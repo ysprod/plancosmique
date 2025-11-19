@@ -430,7 +430,7 @@ export default function HomePage() {
             >
               {category.services.map((service, index) => (
                 <motion.div
-                  key={service.title}
+                  key={service.title+index}
                   variants={itemVariants}
                   whileHover={{ scale: 1.08, y: -12 }}
                   whileTap={{ scale: 0.95 }}
