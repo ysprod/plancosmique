@@ -1,23 +1,22 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import {
+  ArrowLeft,
+  Award,
+  Calculator,
+  Calendar,
+  Compass,
+  Drama,
+  Hash,
+  Heart,
+  Loader2,
+  Sparkles,
+  Target,
+  User
+} from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { 
-  Hash, 
-  Award, 
-  Target, 
-  Compass, 
-  Drama, 
-  Heart, 
-  Zap, 
-  ArrowLeft,
-  Sparkles,
-  Calculator,
-  User,
-  Calendar,
-  Loader2
-} from 'lucide-react';
 
 const containerVariants = {
   hidden: { opacity: 0 },
