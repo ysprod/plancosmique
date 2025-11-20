@@ -1,4 +1,4 @@
-# 🚀 Guide d'Installation - Plan Cosmique
+# 🚀 Guide d'Installation - Mon Etoile
 
 ## 📋 Prérequis
 
@@ -68,7 +68,7 @@ http://localhost:3000
 ## 🎨 Ce que Vous Allez Voir
 
 ### Page d'Accueil (`/`)
-- Logo Plan Cosmique animé
+- Logo Mon Etoile animé
 - 6 services de voyance avec des cartes interactives
 - Animations cosmiques (étoiles, orbes)
 - Background gradient purple-indigo
@@ -174,7 +174,7 @@ Remplacez l'URL dans `app/page.tsx` ligne ~85 :
 ```typescript
 <Image
   src="/votre-logo.png"  // Mettez votre logo dans /public/
-  alt="Plan Cosmique Logo"
+  alt="Mon Etoile Logo"
   width={200}
   height={200}
 />

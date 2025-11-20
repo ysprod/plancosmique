@@ -1,4 +1,4 @@
-# 🌌 Plan Cosmique - Application de Voyance et Prédictions
+# 🌌 Mon Etoile - Application de Voyance et Prédictions
 
 Application Next.js mystique pour les prédictions cosmiques, voyance, tarot et astrologie.
 
@@ -46,7 +46,7 @@ plan-cosmique/
 │   └── voyance/
 │       └── page.tsx         # Page de voyance
 ├── public/
-│   └── logo.png             # Logo Plan Cosmique
+│   └── logo.png             # Logo Mon Etoile
 ├── package.json
 ├── tailwind.config.ts
 ├── tsconfig.json
@@ -170,6 +170,6 @@ MIT License - Libre d'utilisation et de modification
 
 ---
 
-**Créé avec 🌟 par l'équipe Plan Cosmique**
+**Créé avec 🌟 par l'équipe Mon Etoile**
 
 *"L'univers vous guide vers votre destinée"*

@@ -6,39 +6,15 @@ import {
   Moon,
   Star,
   Eye,
-  Zap,
+  Compass,
+  Sun,
   Briefcase,
   Heart,
-  Users,
-  Compass,
-  Target,
-  Lightbulb,
-  TrendingUp,
-  Gem,
-  Shield,
-  DollarSign,
-  Calendar,
-  Sparkle,
-  FileText,
-  Globe,
-  Baby,
-  Link2,
-  UserCheck,
   Building2,
-  UsersRound,
-  Sun,
-  BookOpen,
   Flame,
-  CircleDollarSign,
-  Drama,
-  Brain,
   Hash,
-  Award,
   Palmtree,
-  Mountain,
-  Pyramid,
-  Scroll,
-  Feather
+  ArrowRight
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -48,600 +24,359 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.06,
+      staggerChildren: 0.08,
       delayChildren: 0.1
     }
   }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.9 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      type: "spring",
-      stiffness: 200,
-      damping: 20
+      duration: 0.5,
+      ease: "easeOut"
     }
   }
 };
 
-const floatingVariants = {
-  animate: {
-    y: [0, -20, 0],
-    rotate: [0, 5, -5, 0],
-    transition: {
-      duration: 6,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
-  }
-};
+const iconMap = {
+  Eye,
+  Compass,
+  Sparkles,
+  Star,
+  Briefcase,
+  Palmtree,
+  Heart,
+  Building2,
+  Flame,
+  Hash
+} as const;
 
-// Three cosmic questions
 const cosmicQuestions = [
   {
     question: "Qui suis-je ?",
-    icon: Eye,
-    color: "from-amber-600 via-orange-500 to-red-500",
-    bgColor: "from-amber-900/30 to-orange-900/30",
-    borderColor: "border-amber-500/40"
+    iconName: "Eye" as const,
+    gradient: "from-violet-500 via-purple-400 to-pink-400",
+    bgGradient: "from-violet-50 to-purple-50",
+    shadowColor: "shadow-violet-200/50"
   },
   {
     question: "D'où viens-je ?",
-    icon: Compass,
-    color: "from-indigo-600 via-purple-500 to-fuchsia-500",
-    bgColor: "from-indigo-900/30 to-purple-900/30",
-    borderColor: "border-indigo-500/40"
+    iconName: "Compass" as const,
+    gradient: "from-cyan-500 via-blue-400 to-indigo-400",
+    bgGradient: "from-cyan-50 to-blue-50",
+    shadowColor: "shadow-cyan-200/50"
   },
   {
     question: "Où vais-je ?",
-    icon: Sparkles,
-    color: "from-teal-600 via-cyan-500 to-sky-500",
-    bgColor: "from-teal-900/30 to-cyan-900/30",
-    borderColor: "border-teal-500/40"
+    iconName: "Sparkles" as const,
+    gradient: "from-amber-500 via-orange-400 to-rose-400",
+    bgGradient: "from-amber-50 to-orange-50",
+    shadowColor: "shadow-amber-200/50"
   }
 ];
 
-// Main categories with enhanced structure
 const categories = [
   {
     id: "horoscope",
-    title: "HOROSCOPE PAR SIGNE",
-    icon: Star,
-    color: "from-yellow-600 via-amber-600 to-orange-600",
-    lightColor: "from-yellow-400 to-orange-400",
-    glowColor: "amber-500",
-    description: "Découvrez les prédictions et influences astrales pour votre signe du zodiaque",
-    services: [
-      { icon: Sun, title: "Horoscope du jour", description: "Vos prévisions quotidiennes personnalisées", href: "/horoscope-jour" },
-      { icon: Calendar, title: "Horoscope mensuel", description: "Les grandes tendances du mois", href: "/horoscope-mensuel" },
-      { icon: Star, title: "Horoscope annuel", description: "Votre année astrologique complète", href: "/horoscope-annuel" },
-      { icon: Heart, title: "Horoscope amoureux", description: "L'amour selon votre signe", href: "/horoscope-amour" }
-    ]
+    title: "Horoscope par Signe",
+    iconName: "Star" as const,
+    gradient: "from-yellow-400 to-amber-500",
+    bgGradient: "from-yellow-50 to-amber-50",
+    description: "Prédictions quotidiennes, mensuelles et annuelles",
+    href: "/horoscope",
+    count: "4 services",
+    accentColor: "text-amber-600"
   },
   {
     id: "personal",
-    title: "MA VIE PERSONNELLE",
-    icon: Briefcase,
-    color: "from-violet-600 via-purple-600 to-fuchsia-600",
-    lightColor: "from-violet-400 to-fuchsia-400",
-    glowColor: "violet-500",
-    description: "Explorez votre essence profonde, vos talents et votre chemin de vie",
-    services: [
-      { icon: FileText, title: "Mon Thème astral complet", description: "Carte du ciel et analyse complète", href: "/theme-astral" },
-      { icon: Target, title: "Ma mission de vie", description: "Ce pour quoi vous êtes venu(e) sur Terre", href: "/mission-vie" },
-      { icon: Briefcase, title: "Ma vocation professionnelle", description: "Le métier qui vous fait vibrer", href: "/vocation" },
-      { icon: Lightbulb, title: "Mes talents naturels", description: "Ces dons souvent cachés ou oubliés", href: "/talents" },
-      { icon: Shield, title: "Mes blessures karmiques", description: "Ce que votre âme est venue guérir", href: "/blessures-karmiques" },
-      { icon: Heart, title: "Ma manière d'aimer", description: "Comment j'aime et je suis aimé(e)", href: "/maniere-aimer" },
-      { icon: DollarSign, title: "Mon rapport à l'argent", description: "Argent, travail et succès", href: "/rapport-argent" },
-      { icon: Gem, title: "Ma stabilité émotionnelle", description: "Équilibre intérieur et émotionnel", href: "/stabilite" },
-      { icon: Calendar, title: "Les grands cycles", description: "Les périodes clés de transformation", href: "/cycles-vie" },
-      { icon: Sparkle, title: "Lien avec l'invisible", description: "Monde spirituel, rêves et intuition", href: "/spirituel" }
-    ]
+    title: "Ma Vie Personnelle",
+    iconName: "Briefcase" as const,
+    gradient: "from-violet-400 to-purple-500",
+    bgGradient: "from-violet-50 to-purple-50",
+    description: "Thème astral, mission de vie et talents cachés",
+    href: "/vie-personnelle",
+    count: "10 services",
+    accentColor: "text-purple-600"
   },
   {
     id: "african",
-    title: "ASTROLOGIE AFRICAINE",
-    icon: Palmtree,
-    color: "from-orange-600 via-red-600 to-amber-700",
-    lightColor: "from-orange-400 to-amber-400",
-    glowColor: "orange-500",
-    description: "Découvrez la sagesse ancestrale et les traditions astrologiques africaines",
-    services: [
-      { icon: Globe, title: "Signe Astrologique Africain", description: "Votre signe selon la tradition africaine", href: "/signe-africain" },
-      { icon: Users, title: "Compatibilités Africaines", description: "Affinités énergétiques ancestrales", href: "/compatibilites-africaines" },
-      { icon: Mountain, title: "Guidance Ancestrale", description: "Sagesse des anciens et des ancêtres", href: "/guidance-ancestrale" },
-      { icon: Pyramid, title: "Ma Divinité Égyptienne", description: "La divinité qui vous guide", href: "/divinite-egyptienne" }
-    ]
+    title: "Astrologie Africaine",
+    iconName: "Palmtree" as const,
+    gradient: "from-emerald-400 to-teal-500",
+    bgGradient: "from-emerald-50 to-teal-50",
+    description: "Traditions et sagesses ancestrales millénaires",
+    href: "/astrologie-africaine",
+    count: "4 services",
+    accentColor: "text-teal-600"
   },
   {
     id: "relationships",
-    title: "FAMILLE, AMITIÉ ET COUPLE",
-    icon: Heart,
-    color: "from-rose-600 via-pink-600 to-red-600",
-    lightColor: "from-rose-400 to-red-400",
-    glowColor: "rose-500",
-    description: "Comprenez vos relations et harmonisez vos liens affectifs",
-    services: [
-      { icon: Users, title: "Affinités & Compatibilités", description: "La vérité énergétique de vos relations", href: "/compatibilites" },
-      { icon: Heart, title: "Synastrie de Couple", description: "Lecture profonde de vos thèmes croisés", href: "/synastrie" },
-      { icon: Link2, title: "Relations Karmiques", description: "Âme sœur, flamme jumelle ou contrat karmique", href: "/relations-karmiques" },
-      { icon: Baby, title: "Thème Astral de l'Enfant", description: "Son âme, ses talents et sa mission de vie", href: "/theme-enfant" },
-      { icon: TrendingUp, title: "Chemin Amoureux", description: "Évolution du couple et périodes clés", href: "/chemin-amoureux" }
-    ]
+    title: "Famille & Couple",
+    iconName: "Heart" as const,
+    gradient: "from-pink-400 to-rose-500",
+    bgGradient: "from-pink-50 to-rose-50",
+    description: "Compatibilités et relations karmiques",
+    href: "/relations",
+    count: "5 services",
+    accentColor: "text-rose-600"
   },
   {
     id: "business",
-    title: "MONDE PROFESSIONNEL",
-    icon: Building2,
-    color: "from-cyan-600 via-teal-600 to-emerald-600",
-    lightColor: "from-cyan-400 to-emerald-400",
-    glowColor: "teal-500",
-    description: "Optimisez vos équipes et recrutements avec l'intelligence astrologique",
-    services: [
-      { icon: UserCheck, title: "Talent & Potentiel", description: "Évaluer personnalité, forces et fragilités", href: "/talent-potentiel" },
-      { icon: UsersRound, title: "Synergie d'Équipe", description: "Identifier affinités et tensions", href: "/synergie-equipe" },
-      { icon: Target, title: "Team Building Astrologique", description: "Équipes productives et complémentaires", href: "/team-building" },
-      { icon: Brain, title: "Astropsychologie Collective", description: "Dynamique globale d'un service", href: "/astropsychologie" }
-    ]
+    title: "Monde Professionnel",
+    iconName: "Building2" as const,
+    gradient: "from-sky-400 to-cyan-500",
+    bgGradient: "from-sky-50 to-cyan-50",
+    description: "Team building et astropsychologie collective",
+    href: "/professionnel",
+    count: "4 services",
+    accentColor: "text-cyan-600"
   },
   {
     id: "spirituality",
-    title: "SPIRITUALITÉ AFRICAINE",
-    icon: Flame,
-    color: "from-amber-700 via-orange-700 to-red-700",
-    lightColor: "from-amber-400 to-red-400",
-    glowColor: "amber-600",
-    description: "Reconnectez-vous aux pratiques spirituelles ancestrales africaines",
-    services: [
-      { icon: BookOpen, title: "Notions de base", description: "Fondamentaux de la spiritualité africaine", href: "/spiritualite-bases" },
-      { icon: Shield, title: "Rituels de protection", description: "Protégez votre énergie et votre espace", href: "/rituels-protection" },
-      { icon: CircleDollarSign, title: "Rituels d'abondance", description: "Attirez la prospérité dans votre vie", href: "/rituels-abondance" },
-      { icon: Feather, title: "Invocation des ancêtres", description: "Connectez-vous à vos guides ancestraux", href: "/invocation-ancetres" },
-      { icon: Sparkle, title: "Méditations guidées", description: "Méditations inspirées des traditions africaines", href: "/meditations-africaines" }
-    ]
+    title: "Spiritualité Africaine",
+    iconName: "Flame" as const,
+    gradient: "from-orange-400 to-red-500",
+    bgGradient: "from-orange-50 to-red-50",
+    description: "Rituels sacrés et méditations guidées",
+    href: "/spiritualite",
+    count: "5 services",
+    accentColor: "text-orange-600"
   },
   {
     id: "numerology",
-    title: "NUMÉROLOGIE",
-    icon: Hash,
-    color: "from-indigo-600 via-blue-600 to-cyan-600",
-    lightColor: "from-indigo-400 to-cyan-400",
-    glowColor: "indigo-500",
-    description: "Découvrez les secrets cachés dans vos nombres personnels",
-    services: [
-      { icon: Award, title: "Nombre de naissance", description: "Personnalité, talents et défis de vie", href: "/nombre-naissance" },
-      { icon: Target, title: "Nombre d'expression", description: "Aspirations et potentialités", href: "/nombre-expression" },
-      { icon: Compass, title: "Nombre de chemin de vie", description: "Parcours, défis et opportunités", href: "/chemin-vie-numero" },
-      { icon: Drama, title: "Nombre de personnalité", description: "Traits de caractère et comportements", href: "/nombre-personnalite" },
-      { icon: Heart, title: "Nombre de l'âme", description: "Désirs et aspirations profondes", href: "/nombre-ame" }
-    ]
+    title: "Numérologie",
+    iconName: "Hash" as const,
+    gradient: "from-indigo-400 to-blue-500",
+    bgGradient: "from-indigo-50 to-blue-50",
+    description: "Les secrets cachés dans vos nombres",
+    href: "/numerologie",
+    count: "5 services",
+    accentColor: "text-indigo-600"
   }
 ];
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950 overflow-hidden">
-      {/* Enhanced Animated Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Cosmic Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f12_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f12_1px,transparent_1px)] bg-[size:64px_64px]" />
-
-        {/* Stars */}
-        {[...Array(100)].map((_, i) => (
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-stone-50 overflow-hidden">
+      {/* Artistic Background Elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Soft gradient orbs */}
+        <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] bg-gradient-to-br from-purple-200/30 via-pink-200/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-[600px] h-[600px] bg-gradient-to-tl from-cyan-200/30 via-blue-200/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-[40%] right-[10%] w-[400px] h-[400px] bg-gradient-to-bl from-amber-200/25 via-orange-200/15 to-transparent rounded-full blur-3xl" />
+        
+        {/* Decorative stars */}
+        {[...Array(15)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full"
+            className="absolute"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 3 + 1}px`,
-              height: `${Math.random() * 3 + 1}px`,
-              background: i % 3 === 0 ? '#fbbf24' : i % 3 === 1 ? '#a78bfa' : '#60a5fa',
             }}
             animate={{
-              opacity: [0, 1, 0],
-              scale: [0, 1.5, 0]
+              opacity: [0.2, 0.6, 0.2],
+              scale: [0.8, 1.2, 0.8],
             }}
             transition={{
-              duration: 2 + Math.random() * 5,
+              duration: 3 + Math.random() * 3,
               repeat: Infinity,
-              delay: Math.random() * 5,
-              ease: "easeInOut"
+              delay: Math.random() * 2,
             }}
-          />
+          >
+            <Star className="w-2 h-2 text-amber-400/40 fill-amber-400/30" />
+          </motion.div>
         ))}
-
-        {/* Enhanced Floating orbs */}
-        <motion.div
-          className="absolute top-20 left-20 w-96 h-96 bg-violet-500/20 rounded-full blur-[128px]"
-          animate={{
-            scale: [1, 1.4, 1],
-            opacity: [0.2, 0.4, 0.2],
-            x: [0, 50, 0],
-            y: [0, 30, 0],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-amber-500/20 rounded-full blur-[128px]"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.3, 0.5, 0.3],
-            x: [0, -50, 0],
-            y: [0, -30, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 w-96 h-96 bg-teal-500/15 rounded-full blur-[128px]"
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 py-12">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 py-12 lg:py-16 max-w-7xl">
         {/* Hero Section */}
         <motion.div
-          initial={{ opacity: 0, y: -50 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-center mb-20"
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16 lg:mb-24"
         >
           {/* Logo */}
           <motion.div
-            variants={floatingVariants}
-            animate="animate"
-            className="inline-block mb-8"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="inline-block mb-8 lg:mb-12"
           >
-            <div className="relative w-56 h-56 mx-auto">
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-amber-500 via-violet-500 to-teal-500 rounded-full blur-3xl opacity-60"
-                animate={{
-                  rotate: [0, 360],
-                  scale: [1, 1.2, 1],
-                }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
+            <div className="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 mx-auto">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-200 via-pink-200 to-amber-200 rounded-full blur-2xl opacity-40 animate-pulse" />
+              <Image
+                src="/logo.png"
+                alt="Mon Etoile Logo"
+                width={144}
+                height={144}
+                priority
+                className="relative w-full h-full object-contain"
               />
-              <div className="relative w-full h-full bg-gradient-to-br from-black via-black-50 to-black-100 rounded-full p-4 shadow-2xl border-4 border-amber-400/30">
-                <Image
-                  src="/logo.png"
-                  alt="Plan Cosmique Logo"
-                  width={224}
-                  height={224}
-                  priority
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              {/* Orbiting elements */}
-              <motion.div
-                className="absolute -top-2 -right-2 w-8 h-8"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-              >
-                <Star className="w-8 h-8 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
-              </motion.div>
-              <motion.div
-                className="absolute -bottom-2 -left-2 w-8 h-8"
-                animate={{ rotate: -360 }}
-                transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-              >
-                <Moon className="w-8 h-8 text-violet-400 drop-shadow-[0_0_8px_rgba(167,139,250,0.8)]" />
-              </motion.div>
             </div>
           </motion.div>
 
+          {/* Title */}
           <motion.h1
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-6xl md:text-8xl font-black mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-6 tracking-tight"
           >
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-violet-400 to-teal-400 drop-shadow-[0_0_30px_rgba(251,191,36,0.3)]">
-              PLAN COSMIQUE
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 via-purple-500 to-pink-500">
+              MON ETOILE
             </span>
           </motion.h1>
 
-          <motion.div
+          {/* Subtitle */}
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 1 }}
-            className="mb-8"
+            transition={{ delay: 0.6, duration: 0.6 }}
+            className="text-base sm:text-lg md:text-xl text-slate-600 font-light max-w-3xl mx-auto leading-relaxed px-4"
           >
-            <p className="text-2xl md:text-3xl text-amber-200/90 font-light mb-3 max-w-5xl mx-auto leading-relaxed">
-              Bienvenue dans ce temple virtuel, où chacun vient chercher une réponse
-            </p>
-            <p className="text-xl md:text-2xl text-violet-200/80 font-light max-w-4xl mx-auto">
-              aux trois grandes questions de l'existence
-            </p>
-          </motion.div>
+            Un espace sacré pour comprendre votre chemin, révéler votre essence et illuminer votre destinée
+          </motion.p>
 
           {/* Decorative divider */}
           <motion.div
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
-            transition={{ delay: 0.9, duration: 1 }}
-            className="flex items-center justify-center gap-4 max-w-md mx-auto"
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="flex items-center justify-center gap-3 mt-8 max-w-xs mx-auto"
           >
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
-            <Sun className="w-6 h-6 text-amber-400" />
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-violet-400/50 to-transparent" />
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-purple-300 to-transparent" />
+            <Moon className="w-3 h-3 text-purple-400" />
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-purple-300 to-transparent" />
           </motion.div>
         </motion.div>
 
-        {/* Three Cosmic Questions */}
+        {/* Cosmic Questions */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-24"
+          className="flex justify-center mb-20 lg:mb-28 px-4"
         >
-          {cosmicQuestions.map((item, index) => (
-            <motion.div
-              key={item.question}
-              variants={itemVariants}
-              whileHover={{ scale: 1.05, y: -10 }}
-              className="relative group"
-            >
-              <div className={`absolute inset-0 bg-gradient-to-r ${item.color} rounded-3xl opacity-20 group-hover:opacity-40 blur-2xl transition-all duration-500`} />
-              <div className={`relative bg-gradient-to-br ${item.bgColor} backdrop-blur-xl rounded-3xl p-10 border-2 ${item.borderColor} group-hover:border-opacity-80 transition-all duration-300 shadow-2xl`}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl w-full">
+            {cosmicQuestions.map((item) => {
+              const IconComponent = iconMap[item.iconName];
+              return (
                 <motion.div
-                  animate={{
-                    rotate: [0, 10, -10, 0],
-                    scale: [1, 1.1, 1]
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    delay: index * 0.5
-                  }}
+                  key={item.question}
+                  variants={itemVariants}
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                  className="relative group"
                 >
-                  <item.icon className="w-16 h-16 text-amber-300 mb-6 mx-auto drop-shadow-[0_0_12px_rgba(251,191,36,0.6)]" />
+                  <div className={`relative bg-gradient-to-br ${item.bgGradient} rounded-2xl p-8 shadow-lg ${item.shadowColor} hover:shadow-xl transition-all duration-300 border border-white/50`}>
+                    <div className={`w-14 h-14 mx-auto mb-5 rounded-full bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-md`}>
+                      <IconComponent className="w-7 h-7 text-white" strokeWidth={2} />
+                    </div>
+                    <h3 className="text-xl font-semibold text-slate-800 text-center">
+                      {item.question}
+                    </h3>
+                  </div>
                 </motion.div>
-                <h3 className={`text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r ${item.color} text-center leading-tight`}>
-                  {item.question}
-                </h3>
-              </div>
-            </motion.div>
-          ))}
+              );
+            })}
+          </div>
         </motion.div>
 
         {/* Mission Statement */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 1 }}
-          className="max-w-5xl mx-auto mb-28 text-center"
+          transition={{ delay: 0.8, duration: 0.6 }}
+          className="max-w-4xl mx-auto mb-20 lg:mb-28 px-4"
         >
-          <div className="relative bg-gradient-to-br from-amber-900/20 via-violet-900/20 to-teal-900/20 backdrop-blur-xl rounded-3xl p-12 border-2 border-amber-500/30 shadow-2xl overflow-hidden">
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(251,191,36,0.3),transparent_50%)]" />
+          <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl p-8 lg:p-10 shadow-lg border border-slate-200/50">
+            <p className="text-base sm:text-lg text-slate-700 leading-relaxed text-center mb-6">
+              Inspiré des <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-500">sagesses africaines</span> et éclairé par la <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500">lecture des astres</span>, notre plateforme vous accompagne dans votre quête spirituelle.
+            </p>
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <div className="h-px w-16 bg-gradient-to-r from-transparent to-purple-300" />
+              <Sparkles className="w-4 h-4 text-purple-400" />
+              <div className="h-px w-16 bg-gradient-to-l from-transparent to-purple-300" />
             </div>
-
-            <div className="relative">
-              <p className="text-xl md:text-2xl text-amber-100/90 leading-relaxed mb-8">
-                Inspiré des <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-red-300">sagesses africaines</span> et éclairé par la <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-300 via-purple-300 to-fuchsia-300">lecture des astres</span>, notre plateforme vous aide à{' '}
-                <span className="font-semibold text-teal-200">mieux vous connaître</span>, comprendre votre{' '}
-                <span className="font-semibold text-violet-200">mission de vie</span>, révéler vos{' '}
-                <span className="font-semibold text-rose-200">talents</span>, harmoniser vos{' '}
-                <span className="font-semibold text-amber-200">relations</span>, et avancer avec clarté sur votre chemin spirituel.
-              </p>
-              <div className="flex items-center justify-center gap-3 text-violet-300 mb-6">
-                <Sparkles className="w-6 h-6 animate-pulse" />
-                <span className="text-lg md:text-xl font-medium italic text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-violet-200 to-teal-200">
-                  Votre thème astral devient une boussole, une mémoire, et une lumière
-                </span>
-                <Sparkles className="w-6 h-6 animate-pulse" />
-              </div>
-              <p className="text-lg text-teal-200/90 font-light">
-                pour guider vos choix, vos projets et votre évolution intérieure.
-              </p>
-            </div>
+            <p className="text-sm text-slate-600 italic text-center">
+              Votre thème astral devient une boussole, une mémoire et une lumière
+            </p>
           </div>
         </motion.div>
 
-        {/* Categories Sections */}
-        {categories.map((category, categoryIndex) => (
-          <motion.section
-            key={category.id}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2 + categoryIndex * 0.15, duration: 0.8 }}
-            className="mb-32"
-          >
-            {/* Category Header */}
-            <div className="text-center mb-16">
-              <motion.div
-                whileHover={{ rotate: 360, scale: 1.15 }}
-                transition={{ duration: 0.8 }}
-                className="relative inline-block mb-8"
-              >
-                <div className={`absolute inset-0 bg-${category.glowColor} rounded-3xl blur-2xl opacity-50`} />
-                <div className={`relative w-24 h-24 rounded-3xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-2xl border-2 border-white/20`}>
-                  <category.icon className="w-12 h-12 text-white drop-shadow-lg" />
-                </div>
-              </motion.div>
-
-              <h2 className={`text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r ${category.lightColor} mb-6 tracking-tight`}>
-                {category.title}
-              </h2>
-              <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-                {category.description}
-              </p>
-            </div>
-
-            {/* Services Grid */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto"
-            >
-              {category.services.map((service, index) => (
+        {/* Categories Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="mb-24 lg:mb-28 px-4"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {categories.map((category) => {
+              const IconComponent = iconMap[category.iconName];
+              return (
                 <motion.div
-                  key={`${service.title}-${index}`}
+                  key={category.id}
                   variants={itemVariants}
-                  whileHover={{ scale: 1.08, y: -12 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  whileHover={{ y: -6, scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <Link href={service.href}>
-                    <div className="group relative h-full">
-                      {/* Glow effect */}
-                      <div className={`absolute -inset-1 bg-gradient-to-r ${category.color} rounded-3xl opacity-0 group-hover:opacity-50 blur-xl transition-all duration-500`} />
+                  <Link href={category.href}>
+                    <div className={`group relative bg-gradient-to-br ${category.bgGradient} rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-white/50 h-full`}>
+                      {/* Icon */}
+                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-md mb-4`}>
+                        <IconComponent className="w-6 h-6 text-white" strokeWidth={2} />
+                      </div>
 
-                      <div className="relative bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-xl rounded-3xl p-7 border-2 border-slate-700/50 group-hover:border-opacity-100 transition-all duration-300 h-full shadow-2xl hover:shadow-[0_0_40px_rgba(168,85,247,0.4)]">
-                        {/* Shine effect */}
-                        <motion.div
-                          className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-3xl opacity-0 group-hover:opacity-100`}
-                          initial={{ x: '-100%' }}
-                          whileHover={{ x: '200%' }}
-                          transition={{ duration: 0.6, ease: "easeOut" }}
-                        />
+                      {/* Content */}
+                      <h3 className={`text-lg font-bold ${category.accentColor} mb-2 leading-tight`}>
+                        {category.title}
+                      </h3>
+                      <p className="text-slate-600 text-sm leading-relaxed mb-4">
+                        {category.description}
+                      </p>
 
-                        {/* Icon */}
-                        <motion.div
-                          whileHover={{ rotate: 360, scale: 1.1 }}
-                          transition={{ duration: 0.6 }}
-                          className="relative mb-5"
-                        >
-                          <div className={`absolute inset-0 bg-gradient-to-br ${category.color} rounded-2xl blur-md opacity-50`} />
-                          <div className={`relative w-14 h-14 rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg`}>
-                            <service.icon className="w-7 h-7 text-white" />
-                          </div>
-                        </motion.div>
-
-                        {/* Content */}
-                        <h3 className="text-lg font-black text-white mb-3 leading-tight">
-                          {service.title}
-                        </h3>
-                        <p className="text-slate-300 text-sm leading-relaxed mb-5">
-                          {service.description}
-                        </p>
-
-                        {/* Arrow indicator */}
-                        <motion.div
-                          initial={{ x: 0 }}
-                          whileHover={{ x: 8 }}
-                          className={`flex items-center gap-2 text-transparent bg-clip-text bg-gradient-to-r ${category.color} font-bold text-sm`}
-                        >
-                          <span>Découvrir</span>
-                          <Zap className="w-4 h-4 text-amber-400" />
-                        </motion.div>
+                      {/* Footer */}
+                      <div className="flex items-center justify-between pt-3 border-t border-white/50">
+                        <span className="text-xs text-slate-500 font-medium">{category.count}</span>
+                        <div className="flex items-center gap-1 text-slate-700 group-hover:translate-x-1 transition-transform duration-300">
+                          <span className="text-sm font-semibold">Découvrir</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </div>
                       </div>
                     </div>
                   </Link>
                 </motion.div>
-              ))}
-            </motion.div>
-          </motion.section>
-        ))}
-
-        {/* Final Message */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 2, duration: 1 }}
-          className="max-w-4xl mx-auto mb-16 text-center"
-        >
-          <div className="relative bg-gradient-to-br from-amber-900/30 via-orange-900/30 to-red-900/30 backdrop-blur-xl rounded-3xl p-16 border-2 border-amber-500/50 shadow-2xl overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(251,191,36,0.2),transparent_70%)]" />
-
-            <div className="relative">
-              <motion.div
-                animate={{
-                  rotate: [0, 10, -10, 0],
-                  scale: [1, 1.1, 1]
-                }}
-                transition={{ duration: 5, repeat: Infinity }}
-                className="inline-block mb-6"
-              >
-                <Star className="w-20 h-20 text-amber-400 drop-shadow-[0_0_20px_rgba(251,191,36,0.8)]" />
-              </motion.div>
-              <h3 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-red-300 mb-6 leading-tight">
-                Votre naissance a un but
-              </h3>
-              <p className="text-2xl md:text-3xl text-amber-100/90 font-light mb-4">
-                Nous vous aidons à découvrir ce que votre âme est venue accomplir
-              </p>
-              <div className="flex items-center justify-center gap-3 mt-6">
-                <div className="h-px w-24 bg-gradient-to-r from-transparent to-amber-400/50" />
-                <Scroll className="w-5 h-5 text-amber-400" />
-                <div className="h-px w-24 bg-gradient-to-l from-transparent to-amber-400/50" />
-              </div>
-            </div>
+              );
+            })}
           </div>
         </motion.div>
 
         {/* CTA Section */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.2, duration: 1 }}
-          className="text-center mb-20"
+          transition={{ delay: 1.2, duration: 0.6 }}
+          className="text-center mb-20 px-4"
         >
           <Link href="/consultation">
             <motion.button
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative group px-16 py-7 rounded-full text-white font-black text-2xl shadow-2xl overflow-hidden"
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+              className="relative px-12 py-5 bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-2xl transition-all overflow-hidden group"
             >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-amber-600 via-violet-600 to-teal-600"
-                animate={{
-                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-                style={{
-                  backgroundSize: '200% 200%',
-                }}
-              />
-
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                animate={{
-                  x: ['-200%', '200%']
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  repeatDelay: 1
-                }}
-              />
-
-              <span className="relative z-10 flex items-center gap-4">
-                <Sparkles className="w-7 h-7 animate-pulse" />
-                Commencer votre voyage cosmique
-                <Sparkles className="w-7 h-7 animate-pulse" />
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-600 via-purple-600 to-violet-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <span className="relative flex items-center gap-3">
+                <Sparkles className="w-5 h-5" />
+                Commencer votre voyage spirituel
+                <Sparkles className="w-5 h-5" />
               </span>
             </motion.button>
           </Link>
@@ -651,19 +386,19 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2.5, duration: 1 }}
-          className="text-center mt-20 pt-12 border-t border-amber-500/20"
+          transition={{ delay: 1.4, duration: 0.6 }}
+          className="text-center pt-12 border-t border-slate-200 px-4"
         >
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Moon className="w-5 h-5 text-violet-400" />
-            <Star className="w-4 h-4 text-amber-400" />
-            <Sun className="w-5 h-5 text-orange-400" />
+          <div className="flex items-center justify-center gap-3 mb-4 opacity-50">
+            <Moon className="w-3 h-3 text-purple-500" />
+            <Star className="w-2.5 h-2.5 text-amber-500 fill-amber-500" />
+            <Sun className="w-3 h-3 text-orange-500" />
           </div>
-          <p className="text-sm font-medium text-slate-400 mb-2">
-            © 2025 Plan Cosmique - Tous droits réservés
+          <p className="text-xs text-slate-500 mb-2">
+            © 2025 Mon Etoile - Tous droits réservés
           </p>
-          <p className="text-xs text-slate-500 italic max-w-md mx-auto">
-            Guidez vos choix, vos projets et votre évolution intérieure à travers la sagesse des astres
+          <p className="text-xs text-slate-400 max-w-md mx-auto">
+            Guidé par la lumière des astres et la sagesse ancestrale
           </p>
         </motion.div>
       </div>

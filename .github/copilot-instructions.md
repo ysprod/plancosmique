@@ -1,4 +1,4 @@
-# Copilot Instructions for Plan Cosmique
+# Copilot Instructions for Mon Etoile
 
 These notes make AI agents productive immediately in this repo. Keep guidance specific to this codebase and follow the conventions below.
 
