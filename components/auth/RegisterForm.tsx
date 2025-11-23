@@ -1,10 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-/**
- * Formulaire d'inscription avec validation et design moderne
- */
-
 import { useAuth } from '@/lib/hooks';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -18,13 +14,12 @@ import {
   Mail,
   Phone,
   Shield,
-  Sparkles,
-  Star,
   User,
   X
 } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 export const RegisterForm: React.FC = () => {
   const { register, isLoading } = useAuth();
@@ -135,7 +130,7 @@ export const RegisterForm: React.FC = () => {
   };
 
   const getPasswordStrengthColor = () => {
-    if (passwordStrength === 0) return 'bg-slate-200';
+    if (passwordStrength === 0) return 'bg-gray-200';
     if (passwordStrength === 1) return 'bg-red-500';
     if (passwordStrength === 2) return 'bg-orange-500';
     if (passwordStrength === 3) return 'bg-yellow-500';
@@ -151,67 +146,10 @@ export const RegisterForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-violet-900 relative overflow-hidden flex items-center justify-center p-6">
-      {/* Décorations d'arrière-plan animées */}
+    <div className="min-h-screen bg-white relative overflow-hidden flex items-center justify-center p-6">
+      {/* Background minimaliste */}
       <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-0 left-0 w-96 h-96 bg-violet-500/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            rotate: [90, 0, 90],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            y: [0, -50, 0],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-fuchsia-500/10 rounded-full blur-3xl"
-        />
-      </div>
-
-      {/* Étoiles scintillantes */}
-      <div className="absolute inset-0">
-        {[...Array(50)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              opacity: [0, 1, 0],
-              scale: [0, 1, 0],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              delay: Math.random() * 3,
-            }}
-          />
-        ))}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f5f5f5_1px,transparent_1px),linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-[size:60px_60px]" />
       </div>
 
       <motion.div
@@ -220,11 +158,9 @@ export const RegisterForm: React.FC = () => {
         className="w-full max-w-2xl mx-auto relative z-10"
       >
         {/* Carte principale */}
-        <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
-          {/* Header avec logo et gradient */}
-          <div className="relative bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 px-8 py-12 text-center">
-            <div className="absolute inset-0 bg-black/10" />
-            
+        <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden">
+          {/* Header avec logo */}
+          <div className="relative bg-white px-8 py-12 text-center border-b border-gray-200">
             {/* Logo */}
             <motion.div
               initial={{ scale: 0 }}
@@ -232,63 +168,26 @@ export const RegisterForm: React.FC = () => {
               transition={{ type: "spring", stiffness: 200, damping: 15 }}
               className="relative z-10 mb-6"
             >
-              <div className="inline-flex items-center justify-center w-24 h-24 bg-white rounded-3xl shadow-2xl mb-4">
+              <div className="inline-flex items-center justify-center w-24 h-24 bg-white rounded-3xl shadow-lg mb-4 border border-gray-200">
                 <div className="relative w-16 h-16">
-                  {/* Logo étoile avec animation */}
-                  <motion.div
-                    animate={{
-                      rotate: [0, 360],
-                    }}
-                    transition={{
-                      duration: 20,
-                      repeat: Infinity,
-                      ease: "linear"
-                    }}
-                  >
-                    <Star className="w-16 h-16 text-violet-600 fill-violet-600" />
-                  </motion.div>
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [0.5, 1, 0.5],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                    className="absolute inset-0"
-                  >
-                    <Sparkles className="w-16 h-16 text-fuchsia-500" />
-                  </motion.div>
+                  <Image
+                    src="/logo.png"
+                    alt="Logo Mon Etoile"
+                    width={64}
+                    height={64}
+                    className="w-full h-full object-contain"
+                    priority
+                  />
                 </div>
               </div>
               
-              <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg">
-                Mon Étoile
+              <h1 className="text-4xl font-black text-black mb-2">
+                MON ÉTOILE
               </h1>
-              <p className="text-white/90 text-lg font-medium">
-                Créez votre compte et rejoignez-nous
+              <p className="text-gray-600 text-lg font-medium">
+                Créez votre compte spirituel
               </p>
             </motion.div>
-
-            {/* Icônes décoratives */}
-            <div className="absolute top-4 left-4">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              >
-                <Sparkles className="w-6 h-6 text-white/50" />
-              </motion.div>
-            </div>
-            <div className="absolute top-4 right-4">
-              <motion.div
-                animate={{ rotate: -360 }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-              >
-                <Star className="w-6 h-6 text-white/50 fill-white/50" />
-              </motion.div>
-            </div>
           </div>
 
           {/* Formulaire */}
@@ -300,7 +199,7 @@ export const RegisterForm: React.FC = () => {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="mb-6 p-4 bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200 rounded-2xl flex items-start gap-3 shadow-lg"
+                  className="mb-6 p-4 bg-red-50 border-2 border-red-200 rounded-2xl flex items-start gap-3"
                 >
                   <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
                     <AlertCircle className="w-4 h-4 text-white" />
@@ -323,20 +222,20 @@ export const RegisterForm: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Prénom */}
                 <div className="group">
-                  <label className="block text-sm font-bold text-slate-700 mb-2">
+                  <label className="block text-sm font-bold text-gray-900 mb-2">
                     Prénom <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-violet-600 transition-colors" />
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-gray-900 transition-colors" />
                     <input
                       type="text"
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleChange}
-                      className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all font-medium ${
+                      className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 transition-all font-medium ${
                         errors.firstName
                           ? 'border-red-300 focus:border-red-500 focus:ring-red-500/10'
-                          : 'border-slate-200 focus:border-violet-500 focus:ring-violet-500/10'
+                          : 'border-gray-200 focus:border-gray-900 focus:ring-gray-900/10'
                       }`}
                       placeholder="Jean"
                     />
@@ -358,20 +257,20 @@ export const RegisterForm: React.FC = () => {
 
                 {/* Nom */}
                 <div className="group">
-                  <label className="block text-sm font-bold text-slate-700 mb-2">
+                  <label className="block text-sm font-bold text-gray-900 mb-2">
                     Nom <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-violet-600 transition-colors" />
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-gray-900 transition-colors" />
                     <input
                       type="text"
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleChange}
-                      className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all font-medium ${
+                      className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 transition-all font-medium ${
                         errors.lastName
                           ? 'border-red-300 focus:border-red-500 focus:ring-red-500/10'
-                          : 'border-slate-200 focus:border-violet-500 focus:ring-violet-500/10'
+                          : 'border-gray-200 focus:border-gray-900 focus:ring-gray-900/10'
                       }`}
                       placeholder="Dupont"
                     />
@@ -394,20 +293,20 @@ export const RegisterForm: React.FC = () => {
 
               {/* Email */}
               <div className="group">
-                <label className="block text-sm font-bold text-slate-700 mb-2">
+                <label className="block text-sm font-bold text-gray-900 mb-2">
                   Email <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-violet-600 transition-colors" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-gray-900 transition-colors" />
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all font-medium ${
+                    className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 transition-all font-medium ${
                       errors.email
                         ? 'border-red-300 focus:border-red-500 focus:ring-red-500/10'
-                        : 'border-slate-200 focus:border-violet-500 focus:ring-violet-500/10'
+                        : 'border-gray-200 focus:border-gray-900 focus:ring-gray-900/10'
                     }`}
                     placeholder="jean.dupont@email.com"
                   />
@@ -431,27 +330,27 @@ export const RegisterForm: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Password */}
                 <div className="group">
-                  <label className="block text-sm font-bold text-slate-700 mb-2">
+                  <label className="block text-sm font-bold text-gray-900 mb-2">
                     Mot de passe <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-violet-600 transition-colors" />
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-gray-900 transition-colors" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
-                      className={`w-full pl-12 pr-12 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all font-medium ${
+                      className={`w-full pl-12 pr-12 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 transition-all font-medium ${
                         errors.password
                           ? 'border-red-300 focus:border-red-500 focus:ring-red-500/10'
-                          : 'border-slate-200 focus:border-violet-500 focus:ring-violet-500/10'
+                          : 'border-gray-200 focus:border-gray-900 focus:ring-gray-900/10'
                       }`}
                       placeholder="••••••••"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                     >
                       {showPassword ? (
                         <EyeOff className="w-5 h-5" />
@@ -463,7 +362,7 @@ export const RegisterForm: React.FC = () => {
                   {formData.password && (
                     <div className="mt-3">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-semibold text-slate-600">Force</span>
+                        <span className="text-xs font-semibold text-gray-600">Force</span>
                         <span className={`text-xs font-bold ${
                           passwordStrength === 4 ? 'text-green-600' :
                           passwordStrength === 3 ? 'text-yellow-600' :
@@ -478,7 +377,7 @@ export const RegisterForm: React.FC = () => {
                           <div
                             key={level}
                             className={`h-2 flex-1 rounded-full transition-all ${
-                              level <= passwordStrength ? getPasswordStrengthColor() : 'bg-slate-200'
+                              level <= passwordStrength ? getPasswordStrengthColor() : 'bg-gray-200'
                             }`}
                           />
                         ))}
@@ -499,27 +398,27 @@ export const RegisterForm: React.FC = () => {
 
                 {/* Confirm Password */}
                 <div className="group">
-                  <label className="block text-sm font-bold text-slate-700 mb-2">
+                  <label className="block text-sm font-bold text-gray-900 mb-2">
                     Confirmer <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-violet-600 transition-colors" />
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-gray-900 transition-colors" />
                     <input
                       type={showConfirmPassword ? 'text' : 'password'}
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      className={`w-full pl-12 pr-12 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all font-medium ${
+                      className={`w-full pl-12 pr-12 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 transition-all font-medium ${
                         errors.confirmPassword
                           ? 'border-red-300 focus:border-red-500 focus:ring-red-500/10'
-                          : 'border-slate-200 focus:border-violet-500 focus:ring-violet-500/10'
+                          : 'border-gray-200 focus:border-gray-900 focus:ring-gray-900/10'
                       }`}
                       placeholder="••••••••"
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                     >
                       {showConfirmPassword ? (
                         <EyeOff className="w-5 h-5" />
@@ -548,17 +447,17 @@ export const RegisterForm: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Phone */}
                 <div className="group">
-                  <label className="block text-sm font-bold text-slate-700 mb-2">
-                    Téléphone <span className="text-slate-400 text-xs">(optionnel)</span>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">
+                    Téléphone <span className="text-gray-400 text-xs">(optionnel)</span>
                   </label>
                   <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-violet-600 transition-colors" />
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-gray-900 transition-colors" />
                     <input
                       type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full pl-12 pr-4 py-3.5 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 transition-all font-medium"
+                      className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 transition-all font-medium"
                       placeholder="+33 6 12 34 56 78"
                     />
                   </div>
@@ -576,17 +475,17 @@ export const RegisterForm: React.FC = () => {
 
                 {/* Date of Birth */}
                 <div className="group">
-                  <label className="block text-sm font-bold text-slate-700 mb-2">
-                    Date de naissance <span className="text-slate-400 text-xs">(optionnel)</span>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">
+                    Date de naissance <span className="text-gray-400 text-xs">(optionnel)</span>
                   </label>
                   <div className="relative">
-                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-violet-600 transition-colors" />
+                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-gray-900 transition-colors" />
                     <input
                       type="date"
                       name="dateOfBirth"
                       value={formData.dateOfBirth}
                       onChange={handleChange}
-                      className="w-full pl-12 pr-4 py-3.5 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 transition-all font-medium"
+                      className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 transition-all font-medium"
                     />
                   </div>
                 </div>
@@ -598,7 +497,7 @@ export const RegisterForm: React.FC = () => {
                 disabled={isLoading}
                 whileHover={{ scale: isLoading ? 1 : 1.02 }}
                 whileTap={{ scale: isLoading ? 1 : 0.98 }}
-                className="w-full bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 text-white py-4 rounded-xl font-bold shadow-xl hover:shadow-2xl hover:shadow-violet-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg"
+                className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg"
               >
                 {isLoading ? (
                   <>
@@ -616,11 +515,11 @@ export const RegisterForm: React.FC = () => {
 
             {/* Login Link */}
             <div className="mt-8 text-center">
-              <p className="text-slate-600">
+              <p className="text-gray-600">
                 Vous avez déjà un compte ?{' '}
                 <Link
                   href="/auth/login"
-                  className="text-violet-600 hover:text-violet-700 font-bold transition-colors"
+                  className="text-gray-900 hover:text-amber-600 font-bold transition-colors"
                 >
                   Se connecter
                 </Link>
@@ -628,7 +527,7 @@ export const RegisterForm: React.FC = () => {
             </div>
 
             {/* Sécurité */}
-            <div className="mt-6 flex items-center justify-center gap-2 text-slate-500 text-sm">
+            <div className="mt-6 flex items-center justify-center gap-2 text-gray-500 text-sm">
               <Shield className="w-4 h-4" />
               <span>Vos données sont sécurisées et cryptées</span>
             </div>
@@ -636,7 +535,7 @@ export const RegisterForm: React.FC = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-6 text-center text-white/80 text-sm">
+        <div className="mt-6 text-center text-gray-600 text-sm">
           <p>© 2025 Mon Étoile. Tous droits réservés.</p>
         </div>
       </motion.div>

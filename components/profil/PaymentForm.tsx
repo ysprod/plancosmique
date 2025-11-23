@@ -73,13 +73,13 @@ export default function PaymentForm({ form, loading, error, success, handleChang
         <div>
           <label className="flex items-center gap-2 text-sm font-black text-slate-700 mb-3 ml-1">
             <CreditCard className="w-4 h-4 text-violet-600" />
-            Montant (€)
+            Montant (CFA)
           </label>
           <div className="relative">
             <input
               type="number"
               name="montant"
-              placeholder="200"
+              placeholder="100"
               value={form.montant}
               onChange={handleChange}
               min="1"
@@ -87,7 +87,7 @@ export default function PaymentForm({ form, loading, error, success, handleChang
               required
             />
             <div className="absolute right-6 top-1/2 -translate-y-1/2 text-3xl font-black text-violet-600">
-              €
+              F CFA
             </div>
           </div>
         </div>

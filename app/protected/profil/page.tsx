@@ -130,15 +130,15 @@ export default function ProfilPage() {
     try {
       const paymentData = {
         totalPrice: form.montant,
-        article: [{ sac: 100, chaussure: 100 }],
+        article: [{ sac: 50, chaussure: 50 }],
         personal_Info: [{ userId: 1, orderId: 123 }],
         numeroSend: form.numeroSend,
         nomclient: form.nomclient,
-        return_url: "https://your-domain.com/callback",
-        webhook_url: "https://your-domain.com/my-webhook-url",
+        return_url: "https://www.monetoile.org/callback",
+        webhook_url: "https://www.monetoile.org/my-webhook-url",
       };
 
-      const apiUrl = "https://www.pay.moneyfusion.net/api/pay";
+      const apiUrl = "https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/pay/";
       const response = await axios.post(apiUrl, paymentData, {
         headers: { "Content-Type": "application/json" },
       });
