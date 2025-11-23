@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
   // Liste des routes publiques (peut être étendue)
-  const publicRoutes = ['/', '/auth/login', '/auth/register'];
+  const publicRoutes = ['/', '/auth/login', '/auth/register', '/callback'];
   const isPublicRoute = publicRoutes.some(route => pathname === route);
 
   // Liste des routes protégées (toutes les routes commençant par /protected)
