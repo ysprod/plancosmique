@@ -43,8 +43,9 @@ const processQueue = (error: Error | null, token: string | null = null) => {
 /**
  * Instance Axios configurée
  */
+const cleanBaseURL = config.api.baseURL.replace(/\/+$/, '');
 const apiClient: AxiosInstance = axios.create({
-  baseURL: `${config.api.baseURL}/api/${config.api.apiVersion}`,
+  baseURL: `${cleanBaseURL}/api/${config.api.apiVersion}`,
   timeout: config.api.timeout,
   headers: {
     'Content-Type': 'application/json',
@@ -169,7 +170,7 @@ export const refreshAccessToken = async (): Promise<string> => {
 
   try {
     const response = await axios.post(
-      `${config.api.baseURL}/api/${config.api.apiVersion}/auth/refresh`,
+      `${cleanBaseURL}/api/${config.api.apiVersion}/auth/refresh`,
       {},
       {
         headers: {
