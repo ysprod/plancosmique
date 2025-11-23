@@ -1,8 +1,7 @@
 'use client';
 
-import { ProtectedRoute } from '@/components/auth';
 import { motion } from 'framer-motion';
- 
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import {
   ArrowLeft,
   Award,
@@ -170,7 +169,7 @@ export default function NumerologiePage() {
         throw new Error('Veuillez remplir tous les champs');
       }
 
-      // Simuler un appel API (vous pouvez remplacer par un vrai appel API)
+      // Simuler un appel API
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       // Calculer la numérologie
@@ -187,14 +186,20 @@ export default function NumerologiePage() {
 
   return (
     <ProtectedRoute>
-      <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
-        {/* Subtle Background */}
+      <div className="relative min-h-screen bg-white overflow-hidden">
+        {/* Progress bar */}
+        <motion.div
+          className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 z-50 origin-left"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.5 }}
+        />
+
+        {/* Background minimaliste */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f012_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f012_1px,transparent_1px)] bg-[size:60px_60px]" />
-          {/* Decorative orbs */}
-          <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-gradient-to-br from-indigo-200/20 via-blue-200/10 to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-gradient-to-tl from-purple-200/20 via-pink-200/10 to-transparent rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#f5f5f5_1px,transparent_1px),linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-[size:60px_60px]" />
         </div>
+
         <div className="relative z-10 container mx-auto px-4 sm:px-6 py-12 lg:py-16 max-w-7xl">
           {/* Back Button */}
           <motion.div
@@ -207,13 +212,14 @@ export default function NumerologiePage() {
               <motion.button
                 whileHover={{ scale: 1.05, x: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 transition-colors font-semibold"
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors font-semibold"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span>Retour à l'accueil</span>
               </motion.button>
             </Link>
           </motion.div>
+
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -226,17 +232,18 @@ export default function NumerologiePage() {
               transition={{ duration: 0.6 }}
               className="inline-block mb-6"
             >
-              <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-500 flex items-center justify-center shadow-lg">
+              <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-2xl bg-gray-900 flex items-center justify-center shadow-lg">
                 <Hash className="w-10 h-10 lg:w-12 lg:h-12 text-white" />
               </div>
             </motion.div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-light text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600 mb-4 tracking-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-black mb-4 tracking-tight">
               NUMÉROLOGIE
             </h1>
-            <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
               Découvrez les secrets cachés dans vos nombres personnels
             </p>
           </motion.div>
+
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
             {/* Formulaire */}
             <motion.div
@@ -244,14 +251,14 @@ export default function NumerologiePage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-slate-200">
+              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
                 <div className="flex items-center gap-3 mb-6">
-                  <Calculator className="w-6 h-6 text-indigo-600" />
-                  <h2 className="text-2xl font-bold text-slate-800">Calculez votre profil numérologique</h2>
+                  <Calculator className="w-6 h-6 text-gray-900" />
+                  <h2 className="text-2xl font-bold text-gray-900">Calculez votre profil numérologique</h2>
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                       <User className="w-4 h-4" />
                       Prénom
                     </label>
@@ -259,13 +266,13 @@ export default function NumerologiePage() {
                       type="text"
                       value={formData.firstName}
                       onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-gray-900 focus:ring-2 focus:ring-gray-200 transition-all outline-none"
                       placeholder="Votre prénom"
                       required
                     />
                   </div>
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                       <User className="w-4 h-4" />
                       Nom
                     </label>
@@ -273,13 +280,13 @@ export default function NumerologiePage() {
                       type="text"
                       value={formData.lastName}
                       onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-gray-900 focus:ring-2 focus:ring-gray-200 transition-all outline-none"
                       placeholder="Votre nom"
                       required
                     />
                   </div>
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                       <Calendar className="w-4 h-4" />
                       Date de naissance
                     </label>
@@ -287,7 +294,7 @@ export default function NumerologiePage() {
                       type="date"
                       value={formData.birthDate}
                       onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-gray-900 focus:ring-2 focus:ring-gray-200 transition-all outline-none"
                       required
                     />
                   </div>
@@ -299,7 +306,7 @@ export default function NumerologiePage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white rounded-lg font-bold shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {loading ? (
                       <>
@@ -316,6 +323,7 @@ export default function NumerologiePage() {
                 </form>
               </div>
             </motion.div>
+
             {/* Résultats */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -323,54 +331,55 @@ export default function NumerologiePage() {
               transition={{ delay: 0.4, duration: 0.6 }}
             >
               {result ? (
-                <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-8 shadow-lg border border-indigo-200">
-                  <h2 className="text-2xl font-bold text-indigo-900 mb-6">Votre Profil Numérologique</h2>
+                <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Votre Profil Numérologique</h2>
                   <div className="space-y-6">
-                    <div className="bg-white/70 backdrop-blur-sm rounded-xl p-5 border border-indigo-100">
+                    <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
                       <div className="flex items-center gap-3 mb-2">
-                        <Compass className="w-5 h-5 text-indigo-600" />
-                        <span className="font-semibold text-slate-700">Chemin de Vie</span>
+                        <Compass className="w-5 h-5 text-gray-900" />
+                        <span className="font-semibold text-gray-700">Chemin de Vie</span>
                       </div>
-                      <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600">
+                      <div className="text-4xl font-bold text-gray-900">
                         {result.lifePathNumber}
                       </div>
-                      <p className="text-sm text-slate-600 mt-2">{result.interpretation}</p>
+                      <p className="text-sm text-gray-600 mt-2">{result.interpretation}</p>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-purple-100">
+                      <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
                         <div className="flex items-center gap-2 mb-2">
-                          <Target className="w-4 h-4 text-purple-600" />
-                          <span className="font-semibold text-slate-700 text-sm">Expression</span>
+                          <Target className="w-4 h-4 text-gray-900" />
+                          <span className="font-semibold text-gray-700 text-sm">Expression</span>
                         </div>
-                        <div className="text-3xl font-bold text-purple-600">{result.expressionNumber}</div>
+                        <div className="text-3xl font-bold text-gray-900">{result.expressionNumber}</div>
                       </div>
-                      <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-rose-100">
+                      <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
                         <div className="flex items-center gap-2 mb-2">
-                          <Heart className="w-4 h-4 text-rose-600" />
-                          <span className="font-semibold text-slate-700 text-sm">Âme</span>
+                          <Heart className="w-4 h-4 text-gray-900" />
+                          <span className="font-semibold text-gray-700 text-sm">Âme</span>
                         </div>
-                        <div className="text-3xl font-bold text-rose-600">{result.soulNumber}</div>
+                        <div className="text-3xl font-bold text-gray-900">{result.soulNumber}</div>
                       </div>
-                      <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-teal-100 col-span-2">
+                      <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 col-span-2">
                         <div className="flex items-center gap-2 mb-2">
-                          <Drama className="w-4 h-4 text-teal-600" />
-                          <span className="font-semibold text-slate-700 text-sm">Personnalité</span>
+                          <Drama className="w-4 h-4 text-gray-900" />
+                          <span className="font-semibold text-gray-700 text-sm">Personnalité</span>
                         </div>
-                        <div className="text-3xl font-bold text-teal-600">{result.personalityNumber}</div>
+                        <div className="text-3xl font-bold text-gray-900">{result.personalityNumber}</div>
                       </div>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-slate-200 flex flex-col items-center justify-center h-full min-h-[400px]">
-                  <Hash className="w-16 h-16 text-slate-300 mb-4" />
-                  <p className="text-slate-500 text-center">
+                <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 flex flex-col items-center justify-center h-full min-h-[400px]">
+                  <Hash className="w-16 h-16 text-gray-300 mb-4" />
+                  <p className="text-gray-500 text-center">
                     Remplissez le formulaire pour découvrir<br />votre profil numérologique complet
                   </p>
                 </div>
               )}
             </motion.div>
           </div>
+
           {/* Services Grid */}
           <motion.div
             variants={containerVariants}
@@ -378,7 +387,7 @@ export default function NumerologiePage() {
             animate="visible"
             className="mb-16"
           >
-            <h2 className="text-3xl font-bold text-center text-slate-800 mb-10">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-10">
               Les Nombres Sacrés
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -388,13 +397,13 @@ export default function NumerologiePage() {
                   variants={itemVariants}
                   whileHover={{ y: -4, scale: 1.02 }}
                   transition={{ duration: 0.2 }}
-                  className={`bg-gradient-to-br ${service.color.replace('from-', 'from-').replace('to-', 'to-')}/10 rounded-2xl p-6 border border-white/50 shadow-sm hover:shadow-md transition-all`}
+                  className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all"
                 >
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center shadow-md mb-4`}>
+                  <div className="w-12 h-12 rounded-xl bg-gray-900 flex items-center justify-center shadow-md mb-4">
                     <service.icon className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-lg font-bold text-slate-800 mb-2">{service.title}</h3>
-                  <p className="text-sm text-slate-600">{service.description}</p>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{service.title}</h3>
+                  <p className="text-sm text-gray-600">{service.description}</p>
                 </motion.div>
               ))}
             </div>

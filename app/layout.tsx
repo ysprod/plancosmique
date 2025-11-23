@@ -1,23 +1,57 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-
-const inter = Inter({ subsets: ['latin'] })
+import './globals.css';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import { Suspense } from 'react';
+import { AuthProvider } from '@/lib/auth/AuthContext';
+import { ErrorBoundary, LoadingFallback } from '@/components/ErrorBoundary';
+ 
+// Optimisation de la police avec display swap pour améliorer les performances
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export const metadata: Metadata = {
-  title: 'Mon Etoile - Voyance & Prédictions',
-  description: 'Explorez votre destinée à travers l\'univers avec Mon Etoile',
+  title: 'Mon Étoile - Plateforme Spirituelle',
+  description: 'Votre guide spirituel personnalisé',
   keywords: 'voyance, prédictions, astrologie, tarot, numérologie, cosmos',
-}
+  // Ajout de métadonnées SEO supplémentaires
+  openGraph: {
+    title: 'Mon Étoile - Plateforme Spirituelle',
+    description: 'Votre guide spirituel personnalisé',
+    type: 'website',
+    locale: 'fr_FR',
+  },
+  // Optimisation pour les moteurs de recherche
+  robots: {
+    index: true,
+    follow: true,
+  },
+  // Amélioration de l'apparence sur mobile
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+  },
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="fr">
-      <body className={inter.className}>{children}</body>
+    <html lang="fr" className={inter.variable}>
+      <body className={inter.className}>
+        <ErrorBoundary>
+          <Suspense fallback={<LoadingFallback />}>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </Suspense>
+        </ErrorBoundary>
+      </body>
     </html>
-  )
+  );
 }
