@@ -24,7 +24,7 @@ export const config = {
     home: '/',
     login: '/auth/login',
     register: '/auth/register',
-    dashboard: '/dashboard',
+    dashboard: '/protected/profil',
     adminDashboard: '/dashboard/admin',
     consultantDashboard: '/dashboard/consultant',
     profile: '/dashboard/profile',

@@ -119,7 +119,8 @@ export const RegisterForm: React.FC = () => {
     if (!validate()) return;
 
     try {
-      const { ...registerData } = formData;
+      const {confirmPassword, ...registerData } = formData;
+      console.log(confirmPassword);
       await register(registerData);
     } catch (err: any) {
       let errorMessage = err.response?.data?.message || 'Erreur lors de l\'inscription';
