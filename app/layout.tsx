@@ -28,12 +28,12 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  // Amélioration de l'apparence sur mobile
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

@@ -7,7 +7,6 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
 
-
 // Types selon la doc MoneyFusion
 interface MoneyFusionResponse {
     statut: boolean;

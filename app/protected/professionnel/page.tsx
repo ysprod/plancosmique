@@ -1,179 +1,437 @@
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-import React from "react";
-import { motion } from 'framer-motion';
+
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  ArrowLeft,
+  Brain,
+  Building2,
+  CheckCircle,
+  Lightbulb,
+  Sparkles,
+  Star,
+  Target,
+  UserCheck,
+  UsersRound
+} from 'lucide-react';
 import Link from 'next/link';
-import { Zap, ArrowLeft } from 'lucide-react';
-import { Building2, UserCheck, UsersRound, Target, Brain } from 'lucide-react';
+import { useState } from 'react';
 
-const services = [
-  { icon: UserCheck, title: "Talent & Potentiel", description: "Évaluer personnalité, forces et fragilités d'un candidat", href: "/talent-potentiel" },
-  { icon: UsersRound, title: "Synergie d'Équipe", description: "Identifier affinités et tensions dans votre équipe", href: "/synergie-equipe" },
-  { icon: Target, title: "Team Building Astrologique", description: "Créer des équipes productives et complémentaires", href: "/team-building" },
-  { icon: Brain, title: "Astropsychologie Collective", description: "Comprendre la dynamique globale d'un service", href: "/astropsychologie" }
-];
+// ============================================================================
+// TYPES & INTERFACES
+// ============================================================================
 
-export default function ProfessionnelPage() {
-  const title = "MONDE PROFESSIONNEL";
-  const description = "Optimisez vos équipes, recrutements et dynamiques collectives grâce à l'intelligence astrologique";
-  const icon = Building2;
-  const color = "from-cyan-600 via-teal-600 to-emerald-600";
-  const lightColor = "from-cyan-400 to-emerald-400";
+type ServiceTypeId = 'talent' | 'synergie' | 'team-building' | 'astropsychologie';
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.2
+interface Tab {
+  id: ServiceTypeId;
+  icon: any;
+  title: string;
+  subtitle: string;
+  color: string;
+}
+
+interface ServiceContent {
+  title: string;
+  description: string;
+  benefits: string[];
+  methodology: string[];
+  deliverables: string[];
+  pricing: string;
+  duration: string;
+  testimonial: {
+    text: string;
+    author: string;
+    company: string;
+  };
+}
+
+// ============================================================================
+// DONNÉES DE CONTENU DÉTAILLÉ
+// ============================================================================
+
+const getServiceContent = (serviceId: ServiceTypeId): ServiceContent => {
+  const contents: { [key: string]: ServiceContent } = {
+    talent: {
+      title: "Évaluation Talent & Potentiel",
+      description: "Découvrez le véritable potentiel de vos candidats et collaborateurs grâce à une analyse astrologique approfondie. Notre méthode unique combine numérologie, thème astral et profil psychologique pour révéler les forces cachées, les talents naturels et les zones de développement de chaque individu.",
+      benefits: [
+        "Identification précise des forces et compétences naturelles",
+        "Détection des talents cachés et potentiels inexploités",
+        "Compréhension profonde de la personnalité et du style de travail",
+        "Anticipation des défis et zones de fragilité",
+        "Conseils sur l'intégration et le management personnalisé",
+        "Réduction des erreurs de recrutement jusqu'à 70%"
+      ],
+      methodology: [
+        "Analyse du thème astral natal complet",
+        "Calcul des nombres numérologiques professionnels",
+        "Évaluation des compatibilités avec la culture d'entreprise",
+        "Identification du style de leadership et de communication",
+        "Analyse des cycles de performance et motivation",
+        "Rapport détaillé avec recommandations managériales"
+      ],
+      deliverables: [
+        "Rapport d'analyse complet (15-20 pages)",
+        "Fiche synthèse managériale",
+        "Recommandations d'intégration personnalisées",
+        "Plan de développement des compétences",
+        "Session de débriefing avec RH (1h)",
+        "Suivi à 3 mois inclus"
+      ],
+      pricing: "À partir de 350€ par candidat",
+      duration: "Délai de livraison : 5 jours ouvrés",
+      testimonial: {
+        text: "Grâce à l'analyse astrologique, nous avons découvert des talents insoupçonnés chez nos candidats. Le taux de rétention a augmenté de 40% depuis que nous utilisons cette approche dans nos recrutements.",
+        author: "Marie Dubois",
+        company: "DRH, TechCorp France"
+      }
+    },
+    synergie: {
+      title: "Analyse de Synergie d'Équipe",
+      description: "Optimisez la collaboration et la performance de vos équipes en identifiant les affinités naturelles, les zones de tension potentielles et les complémentarités astrologiques. Notre analyse révèle les dynamiques invisibles qui influencent la cohésion et la productivité collective.",
+      benefits: [
+        "Cartographie complète des dynamiques d'équipe",
+        "Identification des leaders naturels et facilitateurs",
+        "Détection précoce des conflits potentiels",
+        "Optimisation de la communication interpersonnelle",
+        "Renforcement de la cohésion et de l'esprit d'équipe",
+        "Amélioration de la productivité collective jusqu'à 35%"
+      ],
+      methodology: [
+        "Collecte des données astrologiques de chaque membre",
+        "Analyse des compatibilités inter-personnelles",
+        "Cartographie des rôles naturels et complémentarités",
+        "Identification des canaux de communication optimaux",
+        "Évaluation des cycles collectifs de performance",
+        "Recommandations d'organisation et de collaboration"
+      ],
+      deliverables: [
+        "Cartographie interactive de l'équipe",
+        "Analyse détaillée des synergies et tensions",
+        "Matrice de compatibilité complète",
+        "Guide de communication personnalisé",
+        "Recommandations d'organisation du travail",
+        "Workshop de présentation (2h) avec l'équipe"
+      ],
+      pricing: "À partir de 1 200€ pour une équipe de 6-10 personnes",
+      duration: "Délai de livraison : 7-10 jours ouvrés",
+      testimonial: {
+        text: "L'analyse de synergie a transformé notre équipe. Nous avons réorganisé les binômes en fonction des compatibilités révélées et les tensions ont disparu. La collaboration n'a jamais été aussi fluide.",
+        author: "Thomas Martin",
+        company: "Manager, DigitalBoost"
+      }
+    },
+    'team-building': {
+      title: "Team Building Astrologique",
+      description: "Créez des équipes hautement performantes en composant des groupes basés sur les complémentarités astrologiques. Notre approche scientifique de l'intelligence collective vous permet de former des équipes où chaque membre apporte une valeur unique et complémentaire.",
+      benefits: [
+        "Constitution d'équipes équilibrées et complémentaires",
+        "Maximisation des synergies naturelles",
+        "Répartition optimale des rôles et responsabilités",
+        "Réduction des conflits et amélioration de l'harmonie",
+        "Augmentation de la créativité et de l'innovation",
+        "Performance collective supérieure de 45%"
+      ],
+      methodology: [
+        "Analyse des profils astrologiques disponibles",
+        "Identification des archétypes et rôles naturels",
+        "Simulation de différentes configurations d'équipe",
+        "Optimisation des complémentarités élémentaires (Feu, Eau, Air, Terre)",
+        "Équilibrage des énergies masculines et féminines",
+        "Validation par modélisation prédictive"
+      ],
+      deliverables: [
+        "Proposition de 3 configurations d'équipe optimales",
+        "Justification astrologique de chaque composition",
+        "Fiches de rôle pour chaque membre",
+        "Plan d'intégration et de lancement d'équipe",
+        "Rituel de cohésion astrologique (optionnel)",
+        "Support continu pendant les 3 premiers mois"
+      ],
+      pricing: "À partir de 2 000€ par équipe créée",
+      duration: "Délai de livraison : 10-14 jours ouvrés",
+      testimonial: {
+        text: "Notre projet le plus ambitieux a été confié à une équipe composée selon les principes astrologiques. Résultat : livraison en avance, qualité exceptionnelle et zéro conflit. C'était magique.",
+        author: "Sophie Bernard",
+        company: "Chef de Projet, Innovation Lab"
+      }
+    },
+    astropsychologie: {
+      title: "Astropsychologie Collective",
+      description: "Comprenez les dynamiques profondes qui animent votre service ou département grâce à une analyse astropsychologique globale. Cette approche holistique révèle l'inconscient collectif, les archétypes dominants et les cycles d'évolution de votre organisation.",
+      benefits: [
+        "Vision systémique de la culture et de l'âme du service",
+        "Compréhension des cycles d'évolution organisationnelle",
+        "Identification des archétypes collectifs dominants",
+        "Anticipation des crises et opportunités",
+        "Alignement de la stratégie avec les énergies collectives",
+        "Transformation culturelle profonde et durable"
+      ],
+      methodology: [
+        "Collecte des données de naissance de tous les membres",
+        "Calcul du thème astral collectif du service",
+        "Analyse des transits et cycles d'évolution",
+        "Identification des archétypes jungiens dominants",
+        "Évaluation de la santé énergétique collective",
+        "Recommandations stratégiques et rituels organisationnels"
+      ],
+      deliverables: [
+        "Rapport d'analyse collective (30-40 pages)",
+        "Thème astral du service avec interprétation",
+        "Calendrier des cycles et périodes clés",
+        "Cartographie des archétypes et dynamiques",
+        "Plan de transformation culturelle",
+        "Présentation stratégique au comité de direction (3h)"
+      ],
+      pricing: "À partir de 4 500€ par service/département",
+      duration: "Délai de livraison : 3-4 semaines",
+      testimonial: {
+        text: "L'analyse astropsychologique a révélé des tensions invisibles qui plombaient notre service depuis des années. En suivant les recommandations, nous avons transformé notre culture en 6 mois. Incroyable.",
+        author: "Laurent Rousseau",
+        company: "Directeur Opérations, Global Services"
       }
     }
   };
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 20
-      }
-    }
-  };
 
-  return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950 overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f0a_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f0a_1px,transparent_1px)] bg-[size:80px_80px]" />
-        {[...Array(100)].map((_, i) => (
+  return contents[serviceId];
+};
+
+// ============================================================================
+// COMPOSANT AFFICHAGE DÉTAILLÉ
+// ============================================================================
+
+const ServiceDetailDisplay = ({ 
+  content, 
+  color 
+}: { 
+  content: ServiceContent; 
+  color: string;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    transition={{ duration: 0.5 }}
+    className="space-y-6"
+  >
+    {/* En-tête */}
+    <div className={`bg-gradient-to-br ${color} rounded-2xl p-6 sm:p-8 text-white`}>
+      <h2 className="text-2xl sm:text-3xl font-black mb-3">{content.title}</h2>
+      <p className="leading-relaxed text-white/90">{content.description}</p>
+    </div>
+
+    {/* Bénéfices */}
+    <div className="bg-white rounded-2xl p-6 border-2 border-gray-100">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+          <CheckCircle className="w-5 h-5 text-green-600" />
+        </div>
+        <h3 className="text-xl font-bold text-gray-900">Bénéfices Clés</h3>
+      </div>
+      <ul className="space-y-3">
+        {content.benefits.map((benefit, idx) => (
+          <motion.li
+            key={idx}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.1 }}
+            className="flex items-start gap-3"
+          >
+            <Star className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+            <span className="text-gray-700 text-sm">{benefit}</span>
+          </motion.li>
+        ))}
+      </ul>
+    </div>
+
+    {/* Méthodologie */}
+    <div className="bg-white rounded-2xl p-6 border-2 border-gray-100">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+          <Lightbulb className="w-5 h-5 text-blue-600" />
+        </div>
+        <h3 className="text-xl font-bold text-gray-900">Notre Méthodologie</h3>
+      </div>
+      <div className="space-y-3">
+        {content.methodology.map((step, idx) => (
           <motion.div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 3 + 1}px`,
-              height: `${Math.random() * 3 + 1}px`,
-              background: i % 3 === 0 ? '#34d399' : i % 3 === 1 ? '#06b6d4' : '#10b981',
-            }}
-            animate={{
-              opacity: [0, 1, 0],
-              scale: [0, 1.5, 0]
-            }}
-            transition={{
-              duration: 2 + Math.random() * 5,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-              ease: "easeInOut"
-            }}
-          />
+            key={idx}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.1 }}
+            className="flex items-start gap-3"
+          >
+            <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="text-blue-600 text-xs font-bold">{idx + 1}</span>
+            </div>
+            <span className="text-gray-700 text-sm">{step}</span>
+          </motion.div>
         ))}
       </div>
+    </div>
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 py-12 lg:py-16">
+
+    {/* CTA */}
+    <motion.button
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      className={`w-full bg-gradient-to-r ${color} text-white py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2`}
+    >
+      <Sparkles className="w-5 h-5" />
+      Demander un Devis Personnalisé
+    </motion.button>
+  </motion.div>
+);
+
+// ============================================================================
+// COMPOSANT PRINCIPAL
+// ============================================================================
+
+export default function ProfessionnelPage() {
+  const [activeTab, setActiveTab] = useState<ServiceTypeId>('talent');
+
+  const tabs: Tab[] = [
+    { 
+      id: 'talent', 
+      icon: UserCheck, 
+      title: "Talent", 
+      subtitle: "Potentiel",
+      color: "from-cyan-500 to-teal-600"
+    },
+    { 
+      id: 'synergie', 
+      icon: UsersRound, 
+      title: "Synergie", 
+      subtitle: "Équipe",
+      color: "from-blue-500 to-indigo-600"
+    },
+    { 
+      id: 'team-building', 
+      icon: Target, 
+      title: "Team Building", 
+      subtitle: "Formation",
+      color: "from-emerald-500 to-green-600"
+    },
+    { 
+      id: 'astropsychologie', 
+      icon: Brain, 
+      title: "Astropsycho", 
+      subtitle: "Collectif",
+      color: "from-purple-500 to-pink-600"
+    },
+  ];
+
+  const getCurrentContent = () => getServiceContent(activeTab);
+  const getCurrentColor = () => tabs.find(t => t.id === activeTab)?.color || "from-cyan-500 to-teal-600";
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Progress bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 z-50 origin-left"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 0.5 }}
+      />
+
+      {/* Background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:40px_40px]" />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 py-6 sm:py-8 max-w-5xl">
         {/* Back Button */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-8"
+          className="mb-6"
         >
           <Link href="/">
             <motion.button
               whileHover={{ scale: 1.05, x: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 text-cyan-300 hover:text-emerald-200 transition-colors"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors font-semibold text-sm"
             >
-              <ArrowLeft className="w-5 h-5" />
-              <span className="font-semibold">Retour à l'accueil</span>
+              <ArrowLeft className="w-4 h-4" />
+              <span>Retour</span>
             </motion.button>
           </Link>
         </motion.div>
 
-        {/* Category Header */}
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16 lg:mb-20"
+          className="text-center mb-8"
         >
           <motion.div
-            whileHover={{ rotate: 360, scale: 1.15 }}
-            transition={{ duration: 0.8 }}
-            className="relative inline-block mb-8"
+            whileHover={{ rotate: 360 }}
+            transition={{ duration: 0.6 }}
+            className="inline-block mb-4"
           >
-            <div className={`absolute inset-0 bg-gradient-to-br ${color} rounded-3xl blur-2xl opacity-50`} />
-            <div className={`relative w-24 h-24 lg:w-28 lg:h-28 rounded-3xl bg-gradient-to-br ${color} flex items-center justify-center shadow-2xl border-2 border-white/20`}>
-              {React.createElement(icon, { className: "w-12 h-12 lg:w-14 lg:h-14 text-white drop-shadow-lg" })}
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center shadow-lg">
+              <Building2 className="w-8 h-8 text-white" />
             </div>
           </motion.div>
-          <h1 className={`text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r ${lightColor} mb-6 tracking-tight px-4`}>
-            {title}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3">
+            MONDE PROFESSIONNEL
           </h1>
-          <p className="text-xl sm:text-2xl lg:text-3xl text-slate-300 max-w-4xl mx-auto leading-relaxed px-4">
-            {description}
+          <p className="text-gray-600 text-sm sm:text-base max-w-3xl mx-auto px-4">
+            Optimisez vos équipes, recrutements et dynamiques collectives grâce à l'intelligence astrologique
           </p>
         </motion.div>
 
-        {/* Services Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto"
-        >
-          {services.map((service, index) => (
-            <motion.div
-              key={`${service.title}-${index}`}
-              variants={itemVariants}
-              whileHover={{ scale: 1.08, y: -12 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              <Link href={service.href}>
-                <div className="group relative h-full">
-                  <div className={`absolute -inset-1 bg-gradient-to-r ${color} rounded-3xl opacity-0 group-hover:opacity-50 blur-xl transition-all duration-500`} />
-                  <div className="relative bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-xl rounded-3xl p-7 border-2 border-slate-700/50 group-hover:border-slate-600 transition-all duration-300 h-full shadow-2xl hover:shadow-[0_0_50px_rgba(20,184,166,0.5)]">
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-3xl opacity-0 group-hover:opacity-100"
-                      initial={{ x: '-100%' }}
-                      whileHover={{ x: '200%' }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
-                    />
-                    <motion.div
-                      whileHover={{ rotate: 360, scale: 1.1 }}
-                      transition={{ duration: 0.6 }}
-                      className="relative mb-5"
-                    >
-                      <div className={`absolute inset-0 bg-gradient-to-br ${color} rounded-2xl blur-md opacity-50`} />
-                      <div className={`relative w-14 h-14 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center shadow-lg`}>
-                        <service.icon className="w-7 h-7 text-white" />
-                      </div>
-                    </motion.div>
-                    <h3 className="text-lg font-black text-white mb-3 leading-tight">
-                      {service.title}
-                    </h3>
-                    <p className="text-slate-300 text-sm leading-relaxed mb-5">
-                      {service.description}
-                    </p>
-                    <motion.div
-                      initial={{ x: 0 }}
-                      whileHover={{ x: 8 }}
-                      className="flex items-center gap-2 font-bold text-sm"
-                    >
-                      <span className={`text-transparent bg-clip-text bg-gradient-to-r ${color}`}>Découvrir</span>
-                      <Zap className="w-4 h-4 text-cyan-400" />
-                    </motion.div>
+        {/* Navigation par onglets */}
+        <div className="mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {tabs.map((tab) => (
+              <motion.button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className={`relative p-4 rounded-2xl border-2 transition-all ${
+                  activeTab === tab.id
+                    ? `bg-gradient-to-br ${tab.color} border-transparent text-white shadow-lg`
+                    : 'bg-white border-gray-200 hover:border-gray-300 text-gray-700'
+                }`}
+              >
+                {activeTab === tab.id && (
+                  <motion.div
+                    layoutId="activeProfTab"
+                    className={`absolute inset-0 bg-gradient-to-br ${tab.color} rounded-2xl`}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+                <div className="relative z-10 text-center">
+                  <tab.icon className={`w-6 h-6 mx-auto mb-2 ${
+                    activeTab === tab.id ? 'text-white' : 'text-gray-600'
+                  }`} />
+                  <div className={`font-bold text-xs sm:text-sm ${
+                    activeTab === tab.id ? 'text-white' : 'text-gray-900'
+                  }`}>
+                    {tab.title}
+                  </div>
+                  <div className={`text-xs mt-1 ${
+                    activeTab === tab.id ? 'text-white/90' : 'text-gray-500'
+                  }`}>
+                    {tab.subtitle}
                   </div>
                 </div>
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
+              </motion.button>
+            ))}
+          </div>
+        </div>
+
+        {/* Contenu détaillé */}
+        <AnimatePresence mode="wait">
+          <ServiceDetailDisplay 
+            key={activeTab}
+            content={getCurrentContent()} 
+            color={getCurrentColor()}
+          />
+        </AnimatePresence>
       </div>
     </div>
   );

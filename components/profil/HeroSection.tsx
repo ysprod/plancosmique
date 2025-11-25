@@ -10,7 +10,7 @@ export default function HeroSection({ user }: { user: any }) {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
-      className="text-center mb-20"
+      className="text-center mb-8"
     >
       {/* Avatar + Badge */}
       <div className="relative inline-block mb-8">
@@ -58,7 +58,7 @@ export default function HeroSection({ user }: { user: any }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.6 }}
-        className="text-2xl sm:text-2xl lg:text-2xl font-black mb-6"
+        className="text-2xl sm:text-2xl lg:text-2xl font-black mb-4"
       >
         <span className="text-slate-900">Bienvenue, {user?.firstName || "Âme Éclairée"}</span>
       </motion.h1>
@@ -66,7 +66,7 @@ export default function HeroSection({ user }: { user: any }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.6 }}
-        className="text-slate-600 max-w-4xl mx-auto leading-relaxed mb-4"
+        className="text-slate-600 max-w-4xl mx-auto leading-relaxed"
       >
         Ici, tu avances guidé(e) par la lumière de tes génies tutélaires et la présence bienveillante de tes ancêtres.
       </motion.p>

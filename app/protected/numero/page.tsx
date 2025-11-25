@@ -31,7 +31,7 @@ interface SacredNumber {
   affirmation: string;
 }
 
-export default function NumerologiePage() {
+export default function NumeroPage() {
   const [activeTab, setActiveTab] = useState<string>('calculator');
   const [formData, setFormData] = useState({
     firstName: '',
@@ -685,6 +685,6 @@ export default function NumerologiePage() {
           </button>
         </motion.div>
       </div>
-   
+ 
   );
 }

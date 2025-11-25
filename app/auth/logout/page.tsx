@@ -1,18 +1,9 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authService } from "@/lib/api/services/auth.service";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Loader2, 
-  LogOut, 
-  Check, 
-  Star, 
-  Sparkles,
-  Shield,
-  Zap
-} from "lucide-react";
+import { Loader2, LogOut, Check, Star, Sparkles, Shield, Zap } from "lucide-react";
 
 export default function LogoutPage() {
   const router = useRouter();
@@ -22,7 +13,6 @@ export default function LogoutPage() {
   useEffect(() => {
     const logout = async () => {
       try {
-        // Animation de progression
         const progressInterval = setInterval(() => {
           setProgress((prev) => {
             if (prev >= 90) {
@@ -34,22 +24,19 @@ export default function LogoutPage() {
         }, 100);
 
         await authService.logout();
-        
+
         clearInterval(progressInterval);
         setProgress(100);
         setStatus("success");
-
-        // Attendre un peu pour l'animation de succès
         setTimeout(() => {
           router.replace("/auth/login");
-        }, 1500);
+        }, 3000);
       } catch (error) {
         console.error("Logout error:", error);
         setStatus("error");
-        // Rediriger quand même après une erreur
         setTimeout(() => {
           router.replace("/auth/login");
-        }, 2000);
+        }, 3000);
       }
     };
     logout();
@@ -57,7 +44,6 @@ export default function LogoutPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-violet-900 relative overflow-hidden flex items-center justify-center p-6">
-      {/* Décorations d'arrière-plan animées */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
           animate={{

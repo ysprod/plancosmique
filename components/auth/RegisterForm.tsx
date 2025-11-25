@@ -52,21 +52,7 @@ export const RegisterForm: React.FC = () => {
   };
 
   const validate = () => {
-    const newErrors: typeof errors = {};
-
-    // First name
-    if (!formData.firstName) {
-      newErrors.firstName = 'Prénom requis';
-    } else if (formData.firstName.length < 2) {
-      newErrors.firstName = 'Au moins 2 caractères';
-    }
-
-    // Last name
-    if (!formData.lastName) {
-      newErrors.lastName = 'Nom requis';
-    } else if (formData.lastName.length < 2) {
-      newErrors.lastName = 'Au moins 2 caractères';
-    }
+    const newErrors: typeof errors = {};    
 
     // Email
     if (!formData.email) {

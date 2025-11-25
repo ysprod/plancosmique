@@ -2,11 +2,45 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Sparkles, Calendar, Sun, Heart, Briefcase, Activity, Eye, Loader2, ArrowLeft } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { 
+  Sparkles, Calendar, Sun, Heart, Briefcase, Activity, 
+  Loader2, ArrowLeft, Star, Moon, TrendingUp, Users 
+} from 'lucide-react'
 import Link from 'next/link'
 
-// Fonction pour calculer le signe astrologique depuis la date de naissance
+// ============================================================================
+// TYPES & INTERFACES
+// ============================================================================
+
+type HoroscopeTypeId = 'quotidien' | 'mensuel' | 'annuel' | 'amoureux'
+
+interface Tab {
+  id: HoroscopeTypeId
+  icon: any
+  title: string
+  subtitle: string
+}
+
+interface HoroscopeResult {
+  zodiacSign: string
+  symbol: string
+  element: string
+  period: string
+  horoscopeType: string
+  generalForecast: string
+  love: string
+  work: string
+  health: string
+  spiritualAdvice: string
+  luckyColor: string
+  dominantPlanet: string
+}
+
+// ============================================================================
+// UTILITAIRES ASTROLOGIQUES
+// ============================================================================
+
 const getZodiacSign = (date: Date): string => {
   const day = date.getDate()
   const month = date.getMonth() + 1
@@ -25,58 +59,36 @@ const getZodiacSign = (date: Date): string => {
   return "Poissons"
 }
 
-// Fonction pour obtenir le symbole du signe
 const getZodiacSymbol = (sign: string): string => {
   const symbols: { [key: string]: string } = {
-    "Bélier": "♈",
-    "Taureau": "♉",
-    "Gémeaux": "♊",
-    "Cancer": "♋",
-    "Lion": "♌",
-    "Vierge": "♍",
-    "Balance": "♎",
-    "Scorpion": "♏",
-    "Sagittaire": "♐",
-    "Capricorne": "♑",
-    "Verseau": "♒",
-    "Poissons": "♓"
+    "Bélier": "♈", "Taureau": "♉", "Gémeaux": "♊", "Cancer": "♋",
+    "Lion": "♌", "Vierge": "♍", "Balance": "♎", "Scorpion": "♏",
+    "Sagittaire": "♐", "Capricorne": "♑", "Verseau": "♒", "Poissons": "♓"
   }
   return symbols[sign] || "✨"
 }
 
-// Fonction pour obtenir l'élément du signe
 const getZodiacElement = (sign: string): string => {
   const elements: { [key: string]: string } = {
-    "Bélier": "Feu",
-    "Lion": "Feu",
-    "Sagittaire": "Feu",
-    "Taureau": "Terre",
-    "Vierge": "Terre",
-    "Capricorne": "Terre",
-    "Gémeaux": "Air",
-    "Balance": "Air",
-    "Verseau": "Air",
-    "Cancer": "Eau",
-    "Scorpion": "Eau",
-    "Poissons": "Eau"
+    "Bélier": "Feu", "Lion": "Feu", "Sagittaire": "Feu",
+    "Taureau": "Terre", "Vierge": "Terre", "Capricorne": "Terre",
+    "Gémeaux": "Air", "Balance": "Air", "Verseau": "Air",
+    "Cancer": "Eau", "Scorpion": "Eau", "Poissons": "Eau"
   }
   return elements[sign] || "Inconnu"
 }
 
-// Fonction pour générer un horoscope personnalisé
 const generateHoroscope = async (
   zodiacSign: string,
   horoscopeType: string,
   birthDate: Date,
   partnerSign?: string
-): Promise<any> => {
-  // Simulation d'un appel API - Dans une vraie application, cela appellerait une API IA
+): Promise<HoroscopeResult> => {
   await new Promise(resolve => setTimeout(resolve, 2000))
 
   const element = getZodiacElement(zodiacSign)
   const symbol = getZodiacSymbol(zodiacSign)
   
-  // Proverbes africains par type
   const africanWisdom: { [key: string]: string[] } = {
     "Quotidien": [
       "Comme le dit le proverbe bambara : 'Le soleil du matin ne dure pas toute la journée.' Profitez de chaque instant.",
@@ -102,7 +114,6 @@ const generateHoroscope = async (
 
   const randomWisdom = africanWisdom[horoscopeType][Math.floor(Math.random() * africanWisdom[horoscopeType].length)]
 
-  // Couleurs porte-bonheur par élément
   const luckyColors: { [key: string]: string } = {
     "Feu": "Rouge rubis et or",
     "Terre": "Vert émeraude et brun",
@@ -110,7 +121,6 @@ const generateHoroscope = async (
     "Eau": "Bleu océan et blanc nacré"
   }
 
-  // Génération contextuelle selon le type
   let periodText = ""
   let generalForecast = ""
   
@@ -118,24 +128,24 @@ const generateHoroscope = async (
     case "Quotidien":
       const today = new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
       periodText = today
-      generalForecast = `Aujourd'hui, l'énergie cosmique ${element === "Feu" ? "embrase" : element === "Eau" ? "apaise" : element === "Air" ? "stimule" : "stabilise"} votre chemin. Les astres vous invitent à ${element === "Feu" ? "prendre des initiatives audacieuses" : element === "Eau" ? "écouter votre intuition profonde" : element === "Air" ? "communiquer avec clarté" : "ancrer vos projets dans le concret"}. La sagesse ancestrale africaine vous rappelle que chaque jour est une nouvelle page de votre histoire. Restez aligné avec vos ancêtres et leur lumière guidera vos pas.`
+      generalForecast = `Aujourd'hui, l'énergie cosmique ${element === "Feu" ? "embrase" : element === "Eau" ? "apaise" : element === "Air" ? "stimule" : "stabilise"} votre chemin. Les astres vous invitent à ${element === "Feu" ? "prendre des initiatives audacieuses" : element === "Eau" ? "écouter votre intuition profonde" : element === "Air" ? "communiquer avec clarté" : "ancrer vos projets dans le concret"}. La sagesse ancestrale africaine vous rappelle que chaque jour est une nouvelle page de votre histoire.`
       break
     case "Mensuel":
       const currentMonth = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
       periodText = currentMonth
-      generalForecast = `Ce mois de ${currentMonth}, votre signe ${zodiacSign} bénéficie d'influences planétaires favorables. Comme l'enseigne la tradition africaine, 'le tambour appelle, mais c'est le danseur qui choisit sa cadence.' Vous avez le pouvoir de façonner votre destinée. Les énergies cosmiques s'alignent pour vous offrir des opportunités de croissance personnelle et spirituelle. Écoutez les murmures de vos ancêtres et laissez la sagesse millénaire éclairer vos choix.`
+      generalForecast = `Ce mois de ${currentMonth}, votre signe ${zodiacSign} bénéficie d'influences planétaires favorables. Comme l'enseigne la tradition africaine, 'le tambour appelle, mais c'est le danseur qui choisit sa cadence.' Vous avez le pouvoir de façonner votre destinée. Les énergies cosmiques s'alignent pour vous offrir des opportunités de croissance personnelle et spirituelle.`
       break
     case "Annuel":
       const currentYear = new Date().getFullYear()
       periodText = `Année ${currentYear}`
-      generalForecast = `L'année ${currentYear} s'annonce comme une période de transformation profonde pour vous, ${zodiacSign}. Tel le baobab qui grandit lentement mais fermement, vous bâtirez des fondations solides pour votre avenir. Les astres vous encouragent à puiser dans la sagesse de vos racines africaines pour naviguer les défis avec grâce et résilience. Cette année sera marquée par la réconciliation avec votre essence authentique et la reconnexion avec votre lignée spirituelle.`
+      generalForecast = `L'année ${currentYear} s'annonce comme une période de transformation profonde pour vous, ${zodiacSign}. Tel le baobab qui grandit lentement mais fermement, vous bâtirez des fondations solides pour votre avenir. Les astres vous encouragent à puiser dans la sagesse de vos racines africaines pour naviguer les défis avec grâce et résilience.`
       break
     case "Amoureux":
       periodText = "Prévisions sentimentales"
       if (partnerSign) {
-        generalForecast = `La combinaison ${zodiacSign} - ${partnerSign} crée une danse cosmique unique. Comme le dit la sagesse africaine : 'Deux mains lavent mieux qu'une seule.' Votre union possède un potentiel magnifique d'harmonie et de croissance mutuelle. Les astres révèlent une compatibilité profonde qui, cultivée avec patience et respect, peut fleurir comme un jardin tropical sous la pluie bienfaisante.`
+        generalForecast = `La combinaison ${zodiacSign} - ${partnerSign} crée une danse cosmique unique. Comme le dit la sagesse africaine : 'Deux mains lavent mieux qu'une seule.' Votre union possède un potentiel magnifique d'harmonie et de croissance mutuelle. Les astres révèlent une compatibilité profonde qui, cultivée avec patience et respect, peut fleurir comme un jardin tropical.`
       } else {
-        generalForecast = `Dans votre vie sentimentale, ${zodiacSign}, les astres vous invitent à ouvrir votre cœur avec la même générosité que la terre africaine accueille la pluie. L'amour frappera à votre porte quand vous serez en paix avec vous-même. La tradition enseigne : 'L'amour ne se cherche pas, il se cultive.' Préparez le terrain de votre cœur, et l'univers y plantera les plus belles fleurs.`
+        generalForecast = `Dans votre vie sentimentale, ${zodiacSign}, les astres vous invitent à ouvrir votre cœur avec la même générosité que la terre africaine accueille la pluie. L'amour ne se cherche pas, il se cultive. Préparez le terrain de votre cœur, et l'univers y plantera les plus belles fleurs.`
       }
       break
   }
@@ -148,23 +158,160 @@ const generateHoroscope = async (
     horoscopeType,
     generalForecast,
     love: horoscopeType === "Amoureux" 
-      ? `${partnerSign ? `Avec ${partnerSign}, v` : "V"}otre cœur résonne au rythme des tambours ancestraux. ${partnerSign ? "Cette union possède une synergie naturelle qui transcende les différences." : "Une rencontre significative pourrait illuminer votre chemin."} Laissez la vulnérabilité devenir votre force et l'authenticité votre langage d'amour. Les ancêtres bénissent les unions fondées sur le respect mutuel et la croissance spirituelle partagée.`
-      : `En amour, ${element === "Feu" ? "votre passion naturelle attire les regards" : element === "Eau" ? "votre profondeur émotionnelle touche les cœurs" : element === "Air" ? "votre charme communicatif séduit naturellement" : "votre fidélité rassure et construit"}. ${horoscopeType === "Quotidien" ? "Aujourd'hui" : horoscopeType === "Mensuel" ? "Ce mois-ci" : "Cette année"}, soyez ouvert aux surprises que l'univers vous réserve. Un geste sincère peut transformer une amitié en amour profond.`,
-    work: `Sur le plan professionnel, ${element === "Feu" ? "votre dynamisme ouvre des portes" : element === "Eau" ? "votre intuition vous guide vers le succès" : element === "Air" ? "vos idées innovantes impressionnent" : "votre persévérance porte ses fruits"}. Comme le forgeron africain qui façonne le métal avec patience et précision, vous créerez votre succès par un travail méthodique et inspiré. ${horoscopeType === "Quotidien" ? "Aujourd'hui est propice aux" : horoscopeType === "Mensuel" ? "Ce mois favorise les" : "Cette année apporte des"} opportunités de collaboration fructueuse. N'hésitez pas à partager vos visions avec votre communauté professionnelle.`,
-    health: `Votre vitalité ${element === "Feu" ? "rayonne naturellement, mais attention à ne pas brûler vos ressources" : element === "Eau" ? "dépend de votre équilibre émotionnel - prenez soin de votre paix intérieure" : element === "Air" ? "nécessite une bonne oxygénation - marchez en pleine nature" : "se renforce par l'ancrage - connectez-vous à la terre"}. La médecine traditionnelle africaine nous enseigne l'importance de l'harmonie entre le corps, l'esprit et l'âme. ${horoscopeType === "Quotidien" ? "Aujourd'hui" : horoscopeType === "Mensuel" ? "Ce mois-ci" : "Cette année"}, privilégiez les rituels de bien-être qui honorent votre corps comme un temple sacré. L'eau, les plantes et le repos sont vos meilleurs alliés.`,
+      ? `${partnerSign ? `Avec ${partnerSign}, v` : "V"}otre cœur résonne au rythme des tambours ancestraux. ${partnerSign ? "Cette union possède une synergie naturelle qui transcende les différences." : "Une rencontre significative pourrait illuminer votre chemin."} Laissez la vulnérabilité devenir votre force et l'authenticité votre langage d'amour.`
+      : `En amour, ${element === "Feu" ? "votre passion naturelle attire les regards" : element === "Eau" ? "votre profondeur émotionnelle touche les cœurs" : element === "Air" ? "votre charme communicatif séduit naturellement" : "votre fidélité rassure et construit"}. ${horoscopeType === "Quotidien" ? "Aujourd'hui" : horoscopeType === "Mensuel" ? "Ce mois-ci" : "Cette année"}, soyez ouvert aux surprises que l'univers vous réserve.`,
+    work: `Sur le plan professionnel, ${element === "Feu" ? "votre dynamisme ouvre des portes" : element === "Eau" ? "votre intuition vous guide vers le succès" : element === "Air" ? "vos idées innovantes impressionnent" : "votre persévérance porte ses fruits"}. Comme le forgeron africain qui façonne le métal avec patience et précision, vous créerez votre succès par un travail méthodique et inspiré.`,
+    health: `Votre vitalité ${element === "Feu" ? "rayonne naturellement, mais attention à ne pas brûler vos ressources" : element === "Eau" ? "dépend de votre équilibre émotionnel - prenez soin de votre paix intérieure" : element === "Air" ? "nécessite une bonne oxygénation - marchez en pleine nature" : "se renforce par l'ancrage - connectez-vous à la terre"}. La médecine traditionnelle africaine nous enseigne l'importance de l'harmonie entre le corps, l'esprit et l'âme.`,
     spiritualAdvice: randomWisdom,
     luckyColor: luckyColors[element],
     dominantPlanet: element === "Feu" ? "Mars (énergie et action)" : element === "Eau" ? "Lune (émotions et intuition)" : element === "Air" ? "Mercure (communication et intellect)" : "Vénus (amour et stabilité)"
   }
 }
 
+// ============================================================================
+// COMPOSANT RÉSULTAT
+// ============================================================================
+
+const ResultDisplay = ({ result }: { result: HoroscopeResult }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    transition={{ duration: 0.5 }}
+    className="space-y-6"
+  >
+    {/* En-tête */}
+    <div className="text-center pb-6 border-b border-gray-200">
+      <motion.div 
+        className="text-6xl md:text-7xl mb-4"
+        animate={{ rotate: [0, 10, -10, 0] }}
+        transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+      >
+        {result.symbol}
+      </motion.div>
+      <h3 className="text-3xl md:text-4xl font-black text-gray-900 mb-2">
+        {result.zodiacSign}
+      </h3>
+      <p className="text-gray-600 font-medium mb-3">{result.period}</p>
+      <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <span className="px-3 py-1 bg-purple-50 text-purple-700 rounded-full font-semibold">
+          {result.element}
+        </span>
+        <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full font-semibold">
+          {result.horoscopeType}
+        </span>
+      </div>
+    </div>
+
+    {/* Prévision générale */}
+    <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-6 border border-purple-200">
+      <div className="flex items-start gap-3 mb-3">
+        <div className="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+          <Sparkles className="w-5 h-5 text-white" />
+        </div>
+        <h4 className="font-bold text-gray-900 text-lg">Prévisions Générales</h4>
+      </div>
+      <p className="text-gray-700 leading-relaxed">{result.generalForecast}</p>
+    </div>
+
+    {/* Domaines de vie */}
+    <div className="grid gap-4">
+      <motion.div 
+        whileHover={{ scale: 1.02 }}
+        className="bg-white rounded-2xl p-5 border-2 border-gray-100 hover:border-rose-200 transition-all"
+      >
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <Heart className="w-5 h-5 text-rose-600" />
+          </div>
+          <div className="flex-1">
+            <h4 className="font-bold text-gray-900 mb-2">Amour & Relations</h4>
+            <p className="text-gray-600 text-sm leading-relaxed">{result.love}</p>
+          </div>
+        </div>
+      </motion.div>
+
+      <motion.div 
+        whileHover={{ scale: 1.02 }}
+        className="bg-white rounded-2xl p-5 border-2 border-gray-100 hover:border-blue-200 transition-all"
+      >
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <Briefcase className="w-5 h-5 text-blue-600" />
+          </div>
+          <div className="flex-1">
+            <h4 className="font-bold text-gray-900 mb-2">Travail & Carrière</h4>
+            <p className="text-gray-600 text-sm leading-relaxed">{result.work}</p>
+          </div>
+        </div>
+      </motion.div>
+
+      <motion.div 
+        whileHover={{ scale: 1.02 }}
+        className="bg-white rounded-2xl p-5 border-2 border-gray-100 hover:border-green-200 transition-all"
+      >
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <Activity className="w-5 h-5 text-green-600" />
+          </div>
+          <div className="flex-1">
+            <h4 className="font-bold text-gray-900 mb-2">Santé & Bien-être</h4>
+            <p className="text-gray-600 text-sm leading-relaxed">{result.health}</p>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+
+    {/* Sagesse africaine */}
+    <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border-2 border-amber-200">
+      <div className="flex items-center gap-2 mb-3">
+        <Star className="w-5 h-5 text-amber-600" />
+        <h4 className="font-bold text-amber-900">Sagesse Ancestrale</h4>
+      </div>
+      <p className="text-amber-800 italic leading-relaxed text-sm md:text-base">
+        "{result.spiritualAdvice}"
+      </p>
+    </div>
+
+    {/* Informations astrologiques */}
+    <div className="grid grid-cols-2 gap-3">
+      <div className="bg-white rounded-xl p-4 border-2 border-gray-100 text-center">
+        <Moon className="w-6 h-6 mx-auto mb-2 text-purple-600" />
+        <p className="text-xs text-gray-600 mb-1">Planète Dominante</p>
+        <p className="font-bold text-gray-900 text-sm">{result.dominantPlanet}</p>
+      </div>
+      <div className="bg-white rounded-xl p-4 border-2 border-gray-100 text-center">
+        <Sparkles className="w-6 h-6 mx-auto mb-2 text-amber-600" />
+        <p className="text-xs text-gray-600 mb-1">Couleur Porte-bonheur</p>
+        <p className="font-bold text-gray-900 text-sm">{result.luckyColor}</p>
+      </div>
+    </div>
+  </motion.div>
+)
+
+// ============================================================================
+// COMPOSANT PRINCIPAL
+// ============================================================================
+
 export default function HoroscopePage() {
+  const [activeTab, setActiveTab] = useState<HoroscopeTypeId>('quotidien')
   const [birthDate, setBirthDate] = useState<string>('')
-  const [horoscopeType, setHoroscopeType] = useState<string>('Quotidien')
   const [partnerSign, setPartnerSign] = useState<string>('')
-  const [result, setResult] = useState<any>(null)
+  const [result, setResult] = useState<HoroscopeResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>('')
+
+  const tabs: Tab[] = [
+    { id: 'quotidien', icon: Sun, title: "Quotidien", subtitle: "Aujourd'hui" },
+    { id: 'mensuel', icon: Calendar, title: "Mensuel", subtitle: "Ce mois" },
+    { id: 'annuel', icon: TrendingUp, title: "Annuel", subtitle: "Cette année" },
+    { id: 'amoureux', icon: Heart, title: "Amour", subtitle: "Compatibilité" },
+  ]
+
+  const zodiacSigns = [
+    "Bélier", "Taureau", "Gémeaux", "Cancer", "Lion", "Vierge",
+    "Balance", "Scorpion", "Sagittaire", "Capricorne", "Verseau", "Poissons"
+  ]
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -188,386 +335,231 @@ export default function HoroscopePage() {
     try {
       const horoscope = await generateHoroscope(
         zodiacSign,
-        horoscopeType,
+        tabs.find(t => t.id === activeTab)?.title || 'Quotidien',
         date,
-        horoscopeType === 'Amoureux' && partnerSign ? partnerSign : undefined
+        activeTab === 'amoureux' && partnerSign ? partnerSign : undefined
       )
       setResult(horoscope)
     } catch (err) {
-      setError('Erreur lors de la génération de l\'horoscope. Veuillez réessayer.'+ err)
+      setError('Erreur lors de la génération de l\'horoscope. Veuillez réessayer.')
+      console.error(err)
     } finally {
       setLoading(false)
     }
   }
 
-  const zodiacSigns = [
-    "Bélier", "Taureau", "Gémeaux", "Cancer", "Lion", "Vierge",
-    "Balance", "Scorpion", "Sagittaire", "Capricorne", "Verseau", "Poissons"
-  ]
-
-  const services = [
-    {
-      icon: Sun,
-      title: "Horoscope Quotidien",
-      description: "Découvrez les influences astrales du jour pour naviguer avec sagesse et sérénité."
-    },
-    {
-      icon: Calendar,
-      title: "Horoscope Mensuel",
-      description: "Anticipez les tendances du mois à venir et préparez-vous aux opportunités cosmiques."
-    },
-    {
-      icon: Sparkles,
-      title: "Horoscope Annuel",
-      description: "Vision globale de votre année astrologique pour planifier votre évolution spirituelle."
-    },
-    {
-      icon: Heart,
-      title: "Horoscope Amoureux",
-      description: "Explorez la compatibilité amoureuse et les prévisions sentimentales personnalisées."
-    }
-  ]
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5
-      }
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 relative overflow-hidden">
-      {/* Animated background stars */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(90)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-amber-400/30 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              scale: [1, 1.5, 1],
-              opacity: [0.3, 0.6, 0.3],
-            }}
-            transition={{
-              duration: Math.random() * 3 + 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
+    <div className="min-h-screen bg-white">
+      {/* Progress bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-amber-500 z-50 origin-left"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 0.5 }}
+      />
+
+      {/* Background subtil */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:40px_40px]" />
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 py-6 sm:py-8 max-w-4xl">
+        {/* Back Button */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="mb-6"
+        >
+          <Link href="/">
+            <motion.button
+              whileHover={{ scale: 1.05, x: -5 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors font-semibold text-sm"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Retour</span>
+            </motion.button>
+          </Link>
+        </motion.div>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="container mx-auto px-4 py-8"
+          className="text-center mb-8"
         >
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-slate-600 hover:text-amber-600 transition-colors mb-6"
+          <motion.div
+            whileHover={{ rotate: 360 }}
+            transition={{ duration: 0.6 }}
+            className="inline-block mb-4"
           >
-            <ArrowLeft className="w-5 h-5" />
-            Retour à l'accueil
-          </Link>
-
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg">
               <Sparkles className="w-8 h-8 text-white" />
             </div>
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-800">
-                Horoscope
-              </h1>
-              <p className="text-slate-600 mt-2">
-                Découvrez votre horoscope personnalisé inspiré des sagesses astrologiques africaines et des traditions cosmiques ancestrales
-              </p>
-            </div>
-          </div>
+          </motion.div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3">
+            HOROSCOPE
+          </h1>
+          <p className="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto px-4">
+            Découvrez votre horoscope personnalisé inspiré des sagesses astrologiques africaines
+          </p>
         </motion.div>
 
-        {/* Services Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="container mx-auto px-4 pb-12"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {services.map((service, index) => {
-              const Icon = service.icon
-              return (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className="bg-white/60 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 cursor-pointer"
-                >
-                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-xl flex items-center justify-center mb-4">
-                    <Icon className="w-6 h-6 text-amber-600" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-slate-800 mb-2">
-                    {service.title}
-                  </h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">
-                    {service.description}
-                  </p>
-                </motion.div>
-              )
-            })}
-          </div>
-
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-          {/* Formulaire */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-white/60 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-8"
-          >
-            <h2 className="text-2xl font-bold mb-6 text-slate-800 flex items-center gap-2">
-              <Eye className="w-6 h-6 text-violet-600" />
-              Votre Horoscope Personnalisé
-            </h2>
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Date de naissance
-                </label>
-                <input
-                  type="date"
-                  value={birthDate}
-                  onChange={(e) => setBirthDate(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all"
-                  required
-                />
-                <p className="mt-2 text-sm text-slate-500">
-                  Votre signe astrologique sera calculé automatiquement
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Type d'horoscope
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  {['Quotidien', 'Mensuel', 'Annuel', 'Amoureux'].map((type) => (
-                    <button
-                      key={type}
-                      type="button"
-                      onClick={() => setHoroscopeType(type)}
-                      className={`px-4 py-3 rounded-xl font-medium transition-all ${
-                        horoscopeType === type
-                          ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg'
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                      }`}
-                    >
-                      {type}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {horoscopeType === 'Amoureux' && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Signe de votre partenaire (optionnel)
-                  </label>
-                  <select
-                    value={partnerSign}
-                    onChange={(e) => setPartnerSign(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all"
-                  >
-                    <option value="">Sélectionner un signe</option>
-                    {zodiacSigns.map((sign) => (
-                      <option key={sign} value={sign}>
-                        {sign} {getZodiacSymbol(sign)}
-                      </option>
-                    ))}
-                  </select>
-                </motion.div>
-              )}
-
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm"
-                >
-                  {error}
-                </motion.div>
-              )}
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-violet-500 to-purple-600 text-white py-4 rounded-xl font-semibold hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        {/* Navigation par onglets */}
+        <div className="mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {tabs.map((tab) => (
+              <motion.button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className={`relative p-4 rounded-2xl border-2 transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-gradient-to-br from-purple-500 to-pink-600 border-purple-600 text-white shadow-lg'
+                    : 'bg-white border-gray-200 hover:border-purple-300 text-gray-700'
+                }`}
               >
-                {loading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Consultation des astres...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-5 h-5" />
-                    Générer mon horoscope
-                  </>
+                {activeTab === tab.id && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
                 )}
-              </button>
-            </form>
-          </motion.div>
-
-          {/* Résultats */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-white/60 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-8"
-          >
-            {!result && !loading && (
-              <div className="h-full flex items-center justify-center text-center">
-                <div>
-                  <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-violet-100 to-purple-100 rounded-full flex items-center justify-center">
-                    <Sparkles className="w-10 h-10 text-violet-600" />
+                <div className="relative z-10 text-center">
+                  <tab.icon className={`w-6 h-6 mx-auto mb-2 ${
+                    activeTab === tab.id ? 'text-white' : 'text-gray-600'
+                  }`} />
+                  <div className={`font-bold text-sm ${
+                    activeTab === tab.id ? 'text-white' : 'text-gray-900'
+                  }`}>
+                    {tab.title}
                   </div>
-                  <h3 className="text-xl font-semibold text-slate-800 mb-2">
-                    Prêt à découvrir votre destinée ?
-                  </h3>
-                  <p className="text-slate-600">
-                    Remplissez le formulaire pour recevoir votre horoscope personnalisé inspiré des sagesses africaines
-                  </p>
+                  <div className={`text-xs mt-1 ${
+                    activeTab === tab.id ? 'text-purple-100' : 'text-gray-500'
+                  }`}>
+                    {tab.subtitle}
+                  </div>
                 </div>
-              </div>
+              </motion.button>
+            ))}
+          </div>
+        </div>
+
+        {/* Formulaire */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-2xl p-6 sm:p-8 border-2 border-gray-200 shadow-sm mb-8"
+        >
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-bold text-gray-900 mb-2">
+                Date de naissance
+              </label>
+              <input
+                type="date"
+                value={birthDate}
+                onChange={(e) => setBirthDate(e.target.value)}
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all outline-none text-gray-900"
+                required
+              />
+              <p className="mt-2 text-xs text-gray-500">
+                Votre signe sera calculé automatiquement
+              </p>
+            </div>
+
+            {activeTab === 'amoureux' && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+              >
+                <label className="block text-sm font-bold text-gray-900 mb-2">
+                  <Users className="w-4 h-4 inline mr-1" />
+                  Signe de votre partenaire (optionnel)
+                </label>
+                <select
+                  value={partnerSign}
+                  onChange={(e) => setPartnerSign(e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all outline-none text-gray-900"
+                >
+                  <option value="">Sélectionner un signe</option>
+                  {zodiacSigns.map((sign) => (
+                    <option key={sign} value={sign}>
+                      {sign} {getZodiacSymbol(sign)}
+                    </option>
+                  ))}
+                </select>
+              </motion.div>
             )}
 
-            {loading && (
-              <div className="h-full flex items-center justify-center">
-                <div className="text-center">
-                  <Loader2 className="w-12 h-12 mx-auto mb-4 text-violet-600 animate-spin" />
-                  <p className="text-slate-600">Consultation des étoiles ancestrales...</p>
-                </div>
-              </div>
-            )}
-
-            {result && (
+            {error && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="space-y-6"
+                className="p-4 bg-red-50 border-2 border-red-200 rounded-xl text-red-700 text-sm font-medium"
               >
-                {/* En-tête du résultat */}
-                <div className="text-center pb-6 border-b border-slate-200">
-                  <div className="text-6xl mb-3">{result.symbol}</div>
-                  <h3 className="text-3xl font-bold text-slate-800 mb-2">
-                    {result.zodiacSign}
-                  </h3>
-                  <p className="text-slate-600 font-medium">{result.period}</p>
-                  <div className="flex items-center justify-center gap-4 mt-3 text-sm text-slate-500">
-                    <span className="px-3 py-1 bg-violet-50 rounded-full">
-                      Élément : {result.element}
-                    </span>
-                    <span className="px-3 py-1 bg-purple-50 rounded-full">
-                      {result.horoscopeType}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Prévisions générales */}
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-violet-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Sparkles className="w-5 h-5 text-violet-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Prévisions Générales</h4>
-                      <p className="text-slate-600 leading-relaxed">{result.generalForecast}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Heart className="w-5 h-5 text-rose-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Amour</h4>
-                      <p className="text-slate-600 leading-relaxed">{result.love}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Briefcase className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Travail & Finances</h4>
-                      <p className="text-slate-600 leading-relaxed">{result.work}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Activity className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Santé & Bien-être</h4>
-                      <p className="text-slate-600 leading-relaxed">{result.health}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Conseil spirituel africain */}
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200">
-                  <h4 className="font-semibold text-amber-900 mb-3 flex items-center gap-2">
-                    <Sparkles className="w-5 h-5" />
-                    Sagesse Ancestrale Africaine
-                  </h4>
-                  <p className="text-amber-800 italic leading-relaxed">"{result.spiritualAdvice}"</p>
-                </div>
-
-                {/* Informations astrologiques */}
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200">
-                  <div className="text-center p-4 bg-violet-50 rounded-xl">
-                    <p className="text-sm text-slate-600 mb-1">Planète Dominante</p>
-                    <p className="font-semibold text-violet-700">{result.dominantPlanet}</p>
-                  </div>
-                  <div className="text-center p-4 bg-purple-50 rounded-xl">
-                    <p className="text-sm text-slate-600 mb-1">Couleur Porte-bonheur</p>
-                    <p className="font-semibold text-purple-700">{result.luckyColor}</p>
-                  </div>
-                </div>
+                {error}
               </motion.div>
             )}
-          </motion.div>
-        </div>
-      </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white py-4 rounded-xl font-bold hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Consultation des astres...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-5 h-5" />
+                  Générer mon horoscope
+                </>
+              )}
+            </button>
+          </form>
         </motion.div>
+
+        {/* Résultats */}
+        <AnimatePresence mode="wait">
+          {loading && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="bg-white rounded-2xl p-12 border-2 border-gray-200 text-center"
+            >
+              <Loader2 className="w-12 h-12 mx-auto mb-4 text-purple-600 animate-spin" />
+              <p className="text-gray-600 font-medium">Consultation des étoiles ancestrales...</p>
+            </motion.div>
+          )}
+
+          {!loading && !result && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-12 border-2 border-purple-200 text-center"
+            >
+              <div className="w-20 h-20 mx-auto mb-4 bg-white rounded-full flex items-center justify-center shadow-md">
+                <Sparkles className="w-10 h-10 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Prêt à découvrir votre destinée ?
+              </h3>
+              <p className="text-gray-600 text-sm">
+                Remplissez le formulaire pour recevoir votre horoscope personnalisé
+              </p>
+            </motion.div>
+          )}
+
+          {!loading && result && <ResultDisplay result={result} />}
+        </AnimatePresence>
       </div>
     </div>
   )
