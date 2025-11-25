@@ -1,13 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-
-import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Sparkles, Calendar, Sun, Heart, Briefcase, Activity, 
-  Loader2, ArrowLeft, Star, Moon, TrendingUp, Users 
+import { AnimatePresence, motion } from 'framer-motion'
+import {
+  Activity,
+  ArrowLeft,
+  Briefcase,
+  Calendar,
+  Heart,
+  Loader2,
+  Moon,
+  Sparkles,
+  Star,
+  Sun,
+  TrendingUp, Users
 } from 'lucide-react'
 import Link from 'next/link'
+import React, { useState } from 'react'
 
 // ============================================================================
 // TYPES & INTERFACES

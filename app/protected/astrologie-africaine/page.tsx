@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState } from "react";
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowLeft, Calendar, Globe, Heart, Mountain, Palmtree, Pyramid, Sparkles, Star, Users } from 'lucide-react';
 import Link from 'next/link';
-import { ArrowLeft, Palmtree, Globe, Users, Mountain, Pyramid, Sparkles, Calendar, Heart, Star } from 'lucide-react';
+import { useState } from "react";
 
 // Types pour les onglets
 type TabId = 'signe' | 'compatibilite' | 'guidance' | 'divinite';
@@ -22,9 +22,9 @@ const SigneAfricainContent = () => (
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: -20 }}
     transition={{ duration: 0.5 }}
-    className="space-y-8"
+    className="space-y-4"
   >
-    <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-3xl p-8 border border-orange-200">
+    <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-3xl p-4 border border-orange-200">
       <div className="flex items-center gap-4 mb-6">
         <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg">
           <Globe className="w-8 h-8 text-white" />
@@ -491,8 +491,8 @@ export default function AstrologieAfricainePage() {
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 className={`relative p-6 rounded-2xl border-2 transition-all ${activeTab === tab.id
-                    ? 'bg-gradient-to-br from-orange-500 to-amber-600 border-orange-600 shadow-xl'
-                    : 'bg-white border-gray-200 hover:border-orange-300 hover:shadow-md'
+                  ? 'bg-gradient-to-br from-orange-500 to-amber-600 border-orange-600 shadow-xl'
+                  : 'bg-white border-gray-200 hover:border-orange-300 hover:shadow-md'
                   }`}
               >
                 {activeTab === tab.id && (

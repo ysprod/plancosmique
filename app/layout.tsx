@@ -4,9 +4,9 @@ import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
 import { AuthProvider } from '@/lib/auth/AuthContext';
 import { ErrorBoundary, LoadingFallback } from '@/components/ErrorBoundary';
- 
+
 // Optimisation de la police avec display swap pour améliorer les performances
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
