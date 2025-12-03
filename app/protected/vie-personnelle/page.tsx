@@ -1,11 +1,8 @@
 'use client';
-
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  UserCheck
-} from 'lucide-react';
+import {  UserCheck} from 'lucide-react';
 import React, { useState } from 'react';
-import Slide4Section from './Slide4Section';
+import Slide4Section from './slidesection/Slide4Section';
 import AspectAffirmation from './components/AspectAffirmation';
 import AspectDeepAnalysis from './components/AspectDeepAnalysis';
 import AspectExercises from './components/AspectExercises';
@@ -17,11 +14,9 @@ import BackButton from './components/BackButton';
 import FloatingCTA from './components/FloatingCTA';
 import TabsNavigation from './components/TabsNavigation';
 import { personalLifeAspects } from './personalLifeAspects';
-
  
-
 const ViePersonnellePage = () => {
-  const [activeTab, setActiveTab] = useState<string>('theme');
+  const [activeTab, setActiveTab] = useState<string>('consultation');
 
   // Ajout du nouvel onglet Consultation
   const consultationTab = {

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Compass, Eye, Sparkles, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import StatsCounter from '../components/StatsCounter';
 
 const QUESTIONS = [
   { q: "QUI SUIS-JE ?", icon: Eye },
@@ -33,6 +34,9 @@ export default function WelcomePage() {
           />
           <h1 className="text-3xl sm:text-4xl font-black text-black">MON ÉTOILE</h1>
         </motion.div>
+
+        {/* Compteurs crédibilité */}
+        <StatsCounter />
 
         {/* Intro ultra-compacte */}
         <motion.p
