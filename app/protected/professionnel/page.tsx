@@ -21,7 +21,7 @@ import { useState } from 'react';
 // TYPES & INTERFACES
 // ============================================================================
 
-type ServiceTypeId = 'talent' | 'synergie' | 'team-building' | 'astropsychologie';
+type ServiceTypeId = 'talent' | 'synergie' | 'team-building' | 'leadership';
 
 interface Tab {
   id: ServiceTypeId;
@@ -157,39 +157,38 @@ const getServiceContent = (serviceId: ServiceTypeId): ServiceContent => {
         company: "Chef de Projet, Innovation Lab"
       }
     },
-    astropsychologie: {
-      title: "Astropsychologie Collective",
-      description: "Comprenez les dynamiques profondes qui animent votre service ou département grâce à une analyse astropsychologique globale. Cette approche holistique révèle l'inconscient collectif, les archétypes dominants et les cycles d'évolution de votre organisation.",
+    leadership: {
+      title: "Analyse Leadership",
+      description: "Révélez la capacité innée d’une personne à diriger, influencer, inspirer et prendre les bonnes décisions. Cette analyse aide à identifier le style de leadership naturel, la manière de gérer une équipe, la relation au pouvoir, la résistance au stress, la prise d’initiative, ainsi que le potentiel réel d’une personne à assumer des responsabilités élevées.",
       benefits: [
-        "Vision systémique de la culture et de l'âme du service",
-        "Compréhension des cycles d'évolution organisationnelle",
-        "Identification des archétypes collectifs dominants",
-        "Anticipation des crises et opportunités",
-        "Alignement de la stratégie avec les énergies collectives",
-        "Transformation culturelle profonde et durable"
+        "Identification du style de leadership naturel",
+        "Évaluation de la capacité à inspirer et influencer",
+        "Analyse de la gestion du stress et de la prise de décision",
+        "Compréhension de la relation au pouvoir et à l'autorité",
+        "Conseils personnalisés pour développer le leadership",
+        "Détection du potentiel à assumer des responsabilités élevées"
       ],
       methodology: [
-        "Collecte des données de naissance de tous les membres",
-        "Calcul du thème astral collectif du service",
-        "Analyse des transits et cycles d'évolution",
-        "Identification des archétypes jungiens dominants",
-        "Évaluation de la santé énergétique collective",
-        "Recommandations stratégiques et rituels organisationnels"
+        "Analyse du thème astral axée sur les maisons et planètes du leadership",
+        "Étude des aspects liés à l'autorité, l'initiative et la gestion d'équipe",
+        "Évaluation de la résistance au stress et de la prise de décision",
+        "Profilage du style de communication et d'inspiration",
+        "Synthèse des points forts et axes d'amélioration",
+        "Rapport détaillé avec recommandations de développement"
       ],
       deliverables: [
-        "Rapport d'analyse collective (30-40 pages)",
-        "Thème astral du service avec interprétation",
-        "Calendrier des cycles et périodes clés",
-        "Cartographie des archétypes et dynamiques",
-        "Plan de transformation culturelle",
-        "Présentation stratégique au comité de direction (3h)"
+        "Rapport d'analyse leadership (10-15 pages)",
+        "Fiche synthèse des compétences clés",
+        "Plan de développement personnalisé",
+        "Session de restitution (1h) avec le bénéficiaire",
+        "Suivi à 3 mois inclus"
       ],
-      pricing: "À partir de 4 500€ par service/département",
-      duration: "Délai de livraison : 3-4 semaines",
+      pricing: "À partir de 500€ par personne",
+      duration: "Délai de livraison : 5-7 jours ouvrés",
       testimonial: {
-        text: "L'analyse astropsychologique a révélé des tensions invisibles qui plombaient notre service depuis des années. En suivant les recommandations, nous avons transformé notre culture en 6 mois. Incroyable.",
-        author: "Laurent Rousseau",
-        company: "Directeur Opérations, Global Services"
+        text: "L'analyse leadership a permis à nos managers de prendre conscience de leur potentiel et d'adapter leur style. Les résultats sont visibles sur la motivation des équipes.",
+        author: "Claire Lefèvre",
+        company: "Directrice RH, Groupe Nova"
       }
     }
   };
@@ -314,10 +313,10 @@ export default function ProfessionnelPage() {
       color: "from-emerald-500 to-green-600"
     },
     { 
-      id: 'astropsychologie', 
+      id: 'leadership', 
       icon: Brain, 
-      title: "Astropsycho", 
-      subtitle: "Collectif",
+      title: "Leadership", 
+      subtitle: "Diriger",
       color: "from-purple-500 to-pink-600"
     },
   ];

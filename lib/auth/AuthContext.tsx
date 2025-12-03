@@ -82,7 +82,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authService.login(credentials);
       setUser(response.user);
-      router.push('/dashboard/admin/users');
+      router.push('/');
     } catch (error) {
       console.error('Login error:', error);
       throw error;

@@ -9,26 +9,25 @@ import { useAuth } from '@/lib/hooks';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 // Types
+
 interface FormData {
-  email: string;
+  username: string;
   password: string;
 }
 
+
 interface FormErrors {
-  email?: string;
+  username?: string;
   password?: string;
 }
 
 // Validation
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_PASSWORD_LENGTH = 6;
 
 const validateForm = (data: FormData): FormErrors => {
   const errors: FormErrors = {};
 
-  if (!data.email) errors.email = 'Email requis';
-  else if (!EMAIL_REGEX.test(data.email)) errors.email = 'Email invalide';
-
+  if (!data.username) errors.username = 'Nom d’utilisateur requis';
   if (!data.password) errors.password = 'Mot de passe requis';
   else if (data.password.length < MIN_PASSWORD_LENGTH)
     errors.password = `Au moins ${MIN_PASSWORD_LENGTH} caractères`;
@@ -114,7 +113,7 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
-    email: '',
+    username: '',
     password: '',
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -178,13 +177,14 @@ const LoginForm = () => {
       {error && <ErrorAlert message={error} />}
 
       <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+
         <InputField
-          label="Email"
-          name="email"
-          type="email"
-          value={formData.email}
-          error={errors.email}
-          placeholder="votre@email.com"
+          label="Nom d'utilisateur"
+          name="username"
+          type="text"
+          value={formData.username}
+          error={errors.username}
+          placeholder="Votre nom d'utilisateur"
           icon={Mail}
           onChange={handleChange}
         />

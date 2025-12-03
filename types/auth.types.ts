@@ -75,16 +75,15 @@ export interface User {
 }
 
 export interface RegisterDto {
-  firstName: string;
-  lastName: string;
-  email: string;
+  username: string;
+  gender: string;
+  country: string;
+  phone: string;
   password: string;
-  phone?: string;
-  dateOfBirth?: string;
 }
 
 export interface LoginDto {
-  email: string;
+  username: string;
   password: string;
 }
 
