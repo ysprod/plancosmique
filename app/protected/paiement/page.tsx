@@ -16,7 +16,7 @@ const services = [
     id: "vie-personnelle",
     title: "Ma Vie Personnelle",
     icon: "Heart",
-    description: "Découvre ce qui t'anime profondément et comprends comment avancer avec confiance dans ton chemin de vie.",
+    description: "Decouvre ce qui t'anime profondément et comprends comment avancer avec confiance dans ton chemin de vie.",
     gradient: "from-rose-500 to-pink-600",
     color: "text-rose-600",
     bgColor: "bg-gradient-to-br from-rose-50 to-pink-50",
