@@ -81,16 +81,14 @@ export default function WelcomePage() {
           <div className="relative z-10 text-center space-y-3">
             <p className="text-xs sm:text-sm text-gray-700 leading-snug">
               Basée sur les connaissances initiatiques africaines et éclairée par la lecture des astres, notre guidance vous aide à mieux vous connaître, comprendre votre mission de vie, révéler vos talents, harmoniser vos relations, et avancer avec clarté sur votre chemin spirituel.
-
+            </p>
+            <p className="text-xs sm:text-sm text-gray-700 leading-snug">
               Parce qu'il existe un Plan Cosmique qui organise votre vie, votre thème astral devient ici une boussole sacrée, une mémoire profonde et une lumière qui vous éclaire, inspire vos choix et guide vos décisions.
             </p>
 
-
-
             <p className="text-base sm:text-lg font-black text-black leading-tight">
               Votre naissance a un but.
-            </p>
-            <p className="text-xs sm:text-sm text-gray-700 font-semibold">
+              <br />
               Découvrez ce que votre âme est venue accomplir.
             </p>
 
@@ -106,7 +104,7 @@ export default function WelcomePage() {
               </motion.button>
             </Link>
           </div>
-        </motion.div> 
+        </motion.div>
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
 import { motion } from 'framer-motion';
 import { AlertCircle, Info, Sparkles } from 'lucide-react';
+import React from 'react';
+import { birthCountries } from '../birthCountries';
 import InputField from './InputField';
 import SelectField from './SelectField';
 import { GENRE_OPTIONS } from './consultation.constants';
@@ -10,12 +11,9 @@ interface Props {
   form: any;
   errors: any;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  handleNumeroChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   apiError: string | null;
-  paymentError?: string;
   handleSubmit: (e: React.FormEvent) => void;
   resetSelection: () => void;
-  countryOptions: string[];
   selectedTitle: string;
 }
 
@@ -23,15 +21,14 @@ const ConsultationForm: React.FC<Props> = ({
   form,
   errors,
   handleChange,
-  handleNumeroChange,
   apiError,
-  paymentError,
   handleSubmit,
   resetSelection,
-  countryOptions,
   selectedTitle,
-}) => (
-  <motion.div
+}) => {
+  const countryOptions = React.useMemo(() => ['', ...birthCountries], []);
+  return (
+    <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: -20 }}
@@ -136,17 +133,6 @@ const ConsultationForm: React.FC<Props> = ({
         error={errors.heureNaissance}
       />
 
-      {/* Numéro de téléphone */}
-      <InputField
-        label="Numéro de téléphone (pour le paiement MoneyFusion)"
-        name="numeroSend"
-        type="tel"
-        value={form.numeroSend || ''}
-        onChange={handleNumeroChange}
-        error={errors.numeroSend || paymentError}
-        placeholder="Ex: 0700000000 ou +225..."
-      />
-
       {/* Erreur API */}
       {apiError && (
         <motion.div
@@ -182,6 +168,7 @@ const ConsultationForm: React.FC<Props> = ({
       </div>
     </form>
   </motion.div>
-);
+  );
+};
 
 export default ConsultationForm;

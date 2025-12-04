@@ -2,43 +2,19 @@
 import { api } from '@/lib/api/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import React, { useCallback, useMemo, useState, useEffect } from 'react';
-import { birthCountries } from '../birthCountries';
-import ConsultationCard from './ConsultationCard';
+import React, { useCallback, useEffect, useState } from 'react';
 import ConsultationForm from './ConsultationForm';
+import ConsultationSelection from './ConsultationSelection';
+import PaymentProcessing from './PaymentProcessing';
 import PaymentSuccess from './PaymentSuccess';
 import PriceConfirm from './PriceConfirm';
-import { CONSULTATION_CHOICES, CONSULTATION_TYPE_MAP } from './consultation.constants';
+import { CONSULTATION_TYPE_MAP } from './consultation.constants';
 
-// Types
-interface ConsultationChoice {
-  id: string;
-  title: string;
-  description: string;
-}
+import type { ConsultationChoice, FormData, FormErrors, StepType } from './consultation.types';
+import axios from 'axios';
 
-interface FormData {
-  nom: string;
-  prenoms: string;
-  genre: string;
-  dateNaissance: string;
-  paysNaissance: string;
-  villeNaissance: string;
-  heureNaissance: string;
-  numeroSend?: string;
-}
-
-interface FormErrors {
-  [key: string]: string;
-}
-
-type StepType = 'selection' | 'form' | 'confirm' | 'processing' | 'success';
-
-// Constantes
 const SERVICE_ID = process.env.NEXT_PUBLIC_SERVICE_ID;
-const PAYMENT_BASE_URL = 'https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/pay/';
 
-// Validation
 const validateForm = (form: FormData): FormErrors => {
   const errors: FormErrors = {};
 
@@ -49,12 +25,10 @@ const validateForm = (form: FormData): FormErrors => {
   if (!form.paysNaissance) errors.paysNaissance = 'Pays de naissance requis';
   if (!form.villeNaissance.trim()) errors.villeNaissance = 'Ville de naissance requise';
   if (!form.heureNaissance) errors.heureNaissance = 'Heure de naissance requise';
-  if (!form.numeroSend?.trim()) errors.numeroSend = 'Numéro de téléphone requis pour le paiement';
 
   return errors;
 };
 
-// Composant principal
 export default function Slide4Section() {
   const [selected, setSelected] = useState<ConsultationChoice | null>(null);
   const [form, setForm] = useState<FormData>({
@@ -65,16 +39,15 @@ export default function Slide4Section() {
     paysNaissance: '',
     villeNaissance: '',
     heureNaissance: '',
-    numeroSend: '',
+    numeroSend: '0758385387', // valeur par défaut
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [apiError, setApiError] = useState<string | null>(null);
   const [step, setStep] = useState<StepType>('selection');
   const [paymentLoading, setPaymentLoading] = useState(false);
+  const [backActivated, setBackActivated] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [consultationId, setConsultationId] = useState<string | null>(null);
-
-  const countryOptions = useMemo(() => ['', ...birthCountries], []);
 
   // Vérifier le statut du paiement au retour depuis MoneyFusion
   useEffect(() => {
@@ -85,7 +58,7 @@ export default function Slide4Section() {
     if (paymentStatus === 'success' && transactionId) {
       // Paiement réussi
       setStep('success');
-      
+
       // Nettoyer l'URL
       window.history.replaceState({}, document.title, window.location.pathname);
     } else if (paymentStatus === 'failed') {
@@ -114,23 +87,10 @@ export default function Slide4Section() {
     [errors]
   );
 
-  const handleNumeroChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setForm((prev) => ({ ...prev, numeroSend: e.target.value }));
-      if (errors.numeroSend) {
-        setErrors((prev) => {
-          const newErrors = { ...prev };
-          delete newErrors.numeroSend;
-          return newErrors;
-        });
-      }
-      setPaymentError(null);
-    },
-    [errors]
-  );
 
   const handleSelectConsultation = useCallback((choice: ConsultationChoice) => {
     setSelected(choice);
+    setBackActivated(true);
     setStep('form');
   }, []);
 
@@ -164,6 +124,7 @@ export default function Slide4Section() {
     setPaymentLoading(true);
     setPaymentError(null);
 
+
     try {
       // 1. Créer la consultation dans la base de données
       const payload = {
@@ -183,50 +144,62 @@ export default function Slide4Section() {
 
       const createdConsultationId = consultationRes.data?.id || consultationRes.data?.consultationId;
       setConsultationId(createdConsultationId);
+ 
 
-      // 2. Préparer les données de paiement MoneyFusion
       const paymentData = {
-        totalPrice: 200, // À adapter selon le type de consultation
+        totalPrice: 200,
         article: [{ consultation: 200 }],
-        personal_Info: [
-          {
-            nom: form.nom,
-            prenoms: form.prenoms,
-            consultationId: createdConsultationId, // Lier le paiement à la consultation
-          },
-        ],
-        numeroSend: form.numeroSend || '',
+        personal_Info: [], // optionnel, vide si pas d'userId/orderId
+        numeroSend: '0758385387',
         nomclient: `${form.prenoms} ${form.nom}`,
-        return_url: `${window.location.origin}/callback?consultation_id=${createdConsultationId}`,
-        webhook_url: `${window.location.origin}/api/webhooks/moneyfusion`,
+        return_url: "https://www.monetoile.org/callback",
+        webhook_url: "https://www.monetoile.org/my-webhook-url",
+        // return_url: `${window.location.origin}/callback?consultation_id=${createdConsultationId}`,
+        // webhook_url: `${window.location.origin}/api/webhooks/moneyfusion`,
       };
 
-      // 3. Initier le paiement MoneyFusion
-      const paymentResponse = await fetch(PAYMENT_BASE_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(paymentData),
+      const apiUrl = "https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/pay/";
+      const response = await axios.post(apiUrl, paymentData, {
+        headers: { "Content-Type": "application/json" },
       });
 
-      const paymentResult = await paymentResponse.json();
+      // 3. Initier le paiement MoneyFusion
+      // const paymentResponse = await fetch('https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/pay/', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(paymentData),
+      // });
 
-      if (paymentResult?.statut && paymentResult?.url) {
+
+
+      console.log('Résultat du paiement MoneyFusion:', response);
+
+      if (response.data?.statut && response.data?.url) {
         // Paiement initié avec succès
         setStep('processing');
 
         // Redirection vers la page de paiement
         setTimeout(() => {
-          window.location.href = paymentResult.url;
+          window.location.href = response.data.url;
         }, 1500);
       } else {
-        throw new Error(paymentResult?.message || 'Erreur lors de la création du paiement');
+        throw new Error(response.data?.message || 'Erreur lors de la création du paiement');
       }
     } catch (err: any) {
-      console.error('Erreur paiement:', err);
-      setPaymentError(
-        err.response?.data?.message || err.message || 'Erreur lors du traitement du paiement'
-      );
+      let apiErrorMsg = 'Erreur lors du traitement du paiement';
+      if (err.response?.data?.message) {
+        apiErrorMsg = `API: ${err.response.data.message}`;
+      } else if (err.message) {
+        apiErrorMsg = `JS: ${err.message}`;
+      } else if (typeof err === 'string') {
+        apiErrorMsg = `Erreur: ${err}`;
+      } else if (err instanceof Error) {
+        apiErrorMsg = `Exception: ${err.toString()}`;
+      }
+      setPaymentError(apiErrorMsg);
       setStep('confirm'); // Retour à l'étape de confirmation
+      // Optionnel : log complet pour debug
+      console.error('Erreur paiement:', err);
     } finally {
       setPaymentLoading(false);
     }
@@ -260,7 +233,7 @@ export default function Slide4Section() {
     <div className="min-h-screen p-4 sm:p-6 bg-gradient-to-br from-purple-50 via-fuchsia-50 to-pink-50">
       <div className="max-w-6xl mx-auto">
         {/* Header avec bouton retour */}
-        {step !== 'success' && (
+        {step !== 'success' && backActivated && (
           <motion.button
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -272,38 +245,9 @@ export default function Slide4Section() {
           </motion.button>
         )}
 
-        {/* Titre principal */}
+        {/* Étape de sélection de la consultation */}
         {step === 'selection' && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-8"
-          >
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-purple-700 mb-3">
-              Souhaite-tu vraiment une consultation sur
-            </h2>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black bg-gradient-to-r from-purple-600 to-fuchsia-600 bg-clip-text text-transparent">
-              Votre Vie Personnelle ?
-            </h1>
-          </motion.div>
-        )}
-
-        {/* Liste des choix de consultation */}
-        {step === 'selection' && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2"
-          >
-            {CONSULTATION_CHOICES.map((choice) => (
-              <ConsultationCard
-                key={choice.id}
-                choice={choice}
-                onSelect={() => handleSelectConsultation(choice)}
-              />
-            ))}
-          </motion.div>
+          <ConsultationSelection onSelect={handleSelectConsultation} />
         )}
 
         {/* Workflow multi-étapes */}
@@ -314,12 +258,9 @@ export default function Slide4Section() {
               form={form}
               errors={errors}
               handleChange={handleChange}
-              handleNumeroChange={handleNumeroChange}
               apiError={apiError}
-              paymentError={paymentError || undefined}
               handleSubmit={handleSubmit}
               resetSelection={resetSelection}
-              countryOptions={countryOptions}
               selectedTitle={selected.title}
             />
           )}
@@ -335,25 +276,7 @@ export default function Slide4Section() {
           )}
 
           {/* Étape 3 : Traitement du paiement (redirection) */}
-          {step === 'processing' && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center justify-center py-20"
-            >
-              <div className="bg-white rounded-3xl shadow-2xl p-12 text-center max-w-md">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-                  <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  Redirection en cours...
-                </h3>
-                <p className="text-gray-600">
-                  Vous allez être redirigé vers la page de paiement sécurisée.
-                </p>
-              </div>
-            </motion.div>
-          )}
+          {step === 'processing' && <PaymentProcessing />}
 
           {/* Étape 4 : Succès (UNIQUEMENT APRÈS PAIEMENT RÉUSSI) */}
           {step === 'success' && (

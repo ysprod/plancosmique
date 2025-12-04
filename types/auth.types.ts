@@ -59,6 +59,7 @@ export interface UserProfile {
 export interface User {
   _id: string;
   firstName: string;
+  username: string;
   lastName: string;
   email: string;
   role: Role;

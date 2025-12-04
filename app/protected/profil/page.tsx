@@ -12,60 +12,61 @@ const ICONS = { Heart, Users, Briefcase, Globe, Flame, Hash, Calendar };
 const services = [
   {
     id: "vie-personnelle",
-    title: "Ma Vie Personnelle",
+    title: "MA VIE PERSONNELLE",
     icon: "Heart",
-    description: "Découvre ton chemin de vie.",
+    description: "Découvre ce qui t'anime profondément et comprends comment avancer avec confiance dans ton chemin de vie.",
     gradient: "from-rose-500 to-pink-600",
     link: "/protected/vie-personnelle"
   },
   {
     id: "famille-couple",
-    title: "Famille & Couple",
+    title: "FAMILLE, AMITIÉ ET COUPLE",
     icon: "Users",
-    description: "Améliore tes relations.",
+    description: "Explore tes liens affectifs pour mieux aimer, mieux comprendre les autres et créer des relations plus harmonieuses.",
     gradient: "from-emerald-500 to-teal-600",
     link: "/protected/relations"
   },
   {
     id: "professionnel",
-    title: "Professionnel",
+    title: "MONDE PROFESSIONNEL",
     icon: "Briefcase",
-    description: "Trouve ta vocation.",
+    description: "Identifie tes forces naturelles, ta vocation et le domaine où tu peux vraiment t'épanouir et réussir.",
     gradient: "from-blue-500 to-indigo-600",
     link: "/protected/professionnel"
   },
-  {
-    id: "astrologie-africaine",
-    title: "Astrologie Africaine",
-    icon: "Globe",
-    description: "Sagesse ancestrale.",
-    gradient: "from-amber-500 to-orange-600",
-    link: "/protected/astrologie-africaine"
-  },
+
   {
     id: "spiritualite",
-    title: "Spiritualité",
+    title: "SPIRITUALITÉ AFRICAINE",
     icon: "Flame",
-    description: "Connecte-toi aux forces.",
+    description: "Connecte-toi aux forces invisibles, aux ancêtres et aux principes sacrés qui donnent sens et puissance à ta vie.",
     gradient: "from-orange-500 to-red-600",
     link: "/protected/spiritualite"
   },
   {
     id: "numerologie",
-    title: "Numérologie",
+    title: "NUMÉROLOGIE",
     icon: "Hash",
-    description: "Tes nombres révélés.",
+    description: "Les nombres te parlent : découvre ce qu’ils révèlent sur ta personnalité, ton destin et tes cycles d’évolution.",
     gradient: "from-purple-500 to-violet-600",
     link: "/protected/numerologie"
   },
   {
     id: "horoscope",
-    title: "Horoscope",
+    title: "HOROSCOPE PAR SIGNE",
     icon: "Calendar",
-    description: "Prédictions mensuelles.",
+    description: "Reçois chaque mois les influences qui t'accompagnent et les opportunités à saisir selon ton signe.",
     gradient: "from-cyan-500 to-blue-600",
     link: "/protected/horoscope"
-  }
+  },
+  {
+    id: "astrologie-africaine",
+    title: "INVOCATION ET RITUEL MAGIQUE",
+    icon: "Globe",
+    description: "Reçois chaque mois les influences qui t'accompagnent et les opportunités à saisir selon ton signe.",
+    gradient: "from-amber-500 to-orange-600",
+    link: "/protected/astrologie-africaine"
+  },
 ];
 
 export default function ProfilPage() {
@@ -83,18 +84,18 @@ export default function ProfilPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-violet-50">
       {/* Progress bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 z-50" />
-      
-      <Header 
-        user={user} 
-        mobileMenuOpen={mobileMenuOpen} 
-        setMobileMenuOpen={setMobileMenuOpen} 
-        handleLogout={handleLogout} 
+
+      <Header
+        user={user}
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+        handleLogout={handleLogout}
       />
-      
-      <MobileMenu 
-        mobileMenuOpen={mobileMenuOpen} 
-        user={user} 
-        handleLogout={handleLogout} 
+
+      <MobileMenu
+        mobileMenuOpen={mobileMenuOpen}
+        user={user}
+        handleLogout={handleLogout}
       />
 
       <div className="px-4 py-6 max-w-6xl mx-auto">
@@ -104,9 +105,15 @@ export default function ProfilPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-6"
         >
-          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 mb-2">
-            Bonjour {user?.firstName || 'Invité'} 👋
-          </h1>
+          <p className="text-sm sm:text-base text-gray-600 mb-1 font-semibold">
+            Bienvenue, {user?.username || 'Invité'} 👋, dans ce temple virtuel dédié à te reconnecter à ton étoile.
+
+          </p>
+          <p className="text-sm sm:text-base text-gray-600 mb-1">
+            Ici, tu avances guidé(e) par la lumière de tes génies tutélaires et la présence
+            bienveillante de tes ancêtres.<br />
+            <br /><br />
+          </p>
           <p className="text-sm sm:text-base text-gray-600">
             Choisis un domaine pour ta consultation
           </p>
