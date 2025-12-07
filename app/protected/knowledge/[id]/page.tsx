@@ -7,6 +7,7 @@ import { knowledgeService } from '@/lib/api/services';
 import type { Knowledge } from '@/types/knowledge.types';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 
 const categoryLabels = {
   ASTROLOGIE: 'Astrologie',
@@ -148,7 +149,7 @@ export default function KnowledgeDetailPage() {
           {/* Image principale */}
           {knowledge.imageUrl && (
             <div className="relative w-full h-96 mb-8 rounded-2xl overflow-hidden">
-              <img
+              <Image
                 src={knowledge.imageUrl}
                 alt={knowledge.title}
                 className="w-full h-full object-cover"

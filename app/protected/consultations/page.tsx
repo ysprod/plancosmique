@@ -1,30 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Star, 
-  Calendar, 
-  Clock, 
-  CheckCircle, 
-  Loader2, 
-  AlertCircle,
-  Eye,
-  Download,
-  ArrowLeft,
-  Sparkles,
-  MapPin,
-  User,
-  Mail,
-  Phone,
-  FileText,
-  TrendingUp,
-  Filter,
-  Search,
-  ChevronDown
-} from 'lucide-react';
 import { api } from '@/lib/api/client';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  AlertCircle,
+  ArrowLeft,
+  Calendar,
+  CheckCircle,
+  ChevronDown,
+  Clock,
+  Download,
+  Eye,
+  FileText,
+  Filter,
+  Loader2,
+  MapPin,
+  Search,
+  Sparkles,
+  Star,
+  TrendingUp,
+  User
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 // ==================== TYPES ====================
 
@@ -131,12 +130,7 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const formatTime = (dateString: string) => {
-  return new Date(dateString).toLocaleTimeString('fr-FR', {
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-};
+ 
 
 // ==================== COMPOSANTS ====================
 
@@ -380,6 +374,8 @@ export default function ConsultationsListPage() {
 
     setFilteredConsultations(filtered);
   };
+
+
 
   const handleView = (id: string) => {
     router.push(`/protected/consultations/${id}`);

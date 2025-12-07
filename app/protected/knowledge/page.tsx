@@ -6,6 +6,7 @@ import { BookOpen, Heart, Eye, Calendar, User, Tag, Search, Filter, TrendingUp, 
 import { knowledgeService } from '@/lib/api/services';
 import type { Knowledge, KnowledgeCategory } from '@/types/knowledge.types';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const categoryLabels: Record<KnowledgeCategory, string> = {
   ASTROLOGIE: 'Astrologie',
@@ -241,7 +242,7 @@ export default function KnowledgePage() {
                     {/* Image si disponible */}
                     {knowledge.imageUrl && (
                       <div className="relative w-full h-48 mb-4 rounded-xl overflow-hidden">
-                        <img
+                        <Image
                           src={knowledge.imageUrl}
                           alt={knowledge.title}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"

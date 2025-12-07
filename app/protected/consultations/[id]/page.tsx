@@ -1,32 +1,31 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { api } from '@/lib/api/client';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  AlertCircle,
+  ArrowLeft,
+  Calendar,
+  CheckCircle2,
+  Clock,
+  Download,
+  Eye,
+  Heart,
+  Loader2,
+  MapPin,
+  Sparkles,
+  Star,
+  Target,
+  TrendingUp,
+  User,
+  Zap
+} from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useMemo, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { 
-  Loader2, 
-  CheckCircle2, 
-  AlertCircle, 
-  Star, 
-  Sparkles, 
-  Target, 
-  Heart,
-  Briefcase,
-  Brain,
-  ArrowLeft,
-  Download,
-  Calendar,
-  MapPin,
-  Clock,
-  User,
-  TrendingUp,
-  Zap,
-  Shield,
-  Eye
-} from 'lucide-react';
-import { api } from '@/lib/api/client';
 
 // ==================== TYPES ====================
 
@@ -231,7 +230,7 @@ const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => (
         hr: ({ ...props }) => (
           <hr className="my-8 border-white/20" {...props} />
         ),
-        code: ({ node, inline, ...props }: any) => 
+        code: ({  inline, ...props }: any) => 
           inline ? (
             <code className="bg-white/10 px-2 py-1 rounded text-purple-300 text-sm" {...props} />
           ) : (
