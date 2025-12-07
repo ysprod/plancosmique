@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { deepSeekService } from '@/lib/api/services/deepseek.service';
-import { storageService } from '@/lib/storage/local.storage';
 import { sendAnalysisReadyEmail } from '@/lib/api/services/email.service';
 import type { BirthData, AnalyseAstrologique } from '@/types/astrology.types';
 
@@ -110,7 +109,7 @@ export async function POST(
 
 /**
  * GET /api/consultations/[id]/generate-analysis
- * Récupère le statut de génération ou l'analyse si terminée
+ * Endpoint déprécié - utiliser GET /api/consultations/{id} à la place
  */
 export async function GET(
   request: NextRequest,
@@ -126,34 +125,13 @@ export async function GET(
       );
     }
 
-    // Récupérer l'analyse depuis le storage
-    const analyse = storageService.getAnalyse(consultationId);
-    const statut = storageService.getStatut(consultationId);
-    
-    if (analyse) {
-      return NextResponse.json({
-        success: true,
-        statut: 'completed',
-        analyse,
-      });
-    }
-
-    if (statut) {
-      return NextResponse.json({
-        success: true,
-        statut: statut.statut,
-        progression: statut.progression,
-        etapeCourante: statut.etapeCourante,
-        erreur: statut.erreur,
-      });
-    }
-
-    // Aucune donnée trouvée
+    // Cet endpoint n'utilise plus localStorage
+    // Rediriger vers l'API backend pour récupérer l'analyse
     return NextResponse.json({
-      success: true,
-      statut: 'pending',
-      message: 'Analyse en attente de génération',
-    });
+      success: false,
+      error: 'Endpoint déprécié',
+      message: 'Veuillez utiliser GET /api/consultations/{id} pour récupérer l\'analyse',
+    }, { status: 410 }); // 410 Gone
 
   } catch (error) {
     console.error('[API] Erreur récupération analyse:', error);

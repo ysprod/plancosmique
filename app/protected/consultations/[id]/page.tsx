@@ -34,21 +34,23 @@ export default function ConsultationResultPage() {
   useEffect(() => {
     if (!consultationId) return;
 
-    // Polling pour vérifier si l'analyse est prête
-    const checkAnalysis = async () => {
+    // Charger l'analyse depuis l'API backend
+    const loadAnalysis = async () => {
       try {
-        const response = await fetch(`/api/consultations/${consultationId}/generate-analysis`);
+        const response = await fetch(`/api/consultations/${consultationId}`);
+        
+        if (!response.ok) {
+          throw new Error('Analyse non trouvée');
+        }
+
         const data = await response.json();
 
-        if (data.success && data.statut === 'completed' && data.analyse) {
-          setAnalyse(data.analyse);
-          setLoading(false);
-        } else if (data.statut === 'error') {
-          setError('Erreur lors de la génération de votre analyse');
+        if (data.success && data.consultation) {
+          setAnalyse(data.consultation.analyse || data.consultation);
           setLoading(false);
         } else {
-          // Analyse en cours, réessayer dans 5 secondes
-          setTimeout(checkAnalysis, 5000);
+          setError('Analyse non disponible');
+          setLoading(false);
         }
       } catch (err) {
         console.error('Erreur récupération analyse:', err);
@@ -57,7 +59,7 @@ export default function ConsultationResultPage() {
       }
     };
 
-    checkAnalysis();
+    loadAnalysis();
   }, [consultationId]);
 
   const tabs = [

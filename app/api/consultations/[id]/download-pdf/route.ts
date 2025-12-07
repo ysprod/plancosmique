@@ -7,7 +7,6 @@
 
 import { NextResponse } from 'next/server';
 import { renderToStream } from '@react-pdf/renderer';
-import { storageService } from '@/lib/storage/local.storage';
 import { AnalysisDocument } from '@/lib/pdf/analysis-pdf';
 import { createElement } from 'react';
 
@@ -25,14 +24,31 @@ export async function GET(
       );
     }
 
-    // Récupérer l'analyse depuis le storage
-    const analyse = storageService.getAnalyse(consultationId);
+    // Récupérer l'analyse depuis l'API backend
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/consultations/${consultationId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Analyse non trouvée. Veuillez générer l\'analyse d\'abord.' 
+        },
+        { status: 404 }
+      );
+    }
+
+    const data = await response.json();
+    const analyse = data.consultation?.analyse || data.consultation;
 
     if (!analyse) {
       return NextResponse.json(
         { 
           success: false, 
-          error: 'Analyse non trouvée. Veuillez générer l\'analyse d\'abord.' 
+          error: 'Analyse non disponible.' 
         },
         { status: 404 }
       );

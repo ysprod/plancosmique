@@ -37,52 +37,43 @@ export default function ConsultationsListPage() {
     loadConsultations();
   }, []);
 
-  const loadConsultations = () => {
+  const loadConsultations = async () => {
     try {
-      // Charger toutes les analyses depuis localStorage
-      const allKeys = Object.keys(localStorage);
-      console.log('🔍 Toutes les clés localStorage:', allKeys);
+      // Charger les consultations depuis l'API backend
+      const response = await fetch('/api/consultations');
       
-      const analysisKeys = allKeys.filter(key => key.startsWith('astro_analysis_'));
-      console.log('📊 Clés d\'analyse trouvées:', analysisKeys);
-      
-      const loadedConsultations: Consultation[] = [];
-      
-      analysisKeys.forEach(key => {
-        const consultationId = key.replace('astro_analysis_', '');
-        const data = localStorage.getItem(key);
-        console.log(`📄 Données pour ${consultationId}:`, data ? 'Présentes' : 'Absentes');
-        
-        if (data) {
-          try {
-            const analyse = JSON.parse(data);
-            console.log(`✅ Analyse parsée pour ${consultationId}:`, analyse);
-            
-            loadedConsultations.push({
-              id: consultationId,
-              consultationId: consultationId,
-              titre: 'Analyse Astrologique',
-              dateGeneration: analyse.dateGeneration,
-              statut: 'completed',
-              prenoms: analyse.carteDuCiel?.sujet?.prenoms || 'Non renseigné',
-              nom: analyse.carteDuCiel?.sujet?.nom || '',
-              dateNaissance: analyse.carteDuCiel?.sujet?.dateNaissance || '',
-            });
-          } catch (e) {
-            console.error('❌ Erreur parsing analyse:', e);
-          }
-        }
-      });
+      if (!response.ok) {
+        throw new Error('Erreur lors du chargement des consultations');
+      }
 
-      // Trier par date décroissante
-      loadedConsultations.sort((a, b) => 
-        new Date(b.dateGeneration).getTime() - new Date(a.dateGeneration).getTime()
-      );
+      const data = await response.json();
+      console.log('📊 Consultations reçues de l\'API:', data);
 
-      console.log('📋 Consultations chargées:', loadedConsultations.length);
-      console.log('📝 Détails:', loadedConsultations);
+      interface ApiConsultationItem {
+        consultationId?: string;
+        id?: string;
+        titre?: string;
+        dateGeneration: string;
+        statut?: string;
+        prenoms?: string;
+        nom?: string;
+        dateNaissance?: string;
+      }
 
-      setConsultations(loadedConsultations);
+      const consultationsList: Consultation[] = (data.consultations || []).map((item: ApiConsultationItem) => ({
+        id: item.consultationId || item.id || '',
+        consultationId: item.consultationId || item.id || '',
+        titre: item.titre || 'Analyse Astrologique',
+        dateGeneration: item.dateGeneration,
+        statut: (item.statut as Consultation['statut']) || 'completed',
+        prenoms: item.prenoms || 'Non renseigné',
+        nom: item.nom || '',
+        dateNaissance: item.dateNaissance || '',
+      }));
+
+      console.log('📋 Consultations chargées:', consultationsList.length);
+
+      setConsultations(consultationsList);
       setLoading(false);
     } catch (err) {
       console.error('❌ Erreur chargement consultations:', err);

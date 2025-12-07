@@ -168,23 +168,22 @@ export default function Slide4Section() {
 
         console.log('✅ Analyse générée avec succès:', analysisData);
 
-        // Sauvegarder l'analyse dans localStorage côté client
+        // Sauvegarder l'analyse via API backend
         if (analysisData.analyse) {
-          localStorage.setItem(
-            `astro_analysis_${createdConsultationId}`,
-            JSON.stringify(analysisData.analyse)
-          );
-          localStorage.setItem(
-            `astro_status_${createdConsultationId}`,
-            JSON.stringify({
-              consultationId: createdConsultationId,
+          const saveResponse = await fetch(`/api/consultations/${createdConsultationId}/save-analysis`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              analyse: analysisData.analyse,
               statut: 'completed',
-              progression: 100,
-              etapeCourante: 'Analyse complète',
-              dateFin: new Date().toISOString(),
-            })
-          );
-          console.log('💾 Analyse sauvegardée dans localStorage');
+            }),
+          });
+
+          if (!saveResponse.ok) {
+            console.error('⚠️ Erreur sauvegarde analyse:', await saveResponse.text());
+          } else {
+            console.log('💾 Analyse sauvegardée via API');
+          }
         }
 
         // 3. Analyse prête, passer à la confirmation du prix
