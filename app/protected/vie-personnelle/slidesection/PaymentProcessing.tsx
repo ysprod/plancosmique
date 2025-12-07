@@ -38,7 +38,7 @@ const PaymentProcessing: React.FC = () => (
         </p>
       </div>
       <p className="text-xs text-gray-500">
-        Une fois l'analyse prête, vous serez redirigé vers le paiement sécurisé.
+        Une fois l'analyse prête, vous pourrez confirmer le prix.
       </p>
     </div>
   </motion.div>

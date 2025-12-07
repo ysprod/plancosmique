@@ -94,9 +94,9 @@ export default function Slide4Section() {
     setStep('form');
   }, []);
 
-  // 1. Soumission du formulaire => étape de confirmation du prix
+  // 1. Soumission du formulaire => génération de l'analyse
   const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
+    async (e: React.FormEvent) => {
       e.preventDefault();
       setApiError(null);
       setPaymentError(null);
@@ -111,79 +111,105 @@ export default function Slide4Section() {
         setApiError('Aucun choix de consultation sélectionné');
         return;
       }
-//setStep('confirm');
-      setStep('confirm');
+
+      // Lancer la génération de l'analyse IMMÉDIATEMENT après validation
+      setPaymentLoading(true);
+      setStep('processing'); // Afficher l'écran de génération
+
+      try {
+        // 1. Créer la consultation
+        const payload = {
+          serviceId: SERVICE_ID,
+          type: CONSULTATION_TYPE_MAP[selected.id] || 'AUTRE',
+          title: selected.title,
+          description: selected.description,
+          formData: form,
+          status: 'generating_analysis',
+        };
+
+        const consultationRes = await api.post('/consultations', payload);
+
+        if (consultationRes.status !== 200 && consultationRes.status !== 201) {
+          throw new Error(consultationRes.data?.message || 'Erreur lors de la création de la consultation');
+        }
+
+        const createdConsultationId = consultationRes.data?.id || consultationRes.data?.consultationId;
+        setConsultationId(createdConsultationId);
+
+        // 2. Générer l'analyse
+        const analysisResponse = await fetch(`/api/consultations/${createdConsultationId}/generate-analysis`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            birthData: {
+              nom: form.nom,
+              prenoms: form.prenoms,
+              genre: form.genre,
+              dateNaissance: form.dateNaissance,
+              heureNaissance: form.heureNaissance,
+              paysNaissance: form.paysNaissance,
+              villeNaissance: form.villeNaissance,
+              email: form.email,
+            },
+          }),
+        });
+
+        const analysisData = await analysisResponse.json();
+
+        if (!analysisData.success) {
+          const errorMsg = analysisData.error || 'Erreur lors de la génération de l\'analyse';
+          
+          if (errorMsg.includes('Crédit DeepSeek épuisé') || errorMsg.includes('INSUFFICIENT_BALANCE')) {
+            throw new Error('Le service d\'analyse astrologique est temporairement indisponible (crédit API épuisé). Veuillez contacter le support.');
+          }
+          
+          throw new Error(errorMsg);
+        }
+
+        console.log('✅ Analyse générée avec succès:', analysisData);
+
+        // 3. Analyse prête, passer à la confirmation du prix
+        setPaymentLoading(false);
+        setStep('confirm');
+
+      } catch (err: any) {
+        let errorMessage = 'Erreur lors de la génération';
+        if (err.response?.data?.message) {
+          errorMessage = err.response.data.message;
+        } else if (err.message) {
+          errorMessage = err.message;
+        }
+
+        console.error('[Génération] Erreur:', errorMessage);
+        setApiError(errorMessage);
+        setPaymentLoading(false);
+        setStep('form'); // Retour au formulaire en cas d'erreur
+      }
     },
     [form, selected]
   );
 
-  // 2. Génération de l'analyse AVANT le paiement, puis paiement
+  // 2. Confirmation du prix => paiement (l'analyse est déjà prête)
   const handlePay = useCallback(async () => {
-    if (!selected) return;
+    if (!selected || !consultationId) return;
 
     setPaymentLoading(true);
     setPaymentError(null);
+    setStep('processing'); // Afficher "Redirection vers le paiement..."
 
     try {
-      // 1. Créer la consultation dans la base de données
-      const payload = {
-        serviceId: SERVICE_ID,
-        type: CONSULTATION_TYPE_MAP[selected.id] || 'AUTRE',
-        title: selected.title,
-        description: selected.description,
-        formData: form,
-        status: 'generating_analysis', // Génération en cours
-      };
-
-      const consultationRes = await api.post('/consultations', payload);
-
-      if (consultationRes.status !== 200 && consultationRes.status !== 201) {
-        throw new Error(consultationRes.data?.message || 'Erreur lors de la création de la consultation');
-      }
-
-      const createdConsultationId = consultationRes.data?.id || consultationRes.data?.consultationId;
-      setConsultationId(createdConsultationId);
-
-      // 2. Lancer la génération de l'analyse AVANT le paiement
-      setStep('processing'); // Afficher l'écran de génération
-      
-      const analysisResponse = await fetch(`/api/consultations/${createdConsultationId}/generate-analysis`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          birthData: {
-            nom: form.nom,
-            prenoms: form.prenoms,
-            genre: form.genre,
-            dateNaissance: form.dateNaissance,
-            heureNaissance: form.heureNaissance,
-            paysNaissance: form.paysNaissance,
-            villeNaissance: form.villeNaissance,
-            email: form.email,
-          },
-        }),
-      });
-
-      const analysisData = await analysisResponse.json();
-
-      if (!analysisData.success) {
-        throw new Error(analysisData.error || 'Erreur lors de la génération de l\'analyse');
-      }
-
-      console.log('✅ Analyse générée avec succès:', analysisData);
-
-      // 3. Maintenant que l'analyse est prête, procéder au paiement
+      // L'analyse a déjà été générée, procéder directement au paiement
       const paymentData = {
         totalPrice: 200,
         article: [{ consultation: 200 }],
         personal_Info: [{
-          consultationId: createdConsultationId,
+          consultationId: consultationId,
           type: 'CONSULTATION',
           formData: form,
         }],
         numeroSend: form.numeroSend || '0758385387',
         nomclient: `${form.prenoms} ${form.nom}`,
-        return_url: `${window.location.origin}/callback?consultation_id=${createdConsultationId}`,
+        return_url: `${window.location.origin}/callback?consultation_id=${consultationId}`,
         webhook_url: `${window.location.origin}/api/webhooks/moneyfusion`,
       };
 
@@ -196,7 +222,6 @@ export default function Slide4Section() {
 
       if (response.data?.statut && response.data?.url) {
         // Paiement initié avec succès - l'analyse est déjà prête
-        // Redirection vers la page de paiement
         setTimeout(() => {
           window.location.href = response.data.url;
         }, 1500);
