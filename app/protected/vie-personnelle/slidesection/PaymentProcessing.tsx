@@ -27,10 +27,10 @@ const PaymentProcessing: React.FC = () => (
       </div>
       
       <h3 className="text-2xl font-bold text-gray-900 mb-3">
-        🔮 Génération de votre analyse...
+        🔮 Sauvegarde des données...
       </h3>
       <p className="text-gray-600 mb-4">
-        Notre intelligence artificielle génère votre carte du ciel et analyse astrologique complète.
+        Nous enregistrons vos données pour une analyse astrologique complète.
       </p>
       <div className="bg-purple-50 rounded-xl p-4 mb-4">
         <p className="text-sm text-purple-800">
@@ -38,7 +38,7 @@ const PaymentProcessing: React.FC = () => (
         </p>
       </div>
       <p className="text-xs text-gray-500">
-        Une fois l'analyse prête, vous pourrez confirmer le prix.
+        Une fois le payement effectué, vous recevrez votre analyse sous 48 heures.
       </p>
     </div>
   </motion.div>
