@@ -33,7 +33,7 @@ export default function MobileMenu({ mobileMenuOpen, user, handleLogout }: {
                 </p>
               </div>
             </div>
-            <Link href="/dashboard">
+            <Link href="/protected/profil">
               <button className="w-full text-left px-4 py-3 rounded-xl text-slate-700 hover:bg-violet-50 font-semibold transition-all">
                 Dashboard
               </button>

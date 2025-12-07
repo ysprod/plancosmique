@@ -135,53 +135,70 @@ export default function Slide4Section() {
 
         const createdConsultationId = consultationRes.data?.id || consultationRes.data?.consultationId;
         setConsultationId(createdConsultationId);
-console.log('✅ Consultation créée avec ID:', createdConsultationId);
+        console.log('✅ Consultation créée avec ID:', createdConsultationId);
+        
         // 2. Générer l'analyse
-        const analysisResponse = await api.post(`/consultations/${createdConsultationId}/generate-analysis`, {
-          birthData: {
-            nom: form.nom,
-            prenoms: form.prenoms,
-            genre: form.genre,
-            dateNaissance: form.dateNaissance,
-            heureNaissance: form.heureNaissance,
-            paysNaissance: form.paysNaissance,
-            villeNaissance: form.villeNaissance,
-            email: form.email,
-          },
-        });
-
-        console.log('Réponse génération analyse:', analysisResponse);
-
-        if (analysisResponse.status !== 200 && analysisResponse.status !== 201) {
-          const errorMsg = analysisResponse.data?.error || 'Erreur lors de la génération de l\'analyse';
-          
-          if (errorMsg.includes('Crédit DeepSeek épuisé') || errorMsg.includes('INSUFFICIENT_BALANCE')) {
-            throw new Error('Le service d\'analyse astrologique est temporairement indisponible (crédit API épuisé). Veuillez contacter le support.');
-          }
-          
-          throw new Error(errorMsg);
-        }
-
-        const analysisData = analysisResponse.data;
-        console.log('✅ Analyse générée avec succès:', analysisData);
-
-        // Sauvegarder l'analyse via API backend
-        if (analysisData.analyse) {
-          const saveResponse = await api.post(`/consultations/${createdConsultationId}/save-analysis`, {
-            analyse: analysisData.analyse,
-            statut: 'completed',
+        try {
+          const analysisResponse = await api.post(`/consultations/${createdConsultationId}/generate-analysis`, {
+            birthData: {
+              nom: form.nom,
+              prenoms: form.prenoms,
+              genre: form.genre,
+              dateNaissance: form.dateNaissance,
+              heureNaissance: form.heureNaissance,
+              paysNaissance: form.paysNaissance,
+              villeNaissance: form.villeNaissance,
+              email: form.email,
+            },
           });
 
-          if (saveResponse.status !== 200 && saveResponse.status !== 201) {
-            console.error('⚠️ Erreur sauvegarde analyse:', saveResponse.data);
-          } else {
-            console.log('💾 Analyse sauvegardée via API');
-          }
-        }
+          console.log('Réponse génération analyse:', analysisResponse);
 
-        // 3. Analyse prête, passer à la confirmation du prix
-        setPaymentLoading(false);
-        setStep('confirm');
+          if (analysisResponse.status !== 200 && analysisResponse.status !== 201) {
+            const errorMsg = analysisResponse.data?.error || 'Erreur lors de la génération de l\'analyse';
+            
+            if (errorMsg.includes('Crédit DeepSeek épuisé') || errorMsg.includes('INSUFFICIENT_BALANCE')) {
+              throw new Error('Le service d\'analyse astrologique est temporairement indisponible (crédit API épuisé). Veuillez contacter le support.');
+            }
+            
+            throw new Error(errorMsg);
+          }
+
+          const analysisData = analysisResponse.data;
+          console.log('✅ Analyse générée avec succès:', analysisData);
+
+          // Sauvegarder l'analyse via API backend
+          if (analysisData.analyse) {
+            const saveResponse = await api.post(`/consultations/${createdConsultationId}/save-analysis`, {
+              analyse: analysisData.analyse,
+              statut: 'completed',
+            });
+
+            if (saveResponse.status !== 200 && saveResponse.status !== 201) {
+              console.error('⚠️ Erreur sauvegarde analyse:', saveResponse.data);
+            } else {
+              console.log('💾 Analyse sauvegardée via API');
+            }
+          }
+
+          // 3. Analyse prête, passer à la page d'offrande
+          setPaymentLoading(false);
+          setStep('offering');
+        } catch (analysisErr: any) {
+          let errorMessage = 'Erreur lors de la génération d\'analyse';
+          if (analysisErr.response?.data?.message) {
+            errorMessage = analysisErr.response.data.message;
+          } else if (analysisErr.response?.data?.error) {
+            errorMessage = analysisErr.response.data.error;
+          } else if (analysisErr.message) {
+            errorMessage = analysisErr.message;
+          }
+
+          console.error('[Génération Analyse] Erreur:', errorMessage, analysisErr.response?.data);
+          setApiError(errorMessage);
+          setPaymentLoading(false);
+          setStep('form'); // Retour au formulaire en cas d'erreur
+        }
 
       } catch (err: any) {
         let errorMessage = 'Erreur lors de la génération';

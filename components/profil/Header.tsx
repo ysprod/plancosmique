@@ -51,7 +51,7 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
 
           {/* Navigation Desktop */}
           <nav className="hidden lg:flex items-center gap-2">
-            <Link href="/dashboard">
+            <Link href="/protected/profil">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
