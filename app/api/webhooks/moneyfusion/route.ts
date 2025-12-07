@@ -1,0 +1,134 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+/**
+ * Webhook MoneyFusion
+ * POST /api/webhooks/moneyfusion
+ * 
+ * Reçoit les notifications de paiement de MoneyFusion
+ */
+export async function POST(request: NextRequest) {
+    try {
+        const body = await request.json();
+        
+        console.log('[MoneyFusion Webhook] Notification reçue:', JSON.stringify(body, null, 2));
+
+        // Structure attendue de MoneyFusion
+        const {
+            token,
+            montant,
+            numeroSend,
+            nomclient,
+            reference,
+            date_paiement,
+            statut,
+            code_statut,
+            message,
+            personal_Info,
+        } = body;
+
+        // Validation des données
+        if (!token) {
+            console.error('[MoneyFusion Webhook] Token manquant dans la notification');
+            return NextResponse.json(
+                { success: false, error: 'Token manquant' },
+                { status: 400 }
+            );
+        }
+
+        // Log des informations importantes
+        console.log('[MoneyFusion Webhook] Détails du paiement:', {
+            token,
+            montant,
+            numeroSend,
+            nomclient,
+            reference,
+            date_paiement,
+            statut,
+            code_statut,
+            message,
+        });
+
+        // Récupérer les métadonnées si disponibles
+        let metadata = null;
+        if (personal_Info && Array.isArray(personal_Info) && personal_Info.length > 0) {
+            metadata = personal_Info[0];
+            console.log('[MoneyFusion Webhook] Métadonnées:', metadata);
+        }
+
+        // Traiter selon le code statut
+        if (code_statut === 1) {
+            // Paiement réussi
+            console.log('[MoneyFusion Webhook] ✅ Paiement réussi:', token);
+            
+            // TODO: Mettre à jour la base de données selon le type de paiement
+            if (metadata?.type === 'OFFRANDES') {
+                console.log('[MoneyFusion Webhook] Type: Offrandes - Cart:', metadata.cart);
+                // Marquer la commande comme payée
+                // Envoyer notification au client
+                // Enregistrer la transaction
+            } else if (metadata?.type === 'CONSULTATION') {
+                console.log('[MoneyFusion Webhook] Type: Consultation - ID:', metadata.consultationId);
+                
+                // Marquer la consultation comme payée
+                // TODO: Mettre à jour le statut dans la DB
+                // await db.consultations.updateOne(
+                //   { _id: metadata.consultationId },
+                //   { $set: { status: 'paid', paymentToken: token, paidAt: new Date() }}
+                // );
+
+                // L'analyse a déjà été générée AVANT le paiement
+                // On ne déclenche plus la génération ici
+                console.log('[MoneyFusion Webhook] ✅ Analyse déjà générée avant le paiement');
+                console.log('[MoneyFusion Webhook] Consultation marquée comme payée');
+                
+                // Optionnel: Envoyer un email de confirmation de paiement
+                // (différent de l'email d'analyse déjà envoyé)
+                
+                // Enregistrer la transaction
+            }
+
+            return NextResponse.json({
+                success: true,
+                message: 'Webhook traité avec succès',
+            });
+        } else if (code_statut === 2) {
+            // Paiement déjà traité
+            console.log('[MoneyFusion Webhook] ⚠️ Paiement déjà traité:', token);
+            return NextResponse.json({
+                success: true,
+                message: 'Paiement déjà traité',
+            });
+        } else if (code_statut === 3) {
+            // Paiement en attente
+            console.log('[MoneyFusion Webhook] ⏳ Paiement en attente:', token);
+            return NextResponse.json({
+                success: true,
+                message: 'Paiement en attente',
+            });
+        } else {
+            // Paiement échoué ou autre statut
+            console.log('[MoneyFusion Webhook] ❌ Paiement échoué:', token, message);
+            return NextResponse.json({
+                success: true,
+                message: 'Notification reçue',
+            });
+        }
+    } catch (error) {
+        console.error('[MoneyFusion Webhook] Erreur lors du traitement:', error);
+        
+        // Toujours retourner 200 pour éviter que MoneyFusion réessaie indéfiniment
+        return NextResponse.json({
+            success: false,
+            error: 'Erreur interne',
+            message: error instanceof Error ? error.message : 'Erreur inconnue',
+        }, { status: 200 });
+    }
+}
+
+// Support des requêtes GET pour tester l'endpoint
+export async function GET() {
+    return NextResponse.json({
+        message: 'Webhook MoneyFusion - Utilisez POST pour envoyer des notifications',
+        endpoint: '/api/webhooks/moneyfusion',
+    });
+}

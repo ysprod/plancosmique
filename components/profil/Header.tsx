@@ -60,7 +60,7 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
                 Tableau de bord
               </motion.button>
             </Link>
-            <Link href="/consultations">
+            <Link href="/protected/consultations">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

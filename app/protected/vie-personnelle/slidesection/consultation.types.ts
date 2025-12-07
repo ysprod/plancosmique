@@ -15,6 +15,7 @@ export interface FormData {
   villeNaissance: string;
   heureNaissance: string;
   numeroSend?: string;
+  email?: string; // Email pour notifications
 }
 
 export interface FormErrors {

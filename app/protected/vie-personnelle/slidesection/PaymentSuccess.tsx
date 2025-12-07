@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Mail, Download, Calendar, Sparkles, Home } from 'lucide-react';
+import { CheckCircle, Eye, ArrowRight, Clock, Sparkles, Home } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   resetSelection: () => void;
@@ -8,6 +9,12 @@ interface Props {
 }
 
 const PaymentSuccess: React.FC<Props> = ({ resetSelection, consultationId }) => {
+  const router = useRouter();
+
+  const handleViewResults = () => {
+    router.push(`/protected/consultations/${consultationId}`);
+  };
+
   const confettiVariants = {
     initial: { opacity: 0, y: -50, rotate: 0 },
     animate: (i: number) => ({
@@ -65,7 +72,7 @@ const PaymentSuccess: React.FC<Props> = ({ resetSelection, consultationId }) => 
               Paiement Confirmé ! 🎉
             </h2>
             <p className="text-green-100 text-lg">
-              Votre consultation est en cours de préparation
+              Votre analyse astrologique est en cours de génération
             </p>
           </motion.div>
         </div>
@@ -80,16 +87,32 @@ const PaymentSuccess: React.FC<Props> = ({ resetSelection, consultationId }) => 
             className="bg-gradient-to-br from-purple-50 to-fuchsia-50 rounded-2xl p-6 border-2 border-purple-200"
           >
             <div className="flex items-start gap-4">
-              <Sparkles className="w-8 h-8 text-purple-600 flex-shrink-0" />
+              <Sparkles className="w-8 h-8 text-purple-600 flex-shrink-0 animate-pulse" />
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Merci pour votre confiance !
+                  Génération de votre carte du ciel
                 </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  Notre équipe d'astrologues professionnels va analyser votre thème astral 
-                  en profondeur. Vous recevrez votre rapport complet sous{' '}
-                  <strong className="text-purple-700">24 à 48 heures</strong>.
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  Notre intelligence artificielle analyse votre thème astral pour révéler :
                 </p>
+                <ul className="space-y-2 text-gray-700">
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                    Votre mission de vie et chemin karmique
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                    Vos talents naturels et dons uniques
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                    Vos défis de vie et opportunités de croissance
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                    Votre style relationnel et compatibilités
+                  </li>
+                </ul>
               </div>
             </div>
           </motion.div>
@@ -112,47 +135,32 @@ const PaymentSuccess: React.FC<Props> = ({ resetSelection, consultationId }) => 
             </div>
           </div>
 
-          {/* Prochaines étapes */}
-          <div className="space-y-4">
-            <h3 className="font-bold text-gray-900 text-lg">Prochaines étapes :</h3>
-            
-            {[
-              {
-                icon: <Mail className="w-5 h-5" />,
-                title: 'Email de confirmation',
-                desc: 'Vous recevrez un email de confirmation dans les prochaines minutes',
-                color: 'blue',
-              },
-              {
-                icon: <Calendar className="w-5 h-5" />,
-                title: 'Préparation du rapport',
-                desc: 'Nos astrologues analysent votre thème (24-48h)',
-                color: 'purple',
-              },
-              {
-                icon: <Download className="w-5 h-5" />,
-                title: 'Réception du PDF',
-                desc: 'Vous recevrez votre rapport par email + téléchargement direct',
-                color: 'green',
-              },
-            ].map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                className={`flex items-start gap-4 p-4 bg-${step.color}-50 rounded-xl border border-${step.color}-200`}
-              >
-                <div className={`w-10 h-10 bg-${step.color}-100 rounded-full flex items-center justify-center flex-shrink-0 text-${step.color}-600`}>
-                  {step.icon}
-                </div>
-                <div>
-                  <p className={`font-bold text-${step.color}-900 mb-1`}>{step.title}</p>
-                  <p className={`text-sm text-${step.color}-700`}>{step.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          {/* Statut génération */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border-2 border-amber-200"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <Clock className="w-6 h-6 text-amber-600 animate-pulse" />
+              <h3 className="font-bold text-gray-900 text-lg">Analyse en cours</h3>
+            </div>
+            <p className="text-gray-700 mb-4">
+              La génération de votre analyse prend généralement <strong>2 à 5 minutes</strong>.
+              Vous pouvez consulter vos résultats dès maintenant, ils seront mis à jour automatiquement.
+            </p>
+            <motion.button
+              onClick={handleViewResults}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full py-4 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+            >
+              <Eye className="w-5 h-5" />
+              Voir mon analyse astrologique
+              <ArrowRight className="w-5 h-5" />
+            </motion.button>
+          </motion.div>
 
           {/* Support */}
           <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
@@ -165,15 +173,13 @@ const PaymentSuccess: React.FC<Props> = ({ resetSelection, consultationId }) => 
           </div>
 
           {/* Bouton retour */}
-          <motion.button
+          <button
             onClick={resetSelection}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full py-4 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+            className="w-full py-3 text-gray-600 hover:text-gray-900 font-semibold transition-colors flex items-center justify-center gap-2"
           >
             <Home className="w-5 h-5" />
             Retour à l'accueil
-          </motion.button>
+          </button>
         </div>
       </div>
     </motion.div>

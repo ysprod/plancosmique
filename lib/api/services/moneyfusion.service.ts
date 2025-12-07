@@ -222,7 +222,8 @@ class MoneyFusionService {
       const verifyRequest: MoneyFusionVerifyRequest = { token };
 
       // Appel au backend qui fera la vérification côté serveur
-      const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+      // Utilise l'API Next.js locale
+      const backendUrl = '/api';
       const response = await axios.post<MoneyFusionVerifyResponse>(
         `${backendUrl}/payments/moneyfusion/verify`,
         verifyRequest,

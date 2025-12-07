@@ -111,18 +111,19 @@ export default function Slide4Section() {
         setApiError('Aucun choix de consultation sélectionné');
         return;
       }
-//setStep('confirm');
+
       setStep('confirm');
     },
     [form, selected]
   );
 
-  // 2. Génération de l'analyse AVANT le paiement, puis paiement
+  // 2. Création de la consultation et déclenchement du paiement
   const handlePay = useCallback(async () => {
     if (!selected) return;
 
     setPaymentLoading(true);
     setPaymentError(null);
+
 
     try {
       // 1. Créer la consultation dans la base de données
@@ -132,7 +133,7 @@ export default function Slide4Section() {
         title: selected.title,
         description: selected.description,
         formData: form,
-        status: 'generating_analysis', // Génération en cours
+        status: 'pending_payment', // Statut en attente de paiement
       };
 
       const consultationRes = await api.post('/consultations', payload);
@@ -143,48 +144,18 @@ export default function Slide4Section() {
 
       const createdConsultationId = consultationRes.data?.id || consultationRes.data?.consultationId;
       setConsultationId(createdConsultationId);
+ 
 
-      // 2. Lancer la génération de l'analyse AVANT le paiement
-      setStep('processing'); // Afficher l'écran de génération
-      
-      const analysisResponse = await fetch(`/api/consultations/${createdConsultationId}/generate-analysis`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          birthData: {
-            nom: form.nom,
-            prenoms: form.prenoms,
-            genre: form.genre,
-            dateNaissance: form.dateNaissance,
-            heureNaissance: form.heureNaissance,
-            paysNaissance: form.paysNaissance,
-            villeNaissance: form.villeNaissance,
-            email: form.email,
-          },
-        }),
-      });
-
-      const analysisData = await analysisResponse.json();
-
-      if (!analysisData.success) {
-        throw new Error(analysisData.error || 'Erreur lors de la génération de l\'analyse');
-      }
-
-      console.log('✅ Analyse générée avec succès:', analysisData);
-
-      // 3. Maintenant que l'analyse est prête, procéder au paiement
       const paymentData = {
         totalPrice: 200,
         article: [{ consultation: 200 }],
-        personal_Info: [{
-          consultationId: createdConsultationId,
-          type: 'CONSULTATION',
-          formData: form,
-        }],
-        numeroSend: form.numeroSend || '0758385387',
+        personal_Info: [], // optionnel, vide si pas d'userId/orderId
+        numeroSend: '0758385387',
         nomclient: `${form.prenoms} ${form.nom}`,
-        return_url: `${window.location.origin}/callback?consultation_id=${createdConsultationId}`,
-        webhook_url: `${window.location.origin}/api/webhooks/moneyfusion`,
+        return_url: "https://www.monetoile.org/callback",
+        webhook_url: "https://www.monetoile.org/my-webhook-url",
+        // return_url: `${window.location.origin}/callback?consultation_id=${createdConsultationId}`,
+        // webhook_url: `${window.location.origin}/api/webhooks/moneyfusion`,
       };
 
       const apiUrl = "https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/pay/";
@@ -192,10 +163,21 @@ export default function Slide4Section() {
         headers: { "Content-Type": "application/json" },
       });
 
+      // 3. Initier le paiement MoneyFusion
+      // const paymentResponse = await fetch('https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/pay/', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(paymentData),
+      // });
+
+
+
       console.log('Résultat du paiement MoneyFusion:', response);
 
       if (response.data?.statut && response.data?.url) {
-        // Paiement initié avec succès - l'analyse est déjà prête
+        // Paiement initié avec succès
+        setStep('processing');
+
         // Redirection vers la page de paiement
         setTimeout(() => {
           window.location.href = response.data.url;
@@ -204,7 +186,7 @@ export default function Slide4Section() {
         throw new Error(response.data?.message || 'Erreur lors de la création du paiement');
       }
     } catch (err: any) {
-      let apiErrorMsg = 'Erreur lors du traitement';
+      let apiErrorMsg = 'Erreur lors du traitement du paiement';
       if (err.response?.data?.message) {
         apiErrorMsg = `API: ${err.response.data.message}`;
       } else if (err.message) {

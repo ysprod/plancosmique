@@ -133,6 +133,17 @@ const ConsultationForm: React.FC<Props> = ({
         error={errors.heureNaissance}
       />
 
+      {/* Email pour notification */}
+      <InputField
+        label="Email (optionnel - pour recevoir votre analyse)"
+        name="email"
+        type="email"
+        value={form.email || ''}
+        onChange={handleChange}
+        error={errors.email}
+        placeholder="exemple@email.com"
+      />
+
       {/* Erreur API */}
       {apiError && (
         <motion.div
