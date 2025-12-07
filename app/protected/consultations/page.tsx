@@ -41,17 +41,23 @@ export default function ConsultationsListPage() {
     try {
       // Charger toutes les analyses depuis localStorage
       const allKeys = Object.keys(localStorage);
+      console.log('🔍 Toutes les clés localStorage:', allKeys);
+      
       const analysisKeys = allKeys.filter(key => key.startsWith('astro_analysis_'));
+      console.log('📊 Clés d\'analyse trouvées:', analysisKeys);
       
       const loadedConsultations: Consultation[] = [];
       
       analysisKeys.forEach(key => {
         const consultationId = key.replace('astro_analysis_', '');
         const data = localStorage.getItem(key);
+        console.log(`📄 Données pour ${consultationId}:`, data ? 'Présentes' : 'Absentes');
         
         if (data) {
           try {
             const analyse = JSON.parse(data);
+            console.log(`✅ Analyse parsée pour ${consultationId}:`, analyse);
+            
             loadedConsultations.push({
               id: consultationId,
               consultationId: consultationId,
@@ -63,7 +69,7 @@ export default function ConsultationsListPage() {
               dateNaissance: analyse.carteDuCiel?.sujet?.dateNaissance || '',
             });
           } catch (e) {
-            console.error('Erreur parsing analyse:', e);
+            console.error('❌ Erreur parsing analyse:', e);
           }
         }
       });
@@ -73,10 +79,13 @@ export default function ConsultationsListPage() {
         new Date(b.dateGeneration).getTime() - new Date(a.dateGeneration).getTime()
       );
 
+      console.log('📋 Consultations chargées:', loadedConsultations.length);
+      console.log('📝 Détails:', loadedConsultations);
+
       setConsultations(loadedConsultations);
       setLoading(false);
     } catch (err) {
-      console.error('Erreur chargement consultations:', err);
+      console.error('❌ Erreur chargement consultations:', err);
       setError('Erreur lors du chargement des consultations');
       setLoading(false);
     }

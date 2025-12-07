@@ -168,6 +168,25 @@ export default function Slide4Section() {
 
         console.log('✅ Analyse générée avec succès:', analysisData);
 
+        // Sauvegarder l'analyse dans localStorage côté client
+        if (analysisData.analyse) {
+          localStorage.setItem(
+            `astro_analysis_${createdConsultationId}`,
+            JSON.stringify(analysisData.analyse)
+          );
+          localStorage.setItem(
+            `astro_status_${createdConsultationId}`,
+            JSON.stringify({
+              consultationId: createdConsultationId,
+              statut: 'completed',
+              progression: 100,
+              etapeCourante: 'Analyse complète',
+              dateFin: new Date().toISOString(),
+            })
+          );
+          console.log('💾 Analyse sauvegardée dans localStorage');
+        }
+
         // 3. Analyse prête, passer à la confirmation du prix
         setPaymentLoading(false);
         setStep('confirm');
@@ -246,7 +265,7 @@ export default function Slide4Section() {
     } finally {
       setPaymentLoading(false);
     }
-  }, [form, selected]);
+  }, [form, selected, consultationId]);
 
   const resetSelection = useCallback(() => {
     setSelected(null);

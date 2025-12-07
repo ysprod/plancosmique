@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { deepSeekService } from '@/lib/api/services/deepseek.service';
 import { storageService } from '@/lib/storage/local.storage';
 import { sendAnalysisReadyEmail } from '@/lib/api/services/email.service';
-import type { BirthData, AnalyseAstrologique, StatutConsultation } from '@/types/astrology.types';
+import type { BirthData, AnalyseAstrologique } from '@/types/astrology.types';
 
 /**
  * API Route pour générer l'analyse astrologique complète
@@ -41,15 +41,7 @@ export async function POST(
     console.log('[API] Génération analyse pour consultation:', consultationId);
     console.log('[API] Données naissance:', birthData);
 
-    // Mettre à jour le statut : génération en cours
-    const statutEnCours: StatutConsultation = {
-      consultationId,
-      statut: 'generating_chart',
-      progression: 10,
-      etapeCourante: 'Génération de la carte du ciel...',
-      dateDebut: new Date().toISOString(),
-    };
-    storageService.saveStatut(statutEnCours);
+    // Note: Ne pas utiliser localStorage côté serveur - sauvegarde faite côté client
 
     // Générer l'analyse complète via DeepSeek
     const analyse = await deepSeekService.genererAnalyseComplete(birthData);
@@ -66,21 +58,8 @@ export async function POST(
       dateGeneration: new Date().toISOString(),
     };
 
-    // Sauvegarder l'analyse
-    storageService.saveAnalyse(analyseComplete);
-
-    // Mettre à jour le statut : terminé
-    const statutFinal: StatutConsultation = {
-      consultationId,
-      statut: 'completed',
-      progression: 100,
-      etapeCourante: 'Analyse complète',
-      dateDebut: statutEnCours.dateDebut,
-      dateFin: new Date().toISOString(),
-    };
-    storageService.saveStatut(statutFinal);
-
     console.log('[API] Analyse générée avec succès');
+    console.log('[API] ⚠️ Note: Sauvegarde localStorage à faire côté client');
 
     // Envoyer l'email de notification (non-bloquant)
     if (birthData.email) {
@@ -115,15 +94,8 @@ export async function POST(
 
     const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
     
-    // Sauvegarder le statut d'erreur
-    const statutErreur: StatutConsultation = {
-      consultationId,
-      statut: 'error',
-      progression: 0,
-      erreur: errorMessage,
-      dateFin: new Date().toISOString(),
-    };
-    storageService.saveStatut(statutErreur);
+    // Note: Le statut d'erreur sera géré côté client
+    console.error('[API] Erreur:', errorMessage);
     
     return NextResponse.json(
       {
