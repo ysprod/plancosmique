@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { User, LogOut, Menu, X } from "lucide-react";
+import NotificationBell from "@/components/NotificationBell";
 
 export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handleLogout }: {
   user: any;
@@ -72,6 +73,9 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
 
           {/* Actions Desktop */}
           <div className="hidden lg:flex items-center gap-3">
+            {/* Notifications */}
+            <NotificationBell />
+
             {/* User Info */}
             <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-violet-50 border border-violet-100">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">

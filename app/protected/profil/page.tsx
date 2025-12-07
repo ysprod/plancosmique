@@ -3,7 +3,7 @@ import Header from "@/components/profil/Header";
 import MobileMenu from "@/components/profil/MobileMenu";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { motion } from "framer-motion";
-import { ArrowRight, Briefcase, Calendar, Flame, Globe, Hash, Heart, Users } from "lucide-react";
+import { ArrowRight, Briefcase, Calendar, Flame, Globe, Hash, Heart, Users, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -114,6 +114,20 @@ export default function ProfilPage() {
             bienveillante de tes ancêtres.<br />
             <br /><br />
           </p>
+
+          {/* Bouton Le Marché des Offrandes */}
+          <Link href="/protected/marcheoffrandes">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mb-8 px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-2xl font-black text-lg shadow-2xl hover:shadow-amber-500/50 transition-all flex items-center justify-center gap-3 mx-auto"
+            >
+              <ShoppingCart className="w-6 h-6" />
+              LE MARCHÉ DES OFFRANDES
+              <ArrowRight className="w-6 h-6" />
+            </motion.button>
+          </Link>
+
           <p className="text-sm sm:text-base text-gray-600">
             Choisis un domaine pour ta consultation
           </p>

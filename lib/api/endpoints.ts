@@ -53,6 +53,17 @@ export const endpoints = {
     myPayments: '/payments/my-payments',
     stats: '/payments/stats',
   },
+
+  // Notifications
+  notifications: {
+    list: '/notifications',
+    unread: '/notifications/unread',
+    unreadCount: '/notifications/unread/count',
+    byId: (id: string) => `/notifications/${id}`,
+    markAsRead: (id: string) => `/notifications/${id}/read`,
+    markAllAsRead: '/notifications/read-all',
+    preferences: '/notifications/preferences',
+  },
 };
 
 export default endpoints;
