@@ -2,16 +2,15 @@
 import { api } from '@/lib/api/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import ConsultationForm from './ConsultationForm';
 import ConsultationSelection from './ConsultationSelection';
-import PaymentProcessing from './PaymentProcessing';
-import PaymentSuccess from './PaymentSuccess';
-import PriceConfirm from './PriceConfirm';
+import OfferingPage from './OfferingPage';
+import OfferingThankYou from './OfferingThankYou';
 import { CONSULTATION_TYPE_MAP } from './consultation.constants';
+import { CONSULTATION_OFFERINGS } from './offrandes.constants';
 
 import type { ConsultationChoice, FormData, FormErrors, StepType } from './consultation.types';
-import axios from 'axios';
 
 const SERVICE_ID = process.env.NEXT_PUBLIC_SERVICE_ID;
 
@@ -46,27 +45,7 @@ export default function Slide4Section() {
   const [step, setStep] = useState<StepType>('selection');
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [backActivated, setBackActivated] = useState(false);
-  const [paymentError, setPaymentError] = useState<string | null>(null);
   const [consultationId, setConsultationId] = useState<string | null>(null);
-
-  // Vérifier le statut du paiement au retour depuis MoneyFusion
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const paymentStatus = urlParams.get('status');
-    const transactionId = urlParams.get('transaction_id');
-
-    if (paymentStatus === 'success' && transactionId) {
-      // Paiement réussi
-      setStep('success');
-
-      // Nettoyer l'URL
-      window.history.replaceState({}, document.title, window.location.pathname);
-    } else if (paymentStatus === 'failed') {
-      // Paiement échoué
-      setPaymentError('Le paiement a échoué. Veuillez réessayer.');
-      setStep('confirm');
-    }
-  }, []);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -82,7 +61,6 @@ export default function Slide4Section() {
       }
 
       setApiError(null);
-      setPaymentError(null);
     },
     [errors]
   );
@@ -99,7 +77,6 @@ export default function Slide4Section() {
     async (e: React.FormEvent) => {
       e.preventDefault();
       setApiError(null);
-      setPaymentError(null);
 
       const validationErrors = validateForm(form);
       if (Object.keys(validationErrors).length > 0) {
@@ -179,9 +156,9 @@ console.log('✅ Consultation créée avec ID:', createdConsultationId);
           }
         }
 
-        // 3. Analyse prête, passer à la confirmation du prix
+        // 3. Analyse prête, passer à la page d'offrande
         setPaymentLoading(false);
-        setStep('confirm');
+        setStep('offering');
 
       } catch (err: any) {
         let errorMessage = 'Erreur lors de la génération';
@@ -200,64 +177,56 @@ console.log('✅ Consultation créée avec ID:', createdConsultationId);
     [form, selected]
   );
 
-  // 2. Confirmation du prix => paiement (l'analyse est déjà prête)
-  const handlePay = useCallback(async () => {
+  // 2. Confirmation de l'offrande => succès
+  const handleOfferingConfirm = useCallback(async () => {
     if (!selected || !consultationId) return;
 
     setPaymentLoading(true);
-    setPaymentError(null);
-    setStep('processing'); // Afficher "Redirection vers le paiement..."
+    setApiError(null);
 
     try {
-      // L'analyse a déjà été générée, procéder directement au paiement
-      const paymentData = {
-        totalPrice: 200,
-        article: [{ consultation: 200 }],
-        personal_Info: [{
-          consultationId: consultationId,
-          type: 'CONSULTATION',
-          formData: form,
-        }],
-        numeroSend: form.numeroSend || '0758385387',
-        nomclient: `${form.prenoms} ${form.nom}`,
-        return_url: `${window.location.origin}/callback?consultation_id=${consultationId}`,
-        webhook_url: `${window.location.origin}/api/webhooks/moneyfusion`,
-      };
+      // Récupérer le type de consultation
+      const consultationType = CONSULTATION_TYPE_MAP[selected.id] || 'AUTRE';
+      const offering = CONSULTATION_OFFERINGS[consultationType];
 
-      const apiUrl = "https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/pay/";
-      const response = await axios.post(apiUrl, paymentData, {
-        headers: { "Content-Type": "application/json" },
+      if (!offering) {
+        throw new Error('Type de consultation non trouvé');
+      }
+
+      // Enregistrer l'offrande via API
+      const offeringRes = await api.post(`/consultations/${consultationId}/confirm-offering`, {
+        consultationType: consultationType,
+        amount: offering.amount,
+        currency: 'FCFA',
+        timestamp: new Date().toISOString(),
       });
 
-      console.log('Résultat du paiement MoneyFusion:', response);
+      if (offeringRes.status !== 200 && offeringRes.status !== 201) {
+        throw new Error(offeringRes.data?.message || 'Erreur lors de la confirmation de l\'offrande');
+      }
 
-      if (response.data?.statut && response.data?.url) {
-        // Paiement initié avec succès - l'analyse est déjà prête
-        setTimeout(() => {
-          window.location.href = response.data.url;
-        }, 1500);
-      } else {
-        throw new Error(response.data?.message || 'Erreur lors de la création du paiement');
-      }
+      console.log('✅ Offrande confirmée');
+
+      // Passer à la page de succès
+      setPaymentLoading(false);
+      setStep('success');
     } catch (err: any) {
-      let apiErrorMsg = 'Erreur lors du traitement';
+      let errorMessage = 'Erreur lors du traitement';
       if (err.response?.data?.message) {
-        apiErrorMsg = `API: ${err.response.data.message}`;
+        errorMessage = `API: ${err.response.data.message}`;
       } else if (err.message) {
-        apiErrorMsg = `JS: ${err.message}`;
+        errorMessage = `JS: ${err.message}`;
       } else if (typeof err === 'string') {
-        apiErrorMsg = `Erreur: ${err}`;
+        errorMessage = `Erreur: ${err}`;
       } else if (err instanceof Error) {
-        apiErrorMsg = `Exception: ${err.toString()}`;
+        errorMessage = `Exception: ${err.toString()}`;
       }
-      setPaymentError(apiErrorMsg);
-      setStep('confirm'); // Retour à l'étape de confirmation
-      // Optionnel : log complet pour debug
-      console.error('Erreur paiement:', err);
+      setApiError(errorMessage);
+      console.error('Erreur offrande:', err);
     } finally {
       setPaymentLoading(false);
     }
-  }, [form, selected, consultationId]);
+  }, [selected, consultationId]);
 
   const resetSelection = useCallback(() => {
     setSelected(null);
@@ -273,15 +242,18 @@ console.log('✅ Consultation créée avec ID:', createdConsultationId);
     });
     setErrors({});
     setApiError(null);
-    setPaymentError(null);
     setStep('selection');
     setConsultationId(null);
   }, []);
 
   const handleBackToForm = useCallback(() => {
     setStep('form');
-    setPaymentError(null);
+    setApiError(null);
   }, []);
+
+  const handleCloseSuccess = useCallback(() => {
+    resetSelection();
+  }, [resetSelection]);
 
   return (
     <div className="min-h-screen p-4 sm:p-6 bg-gradient-to-br from-purple-50 via-fuchsia-50 to-pink-50">
@@ -319,24 +291,23 @@ console.log('✅ Consultation créée avec ID:', createdConsultationId);
             />
           )}
 
-          {/* Étape 2 : Confirmation du prix */}
-          {step === 'confirm' && (
-            <PriceConfirm
-              handlePay={handlePay}
-              paymentLoading={paymentLoading}
-              paymentError={paymentError || undefined}
+          {/* Étape 2 : Page d'offrande */}
+          {step === 'offering' && selected && (
+            <OfferingPage
+              consultationType={CONSULTATION_TYPE_MAP[selected.id] || 'AUTRE'}
+              onConfirm={handleOfferingConfirm}
+              loading={paymentLoading}
               onBack={handleBackToForm}
             />
           )}
 
-          {/* Étape 3 : Traitement du paiement (redirection) */}
-          {step === 'processing' && <PaymentProcessing />}
-
-          {/* Étape 4 : Succès (UNIQUEMENT APRÈS PAIEMENT RÉUSSI) */}
-          {step === 'success' && (
-            <PaymentSuccess
-              consultationId={consultationId!}
-              resetSelection={resetSelection}
+          {/* Étape 3 : Succès (APRÈS OFFRANDE CONFIRMÉE) */}
+          {step === 'success' && consultationId && selected && (
+            <OfferingThankYou
+              consultationId={consultationId}
+              consultationType={CONSULTATION_TYPE_MAP[selected.id] || 'AUTRE'}
+              waitingTime={CONSULTATION_OFFERINGS[CONSULTATION_TYPE_MAP[selected.id] || 'AUTRE']?.waitingTime || 24}
+              onClose={handleCloseSuccess}
             />
           )}
         </AnimatePresence>

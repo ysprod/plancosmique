@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -25,19 +25,6 @@ export default function AdminLayout({
   const router = useRouter();
   const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (isMounted && (!user || user.role !== 'SUPER_ADMIN')) {
-      router.push('/auth/login');
-    }
-  }, [user, isMounted, router]);
-
-  if (!isMounted) return null;
 
   const menuItems = [
     {

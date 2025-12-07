@@ -22,4 +22,4 @@ export interface FormErrors {
   [key: string]: string;
 }
 
-export type StepType = 'selection' | 'form' | 'confirm' | 'processing' | 'success';
+export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success';

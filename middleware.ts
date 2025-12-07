@@ -10,7 +10,7 @@ export function middleware(request: NextRequest) {
   const isPublicRoute = publicRoutes.some(route => pathname === route);
 
   // Liste des routes protégées (toutes les routes commençant par /protected)
-  const protectedRoutePrefixes = ['/protected','/dashboard'];
+  const protectedRoutePrefixes = ['/admin','/protected','/dashboard'];
   const isProtectedRoute = protectedRoutePrefixes.some(prefix => pathname.startsWith(prefix));
 
   // Si la route est protégée et pas de token, rediriger vers login avec returnTo
