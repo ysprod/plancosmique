@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Star, 
   Calendar, 
@@ -13,107 +13,380 @@ import {
   Eye,
   Download,
   ArrowLeft,
-  Sparkles
+  Sparkles,
+  MapPin,
+  User,
+  Mail,
+  Phone,
+  FileText,
+  TrendingUp,
+  Filter,
+  Search,
+  ChevronDown
 } from 'lucide-react';
+import { api } from '@/lib/api/client';
+
+// ==================== TYPES ====================
+
+type ConsultationType = 'SPIRITUALITE' | 'VIE_PERSONNELLE' | 'RELATIONS' | 'PROFESSIONNEL' | 'OFFRANDES';
+type ConsultationStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+
+interface ConsultationFormData {
+  nom: string;
+  prenoms: string;
+  genre: string;
+  dateNaissance: string;
+  paysNaissance: string;
+  villeNaissance: string;
+  heureNaissance: string;
+  numeroSend?: string;
+  email?: string;
+}
+
+interface CarteDuCiel {
+  sujet: {
+    nom: string;
+    prenoms: string;
+    dateNaissance: string;
+    lieuNaissance: string;
+    heureNaissance: string;
+  };
+  positions: Array<{
+    planete: string;
+    signe: string;
+    maison: number;
+    retrograde: boolean;
+  }>;
+  aspectsTexte: string;
+}
+
+interface MissionDeVie {
+  titre: string;
+  contenu: string;
+}
+
+interface ResultData {
+  consultationId: string;
+  sessionId: string;
+  timestamp: string;
+  carteDuCiel: CarteDuCiel;
+  missionDeVie: MissionDeVie;
+  metadata: {
+    processingTime: number;
+    tokensUsed: number;
+    model: string;
+  };
+  dateGeneration: string;
+}
 
 interface Consultation {
-  id: string;
-  consultationId: string;
-  titre: string;
-  dateGeneration: string;
-  statut: 'pending' | 'generating_chart' | 'generating_analysis' | 'completed' | 'error';
-  prenoms: string;
-  nom: string;
-  dateNaissance: string;
+  _id: string;
+  clientId: {
+    _id: string;
+    email: string;
+  };
+  consultantId: string | null;
+  type: ConsultationType;
+  status: ConsultationStatus;
+  title: string;
+  description: string;
+  formData: ConsultationFormData;
+  result: any;
+  resultData: ResultData | null;
+  scheduledDate: string | null;
+  completedDate: string | null;
+  price: number;
+  isPaid: boolean;
+  paymentId: string | null;
+  rating: number | null;
+  review: string | null;
+  attachments: string[];
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
+
+// ==================== HELPERS ====================
+
+const TYPE_LABELS: Record<ConsultationType, { label: string; color: string; icon: typeof Star }> = {
+  SPIRITUALITE: { label: 'Spiritualité', color: 'from-purple-500 to-pink-500', icon: Sparkles },
+  VIE_PERSONNELLE: { label: 'Vie Personnelle', color: 'from-blue-500 to-cyan-500', icon: User },
+  RELATIONS: { label: 'Relations', color: 'from-rose-500 to-red-500', icon: Star },
+  PROFESSIONNEL: { label: 'Professionnel', color: 'from-green-500 to-emerald-500', icon: TrendingUp },
+  OFFRANDES: { label: 'Offrandes', color: 'from-amber-500 to-orange-500', icon: Star }
+};
+
+const STATUS_CONFIG: Record<ConsultationStatus, { label: string; color: string; icon: typeof CheckCircle }> = {
+  COMPLETED: { label: 'Complète', color: 'bg-green-100 text-green-800', icon: CheckCircle },
+  PROCESSING: { label: 'En cours', color: 'bg-blue-100 text-blue-800', icon: Loader2 },
+  PENDING: { label: 'En attente', color: 'bg-gray-100 text-gray-800', icon: Clock },
+  FAILED: { label: 'Erreur', color: 'bg-red-100 text-red-800', icon: AlertCircle }
+};
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+};
+
+const formatTime = (dateString: string) => {
+  return new Date(dateString).toLocaleTimeString('fr-FR', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+
+// ==================== COMPOSANTS ====================
+
+interface StatusBadgeProps {
+  status: ConsultationStatus;
+}
+
+const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
+  const config = STATUS_CONFIG[status];
+  const Icon = config.icon;
+  
+  return (
+    <span className={`inline-flex items-center gap-1.5 px-3 py-1 ${config.color} rounded-full text-xs font-semibold`}>
+      <Icon className={`w-3.5 h-3.5 ${status === 'PROCESSING' ? 'animate-spin' : ''}`} />
+      {config.label}
+    </span>
+  );
+};
+
+interface TypeBadgeProps {
+  type: ConsultationType;
+}
+
+const TypeBadge: React.FC<TypeBadgeProps> = ({ type }) => {
+  const config = TYPE_LABELS[type];
+  const Icon = config.icon;
+  
+  return (
+    <div className={`inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r ${config.color} text-white rounded-lg text-xs font-bold`}>
+      <Icon className="w-4 h-4" />
+      {config.label}
+    </div>
+  );
+};
+
+interface ConsultationCardProps {
+  consultation: Consultation;
+  index: number;
+  onView: (id: string) => void;
+  onDownload: (id: string) => void;
+}
+
+const ConsultationCard: React.FC<ConsultationCardProps> = ({ consultation, index, onView, onDownload }) => {
+  const typeConfig = TYPE_LABELS[consultation.type];
+  const Icon = typeConfig.icon;
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+      whileHover={{ y: -4 }}
+      className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all"
+    >
+      {/* Header */}
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-start gap-3 flex-1">
+          <div className={`w-12 h-12 bg-gradient-to-br ${typeConfig.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
+            <Icon className="w-6 h-6 text-white" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-xl font-bold text-white mb-1 line-clamp-1">
+              {consultation.title}
+            </h3>
+            <p className="text-purple-200 text-sm line-clamp-2">
+              {consultation.description}
+            </p>
+          </div>
+        </div>
+        <StatusBadge status={consultation.status} />
+      </div>
+
+      {/* Type Badge */}
+      <div className="mb-4">
+        <TypeBadge type={consultation.type} />
+      </div>
+
+      {/* Info Client */}
+      <div className="space-y-2 mb-4 p-4 bg-black/20 rounded-xl">
+        <div className="flex items-center gap-2 text-sm text-purple-200">
+          <User className="w-4 h-4 flex-shrink-0" />
+          <span className="font-medium">
+            {consultation.formData.prenoms} {consultation.formData.nom}
+          </span>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-purple-300">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-3.5 h-3.5 flex-shrink-0" />
+            Né(e) le {formatDate(consultation.formData.dateNaissance)}
+          </div>
+          <div className="flex items-center gap-2">
+            <Clock className="w-3.5 h-3.5 flex-shrink-0" />
+            à {consultation.formData.heureNaissance}
+          </div>
+          <div className="flex items-center gap-2 col-span-1 sm:col-span-2">
+            <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+            {consultation.formData.villeNaissance}, {consultation.formData.paysNaissance}
+          </div>
+        </div>
+      </div>
+
+      {/* Metadata */}
+      <div className="flex flex-wrap gap-3 text-xs text-purple-300 mb-4">
+        <div className="flex items-center gap-1.5">
+          <Calendar className="w-3.5 h-3.5" />
+          Créé le {formatDate(consultation.createdAt)}
+        </div>
+        {consultation.completedDate && (
+          <div className="flex items-center gap-1.5">
+            <CheckCircle className="w-3.5 h-3.5" />
+            Complété le {formatDate(consultation.completedDate)}
+          </div>
+        )}
+      </div>
+
+      {/* Actions */}
+      {consultation.status === 'COMPLETED' && (
+        <div className="flex gap-2">
+          <button
+            onClick={() => onView(consultation._id)}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-white/20 hover:bg-white/30 text-white rounded-xl transition-all font-semibold"
+          >
+            <Eye className="w-4 h-4" />
+            Voir l'analyse
+          </button>
+          <button
+            onClick={() => onDownload(consultation._id)}
+            className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-lg text-white rounded-xl transition-all font-semibold"
+          >
+            <Download className="w-4 h-4" />
+            <span className="hidden sm:inline">PDF</span>
+          </button>
+        </div>
+      )}
+
+      {consultation.status === 'PROCESSING' && (
+        <div className="text-center py-3 bg-blue-500/20 rounded-xl border border-blue-500/30">
+          <p className="text-blue-200 text-sm font-medium">
+            Génération en cours... Revenez dans quelques instants
+          </p>
+        </div>
+      )}
+
+      {consultation.status === 'FAILED' && (
+        <div className="text-center py-3 bg-red-500/20 rounded-xl border border-red-500/30">
+          <p className="text-red-200 text-sm font-medium">
+            Une erreur est survenue. Contactez le support.
+          </p>
+        </div>
+      )}
+    </motion.div>
+  );
+};
+
+// ==================== PAGE PRINCIPALE ====================
 
 export default function ConsultationsListPage() {
   const router = useRouter();
   const [consultations, setConsultations] = useState<Consultation[]>([]);
+  const [filteredConsultations, setFilteredConsultations] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Filtres
+  const [searchQuery, setSearchQuery] = useState('');
+  const [typeFilter, setTypeFilter] = useState<ConsultationType | 'ALL'>('ALL');
+  const [statusFilter, setStatusFilter] = useState<ConsultationStatus | 'ALL'>('ALL');
 
   useEffect(() => {
     loadConsultations();
   }, []);
 
+  useEffect(() => {
+    filterConsultations();
+  }, [consultations, searchQuery, typeFilter, statusFilter]);
+
   const loadConsultations = async () => {
     try {
-      // Charger les consultations depuis l'API backend
-      const response = await fetch('/api/consultations');
+      const token = localStorage.getItem('monetoile_access_token');
       
-      if (!response.ok) {
+      if (!token) {
+        setError('Vous devez être connecté pour voir vos consultations');
+        setLoading(false);
+        return;
+      }
+
+      const response = await api.get('/consultations/my');
+      
+      if (response.status !== 200) {
         throw new Error('Erreur lors du chargement des consultations');
       }
 
-      const data = await response.json();
-      console.log('📊 Consultations reçues de l\'API:', data);
+      const data = response.data;
+      console.log('📊 Consultations reçues:', data);
 
-      interface ApiConsultationItem {
-        consultationId?: string;
-        id?: string;
-        titre?: string;
-        dateGeneration: string;
-        statut?: string;
-        prenoms?: string;
-        nom?: string;
-        dateNaissance?: string;
-      }
-
-      const consultationsList: Consultation[] = (data.consultations || []).map((item: ApiConsultationItem) => ({
-        id: item.consultationId || item.id || '',
-        consultationId: item.consultationId || item.id || '',
-        titre: item.titre || 'Analyse Astrologique',
-        dateGeneration: item.dateGeneration,
-        statut: (item.statut as Consultation['statut']) || 'completed',
-        prenoms: item.prenoms || 'Non renseigné',
-        nom: item.nom || '',
-        dateNaissance: item.dateNaissance || '',
-      }));
-
-      console.log('📋 Consultations chargées:', consultationsList.length);
-
-      setConsultations(consultationsList);
+      setConsultations(data.consultations || []);
       setLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       console.error('❌ Erreur chargement consultations:', err);
-      setError('Erreur lors du chargement des consultations');
+      
+      if (err.response?.status === 403 || err.response?.status === 401) {
+        setError('Session expirée. Veuillez vous reconnecter.');
+      } else {
+        setError('Erreur lors du chargement des consultations');
+      }
+      
       setLoading(false);
     }
   };
 
-  const getStatutBadge = (statut: Consultation['statut']) => {
-    switch (statut) {
-      case 'completed':
-        return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">
-            <CheckCircle className="w-3 h-3" />
-            Complète
-          </span>
-        );
-      case 'generating_analysis':
-      case 'generating_chart':
-        return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">
-            <Loader2 className="w-3 h-3 animate-spin" />
-            En cours
-          </span>
-        );
-      case 'error':
-        return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-semibold">
-            <AlertCircle className="w-3 h-3" />
-            Erreur
-          </span>
-        );
-      default:
-        return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-semibold">
-            <Clock className="w-3 h-3" />
-            En attente
-          </span>
-        );
+  const filterConsultations = () => {
+    // Vérifier que consultations est bien un tableau
+    if (!Array.isArray(consultations)) {
+      console.warn('⚠️ consultations n\'est pas un tableau:', consultations);
+      setFilteredConsultations([]);
+      return;
     }
+
+    let filtered = [...consultations];
+
+    // Filtre par recherche
+    if (searchQuery) {
+      filtered = filtered.filter(c => 
+        c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        c.formData.prenoms.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        c.formData.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        c.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Filtre par type
+    if (typeFilter !== 'ALL') {
+      filtered = filtered.filter(c => c.type === typeFilter);
+    }
+
+    // Filtre par statut
+    if (statusFilter !== 'ALL') {
+      filtered = filtered.filter(c => c.status === statusFilter);
+    }
+
+    setFilteredConsultations(filtered);
+  };
+
+  const handleView = (id: string) => {
+    router.push(`/protected/consultations/${id}`);
+  };
+
+  const handleDownload = (id: string) => {
+    window.open(`/api/consultations/${id}/download-pdf`, '_blank');
   };
 
   if (loading) {
@@ -129,48 +402,116 @@ export default function ConsultationsListPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 py-8 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <button
             onClick={() => router.push('/protected/profil')}
-            className="flex items-center gap-2 text-white/80 hover:text-white transition-colors mb-6"
+            className="flex items-center gap-2 text-white/80 hover:text-white transition-colors mb-6 group"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             Retour au profil
           </button>
 
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-white/10 backdrop-blur-lg rounded-2xl flex items-center justify-center">
-              <Star className="w-8 h-8 text-yellow-300" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-2xl">
+                <FileText className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-black text-white mb-1">
+                  Mes Consultations
+                </h1>
+                <p className="text-purple-200">
+                  {consultations.length} {consultations.length > 1 ? 'analyses' : 'analyse'} · {filteredConsultations.length} affichée{filteredConsultations.length > 1 ? 's' : ''}
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-                Mes Consultations
-              </h1>
-              <p className="text-purple-200">
-                {consultations.length} {consultations.length > 1 ? 'analyses disponibles' : 'analyse disponible'}
-              </p>
-            </div>
+
+            <button
+              onClick={() => router.push('/protected/vie-personnelle')}
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl hover:shadow-2xl hover:scale-105 transition-all"
+            >
+              <Sparkles className="w-5 h-5" />
+              Nouvelle analyse
+            </button>
           </div>
         </div>
 
-        {/* Error */}
-        {error && (
+        {/* Filtres */}
+        {consultations.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-red-500/20 backdrop-blur-lg border border-red-500/30 rounded-2xl p-6 mb-6"
+            className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 mb-6"
           >
-            <div className="flex items-center gap-3">
-              <AlertCircle className="w-6 h-6 text-red-300" />
-              <p className="text-red-100">{error}</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Recherche */}
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
+                <input
+                  type="text"
+                  placeholder="Rechercher..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-purple-300 focus:outline-none focus:border-purple-400 transition-colors"
+                />
+              </div>
+
+              {/* Filtre Type */}
+              <div className="relative">
+                <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
+                <select
+                  value={typeFilter}
+                  onChange={(e) => setTypeFilter(e.target.value as ConsultationType | 'ALL')}
+                  className="w-full pl-12 pr-10 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-purple-400 transition-colors appearance-none cursor-pointer"
+                >
+                  <option value="ALL">Tous les types</option>
+                  {Object.entries(TYPE_LABELS).map(([key, config]) => (
+                    <option key={key} value={key}>{config.label}</option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300 pointer-events-none" />
+              </div>
+
+              {/* Filtre Statut */}
+              <div className="relative">
+                <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value as ConsultationStatus | 'ALL')}
+                  className="w-full pl-12 pr-10 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-purple-400 transition-colors appearance-none cursor-pointer"
+                >
+                  <option value="ALL">Tous les statuts</option>
+                  {Object.entries(STATUS_CONFIG).map(([key, config]) => (
+                    <option key={key} value={key}>{config.label}</option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300 pointer-events-none" />
+              </div>
             </div>
           </motion.div>
         )}
 
-        {/* Liste des consultations */}
-        {consultations.length === 0 ? (
+        {/* Error */}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="bg-red-500/20 backdrop-blur-lg border border-red-500/30 rounded-2xl p-6 mb-6"
+            >
+              <div className="flex items-center gap-3">
+                <AlertCircle className="w-6 h-6 text-red-300 flex-shrink-0" />
+                <p className="text-red-100">{error}</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Liste */}
+        {filteredConsultations.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -178,103 +519,52 @@ export default function ConsultationsListPage() {
           >
             <Sparkles className="w-16 h-16 text-purple-300 mx-auto mb-4" />
             <h3 className="text-2xl font-bold text-white mb-2">
-              Aucune consultation pour le moment
+              {consultations.length === 0 
+                ? 'Aucune consultation pour le moment' 
+                : 'Aucun résultat trouvé'}
             </h3>
             <p className="text-purple-200 mb-6">
-              Commandez votre première analyse astrologique pour découvrir votre destinée
+              {consultations.length === 0
+                ? 'Commandez votre première analyse astrologique pour découvrir votre destinée'
+                : 'Essayez de modifier vos filtres de recherche'}
             </p>
             <button
-              onClick={() => router.push('/protected/vie-personnelle')}
+              onClick={() => {
+                if (consultations.length === 0) {
+                  router.push('/protected/vie-personnelle');
+                } else {
+                  setSearchQuery('');
+                  setTypeFilter('ALL');
+                  setStatusFilter('ALL');
+                }
+              }}
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all"
             >
-              <Star className="w-5 h-5" />
-              Commander une analyse
+              {consultations.length === 0 ? (
+                <>
+                  <Star className="w-5 h-5" />
+                  Commander une analyse
+                </>
+              ) : (
+                <>
+                  <Filter className="w-5 h-5" />
+                  Réinitialiser les filtres
+                </>
+              )}
             </button>
           </motion.div>
         ) : (
-          <div className="grid gap-4">
-            {consultations.map((consultation, index) => (
-              <motion.div
-                key={consultation.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all"
-              >
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  {/* Info */}
-                  <div className="flex-1">
-                    <div className="flex items-start gap-3 mb-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Star className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-xl font-bold text-white mb-1">
-                          {consultation.titre}
-                        </h3>
-                        <p className="text-purple-200 text-sm">
-                          {consultation.prenoms} {consultation.nom}
-                        </p>
-                      </div>
-                      {getStatutBadge(consultation.statut)}
-                    </div>
-
-                    <div className="flex flex-wrap gap-4 text-sm text-purple-200">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
-                        Né(e) le {new Date(consultation.dateNaissance).toLocaleDateString('fr-FR')}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4" />
-                        Généré le {new Date(consultation.dateGeneration).toLocaleDateString('fr-FR')}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  {consultation.statut === 'completed' && (
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => router.push(`/protected/consultations/${consultation.consultationId}`)}
-                        className="flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-xl transition-all"
-                      >
-                        <Eye className="w-4 h-4" />
-                        <span className="hidden sm:inline">Voir</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          const url = `/api/consultations/${consultation.consultationId}/download-pdf`;
-                          window.open(url, '_blank');
-                        }}
-                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-lg text-white rounded-xl transition-all"
-                      >
-                        <Download className="w-4 h-4" />
-                        <span className="hidden sm:inline">PDF</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
+          <div className="grid gap-6">
+            {filteredConsultations.map((consultation, index) => (
+              <ConsultationCard
+                key={consultation._id}
+                consultation={consultation}
+                index={index}
+                onView={handleView}
+                onDownload={handleDownload}
+              />
             ))}
           </div>
-        )}
-
-        {/* CTA */}
-        {consultations.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mt-8 text-center"
-          >
-            <button
-              onClick={() => router.push('/protected/vie-personnelle')}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-all"
-            >
-              <Sparkles className="w-5 h-5" />
-              Commander une nouvelle analyse
-            </button>
-          </motion.div>
         )}
       </div>
     </div>

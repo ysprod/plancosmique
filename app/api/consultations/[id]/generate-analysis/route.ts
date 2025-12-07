@@ -5,7 +5,7 @@ import type { BirthData, AnalyseAstrologique } from '@/types/astrology.types';
 
 /**
  * API Route pour générer l'analyse astrologique complète
- * POST /api/consultations/[id]/generate-analysis
+ * POST /consultations/[id]/generate-analysis
  */
 export async function POST(
   request: Request,
@@ -108,8 +108,8 @@ export async function POST(
 }
 
 /**
- * GET /api/consultations/[id]/generate-analysis
- * Endpoint déprécié - utiliser GET /api/consultations/{id} à la place
+ * GET /consultations/[id]/generate-analysis
+ * Endpoint déprécié - utiliser GET /consultations/{id} à la place
  */
 export async function GET(
   request: NextRequest,

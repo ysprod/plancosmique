@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { 
   Loader2, 
   CheckCircle2, 
@@ -15,11 +16,235 @@ import {
   Briefcase,
   Brain,
   ArrowLeft,
-  Download
+  Download,
+  Calendar,
+  MapPin,
+  Clock,
+  User,
+  TrendingUp,
+  Zap,
+  Shield,
+  Eye
 } from 'lucide-react';
-import type { AnalyseAstrologique } from '@/types/astrology.types';
+import { api } from '@/lib/api/client';
 
-type TabType = 'mission' | 'talents' | 'defis' | 'relations' | 'carriere' | 'spiritualite';
+// ==================== TYPES ====================
+
+interface SubjectInfo {
+  nom: string;
+  prenoms: string;
+  dateNaissance: string;
+  lieuNaissance: string;
+  heureNaissance: string;
+}
+
+interface Position {
+  planete: string;
+  signe: string;
+  maison: number;
+  retrograde: boolean;
+}
+
+interface CarteDuCiel {
+  sujet: SubjectInfo;
+  positions: Position[];
+  aspectsTexte: string;
+}
+
+interface Section {
+  titre: string;
+  contenu: string;
+}
+
+interface AnalyseAstrologique {
+  _id: string;
+  userId: string;
+  consultationId: string;
+  carteDuCiel: CarteDuCiel;
+  missionDeVie: Section;
+  dateGeneration: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ==================== HELPERS ====================
+
+const PLANET_ICONS: Record<string, string> = {
+  'Soleil': '☉',
+  'Lune': '☽',
+  'Mercure': '☿',
+  'Vénus': '♀',
+  'Mars': '♂',
+  'Jupiter': '♃',
+  'Saturne': '♄',
+  'Uranus': '♅',
+  'Neptune': '♆',
+  'Pluton': '♇',
+  'Ascendant': 'AS',
+  'Milieu du Ciel': 'MC',
+  'Chiron': '⚷',
+  'Nœud Nord': '☊',
+  'Nœud Sud': '☋'
+};
+
+const getPlanetIcon = (planete: string): string => {
+  const baseNom = planete.replace(' RÉTROGRADE', '').trim();
+  return PLANET_ICONS[baseNom] || '✦';
+};
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+};
+
+// ==================== COMPOSANTS ====================
+
+interface PlanetCardProps {
+  position: Position;
+  index: number;
+}
+
+const PlanetCard: React.FC<PlanetCardProps> = ({ position, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.05 }}
+    className={`bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all ${
+      position.retrograde ? 'border-red-500/30' : ''
+    }`}
+  >
+    <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center gap-3">
+        <span className="text-3xl">{getPlanetIcon(position.planete)}</span>
+        <div>
+          <h3 className="font-bold text-white text-sm">
+            {position.planete}
+            {position.retrograde && <span className="text-red-400 text-xs ml-1">⟲</span>}
+          </h3>
+          <p className="text-purple-300 text-xs">Maison {position.maison}</p>
+        </div>
+      </div>
+      <div className="text-right">
+        <p className="text-amber-300 font-bold text-sm">{position.signe}</p>
+      </div>
+    </div>
+  </motion.div>
+);
+
+interface SubjectHeaderProps {
+  sujet: SubjectInfo;
+}
+
+const SubjectHeader: React.FC<SubjectHeaderProps> = ({ sujet }) => (
+  <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-lg rounded-3xl p-6 sm:p-8 border border-white/20 mb-8">
+    <div className="flex items-center gap-4 mb-6">
+      <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+        <User className="w-8 h-8 text-white" />
+      </div>
+      <div>
+        <h2 className="text-2xl sm:text-3xl font-black text-white">
+          {sujet.prenoms} {sujet.nom}
+        </h2>
+        <p className="text-purple-200">Thème Natal Complet</p>
+      </div>
+    </div>
+
+    <div className="grid sm:grid-cols-3 gap-4">
+      <div className="flex items-center gap-3 bg-white/5 rounded-xl p-4">
+        <Calendar className="w-5 h-5 text-amber-300 flex-shrink-0" />
+        <div>
+          <p className="text-xs text-purple-300">Date de naissance</p>
+          <p className="text-white font-semibold">{formatDate(sujet.dateNaissance)}</p>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3 bg-white/5 rounded-xl p-4">
+        <Clock className="w-5 h-5 text-blue-300 flex-shrink-0" />
+        <div>
+          <p className="text-xs text-purple-300">Heure de naissance</p>
+          <p className="text-white font-semibold">{sujet.heureNaissance}</p>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3 bg-white/5 rounded-xl p-4">
+        <MapPin className="w-5 h-5 text-green-300 flex-shrink-0" />
+        <div>
+          <p className="text-xs text-purple-300">Lieu</p>
+          <p className="text-white font-semibold line-clamp-1">{sujet.lieuNaissance}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+interface MarkdownContentProps {
+  content: string;
+}
+
+const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => (
+  <div className="markdown-content prose prose-invert max-w-none">
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        h1: ({ ...props }) => (
+          <h1 className="text-3xl sm:text-4xl font-black text-white mb-6 flex items-center gap-3" {...props}>
+            <Sparkles className="w-8 h-8 text-yellow-300" />
+            {props.children}
+          </h1>
+        ),
+        h2: ({ ...props }) => (
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mt-8 mb-4 flex items-center gap-2" {...props}>
+            <Star className="w-6 h-6 text-purple-300" />
+            {props.children}
+          </h2>
+        ),
+        h3: ({ ...props }) => (
+          <h3 className="text-xl sm:text-2xl font-bold text-purple-200 mt-6 mb-3" {...props} />
+        ),
+        p: ({ ...props }) => (
+          <p className="text-white/90 leading-relaxed mb-4" {...props} />
+        ),
+        ul: ({ ...props }) => (
+          <ul className="space-y-3 mb-4" {...props} />
+        ),
+        ol: ({ ...props }) => (
+          <ol className="space-y-3 mb-4 list-decimal list-inside" {...props} />
+        ),
+        li: ({ ...props }) => (
+          <li className="text-white/90 flex items-start gap-3" {...props}>
+            <CheckCircle2 className="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" />
+            <span className="flex-1">{props.children}</span>
+          </li>
+        ),
+        strong: ({ ...props }) => (
+          <strong className="text-amber-300 font-bold" {...props} />
+        ),
+        em: ({ ...props }) => (
+          <em className="text-purple-300" {...props} />
+        ),
+        blockquote: ({ ...props }) => (
+          <blockquote className="border-l-4 border-purple-500 pl-4 py-2 my-4 bg-purple-500/10 rounded-r-lg" {...props} />
+        ),
+        hr: ({ ...props }) => (
+          <hr className="my-8 border-white/20" {...props} />
+        ),
+        code: ({ node, inline, ...props }: any) => 
+          inline ? (
+            <code className="bg-white/10 px-2 py-1 rounded text-purple-300 text-sm" {...props} />
+          ) : (
+            <code className="block bg-white/10 p-4 rounded-lg text-purple-300 text-sm overflow-x-auto" {...props} />
+          )
+      }}
+    >
+      {content}
+    </ReactMarkdown>
+  </div>
+);
+
+// ==================== PAGE PRINCIPALE ====================
 
 export default function ConsultationResultPage() {
   const params = useParams();
@@ -29,24 +254,26 @@ export default function ConsultationResultPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [analyse, setAnalyse] = useState<AnalyseAstrologique | null>(null);
-  const [activeTab, setActiveTab] = useState<TabType>('mission');
+  const [showCarteDuCiel, setShowCarteDuCiel] = useState(false);
 
   useEffect(() => {
     if (!consultationId) return;
 
-    // Charger l'analyse depuis l'API backend
     const loadAnalysis = async () => {
       try {
-        const response = await fetch(`/api/consultations/${consultationId}`);
+        console.log('[Client] Récupération de l\'analyse:', consultationId);
+        const response = await api.get(`/consultations/analysis/${consultationId}`);
         
-        if (!response.ok) {
+        console.log('Réponse API:', response.data);
+
+        if (response.status !== 200) {
           throw new Error('Analyse non trouvée');
         }
 
-        const data = await response.json();
+        const data = response.data;
 
-        if (data.success && data.consultation) {
-          setAnalyse(data.consultation.analyse || data.consultation);
+        if (data.analyse) {
+          setAnalyse(data.analyse);
           setLoading(false);
         } else {
           setError('Analyse non disponible');
@@ -62,14 +289,30 @@ export default function ConsultationResultPage() {
     loadAnalysis();
   }, [consultationId]);
 
-  const tabs = [
-    { id: 'mission' as TabType, label: 'Mission de Vie', icon: Target, color: 'purple' },
-    { id: 'talents' as TabType, label: 'Talents Naturels', icon: Sparkles, color: 'amber' },
-    { id: 'defis' as TabType, label: 'Défis', icon: Brain, color: 'red' },
-    { id: 'relations' as TabType, label: 'Relations', icon: Heart, color: 'pink' },
-    { id: 'carriere' as TabType, label: 'Carrière', icon: Briefcase, color: 'blue' },
-    { id: 'spiritualite' as TabType, label: 'Spiritualité', icon: Star, color: 'indigo' },
-  ];
+  // Grouper les planètes par catégorie
+  const groupedPositions = useMemo(() => {
+    if (!analyse) return { principales: [], personnelles: [], sociales: [], transpersonnelles: [], points: [] };
+
+    const positions = analyse.carteDuCiel.positions;
+
+    return {
+      principales: positions.filter(p => 
+        ['Soleil', 'Ascendant', 'Lune', 'Milieu du Ciel'].includes(p.planete)
+      ),
+      personnelles: positions.filter(p => 
+        ['Mercure', 'Vénus', 'Mars'].includes(p.planete)
+      ),
+      sociales: positions.filter(p => 
+        ['Jupiter', 'Jupiter RÉTROGRADE', 'Saturne', 'Saturne RÉTROGRADE'].some(n => p.planete.includes(n.split(' ')[0]))
+      ),
+      transpersonnelles: positions.filter(p => 
+        ['Uranus', 'Neptune', 'Pluton'].some(n => p.planete.includes(n))
+      ),
+      points: positions.filter(p => 
+        ['Chiron', 'Nœud Nord', 'Nœud Sud', 'Vertex', 'Lilith', 'Pallas', 'Vesta', 'Cérès', 'Part de Fortune', 'Junon'].some(n => p.planete.includes(n))
+      )
+    };
+  }, [analyse]);
 
   if (loading) {
     return (
@@ -87,21 +330,21 @@ export default function ConsultationResultPage() {
             <Loader2 className="w-full h-full text-white" />
           </motion.div>
           <h2 className="text-2xl font-bold text-white mb-3">
-            Génération de votre analyse astrologique
+            Chargement de votre analyse
           </h2>
           <p className="text-purple-200 mb-4">
-            Notre IA analyse votre carte du ciel pour révéler votre mission de vie, vos talents et bien plus...
+            Préparation de votre thème natal complet...
           </p>
           <div className="flex items-center justify-center gap-2 text-sm text-purple-300">
             <Sparkles className="w-4 h-4 animate-pulse" />
-            <span>Cela peut prendre quelques instants</span>
+            <span>Veuillez patienter</span>
           </div>
         </motion.div>
       </div>
     );
   }
 
-  if (error) {
+  if (error || !analyse) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-900 via-orange-900 to-pink-900 flex items-center justify-center p-4">
         <motion.div
@@ -111,44 +354,38 @@ export default function ConsultationResultPage() {
         >
           <AlertCircle className="w-16 h-16 text-red-300 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-white mb-3">Erreur</h2>
-          <p className="text-red-200 mb-6">{error}</p>
+          <p className="text-red-200 mb-6">{error || 'Analyse non disponible'}</p>
           <button
-            onClick={() => router.push('/protected/profil')}
+            onClick={() => router.push('/protected/consultations')}
             className="px-6 py-3 bg-white/20 hover:bg-white/30 rounded-xl font-semibold text-white transition-all"
           >
-            Retour au profil
+            Retour aux consultations
           </button>
         </motion.div>
       </div>
     );
   }
 
-  if (!analyse) {
-    return null;
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
-      {/* Header */}
-      <div className="bg-white/10 backdrop-blur-lg border-b border-white/10 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
+      {/* Header Fixed */}
+      <div className="bg-white/10 backdrop-blur-lg border-b border-white/10 sticky top-0 z-50 shadow-2xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <div className="flex items-center justify-between gap-4">
             <button
-              onClick={() => router.push('/protected/profil')}
-              className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
+              onClick={() => router.push('/protected/consultations')}
+              className="flex items-center gap-2 text-white/80 hover:text-white transition-colors group"
             >
-              <ArrowLeft className="w-5 h-5" />
-              <span className="hidden sm:inline">Retour</span>
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+              <span className="hidden sm:inline font-semibold">Retour</span>
             </button>
             
-            <div className="text-center flex-1">
-              <h1 className="text-xl sm:text-2xl font-bold text-white flex items-center justify-center gap-2">
-                <Star className="w-6 h-6 text-yellow-300" />
-                Votre Analyse Astrologique
+            <div className="flex-1 text-center">
+              <h1 className="text-lg sm:text-xl font-black text-white flex items-center justify-center gap-2">
+                <Star className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-300" />
+                <span className="hidden sm:inline">Analyse Astrologique Complète</span>
+                <span className="sm:hidden">Analyse</span>
               </h1>
-              <p className="text-sm text-purple-200 mt-1">
-                {analyse.carteDuCiel.sujet.prenoms} {analyse.carteDuCiel.sujet.nom}
-              </p>
             </div>
 
             <button
@@ -156,300 +393,162 @@ export default function ConsultationResultPage() {
                 const url = `/api/consultations/${consultationId}/download-pdf`;
                 window.open(url, '_blank');
               }}
-              className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-white transition-all"
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-lg rounded-xl text-white font-semibold transition-all"
             >
               <Download className="w-5 h-5" />
-              <span className="hidden sm:inline">Télécharger PDF</span>
+              <span className="hidden sm:inline">PDF</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Tabs Navigation */}
-      <div className="bg-white/5 backdrop-blur-sm border-b border-white/10 sticky top-[73px] z-30">
-        <div className="max-w-7xl mx-auto px-4 overflow-x-auto">
-          <div className="flex gap-2 py-3 min-w-max">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all whitespace-nowrap ${
-                    isActive
-                      ? `bg-${tab.color}-500 text-white shadow-lg`
-                      : 'bg-white/10 text-white/70 hover:bg-white/20'
-                  }`}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        {/* Subject Header */}
+        <SubjectHeader sujet={analyse.carteDuCiel.sujet} />
+
+        {/* Carte du Ciel Toggle */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <button
+            onClick={() => setShowCarteDuCiel(!showCarteDuCiel)}
+            className="w-full bg-white/10 hover:bg-white/15 backdrop-blur-lg rounded-2xl p-6 border border-white/20 transition-all group"
           >
-            {activeTab === 'mission' && analyse.missionDeVie && (
-              <MissionDeVieTab data={analyse.missionDeVie} />
-            )}
-            
-            {activeTab === 'talents' && analyse.talentsNaturels && (
-              <TalentsNaturelsTab data={analyse.talentsNaturels} />
-            )}
-            
-            {activeTab === 'defis' && analyse.defisViePersonnelle && (
-              <DefisTab />
-            )}
-            
-            {activeTab === 'relations' && analyse.relations && (
-              <RelationsTab data={analyse.relations} />
-            )}
-            
-            {activeTab === 'carriere' && analyse.carriereVocation && (
-              <CarriereTab data={analyse.carriereVocation} />
-            )}
-            
-            {activeTab === 'spiritualite' && analyse.spiritualiteCroissance && (
-              <SpiritualiteTab data={analyse.spiritualiteCroissance} />
-            )}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    </div>
-  );
-}
-
-// Composant pour l'onglet Mission de Vie
-function MissionDeVieTab({ data }: { data: any }) {
-  return (
-    <div className="space-y-6">
-      {/* Analyse Karmique */}
-      <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 sm:p-8">
-        <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-          <Target className="w-6 h-6 text-purple-300" />
-          Analyse Karmique
-        </h2>
-        
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white/5 rounded-2xl p-6">
-            <h3 className="text-lg font-bold text-purple-200 mb-2">Nœud Nord</h3>
-            <p className="text-sm text-purple-300 mb-3">{data.analyseKarmique.noeudNord.position}</p>
-            <p className="text-white/90 leading-relaxed">{data.analyseKarmique.noeudNord.signification}</p>
-          </div>
-          
-          <div className="bg-white/5 rounded-2xl p-6">
-            <h3 className="text-lg font-bold text-pink-200 mb-2">Nœud Sud</h3>
-            <p className="text-sm text-pink-300 mb-3">{data.analyseKarmique.noeudSud.position}</p>
-            <p className="text-white/90 leading-relaxed">{data.analyseKarmique.noeudSud.signification}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Synthèse */}
-      <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-lg rounded-3xl p-6 sm:p-8 border border-white/10">
-        <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-yellow-300" />
-          Synthèse de Votre Mission
-        </h2>
-        
-        <div className="space-y-4">
-          {data.synthese && data.synthese.map((point: string, index: number) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-start gap-3"
-            >
-              <CheckCircle2 className="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" />
-              <p className="text-white/90 leading-relaxed">{point}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Composants pour les nouveaux onglets
-function DefisTab() {
-  return (
-    <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-white">
-      <h2 className="text-2xl font-bold mb-4">Défis de Vie Personnelle</h2>
-      <p className="text-purple-200">Section en développement...</p>
-    </div>
-  );
-}
-
-function RelationsTab({ data }: { data: any }) {
-  return (
-    <div className="space-y-6">
-      <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 sm:p-8">
-        <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-          <Heart className="w-6 h-6 text-pink-300" />
-          {data.titre}
-        </h2>
-        
-        <div className="space-y-4">
-          <div className="bg-white/5 rounded-2xl p-6">
-            <h3 className="text-lg font-bold text-pink-200 mb-3">Style Relationnel</h3>
-            <p className="text-white/90 leading-relaxed mb-2">
-              <strong>Vénus:</strong> {data.styleRelationnel.venus}
-            </p>
-            <p className="text-white/90 leading-relaxed">
-              {data.styleRelationnel.description}
-            </p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-pink-500/20 to-rose-500/20 backdrop-blur-lg rounded-3xl p-6 border border-white/10">
-            <h3 className="text-xl font-bold text-white mb-4">Compatibilités</h3>
-            <div className="flex flex-wrap gap-2">
-              {data.compatibilite.signesCompatibles.map((signe: string, i: number) => (
-                <span key={i} className="px-4 py-2 bg-pink-500/30 rounded-full text-white">
-                  {signe}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CarriereTab({ data }: { data: any }) {
-  return (
-    <div className="space-y-6">
-      <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 sm:p-8">
-        <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-          <Briefcase className="w-6 h-6 text-blue-300" />
-          {data.titre}
-        </h2>
-        
-        <div className="space-y-4">
-          <div className="bg-white/5 rounded-2xl p-6">
-            <h3 className="text-lg font-bold text-blue-200 mb-3">Vocation</h3>
-            <p className="text-white/90 leading-relaxed">
-              {data.milieuDuCiel.description}
-            </p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-blue-500/20 to-indigo-500/20 backdrop-blur-lg rounded-3xl p-6 border border-white/10">
-            <h3 className="text-xl font-bold text-white mb-4">Domaines Recommandés</h3>
-            <ul className="space-y-2">
-              {data.domainesRecommandes.map((domaine: string, i: number) => (
-                <li key={i} className="flex items-center gap-2 text-white/90">
-                  <CheckCircle2 className="w-4 h-4 text-green-300" />
-                  {domaine}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SpiritualiteTab({ data }: { data: any }) {
-  return (
-    <div className="space-y-6">
-      <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 sm:p-8">
-        <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-          <Star className="w-6 h-6 text-indigo-300" />
-          {data.titre}
-        </h2>
-        
-        <div className="space-y-4">
-          <div className="bg-white/5 rounded-2xl p-6">
-            <h3 className="text-lg font-bold text-indigo-200 mb-3">Chemin Spirituel</h3>
-            <p className="text-white/90 leading-relaxed">
-              {data.cheminSpirituel.description}
-            </p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-indigo-500/20 to-purple-500/20 backdrop-blur-lg rounded-3xl p-6 border border-white/10">
-            <h3 className="text-xl font-bold text-white mb-4">Pratiques Recommandées</h3>
-            <div className="grid sm:grid-cols-2 gap-3">
-              {data.pratiquesRecommandees.map((pratique: string, i: number) => (
-                <div key={i} className="flex items-center gap-2 bg-white/5 rounded-lg px-4 py-2">
-                  <Sparkles className="w-4 h-4 text-yellow-300" />
-                  <span className="text-white/90 text-sm">{pratique}</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center">
+                  <Eye className="w-6 h-6 text-white" />
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-// Composant pour l'onglet Talents Naturels
-function TalentsNaturelsTab({ data }: { data: any }) {
-  return (
-    <div className="space-y-6">
-      {/* Intellect & Communication */}
-      <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 sm:p-8">
-        <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-          <Brain className="w-6 h-6 text-amber-300" />
-          Intellect & Communication
-        </h2>
-        
-        <div className="space-y-4">
-          <div>
-            <p className="text-amber-200 font-semibold mb-2">
-              {data.intellectCommunication.soleil} • {data.intellectCommunication.mercure}
-            </p>
-            <p className="text-white/90 leading-relaxed mb-4">
-              {data.intellectCommunication.description}
-            </p>
-          </div>
-          
-          <div className="grid sm:grid-cols-2 gap-3">
-            {data.intellectCommunication.talents && data.intellectCommunication.talents.map((talent: string, index: number) => (
-              <div key={index} className="flex items-center gap-2 bg-white/5 rounded-lg px-4 py-2">
-                <Star className="w-4 h-4 text-yellow-300" />
-                <span className="text-white/90 text-sm">{talent}</span>
+                <div className="text-left">
+                  <h2 className="text-xl font-black text-white">Carte du Ciel</h2>
+                  <p className="text-sm text-purple-300">
+                    {analyse.carteDuCiel.positions.length} positions planétaires
+                  </p>
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
+              <motion.div
+                animate={{ rotate: showCarteDuCiel ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Zap className="w-6 h-6 text-purple-300" />
+              </motion.div>
+            </div>
+          </button>
 
-      {/* Synthèse */}
-      <div className="bg-gradient-to-br from-amber-500/20 to-orange-500/20 backdrop-blur-lg rounded-3xl p-6 sm:p-8 border border-white/10">
-        <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-yellow-300" />
-          Synthèse de Vos Talents
-        </h2>
-        
-        <div className="space-y-4">
-          {data.synthese && data.synthese.map((point: string, index: number) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-start gap-3"
-            >
-              <CheckCircle2 className="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" />
-              <p className="text-white/90 leading-relaxed">{point}</p>
-            </motion.div>
-          ))}
-        </div>
+          <AnimatePresence>
+            {showCarteDuCiel && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mt-6 space-y-6"
+              >
+                {/* Planètes principales */}
+                {groupedPositions.principales.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-bold text-purple-200 mb-3 flex items-center gap-2">
+                      <Star className="w-5 h-5 text-yellow-300" />
+                      Planètes Principales
+                    </h3>
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      {groupedPositions.principales.map((pos, i) => (
+                        <PlanetCard key={i} position={pos} index={i} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Planètes personnelles */}
+                {groupedPositions.personnelles.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-bold text-purple-200 mb-3 flex items-center gap-2">
+                      <Heart className="w-5 h-5 text-pink-300" />
+                      Planètes Personnelles
+                    </h3>
+                    <div className="grid sm:grid-cols-3 gap-3">
+                      {groupedPositions.personnelles.map((pos, i) => (
+                        <PlanetCard key={i} position={pos} index={i} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Planètes sociales */}
+                {groupedPositions.sociales.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-bold text-purple-200 mb-3 flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5 text-blue-300" />
+                      Planètes Sociales
+                    </h3>
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      {groupedPositions.sociales.map((pos, i) => (
+                        <PlanetCard key={i} position={pos} index={i} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Planètes transpersonnelles */}
+                {groupedPositions.transpersonnelles.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-bold text-purple-200 mb-3 flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-indigo-300" />
+                      Planètes Transpersonnelles
+                    </h3>
+                    <div className="grid sm:grid-cols-3 gap-3">
+                      {groupedPositions.transpersonnelles.map((pos, i) => (
+                        <PlanetCard key={i} position={pos} index={i} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Points sensibles */}
+                {groupedPositions.points.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-bold text-purple-200 mb-3 flex items-center gap-2">
+                      <Target className="w-5 h-5 text-green-300" />
+                      Points Sensibles
+                    </h3>
+                    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+                      {groupedPositions.points.map((pos, i) => (
+                        <PlanetCard key={i} position={pos} index={i} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Mission de Vie (Markdown) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 sm:p-8 border border-white/20"
+        >
+          <MarkdownContent content={analyse.missionDeVie.contenu} />
+        </motion.div>
+
+        {/* Footer Info */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="mt-8 text-center p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10"
+        >
+          <p className="text-purple-300 text-sm mb-2">
+            Analyse générée le {formatDate(analyse.dateGeneration)}
+          </p>
+          <p className="text-purple-400 text-xs">
+            Cette analyse est personnalisée selon votre thème natal complet
+          </p>
+        </motion.div>
       </div>
     </div>
   );

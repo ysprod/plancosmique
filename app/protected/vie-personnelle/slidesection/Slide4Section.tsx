@@ -135,29 +135,25 @@ export default function Slide4Section() {
 
         const createdConsultationId = consultationRes.data?.id || consultationRes.data?.consultationId;
         setConsultationId(createdConsultationId);
-
+console.log('✅ Consultation créée avec ID:', createdConsultationId);
         // 2. Générer l'analyse
-        const analysisResponse = await fetch(`/api/consultations/${createdConsultationId}/generate-analysis`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            birthData: {
-              nom: form.nom,
-              prenoms: form.prenoms,
-              genre: form.genre,
-              dateNaissance: form.dateNaissance,
-              heureNaissance: form.heureNaissance,
-              paysNaissance: form.paysNaissance,
-              villeNaissance: form.villeNaissance,
-              email: form.email,
-            },
-          }),
+        const analysisResponse = await api.post(`/consultations/${createdConsultationId}/generate-analysis`, {
+          birthData: {
+            nom: form.nom,
+            prenoms: form.prenoms,
+            genre: form.genre,
+            dateNaissance: form.dateNaissance,
+            heureNaissance: form.heureNaissance,
+            paysNaissance: form.paysNaissance,
+            villeNaissance: form.villeNaissance,
+            email: form.email,
+          },
         });
 
-        const analysisData = await analysisResponse.json();
+        console.log('Réponse génération analyse:', analysisResponse);
 
-        if (!analysisData.success) {
-          const errorMsg = analysisData.error || 'Erreur lors de la génération de l\'analyse';
+        if (analysisResponse.status !== 200 && analysisResponse.status !== 201) {
+          const errorMsg = analysisResponse.data?.error || 'Erreur lors de la génération de l\'analyse';
           
           if (errorMsg.includes('Crédit DeepSeek épuisé') || errorMsg.includes('INSUFFICIENT_BALANCE')) {
             throw new Error('Le service d\'analyse astrologique est temporairement indisponible (crédit API épuisé). Veuillez contacter le support.');
@@ -166,21 +162,18 @@ export default function Slide4Section() {
           throw new Error(errorMsg);
         }
 
+        const analysisData = analysisResponse.data;
         console.log('✅ Analyse générée avec succès:', analysisData);
 
         // Sauvegarder l'analyse via API backend
         if (analysisData.analyse) {
-          const saveResponse = await fetch(`/api/consultations/${createdConsultationId}/save-analysis`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              analyse: analysisData.analyse,
-              statut: 'completed',
-            }),
+          const saveResponse = await api.post(`/consultations/${createdConsultationId}/save-analysis`, {
+            analyse: analysisData.analyse,
+            statut: 'completed',
           });
 
-          if (!saveResponse.ok) {
-            console.error('⚠️ Erreur sauvegarde analyse:', await saveResponse.text());
+          if (saveResponse.status !== 200 && saveResponse.status !== 201) {
+            console.error('⚠️ Erreur sauvegarde analyse:', saveResponse.data);
           } else {
             console.log('💾 Analyse sauvegardée via API');
           }

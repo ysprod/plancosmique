@@ -3,7 +3,7 @@ export const config = {
   api: {
     baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
     apiVersion: 'v1',
-    timeout: 60000, // 30 secondes
+    timeout: 300000, // 5 minutes
   },
 
   // Auth Configuration
@@ -11,7 +11,7 @@ export const config = {
     tokenKey: 'monetoile_access_token',
     refreshTokenKey: 'monetoile_refresh_token',
     userKey: 'monetoile_user',
-    tokenExpirationBuffer: 60, // 60 secondes avant expiration
+    tokenExpirationBuffer: 360, // 360 secondes avant expiration
   },
 
   // Frontend Configuration
