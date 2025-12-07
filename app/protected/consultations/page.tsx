@@ -306,6 +306,7 @@ export default function ConsultationsListPage() {
 
   useEffect(() => {
     filterConsultations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [consultations, searchQuery, typeFilter, statusFilter]);
 
   const loadConsultations = async () => {
