@@ -426,7 +426,7 @@ export default function AdminDashboard() {
                   <h3 className="text-base font-bold text-gray-900">Consultations</h3>
                 </div>
                 <Link
-                  href="/dashboard/admin/consultations"
+                  href="/admin/consultations"
                   className="text-amber-600 hover:text-amber-700 text-xs font-semibold
                              hover:underline"
                 >
