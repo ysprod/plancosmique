@@ -3,13 +3,28 @@ import { api } from '@/lib/api/client';
 
 interface Consultation {
   id: string;
-  type: string;
-  status: 'pending' | 'generating' | 'completed' | 'error';
-  clientName: string;
-  clientEmail: string;
+  title: string;
+  type: 'SPIRITUALITE' | 'TAROT' | 'ASTROLOGIE' | 'NUMEROLOGIE';
+  status: 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR';
+  clientName?: string;
+  clientEmail?: string;
+  clientId?: {
+    email: string;
+  };
   price: number;
+  isPaid: boolean;
+  rating?: number;
+  review?: string;
   createdAt: string;
   completedAt?: string;
+  resultData?: any;
+  formData?: {
+    prenoms: string;
+    nom: string;
+    numeroSend?: string;
+    paysNaissance?: string;
+    villeNaissance?: string;
+  };
 }
 
 interface UseAdminConsultationsOptions {
@@ -51,6 +66,8 @@ export function useAdminConsultations(options: UseAdminConsultationsOptions = {}
         signal: abortControllerRef.current.signal,
         timeout: 10000,
       });
+
+      console.log('Consultations:', response);
 
       setConsultations(response.data.consultations || []);
       setTotal(response.data.total || 0);

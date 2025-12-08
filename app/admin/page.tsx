@@ -6,7 +6,7 @@ import {
   Users, FileText, CreditCard, TrendingUp, 
   AlertCircle, CheckCircle, Clock, DollarSign,
   Activity, ArrowUpRight, ArrowDownRight, RefreshCw,
-  Sparkles, Calendar, BarChart3, Target, Zap
+  BarChart3, Target, Zap
 } from 'lucide-react';
 import { StatCard } from '@/components/admin/StatCard';
 import { useAdminStats } from '@/hooks/useAdminStats';
