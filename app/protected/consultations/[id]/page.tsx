@@ -18,7 +18,7 @@ import {
   User
 } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -63,29 +63,6 @@ interface AnalyseAstrologique {
 
 // ==================== HELPERS ====================
 
-const PLANET_ICONS: Record<string, string> = {
-  'Soleil': '☉',
-  'Lune': '☽',
-  'Mercure': '☿',
-  'Vénus': '♀',
-  'Mars': '♂',
-  'Jupiter': '♃',
-  'Saturne': '♄',
-  'Uranus': '♅',
-  'Neptune': '♆',
-  'Pluton': '♇',
-  'Ascendant': 'AS',
-  'Milieu du Ciel': 'MC',
-  'Chiron': '⚷',
-  'Nœud Nord': '☊',
-  'Nœud Sud': '☋'
-};
-
-const getPlanetIcon = (planete: string): string => {
-  const baseNom = planete.replace(' RÉTROGRADE', '').trim();
-  return PLANET_ICONS[baseNom] || '✦';
-};
-
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('fr-FR', {
     day: 'numeric',
@@ -95,38 +72,6 @@ const formatDate = (dateString: string) => {
 };
 
 // ==================== COMPOSANTS ====================
-
-interface PlanetCardProps {
-  position: Position;
-  index: number;
-}
-
-const PlanetCard: React.FC<PlanetCardProps> = ({ position, index }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: index * 0.05 }}
-    className={`bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all ${
-      position.retrograde ? 'border-red-500/30' : ''
-    }`}
-  >
-    <div className="flex items-center justify-between mb-2">
-      <div className="flex items-center gap-3">
-        <span className="text-3xl">{getPlanetIcon(position.planete)}</span>
-        <div>
-          <h3 className="font-bold text-white text-sm">
-            {position.planete}
-            {position.retrograde && <span className="text-red-400 text-xs ml-1">⟲</span>}
-          </h3>
-          <p className="text-purple-300 text-xs">Maison {position.maison}</p>
-        </div>
-      </div>
-      <div className="text-right">
-        <p className="text-amber-300 font-bold text-sm">{position.signe}</p>
-      </div>
-    </div>
-  </motion.div>
-);
 
 interface SubjectHeaderProps {
   sujet: SubjectInfo;
@@ -248,7 +193,6 @@ export default function ConsultationResultPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [analyse, setAnalyse] = useState<AnalyseAstrologique | null>(null);
-  const [showCarteDuCiel, setShowCarteDuCiel] = useState(false);
 
   useEffect(() => {
     if (!consultationId) return;
@@ -282,31 +226,6 @@ export default function ConsultationResultPage() {
 
     loadAnalysis();
   }, [consultationId]);
-
-  // Grouper les planètes par catégorie
-  const groupedPositions = useMemo(() => {
-    if (!analyse) return { principales: [], personnelles: [], sociales: [], transpersonnelles: [], points: [] };
-
-    const positions = analyse.carteDuCiel.positions;
-
-    return {
-      principales: positions.filter(p => 
-        ['Soleil', 'Ascendant', 'Lune', 'Milieu du Ciel'].includes(p.planete)
-      ),
-      personnelles: positions.filter(p => 
-        ['Mercure', 'Vénus', 'Mars'].includes(p.planete)
-      ),
-      sociales: positions.filter(p => 
-        ['Jupiter', 'Jupiter RÉTROGRADE', 'Saturne', 'Saturne RÉTROGRADE'].some(n => p.planete.includes(n.split(' ')[0]))
-      ),
-      transpersonnelles: positions.filter(p => 
-        ['Uranus', 'Neptune', 'Pluton'].some(n => p.planete.includes(n))
-      ),
-      points: positions.filter(p => 
-        ['Chiron', 'Nœud Nord', 'Nœud Sud', 'Vertex', 'Lilith', 'Pallas', 'Vesta', 'Cérès', 'Part de Fortune', 'Junon'].some(n => p.planete.includes(n))
-      )
-    };
-  }, [analyse]);
 
   if (loading) {
     return (
