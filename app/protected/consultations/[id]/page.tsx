@@ -3,7 +3,7 @@
 'use client';
 
 import { api } from '@/lib/api/client';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   AlertCircle,
   ArrowLeft,
@@ -11,16 +11,11 @@ import {
   CheckCircle2,
   Clock,
   Download,
-  Eye,
-  Heart,
   Loader2,
   MapPin,
   Sparkles,
   Star,
-  Target,
-  TrendingUp,
-  User,
-  Zap
+  User
 } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -405,124 +400,7 @@ export default function ConsultationResultPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         {/* Subject Header */}
         <SubjectHeader sujet={analyse.carteDuCiel.sujet} />
-
-        {/* Carte du Ciel Toggle */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <button
-            onClick={() => setShowCarteDuCiel(!showCarteDuCiel)}
-            className="w-full bg-white/10 hover:bg-white/15 backdrop-blur-lg rounded-2xl p-6 border border-white/20 transition-all group"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center">
-                  <Eye className="w-6 h-6 text-white" />
-                </div>
-                <div className="text-left">
-                  <h2 className="text-xl font-black text-white">Carte du Ciel</h2>
-                  <p className="text-sm text-purple-300">
-                    {analyse.carteDuCiel.positions.length} positions planétaires
-                  </p>
-                </div>
-              </div>
-              <motion.div
-                animate={{ rotate: showCarteDuCiel ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Zap className="w-6 h-6 text-purple-300" />
-              </motion.div>
-            </div>
-          </button>
-
-          <AnimatePresence>
-            {showCarteDuCiel && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="mt-6 space-y-6"
-              >
-                {/* Planètes principales */}
-                {groupedPositions.principales.length > 0 && (
-                  <div>
-                    <h3 className="text-lg font-bold text-purple-200 mb-3 flex items-center gap-2">
-                      <Star className="w-5 h-5 text-yellow-300" />
-                      Planètes Principales
-                    </h3>
-                    <div className="grid sm:grid-cols-2 gap-3">
-                      {groupedPositions.principales.map((pos, i) => (
-                        <PlanetCard key={i} position={pos} index={i} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Planètes personnelles */}
-                {groupedPositions.personnelles.length > 0 && (
-                  <div>
-                    <h3 className="text-lg font-bold text-purple-200 mb-3 flex items-center gap-2">
-                      <Heart className="w-5 h-5 text-pink-300" />
-                      Planètes Personnelles
-                    </h3>
-                    <div className="grid sm:grid-cols-3 gap-3">
-                      {groupedPositions.personnelles.map((pos, i) => (
-                        <PlanetCard key={i} position={pos} index={i} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Planètes sociales */}
-                {groupedPositions.sociales.length > 0 && (
-                  <div>
-                    <h3 className="text-lg font-bold text-purple-200 mb-3 flex items-center gap-2">
-                      <TrendingUp className="w-5 h-5 text-blue-300" />
-                      Planètes Sociales
-                    </h3>
-                    <div className="grid sm:grid-cols-2 gap-3">
-                      {groupedPositions.sociales.map((pos, i) => (
-                        <PlanetCard key={i} position={pos} index={i} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Planètes transpersonnelles */}
-                {groupedPositions.transpersonnelles.length > 0 && (
-                  <div>
-                    <h3 className="text-lg font-bold text-purple-200 mb-3 flex items-center gap-2">
-                      <Sparkles className="w-5 h-5 text-indigo-300" />
-                      Planètes Transpersonnelles
-                    </h3>
-                    <div className="grid sm:grid-cols-3 gap-3">
-                      {groupedPositions.transpersonnelles.map((pos, i) => (
-                        <PlanetCard key={i} position={pos} index={i} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Points sensibles */}
-                {groupedPositions.points.length > 0 && (
-                  <div>
-                    <h3 className="text-lg font-bold text-purple-200 mb-3 flex items-center gap-2">
-                      <Target className="w-5 h-5 text-green-300" />
-                      Points Sensibles
-                    </h3>
-                    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
-                      {groupedPositions.points.map((pos, i) => (
-                        <PlanetCard key={i} position={pos} index={i} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+ 
 
         {/* Mission de Vie (Markdown) */}
         <motion.div
