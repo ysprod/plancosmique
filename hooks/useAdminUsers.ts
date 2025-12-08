@@ -1,17 +1,29 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '@/lib/api/client';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface User {
   id: string;
   email: string;
   nom: string;
   prenom: string;
+  username: string;
   telephone: string;
-  role: 'user' | 'admin';
+  phone?: string;
+  role: 'USER' | 'ADMIN';
   status: 'active' | 'inactive' | 'suspended';
+  isActive: boolean;
+  emailVerified: boolean;
   createdAt: string;
   lastLogin: string;
   consultationsCount: number;
+  totalConsultations: number;
+  rating: number;
+  credits: number;
+  country?: string;
+  gender?: string;
+  preferences?: {
+    notifications?: boolean;
+  };
 }
 
 interface UseAdminUsersOptions {
