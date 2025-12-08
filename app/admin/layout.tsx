@@ -1,141 +1,119 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+ 
+import { MobileNav } from '@/components/admin/MobileNav';
 import Link from 'next/link';
-import {
-  LayoutDashboard,
-  Users,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-  BarChart3,
-  FileText,
-  CreditCard,
-  Shield,
+import { usePathname } from 'next/navigation';
+import { 
+  LayoutDashboard, Users, FileText, CreditCard, 
+  Settings, LogOut 
 } from 'lucide-react';
-import { useAuth } from '@/lib/hooks/useAuth';
+import { motion } from 'framer-motion';
+import { useAuth } from '@/lib/auth/AuthContext';
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const navItems = [
+  { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard },
+  { href: '/admin/users', label: 'Utilisateurs', icon: Users },
+  { href: '/admin/consultations', label: 'Consultations', icon: FileText },
+  { href: '/admin/payments', label: 'Paiements', icon: CreditCard },
+  { href: '/admin/settings', label: 'Paramètres', icon: Settings },
+];
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { user } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const pathname = usePathname();
+  const {   logout } = useAuth();
 
-  const menuItems = [
-    {
-      label: 'Dashboard',
-      icon: LayoutDashboard,
-      href: '/admin',
-    },
-    {
-      label: 'Utilisateurs',
-      icon: Users,
-      href: '/admin/users',
-    },
-    {
-      label: 'Consultations',
-      icon: FileText,
-      href: '/admin/consultations',
-    },
-    {
-      label: 'Paiements',
-      icon: CreditCard,
-      href: '/admin/payments',
-    },
-    {
-      label: 'Analytics',
-      icon: BarChart3,
-      href: '/admin/analytics',
-    },
-    {
-      label: 'Sécurité',
-      icon: Shield,
-      href: '/admin/security',
-    },
-    {
-      label: 'Paramètres',
-      icon: Settings,
-      href: '/admin/settings',
-    },
-  ];
+  // useEffect(() => {
+  //   if (!loading && (!user || user.role !== 'admin')) {
+  //     router.replace('/auth/login');
+  //   }
+  // }, [user, loading, router]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('monetoile_access_token');
-    localStorage.removeItem('monetoile_refresh_token');
-    localStorage.removeItem('monetoile_user');
-    router.push('/auth/login');
+  // if (loading) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-screen">
+  //       <motion.div
+  //         animate={{ rotate: 360 }}
+  //         transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+  //         className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full"
+  //       />
+  //     </div>
+  //   );
+  // }
+
+  // if (!user || user.role !== 'admin') {
+  //   return null;
+  // }
+
+  const handleLogout = async () => {
+    await logout();
+    router.replace('/auth/login');
   };
 
   return (
-    <div className="min-h-screen bg-slate-950">
-      {/* Topbar */}
-      <div className="fixed top-0 left-0 right-0 h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 z-40">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 hover:bg-slate-800 rounded-lg transition-colors lg:hidden"
-          >
-            {sidebarOpen ? (
-              <X className="w-6 h-6 text-purple-300" />
-            ) : (
-              <Menu className="w-6 h-6 text-purple-300" />
-            )}
-          </button>
-          <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-            Mon Étoile Admin
-          </h1>
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Sidebar Desktop */}
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 
+                        bg-white border-r border-gray-200">
+        {/* Logo */}
+        <div className="flex items-center gap-3 px-6 py-6 border-b border-gray-200">
+          <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 
+                          rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-xl">M</span>
+          </div>
+          <div>
+            <h1 className="font-bold text-gray-900">Mon Étoile</h1>
+            <p className="text-xs text-gray-600">Administration</p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="text-right">
-            <p className="text-sm font-medium text-white">{user?.email}</p>
-            <p className="text-xs text-purple-300">Super Administrateur</p>
-          </div>
+        {/* Navigation */}
+        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
+            
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg 
+                           transition-all ${
+                  isActive
+                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="font-medium">{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Logout */}
+        <div className="px-4 py-6 border-t border-gray-200">
           <button
             onClick={handleLogout}
-            className="p-2 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors"
-            title="Déconnexion"
+            className="flex items-center gap-3 px-4 py-3 text-red-600 
+                       hover:bg-red-50 rounded-lg w-full transition-colors"
           >
             <LogOut className="w-5 h-5" />
+            <span className="font-medium">Déconnexion</span>
           </button>
         </div>
-      </div>
+      </aside>
 
-      <div className="flex pt-16">
-        {/* Sidebar */}
-        <aside
-          className={`fixed left-0 top-16 bottom-0 w-64 bg-slate-900 border-r border-slate-800 transition-transform lg:translate-x-0 z-30 ${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
-        >
-          <nav className="p-6 space-y-2">
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setSidebarOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-purple-300 transition-colors group"
-                >
-                  <Icon className="w-5 h-5 group-hover:text-purple-400" />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
-        </aside>
+      {/* Navigation Mobile */}
+      <MobileNav />
 
-        {/* Main Content */}
-        <main className="flex-1 lg:ml-64">
-          <div className="p-6">{children}</div>
-        </main>
-      </div>
+      {/* Contenu Principal */}
+      <main className="flex-1 lg:ml-64">
+        {children}
+      </main>
     </div>
   );
 }
