@@ -1,17 +1,19 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
  
 import { MobileNav } from '@/components/admin/MobileNav';
+import { useAuth } from '@/lib/auth/AuthContext';
+import {
+  CreditCard,
+  FileText,
+  LayoutDashboard,
+  LogOut,
+  Settings,
+  Users
+} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  LayoutDashboard, Users, FileText, CreditCard, 
-  Settings, LogOut 
-} from 'lucide-react';
-import { motion } from 'framer-motion';
-import { useAuth } from '@/lib/auth/AuthContext';
 
 const navItems = [
   { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard },

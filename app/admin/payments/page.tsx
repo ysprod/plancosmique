@@ -1,16 +1,25 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  CreditCard, Search, Filter, 
-  CheckCircle, Clock, XCircle, AlertCircle,
-  Eye, RefreshCw, X, User, Calendar, 
-  DollarSign, Hash, Smartphone
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  AlertCircle,
+  Calendar,
+  CheckCircle, Clock,
+  CreditCard,
+  Eye,
+  Filter,
+  Hash,
+  RefreshCw,
+  Search,
+  Smartphone,
+  User,
+  X,
+  XCircle
 } from 'lucide-react';
+import { useCallback, useMemo, useState } from 'react';
  
-import Link from 'next/link';
 import { useAdminPayments } from '@/hooks/useAdminPayments';
+import Link from 'next/link';
 
 type PaymentStatus = 'all' | 'pending' | 'completed' | 'failed' | 'cancelled';
 type PaymentMethod = 'all' | 'orange_money' | 'mtn_money' | 'moov_money' | 'wave';

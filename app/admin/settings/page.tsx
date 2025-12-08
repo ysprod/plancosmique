@@ -1,13 +1,21 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Settings, Save, RefreshCw, AlertCircle,
-  Globe, Bell, Lock, Mail, Database,
-  Palette, Shield, CreditCard, FileText,
-  Users, CheckCircle, Loader, Eye, EyeOff
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  AlertCircle,
+  Bell,
+  CheckCircle,
+  CreditCard,
+  Database,
+  Eye, EyeOff,
+  Globe,
+  Loader,
+  Lock,
+  Save,
+  Settings,
+  Shield
 } from 'lucide-react';
+import { useState } from 'react';
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<'general' | 'notifications' | 'security' | 'payment' | 'system'>('general');
