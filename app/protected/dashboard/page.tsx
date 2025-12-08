@@ -17,14 +17,14 @@ export default function DashboardPage() {
       switch (user.role) {
         case Role.SUPER_ADMIN:
         case Role.ADMIN:
-          router.push('/dashboard/admin');
+          router.push('/admin');
           break;
         case Role.CONSULTANT:
-          router.push('/dashboard/consultant');
+          router.push('/consultant');
           break;
         case Role.USER:
         default:
-          router.push('/dashboard/user');
+          router.push('/user');
           break;
       }
     }

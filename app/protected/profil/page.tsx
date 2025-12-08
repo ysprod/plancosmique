@@ -1,11 +1,9 @@
 "use client";
-import Header from "@/components/profil/Header";
-import MobileMenu from "@/components/profil/MobileMenu";
+import StatsCounter from "@/components/StatsCounter";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { motion } from "framer-motion";
-import { ArrowRight, Briefcase, Calendar, Flame, Globe, Hash, Heart, Users, ShoppingCart } from "lucide-react";
+import { ArrowRight, Briefcase, Calendar, Flame, Globe, Hash, Heart, ShoppingCart, Users } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 
 const ICONS = { Heart, Users, Briefcase, Globe, Flame, Hash, Calendar };
 
@@ -70,33 +68,14 @@ const services = [
 ];
 
 export default function ProfilPage() {
-  const { logout, user } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleLogout = () => {
-    if (confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
-      logout();
-      window.location.href = "/";
-    }
-  };
+  const { user } = useAuth();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-violet-50">
       {/* Progress bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 z-50" />
-
-      <Header
-        user={user}
-        mobileMenuOpen={mobileMenuOpen}
-        setMobileMenuOpen={setMobileMenuOpen}
-        handleLogout={handleLogout}
-      />
-
-      <MobileMenu
-        mobileMenuOpen={mobileMenuOpen}
-        user={user}
-        handleLogout={handleLogout}
-      />
+           {/* Compteurs crédibilité */}
+        <StatsCounter />
 
       <div className="px-4 py-6 max-w-6xl mx-auto">
         {/* Hero ultra-compact */}

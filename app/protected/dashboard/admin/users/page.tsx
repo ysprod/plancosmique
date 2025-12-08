@@ -12,11 +12,11 @@ export default function UsersManagementPage() {
             <UsersList 
               onCreateUser={() => {
                 // Rediriger vers la page de création
-                window.location.href = '/dashboard/admin/users/create';
+                window.location.href = '/admin/users/create';
               }}
               onUserSelect={(user) => {
                 // Rediriger vers la page de détails
-                window.location.href = `/dashboard/admin/users/${user._id}`;
+                window.location.href = `/admin/users/${user._id}`;
               }}
             />
           </div>

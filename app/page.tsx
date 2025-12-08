@@ -1,9 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import { ArrowRight, Compass, Eye, Sparkles, Star } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
-import StatsCounter from '../components/StatsCounter';
 
 const QUESTIONS = [
   { q: "QUI SUIS-JE ?", icon: Eye },
@@ -16,29 +14,7 @@ export default function WelcomePage() {
     <div className="min-h-screen bg-white">
       {/* Progress bar mobile-optimized */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500 z-50" />
-
       <div className="px-4 py-6 max-w-2xl mx-auto">
-        {/* Logo ultra-compact mobile */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center mb-6"
-        >
-          <Image
-            src="/logo.png"
-            alt="Mon Étoile"
-            width={80}
-            height={80}
-            className="mx-auto mb-2"
-            priority
-          />
-          <h1 className="text-3xl sm:text-4xl font-black text-black">MON ÉTOILE</h1>
-        </motion.div>
-
-        {/* Compteurs crédibilité */}
-        <StatsCounter />
-
-        {/* Intro ultra-compacte */}
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -85,13 +61,11 @@ export default function WelcomePage() {
             <p className="text-xs sm:text-sm text-gray-700 leading-snug">
               Parce qu'il existe un Plan Cosmique qui organise votre vie, votre thème astral devient ici une boussole sacrée, une mémoire profonde et une lumière qui vous éclaire, inspire vos choix et guide vos décisions.
             </p>
-
             <p className="text-base sm:text-lg font-black text-black leading-tight">
               Votre naissance a un but.
               <br />
               Découvrez ce que votre âme est venue accomplir.
             </p>
-
             {/* CTA mobile-optimized */}
             <Link href="/protected/profil" className="block">
               <motion.button

@@ -481,7 +481,7 @@ export const UsersList: React.FC<UsersListProps> = ({
                     <div className="flex items-center gap-2 pt-2" onClick={(e) => e.stopPropagation()}>
                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1">
                         <Link
-                          href={`/dashboard/admin/users/${user._id}`}
+                          href={`/admin/users/${user._id}`}
                           className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all border-2 border-transparent hover:border-blue-200 font-semibold text-sm"
                           title="Voir le profil"
                         >
@@ -492,7 +492,7 @@ export const UsersList: React.FC<UsersListProps> = ({
 
                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1">
                         <Link
-                          href={`/dashboard/admin/users/${user._id}/edit`}
+                          href={`/admin/users/${user._id}/edit`}
                           className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-violet-600 bg-violet-50 hover:bg-violet-100 rounded-xl transition-all border-2 border-transparent hover:border-violet-200 font-semibold text-sm"
                           title="Modifier"
                         >

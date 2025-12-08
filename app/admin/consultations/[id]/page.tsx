@@ -355,10 +355,10 @@ export default function ConsultationResultPage() {
           <h2 className="text-2xl font-bold text-white mb-3">Erreur</h2>
           <p className="text-red-200 mb-6">{error || 'Analyse non disponible'}</p>
           <button
-            onClick={() => router.push('/protected/consultations')}
+            onClick={() => router.push('/admin/consultations/')}
             className="px-6 py-3 bg-white/20 hover:bg-white/30 rounded-xl font-semibold text-white transition-all"
           >
-            Retour aux consultations
+            Retour 
           </button>
         </motion.div>
       </div>
@@ -372,7 +372,7 @@ export default function ConsultationResultPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between gap-4">
             <button
-              onClick={() => router.push('/protected/consultations')}
+              onClick={() => router.push('/admin/consultations/')}
               className="flex items-center gap-2 text-white/80 hover:text-white transition-colors group"
             >
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />

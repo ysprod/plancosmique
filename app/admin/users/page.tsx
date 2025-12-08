@@ -518,7 +518,7 @@ export default function UsersPage() {
                     {/* Boutons d'action */}
                     <div className="flex gap-1.5">
                       <Link
-                        href={`/dashboard/admin/users/${user.id}`}
+                        href={`/admin/users/${user.id}`}
                         className="flex-1 flex items-center justify-center gap-1 
                                    px-2 py-1.5 bg-blue-600 text-white text-xs 
                                    rounded font-medium hover:bg-blue-700 transition-colors"

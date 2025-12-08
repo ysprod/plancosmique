@@ -11,10 +11,10 @@ export default function UsersManagementPage() {
           <div className="max-w-7xl mx-auto">
             <UsersList
               onCreateUser={() => {
-                window.location.href = '/dashboard/admin/users/create';
+                window.location.href = '/admin/users/create';
               }}
               onUserSelect={(user) => {
-                window.location.href = `/dashboard/admin/users/${user._id}`;
+                window.location.href = `/admin/users/${user._id}`;
               }}
             />
           </div>

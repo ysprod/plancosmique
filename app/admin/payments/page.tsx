@@ -444,7 +444,7 @@ export default function PaymentsPage() {
 
                   {/* Bouton */}
                   <Link
-                    href={`/dashboard/admin/payments/${payment.id}`}
+                    href={`/admin/payments/${payment.id}`}
                     className="w-full flex items-center justify-center gap-1 
                                px-2 py-1.5 bg-green-600 text-white text-xs 
                                rounded font-medium hover:bg-green-700 transition-colors"

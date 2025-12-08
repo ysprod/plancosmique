@@ -25,9 +25,9 @@ export const config = {
     login: '/auth/login',
     register: '/auth/register',
     dashboard: '/protected/profil',
-    adminDashboard: '/dashboard/admin',
-    consultantDashboard: '/dashboard/consultant',
-    profile: '/dashboard/profile',
+    adminDashboard: '/admin',
+    consultantDashboard: '/consultant',
+    profile: '/profile',
   },
 
   // Pagination

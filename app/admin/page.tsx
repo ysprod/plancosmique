@@ -175,7 +175,7 @@ export default function AdminDashboard() {
               </motion.button>
 
               <Link
-                href="/dashboard/admin/reports"
+                href="/admin/reports"
                 className="hidden md:flex items-center gap-1.5 px-3 py-2 
                            text-gray-700 hover:bg-gray-100 rounded-lg 
                            transition-colors border border-gray-200 text-sm font-medium"
@@ -363,7 +363,7 @@ export default function AdminDashboard() {
                   <h3 className="text-base font-bold text-gray-900">Utilisateurs</h3>
                 </div>
                 <Link
-                  href="/dashboard/admin/users"
+                  href="/admin/users"
                   className="text-amber-600 hover:text-amber-700 text-xs font-semibold
                              hover:underline"
                 >
@@ -489,7 +489,7 @@ export default function AdminDashboard() {
                   <h3 className="text-base font-bold text-gray-900">Paiements</h3>
                 </div>
                 <Link
-                  href="/dashboard/admin/payments"
+                  href="/admin/payments"
                   className="text-amber-600 hover:text-amber-700 text-xs font-semibold
                              hover:underline"
                 >

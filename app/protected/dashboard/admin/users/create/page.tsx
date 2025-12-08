@@ -100,7 +100,7 @@ export default function CreateUserPage() {
       await usersService.create(donnes);
       setSuccess(true);
       setTimeout(() => {
-        router.replace("/dashboard/admin/users");
+        router.replace("/admin/users");
       }, 1500);
     } catch (err: any) {
             if (err?.response?.data) {
@@ -165,7 +165,7 @@ export default function CreateUserPage() {
           className="mb-8"
         >
           <Link
-            href="/dashboard/admin/users"
+            href="/admin/users"
             className="inline-flex items-center gap-2 text-slate-600 hover:text-violet-600 transition-colors mb-4 font-medium"
           >
             <ArrowLeft className="w-5 h-5" />

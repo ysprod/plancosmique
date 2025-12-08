@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
 import { AuthProvider } from '@/lib/auth/AuthContext';
 import { ErrorBoundary, LoadingFallback } from '@/components/ErrorBoundary';
+import HeaderPage from '@/components/commons/Header';
 
 // Optimisation de la police avec display swap pour améliorer les performances
 const inter = Inter({
@@ -47,6 +48,7 @@ export default function RootLayout({
         <ErrorBoundary>
           <Suspense fallback={<LoadingFallback />}>
             <AuthProvider>
+              <HeaderPage />
               {children}
             </AuthProvider>
           </Suspense>
