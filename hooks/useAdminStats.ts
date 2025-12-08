@@ -32,6 +32,7 @@ export function useAdminStats() {
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -41,6 +42,7 @@ export function useAdminStats() {
       const response = await api.get('/admin/stats');
 
       setStats(response.data);
+      setLastUpdated(new Date().toISOString());
     } catch (err: any) {
       setError(err.response?.data?.message || err.message || 'Erreur inconnue');
     } finally {
@@ -52,5 +54,5 @@ export function useAdminStats() {
     fetchStats();
   }, [fetchStats]);
 
-  return { stats, loading, error, refetch: fetchStats };
+  return { stats, loading, error, refetch: fetchStats, lastUpdated };
 }
