@@ -1,20 +1,16 @@
-"use client";
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
+"use client";
 import { api } from '@/lib/api/client';
+import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import axios from 'axios';
 import React, { useCallback, useState } from 'react';
 import ConsultationForm from './ConsultationForm';
 import ConsultationSelection from './ConsultationSelection';
 import OfferingPage from './OfferingPage';
-import PaymentProcessing from './PaymentProcessing';
 import { CONSULTATION_TYPE_MAP } from './consultation.constants';
-import { CONSULTATION_OFFERINGS } from './offrandes.constants';
-
 import type { ConsultationChoice, FormData, FormErrors, StepType } from './consultation.types';
+import { CONSULTATION_OFFERINGS } from './offrandes.constants';
 
 const SERVICE_ID = process.env.NEXT_PUBLIC_SERVICE_ID;
 
@@ -75,7 +71,6 @@ export default function Slide4Section() {
     setStep('form');
   }, []);
 
-  // 1. Soumission du formulaire => passage direct à l'offrande
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -92,21 +87,16 @@ export default function Slide4Section() {
         return;
       }
 
-      // Passer directement à l'offrande (pas de traitement ici)
       setStep('offering');
     },
     [form, selected]
   );
 
-  // 2. Confirmation de l'offrande => Initiation du paiement MoneyFusion
   const handleOfferingConfirm = useCallback(async () => {
     if (!selected) return;
-
     setPaymentLoading(true);
-    setStep('processing');
-
+ 
     try {
-      // 1. Créer la consultation EN ATTENTE DE PAIEMENT
       const payload = {
         serviceId: SERVICE_ID,
         type: CONSULTATION_TYPE_MAP[selected.id] || 'AUTRE',
@@ -142,8 +132,7 @@ export default function Slide4Section() {
         webhook_url: `https://www.monetoile.org/api/webhooks/moneyfusion`,
       };
 
-      // 3. Appeler MoneyFusion     
-      
+
       const apiUrl = "https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/pay/";
       const response = await axios.post(apiUrl, paymentData, {
         headers: { "Content-Type": "application/json" },
@@ -155,7 +144,7 @@ export default function Slide4Section() {
         // Sauvegarder le type d'offrande avant redirection
         const savedOfferingType = CONSULTATION_TYPE_MAP[selected.id];
         localStorage.setItem('consultation_offering_type', savedOfferingType);
-        
+
         // 4. Redirection vers la page de paiement
         setTimeout(() => {
           window.location.href = response.data.url;
@@ -200,7 +189,6 @@ export default function Slide4Section() {
     setApiError(null);
     setStep('selection');
   }, []);
-
 
 
   return (
@@ -248,9 +236,6 @@ export default function Slide4Section() {
               onBack={handleBackToForm}
             />
           )}
-
-       
-          {step === 'processing' && <PaymentProcessing />}
         </AnimatePresence>
       </div>
     </div>

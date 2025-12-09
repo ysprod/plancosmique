@@ -41,23 +41,29 @@ export const CONSULTATION_OFFERINGS: Record<string, {
     spiritualBenefit: 'Vision claire de votre destinée',
     waitingTime: 36,
   },
-  RELATION: {
-    amount: 200,
-    description: 'Offrande pour votre Guidance Relationnelle',
-    spiritualBenefit: 'Clarté dans vos relations',
-    waitingTime: 24,
-  },
-  CARRIERE: {
-    amount: 200,
-    description: 'Offrande pour votre Guidance Professionnelle',
-    spiritualBenefit: 'Alignement avec votre mission professionnelle',
-    waitingTime: 36,
-  },
   SPIRITUALITE: {
     amount: 200,
     description: 'Offrande pour votre Chemin Spirituel',
     spiritualBenefit: 'Éveil et transformation spirituelle',
     waitingTime: 48,
+  },
+  VIE_PERSONNELLE: {
+    amount: 200,
+    description: 'Offrande pour votre Guidance Personnelle',
+    spiritualBenefit: 'Transformation et guérison intérieure',
+    waitingTime: 48,
+  },
+  RELATIONS: {
+    amount: 200,
+    description: 'Offrande pour votre Guidance Relationnelle',
+    spiritualBenefit: 'Harmonie et compréhension dans vos relations',
+    waitingTime: 36,
+  },
+  PROFESSIONNEL: {
+    amount: 200,
+    description: 'Offrande pour votre Guidance Professionnelle',
+    spiritualBenefit: 'Alignement avec votre mission professionnelle',
+    waitingTime: 36,
   },
   AUTRE: {
     amount: 200,
