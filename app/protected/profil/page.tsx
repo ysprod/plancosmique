@@ -111,13 +111,26 @@ export default function ProfilPage() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="mb-8 px-8 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-2xl font-black text-lg shadow-2xl hover:shadow-purple-500/50 transition-all flex items-center justify-center gap-3 mx-auto"
+              className="mb-4 px-8 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-2xl font-black text-lg shadow-2xl hover:shadow-purple-500/50 transition-all flex items-center justify-center gap-3 mx-auto"
             >
               <BookOpen className="w-6 h-6" />
               BIBLIOTHÈQUE SACRÉE (LIVRES PDF)
               <ArrowRight className="w-6 h-6" />
             </motion.button>
           </Link>
+
+          {/* Lien Mes Livres */}
+          <div className="text-center mb-8">
+            <Link href="/protected/mes-livres">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="text-purple-600 hover:text-purple-800 font-bold text-sm underline"
+              >
+                📚 Voir mes livres achetés
+              </motion.button>
+            </Link>
+          </div>
 
           <p className="text-sm sm:text-base text-gray-600">
             Choisis un domaine pour ta consultation

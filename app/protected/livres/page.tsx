@@ -1,91 +1,71 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { BookOpen, Download, ShoppingCart, Star, ArrowLeft } from 'lucide-react';
+import { BookOpen, Download, ShoppingCart, ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/lib/auth/AuthContext';
 import axios from 'axios';
+import { api } from '@/lib/api/client';
 
 interface Book {
-  id: string;
+  _id: string;
+  bookId: string;
   title: string;
   subtitle: string;
   description: string;
   price: number;
-  pages: number;
-  coverImage: string;
+  pageCount: number;
+  coverImage?: string;
   category: string;
-  rating: number;
-  preview?: string;
+  author: string;
+  isActive?: boolean;
 }
 
-const BOOKS: Book[] = [
-  {
-    id: 'secrets-ancestraux',
-    title: 'Les Secrets Ancestraux',
-    subtitle: 'Sagesse Africaine et Spiritualité',
-    description: 'Découvrez les enseignements sacrés transmis de génération en génération. Ce livre révèle les pratiques spirituelles, rituels et connaissances ésotériques de l\'Afrique traditionnelle.',
-    price: 5000,
-    pages: 250,
-    coverImage: '/books/secrets-ancestraux.jpg',
-    category: 'Spiritualité',
-    rating: 4.9,
-  },
-  {
-    id: 'astrologie-africaine',
-    title: 'Astrologie Africaine',
-    subtitle: 'Le Zodiaque Ancestral',
-    description: 'Explorez le système astrologique africain unique qui relie les cycles cosmiques aux traditions ancestrales. Comprenez votre signe et votre destinée selon la sagesse des anciens.',
-    price: 4500,
-    pages: 180,
-    coverImage: '/books/astrologie-africaine.jpg',
-    category: 'Astrologie',
-    rating: 4.8,
-  },
-  {
-    id: 'numerologie-sacree',
-    title: 'Numérologie Sacrée',
-    subtitle: 'Les Nombres de Votre Destin',
-    description: 'Les nombres révèlent votre mission de vie, vos talents cachés et vos cycles d\'évolution. Apprenez à décoder les messages numériques qui guident votre existence.',
-    price: 3500,
-    pages: 150,
-    coverImage: '/books/numerologie-sacree.jpg',
-    category: 'Numérologie',
-    rating: 4.7,
-  },
-  {
-    id: 'rituels-puissance',
-    title: 'Rituels de Puissance',
-    subtitle: 'Invocations et Pratiques Magiques',
-    description: 'Guide pratique des rituels efficaces pour la protection, l\'abondance, l\'amour et la transformation. Chaque rituel est expliqué étape par étape avec les incantations authentiques.',
-    price: 6000,
-    pages: 300,
-    coverImage: '/books/rituels-puissance.jpg',
-    category: 'Pratiques',
-    rating: 5.0,
-  },
-];
-
 export default function LivresPage() {
+  const { user } = useAuth();
+  const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
   const [purchasingBookId, setPurchasingBookId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // Charger les livres depuis le backend
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await api.get('/books');
+        setBooks(response.data || []);
+      } catch (err) {
+        console.error('Erreur chargement livres:', err);
+        setError('Impossible de charger les livres');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, []);
+
   const handlePurchase = async (book: Book) => {
-    setPurchasingBookId(book.id);
+    setPurchasingBookId(book.bookId);
     setError(null);
 
     try {
+      const phoneNumber = user?.phone || '0758385387';
+      const clientName = user?.username || 'Client';
+
       const paymentData = {
         totalPrice: book.price,
         article: [{ livre: book.price }],
         personal_Info: [{
-          bookId: book.id,
+          bookId: book.bookId,
           bookTitle: book.title,
           productType: 'ebook_pdf',
+          phone: phoneNumber,
         }],
-        numeroSend: '0758385387', // À remplacer par le numéro de l'utilisateur
-        nomclient: 'Client', // À remplacer par le nom de l'utilisateur
-        return_url: `${window.location.origin}/callback?book_id=${book.id}&type=book`,
+        numeroSend: phoneNumber,
+        nomclient: clientName,
+        return_url: `${window.location.origin}/callback?book_id=${book.bookId}&type=book&phone=${phoneNumber}`,
         webhook_url: `${window.location.origin}/api/webhooks/moneyfusion`,
       };
 
@@ -105,6 +85,17 @@ export default function LivresPage() {
       setPurchasingBookId(null);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-amber-600 animate-spin mx-auto mb-4" />
+          <p className="text-gray-700 font-semibold">Chargement des livres...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50">
@@ -153,79 +144,85 @@ export default function LivresPage() {
 
         {/* Grille de livres */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {BOOKS.map((book, index) => (
-            <motion.div
-              key={book.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-100 hover:border-amber-300 transition-all group"
-            >
-              {/* Couverture */}
-              <div className="relative h-64 bg-gradient-to-br from-amber-200 to-orange-300 flex items-center justify-center">
-                <BookOpen className="w-24 h-24 text-white opacity-50" />
-                <div className="absolute top-3 right-3 bg-amber-600 text-white px-3 py-1 rounded-full text-xs font-bold">
-                  {book.category}
-                </div>
-              </div>
-
-              {/* Contenu */}
-              <div className="p-5">
-                <h3 className="text-xl font-black text-gray-900 mb-1">
-                  {book.title}
-                </h3>
-                <p className="text-sm font-semibold text-amber-600 mb-3">
-                  {book.subtitle}
-                </p>
-
-                {/* Rating & Pages */}
-                <div className="flex items-center justify-between mb-3 text-sm text-gray-600">
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                    <span className="font-bold">{book.rating}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <BookOpen className="w-4 h-4" />
-                    <span>{book.pages} pages</span>
+          {books.length === 0 ? (
+            <div className="col-span-full text-center py-12">
+              <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600 text-lg">Aucun livre disponible pour le moment</p>
+            </div>
+          ) : (
+            books.map((book, index) => (
+              <motion.div
+                key={book.bookId}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-100 hover:border-amber-300 transition-all group"
+              >
+                {/* Couverture */}
+                <div className="relative h-64 bg-gradient-to-br from-amber-200 to-orange-300 flex items-center justify-center">
+                  <BookOpen className="w-24 h-24 text-white opacity-50" />
+                  <div className="absolute top-3 right-3 bg-amber-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                    {book.category}
                   </div>
                 </div>
 
-                <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-                  {book.description}
-                </p>
+                {/* Contenu */}
+                <div className="p-5">
+                  <h3 className="text-xl font-black text-gray-900 mb-1">
+                    {book.title}
+                  </h3>
+                  <p className="text-sm font-semibold text-amber-600 mb-3">
+                    {book.subtitle}
+                  </p>
 
-                {/* Prix et CTA */}
-                <div className="flex items-center justify-between pt-4 border-t-2 border-gray-100">
-                  <div>
-                    <p className="text-2xl font-black text-gray-900">
-                      {book.price.toLocaleString('fr-FR')} <span className="text-sm font-normal">FCFA</span>
-                    </p>
+                  {/* Author & Pages */}
+                  <div className="flex items-center justify-between mb-3 text-sm text-gray-600">
+                    <div className="flex items-center gap-1">
+                      <span className="font-semibold">{book.author}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <BookOpen className="w-4 h-4" />
+                      <span>{book.pageCount} pages</span>
+                    </div>
                   </div>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handlePurchase(book)}
-                    disabled={purchasingBookId === book.id}
-                    className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 
-                             text-white px-4 py-2 rounded-xl font-bold text-sm 
-                             hover:shadow-lg transition-all disabled:opacity-50"
-                  >
-                    {purchasingBookId === book.id ? (
-                      <>
-                        <span className="animate-spin">⏳</span>
-                        Paiement...
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingCart className="w-4 h-4" />
-                        Acheter
-                      </>
-                    )}
-                  </motion.button>
+
+                  <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                    {book.description}
+                  </p>
+
+                  {/* Prix et CTA */}
+                  <div className="flex items-center justify-between pt-4 border-t-2 border-gray-100">
+                    <div>
+                      <p className="text-2xl font-black text-gray-900">
+                        {book.price.toLocaleString('fr-FR')} <span className="text-sm font-normal">FCFA</span>
+                      </p>
+                    </div>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handlePurchase(book)}
+                      disabled={purchasingBookId === book.bookId}
+                      className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 
+                               text-white px-4 py-2 rounded-xl font-bold text-sm 
+                               hover:shadow-lg transition-all disabled:opacity-50"
+                    >
+                      {purchasingBookId === book.bookId ? (
+                        <>
+                          <span className="animate-spin">⏳</span>
+                          Paiement...
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart className="w-4 h-4" />
+                          Acheter
+                        </>
+                      )}
+                    </motion.button>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))
+          )}
         </div>
 
         {/* Info téléchargement */}
