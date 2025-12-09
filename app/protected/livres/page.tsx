@@ -66,8 +66,8 @@ export default function LivresPage() {
         }],
         numeroSend: phoneNumber,
         nomclient: clientName,
-        return_url: `${window.location.origin}/callback?book_id=${book.bookId}&type=book&phone=${phoneNumber}`,
-        webhook_url: `${window.location.origin}/api/webhooks/moneyfusion`,
+        return_url: `'https://www.monetoile.org/callback?book_id=${book.bookId}&type=book&phone=${phoneNumber}`,
+        webhook_url: `https://www.monetoile.org/api/webhooks/moneyfusion`,
       };
 
       const apiUrl = "https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/pay/";

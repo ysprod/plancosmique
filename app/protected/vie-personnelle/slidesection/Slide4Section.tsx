@@ -158,11 +158,12 @@ export default function Slide4Section() {
         }],
         numeroSend: form.numeroSend || '0758385387',
         nomclient: `${form.prenoms} ${form.nom}`,
-        return_url: `${window.location.origin}/callback?consultation_id=${createdConsultationId}`,
-        webhook_url: `${window.location.origin}/api/webhooks/moneyfusion`,
+        return_url: `https://www.monetoile.org/callback?consultation_id=${createdConsultationId}`,
+        webhook_url: `https://www.monetoile.org/api/webhooks/moneyfusion`,
       };
 
-      // 3. Appeler MoneyFusion
+      // 3. Appeler MoneyFusion     
+      
       const apiUrl = "https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/pay/";
       const response = await axios.post(apiUrl, paymentData, {
         headers: { "Content-Type": "application/json" },
