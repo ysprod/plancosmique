@@ -59,7 +59,6 @@ const PaymentCallbackContent = () => {
   const [status, setStatus] = useState<PaymentStatus>('pending');
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   const [consultationId, setConsultationId] = useState<string | null>(null);
-  const [analysisId, setAnalysisId] = useState<string | null>(null);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
@@ -208,7 +207,6 @@ const PaymentCallbackContent = () => {
 
           if (callbackResult.success) {
             setConsultationId(callbackResult.consultationId || null);
-            setAnalysisId(callbackResult.analysisId || null);
             setDownloadUrl(callbackResult.downloadUrl || null);
             setShouldAutoRedirect(true);
           } else {
@@ -257,6 +255,7 @@ const PaymentCallbackContent = () => {
     }, 1000);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldAutoRedirect, autoRedirectCountdown]);
 
   // 🔹 Redirection automatique intelligente
