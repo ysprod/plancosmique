@@ -55,6 +55,46 @@ export default function Slide4Section() {
   const [consultationId, setConsultationId] = useState<string | null>(null);
   const [offeringType, setOfferingType] = useState<string | null>(null);
 
+  // Fonction pour générer l'analyse
+  const generateAnalysis = useCallback(async (cId: string) => {
+    try {
+      console.log('🔮 [Slide4Section] Démarrage génération analyse pour:', cId);
+
+      // Préparer les données de naissance
+      const birthData = {
+        nom: form.nom,
+        prenoms: form.prenoms,
+        genre: form.genre,
+        dateNaissance: form.dateNaissance,
+        heureNaissance: form.heureNaissance,
+        paysNaissance: form.paysNaissance,
+        villeNaissance: form.villeNaissance,
+      };
+
+      // Appeler l'endpoint de génération d'analyse
+      const response = await fetch(
+        `/api/consultations/${cId}/generate-analysis`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ birthData }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erreur lors de la génération');
+      }
+
+      const result = await response.json();
+      console.log('✅ [Slide4Section] Analyse générée avec succès:', result.consultationId);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
+      console.error('❌ [Slide4Section] Erreur génération analyse:', errorMessage);
+      // On n'affiche pas l'erreur car l'analyse se génère en background
+    }
+  }, [form]);
+
   // Vérifier si on revient d'une redirection de paiement réussi
   useEffect(() => {
     const successConsultationId = searchParams.get('consultation_id');
@@ -66,8 +106,13 @@ export default function Slide4Section() {
       setOfferingType(savedOfferingType);
       setStep('success');
       setBackActivated(true);
+
+      // Déclencher la génération de l'analyse si consultationId est défini
+      if (successConsultationId) {
+        generateAnalysis(successConsultationId);
+      }
     }
-  }, [searchParams]);
+  }, [searchParams, generateAnalysis]);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
