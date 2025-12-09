@@ -180,16 +180,6 @@ function BookSuccessContent() {
                 Voir plus de livres
               </motion.button>
             </Link>
-            <Link href="/protected/profil">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-6 py-3 rounded-xl font-bold transition-all"
-              >
-                Retour au profil
-                <ArrowRight className="w-5 h-5" />
-              </motion.button>
-            </Link>
           </div>
         </div>
       </motion.div>

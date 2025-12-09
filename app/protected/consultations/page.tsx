@@ -401,14 +401,7 @@ export default function ConsultationsListPage() {
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 py-8 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <button
-            onClick={() => router.push('/protected/profil')}
-            className="flex items-center gap-2 text-white/80 hover:text-white transition-colors mb-6 group"
-          >
-            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            Retour au profil
-          </button>
+        <div className="mb-8">        
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">

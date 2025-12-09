@@ -121,15 +121,6 @@ export default function KnowledgePage() {
               </p>
             </div>
             
-            <Link href="/protected/profil">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-4 py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 transition-colors"
-              >
-                Retour au profil
-              </motion.button>
-            </Link>
           </div>
 
           {/* Barre de recherche */}

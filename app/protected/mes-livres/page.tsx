@@ -66,16 +66,7 @@ export default function MesLivresPage() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <Link href="/protected/profil">
-            <motion.button
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors mb-6 group"
-            >
-              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-              <span className="font-semibold">Retour au profil</span>
-            </motion.button>
-          </Link>
+         
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
