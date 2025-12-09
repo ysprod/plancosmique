@@ -19,17 +19,7 @@ export default function OfferingPage({
 }: OfferingPageProps) {
   const offering = CONSULTATION_OFFERINGS[consultationType];
 
-  if (!offering) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center py-12 text-red-600"
-      >
-        <p>Consultation non reconnue</p>
-      </motion.div>
-    );
-  }
+  
 
   const currency = getCurrencySymbol();
 

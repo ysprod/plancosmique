@@ -2,6 +2,7 @@
 import { api } from '@/lib/api/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
+import axios from 'axios';
 import React, { useCallback, useState } from 'react';
 import ConsultationForm from './ConsultationForm';
 import ConsultationSelection from './ConsultationSelection';
@@ -96,22 +97,22 @@ export default function Slide4Section() {
     [form, selected]
   );
 
-  // 2. Confirmation de l'offrande => DÉBUT du traitement (création + génération)
+  // 2. Confirmation de l'offrande => Initiation du paiement MoneyFusion
   const handleOfferingConfirm = useCallback(async () => {
     if (!selected) return;
 
     setPaymentLoading(true);
-    setStep('processing'); // Afficher l'écran de traitement
+    setStep('processing');
 
     try {
-      // 1. Créer la consultation
+      // 1. Créer la consultation EN ATTENTE DE PAIEMENT
       const payload = {
         serviceId: SERVICE_ID,
         type: CONSULTATION_TYPE_MAP[selected.id] || 'AUTRE',
         title: selected.title,
         description: selected.description,
         formData: form,
-        status: 'generating_analysis',
+        status: 'pending_payment',
       };
 
       const consultationRes = await api.post('/consultations', payload);
@@ -123,74 +124,52 @@ export default function Slide4Section() {
       const createdConsultationId = consultationRes.data?.id || consultationRes.data?.consultationId;
       setConsultationId(createdConsultationId);
       console.log('✅ Consultation créée avec ID:', createdConsultationId);
-      
-      // 2. Générer l'analyse
-      const analysisResponse = await api.post(`/consultations/${createdConsultationId}/generate-analysis`, {
-        birthData: {
-          nom: form.nom,
-          prenoms: form.prenoms,
-          genre: form.genre,
-          dateNaissance: form.dateNaissance,
-          heureNaissance: form.heureNaissance,
-          paysNaissance: form.paysNaissance,
-          villeNaissance: form.villeNaissance,
-          email: form.email,
-        },
+
+      // 2. Préparer les données pour MoneyFusion
+      const offering = CONSULTATION_OFFERINGS[selected.id];
+      const paymentData = {
+        totalPrice: offering.amount,
+        article: [{ consultation: offering.amount }],
+        personal_Info: [{
+          consultationId: createdConsultationId,
+          type: CONSULTATION_TYPE_MAP[selected.id],
+          formData: form,
+        }],
+        numeroSend: form.numeroSend || '0758385387',
+        nomclient: `${form.prenoms} ${form.nom}`,
+        return_url: `${window.location.origin}/callback?consultation_id=${createdConsultationId}`,
+        webhook_url: `${window.location.origin}/api/webhooks/moneyfusion`,
+      };
+
+      // 3. Appeler MoneyFusion
+      const apiUrl = "https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/pay/";
+      const response = await axios.post(apiUrl, paymentData, {
+        headers: { "Content-Type": "application/json" },
       });
 
-      console.log('Réponse génération analyse:', analysisResponse);
+      console.log('✅ Réponse MoneyFusion:', response.data);
 
-      if (analysisResponse.status !== 200 && analysisResponse.status !== 201) {
-        const errorMsg = analysisResponse.data?.error || 'Erreur lors de la génération de l\'analyse';
-        
-        if (errorMsg.includes('Crédit DeepSeek épuisé') || errorMsg.includes('INSUFFICIENT_BALANCE')) {
-          throw new Error('Le service d\'analyse astrologique est temporairement indisponible (crédit API épuisé). Veuillez contacter le support.');
-        }
-        
-        throw new Error(errorMsg);
+      if (response.data?.statut && response.data?.url) {
+        // 4. Redirection vers la page de paiement
+        setTimeout(() => {
+          window.location.href = response.data.url;
+        }, 1000);
+      } else {
+        throw new Error(response.data?.message || 'Erreur lors de l\'initiation du paiement');
       }
-
-      const analysisData = analysisResponse.data;
-      console.log('✅ Analyse générée avec succès:', analysisData);
-
-      // Sauvegarder l'analyse via API backend
-      if (analysisData.analyse) {
-        const saveResponse = await api.post(`/consultations/${createdConsultationId}/save-analysis`, {
-          analyse: analysisData.analyse,
-          statut: 'completed',
-        });
-
-        if (saveResponse.status !== 200 && saveResponse.status !== 201) {
-          console.error('⚠️ Erreur sauvegarde analyse:', saveResponse.data);
-        } else {
-          console.log('💾 Analyse sauvegardée via API');
-        }
-      }
-
-      // 3. Enregistrer l'offrande
-      await api.post(`/consultations/${createdConsultationId}/confirm-offering`, {
-        offeringAmount: CONSULTATION_OFFERINGS[selected.id]?.amount || 0,
-        consultationType: selected.id,
-      });
-
-      // 4. Tout est prêt => succès
-      setPaymentLoading(false);
-      setStep('success');
 
     } catch (err: any) {
-      let errorMessage = 'Erreur lors du traitement';
+      let errorMessage = 'Erreur lors du paiement';
       if (err.response?.data?.message) {
         errorMessage = err.response.data.message;
-      } else if (err.response?.data?.error) {
-        errorMessage = err.response.data.error;
       } else if (err.message) {
         errorMessage = err.message;
       }
 
-      console.error('[Traitement après offrande] Erreur:', errorMessage);
+      console.error('[Paiement] Erreur:', errorMessage);
       setApiError(errorMessage);
       setPaymentLoading(false);
-      setStep('offering'); // Retour à l'offrande en cas d'erreur
+      setStep('offering');
     }
   }, [form, selected]);
 

@@ -34,6 +34,45 @@ function PaymentCallbackContent() {
 
     const BACKEND_VERIFY_URL = "/payments/moneyfusion/verify";
 
+    const generateAnalysisAfterPayment = useCallback(async (consultationId: string, t: string) => {
+        try {
+            console.log('🚀 Génération de l\'analyse après paiement validé:', consultationId);
+
+            // 1. Récupérer les détails de la consultation
+            const consultationRes = await api.get(`/consultations/${consultationId}`);
+            const consultation = consultationRes.data;
+
+            if (!consultation) {
+                throw new Error('Consultation non trouvée');
+            }
+
+            // 2. Générer l'analyse
+            const analysisResponse = await api.post(`/consultations/${consultationId}/generate-analysis`, {
+                birthData: consultation.formData,
+            });
+
+            console.log('✅ Analyse générée avec succès');
+
+            // 3. Sauvegarder l'analyse
+            if (analysisResponse.data?.analyse) {
+                await api.post(`/consultations/${consultationId}/save-analysis`, {
+                    analyse: analysisResponse.data.analyse,
+                    statut: 'completed',
+                });
+                console.log('💾 Analyse sauvegardée');
+            }
+
+            // 4. Marquer le paiement comme traité
+            await api.post(`/consultations/${consultationId}/confirm-offering`, {
+                paid: true,
+                paymentToken: t,
+            });
+
+        } catch (err: any) {
+            console.error('❌ Erreur génération analyse:', err);
+        }
+    }, []);
+
     const verifyPayment = useCallback(async (t: string) => {
         setLoading(true);
         setError("");
@@ -54,6 +93,12 @@ function PaymentCallbackContent() {
                     "monetoile_payment_details",
                     JSON.stringify(data.payment)
                 );
+
+                // Générer l'analyse après paiement validé
+                const consultationId = searchParams.get("consultation_id");
+                if (consultationId) {
+                  generateAnalysisAfterPayment(consultationId, t);
+                }
             } else if (data?.status === "already_used") {
                 setStatus("already_used");
                 setError(data.message || "Ce paiement a déjà été traité");
@@ -74,9 +119,7 @@ function PaymentCallbackContent() {
         } finally {
             setLoading(false);
         }
-    }, []);
-
-
+    }, [searchParams, generateAnalysisAfterPayment]);
 
     // Vérification du token à l'arrivée
     useEffect(() => {

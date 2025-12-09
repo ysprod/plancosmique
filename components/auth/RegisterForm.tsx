@@ -15,7 +15,6 @@ import {
   User,
   X
 } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useCallback, useMemo, useState } from 'react';
 import { countries } from './countries';
@@ -335,11 +334,8 @@ export const RegisterForm: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden flex items-center justify-center p-6">
-      {/* Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f5f5f5_1px,transparent_1px),linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-[size:60px_60px]" />
-      </div>
+    <div className="bg-white relative overflow-hidden flex items-center justify-center">
+     
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -353,22 +349,9 @@ export const RegisterForm: React.FC = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-              className="relative z-10 mb-6"
+              className="relative z-10"
             >
-              <div className="inline-flex items-center justify-center w-24 h-24 bg-white rounded-3xl shadow-lg mb-4 border border-gray-200">
-                <div className="relative w-16 h-16">
-                  <Image
-                    src="/logo.png"
-                    alt="Logo Mon Etoile"
-                    width={64}
-                    height={64}
-                    className="w-full h-full object-contain"
-                    priority
-                  />
-                </div>
-              </div>
-
-              <h1 className="text-4xl font-black text-black mb-2">MON ÉTOILE</h1>
+             
               <p className="text-gray-600 text-lg font-medium">
                 Créez votre compte en toute confidentialité
                 <br />
