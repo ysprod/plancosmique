@@ -1,9 +1,13 @@
+"use client";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { api } from '@/lib/api/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import axios from 'axios';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ConsultationForm from './ConsultationForm';
 import ConsultationSelection from './ConsultationSelection';
 import OfferingPage from './OfferingPage';
@@ -31,6 +35,7 @@ const validateForm = (form: FormData): FormErrors => {
 };
 
 export default function Slide4Section() {
+  const searchParams = useSearchParams();
   const [selected, setSelected] = useState<ConsultationChoice | null>(null);
   const [form, setForm] = useState<FormData>({
     nom: '',
@@ -48,6 +53,21 @@ export default function Slide4Section() {
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [backActivated, setBackActivated] = useState(false);
   const [consultationId, setConsultationId] = useState<string | null>(null);
+  const [offeringType, setOfferingType] = useState<string | null>(null);
+
+  // Vérifier si on revient d'une redirection de paiement réussi
+  useEffect(() => {
+    const successConsultationId = searchParams.get('consultation_id');
+    const isPaymentSuccess = searchParams.get('payment_success');
+    const savedOfferingType = localStorage.getItem('consultation_offering_type');
+    
+    if (successConsultationId && isPaymentSuccess === 'true') {
+      setConsultationId(successConsultationId);
+      setOfferingType(savedOfferingType);
+      setStep('success');
+      setBackActivated(true);
+    }
+  }, [searchParams]);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -151,6 +171,10 @@ export default function Slide4Section() {
       console.log('✅ Réponse MoneyFusion:', response.data);
 
       if (response.data?.statut && response.data?.url) {
+        // Sauvegarder le type d'offrande avant redirection
+        const savedOfferingType = CONSULTATION_TYPE_MAP[selected.id];
+        localStorage.setItem('consultation_offering_type', savedOfferingType);
+        
         // 4. Redirection vers la page de paiement
         setTimeout(() => {
           window.location.href = response.data.url;
@@ -253,6 +277,7 @@ export default function Slide4Section() {
             <PaymentSuccess
               consultationId={consultationId!}
               resetSelection={resetSelection}
+              offeringType={offeringType || (selected ? CONSULTATION_TYPE_MAP[selected.id] : undefined)}
             />
           )}
         </AnimatePresence>

@@ -140,10 +140,14 @@ function PaymentCallbackContent() {
             // Vérifier si c'est un achat de livre
             const bookId = searchParams.get("book_id");
             const paymentType = searchParams.get("type");
+            const consultationId = searchParams.get("consultation_id");
             
             const timer = setTimeout(() => {
                 if (bookId && paymentType === "book") {
                     router.replace(`/protected/livres/success?book_id=${bookId}`);
+                } else if (consultationId) {
+                    // Redirection vers la page vie-personnelle avec le flag de succès
+                    router.replace(`/protected/vie-personnelle?consultation_id=${consultationId}&payment_success=true`);
                 } else {
                     router.replace("/protected/profil");
                 }

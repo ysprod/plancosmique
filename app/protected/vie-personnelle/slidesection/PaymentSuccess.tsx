@@ -1,19 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Eye, ArrowRight, Clock, Sparkles, Home } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { Clock, Sparkles, Home, Gift, Heart } from 'lucide-react';
+import { CONSULTATION_OFFERINGS, getCurrencySymbol } from './offrandes.constants';
 
 interface Props {
   resetSelection: () => void;
   consultationId: string;
+  offeringType?: string;
 }
 
-const PaymentSuccess: React.FC<Props> = ({ resetSelection, consultationId }) => {
-  const router = useRouter();
-
-  const handleViewResults = () => {
-    router.push(`/protected/consultations/${consultationId}`);
-  };
+const PaymentSuccess: React.FC<Props> = ({ resetSelection, consultationId, offeringType }) => {
+  // Récupérer les infos de l'offrande
+  const offering = offeringType ? CONSULTATION_OFFERINGS[offeringType] : null;
+  const currency = getCurrencySymbol();
 
   const confettiVariants = {
     initial: { opacity: 0, y: -50, rotate: 0 },
@@ -57,7 +56,7 @@ const PaymentSuccess: React.FC<Props> = ({ resetSelection, consultationId }) => 
       {/* Card principale */}
       <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-2 border-green-200 relative z-10">
         {/* Header succès */}
-        <div className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 p-8 text-center relative overflow-hidden">
+        <div className="bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 p-8 text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-white/10" />
           <motion.div
             initial={{ scale: 0, rotate: -180 }}
@@ -66,53 +65,86 @@ const PaymentSuccess: React.FC<Props> = ({ resetSelection, consultationId }) => 
             className="relative"
           >
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
-              <CheckCircle className="w-12 h-12 text-green-600" />
+              <Gift className="w-12 h-12 text-amber-600" />
             </div>
             <h2 className="text-3xl font-black text-white mb-2">
-              Paiement Confirmé ! 🎉
+              Merci pour votre Offrande ! 🙏
             </h2>
-            <p className="text-green-100 text-lg">
-              Votre analyse astrologique est en cours de génération
+            <p className="text-amber-100 text-lg">
+              Votre demande de consultation a été reçue
             </p>
           </motion.div>
         </div>
 
         {/* Corps */}
         <div className="p-8 space-y-6">
-          {/* Message principal */}
+          {/* Message de félicitations et confirmation */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-gradient-to-br from-purple-50 to-fuchsia-50 rounded-2xl p-6 border-2 border-purple-200"
+            className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border-2 border-amber-200"
           >
             <div className="flex items-start gap-4">
-              <Sparkles className="w-8 h-8 text-purple-600 flex-shrink-0 animate-pulse" />
+              <Heart className="w-8 h-8 text-amber-600 flex-shrink-0 animate-pulse" />
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Génération de votre carte du ciel
+                  Votre offrande a été acceptée
                 </h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  Notre intelligence artificielle analyse votre thème astral pour révéler :
+                <p className="text-gray-700 leading-relaxed">
+                  Nous vous remercions sincèrement pour votre offrande. Celle-ci honore votre démarche spirituelle et soutient notre communauté.
                 </p>
-                <ul className="space-y-2 text-gray-700">
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                    Votre mission de vie et chemin karmique
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                    Vos talents naturels et dons uniques
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                    Vos défis de vie et opportunités de croissance
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                    Votre style relationnel et compatibilités
-                  </li>
-                </ul>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Affichage du montant de l'offrande si disponible */}
+          {offering && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+              className="bg-gradient-to-r from-amber-100 to-orange-100 rounded-2xl p-6 border-2 border-amber-300"
+            >
+              <div className="text-center">
+                <p className="text-gray-700 text-sm font-semibold mb-2 uppercase tracking-wide">
+                  Offrande reçue
+                </p>
+                <div className="flex items-baseline justify-center gap-2">
+                  <span className="text-4xl font-black text-amber-700">
+                    {offering.amount.toLocaleString('fr-FR')}
+                  </span>
+                  <span className="text-2xl font-bold text-amber-600">
+                    {currency}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Informations sur l'attente */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl p-6 border-2 border-purple-200"
+          >
+            <div className="flex items-start gap-4">
+              <Clock className="w-8 h-8 text-purple-600 flex-shrink-0 animate-pulse" />
+              <div>
+                <h3 className="font-bold text-gray-900 text-lg mb-2">
+                  Délai de traitement
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Un Maître Spirituel apportera une réponse complète à votre demande de consultation dans
+                  <span className="font-bold text-purple-700 mx-1">
+                    {offering?.waitingTime || '24'} heures
+                  </span>
+                  environ.
+                </p>
+                <p className="text-gray-600 text-sm mt-3">
+                  Vous serez notifié dès que votre consultation sera prête.
+                </p>
               </div>
             </div>
           </motion.div>
@@ -135,40 +167,41 @@ const PaymentSuccess: React.FC<Props> = ({ resetSelection, consultationId }) => 
             </div>
           </div>
 
-          {/* Statut génération */}
+          {/* Message d'attente */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border-2 border-amber-200"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-200"
           >
-            <div className="flex items-center gap-3 mb-4">
-              <Clock className="w-6 h-6 text-amber-600 animate-pulse" />
-              <h3 className="font-bold text-gray-900 text-lg">Analyse en cours</h3>
+            <div className="flex items-start gap-4">
+              <Sparkles className="w-6 h-6 text-green-600 flex-shrink-0 animate-pulse" />
+              <div>
+                <p className="text-gray-700 font-semibold mb-2">
+                  Ce qu'il se passe maintenant :
+                </p>
+                <ul className="space-y-2 text-gray-700 text-sm">
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                    Votre demande a été transmise à un Maître Spirituel
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                    Une analyse spirituelle complète est en cours
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                    Vous recevrez une notification dès que votre réponse est prête
+                  </li>
+                </ul>
+              </div>
             </div>
-            <p className="text-gray-700 mb-4">
-              La génération de votre analyse prend généralement <strong>2 à 5 minutes</strong>.
-              Vous pouvez consulter vos résultats dès maintenant, ils seront mis à jour automatiquement.
-            </p>
-            <motion.button
-              onClick={handleViewResults}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full py-4 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
-            >
-              <Eye className="w-5 h-5" />
-              Voir mon analyse astrologique
-              <ArrowRight className="w-5 h-5" />
-            </motion.button>
           </motion.div>
 
           {/* Support */}
           <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
             <p className="text-sm text-gray-700 text-center">
-              <strong>Besoin d'aide ?</strong> Contactez-nous à 
-              {/* <a href="mailto:support@monetoile.org" className="text-purple-600 hover:underline font-semibold">
-                support@monetoile.org
-              </a> */}
+              <strong>Besoin d'aide ?</strong> Consultez vos consultations pour suivre la progression
             </p>
           </div>
 
