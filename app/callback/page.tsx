@@ -63,7 +63,7 @@ const PaymentCallbackContent = () => {
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [autoRedirectCountdown, setAutoRedirectCountdown] = useState<number>(10);
+  const [autoRedirectCountdown, setAutoRedirectCountdown] = useState<number>(60);
   const [shouldAutoRedirect, setShouldAutoRedirect] = useState(false);
 
   // 🔹 Vérifier et normaliser le statut du paiement

@@ -1,4 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
+import type { BirthData } from '@/types/astrology.types';
+
+/**
+ * Fonction asynchrone pour générer l'analyse sans bloquer la réponse
+ */
+async function generateAnalysisAsync(
+  consultationId: string,
+  birthData: BirthData
+): Promise<void> {
+  try {
+    console.log('🔮 [Callback] Démarrage génération analyse pour:', consultationId);
+
+    const apiUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/consultations/${consultationId}/generate-analysis`;
+
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ birthData }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('❌ [Callback] Erreur génération:', errorData.message);
+      return;
+    }
+
+    const result = await response.json();
+    console.log('✅ [Callback] Analyse générée avec succès:', consultationId);
+    console.log('📊 [Callback] Résultat:', {
+      consultationId: result.consultationId,
+      hasAnalyse: !!result.analyse,
+    });
+
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
+    console.error('❌ [Callback] Erreur génération analyse:', errorMessage);
+    // On n'interrompt pas le flux car la génération est asynchrone
+  }
+}
 
 /**
  * API Callback pour traiter les paiements de consultations
@@ -28,26 +69,49 @@ export async function POST(request: NextRequest) {
     if (type === 'consultation') {
       const personalInfo = paymentData.personal_Info?.[0];
       const consultationId = personalInfo?.consultationId;
+      const formData = personalInfo?.formData;
 
-      if (!consultationId) {
+      if (!consultationId || !formData) {
         return NextResponse.json(
-          { success: false, message: 'ID de consultation manquant' },
+          { success: false, message: 'ID de consultation ou données manquantes' },
           { status: 400 }
         );
       }
 
       console.log('✅ Traitement consultation:', consultationId);
 
-      // TODO: Appeler le backend pour:
-      // 1. Mettre à jour le statut de la consultation à "paid"
-      // 2. Générer l'analyse si nécessaire
-      // 3. Envoyer email de confirmation
+      try {
+        // 1. Préparer les données de naissance
+        const birthData = {
+          nom: formData.nom,
+          prenoms: formData.prenoms,
+          genre: formData.genre,
+          dateNaissance: formData.dateNaissance,
+          heureNaissance: formData.heureNaissance,
+          paysNaissance: formData.paysNaissance,
+          villeNaissance: formData.villeNaissance,
+        };
 
-      return NextResponse.json({
-        success: true,
-        consultationId,
-        message: 'Paiement de consultation traité avec succès',
-      }, { status: 200 });
+        // 2. Déclencher la génération de l'analyse de manière asynchrone
+        // On lance la génération mais on ne l'attend pas pour la réponse
+        generateAnalysisAsync(consultationId, birthData).catch((err: unknown) => {
+          console.error('❌ Erreur génération analyse:', err instanceof Error ? err.message : 'Erreur inconnue');
+        });
+
+        return NextResponse.json({
+          success: true,
+          consultationId,
+          message: 'Paiement de consultation traité avec succès. Génération de l\'analyse en cours...',
+        }, { status: 200 });
+
+      } catch (processError: unknown) {
+        const errorMsg = processError instanceof Error ? processError.message : 'Erreur inconnue';
+        console.error('❌ Erreur traitement consultation:', errorMsg);
+        return NextResponse.json(
+          { success: false, message: `Erreur traitement consultation: ${errorMsg}` },
+          { status: 500 }
+        );
+      }
     }
 
     // Type par défaut
