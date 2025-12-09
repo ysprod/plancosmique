@@ -6,11 +6,12 @@ export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
   // Liste des routes publiques (peut être étendue)
+  // /callback est autorisé sans authentification car c'est la redirection MoneyFusion
   const publicRoutes = ['/', '/auth/login', '/auth/register', '/callback'];
   const isPublicRoute = publicRoutes.some(route => pathname === route);
 
   // Liste des routes protégées (toutes les routes commençant par /protected)
-  const protectedRoutePrefixes = ['/admin','/protected','/dashboard'];
+  const protectedRoutePrefixes = ['/admin', '/protected', '/dashboard'];
   const isProtectedRoute = protectedRoutePrefixes.some(prefix => pathname.startsWith(prefix));
 
   // Si la route est protégée et pas de token, rediriger vers login avec returnTo
@@ -21,7 +22,7 @@ export function middleware(request: NextRequest) {
   }
 
   // Si connecté et essaie d'accéder à login/register, rediriger vers dashboard
-  if (token && isPublicRoute && pathname !== '/') {
+  if (token && isPublicRoute && pathname !== '/' && pathname !== '/callback') {
     return NextResponse.redirect(new URL('/protected/profil', request.url));
   }
 
