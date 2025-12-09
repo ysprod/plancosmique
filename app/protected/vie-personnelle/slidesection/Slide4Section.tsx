@@ -6,13 +6,11 @@ import { api } from '@/lib/api/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import axios from 'axios';
-import React, { useCallback, useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import React, { useCallback, useState } from 'react';
 import ConsultationForm from './ConsultationForm';
 import ConsultationSelection from './ConsultationSelection';
 import OfferingPage from './OfferingPage';
 import PaymentProcessing from './PaymentProcessing';
-import PaymentSuccess from './PaymentSuccess';
 import { CONSULTATION_TYPE_MAP } from './consultation.constants';
 import { CONSULTATION_OFFERINGS } from './offrandes.constants';
 
@@ -35,7 +33,6 @@ const validateForm = (form: FormData): FormErrors => {
 };
 
 export default function Slide4Section() {
-  const searchParams = useSearchParams();
   const [selected, setSelected] = useState<ConsultationChoice | null>(null);
   const [form, setForm] = useState<FormData>({
     nom: '',
@@ -52,22 +49,6 @@ export default function Slide4Section() {
   const [step, setStep] = useState<StepType>('selection');
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [backActivated, setBackActivated] = useState(false);
-  const [consultationId, setConsultationId] = useState<string | null>(null);
-  const [offeringType, setOfferingType] = useState<string | null>(null);
-
-  // Vérifier si on revient d'une redirection de paiement réussi
-  useEffect(() => {
-    const successConsultationId = searchParams.get('consultation_id');
-    const isPaymentSuccess = searchParams.get('payment_success');
-    const savedOfferingType = localStorage.getItem('consultation_offering_type');
-    
-    if (successConsultationId && isPaymentSuccess === 'true') {
-      setConsultationId(successConsultationId);
-      setOfferingType(savedOfferingType);
-      setStep('success');
-      setBackActivated(true);
-    }
-  }, [searchParams]);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -142,7 +123,6 @@ export default function Slide4Section() {
       }
 
       const createdConsultationId = consultationRes.data?.id || consultationRes.data?.consultationId;
-      setConsultationId(createdConsultationId);
       console.log('✅ Consultation créée avec ID:', createdConsultationId);
 
       // 2. Préparer les données pour MoneyFusion
@@ -219,7 +199,6 @@ export default function Slide4Section() {
     setErrors({});
     setApiError(null);
     setStep('selection');
-    setConsultationId(null);
   }, []);
 
 
@@ -270,17 +249,8 @@ export default function Slide4Section() {
             />
           )}
 
-          {/* Étape 3 : Traitement (génération analyse) */}
+       
           {step === 'processing' && <PaymentProcessing />}
-
-          {/* Étape 4 : Succès */}
-          {step === 'success' && (
-            <PaymentSuccess
-              consultationId={consultationId!}
-              resetSelection={resetSelection}
-              offeringType={offeringType || (selected ? CONSULTATION_TYPE_MAP[selected.id] : undefined)}
-            />
-          )}
         </AnimatePresence>
       </div>
     </div>
