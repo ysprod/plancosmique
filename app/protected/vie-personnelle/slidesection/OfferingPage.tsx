@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Heart, Gift, ArrowRight } from 'lucide-react';
 import { CONSULTATION_OFFERINGS, getCurrencySymbol } from './offrandes.constants';
+import { CONSULTATION_TYPE_MAP } from './consultation.constants';
 
 interface OfferingPageProps {
   consultationType: string;
@@ -17,9 +18,19 @@ export default function OfferingPage({
   loading,
   onBack,
 }: OfferingPageProps) {
-  const offering = CONSULTATION_OFFERINGS[consultationType];
+  // Map the consultation choice ID to the offering type
+  const offeringType = CONSULTATION_TYPE_MAP[consultationType];
+  const offering = CONSULTATION_OFFERINGS[offeringType];
 
-  
+  if (!offering) {
+    return (
+      <div className="max-w-2xl mx-auto p-8 text-center">
+        <p className="text-red-600 font-semibold">
+          Type de consultation non trouvé: {consultationType} (mapped to {offeringType})
+        </p>
+      </div>
+    );
+  }
 
   const currency = getCurrencySymbol();
 
