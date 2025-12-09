@@ -34,7 +34,9 @@ export default function LivresPage() {
     const fetchBooks = async () => {
       try {
         const response = await api.get('/books');
-        setBooks(response.data || []);
+        // Le backend peut retourner soit un tableau directement, soit un objet avec une propriété books
+        const booksData = Array.isArray(response.data) ? response.data : (response.data?.books || []);
+        setBooks(booksData);
       } catch (err) {
         console.error('Erreur chargement livres:', err);
         setError('Impossible de charger les livres');
