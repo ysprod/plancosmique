@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import type { BirthData } from '@/types/astrology.types';
 
 /**
- * Fonction asynchrone pour générer l'analyse sans bloquer la réponse
+ * Fonction pour générer l'analyse ET ATTENDRE sa fin
+ * Retourne true si succès, false si erreur
  */
-async function generateAnalysisAsync(
+async function generateAnalysis(
   consultationId: string,
   birthData: BirthData
-): Promise<void> {
+): Promise<boolean> {
   try {
     console.log('🔮 [Callback] Démarrage génération analyse pour:', consultationId);
 
@@ -24,7 +25,7 @@ async function generateAnalysisAsync(
     if (!response.ok) {
       const errorData = await response.json();
       console.error('❌ [Callback] Erreur génération:', errorData.message);
-      return;
+      return false;
     }
 
     const result = await response.json();
@@ -34,10 +35,12 @@ async function generateAnalysisAsync(
       hasAnalyse: !!result.analyse,
     });
 
+    return true;
+
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
     console.error('❌ [Callback] Erreur génération analyse:', errorMessage);
-    // On n'interrompt pas le flux car la génération est asynchrone
+    return false;
   }
 }
 
@@ -92,16 +95,23 @@ export async function POST(request: NextRequest) {
           villeNaissance: formData.villeNaissance,
         };
 
-        // 2. Déclencher la génération de l'analyse de manière asynchrone
-        // On lance la génération mais on ne l'attend pas pour la réponse
-        generateAnalysisAsync(consultationId, birthData).catch((err: unknown) => {
-          console.error('❌ Erreur génération analyse:', err instanceof Error ? err.message : 'Erreur inconnue');
-        });
+        // 2. Générer l'analyse et ATTENDRE sa fin
+        console.log('⏳ Attente de la génération de l\'analyse...');
+        const analysisGenerated = await generateAnalysis(consultationId, birthData);
+
+        if (!analysisGenerated) {
+          console.warn('⚠️ L\'analyse n\'a pas pu être générée, mais on continue quand même');
+        } else {
+          console.log('✅ Analyse générée avec succès');
+        }
 
         return NextResponse.json({
           success: true,
           consultationId,
-          message: 'Paiement de consultation traité avec succès. Génération de l\'analyse en cours...',
+          analysisGenerated,
+          message: analysisGenerated 
+            ? 'Paiement et analyse complétés avec succès!'
+            : 'Paiement traité mais l\'analyse sera générée ultérieurement.',
         }, { status: 200 });
 
       } catch (processError: unknown) {

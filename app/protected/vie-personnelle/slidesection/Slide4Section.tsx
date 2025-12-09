@@ -11,6 +11,7 @@ import OfferingPage from './OfferingPage';
 import { CONSULTATION_TYPE_MAP } from './consultation.constants';
 import type { ConsultationChoice, FormData, FormErrors, StepType } from './consultation.types';
 import { CONSULTATION_OFFERINGS } from './offrandes.constants';
+import PaymentProcessing from './PaymentProcessing';
 
 const SERVICE_ID = process.env.NEXT_PUBLIC_SERVICE_ID;
 
@@ -95,7 +96,8 @@ export default function Slide4Section() {
   const handleOfferingConfirm = useCallback(async () => {
     if (!selected) return;
     setPaymentLoading(true);
- 
+    setStep('processing');
+
     try {
       const payload = {
         serviceId: SERVICE_ID,
@@ -105,6 +107,8 @@ export default function Slide4Section() {
         formData: form,
         status: 'pending_payment',
       };
+
+      console.log('[Consultation] Payload:', JSON.stringify(payload, null, 2));
 
       const consultationRes = await api.post('/consultations', payload);
 
@@ -157,11 +161,14 @@ export default function Slide4Section() {
       let errorMessage = 'Erreur lors du paiement';
       if (err.response?.data?.message) {
         errorMessage = err.response.data.message;
+      } else if (err.response?.data?.error) {
+        errorMessage = err.response.data.error;
       } else if (err.message) {
         errorMessage = err.message;
       }
 
-      console.error('[Paiement] Erreur:', errorMessage);
+      console.error('[Paiement] Erreur complète:', err.response?.data || err);
+      console.error('[Paiement] Message erreur:', errorMessage);
       setApiError(errorMessage);
       setPaymentLoading(false);
       setStep('offering');
@@ -236,6 +243,11 @@ export default function Slide4Section() {
               onBack={handleBackToForm}
             />
           )}
+
+          {/* Étape 3 : Paiement */}
+          {step === 'processing' && selected && (
+             <PaymentProcessing />
+          )}  
         </AnimatePresence>
       </div>
     </div>

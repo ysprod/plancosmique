@@ -20,15 +20,14 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // URL de vérification MoneyFusion
-        const verifyUrl = 'https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/verify/';
+        // URL de vérification MoneyFusion (endpoint public de notification)
+        const verifyUrl = `https://www.pay.moneyfusion.net/paiementNotif/${token}`;
 
-        console.log('[MoneyFusion API] Vérification du token:', token);
+        console.log('[MoneyFusion API] Vérification du token (GET):', verifyUrl);
 
         // Appel à l'API MoneyFusion pour vérifier le paiement
-        const response = await axios.post(
+        const response = await axios.get(
             verifyUrl,
-            { token },
             {
                 headers: {
                     'Content-Type': 'application/json',

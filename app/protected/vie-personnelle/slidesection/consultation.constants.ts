@@ -10,7 +10,6 @@ export const GENRE_OPTIONS = [
   { value: '', label: 'Sélectionner' },
   { value: 'Homme', label: 'Homme' },
   { value: 'Femme', label: 'Femme' },
-  { value: 'Autre', label: 'Autre' },
 ] as const;
 
 export const CONSULTATION_CHOICES: ConsultationChoice[] = [
