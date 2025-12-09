@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { BookOpen, Download, ArrowLeft, Calendar, Loader2 } from 'lucide-react';
+import { BookOpen, Download, Calendar, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth/AuthContext';

@@ -1,8 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { BookOpen, Download, ShoppingCart, ArrowLeft, Loader2 } from 'lucide-react';
-import Link from 'next/link';
+import { BookOpen, Download, ShoppingCart, Loader2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth/AuthContext';
 import axios from 'axios';

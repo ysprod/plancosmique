@@ -5,7 +5,6 @@ import { api } from '@/lib/api/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   AlertCircle,
-  ArrowLeft,
   Calendar,
   CheckCircle,
   ChevronDown,

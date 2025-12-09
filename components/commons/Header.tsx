@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { Role } from "@/types/auth.types";
 import { 
   User, LogOut, Menu, X, Home, FileText, 
   Settings, Sparkles, ChevronDown 
@@ -13,7 +14,7 @@ import NotificationBell from "@/components/NotificationBell";
 import { useState, useCallback, useEffect } from "react";
 
 export default function HeaderPage() {
-  const { logout, user } = useAuth();
+  const { logout, user, hasRole } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -41,9 +42,8 @@ export default function HeaderPage() {
 
   // Menu items
   const navItems = [
-    { href: "/admin", label: "Tableau de bord", icon: Home },
+    ...(hasRole(Role.SUPER_ADMIN) ? [{ href: "/admin", label: "Tableau de bord", icon: Home }] : []),
     { href: "/protected/consultations", label: "Mes Consultations", icon: FileText },
-    { href: "/protected/settings", label: "Paramètres", icon: Settings },
   ];
 
   return (
@@ -203,6 +203,16 @@ export default function HeaderPage() {
                             <p className="text-xs text-gray-500">{user?.email}</p>
                           </div>
                           
+                          <Link href="/protected/settings" onClick={() => setShowUserMenu(false)}>
+                            <button
+                              className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm
+                                         text-slate-700 hover:bg-violet-50 hover:text-violet-600 transition-colors font-medium"
+                            >
+                              <Settings className="w-4 h-4" />
+                              Paramètres
+                            </button>
+                          </Link>
+                          
                           <button
                             onClick={handleLogout}
                             className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm
@@ -335,6 +345,25 @@ export default function HeaderPage() {
                       );
                     })}
                   </nav>
+
+                  {/* Settings Button */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.25 }}
+                  >
+                    <Link href="/protected/settings" onClick={closeMobileMenu}>
+                      <motion.button
+                        whileTap={{ scale: 0.98 }}
+                        className="w-full flex items-center justify-center gap-2 px-6 py-3 
+                                   rounded-xl bg-violet-50 text-violet-600 font-bold
+                                   hover:bg-violet-100 transition-all"
+                      >
+                        <Settings className="w-5 h-5" />
+                        <span>Paramètres</span>
+                      </motion.button>
+                    </Link>
+                  </motion.div>
 
                   {/* Logout Button */}
                   <motion.button
