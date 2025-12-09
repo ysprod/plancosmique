@@ -152,6 +152,7 @@ const PaymentCallbackContent = () => {
       }
 
       const result = await response.json();
+      
       return {
         success: true,
         status: 'paid',
