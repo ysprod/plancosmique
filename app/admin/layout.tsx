@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/auth/AuthContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Activity,
+  BookOpen,
   CreditCard,
   FileText,
   LayoutDashboard,
@@ -22,6 +23,7 @@ const navItems = [
   { href: '/admin/users', label: 'Utilisateurs', icon: Users, color: 'blue' },
   { href: '/admin/consultations', label: 'Consultations', icon: FileText, color: 'green' },
   { href: '/admin/payments', label: 'Paiements', icon: CreditCard, color: 'purple' },
+  { href: '/admin/books', label: 'Livres', icon: BookOpen, color: 'indigo' },
   { href: '/admin/settings', label: 'Paramètres', icon: Settings, color: 'gray' },
 ];
 
