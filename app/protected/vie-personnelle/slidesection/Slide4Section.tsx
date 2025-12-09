@@ -126,7 +126,8 @@ export default function Slide4Section() {
       console.log('✅ Consultation créée avec ID:', createdConsultationId);
 
       // 2. Préparer les données pour MoneyFusion
-      const offering = CONSULTATION_OFFERINGS[selected.id];
+      const offeringType = CONSULTATION_TYPE_MAP[selected.id];
+      const offering = CONSULTATION_OFFERINGS[offeringType];
       const paymentData = {
         totalPrice: offering.amount,
         article: [{ consultation: offering.amount }],
