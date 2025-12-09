@@ -137,12 +137,20 @@ function PaymentCallbackContent() {
     // Redirection automatique après succès
     useEffect(() => {
         if (status === "success") {
+            // Vérifier si c'est un achat de livre
+            const bookId = searchParams.get("book_id");
+            const paymentType = searchParams.get("type");
+            
             const timer = setTimeout(() => {
-                router.replace("/protected/profil");
+                if (bookId && paymentType === "book") {
+                    router.replace(`/protected/livres/success?book_id=${bookId}`);
+                } else {
+                    router.replace("/protected/profil");
+                }
             }, 5000);
             return () => clearTimeout(timer);
         }
-    }, [status, router]);
+    }, [status, router, searchParams]);
 
     const handleRetry = () => {
         if (token && retryCount < 3) {

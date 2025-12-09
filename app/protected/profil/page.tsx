@@ -2,7 +2,7 @@
 import StatsCounter from "@/components/StatsCounter";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { motion } from "framer-motion";
-import { ArrowRight, Briefcase, Calendar, Flame, Globe, Hash, Heart, ShoppingCart, Users } from "lucide-react";
+import { ArrowRight, BookOpen, Briefcase, Calendar, Flame, Globe, Hash, Heart, ShoppingCart, Users } from "lucide-react";
 import Link from "next/link";
 
 const ICONS = { Heart, Users, Briefcase, Globe, Flame, Hash, Calendar };
@@ -74,8 +74,7 @@ export default function ProfilPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-violet-50">
       {/* Progress bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 z-50" />
-           {/* Compteurs crédibilité */}
-        <StatsCounter />
+   
 
       <div className="px-4 py-6 max-w-6xl mx-auto">
         {/* Hero ultra-compact */}
@@ -99,10 +98,23 @@ export default function ProfilPage() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="mb-8 px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-2xl font-black text-lg shadow-2xl hover:shadow-amber-500/50 transition-all flex items-center justify-center gap-3 mx-auto"
+              className="mb-4 px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-2xl font-black text-lg shadow-2xl hover:shadow-amber-500/50 transition-all flex items-center justify-center gap-3 mx-auto"
             >
               <ShoppingCart className="w-6 h-6" />
               LE MARCHÉ DES OFFRANDES
+              <ArrowRight className="w-6 h-6" />
+            </motion.button>
+          </Link>
+
+          {/* Bouton Bibliothèque Sacrée */}
+          <Link href="/protected/livres">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mb-8 px-8 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-2xl font-black text-lg shadow-2xl hover:shadow-purple-500/50 transition-all flex items-center justify-center gap-3 mx-auto"
+            >
+              <BookOpen className="w-6 h-6" />
+              BIBLIOTHÈQUE SACRÉE (LIVRES PDF)
               <ArrowRight className="w-6 h-6" />
             </motion.button>
           </Link>
@@ -156,6 +168,8 @@ export default function ProfilPage() {
           })}
         </motion.div>
       </div>
+              {/* Compteurs crédibilité */}
+        <StatsCounter />
     </div>
   );
 }

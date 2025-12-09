@@ -3,9 +3,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Compass, Eye, Sparkles, Star } from 'lucide-react';
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth/AuthContext';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 const QUESTIONS = [
   { q: "QUI SUIS-JE ?", icon: Eye },
@@ -14,43 +11,9 @@ const QUESTIONS = [
 ];
 
 export default function WelcomePage() {
-  const { user, isLoading } = useAuth();
-  const router = useRouter();
-  const [isRedirecting, setIsRedirecting] = useState(false);
 
-  // Redirection automatique si l'utilisateur est connecté
-  useEffect(() => {
-    if (!isLoading && user) {
-      setIsRedirecting(true);
-      router.push('/protected/profil');
-    }
-  }, [user, isLoading, router]);
-
-  // Affichage du loader pendant la vérification ou la redirection
-  if (isLoading || isRedirecting) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center"
-        >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-            className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-3"
-          />
-          <p className="text-sm text-gray-600 font-medium">
-            {isRedirecting ? 'Redirection vers votre profil...' : 'Vérification...'}
-          </p>
-        </motion.div>
-      </div>
-    );
-  }
-
-  // Si pas connecté, afficher la page de bienvenue
   return (
-    <div className="min-h-screen bg-white">
+    <div className=" bg-white">
       {/* Progress bar mobile-optimized */}
       <motion.div
         initial={{ scaleX: 0 }}
@@ -147,7 +110,7 @@ export default function WelcomePage() {
             </p>
 
             {/* CTA mobile-optimized */}
-            <Link href="/auth/login" className="block">
+            <Link href="/protected/profil" className="block">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.96 }}
@@ -162,16 +125,7 @@ export default function WelcomePage() {
               </motion.button>
             </Link>
 
-            {/* Lien connexion alternatif */}
-            <p className="text-xs text-gray-600 mt-3">
-              Déjà membre ?{' '}
-              <Link 
-                href="/auth/login" 
-                className="text-amber-600 hover:text-amber-700 font-semibold underline"
-              >
-                Connectez-vous
-              </Link>
-            </p>
+         
           </div>
         </motion.div>
       </div>
