@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/hooks';
-import { ProtectedRoute } from '@/components/auth';
 import { Role } from '@/types/auth.types';
 import { Loader2 } from 'lucide-react';
 
@@ -31,13 +30,11 @@ export default function DashboardPage() {
   }, [user, isLoading, router]);
 
   return (
-    <ProtectedRoute>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-violet-50 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-violet-600 animate-spin mx-auto mb-4" />
-          <p className="text-slate-600 text-lg">Redirection vers votre dashboard...</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-violet-50 flex items-center justify-center">
+      <div className="text-center">
+        <Loader2 className="w-12 h-12 text-violet-600 animate-spin mx-auto mb-4" />
+        <p className="text-slate-600 text-lg">Redirection vers votre dashboard...</p>
       </div>
-    </ProtectedRoute>
+    </div>
   );
 }
