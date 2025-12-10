@@ -22,6 +22,12 @@ export function useAnalysisProgress(analysisStages: AnalysisStage[]) {
   }, []);
 
   const startAnalysisAnimation = useCallback(async () => {
+    setIsGeneratingAnalysis(true);
+    setAnalysisCompleted(false);
+    setAnalysisProgress(0);
+    setCurrentStageIndex(0);
+    setCurrentStageMessage('');
+
     let isCancelled = false;
 
     const animateStages = async () => {
@@ -48,6 +54,7 @@ export function useAnalysisProgress(analysisStages: AnalysisStage[]) {
 
       if (!isCancelled) {
         setAnalysisCompleted(true);
+        setIsGeneratingAnalysis(false);
         console.log('✅ Analyse terminée, activation de la redirection...');
       }
     };
@@ -56,6 +63,7 @@ export function useAnalysisProgress(analysisStages: AnalysisStage[]) {
 
     return () => {
       isCancelled = true;
+      setIsGeneratingAnalysis(false);
     };
   }, [analysisStages]);
 
