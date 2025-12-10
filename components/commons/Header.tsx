@@ -48,8 +48,8 @@ export default function HeaderPage() {
 
   return (
     <div className="relative">
-      {/* Progress bar animée - UNIQUEMENT SI CONNECTÉ */}
-      {user && (
+   
+   
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
@@ -62,7 +62,7 @@ export default function HeaderPage() {
             className="h-full w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent"
           />
         </motion.div>
-      )}
+      
 
       {/* Header */}
       <motion.header
@@ -118,8 +118,7 @@ export default function HeaderPage() {
               </div>
             </Link>
 
-            {/* Navigation Desktop - UNIQUEMENT SI CONNECTÉ */}
-            {user && (
+           
               <nav className="hidden lg:flex items-center gap-1">
                 {navItems.map((item, index) => {
                   const Icon = item.icon;
@@ -142,10 +141,10 @@ export default function HeaderPage() {
                   );
                 })}
               </nav>
-            )}
+          
 
             {/* Actions Desktop - UNIQUEMENT SI CONNECTÉ */}
-            {user && (
+           
               <div className="hidden lg:flex items-center gap-2">
                 {/* Notifications */}
                 <NotificationBell />
@@ -227,10 +226,10 @@ export default function HeaderPage() {
                   </AnimatePresence>
                 </div>
               </div>
-            )}
+        
 
             {/* Mobile: Notifications + Menu Button - UNIQUEMENT SI CONNECTÉ */}
-            {user && (
+          
               <div className="flex lg:hidden items-center gap-2">
                 <NotificationBell />
                 
@@ -265,13 +264,13 @@ export default function HeaderPage() {
                   </AnimatePresence>
                 </motion.button>
               </div>
-            )}
+        
           </div>
         </div>
       </motion.header>
 
       {/* Mobile Menu Overlay - UNIQUEMENT SI CONNECTÉ */}
-      {user && (
+     
         <AnimatePresence>
           {mobileMenuOpen && (
             <>
@@ -385,7 +384,7 @@ export default function HeaderPage() {
             </>
           )}
         </AnimatePresence>
-      )}
+      
 
       {/* Spacer pour éviter que le contenu passe sous le header */}
       <div className={user ? "h-16 sm:h-18" : "h-16 sm:h-17"} />
