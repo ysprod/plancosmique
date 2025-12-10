@@ -28,7 +28,7 @@ export default function HeaderPage() {
     if (confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
       logout();
       setMobileMenuOpen(false);
-      window.location.href = "/";
+      window.location.href = "/auth/logout";
     }
   }, [logout]);
 

@@ -52,8 +52,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const storedUser = getUser();
         const token = getAccessToken();
 
+        // IMPORTANT : ne faire l'appel authService.me() que si on a un token ET un utilisateur en cache
         if (storedUser && token) {
-          // Vérifier que le token est toujours valide en récupérant le profil
           try {
             const currentUser = await authService.me();
             setUser(currentUser);
@@ -63,9 +63,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             clearAuth();
             setUser(null);
           }
+        } else {
+          // Pas de token = pas d'utilisateur connecté
+          setUser(null);
         }
       } catch (error) {
         console.error('Error initializing auth:', error);
+        setUser(null);
       } finally {
         setIsLoading(false);
       }
