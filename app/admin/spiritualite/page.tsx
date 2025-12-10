@@ -8,6 +8,8 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Database, Copy, Check, FileJson, FileCode, Flame, Loader, AlertCircle, Zap } from 'lucide-react';
+import { api } from '@/lib/api/client';
+import type { AxiosError } from 'axios';
 
 interface SpiritualPractice {
   _id: string;
@@ -31,8 +33,6 @@ interface SpiritualPractice {
   updatedAt?: string;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
-
 export default function SpiritualiteAdmin() {
   const [practices, setPractices] = useState<SpiritualPractice[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,16 +53,12 @@ export default function SpiritualiteAdmin() {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch(`${API_URL}/spiritualite`);
-      
-      if (!response.ok) {
-        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+
+      const { data } = await api.get<SpiritualPractice[]>('/spiritualite');
       setPractices(data);
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erreur de connexion au serveur';
+      const axiosErr = err as AxiosError<{ message?: string }>;
+      const message = axiosErr?.response?.data?.message || axiosErr.message || 'Erreur de connexion au serveur';
       setError(message);
       console.error('Erreur lors du chargement:', err);
     } finally {
@@ -73,16 +69,11 @@ export default function SpiritualiteAdmin() {
   const fetchExport = async (format: 'json' | 'sql' | 'schema') => {
     try {
       setExporting(true);
-      const response = await fetch(`${API_URL}/spiritualite/admin/export/${format}`);
-      
-      if (!response.ok) {
-        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
-      setExportData(data.data || JSON.stringify(data, null, 2));
+      const { data } = await api.get<{ data?: string }>(`/spiritualite/admin/export/${format}`);
+      setExportData(data?.data || JSON.stringify(data, null, 2));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de l\'export');
+      const axiosErr = err as AxiosError<{ message?: string }>;
+      setError(axiosErr?.response?.data?.message || axiosErr.message || 'Erreur lors de l\'export');
       setExportData('');
     } finally {
       setExporting(false);
@@ -118,16 +109,7 @@ export default function SpiritualiteAdmin() {
       setSeedingSuccess(false);
       setError(null);
 
-      const response = await fetch(`${API_URL}/spiritualite/seed`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
-      }
+      await api.post('/spiritualite/seed');
 
       setSeedingSuccess(true);
       await fetchPractices();
