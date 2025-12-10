@@ -82,14 +82,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authService.login(credentials);
       setUser(response.user);
-      router.push('/');
+      // Laisser le middleware/page gérer la redirection
+      // Juste attendre une fraction de seconde pour laisser les tokens se propager
+      await new Promise(resolve => setTimeout(resolve, 100));
     } catch (error) {
       console.error('Login error:', error);
       throw error;
     } finally {
       setIsLoading(false);
     }
-  }, [router]);
+  }, []);
 
   /**
    * Inscription utilisateur

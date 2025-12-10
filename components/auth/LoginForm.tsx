@@ -150,9 +150,11 @@ const LoginForm = () => {
     try {
       await login(formData);
 
-      // 🔥 Redirection garantie stable
-      router.push(returnTo || '/protected/profil');
-      router.refresh();
+      // 🔥 La redirection se fait APRÈS le login réussi
+      // Utiliser setTimeout pour laisser le state se mettre à jour
+      setTimeout(() => {
+        router.push(returnTo || '/protected/profil');
+      }, 50);
 
     } catch (err: any) {
       setError(
