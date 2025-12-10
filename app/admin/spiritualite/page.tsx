@@ -1,8 +1,3 @@
-/**
- * Composant d'administration pour gérer le contenu de la spiritualité
- * Connecté au backend NestJS - API v1/spiritualite
- */
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -18,7 +13,8 @@ interface SpiritualPractice {
   iconName: string;
   category: string;
   published: boolean;
-  order_index: number;
+  order_index?: number;
+  order?: number;
   description: string;
   introduction: string;
   keyElements: string[];
@@ -29,8 +25,16 @@ interface SpiritualPractice {
   affirmation: string;
   materials?: string[];
   best_timing?: string;
+  bestTiming?: string;
   createdAt?: string;
   updatedAt?: string;
+  __v?: number;
+}
+
+interface ApiResponse {
+  success: boolean;
+  data: SpiritualPractice[];
+  count: number;
 }
 
 export default function SpiritualiteAdmin() {
@@ -61,8 +65,15 @@ export default function SpiritualiteAdmin() {
       setLoading(true);
       setError(null);
 
-      const { data } = await api.get<SpiritualPractice[]>('/spiritualite');
-      setPractices(Array.isArray(data) ? data : []);
+      const { data } = await api.get<ApiResponse>('/spiritualite');
+      console.log('API Response:', data);
+      
+      // Le backend retourne { success, data: [...], count }
+      if (data?.data && Array.isArray(data.data)) {
+        setPractices(data.data);
+      } else {
+        setError('Format de réponse invalide');
+      }
     } catch (err) {
       const axiosErr = err as AxiosError<{ message?: string }>;
       const message = axiosErr?.response?.data?.message || axiosErr.message || 'Erreur de connexion au serveur';
@@ -76,8 +87,12 @@ export default function SpiritualiteAdmin() {
   const fetchExport = async (format: 'json' | 'sql' | 'schema') => {
     try {
       setExporting(true);
-      const { data } = await api.get<{ data?: string }>(`/spiritualite/admin/export/${format}`);
-      setExportData(data?.data || JSON.stringify(data, null, 2));
+      const { data } = await api.get<ApiResponse>(`/spiritualite/admin/export/${format}`);
+      // Pour l'export, on utilise data.data qui contient le contenu
+      setExportData(data?.data 
+        ? (typeof data.data === 'string' ? data.data : JSON.stringify(data.data, null, 2))
+        : JSON.stringify(data, null, 2)
+      );
     } catch (err) {
       const axiosErr = err as AxiosError<{ message?: string }>;
       setError(axiosErr?.response?.data?.message || axiosErr.message || 'Erreur lors de l\'export');
