@@ -66,8 +66,8 @@ export default function MesFavorisPage() {
           setFavorites(data.data);
         }
       } catch (err) {
-        const axiosErr = err as AxiosError<{ message?: string }>;
-        setError(axiosErr?.response?.data?.message || 'Erreur de chargement');
+        // Erreur silencieuse - la page affiche un message vide
+        console.error('Erreur de chargement:', err);
       } finally {
         setLoading(false);
       }
