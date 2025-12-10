@@ -46,12 +46,12 @@ export default function RootLayout({
     <html lang="fr" className={inter.variable}>
       <body className={inter.className}>
         <ErrorBoundary>
-          <Suspense fallback={<LoadingFallback />}>
-            <AuthProvider>
-              <HeaderPage />
+          <AuthProvider>
+            <HeaderPage />
+            <Suspense fallback={<LoadingFallback />}>
               {children}
-            </AuthProvider>
-          </Suspense>
+            </Suspense>
+          </AuthProvider>
         </ErrorBoundary>
       </body>
     </html>

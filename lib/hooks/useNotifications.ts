@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { notificationsService } from '@/lib/api/services';
+import { useAuth } from '@/lib/hooks/useAuth';
 import type { Notification } from '@/types/notification.types';
 
 export function useNotifications(pollingInterval: number = 30000) {
@@ -9,6 +10,7 @@ export function useNotifications(pollingInterval: number = 30000) {
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
 
   const fetchNotifications = useCallback(async () => {
     try {
@@ -59,14 +61,27 @@ export function useNotifications(pollingInterval: number = 30000) {
   }, [notifications]);
 
   // Polling pour récupérer les nouvelles notifications
+  // ⚠️ Ne fetcher QUE si utilisateur connecté
   useEffect(() => {
+    // Attendre que l'auth soit chargé et que l'utilisateur soit connecté
+    if (authLoading) {
+      return; // Attendre que l'auth finisse de charger
+    }
+
+    if (!isAuthenticated) {
+      // Pas connecté, ne rien fetcher
+      setIsLoading(false);
+      return;
+    }
+
+    // Utilisateur connecté, lancer le polling
     fetchNotifications();
     
     if (pollingInterval > 0) {
       const interval = setInterval(fetchNotifications, pollingInterval);
       return () => clearInterval(interval);
     }
-  }, [fetchNotifications, pollingInterval]);
+  }, [isAuthenticated, authLoading, fetchNotifications, pollingInterval]);
 
   return {
     notifications,
