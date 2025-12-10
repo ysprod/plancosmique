@@ -4,139 +4,35 @@ import StatsCounter from "@/components/StatsCounter";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { motion } from "framer-motion";
 import { 
-  ArrowRight, 
-  BookOpen, 
-  Briefcase, 
-  Calendar, 
-  Flame, 
-  Hash, 
-  Heart, 
-  ShoppingCart, 
+  ArrowRight,
+  BookOpen,
+  Flame,
+  Hash,
+  ShoppingCart,
   Sparkles,
   Star,
-  Users,
-  Zap,
   Gift,
   TrendingUp,
-  Shield
+  Shield,
+  Zap
 } from "lucide-react";
 import Link from "next/link";
 
-const ICONS = { 
-  Heart, 
-  Users, 
-  Briefcase, 
-  Sparkles, 
-  Flame, 
-  Hash, 
-  Calendar, 
-  Star, 
-  BookOpen, 
-  ShoppingCart,
-  Zap,
-  Gift
-};
-
-// Structure organisée par grandes rubriques avec badges
-const categories = [
-  {
-    id: "marche",
-    title: "LE MARCHÉ DES OFFRANDES",
-    subtitle: "Objets Sacrés & Rituels",
-    icon: ShoppingCart,
-    color: "from-green-600 to-emerald-600",
-    badge: "Nouveauté",
-    badgeColor: "bg-green-500",
-    services: [
-      {
-        id: "marche-offrandes",
-        title: "Le Marché des Offrandes",
-        icon: "ShoppingCart",
-        description: "Découvre les offrandes sacrées et les objets rituels pour accompagner tes pratiques spirituelles.",
-        gradient: "from-green-500 to-emerald-600",
-        link: "/protected/marcheoffrandes",
-        badge: "Popular",
-        stats: "200+ produits"
-      },
-    ]
-  },
-  {
-    id: "librairie",
-    title: "LIBRAIRIE ÉSOTÉRIQUE",
-    subtitle: "Sagesse & Connaissance",
-    icon: BookOpen,
-    color: "from-blue-600 to-cyan-600",
-    badge: "Best-seller",
-    badgeColor: "bg-blue-500",
-    services: [
-      {
-        id: "livres",
-        title: "Librairie Ésotérique",
-        icon: "BookOpen",
-        description: "Explore notre collection de livres sacrés et guides spirituels pour approfondir tes connaissances.",
-        gradient: "from-blue-500 to-cyan-600",
-        link: "/protected/livres",
-        stats: "50+ livres"
-      },
-      {
-        id: "mes-livres",
-        title: "Ma Bibliothèque",
-        icon: "Star",
-        description: "Accède à tous tes livres et contenus ésotériques personnels.",
-        gradient: "from-indigo-500 to-blue-600",
-        link: "/protected/mes-livres",
-        badge: "Premium"
-      },
-    ]
-  },
+// Structure organisée en 6 grandes boîtes principales
+const mainCategories = [
   {
     id: "astrologie",
     title: "ASTROLOGIE",
     subtitle: "Découvre Ton Chemin de Vie",
-    icon: Heart,
+    icon: Star,
     color: "from-purple-600 to-pink-600",
+    gradient: "from-purple-500 to-pink-600",
     badge: "Populaire",
     badgeColor: "bg-purple-500",
-    services: [
-      {
-        id: "vie-personnelle",
-        title: "Ma Vie Personnelle",
-        icon: "Heart",
-        description: "Découvre ce qui t'anime profondément et comprends comment avancer avec confiance dans ton chemin de vie.",
-        gradient: "from-rose-500 to-pink-600",
-        link: "/protected/vie-personnelle",
-        badge: "Essentiel",
-        stats: "Analyse complète"
-      },
-      {
-        id: "famille-couple",
-        title: "Famille, Amitié et Couple",
-        icon: "Users",
-        description: "Explore tes liens affectifs pour mieux aimer, mieux comprendre les autres et créer des relations plus harmonieuses.",
-        gradient: "from-emerald-500 to-teal-600",
-        link: "/protected/relations",
-        stats: "Relations harmonieuses"
-      },
-      {
-        id: "professionnel",
-        title: "Monde Professionnel",
-        icon: "Briefcase",
-        description: "Identifie tes forces naturelles, ta vocation et le domaine où tu peux vraiment t'épanouir et réussir.",
-        gradient: "from-blue-500 to-indigo-600",
-        link: "/protected/professionnel",
-        stats: "Réussite professionnelle"
-      },
-      {
-        id: "horoscope",
-        title: "Horoscope par Signe",
-        icon: "Calendar",
-        description: "Reçois chaque mois les influences qui t'accompagnent et les opportunités à saisir selon ton signe.",
-        gradient: "from-cyan-500 to-blue-600",
-        link: "/protected/horoscope",
-        badge: "Gratuit",
-        stats: "Mis à jour mensuellement"
-      },
-    ]
+    description: "Explore les influences cosmiques qui façonnent ta destinée et révèle ton véritable potentiel à travers les astres.",
+    link: "/protected/astrologie",
+    stats: "4 domaines de vie",
+    hasSubmenu: true
   },
   {
     id: "numerologie",
@@ -144,19 +40,13 @@ const categories = [
     subtitle: "Les Nombres Révèlent Ton Destin",
     icon: Hash,
     color: "from-indigo-600 to-purple-600",
+    gradient: "from-indigo-500 to-purple-600",
     badge: "Mystique",
     badgeColor: "bg-indigo-500",
-    services: [
-      {
-        id: "numerologie",
-        title: "Consultations Numérologiques",
-        icon: "Hash",
-        description: "Nombre de Naissance • Nombre d'Expression • Chemin de Vie • Nombre Personnel • Nombre de l'Âme",
-        gradient: "from-purple-500 to-violet-600",
-        link: "/protected/numerologie",
-        stats: "5 types d'analyses"
-      },
-    ]
+    description: "Décode les mystères cachés dans tes nombres personnels pour comprendre ton chemin de vie et ta mission d'âme.",
+    link: "/protected/numerologie",
+    stats: "5 types d'analyses",
+    hasSubmenu: false
   },
   {
     id: "spiritualite",
@@ -164,39 +54,55 @@ const categories = [
     subtitle: "Sagesse Ancestrale",
     icon: Flame,
     color: "from-orange-600 to-red-600",
+    gradient: "from-orange-500 to-red-600",
     badge: "Authentique",
     badgeColor: "bg-orange-500",
-    services: [
-      {
-        id: "spiritualite",
-        title: "Spiritualité Africaine",
-        icon: "Flame",
-        description: "Connecte-toi aux forces invisibles, aux ancêtres et aux principes sacrés qui donnent sens et puissance à ta vie.",
-        gradient: "from-orange-500 to-red-600",
-        link: "/protected/spiritualite",
-        stats: "Traditions millénaires"
-      },
-    ]
+    description: "Connecte-toi aux forces invisibles, aux ancêtres et aux principes sacrés qui donnent sens et puissance à ta vie.",
+    link: "/protected/spiritualite",
+    stats: "Traditions millénaires",
+    hasSubmenu: false
   },
   {
     id: "invocations",
     title: "INVOCATIONS ET RITUELS MAGIQUES",
     subtitle: "Manifeste Tes Intentions",
     icon: Sparkles,
-    color: "from-amber-600 to-orange-600",
+    color: "from-amber-600 to-yellow-600",
+    gradient: "from-amber-500 to-yellow-600",
     badge: "Puissant",
     badgeColor: "bg-amber-500",
-    services: [
-      {
-        id: "astrologie-africaine",
-        title: "Invocations et Rituels Magiques",
-        icon: "Sparkles",
-        description: "Pratiques ésotériques et rituels pour manifester tes intentions et attirer les énergies bénéfiques.",
-        gradient: "from-amber-500 to-orange-600",
-        link: "/protected/astrologie-africaine",
-        stats: "Résultats garantis"
-      },
-    ]
+    description: "Pratiques ésotériques et rituels sacrés pour manifester tes intentions et attirer les énergies bénéfiques dans ta vie.",
+    link: "/protected/astrologie-africaine",
+    stats: "Résultats garantis",
+    hasSubmenu: false
+  },
+  {
+    id: "marche",
+    title: "LE MARCHÉ DES OFFRANDES",
+    subtitle: "Objets Sacrés & Rituels",
+    icon: ShoppingCart,
+    color: "from-green-600 to-emerald-600",
+    gradient: "from-green-500 to-emerald-600",
+    badge: "Nouveauté",
+    badgeColor: "bg-green-500",
+    description: "Découvre les offrandes sacrées et objets rituels authentiques pour accompagner tes pratiques spirituelles.",
+    link: "/protected/marcheoffrandes",
+    stats: "200+ produits",
+    hasSubmenu: false
+  },
+  {
+    id: "librairie",
+    title: "LIBRAIRIE ÉSOTÉRIQUE",
+    subtitle: "Sagesse & Connaissance",
+    icon: BookOpen,
+    color: "from-blue-600 to-cyan-600",
+    gradient: "from-blue-500 to-cyan-600",
+    badge: "Best-seller",
+    badgeColor: "bg-blue-500",
+    description: "Explore notre collection de livres sacrés, grimoires et guides spirituels pour approfondir tes connaissances.",
+    link: "/protected/livres",
+    stats: "50+ livres",
+    hasSubmenu: false
   },
 ];
 
@@ -342,128 +248,83 @@ export default function ProfilPage() {
           </motion.div>
         </motion.div>
 
-        {/* Catégories organisées */}
-        <div className="space-y-8 sm:space-y-12">
-          {categories.map((category, catIndex) => {
+        {/* Catégories principales - Grid de 6 boîtes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {mainCategories.map((category, index) => {
             const CategoryIcon = category.icon;
             return (
-              <motion.div
-                key={category.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 + catIndex * 0.1, duration: 0.5 }}
-                className="space-y-4 sm:space-y-6"
-              >
-                {/* En-tête de catégorie ultra-premium */}
+              <Link key={category.id} href={category.link}>
                 <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  className="relative bg-gradient-to-r from-white/90 to-white/70 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-gray-200 shadow-lg"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 + index * 0.1, duration: 0.5 }}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 border-2 border-gray-200 shadow-lg hover:shadow-2xl hover:border-purple-300 transition-all h-full overflow-hidden"
                 >
                   {/* Badge catégorie */}
                   {category.badge && (
-                    <div className={`absolute top-3 right-3 sm:top-4 sm:right-4 ${category.badgeColor} text-white text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 rounded-full`}>
+                    <div className={`absolute top-4 right-4 ${category.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-full shadow-md`}>
                       {category.badge}
                     </div>
                   )}
 
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    {/* Icône de catégorie */}
+                  {/* Effet de brillance au survol */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent"
+                    initial={{ x: '-100%' }}
+                    whileHover={{ x: '100%' }}
+                    transition={{ duration: 0.6 }}
+                  />
+
+                  {/* Contenu */}
+                  <div className="relative z-10">
+                    {/* Icône large */}
                     <motion.div
                       whileHover={{ rotate: 360, scale: 1.1 }}
                       transition={{ duration: 0.6 }}
-                      className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg`}
+                      className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-xl mb-4 sm:mb-6 mx-auto`}
                     >
-                      <CategoryIcon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                      <CategoryIcon className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                     </motion.div>
 
-                    {/* Titre + Sous-titre */}
-                    <div className="flex-1">
-                      <h2 className={`text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r ${category.color} bg-clip-text text-transparent mb-0.5 sm:mb-1`}>
-                        {category.title}
-                      </h2>
-                      <p className="text-xs sm:text-sm text-gray-600">
-                        {category.subtitle}
-                      </p>
-                    </div>
+                    {/* Titre */}
+                    <h2 className={`text-lg sm:text-xl font-bold bg-gradient-to-r ${category.color} bg-clip-text text-transparent mb-2 text-center`}>
+                      {category.title}
+                    </h2>
+
+                    {/* Sous-titre */}
+                    <p className="text-xs sm:text-sm text-gray-600 font-semibold mb-3 sm:mb-4 text-center">
+                      {category.subtitle}
+                    </p>
+
+                    {/* Description */}
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4 text-center">
+                      {category.description}
+                    </p>
+
+                    {/* Stats */}
+                    {category.stats && (
+                      <div className="flex items-center justify-center gap-2 mb-4 text-xs font-semibold text-purple-700">
+                        <Star className="w-4 h-4 fill-purple-500 text-purple-500" />
+                        <span>{category.stats}</span>
+                      </div>
+                    )}
+
+                    {/* CTA animé */}
+                    <motion.div
+                      className="flex items-center justify-center gap-2 text-sm font-bold text-purple-700 group-hover:text-purple-900 transition-colors"
+                      whileHover={{ x: 4 }}
+                    >
+                      <span>Explorer</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </motion.div>
                   </div>
+
+                  {/* Dégradé de fond au survol */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} opacity-0 group-hover:opacity-5 transition-opacity rounded-2xl sm:rounded-3xl`} />
                 </motion.div>
-
-                {/* Services de la catégorie */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-                  {category.services.map((service, i) => {
-                    const Icon = ICONS[service.icon as keyof typeof ICONS];
-                    return (
-                      <Link key={service.id} href={service.link}>
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.05 * i }}
-                          whileHover={{ y: -6, scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          className="group relative bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 border-2 border-gray-200 shadow-md hover:shadow-2xl hover:border-purple-300 transition-all h-full overflow-hidden"
-                        >
-                          {/* Effet de brillance au survol */}
-                          <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent"
-                            initial={{ x: '-100%' }}
-                            whileHover={{ x: '100%' }}
-                            transition={{ duration: 0.6 }}
-                          />
-
-                          {/* Badge service */}
-                          {service.badge && (
-                            <div className="absolute top-3 right-3 bg-purple-500 text-white text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full">
-                              {service.badge}
-                            </div>
-                          )}
-
-                          {/* Contenu */}
-                          <div className="relative z-10">
-                            {/* Icône + Titre */}
-                            <div className="flex items-start gap-3 mb-3 sm:mb-4">
-                              <motion.div
-                                whileHover={{ rotate: [0, -10, 10, -10, 0] }}
-                                transition={{ duration: 0.5 }}
-                                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow`}
-                              >
-                                <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                              </motion.div>
-                              <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 leading-tight">
-                                {service.title}
-                              </h3>
-                            </div>
-
-                            {/* Description */}
-                            <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 leading-relaxed">
-                              {service.description}
-                            </p>
-
-                            {/* Stats (si présent) */}
-                            {service.stats && (
-                              <div className="flex items-center gap-2 mb-3 text-[10px] sm:text-xs text-purple-700 font-semibold">
-                                <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-purple-500 text-purple-500" />
-                                <span>{service.stats}</span>
-                              </div>
-                            )}
-
-                            {/* CTA animé */}
-                            <motion.div
-                              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm font-bold text-purple-700 group-hover:text-purple-900 transition-colors"
-                              whileHover={{ x: 4 }}
-                            >
-                              <span>Découvrir</span>
-                              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
-                            </motion.div>
-                          </div>
-
-                          {/* Dégradé de fond au survol */}
-                          <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-5 transition-opacity rounded-xl sm:rounded-2xl`} />
-                        </motion.div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </motion.div>
+              </Link>
             );
           })}
         </div>

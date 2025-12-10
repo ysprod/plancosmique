@@ -49,13 +49,20 @@ export default function SpiritualiteAdmin() {
     fetchPractices();
   }, []);
 
+  // Charger l'export quand le format change
+  useEffect(() => {
+    if (!loading && practices.length > 0) {
+      fetchExport(exportFormat);
+    }
+  }, [exportFormat, loading, practices.length]);
+
   const fetchPractices = async () => {
     try {
       setLoading(true);
       setError(null);
 
       const { data } = await api.get<SpiritualPractice[]>('/spiritualite');
-      setPractices(data);
+      setPractices(Array.isArray(data) ? data : []);
     } catch (err) {
       const axiosErr = err as AxiosError<{ message?: string }>;
       const message = axiosErr?.response?.data?.message || axiosErr.message || 'Erreur de connexion au serveur';
@@ -80,9 +87,8 @@ export default function SpiritualiteAdmin() {
     }
   };
 
-  const handleExportFormatChange = async (format: 'json' | 'sql' | 'schema') => {
+  const handleExportFormatChange = (format: 'json' | 'sql' | 'schema') => {
     setExportFormat(format);
-    await fetchExport(format);
   };
 
   const handleCopy = async (content: string, type: string) => {
