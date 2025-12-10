@@ -1,7 +1,9 @@
 'use client';
 
+import { ErrorBoundary, LoadingFallback } from '@/components/ErrorBoundary';
 import { ProtectedRoute } from '@/components/auth';
-import React from 'react';
+import { Suspense } from 'react';
+import HeaderContent from '../HeaderContent';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -12,5 +14,16 @@ interface ProtectedLayoutProps {
  * Garantit que TOUTES les pages du dossier /protected nécessitent une authentification
  */
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
-  return <ProtectedRoute>{children}</ProtectedRoute>;
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingFallback />}>
+        <ProtectedRoute>
+          <HeaderContent />
+          <main className="min-h-screen">
+            {children}
+          </main>
+        </ProtectedRoute>
+      </Suspense>
+    </ErrorBoundary>
+  );
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, Compass, Eye, Sparkles, Star } from 'lucide-react';
 import Link from 'next/link';
@@ -27,6 +28,23 @@ export default function WelcomePage() {
           className="h-full w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent"
         />
       </motion.div>
+
+       {/* Logo ultra-compact mobile */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center mb-6"
+        >
+          <Image
+            src="/logo.png"
+            alt="Mon Étoile"
+            width={80}
+            height={80}
+            className="mx-auto mb-2"
+            priority
+          />
+          <h1 className="text-3xl sm:text-4xl font-black text-black">MON ÉTOILE</h1>
+        </motion.div>
 
       <div className="px-4 py-6 max-w-2xl mx-auto">
         <motion.p

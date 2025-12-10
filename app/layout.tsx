@@ -3,9 +3,7 @@ import { AuthProvider } from '@/lib/auth/AuthContext';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
-import './globals.css';
-import HeaderContent from './HeaderContent';
- 
+import './globals.css'; 
 
 // Optimisation de la police avec preload et display swap
 const inter = Inter({
@@ -76,8 +74,7 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         <ErrorBoundary>
           <AuthProvider>
-            <Suspense fallback={<LoadingFallback />}>
-              <HeaderContent />
+            <Suspense fallback={<LoadingFallback />}>              
               <main className="min-h-screen">
                 {children}
               </main>
