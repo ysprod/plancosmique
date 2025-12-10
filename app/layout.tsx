@@ -150,9 +150,6 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         
-        {/* Préchargement des ressources critiques */}
-        <link rel="preload" as="image" href="/logo.png" />
-        
         {/* Meta tags supplémentaires pour PWA */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

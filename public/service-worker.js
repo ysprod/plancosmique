@@ -45,6 +45,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Ignorer les schémas non-HTTP(S) (chrome-extension, etc.)
+  const url = new URL(event.request.url);
+  if (!url.protocol.startsWith('http')) {
+    return;
+  }
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {

@@ -133,6 +133,7 @@ export default function RootLayoutClient({
                   scale: { duration: 1.5, repeat: Infinity }
                 }}
                 className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-6"
+                suppressHydrationWarning
               >
                 <Sparkles className="w-full h-full text-white drop-shadow-2xl" />
               </motion.div>
