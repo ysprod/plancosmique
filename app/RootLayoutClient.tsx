@@ -21,6 +21,7 @@ export default function RootLayoutClient({
   const [showOfflineToast, setShowOfflineToast] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [isLoading, setIsLoading] = useState(true);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   // Détection du scroll pour le bouton "Retour en haut"
   useEffect(() => {
@@ -83,6 +84,11 @@ export default function RootLayoutClient({
     return () => clearTimeout(timer);
   }, []);
 
+  // Marquer comme hydraté après montage client
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   // Masquer le toast offline après 5 secondes
   useEffect(() => {
     if (showOfflineToast && isOnline) {
@@ -123,20 +129,24 @@ export default function RootLayoutClient({
               transition={{ duration: 0.5 }}
               className="text-center"
             >
-              <motion.div
-                animate={{ 
-                  rotate: 360,
-                  scale: [1, 1.2, 1]
-                }}
-                transition={{ 
-                  rotate: { duration: 2, repeat: Infinity, ease: "linear" },
-                  scale: { duration: 1.5, repeat: Infinity }
-                }}
-                className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-6"
-                suppressHydrationWarning
-              >
-                <Sparkles className="w-full h-full text-white drop-shadow-2xl" />
-              </motion.div>
+              {isHydrated && (
+                <motion.div
+                  animate={{ 
+                    rotate: 360,
+                    scale: [1, 1.2, 1]
+                  }}
+                  transition={{ 
+                    rotate: { duration: 2, repeat: Infinity, ease: "linear" },
+                    scale: { duration: 1.5, repeat: Infinity }
+                  }}
+                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-6"
+                >
+                  <Sparkles className="w-full h-full text-white drop-shadow-2xl" />
+                </motion.div>
+              )}
+              {!isHydrated && (
+                <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-6" />
+              )}
               
               <motion.h2
                 initial={{ y: 20, opacity: 0 }}
