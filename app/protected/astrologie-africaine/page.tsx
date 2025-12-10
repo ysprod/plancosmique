@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Globe, Heart, Mountain, Palmtree, Pyramid, Sparkles, Star, Users } from 'lucide-react';
-import Link from 'next/link';
+import { Calendar, Globe, Heart, Mountain, Palmtree, Pyramid, Sparkles, Star, Users } from 'lucide-react';
 import { useState } from "react";
 
 // Types pour les onglets
@@ -30,7 +29,7 @@ const SigneAfricainContent = () => (
           <Globe className="w-8 h-8 text-white" />
         </div>
         <div>
-          <h2 className="text-3xl font-black text-gray-900">Votre Signe Astrologique Africain</h2>
+          <h2 className="text-3xl font-black text-gray-900">Incantions et Rituels Magiques</h2>
           <p className="text-gray-600">Découvrez votre identité cosmique ancestrale</p>
         </div>
       </div>
@@ -438,25 +437,7 @@ export default function AstrologieAfricainePage() {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 py-12 lg:py-16 max-w-7xl">
-        {/* Back Button */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-8"
-        >
-          <Link href="/">
-            <motion.button
-              whileHover={{ scale: 1.05, x: -5 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors font-semibold"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Retour à l'accueil</span>
-            </motion.button>
-          </Link>
-        </motion.div>
-
+        
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -474,7 +455,7 @@ export default function AstrologieAfricainePage() {
             </div>
           </motion.div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-4 tracking-tight">
-            ASTROLOGIE AFRICAINE
+           Incantions et Rituels Magiques
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
             Découvrez la sagesse ancestrale et les traditions astrologiques africaines millénaires

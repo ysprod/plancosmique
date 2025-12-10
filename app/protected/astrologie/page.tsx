@@ -1,22 +1,9 @@
 "use client";
-
 import { motion } from "framer-motion";
-import { 
-  ArrowRight,
-  Briefcase,
-  Calendar,
-  Heart,
-  Star,
-  Users
-} from "lucide-react";
+import { ArrowRight, Briefcase, Calendar, Heart, Star, Users } from "lucide-react";
 import Link from "next/link";
 
-const ICONS = { 
-  Heart, 
-  Users, 
-  Briefcase, 
-  Calendar
-};
+const ICONS = { Heart, Users, Briefcase, Calendar };
 
 // Les 4 sous-rubriques de l'astrologie
 const astrologySections = [
@@ -28,8 +15,6 @@ const astrologySections = [
     gradient: "from-rose-500 to-pink-600",
     color: "from-rose-600 to-pink-600",
     link: "/protected/vie-personnelle",
-    badge: "Essentiel",
-    badgeColor: "bg-rose-500",
     stats: "Analyse complète"
   },
   {
@@ -40,8 +25,6 @@ const astrologySections = [
     gradient: "from-emerald-500 to-teal-600",
     color: "from-emerald-600 to-teal-600",
     link: "/protected/relations",
-    badge: "Relations",
-    badgeColor: "bg-emerald-500",
     stats: "Relations harmonieuses"
   },
   {
@@ -52,8 +35,6 @@ const astrologySections = [
     gradient: "from-blue-500 to-indigo-600",
     color: "from-blue-600 to-indigo-600",
     link: "/protected/professionnel",
-    badge: "Carrière",
-    badgeColor: "bg-blue-500",
     stats: "Réussite professionnelle"
   },
   {
@@ -64,8 +45,6 @@ const astrologySections = [
     gradient: "from-cyan-500 to-blue-600",
     color: "from-cyan-600 to-blue-600",
     link: "/protected/horoscope",
-    badge: "Gratuit",
-    badgeColor: "bg-cyan-500",
     stats: "Mis à jour mensuellement"
   },
 ];
@@ -161,12 +140,7 @@ export default function AstrologiePage() {
                   whileTap={{ scale: 0.98 }}
                   className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 border-2 border-gray-200 shadow-lg hover:shadow-2xl hover:border-purple-300 transition-all h-full overflow-hidden"
                 >
-                  {/* Badge */}
-                  {section.badge && (
-                    <div className={`absolute top-4 right-4 ${section.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-full shadow-md`}>
-                      {section.badge}
-                    </div>
-                  )}
+
 
                   {/* Effet de brillance au survol */}
                   <motion.div
@@ -221,7 +195,7 @@ export default function AstrologiePage() {
               </Link>
             );
           })}
-        </div> 
+        </div>
       </div>
     </div>
   );

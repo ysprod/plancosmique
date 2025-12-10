@@ -86,7 +86,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Logo avec animation */}
         <motion.div
           variants={navItemVariants}
-          className="flex items-center gap-3 px-6 py-6 border-b border-gray-200 
+          className="flex items-center gap-3 px-6 py-2 border-b border-gray-200 
                      bg-gradient-to-r from-amber-50 to-orange-50"
         >
           <motion.div
@@ -171,7 +171,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Logout Button avec animation */}
         <motion.div
           variants={navItemVariants}
-          className="px-4 py-4 border-t border-gray-200 bg-gray-50"
+          className="px-4 py-2 border-t border-gray-200 bg-gray-50"
         >
           <motion.button
             onClick={handleLogout}

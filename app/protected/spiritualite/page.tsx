@@ -234,7 +234,7 @@ export default function SpiritualiteBlogPage() {
           
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
             <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-transparent bg-clip-text">
-              Blog Spirituel
+             SPIRITUALITE AFRICAINE
             </span>
           </h1>
           
@@ -572,51 +572,7 @@ export default function SpiritualiteBlogPage() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mt-12 sm:mt-16 text-center"
-        >
-          <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
-            <motion.div
-              animate={{
-                scale: [1, 1.2, 1],
-                rotate: [0, 180, 360]
-              }}
-              transition={{ duration: 20, repeat: Infinity }}
-              className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"
-            />
-            
-            <div className="relative z-10">
-              <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                className="inline-block mb-4"
-              >
-                <Sparkles className="w-12 h-12 sm:w-16 sm:h-16 text-white" />
-              </motion.div>
-              
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4">
-                Restez connecté à votre spiritualité
-              </h2>
-              
-              <p className="text-base sm:text-lg text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto">
-                Rejoignez notre communauté et recevez nos derniers articles directement dans votre boîte mail
-              </p>
-              
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-purple-600 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base shadow-xl hover:shadow-2xl transition-all"
-              >
-                S'abonner gratuitement
-              </motion.button>
-            </div>
-          </div>
-        </motion.div>
+ 
       </div>
     </div>
   );

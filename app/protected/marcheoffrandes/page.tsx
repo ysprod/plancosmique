@@ -354,6 +354,7 @@ export default function MarcheOffrandes() {
                 onPayment={handlePayment}
                 onBackToCart={backToCart}
             />
+            <br />   <br />   <br />   <br />   <br />   <br />   <br />   <br />
         </div>
     );
 }
