@@ -8,6 +8,7 @@ import {
   BookOpen,
   CreditCard,
   FileText,
+  Flame,
   LayoutDashboard,
   LogOut,
   Settings,
@@ -24,6 +25,7 @@ const navItems = [
   { href: '/admin/consultations', label: 'Consultations', icon: FileText, color: 'green' },
   { href: '/admin/payments', label: 'Paiements', icon: CreditCard, color: 'purple' },
   { href: '/admin/books', label: 'Livres', icon: BookOpen, color: 'indigo' },
+  { href: '/admin/spiritualite', label: 'Spiritualité', icon: Flame, color: 'orange' },
   { href: '/admin/settings', label: 'Paramètres', icon: Settings, color: 'gray' },
 ];
 
