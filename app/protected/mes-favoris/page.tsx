@@ -1,19 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api/client';
-import Link from 'next/link';
-import type { AxiosError } from 'axios';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Heart,
-  Loader2,
-  ArrowLeft,
-  BookOpen,
-  Search,
-  Filter,
-  Star
+    ArrowLeft,
+    BookOpen,
+    Filter,
+    Heart,
+    Loader2,
+    Search,
+    Star
 } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 interface FavoritePractice {
   _id: string;

@@ -276,7 +276,6 @@ export default function EditUserPage() {
                 >
                   <option value="M">Masculin</option>
                   <option value="F">Féminin</option>
-                  <option value="Other">Autre</option>
                 </select>
               </div>
 

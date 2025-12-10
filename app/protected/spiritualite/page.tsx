@@ -62,6 +62,7 @@ export default function SpiritualiteBlogPage() {
 
   useEffect(() => {
     fetchPractices();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

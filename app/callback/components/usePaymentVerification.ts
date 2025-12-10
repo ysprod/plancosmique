@@ -2,44 +2,62 @@
 'use client';
 
 import { useCallback } from 'react';
-import type { ApiResponse, PaymentData } from './types';
+import { api } from '@/lib/api/client';
+import type { PaymentData } from './types';
+
+export interface VerifyPaymentResponse {
+  success: boolean;
+  status: string;
+  message: string;
+  data?: {
+    _id: string;
+    amount: number;
+    status: string;
+    method: string;
+  };
+}
+
+export interface ProcessPaymentResponse {
+  success: boolean;
+  status: string;
+  message: string;
+  consultationId?: string;
+  bookId?: string;
+  downloadUrl?: string;
+  data?: {
+    paymentId: string;
+    amount: number;
+    reference: string;
+  };
+}
 
 /**
- * Hook custom pour gérer la vérification des paiements
+ * Hook personnalisé pour la gestion des paiements
+ * Les traitements sont maintenant gérés par le backend NestJS
  */
 export function usePaymentVerification() {
-  // Vérifier le statut du paiement via MoneyFusion
-  const verifyPayment = useCallback(async (paymentToken: string): Promise<ApiResponse> => {
+  /**
+   * Vérifier le statut d'un paiement via le backend
+   * GET /api/v1/payments/verify?token=xxx
+   */
+  const verifyPayment = useCallback(async (paymentToken: string): Promise<VerifyPaymentResponse> => {
     try {
-      const response = await fetch(
-        `https://www.pay.moneyfusion.net/paiementNotif/${paymentToken}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          cache: 'no-store',
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Erreur HTTP: ${response.status}`);
+      if (!paymentToken || paymentToken.trim() === '') {
+        return {
+          success: false,
+          status: 'error',
+          message: 'Token de paiement manquant',
+        };
       }
 
-      const result = await response.json();
+      console.log('🔍 Vérification paiement:', paymentToken);
 
-      if (!result.statut || !result.data) {
-        throw new Error('Format de réponse invalide de MoneyFusion');
-      }
+      const response = await api.get<VerifyPaymentResponse>(`/payments/verify?token=${paymentToken}`);
 
-      return {
-        success: true,
-        status: result.data.statut,
-        data: result.data,
-        message: result.message || 'Paiement vérifié',
-      };
+      console.log('✅ Paiement vérifié:', response.data.status);
+      return response.data;
     } catch (error: any) {
-      console.error('❌ Erreur vérification paiement:', error);
+      console.error('❌ Erreur vérification paiement:', error.message);
       return {
         success: false,
         status: 'error',
@@ -48,60 +66,79 @@ export function usePaymentVerification() {
     }
   }, []);
 
-  // Traiter le paiement après vérification (créer consultation/livre + analyser)
-  const processPaymentCallback = useCallback(async (
-    paymentToken: string,
-    paymentDetails: PaymentData
-  ): Promise<ApiResponse> => {
-    try {
-      const personalInfo = paymentDetails.personal_Info?.[0];
-      const type = personalInfo?.type || 'consultation';
-      
-      const callbackEndpoint = type === 'book' 
-        ? '/api/payment/callback/books'
-        : '/api/payment/callback';
-      
-      const response = await fetch(callbackEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+  /**
+   * Traiter le paiement d'une consultation
+   * POST /api/v1/payments/process-consultation
+   */
+  const processConsultationPayment = useCallback(
+    async (paymentToken: string, paymentData: PaymentData): Promise<ProcessPaymentResponse> => {
+      try {
+        if (!paymentToken) {
+          throw new Error('Token de paiement manquant');
+        }
+
+        console.log('📊 Traitement consultation:', {
           token: paymentToken,
-          status: paymentDetails.statut,
-          paymentData: paymentDetails,
-          type,
-        }),
-      });
+          type: 'consultation',
+        });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || `Erreur HTTP: ${response.status}`);
+        const response = await api.post<ProcessPaymentResponse>('/payments/process-consultation', {
+          token: paymentToken,
+          paymentData,
+        });
+
+        console.log('✅ Consultation traitée:', response.data);
+        return response.data;
+      } catch (error: any) {
+        console.error('❌ Erreur traitement consultation:', error.message);
+        return {
+          success: false,
+          status: 'error',
+          message: error.message || 'Erreur de traitement du paiement',
+        };
       }
+    },
+    []
+  );
 
-      const result = await response.json();
-      
-      return {
-        success: true,
-        status: 'paid',
-        consultationId: result.consultationId,
-        analysisId: result.analysisId,
-        downloadUrl: result.downloadUrl,
-        analysisGenerated: result.analysisGenerated,
-        message: result.message || 'Paiement traité avec succès',
-      };
-    } catch (error: any) {
-      console.error('❌ Erreur traitement callback:', error);
-      return {
-        success: false,
-        status: 'error',
-        message: error.message || 'Erreur de traitement du paiement',
-      };
-    }
-  }, []);
+  /**
+   * Traiter le paiement d'un livre
+   * POST /api/v1/payments/process-book
+   */
+  const processBookPayment = useCallback(
+    async (paymentToken: string, paymentData: PaymentData): Promise<ProcessPaymentResponse> => {
+      try {
+        if (!paymentToken) {
+          throw new Error('Token de paiement manquant');
+        }
+
+        console.log('📚 Traitement livre:', {
+          token: paymentToken,
+          type: 'book',
+        });
+
+        const response = await api.post<ProcessPaymentResponse>('/payments/process-book', {
+          token: paymentToken,
+          paymentData,
+        });
+
+        console.log('✅ Livre traité:', response.data);
+        return response.data;
+      } catch (error: any) {
+        console.error('❌ Erreur traitement livre:', error.message);
+        return {
+          success: false,
+          status: 'error',
+          message: error.message || 'Erreur de traitement du paiement',
+        };
+      }
+    },
+    []
+  );
 
   return {
     verifyPayment,
-    processPaymentCallback,
+    processConsultationPayment,
+    processBookPayment,
   };
 }

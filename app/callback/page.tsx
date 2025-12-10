@@ -26,10 +26,9 @@ import {
 const PaymentCallbackContent = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-  const { verifyPayment, processPaymentCallback } = usePaymentVerification();
+  const { verifyPayment, processConsultationPayment, processBookPayment } = usePaymentVerification();
 
   // États de base
-  const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   const [consultationId, setConsultationId] = useState<string | null>(null);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -78,14 +77,31 @@ const PaymentCallbackContent = () => {
           return;
         }
 
-        const normalizedStatus = normalizePaymentStatus(verificationResult.data.statut);
-        setPaymentData(verificationResult.data);
+        // La réponse du backend NestJS retourne un objet simplifié
+        const backendPaymentData = verificationResult.data as any;
+        const normalizedStatus = normalizePaymentStatus(backendPaymentData.status);
         setStatus(normalizedStatus);
 
         if (normalizedStatus === 'paid') {
           console.log('✅ Paiement confirmé, traitement du callback...');
           await startAnalysisAnimation();
-          const callbackResult = await processPaymentCallback(token, verificationResult.data);
+          
+          // Créer un objet PaymentData compatible pour le traitement
+          const paymentDetails: PaymentData = {
+            _id: backendPaymentData._id,
+            tokenPay: token || '',
+            numeroSend: '',
+            nomclient: '',
+            Montant: backendPaymentData.amount,
+            frais: 0,
+            statut: 'paid',
+            createdAt: new Date().toISOString(),
+            personal_Info: [],
+          };
+          
+          // Appeler la méthode de traitement appropriée
+          // Pour l'instant, on suppose une consultation (sera à adapter selon les données disponibles)
+          const callbackResult = await processConsultationPayment(token || '', paymentDetails);
 
           if (callbackResult.success) {
             setConsultationId(callbackResult.consultationId || null);
@@ -114,7 +130,7 @@ const PaymentCallbackContent = () => {
     };
 
     initializePaymentVerification();
-  }, [token, verifyPayment, processPaymentCallback, normalizePaymentStatus, setStatus, setError, startAnalysisAnimation, setShouldAutoRedirect]);
+  }, [token, verifyPayment, processConsultationPayment, processBookPayment, normalizePaymentStatus, setStatus, setError, startAnalysisAnimation, setShouldAutoRedirect]);
 
   // 🔹 Gestion du compte à rebours - NE DÉMARRE QU'APRÈS L'ANALYSE
   useEffect(() => {
@@ -123,11 +139,11 @@ const PaymentCallbackContent = () => {
     console.log('⏱️ Démarrage du compte à rebours de redirection...');
 
     const cleanup = startCountdown(() => {
-      handleAutoRedirect(paymentData, consultationId, downloadUrl);
+      handleAutoRedirect(null, consultationId, downloadUrl);
     });
 
     return cleanup;
-  }, [shouldAutoRedirect, analysisCompleted, startCountdown, handleAutoRedirect, paymentData, consultationId, downloadUrl]);
+  }, [shouldAutoRedirect, analysisCompleted, startCountdown, handleAutoRedirect, consultationId, downloadUrl]);
 
   // 🌟 Loader initial
   if (isLoading) {
@@ -214,7 +230,7 @@ const PaymentCallbackContent = () => {
             {/* Corps de la carte */}
             <div className="p-4 sm:p-6 md:p-8">
               {/* Détails du paiement */}
-              {statusConfig.showDetails && <TransactionDetails paymentData={paymentData} showDetails={statusConfig.showDetails} itemVariants={itemVariants} />}
+              {statusConfig.showDetails && <TransactionDetails paymentData={null} showDetails={statusConfig.showDetails} itemVariants={itemVariants} />}
 
               {/* Statut de traitement */}
               {isProcessing && !isGeneratingAnalysis && (
