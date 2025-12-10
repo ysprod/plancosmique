@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { 
-  ArrowLeft,
   ArrowRight,
   Briefcase,
   Calendar,
@@ -97,20 +96,6 @@ export default function AstrologiePage() {
       </div>
 
       <div className="relative z-10 px-4 sm:px-6 py-8 sm:py-12 max-w-6xl mx-auto">
-        {/* Bouton retour */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-8"
-        >
-          <Link href="/protected/profil">
-            <button className="flex items-center gap-2 text-purple-700 hover:text-purple-900 font-semibold transition-colors">
-              <ArrowLeft className="w-5 h-5" />
-              <span>Retour au profil</span>
-            </button>
-          </Link>
-        </motion.div>
-
         {/* En-tête de la page */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

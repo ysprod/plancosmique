@@ -10,11 +10,7 @@ import {
   Hash,
   ShoppingCart,
   Sparkles,
-  Star,
-  Gift,
-  TrendingUp,
-  Shield,
-  Zap
+  Star
 } from "lucide-react";
 import Link from "next/link";
 
@@ -106,30 +102,6 @@ const mainCategories = [
   },
 ];
 
-// Bénéfices clés (nouveauté)
-const benefits = [
-  {
-    icon: Shield,
-    title: "100% Confidentiel",
-    description: "Tes données sont sécurisées"
-  },
-  {
-    icon: Zap,
-    title: "Résultats Rapides",
-    description: "Analyse en quelques minutes"
-  },
-  {
-    icon: Gift,
-    title: "Bonus Exclusifs",
-    description: "Contenu gratuit chaque mois"
-  },
-  {
-    icon: TrendingUp,
-    title: "Accompagnement",
-    description: "Suivi personnalisé"
-  }
-];
-
 export default function ProfilPage() {
   const { user } = useAuth();
 
@@ -175,25 +147,13 @@ export default function ProfilPage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-8 sm:mb-12"
         >
-          {/* Badge de bienvenue */}
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-200 rounded-full px-4 sm:px-6 py-2 mb-4 sm:mb-6"
-          >
-            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
-            <span className="text-xs sm:text-sm font-semibold text-purple-700">
-              Espace Personnel Premium
-            </span>
-          </motion.div>
-
+          
           {/* Titre principal */}
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4"
+            className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3"
           >
             <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-violet-600 bg-clip-text text-transparent">
               Bienvenue, {user?.username || 'Invité'}
@@ -219,33 +179,7 @@ export default function ProfilPage() {
             <span className="font-semibold text-pink-700">génies tutélaires</span> et la présence bienveillante de tes{' '}
             <span className="font-semibold text-violet-700">ancêtres</span>.
           </motion.p>
-
-          {/* Bénéfices clés */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto mb-8"
-          >
-            {benefits.map((benefit, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
-                whileHover={{ y: -4 }}
-                className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-gray-200 shadow-sm hover:shadow-md transition-all"
-              >
-                <benefit.icon className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600 mx-auto mb-2" />
-                <h4 className="text-xs sm:text-sm font-bold text-gray-900 mb-1">
-                  {benefit.title}
-                </h4>
-                <p className="text-[10px] sm:text-xs text-gray-600">
-                  {benefit.description}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
+ 
         </motion.div>
 
         {/* Catégories principales - Grid de 6 boîtes */}
@@ -262,12 +196,7 @@ export default function ProfilPage() {
                   whileTap={{ scale: 0.98 }}
                   className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 border-2 border-gray-200 shadow-lg hover:shadow-2xl hover:border-purple-300 transition-all h-full overflow-hidden"
                 >
-                  {/* Badge catégorie */}
-                  {category.badge && (
-                    <div className={`absolute top-4 right-4 ${category.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-full shadow-md`}>
-                      {category.badge}
-                    </div>
-                  )}
+                  
 
                   {/* Effet de brillance au survol */}
                   <motion.div
@@ -303,13 +232,7 @@ export default function ProfilPage() {
                       {category.description}
                     </p>
 
-                    {/* Stats */}
-                    {category.stats && (
-                      <div className="flex items-center justify-center gap-2 mb-4 text-xs font-semibold text-purple-700">
-                        <Star className="w-4 h-4 fill-purple-500 text-purple-500" />
-                        <span>{category.stats}</span>
-                      </div>
-                    )}
+                    
 
                     {/* CTA animé */}
                     <motion.div
@@ -329,32 +252,7 @@ export default function ProfilPage() {
           })}
         </div>
 
-        {/* Call-to-Action final */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5 }}
-          className="mt-12 sm:mt-16 text-center"
-        >
-          <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-violet-600 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl">
-            <Sparkles className="w-12 h-12 sm:w-16 sm:h-16 text-white mx-auto mb-4" />
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
-              Prêt(e) à Transformer Ta Vie ?
-            </h3>
-            <p className="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto">
-              Rejoins des milliers de personnes qui ont déjà découvert leur véritable destinée
-            </p>
-            <Link href="/protected/marcheoffrandes">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white text-purple-700 font-bold text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-lg hover:shadow-xl transition-all"
-              >
-                Aller au marché des offrandes✨
-              </motion.button>
-            </Link>
-          </div>
-        </motion.div>
+   
       </div>
 
       {/* Compteurs crédibilité */}
