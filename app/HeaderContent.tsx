@@ -78,10 +78,10 @@ export default function HeaderContent() {
 
   const handleLogout = useCallback(() => {
     if (confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
-      logout();
+     
       setMobileMenuOpen(false);
       setShowUserMenu(false);
-      window.location.href = "/auth/logout";
+       logout();
     }
   }, [logout]);
 

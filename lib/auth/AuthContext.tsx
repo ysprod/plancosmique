@@ -121,6 +121,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(true);
     try {
       await authService.logout();
+      window.location.href = "/auth/logout";
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
