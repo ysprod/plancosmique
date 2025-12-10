@@ -9,7 +9,7 @@ import { User, LogOut, Menu, X, Home, FileText, Settings, Sparkles, ChevronDown 
 import NotificationBell from "@/components/NotificationBell";
 import { useState, useCallback, useEffect } from "react";
 
-export default function HeaderPage() {
+export default function HeaderContent() {
   const { logout, user, hasRole } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);

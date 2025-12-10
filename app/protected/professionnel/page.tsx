@@ -3,7 +3,6 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  ArrowLeft,
   Brain,
   Building2,
   CheckCircle,
@@ -14,7 +13,6 @@ import {
   UserCheck,
   UsersRound
 } from 'lucide-react';
-import Link from 'next/link';
 import { useState } from 'react';
 
 // ============================================================================

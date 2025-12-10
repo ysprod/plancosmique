@@ -10,11 +10,9 @@ import {
   Briefcase,
   Coins,
   Users,
-  ArrowLeft,
   Loader2,
   CheckCircle2
 } from 'lucide-react';
-import Link from 'next/link';
 import { useState } from 'react';
 
 // Prediction categories

@@ -3,7 +3,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Activity,
-  ArrowLeft,
   Briefcase,
   Calendar,
   Heart,
@@ -14,7 +13,6 @@ import {
   Sun,
   TrendingUp, Users
 } from 'lucide-react'
-import Link from 'next/link'
 import React, { useState } from 'react'
 
 // ============================================================================
