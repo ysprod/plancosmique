@@ -372,23 +372,7 @@ export default function HoroscopePage() {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 py-6 sm:py-8 max-w-4xl">
-        {/* Back Button */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-6"
-        >
-          <Link href="/">
-            <motion.button
-              whileHover={{ scale: 1.05, x: -5 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors font-semibold text-sm"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Retour</span>
-            </motion.button>
-          </Link>
-        </motion.div>
+        
 
         {/* Header */}
         <motion.div

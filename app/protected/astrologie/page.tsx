@@ -221,23 +221,7 @@ export default function AstrologiePage() {
               </Link>
             );
           })}
-        </div>
-
-        {/* Call-to-Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2 }}
-          className="text-center bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-10 shadow-xl border border-gray-200"
-        >
-          <Star className="w-12 h-12 sm:w-16 sm:h-16 text-purple-600 mx-auto mb-4" />
-          <h3 className="text-2xl sm:text-3xl font-bold mb-3 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Prêt(e) à Explorer Ton Destin ?
-          </h3>
-          <p className="text-sm sm:text-base text-gray-600 mb-6 max-w-2xl mx-auto">
-            Choisis le domaine de vie que tu souhaites explorer en profondeur et laisse les astres te révéler ton chemin.
-          </p>
-        </motion.div>
+        </div> 
       </div>
     </div>
   );

@@ -113,17 +113,7 @@ export default function VoyancePage() {
       </div>
 
       <div className="relative z-10 container mx-auto px-6 py-12 max-w-4xl">
-        {/* Back Button */}
-        <Link href="/">
-          <motion.button
-            whileHover={{ scale: 1.05, x: -5 }}
-            whileTap={{ scale: 0.95 }}
-            className="mb-8 flex items-center gap-2 text-purple-300 hover:text-purple-100 font-bold transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Retour à l&lsquo;accueil
-          </motion.button>
-        </Link>
+        
 
         {/* Header */}
         <motion.div
@@ -325,15 +315,7 @@ export default function VoyancePage() {
                 >
                   Nouvelle prédiction
                 </motion.button>
-                <Link href="/" className="flex-1">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full px-6 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl transition-all"
-                  >
-                    Retour à l&lsquo;accueil
-                  </motion.button>
-                </Link>
+                
               </div>
             </motion.div>
           )}

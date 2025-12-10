@@ -1,0 +1,442 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useRouter, useParams } from 'next/navigation';
+import { 
+  User, Mail, Phone, Globe, Shield, 
+  Save, X, Loader2, CheckCircle, AlertCircle,
+  ArrowLeft, CreditCard, Star
+} from 'lucide-react';
+import { api } from '@/lib/api/client';
+import Link from 'next/link';
+
+interface UserData {
+  _id: string;
+  username: string;
+  email: string;
+  phone?: string;
+  country?: string;
+  gender?: 'M' | 'F' | 'Other';
+  role: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
+  isActive: boolean;
+  emailVerified: boolean;
+  credits?: number;
+  preferences?: {
+    notifications?: boolean;
+    newsletter?: boolean;
+  };
+}
+
+const COUNTRIES = [
+  'France', 'Belgique', 'Suisse', 'Canada', 'États-Unis',
+  'Côte d\'Ivoire', 'Sénégal', 'Cameroun', 'Mali', 'Burkina Faso',
+  'Autre'
+];
+
+export default function EditUserPage() {
+  const router = useRouter();
+  const params = useParams();
+  const userId = params?.id as string;
+
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  const [formData, setFormData] = useState<Partial<UserData>>({
+    username: '',
+    email: '',
+    phone: '',
+    country: '',
+    gender: 'Other',
+    role: 'USER',
+    isActive: true,
+    emailVerified: false,
+    credits: 0,
+    preferences: {
+      notifications: true,
+      newsletter: false,
+    },
+  });
+
+  // Charger les données utilisateur
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const { data } = await api.get(`/admin/users/${userId}`);
+        setFormData(data);
+      } catch (err) {
+        const error = err as { response?: { data?: { message?: string } } };
+        setError(error.response?.data?.message || 'Erreur lors du chargement');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchUser();
+    }
+  }, [userId]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
+
+    try {
+      await api.patch(`/admin/users/${userId}`, formData);
+      setSuccess(true);
+      setTimeout(() => {
+        router.push('/admin/users');
+      }, 1500);
+    } catch (err) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'Erreur lors de la modification');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-violet-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-violet-600 animate-spin mx-auto mb-4" />
+          <p className="text-slate-600">Chargement de l'utilisateur...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-violet-50 p-4 sm:p-6">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6"
+        >
+          <Link
+            href="/admin/users"
+            className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-4"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Retour aux utilisateurs
+          </Link>
+          
+          <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-3">
+            <User className="w-8 h-8 text-violet-600" />
+            Modifier l'utilisateur
+          </h1>
+          <p className="text-slate-600 mt-2">
+            Modifiez les informations de l'utilisateur
+          </p>
+        </motion.div>
+
+        {/* Success Message */}
+        {success && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3"
+          >
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <div>
+              <p className="text-green-900 font-semibold">Modifications enregistrées</p>
+              <p className="text-green-700 text-sm">Redirection en cours...</p>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Error Message */}
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-3"
+          >
+            <AlertCircle className="w-5 h-5 text-red-600" />
+            <div className="flex-1">
+              <p className="text-red-900 font-semibold">Erreur</p>
+              <p className="text-red-700 text-sm">{error}</p>
+            </div>
+            <button
+              onClick={() => setError(null)}
+              className="text-red-600 hover:text-red-800"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </motion.div>
+        )}
+
+        {/* Form */}
+        <motion.form
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          onSubmit={handleSubmit}
+          className="bg-white rounded-2xl shadow-lg border border-slate-200 p-6 space-y-6"
+        >
+          {/* Informations de base */}
+          <div>
+            <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <User className="w-5 h-5 text-violet-600" />
+              Informations de base
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Username */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Nom d'utilisateur *
+                </label>
+                <input
+                  type="text"
+                  value={formData.username || ''}
+                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                  required
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 
+                           focus:ring-violet-500 focus:border-transparent transition-all"
+                  placeholder="Entrez le nom d'utilisateur"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Email *
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    type="email"
+                    value={formData.email || ''}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    required
+                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg 
+                             focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                    placeholder="utilisateur@example.com"
+                  />
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Téléphone
+                </label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    type="tel"
+                    value={formData.phone || ''}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg 
+                             focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                    placeholder="+33 6 12 34 56 78"
+                  />
+                </div>
+              </div>
+
+              {/* Country */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Pays
+                </label>
+                <div className="relative">
+                  <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <select
+                    value={formData.country || ''}
+                    onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg 
+                             focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                  >
+                    <option value="">Sélectionner un pays</option>
+                    {COUNTRIES.map((country) => (
+                      <option key={country} value={country}>
+                        {country}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Gender */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Genre
+                </label>
+                <select
+                  value={formData.gender || 'Other'}
+                  onChange={(e) => setFormData({ ...formData, gender: e.target.value as 'M' | 'F' | 'Other' })}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg 
+                           focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                >
+                  <option value="M">Masculin</option>
+                  <option value="F">Féminin</option>
+                  <option value="Other">Autre</option>
+                </select>
+              </div>
+
+              {/* Credits */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Crédits
+                </label>
+                <div className="relative">
+                  <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    type="number"
+                    min="0"
+                    value={formData.credits || 0}
+                    onChange={(e) => setFormData({ ...formData, credits: parseInt(e.target.value) || 0 })}
+                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg 
+                             focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Rôle et permissions */}
+          <div>
+            <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <Shield className="w-5 h-5 text-violet-600" />
+              Rôle et permissions
+            </h2>
+            
+            <div className="space-y-4">
+              {/* Role */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Rôle
+                </label>
+                <select
+                  value={formData.role || 'USER'}
+                  onChange={(e) => setFormData({ ...formData, role: e.target.value as 'USER' | 'ADMIN' | 'SUPER_ADMIN' })}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg 
+                           focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                >
+                  <option value="USER">Utilisateur</option>
+                  <option value="ADMIN">Administrateur</option>
+                  <option value="SUPER_ADMIN">Super Admin</option>
+                </select>
+              </div>
+
+              {/* Statut */}
+              <div className="flex items-center gap-6">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.isActive || false}
+                    onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                    className="w-5 h-5 text-violet-600 border-slate-300 rounded focus:ring-2 
+                             focus:ring-violet-500"
+                  />
+                  <span className="text-sm font-medium text-slate-700">Compte actif</span>
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.emailVerified || false}
+                    onChange={(e) => setFormData({ ...formData, emailVerified: e.target.checked })}
+                    className="w-5 h-5 text-violet-600 border-slate-300 rounded focus:ring-2 
+                             focus:ring-violet-500"
+                  />
+                  <span className="text-sm font-medium text-slate-700">Email vérifié</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {/* Préférences */}
+          <div>
+            <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <Star className="w-5 h-5 text-violet-600" />
+              Préférences
+            </h2>
+            
+            <div className="space-y-3">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formData.preferences?.notifications || false}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    preferences: {
+                      ...formData.preferences,
+                      notifications: e.target.checked
+                    }
+                  })}
+                  className="w-5 h-5 text-violet-600 border-slate-300 rounded focus:ring-2 
+                           focus:ring-violet-500"
+                />
+                <span className="text-sm font-medium text-slate-700">Notifications actives</span>
+              </label>
+
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formData.preferences?.newsletter || false}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    preferences: {
+                      ...formData.preferences,
+                      newsletter: e.target.checked
+                    }
+                  })}
+                  className="w-5 h-5 text-violet-600 border-slate-300 rounded focus:ring-2 
+                           focus:ring-violet-500"
+                />
+                <span className="text-sm font-medium text-slate-700">Newsletter abonné</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-3 pt-4 border-t border-slate-200">
+            <Link
+              href="/admin/users"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 
+                       bg-slate-100 text-slate-700 rounded-xl font-semibold 
+                       hover:bg-slate-200 transition-colors"
+            >
+              <X className="w-5 h-5" />
+              Annuler
+            </Link>
+            
+            <button
+              type="submit"
+              disabled={saving || success}
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 
+                       bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-xl 
+                       font-semibold hover:from-violet-700 hover:to-purple-700 
+                       disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            >
+              {saving ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Enregistrement...
+                </>
+              ) : success ? (
+                <>
+                  <CheckCircle className="w-5 h-5" />
+                  Enregistré
+                </>
+              ) : (
+                <>
+                  <Save className="w-5 h-5" />
+                  Enregistrer
+                </>
+              )}
+            </button>
+          </div>
+        </motion.form>
+      </div>
+    </div>
+  );
+}

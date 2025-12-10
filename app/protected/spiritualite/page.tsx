@@ -298,24 +298,7 @@ const SpiritualiteAfricainePage = () => {
         transition={{ duration: 0.6 }}
         className="bg-white/80 backdrop-blur-md shadow-lg border-b border-amber-100"
       >
-           {/* Back Button */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-8"
-        >
-          <Link href="/">
-            <motion.button
-              whileHover={{ scale: 1.05, x: -5 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors font-semibold"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Retour à l'accueil</span>
-            </motion.button>
-          </Link>
-        </motion.div>
+      
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <div className="text-center">
             <motion.div
