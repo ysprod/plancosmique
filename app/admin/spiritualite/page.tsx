@@ -1,18 +1,98 @@
 /**
  * Composant d'administration pour gérer le contenu de la spiritualité
- * Permet d'exporter les données vers la base de données
+ * Connecté au backend NestJS - API v1/spiritualite
  */
 
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Download, Database, Copy, Check, FileJson, FileCode } from 'lucide-react';
-import { exportToJSON, generateSQLInsert, tableSchema, spiritualPracticesData } from '@/lib/utils/spiritualite-export';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Download, Database, Copy, Check, FileJson, FileCode, Flame, Loader, AlertCircle, Zap } from 'lucide-react';
+
+interface SpiritualPractice {
+  _id: string;
+  slug: string;
+  title: string;
+  iconName: string;
+  category: string;
+  published: boolean;
+  order_index: number;
+  description: string;
+  introduction: string;
+  keyElements: string[];
+  detailedGuide: string;
+  benefits: string[];
+  practicalSteps: string[];
+  warnings: string[];
+  affirmation: string;
+  materials?: string[];
+  best_timing?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
 
 export default function SpiritualiteAdmin() {
+  const [practices, setPractices] = useState<SpiritualPractice[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
   const [exportFormat, setExportFormat] = useState<'json' | 'sql' | 'schema'>('json');
+  const [exporting, setExporting] = useState(false);
+  const [exportData, setExportData] = useState<string>('');
+  const [seeding, setSeeding] = useState(false);
+  const [seedingSuccess, setSeedingSuccess] = useState(false);
+
+  // Charger les pratiques au démarrage
+  useEffect(() => {
+    fetchPractices();
+  }, []);
+
+  const fetchPractices = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetch(`${API_URL}/spiritualite`);
+      
+      if (!response.ok) {
+        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      setPractices(data);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Erreur de connexion au serveur';
+      setError(message);
+      console.error('Erreur lors du chargement:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchExport = async (format: 'json' | 'sql' | 'schema') => {
+    try {
+      setExporting(true);
+      const response = await fetch(`${API_URL}/spiritualite/admin/export/${format}`);
+      
+      if (!response.ok) {
+        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      setExportData(data.data || JSON.stringify(data, null, 2));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur lors de l\'export');
+      setExportData('');
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const handleExportFormatChange = async (format: 'json' | 'sql' | 'schema') => {
+    setExportFormat(format);
+    await fetchExport(format);
+  };
 
   const handleCopy = async (content: string, type: string) => {
     await navigator.clipboard.writeText(content);
@@ -32,16 +112,30 @@ export default function SpiritualiteAdmin() {
     URL.revokeObjectURL(url);
   };
 
-  const getExportContent = () => {
-    switch (exportFormat) {
-      case 'json':
-        return exportToJSON();
-      case 'sql':
-        return generateSQLInsert();
-      case 'schema':
-        return tableSchema;
-      default:
-        return '';
+  const handleSeed = async () => {
+    try {
+      setSeeding(true);
+      setSeedingSuccess(false);
+      setError(null);
+
+      const response = await fetch(`${API_URL}/spiritualite/seed`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      }
+
+      setSeedingSuccess(true);
+      await fetchPractices();
+      setTimeout(() => setSeedingSuccess(false), 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur lors de l\'initialisation');
+    } finally {
+      setSeeding(false);
     }
   };
 
@@ -73,77 +167,148 @@ export default function SpiritualiteAdmin() {
             </div>
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-700 to-red-600 bg-clip-text text-transparent">
-                Export Spiritualité Africaine
+                Gestion Spiritualité Africaine
               </h1>
               <p className="text-gray-600">
-                Exportez le contenu vers votre base de données
+                Backend NestJS - MongoDB
               </p>
             </div>
           </div>
+
+          {/* Messages d'erreur */}
+          <AnimatePresence>
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3"
+              >
+                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-bold text-red-700">Erreur</h4>
+                  <p className="text-sm text-red-600">{error}</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Messages de succès */}
+          <AnimatePresence>
+            {seedingSuccess && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3"
+              >
+                <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-bold text-green-700">Succès !</h4>
+                  <p className="text-sm text-green-600">Les 5 pratiques ont été initialisées</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mt-6">
             <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
               <div className="text-2xl font-bold text-purple-700">
-                {spiritualPracticesData.length}
+                {loading ? '-' : practices.length}
               </div>
               <div className="text-sm text-gray-600">Pratiques</div>
             </div>
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg p-4 border border-blue-200">
               <div className="text-2xl font-bold text-blue-700">
-                {spiritualPracticesData.filter(p => p.published).length}
+                {loading ? '-' : practices.filter(p => p.published).length}
               </div>
               <div className="text-sm text-gray-600">Publiées</div>
             </div>
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4 border border-green-200">
               <div className="text-2xl font-bold text-green-700">
-                {spiritualPracticesData.reduce((acc, p) => acc + p.practicalSteps.length, 0)}
+                {loading ? '-' : practices.reduce((acc, p) => acc + (p.practicalSteps?.length || 0), 0)}
               </div>
               <div className="text-sm text-gray-600">Étapes totales</div>
             </div>
           </div>
         </motion.div>
 
-        {/* Sélecteur de format */}
+        {/* Bouton Seed */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="bg-white rounded-2xl shadow-xl p-6 mb-8"
         >
+          <h2 className="text-xl font-bold text-gray-900 mb-4">Initialisation</h2>
+          <p className="text-gray-600 mb-4">
+            Chargez les 5 pratiques spirituelles par défaut dans la base de données
+          </p>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleSeed}
+            disabled={seeding || loading}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {seeding ? (
+              <>
+                <Loader className="w-5 h-5 animate-spin" />
+                Initialisation en cours...
+              </>
+            ) : (
+              <>
+                <Zap className="w-5 h-5" />
+                Initialiser les données
+              </>
+            )}
+          </motion.button>
+        </motion.div>
+
+        {/* Sélecteur de format */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="bg-white rounded-2xl shadow-xl p-6 mb-8"
+        >
           <h2 className="text-xl font-bold text-gray-900 mb-4">Format d'export</h2>
           <div className="grid grid-cols-3 gap-4">
             <button
-              onClick={() => setExportFormat('json')}
+              onClick={() => handleExportFormatChange('json')}
+              disabled={exporting}
               className={`p-4 rounded-xl border-2 transition-all ${
                 exportFormat === 'json'
                   ? 'border-amber-500 bg-amber-50 text-amber-700'
                   : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300'
-              }`}
+              } disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               <FileJson className="w-8 h-8 mx-auto mb-2" />
               <div className="font-semibold">JSON</div>
-              <div className="text-xs mt-1">Format universel</div>
+              <div className="text-xs mt-1">API REST</div>
             </button>
             <button
-              onClick={() => setExportFormat('sql')}
+              onClick={() => handleExportFormatChange('sql')}
+              disabled={exporting}
               className={`p-4 rounded-xl border-2 transition-all ${
                 exportFormat === 'sql'
                   ? 'border-amber-500 bg-amber-50 text-amber-700'
                   : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300'
-              }`}
+              } disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               <FileCode className="w-8 h-8 mx-auto mb-2" />
-              <div className="font-semibold">SQL INSERT</div>
+              <div className="font-semibold">SQL</div>
               <div className="text-xs mt-1">PostgreSQL</div>
             </button>
             <button
-              onClick={() => setExportFormat('schema')}
+              onClick={() => handleExportFormatChange('schema')}
+              disabled={exporting}
               className={`p-4 rounded-xl border-2 transition-all ${
                 exportFormat === 'schema'
                   ? 'border-amber-500 bg-amber-50 text-amber-700'
                   : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300'
-              }`}
+              } disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               <Database className="w-8 h-8 mx-auto mb-2" />
               <div className="font-semibold">SCHEMA</div>
@@ -157,16 +322,19 @@ export default function SpiritualiteAdmin() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-2xl shadow-xl p-6"
+          className="bg-white rounded-2xl shadow-xl p-6 mb-8"
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Aperçu</h2>
+            <h2 className="text-xl font-bold text-gray-900">
+              {exporting ? 'Chargement...' : 'Aperçu de l\'export'}
+            </h2>
             <div className="flex gap-2">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => handleCopy(getExportContent(), exportFormat)}
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-shadow"
+                onClick={() => handleCopy(exportData, exportFormat)}
+                disabled={!exportData || exporting}
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {copied === exportFormat ? (
                   <>
@@ -183,8 +351,9 @@ export default function SpiritualiteAdmin() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => handleDownload(getExportContent(), getFilename())}
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-red-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-shadow"
+                onClick={() => handleDownload(exportData, getFilename())}
+                disabled={!exportData || exporting}
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-red-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Download className="w-5 h-5" />
                 Télécharger
@@ -194,39 +363,21 @@ export default function SpiritualiteAdmin() {
 
           {/* Code preview */}
           <div className="bg-gray-900 rounded-xl p-4 overflow-x-auto">
-            <pre className="text-green-400 text-xs sm:text-sm font-mono">
-              {getExportContent().slice(0, 2000)}
-              {getExportContent().length > 2000 && '\n\n... (contenu tronqué pour l\'aperçu)'}
-            </pre>
-          </div>
-
-          {/* Instructions */}
-          <div className="mt-6 p-4 bg-amber-50 border-l-4 border-amber-500 rounded-lg">
-            <h3 className="font-bold text-amber-900 mb-2">📋 Instructions d'utilisation</h3>
-            <div className="text-sm text-amber-800 space-y-2">
-              {exportFormat === 'json' && (
-                <>
-                  <p>1. Copiez ou téléchargez le fichier JSON</p>
-                  <p>2. Utilisez votre endpoint API pour importer les données</p>
-                  <p>3. Exemple: <code className="bg-white px-2 py-1 rounded">POST /api/spiritual-practices/import</code></p>
-                </>
-              )}
-              {exportFormat === 'sql' && (
-                <>
-                  <p>1. Créez d'abord la table avec le schéma (onglet SCHEMA)</p>
-                  <p>2. Copiez les instructions SQL INSERT</p>
-                  <p>3. Exécutez-les dans votre base PostgreSQL</p>
-                  <p>4. Commande: <code className="bg-white px-2 py-1 rounded">psql -d votre_db -f spiritualite-insert.sql</code></p>
-                </>
-              )}
-              {exportFormat === 'schema' && (
-                <>
-                  <p>1. Copiez le schéma de la table</p>
-                  <p>2. Exécutez-le dans votre base PostgreSQL AVANT d'insérer les données</p>
-                  <p>3. Le schéma inclut les index pour optimiser les requêtes</p>
-                </>
-              )}
-            </div>
+            {exporting ? (
+              <div className="flex items-center justify-center h-32 text-gray-400">
+                <Loader className="w-6 h-6 animate-spin mr-2" />
+                Chargement de l'export...
+              </div>
+            ) : exportData ? (
+              <pre className="text-green-400 text-xs sm:text-sm font-mono">
+                {exportData.slice(0, 2000)}
+                {exportData.length > 2000 && '\n\n... (contenu tronqué pour l\'aperçu)'}
+              </pre>
+            ) : (
+              <div className="flex items-center justify-center h-32 text-gray-400">
+                Sélectionnez un format d'export
+              </div>
+            )}
           </div>
         </motion.div>
 
@@ -235,36 +386,65 @@ export default function SpiritualiteAdmin() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-8 bg-white rounded-2xl shadow-xl p-6"
+          className="bg-white rounded-2xl shadow-xl p-6"
         >
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Pratiques spirituelles</h2>
-          <div className="space-y-2">
-            {spiritualPracticesData.map((practice, index) => (
-              <div
-                key={practice.id}
-                className="flex items-center justify-between p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-amber-600 text-white rounded-lg flex items-center justify-center font-bold">
-                    {index + 1}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900">{practice.title}</div>
-                    <div className="text-xs text-gray-600">
-                      {practice.keyElements.length} éléments • {practice.practicalSteps.length} étapes
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <Flame className="w-6 h-6 text-orange-600" />
+              Pratiques spirituelles
+            </h2>
+            <motion.button
+              whileHover={{ rotate: 180 }}
+              onClick={fetchPractices}
+              disabled={loading}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
+            >
+              <Database className="w-5 h-5 text-gray-600" />
+            </motion.button>
+          </div>
+
+          {loading ? (
+            <div className="flex items-center justify-center h-32">
+              <Loader className="w-6 h-6 animate-spin text-amber-600" />
+              <span className="ml-2 text-gray-600">Chargement des pratiques...</span>
+            </div>
+          ) : practices.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              <p>Aucune pratique trouvée</p>
+              <p className="text-sm mt-2">Cliquez sur "Initialiser les données" pour charger les 5 pratiques</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {practices.map((practice, index) => (
+                <motion.div
+                  key={practice._id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="flex items-center justify-between p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-amber-600 text-white rounded-lg flex items-center justify-center font-bold text-sm">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-900">{practice.title}</div>
+                      <div className="text-xs text-gray-600">
+                        {practice.keyElements?.length || 0} éléments • {practice.practicalSteps?.length || 0} étapes
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className={`px-3 py-1 rounded-full text-xs font-bold ${
-                  practice.published
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-300 text-gray-700'
-                }`}>
-                  {practice.published ? 'Publié' : 'Brouillon'}
-                </div>
-              </div>
-            ))}
-          </div>
+                  <div className={`px-3 py-1 rounded-full text-xs font-bold ${
+                    practice.published
+                      ? 'bg-green-500 text-white'
+                      : 'bg-gray-300 text-gray-700'
+                  }`}>
+                    {practice.published ? 'Publié' : 'Brouillon'}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
     </div>
