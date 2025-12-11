@@ -117,8 +117,7 @@ Interfaces exportées:
 1. ✅ `app/protected/vie-personnelle/slidesection/Slide4Section.tsx` - Sauvegarde via API
 2. ✅ `app/protected/consultations/page.tsx` - Chargement liste via API
 3. ✅ `app/protected/consultations/[id]/page.tsx` - Chargement détail via API
-4. ✅ `app/api/consultations/[id]/download-pdf/route.ts` - Récupération pour PDF via API
-5. ✅ `app/api/consultations/[id]/generate-analysis/route.ts` - Suppression storageService
+4. ✅ `app/api/consultations/[id]/download-pdf/route.route.ts` - Suppression storageService
 6. ✅ `types/consultation-api.types.ts` - Types d'API créés
 
 ---

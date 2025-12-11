@@ -1,236 +1,179 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-
-import { useRouter } from 'next/navigation';
-import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { api } from '@/lib/api/client';
 import {
   AlertTriangle,
+  BookOpen,
   CheckCircle,
   CheckCircle2,
   Clock,
-  XCircle,
-  BookOpen,
   Compass,
   Heart,
   Sparkles,
   Stars,
   Target,
   Telescope,
+  XCircle,
   Zap,
 } from 'lucide-react';
-import type { PaymentData, PaymentStatus, StatusConfig, AnalysisStage } from './types';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { AnalysisStage, PaymentData, PaymentStatus, StatusConfig } from './types';
 
+// ==================== CONSTANTES ====================
+const SSE_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const MAX_RECONNECT_ATTEMPTS = 5;
+const RECONNECT_DELAY = 2000;
+const AUTO_REDIRECT_DELAY = 15;
+
+const ANALYSIS_STAGES: AnalysisStage[] = [
+  {
+    progress: 5,
+    label: 'Initialisation',
+    icon: Sparkles,
+    color: 'from-blue-400 to-cyan-400',
+    description: 'Préparation des données de naissance...',
+    duration: 1000,
+  },
+  {
+    progress: 15,
+    label: 'Positions Planétaires',
+    icon: Stars,
+    color: 'from-purple-400 to-pink-400',
+    description: 'Calcul des positions célestes à votre naissance...',
+    duration: 3000,
+  },
+  {
+    progress: 30,
+    label: 'Aspects Astrologiques',
+    icon: Zap,
+    color: 'from-yellow-400 to-orange-400',
+    description: 'Analyse des interactions entre les planètes...',
+    duration: 4000,
+  },
+  {
+    progress: 45,
+    label: 'Thème Natal',
+    icon: Telescope,
+    color: 'from-indigo-400 to-purple-400',
+    description: 'Construction de votre carte du ciel personnalisée...',
+    duration: 5000,
+  },
+  {
+    progress: 60,
+    label: 'Maisons Astrologiques',
+    icon: Compass,
+    color: 'from-green-400 to-teal-400',
+    description: 'Interprétation des 12 maisons de votre thème...',
+    duration: 4000,
+  },
+  {
+    progress: 75,
+    label: 'Mission de Vie',
+    icon: Target,
+    color: 'from-pink-400 to-rose-400',
+    description: 'Dévoilement de votre chemin de vie karmique...',
+    duration: 5000,
+  },
+  {
+    progress: 88,
+    label: 'Personnalité',
+    icon: Heart,
+    color: 'from-red-400 to-pink-400',
+    description: 'Analyse approfondie de votre personnalité...',
+    duration: 3000,
+  },
+  {
+    progress: 95,
+    label: 'Finalisation',
+    icon: BookOpen,
+    color: 'from-violet-400 to-purple-400',
+    description: 'Compilation de votre rapport complet...',
+    duration: 2000,
+  },
+  {
+    progress: 100,
+    label: 'Terminé',
+    icon: CheckCircle,
+    color: 'from-green-400 to-emerald-400',
+    description: 'Votre analyse astrologique est prête !',
+    duration: 1000,
+  },
+];
+
+interface VerificationResult {
+  success: boolean;
+  status: string;
+  message?: string;
+  data?: any;
+}
+
+interface ProcessResult {
+  success: boolean;
+  consultationId?: string;
+  downloadUrl?: string;
+  message?: string;
+}
+
+// ==================== HOOK PRINCIPAL ====================
 export function usePaymentCallback(token: string | null) {
-  // Inline usePaymentVerification hook
-  const verifyPayment = useCallback(async (paymentToken: string) => {
-    try {
-      if (!paymentToken || paymentToken.trim() === '') {
-        return {
-          success: false,
-          status: 'error',
-          message: 'Token de paiement manquant',
-        };
-      }
+  const router = useRouter();
 
-      console.log('🔍 Vérification paiement:', paymentToken);
-
-      const response = await api.get(`/payments/verify?token=${paymentToken}`);
-
-      console.log('✅ Paiement vérifié:', response.data.status);
-      return response.data;
-    } catch (error: any) {
-      console.error('❌ Erreur vérification paiement:', error.message);
-      return {
-        success: false,
-        status: 'error',
-        message: error.message || 'Erreur de vérification du paiement',
-      };
-    }
-  }, []);
-
-  const processConsultationPayment = useCallback(
-    async (paymentToken: string, paymentData: PaymentData) => {
-      try {
-        if (!paymentToken) {
-          throw new Error('Token de paiement manquant');
-        }
-
-        console.log('📊 Traitement consultation:', {
-          token: paymentToken,
-          type: 'consultation',
-        });
-
-        const response = await api.post('/payments/process-consultation', {
-          token: paymentToken,
-          paymentData,
-        });
-
-        console.log('✅ Consultation traitée:', response.data);
-        return response.data;
-      } catch (error: any) {
-        console.error('❌ Erreur traitement consultation:', error.message);
-        return {
-          success: false,
-          status: 'error',
-          message: error.message || 'Erreur de traitement du paiement',
-        };
-      }
-    },
-    []
-  );
-
-  // États de base
+  // ========== États ==========
   const [consultationId, setConsultationId] = useState<string | null>(null);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(false);
-  const [manualAnalysisCompleted, setManualAnalysisCompleted] = useState(false);
-
-  // Inline usePaymentStatus hook
   const [status, setStatus] = useState<PaymentStatus>('pending');
   const [error, setError] = useState<string>('');
-
-  const normalizePaymentStatus = useCallback((apiStatus: string): PaymentStatus => {
-    const normalized = apiStatus?.toLowerCase?.() || '';
-
-    const statusMap: Record<string, PaymentStatus> = {
-      pending: 'pending',
-      paid: 'paid',
-      completed: 'paid',
-      failure: 'failure',
-      'no paid': 'no paid',
-      already_used: 'already_used',
-    };
-
-    return statusMap[normalized] || 'error';
-  }, []);
-  // Inline useAnalysisStages hook
-  const analysisStages = useMemo<AnalysisStage[]>(
-    () => [
-      {
-        progress: 5,
-        label: 'Initialisation',
-        icon: Sparkles,
-        color: 'from-blue-400 to-cyan-400',
-        description: 'Préparation des données de naissance...',
-        duration: 1000,
-      },
-      {
-        progress: 15,
-        label: 'Positions Planétaires',
-        icon: Stars,
-        color: 'from-purple-400 to-pink-400',
-        description: 'Calcul des positions célestes à votre naissance...',
-        duration: 3000,
-      },
-      {
-        progress: 30,
-        label: 'Aspects Astrologiques',
-        icon: Zap,
-        color: 'from-yellow-400 to-orange-400',
-        description: 'Analyse des interactions entre les planètes...',
-        duration: 4000,
-      },
-      {
-        progress: 45,
-        label: 'Thème Natal',
-        icon: Telescope,
-        color: 'from-indigo-400 to-purple-400',
-        description: 'Construction de votre carte du ciel personnalisée...',
-        duration: 5000,
-      },
-      {
-        progress: 60,
-        label: 'Maisons Astrologiques',
-        icon: Compass,
-        color: 'from-green-400 to-teal-400',
-        description: 'Interprétation des 12 maisons de votre thème...',
-        duration: 4000,
-      },
-      {
-        progress: 75,
-        label: 'Mission de Vie',
-        icon: Target,
-        color: 'from-pink-400 to-rose-400',
-        description: 'Dévoilement de votre chemin de vie karmique...',
-        duration: 5000,
-      },
-      {
-        progress: 88,
-        label: 'Personnalité',
-        icon: Heart,
-        color: 'from-red-400 to-pink-400',
-        description: 'Analyse approfondie de votre personnalité...',
-        duration: 3000,
-      },
-      {
-        progress: 95,
-        label: 'Finalisation',
-        icon: BookOpen,
-        color: 'from-violet-400 to-purple-400',
-        description: 'Compilation de votre rapport complet...',
-        duration: 2000,
-      },
-      {
-        progress: 100,
-        label: 'Terminé',
-        icon: CheckCircle,
-        color: 'from-green-400 to-emerald-400',
-        description: 'Votre analyse astrologique est prête !',
-        duration: 1000,
-      },
-    ],
-    []
-  );
-
-  // Inline useRealtimeAnalysisProgress hook
   const [sseProgress, setSseProgress] = useState(0);
   const [currentStage, setCurrentStage] = useState('init');
   const [sseStageIndex, setSseStageIndex] = useState(0);
-  const [sseStageMessage, setSseStageMessage] = useState('Preparation...');
+  const [sseStageMessage, setSseStageMessage] = useState('Préparation...');
   const [sseCompleted, setSseCompleted] = useState(false);
   const [sseConnected, setSseConnected] = useState(false);
+  const [shouldAutoRedirect, setShouldAutoRedirect] = useState(false);
+  const [autoRedirectCountdown, setAutoRedirectCountdown] = useState(AUTO_REDIRECT_DELAY);
 
+  // ========== Refs ==========
   const eventSourceRef = useRef<EventSource | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const reconnectAttemptsRef = useRef(0);
+  const isSSEConnectedRef = useRef(false); // Éviter les connexions multiples
 
-  const MAX_RECONNECT_ATTEMPTS = 5;
-  const RECONNECT_DELAY = 2000;
+  // ==================== SSE CONNECTION (fonction réutilisable) ====================
 
-  useEffect(() => {
-    if (!isGeneratingAnalysis || !consultationId) {
+  /**
+   * Établit la connexion SSE pour suivre la progression de l'analyse
+   */
+  const setupSSEConnection = useCallback((targetConsultationId: string) => {
+    // Éviter les connexions multiples
+    if (isSSEConnectedRef.current || eventSourceRef.current) {
+      console.log('⚠️ SSE déjà connecté, éviter doublon');
       return;
     }
 
-    let isMounted = true;
-
     const connect = () => {
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-        const url = `${baseUrl}/api/v1/analysis/progress/${consultationId}`;
-
-        console.log('SSE Connection:', url);
+        const url = `${SSE_BASE_URL}/api/v1/analysis/progress/${targetConsultationId}`;
+        console.log('📡 SSE Connection directe:', url);
 
         const eventSource = new EventSource(url);
         eventSourceRef.current = eventSource;
+        isSSEConnectedRef.current = true;
 
         eventSource.onopen = () => {
-          if (!isMounted) return;
-          
-          console.log('SSE connected');
+          console.log('✅ SSE connected');
           setSseConnected(true);
           reconnectAttemptsRef.current = 0;
         };
 
         eventSource.onmessage = (event) => {
-          if (!isMounted) return;
-
           try {
             const data = JSON.parse(event.data);
-            
+            console.log('📊 SSE Progress:', data);
+
             setSseProgress(data.progress);
             setCurrentStage(data.stage);
             setSseStageIndex(data.stageIndex);
@@ -238,49 +181,188 @@ export function usePaymentCallback(token: string | null) {
             setSseCompleted(data.completed);
 
             if (data.completed) {
+              console.log('✅ Analyse terminée via SSE');
               eventSource.close();
+              isSSEConnectedRef.current = false;
             }
           } catch (err) {
-            console.error('SSE parsing error:', err);
+            console.error('❌ SSE parsing error:', err);
           }
         };
 
         eventSource.onerror = (err) => {
-          console.error('SSE error:', err);
-          
+          console.error('❌ SSE error:', err);
           eventSource.close();
-          
-          if (!isMounted) return;
-
+          isSSEConnectedRef.current = false;
           setSseConnected(false);
 
+          // Reconnexion avec backoff exponentiel
           if (reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS) {
             reconnectAttemptsRef.current++;
             const delay = RECONNECT_DELAY * reconnectAttemptsRef.current;
-            
+
+            console.log(
+              `🔄 SSE Reconnection attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS} in ${delay}ms`
+            );
+
             reconnectTimeoutRef.current = setTimeout(() => {
-              if (isMounted && !sseCompleted) {
+              if (!sseCompleted) {
                 connect();
               }
             }, delay);
           } else {
-            console.log('Max reconnection attempts reached');
+            console.log('⚠️ Max reconnection attempts reached');
           }
         };
-
       } catch (err) {
-        console.error('EventSource creation error:', err);
+        console.error('❌ EventSource creation error:', err);
+        isSSEConnectedRef.current = false;
       }
     };
 
     connect();
+  }, [sseCompleted]);
 
+  // ==================== INITIALISATION PAIEMENT + SSE ====================
+
+  const initializePayment = useCallback(async () => {
+    if (!token) {
+      setStatus('error');
+      setError('Token de paiement manquant');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setIsProcessing(true);
+
+      // ========== 1. VÉRIFIER LE PAIEMENT ==========
+      let verification: VerificationResult;
+
+      if (!token?.trim()) {
+        verification = {
+          success: false,
+          status: 'error',
+          message: 'Token de paiement manquant',
+        };
+      } else {
+        try {
+          console.log('🔍 Vérification paiement:', token);
+          const response = await api.get(`/payments/verify?token=${token}`);
+          console.log('✅ Paiement vérifié:', response.data.status);
+          verification = response.data;
+        } catch (error: any) {
+          console.error('❌ Erreur vérification paiement:', error.message);
+          verification = {
+            success: false,
+            status: 'error',
+            message: error.message || 'Erreur de vérification du paiement',
+          };
+        }
+      }
+
+      if (!verification.success || !verification.data) {
+        setStatus('error');
+        setError(verification.message || 'Impossible de vérifier le paiement');
+        return;
+      }
+
+      // ========== 2. CRÉER LES DONNÉES DE PAIEMENT ==========
+      const paymentData: PaymentData = {
+        _id: verification.data._id,
+        tokenPay: token || '',
+        numeroSend: '',
+        nomclient: '',
+        Montant: verification.data.amount,
+        frais: 0,
+        statut: 'paid',
+        createdAt: new Date().toISOString(),
+        personal_Info: [],
+      };
+
+      // ========== 3. TRAITER LA CONSULTATION ==========
+      console.log('🚀 FORCE START: Lancement génération analyse');
+      setIsGeneratingAnalysis(true);
+
+      let result: ProcessResult;
+
+      try {
+        console.log('📊 Traitement consultation:', { token, type: 'consultation' });
+
+        const response = await api.post('/payments/process-consultation', {
+          token,
+          paymentData,
+        });
+
+        console.log('✅ Consultation traitée:', response.data);
+        result = response.data;
+      } catch (error: any) {
+        console.error('❌ Erreur traitement consultation:', error.message);
+        result = {
+          success: false,
+          message: error.message || 'Erreur de traitement du paiement',
+        };
+      }
+
+      // ========== 4. GÉRER LE RÉSULTAT ==========
+      const resultConsultationId = result.consultationId || null;
+      const resultDownloadUrl = result.downloadUrl || null;
+
+      // Mettre à jour les états
+      setConsultationId(resultConsultationId);
+      setDownloadUrl(resultDownloadUrl);
+
+      // ========== 5. CONNECTER SSE IMMÉDIATEMENT SI consultationId DISPONIBLE ==========
+      if (resultConsultationId) {
+        console.log('🔌 Connexion SSE immédiate avec consultationId:', resultConsultationId);
+
+        // 🔥 CONNEXION SSE DIRECTE (pas d'attente d'un useEffect)
+        setupSSEConnection(resultConsultationId);
+
+        setIsGeneratingAnalysis(true); // Confirmer que la génération est active
+        setShouldAutoRedirect(true);
+      } else {
+        console.error('❌ Pas de consultationId, impossible de lancer SSE');
+        setIsGeneratingAnalysis(false);
+      }
+
+      // ========== 6. DÉFINIR LE STATUT FINAL ==========
+      if (result.success) {
+        setStatus('paid');
+      } else {
+        const msg = (result.message || '').toLowerCase();
+        const isAlreadyProcessed = msg.includes('déjà') || msg.includes('already');
+
+        if (isAlreadyProcessed) {
+          setStatus('already_used');
+        } else {
+          setStatus('error');
+          setError(result.message || 'Erreur, mais génération en cours...');
+        }
+      }
+
+    } catch (err: any) {
+      console.error('❌ Erreur globale:', err);
+      setStatus('error');
+      setError(err?.message || 'Une erreur inattendue est survenue');
+      setIsGeneratingAnalysis(false);
+    } finally {
+      setIsLoading(false);
+      setIsProcessing(false);
+    }
+  }, [token, setupSSEConnection]);
+
+  // ==================== CLEANUP SSE ====================
+
+  useEffect(() => {
+    // Cleanup SSE au démontage du composant
     return () => {
-      isMounted = false;
-      
       if (eventSourceRef.current) {
+        console.log('🧹 Cleanup: Fermeture SSE');
         eventSourceRef.current.close();
         eventSourceRef.current = null;
+        isSSEConnectedRef.current = false;
       }
 
       if (reconnectTimeoutRef.current) {
@@ -288,55 +370,21 @@ export function usePaymentCallback(token: string | null) {
         reconnectTimeoutRef.current = null;
       }
     };
-  }, [consultationId, isGeneratingAnalysis, sseCompleted]);
-
-  const analysisCompleted = manualAnalysisCompleted || sseCompleted;
-  const analysisProgress = manualAnalysisCompleted ? 100 : sseProgress;
-  const currentStageIndex = manualAnalysisCompleted
-    ? Math.max(analysisStages.length - 1, 0)
-    : sseStageIndex;
-  const currentStageMessage = manualAnalysisCompleted
-    ? 'Analyse déjà générée. Redirection en cours...'
-    : sseStageMessage || 'Préparation...';
-  const router = useRouter();
-
-  // Inline useAutoRedirect state
-  const [shouldAutoRedirect, setShouldAutoRedirect] = useState(false);
-  const [autoRedirectCountdown, setAutoRedirectCountdown] = useState<number>(15);
-
-  const startCountdown = useCallback((callback: () => void) => {
-    setShouldAutoRedirect(true);
-    setAutoRedirectCountdown(15);
-
-    const interval = setInterval(() => {
-      setAutoRedirectCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          callback();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
   }, []);
 
-  // Inline usePaymentActions hook
-  const handleViewConsultation = useCallback(
-    (consultationId: string | null) => {
-      if (consultationId) {
-        router.push(`/protected/consultations/${consultationId}`);
-      }
-    },
-    [router]
-  );
+  // ==================== ACTIONS ====================
 
-  const handleDownloadBook = useCallback((downloadUrl: string | null) => {
+  const handleViewConsultation = useCallback(() => {
+    if (consultationId) {
+      router.push(`/protected/consultations/${consultationId}`);
+    }
+  }, [consultationId, router]);
+
+  const handleDownloadBook = useCallback(() => {
     if (downloadUrl) {
       window.open(downloadUrl, '_blank');
     }
-  }, []);
+  }, [downloadUrl]);
 
   const handleRetry = useCallback(() => {
     window.location.reload();
@@ -346,21 +394,18 @@ export function usePaymentCallback(token: string | null) {
     router.push('/protected/profil');
   }, [router]);
 
-  const handleAutoRedirect = useCallback(
-    (paymentData: PaymentData | null, consultationId: string | null, downloadUrl: string | null) => {
-      const personalInfo = paymentData?.personal_Info?.[0];
-      const type = personalInfo?.type || 'consultation';
+  const handleAutoRedirect = useCallback(() => {
+    if (downloadUrl) {
+      router.push('/protected/bibliotheque');
+    } else if (consultationId) {
+      router.push(`/protected/consultations/${consultationId}`);
+    } else {
+      router.push('/protected/consultations');
+    }
+  }, [consultationId, downloadUrl, router]);
 
-      if (type === 'book' && downloadUrl) {
-        router.push('/protected/bibliotheque');
-      } else if (consultationId) {
-        router.push(`/protected/consultations/${consultationId}`);
-      } else {
-        router.push('/protected/consultations');
-      }
-    },
-    [router]
-  );
+  // ==================== STATUS CONFIG ====================
+
   const statusConfig = useMemo<StatusConfig>(() => {
     const configs: Record<PaymentStatus, StatusConfig> = {
       pending: {
@@ -388,7 +433,8 @@ export function usePaymentCallback(token: string | null) {
       failure: {
         icon: XCircle,
         title: 'Paiement échoué',
-        description: 'Une erreur est survenue lors du traitement de votre paiement. Veuillez réessayer.',
+        description:
+          'Une erreur est survenue lors du traitement de votre paiement. Veuillez réessayer.',
         color: 'text-red-600',
         gradient: 'from-red-500/20 via-rose-500/20 to-pink-500/20',
         iconBg: 'bg-red-100',
@@ -408,7 +454,8 @@ export function usePaymentCallback(token: string | null) {
       already_used: {
         icon: CheckCircle,
         title: 'Paiement déjà enregistré',
-        description: 'Cette transaction a déjà été validée. Retrouvez votre contenu dans vos consultations ou votre bibliothèque.',
+        description:
+          'Cette transaction a déjà été validée. Retrouvez votre contenu dans vos consultations ou votre bibliothèque.',
         color: 'text-emerald-700',
         gradient: 'from-emerald-500/20 via-teal-500/20 to-green-500/20',
         iconBg: 'bg-emerald-100',
@@ -430,143 +477,69 @@ export function usePaymentCallback(token: string | null) {
     return configs[status];
   }, [status, error, downloadUrl]);
 
-  // Vérification et traitement du paiement
-  const initializePaymentVerification = useCallback(async () => {
-    if (!token) {
-      setStatus('error');
-      setError('Token de paiement manquant');
-      setIsLoading(false);
-      return;
-    }
+  // ==================== EFFECTS ====================
 
-    try {
-      setIsLoading(true);
-      setIsProcessing(true);
-
-      const verificationResult = await verifyPayment(token);
-
-      if (!verificationResult.success || !verificationResult.data) {
-        setStatus('error');
-        setError(verificationResult.message || 'Impossible de vérifier le paiement');
-        setIsLoading(false);
-        setIsProcessing(false);
-        return;
-      }
-
-      const backendPaymentData = verificationResult.data as any;
-      const normalizedStatus = normalizePaymentStatus(backendPaymentData.status);
-      setStatus(normalizedStatus);
-
-      const paymentDetails: PaymentData = {
-        _id: backendPaymentData._id,
-        tokenPay: token || '',
-        numeroSend: '',
-        nomclient: '',
-        Montant: backendPaymentData.amount,
-        frais: 0,
-        statut: 'paid',
-        createdAt: new Date().toISOString(),
-        personal_Info: [],
-      };
-
-      const handlePaid = async () => {
-        setManualAnalysisCompleted(false);
-        setIsGeneratingAnalysis(true);
-        const callbackResult = await processConsultationPayment(token || '', paymentDetails);
-
-        if (callbackResult.success) {
-          setConsultationId(callbackResult.consultationId || null);
-          setDownloadUrl(callbackResult.downloadUrl || null);
-          setShouldAutoRedirect(true);
-          return;
-        }
-
-        const msg = (callbackResult.message || '').toLowerCase();
-        const isAlreadyProcessed = msg.includes('déjà') || msg.includes('already');
-
-        if (isAlreadyProcessed) {
-          // Traiter comme un succès déjà consommé : marquer comme analysé et rediriger
-          setStatus('already_used');
-          setManualAnalysisCompleted(true);
-          setIsGeneratingAnalysis(false);
-          setConsultationId(callbackResult.consultationId || null);
-          setDownloadUrl(callbackResult.downloadUrl || null);
-          setShouldAutoRedirect(true);
-          return;
-        }
-
-        setStatus('error');
-        setError(callbackResult.message || 'Erreur lors du traitement du paiement');
-        setIsGeneratingAnalysis(false);
-        setManualAnalysisCompleted(false);
-      };
-
-      if (normalizedStatus === 'paid') {
-        await handlePaid();
-      } else if (normalizedStatus === 'already_used') {
-        setManualAnalysisCompleted(true);
-        setIsGeneratingAnalysis(false);
-        setShouldAutoRedirect(true);
-      } else if (normalizedStatus === 'pending') {
-        // rien de plus à faire
-      }
-    } catch (err: any) {
-      setStatus('error');
-      setError(err?.message || 'Une erreur inattendue est survenue');
-      setIsGeneratingAnalysis(false);
-    } finally {
-      setIsLoading(false);
-      setIsProcessing(false);
-    }
-  }, [token, verifyPayment, processConsultationPayment, normalizePaymentStatus, setStatus, setError]);
-
+  // Initialiser au montage
   useEffect(() => {
-    initializePaymentVerification();
-  }, [initializePaymentVerification]);
+    initializePayment();
+  }, [initializePayment]);
 
+  // Arrêter la génération quand l'analyse est terminée
   useEffect(() => {
-    if (analysisCompleted) {
+    if (sseCompleted) {
+      console.log('✅ Analyse terminée, arrêt de la génération');
       setIsGeneratingAnalysis(false);
     }
-  }, [analysisCompleted]);
+  }, [sseCompleted]);
 
-  // Compte à rebours auto-redirect après analyse
+  // Compte à rebours auto-redirect
   useEffect(() => {
-    if (!shouldAutoRedirect || !analysisCompleted) return;
+    if (!shouldAutoRedirect || !sseCompleted) return;
 
-    const cleanup = startCountdown(() => {
-      handleAutoRedirect(null, consultationId, downloadUrl);
-    });
+    console.log('⏱️ Démarrage compte à rebours auto-redirect (15s)');
 
-    return cleanup;
-  }, [shouldAutoRedirect, analysisCompleted, startCountdown, handleAutoRedirect, consultationId, downloadUrl]);
+    const interval = setInterval(() => {
+      setAutoRedirectCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          handleAutoRedirect();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [shouldAutoRedirect, sseCompleted, handleAutoRedirect]);
+
+  // ==================== RETURN ====================
 
   return {
-    // états globaux
+    // États globaux
     isLoading,
     isProcessing,
     status,
     statusConfig,
 
-    // analyse
-    analysisStages,
+    // Analyse
+    analysisStages: ANALYSIS_STAGES,
     isGeneratingAnalysis,
-    analysisCompleted,
-    analysisProgress,
-    currentStageIndex,
-    currentStageMessage,
+    analysisCompleted: sseCompleted,
+    analysisProgress: sseProgress,
+    currentStageIndex: sseStageIndex,
+    currentStageMessage: sseStageMessage || 'Préparation...',
     currentStage,
     sseConnected,
 
-    // données
+    // Données
     consultationId,
     downloadUrl,
 
-    // redirection
+    // Redirection
     shouldAutoRedirect,
     autoRedirectCountdown,
 
-    // actions
+    // Actions
     handleViewConsultation,
     handleDownloadBook,
     handleRetry,

@@ -181,6 +181,13 @@ const PaymentCallbackContent = () => {
           exit="exit"
           className="w-full max-w-3xl relative z-10"
         >
+
+           <AnalysisProgressBar
+              analysisProgress={analysisProgress}
+              currentStageIndex={currentStageIndex}
+              currentStageMessage={currentStageMessage}
+              analysisStages={analysisStages}
+            />
           {/* 🔮 Barre de progression d'analyse */}
           {isGeneratingAnalysis && (
             <AnalysisProgressBar
@@ -221,13 +228,15 @@ const PaymentCallbackContent = () => {
             pulseVariants={pulseVariants}
           />
 
+          {status}
+
           {/* 🎬 Boutons d'action */}
           <ActionButtons
             status={status}
             downloadUrl={downloadUrl}
             consultationId={consultationId}
-            onViewConsultation={() => handleViewConsultation(consultationId)}
-            onDownloadBook={() => handleDownloadBook(downloadUrl)}
+            onViewConsultation={() => handleViewConsultation()}
+            onDownloadBook={() => handleDownloadBook()}
             onRetry={handleRetry}
             onGoHome={handleGoHome}
             itemVariants={itemVariants}

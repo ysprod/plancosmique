@@ -80,7 +80,7 @@ app/protected/
 
 ## 🔌 API Endpoints
 
-### POST `/api/consultations/[id]/generate-analysis`
+
 
 Génère l'analyse astrologique complète pour une consultation.
 
@@ -113,7 +113,7 @@ Génère l'analyse astrologique complète pour une consultation.
 }
 ```
 
-### GET `/api/consultations/[id]/generate-analysis`
+
 
 Récupère le statut de génération ou l'analyse si terminée.
 
