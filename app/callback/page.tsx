@@ -15,6 +15,7 @@ import {
   useAnimationVariants,
   usePaymentCallback,
 } from './components';
+ 
 
 const PaymentCallbackContent = () => {
   const searchParams = useSearchParams();
@@ -47,7 +48,29 @@ const PaymentCallbackContent = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 flex items-center justify-center p-3 sm:p-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 flex items-center justify-center p-3 sm:p-4 relative overflow-hidden">
+      {/* Background animé */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{ duration: 20, repeat: Infinity }}
+          className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-purple-300/30 to-pink-300/30 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{
+            scale: [1.2, 1, 1.2],
+            rotate: [90, 0, 90],
+            opacity: [0.5, 0.3, 0.5]
+          }}
+          transition={{ duration: 20, repeat: Infinity }}
+          className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-blue-300/30 to-purple-300/30 rounded-full blur-3xl"
+        />
+      </div>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={status}
@@ -55,9 +78,9 @@ const PaymentCallbackContent = () => {
           initial="hidden"
           animate="visible"
           exit="exit"
-          className="w-full max-w-3xl"
+          className="w-full max-w-3xl relative z-10"
         >
-          {/* 🔮 Composant de progression d'analyse */}
+          {/* 🔮 Barre de progression ULTRA-PREMIUM pour l'analyse */}
           {isGeneratingAnalysis && (
             <AnalysisProgress
               analysisProgress={analysisProgress}

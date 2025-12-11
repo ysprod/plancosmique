@@ -8,7 +8,7 @@ import type { AnalysisStage } from './types';
  * Hook custom pour gérer la progression de l'analyse
  */
 export function useAnalysisProgress(analysisStages: AnalysisStage[]) {
-  const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(false);
+  const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(true);
   const [analysisCompleted, setAnalysisCompleted] = useState(false);
   const [analysisProgress, setAnalysisProgress] = useState(0);
   const [currentStageIndex, setCurrentStageIndex] = useState(0);

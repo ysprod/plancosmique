@@ -12,7 +12,7 @@ export { ProcessingBanner } from './ProcessingBanner';
 // Custom Hooks
 export { usePaymentVerification } from './usePaymentVerification';
 export { usePaymentStatus } from './usePaymentStatus';
-export { useAnalysisProgress } from './useAnalysisProgress';
+export { useAnalysisProgress } from './frontend-analysis-progress-hook';
 export { usePaymentCallback } from './usePaymentCallback';
 export { useAutoRedirect } from './useAutoRedirect';
 export { usePaymentActions } from './usePaymentActions';

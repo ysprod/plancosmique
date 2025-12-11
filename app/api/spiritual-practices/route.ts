@@ -7,6 +7,9 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
+// Cette route est dynamique car elle dépend de searchParams
+export const dynamic = 'force-dynamic';
+
 // TODO: Remplacez par votre client DB
 // import { db } from '@/lib/db';
 

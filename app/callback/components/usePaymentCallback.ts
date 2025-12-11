@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { usePaymentVerification } from './usePaymentVerification';
 import { usePaymentStatus } from './usePaymentStatus';
 import { useAnalysisStages } from './useAnalysisStages';
-import { useAnalysisProgress } from './useAnalysisProgress';
+import { useAnalysisProgress as useRealtimeAnalysisProgress } from './frontend-analysis-progress-hook';
 import { useAutoRedirect } from './useAutoRedirect';
 import { usePaymentActions } from './usePaymentActions';
 import { useStatusConfig } from './useStatusConfig';
@@ -19,18 +19,29 @@ export function usePaymentCallback(token: string | null) {
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(false);
+  const [manualAnalysisCompleted, setManualAnalysisCompleted] = useState(false);
 
   // Hooks spécialisés
   const { status, setStatus, error, setError, normalizePaymentStatus } = usePaymentStatus();
   const analysisStages = useAnalysisStages();
   const {
-    isGeneratingAnalysis,
-    analysisCompleted,
-    analysisProgress,
-    currentStageIndex,
-    currentStageMessage,
-    startAnalysisAnimation,
-  } = useAnalysisProgress(analysisStages);
+    progress: sseProgress,
+    stage: currentStage,
+    stageIndex: sseStageIndex,
+    message: sseStageMessage,
+    completed: sseCompleted,
+    isConnected: sseConnected,
+  } = useRealtimeAnalysisProgress(consultationId, isGeneratingAnalysis);
+
+  const analysisCompleted = manualAnalysisCompleted || sseCompleted;
+  const analysisProgress = manualAnalysisCompleted ? 100 : sseProgress;
+  const currentStageIndex = manualAnalysisCompleted
+    ? Math.max(analysisStages.length - 1, 0)
+    : sseStageIndex;
+  const currentStageMessage = manualAnalysisCompleted
+    ? 'Analyse déjà générée. Redirection en cours...'
+    : sseStageMessage || 'Préparation...';
   const { shouldAutoRedirect, setShouldAutoRedirect, autoRedirectCountdown, startCountdown } =
     useAutoRedirect();
   const { handleViewConsultation, handleDownloadBook, handleRetry, handleGoHome, handleAutoRedirect } =
@@ -77,7 +88,8 @@ export function usePaymentCallback(token: string | null) {
       };
 
       const handlePaid = async () => {
-        await startAnalysisAnimation();
+        setManualAnalysisCompleted(false);
+        setIsGeneratingAnalysis(true);
         const callbackResult = await processConsultationPayment(token || '', paymentDetails);
 
         if (callbackResult.success) {
@@ -91,20 +103,27 @@ export function usePaymentCallback(token: string | null) {
         const isAlreadyProcessed = msg.includes('déjà') || msg.includes('already');
 
         if (isAlreadyProcessed) {
-          // Traiter comme un succès déjà consommé : on n'affiche pas d'erreur bloquante
+          // Traiter comme un succès déjà consommé : marquer comme analysé et rediriger
           setStatus('already_used');
+          setManualAnalysisCompleted(true);
+          setIsGeneratingAnalysis(false);
+          setConsultationId(callbackResult.consultationId || null);
+          setDownloadUrl(callbackResult.downloadUrl || null);
           setShouldAutoRedirect(true);
           return;
         }
 
         setStatus('error');
         setError(callbackResult.message || 'Erreur lors du traitement du paiement');
+        setIsGeneratingAnalysis(false);
+        setManualAnalysisCompleted(false);
       };
 
       if (normalizedStatus === 'paid') {
         await handlePaid();
       } else if (normalizedStatus === 'already_used') {
-        await startAnalysisAnimation();
+        setManualAnalysisCompleted(true);
+        setIsGeneratingAnalysis(false);
         setShouldAutoRedirect(true);
       } else if (normalizedStatus === 'pending') {
         // rien de plus à faire
@@ -112,15 +131,22 @@ export function usePaymentCallback(token: string | null) {
     } catch (err: any) {
       setStatus('error');
       setError(err?.message || 'Une erreur inattendue est survenue');
+      setIsGeneratingAnalysis(false);
     } finally {
       setIsLoading(false);
       setIsProcessing(false);
     }
-  }, [token, verifyPayment, processConsultationPayment, normalizePaymentStatus, setStatus, setError, startAnalysisAnimation, setShouldAutoRedirect]);
+  }, [token, verifyPayment, processConsultationPayment, normalizePaymentStatus, setStatus, setError, setShouldAutoRedirect]);
 
   useEffect(() => {
     initializePaymentVerification();
   }, [initializePaymentVerification]);
+
+  useEffect(() => {
+    if (analysisCompleted) {
+      setIsGeneratingAnalysis(false);
+    }
+  }, [analysisCompleted]);
 
   // Compte à rebours auto-redirect après analyse
   useEffect(() => {
@@ -147,7 +173,8 @@ export function usePaymentCallback(token: string | null) {
     analysisProgress,
     currentStageIndex,
     currentStageMessage,
-    startAnalysisAnimation,
+    currentStage,
+    sseConnected,
 
     // données
     consultationId,

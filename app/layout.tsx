@@ -145,10 +145,8 @@ export default function RootLayout({
     >
       <head>
         {/* Preconnect pour optimiser les performances */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         
         {/* Meta tags supplémentaires pour PWA */}
         <meta name="apple-mobile-web-app-capable" content="yes" />

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { ArrowRight, Download, Eye, Home, RefreshCw } from 'lucide-react';
 import type { PaymentStatus } from './types';
 
@@ -13,7 +13,7 @@ interface PaymentActionsProps {
   onDownloadBook: () => void;
   onRetry: () => void;
   onGoHome: () => void;
-  itemVariants: any;
+  itemVariants: Variants | undefined;
 }
 
 /**
