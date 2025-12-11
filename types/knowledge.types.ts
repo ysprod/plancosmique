@@ -1,14 +1,6 @@
-// Types pour le module Knowledge (Partage de Connaissances)
-
 export type KnowledgeCategory =
-  | 'ASTROLOGIE'
-  | 'NUMEROLOGIE'
-  | 'TAROT'
-  | 'SPIRITUALITE'
-  | 'MEDITATION'
-  | 'DEVELOPPEMENT_PERSONNEL'
-  | 'RITUELS'
-  | 'AUTRES';
+  | 'ASTROLOGIE' | 'NUMEROLOGIE' | 'TAROT' | 'SPIRITUALITE'
+  | 'MEDITATION' | 'DEVELOPPEMENT_PERSONNEL' | 'RITUELS' | 'AUTRES';
 
 export interface KnowledgeAuthor {
   _id: string;

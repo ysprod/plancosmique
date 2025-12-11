@@ -211,24 +211,7 @@ export default function RootLayout({
         <div id="modal-root" />
         <div id="toast-root" />
 
-        {/* Enregistrement du Service Worker pour PWA */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                  navigator.serviceWorker.register('/service-worker.js')
-                    .then((registration) => {
-                      console.log('Service Worker enregistré:', registration);
-                    })
-                    .catch((error) => {
-                      console.warn('Erreur enregistrement Service Worker:', error);
-                    });
-                });
-              }
-            `,
-          }}
-        />
+        {/* Service Worker désactivé pour debug mobile */}
       </body>
     </html>
   );

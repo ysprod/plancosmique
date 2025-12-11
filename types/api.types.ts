@@ -1,7 +1,3 @@
-/**
- * Types pour les réponses API
- */
-
 export interface ApiResponse<T> {
   data: T;
   message?: string;
@@ -32,7 +28,6 @@ export interface QueryParams {
   [key: string]: any;
 }
 
-// Consultation Types
 export enum ConsultationType {
   HOROSCOPE = 'horoscope',
   NUMEROLOGIE = 'numerologie',
@@ -71,7 +66,6 @@ export interface Consultation {
   updatedAt: Date;
 }
 
-// Payment Types
 export enum PaymentMethod {
   CARD = 'card',
   PAYPAL = 'paypal',
@@ -106,7 +100,6 @@ export interface Payment {
   updatedAt: Date;
 }
 
-// Service Types
 export interface Service {
   _id: string;
   slug: string;

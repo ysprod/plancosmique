@@ -1,4 +1,3 @@
-// Types correspondant au backend NestJS
 export type NotificationType = 
   | 'CONSULTATION_RESULT'
   | 'NEW_KNOWLEDGE'
