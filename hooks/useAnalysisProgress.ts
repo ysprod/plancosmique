@@ -1,17 +1,6 @@
-// ==================== FRONTEND: Hook pour suivre la progression ====================
-// hooks/useAnalysisProgress.ts
-
+import { AnalysisProgressData } from '@/app/callback/components/types';
 import { useEffect, useState, useRef } from 'react';
-
-export interface AnalysisProgressData {
-  consultationId: string;
-  stage: string;
-  stageIndex: number;
-  progress: number;
-  message: string;
-  timestamp: string;
-  completed: boolean;
-}
+ 
 
 interface UseAnalysisProgressReturn {
   progress: number;
@@ -29,9 +18,6 @@ interface UseAnalysisProgressReturn {
  * @param consultationId - ID de la consultation à suivre
  * @param enabled - Activer/désactiver la connexion SSE
  * @returns État de la progression en temps réel
- * 
- * @example
- * const { progress, message, completed } = useAnalysisProgress(consultationId, true);
  */
 export function useAnalysisProgress(
   consultationId: string | null,
@@ -134,10 +120,9 @@ export function useAnalysisProgress(
           }
         };
 
-      } catch (err) {
+      } catch (err: any) {
         console.error('❌ Erreur création EventSource:', err);
-        const message = err instanceof Error ? err.message : 'Erreur lors de la connexion SSE';
-        setError(message);
+        setError(err.message);
       }
     };
 
@@ -171,5 +156,3 @@ export function useAnalysisProgress(
     isConnected,
   };
 }
-
- 

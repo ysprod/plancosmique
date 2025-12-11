@@ -1,0 +1,1 @@
+export { usePaymentCallback } from '@/app/callback/components/usePaymentCallback';

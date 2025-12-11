@@ -1,24 +1,21 @@
-// UI Components
-export { PaymentLoadingScreen } from './PaymentLoadingScreen';
-export { AnalysisProgress } from './AnalysisProgress';
-export { AnalysisCompletionBanner } from './AnalysisCompletionBanner';
-export { AnalysisPreview } from './AnalysisPreview';
-export { TransactionDetails } from './TransactionDetails';
-export { PaymentStatusIndicators } from './PaymentStatusIndicators';
-export { PaymentActionsButtons } from './PaymentActionsButtons';
-export { StatusHeader } from './StatusHeader';
-export { ProcessingBanner } from './ProcessingBanner';
+// ==================== EXPORTS CENTRALISÉS ====================
 
-// Custom Hooks
-export { usePaymentVerification } from './usePaymentVerification';
-export { usePaymentStatus } from './usePaymentStatus';
-export { useAnalysisProgress } from './frontend-analysis-progress-hook';
+// Composants visuels
+export { BackgroundBlobs } from './BackgroundBlobs';
+export { CompletionBanner } from './CompletionBanner';
+export { StatusCard } from './StatusCard';
+export { ActionButtons } from './ActionButtons';
+export { SecurityNote } from './SecurityNote';
+
+// Hooks
 export { usePaymentCallback } from './usePaymentCallback';
-export { useAutoRedirect } from './useAutoRedirect';
-export { usePaymentActions } from './usePaymentActions';
-export { useStatusConfig } from './useStatusConfig';
-export { useAnalysisStages } from './useAnalysisStages';
 export { useAnimationVariants } from './useAnimationVariants';
-
+export { useAnalysisProgress } from '@/hooks/useAnalysisProgress';
 // Types
-export type { PaymentData, ApiResponse, PaymentStatus, AnalysisStage, StatusConfig } from './types';
+export type {
+  PaymentStatus,
+  PaymentData,
+  StatusConfig,
+  AnalysisStage,
+  AnalysisProgressData,
+} from './types';
