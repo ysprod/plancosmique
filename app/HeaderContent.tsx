@@ -78,10 +78,10 @@ export default function HeaderContent() {
 
   const handleLogout = useCallback(() => {
     if (confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
-     
+
       setMobileMenuOpen(false);
       setShowUserMenu(false);
-       logout();
+      logout();
     }
   }, [logout]);
 
@@ -92,10 +92,10 @@ export default function HeaderContent() {
   // Menu items avec mémoïsation
   const navItems = useMemo(() => [
     ...(hasRole(Role.SUPER_ADMIN) ? [
-      { href: "/admin", label: "Administration", icon: LayoutDashboard  }
+      { href: "/admin", label: "Administration", icon: LayoutDashboard }
     ] : []),
     { href: "/protected/profil", label: "Mon Profil", icon: Home },
-    { href: "/protected/consultations", label: "Consultations", icon: FileText  },
+    { href: "/protected/consultations", label: "Consultations", icon: FileText },
     { href: "/protected//spiritualite", label: "Blog", icon: BookOpen },
     { href: "/protected//marcheoffrandes", label: "Marché", icon: ShoppingBag },
   ], [hasRole]);
@@ -108,34 +108,31 @@ export default function HeaderContent() {
   return (
     <>
       {/* Barre de progression de scroll */}
-      {user && (
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 z-50 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 origin-left"
+        style={{ scaleX: scrollY.get() > 0 ? progressWidth : 0 }}
+      >
         <motion.div
-          className="fixed top-0 left-0 right-0 h-1 z-50 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 origin-left"
-          style={{ scaleX: scrollY.get() > 0 ? progressWidth : 0 }}
-        >
-          <motion.div
-            animate={{ x: ["-100%", "100%"] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-            className="h-full w-1/4 bg-gradient-to-r from-transparent via-white/50 to-transparent"
-          />
-        </motion.div>
-      )}
+          animate={{ x: ["-100%", "100%"] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+          className="h-full w-1/4 bg-gradient-to-r from-transparent via-white/50 to-transparent"
+        />
+      </motion.div>
 
       {/* Header Principal */}
       <motion.header
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, type: "spring", stiffness: 120 }}
-        className={`fixed ${user ? 'top-1' : 'top-0'} left-0 right-0 z-40 transition-all duration-300 ${
-          isScrolled
+        className={`fixed ${user ? 'top-1' : 'top-0'} left-0 right-0 z-40 transition-all duration-300 ${isScrolled
             ? 'bg-white/98 backdrop-blur-xl shadow-lg shadow-violet-500/5 border-b border-violet-100/50'
             : 'bg-white/90 backdrop-blur-md'
-        }`}
+          }`}
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3">
           <div className="flex items-center justify-between gap-2 sm:gap-4">
             {/* Logo Amélioré */}
-            <Link href={user ? "/protected/profil" : "/"} className="flex items-center gap-2 sm:gap-2.5 group">
+            <Link href="/protected/profil" className="flex items-center gap-2 sm:gap-2.5 group">
               <motion.div
                 whileHover={{ rotate: 360, scale: 1.08 }}
                 transition={{ duration: 0.6, type: "spring" }}
@@ -153,7 +150,7 @@ export default function HeaderContent() {
                     />
                   </div>
                 </div>
-                
+
                 {/* Glow effect */}
                 <motion.div
                   animate={{
@@ -215,8 +212,8 @@ export default function HeaderContent() {
                     >
                       <Icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
                       <span>{item.label}</span>
-                      
-                      
+
+
                     </motion.button>
                   </Link>
                 );
@@ -252,7 +249,7 @@ export default function HeaderContent() {
                       <Crown className="w-4 h-4 text-yellow-400 drop-shadow-lg" />
                     </motion.div>
                   </div>
-                  
+
                   <div className="text-left">
                     <p className="text-sm font-bold text-slate-900 leading-tight max-w-[120px] truncate">
                       {user?.username || "Utilisateur"}
@@ -261,7 +258,7 @@ export default function HeaderContent() {
                       Premium ⭐
                     </p>
                   </div>
-                  
+
                   <motion.div
                     animate={{ rotate: showUserMenu ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
@@ -442,7 +439,7 @@ export default function HeaderContent() {
                         <Crown className="w-6 h-6 text-yellow-400 drop-shadow-lg" />
                       </motion.div>
                     </div>
-                    
+
                     <div className="flex-1 min-w-0">
                       <p className="text-base font-black text-slate-900 truncate">
                         {user?.username || "Utilisateur"}
@@ -508,8 +505,8 @@ export default function HeaderContent() {
                               <Icon className="w-5 h-5" />
                             </div>
                             <span className="flex-1">{item.label}</span>
-                            
-                            
+
+
                           </motion.button>
                         </Link>
                       </motion.div>

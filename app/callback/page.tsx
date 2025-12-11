@@ -112,7 +112,8 @@ const PaymentCallbackContent = () => {
             setError(callbackResult.message || 'Erreur lors du traitement du paiement');
           }
         } else if (normalizedStatus === 'already_used') {
-          console.log('⚠️ Token déjà utilisé');
+          console.log('⚠️ Token déjà utilisé — relance de l\'affichage d\'analyse');
+          await startAnalysisAnimation();
           setShouldAutoRedirect(true);
         } else if (normalizedStatus === 'pending') {
           console.log('⏳ Paiement en attente...');

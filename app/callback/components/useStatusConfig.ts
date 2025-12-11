@@ -4,9 +4,9 @@
 import { useMemo } from 'react';
 import {
   AlertTriangle,
+  CheckCircle,
   CheckCircle2,
   Clock,
-  ShieldAlert,
   XCircle,
 } from 'lucide-react';
 import type { PaymentStatus, StatusConfig } from './types';
@@ -60,13 +60,13 @@ export function useStatusConfig(status: PaymentStatus, error: string, downloadUr
         showDetails: false,
       },
       already_used: {
-        icon: ShieldAlert,
-        title: 'Transaction déjà traitée',
-        description: 'Ce paiement a déjà été traité. Consultez vos consultations pour la retrouver.',
-        color: 'text-indigo-600',
-        gradient: 'from-indigo-500/20 via-purple-500/20 to-violet-500/20',
-        iconBg: 'bg-indigo-100',
-        iconColor: 'text-indigo-600',
+        icon: CheckCircle,
+        title: 'Paiement déjà enregistré',
+        description: 'Cette transaction a déjà été validée. Retrouvez votre contenu dans vos consultations ou votre bibliothèque.',
+        color: 'text-emerald-700',
+        gradient: 'from-emerald-500/20 via-teal-500/20 to-green-500/20',
+        iconBg: 'bg-emerald-100',
+        iconColor: 'text-emerald-700',
         showDetails: false,
       },
       error: {
