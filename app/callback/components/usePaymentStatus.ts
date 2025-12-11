@@ -12,14 +12,18 @@ export function usePaymentStatus() {
   const [error, setError] = useState<string>('');
 
   const normalizePaymentStatus = useCallback((apiStatus: string): PaymentStatus => {
+    const normalized = apiStatus?.toLowerCase?.() || '';
+
     const statusMap: Record<string, PaymentStatus> = {
       pending: 'pending',
       paid: 'paid',
+      completed: 'paid',
       failure: 'failure',
       'no paid': 'no paid',
       already_used: 'already_used',
     };
-    return statusMap[apiStatus] || 'error';
+
+    return statusMap[normalized] || 'error';
   }, []);
 
   return {
