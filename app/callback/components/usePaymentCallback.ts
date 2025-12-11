@@ -84,10 +84,21 @@ export function usePaymentCallback(token: string | null) {
           setConsultationId(callbackResult.consultationId || null);
           setDownloadUrl(callbackResult.downloadUrl || null);
           setShouldAutoRedirect(true);
-        } else {
-          setStatus('error');
-          setError(callbackResult.message || 'Erreur lors du traitement du paiement');
+          return;
         }
+
+        const msg = (callbackResult.message || '').toLowerCase();
+        const isAlreadyProcessed = msg.includes('déjà') || msg.includes('already');
+
+        if (isAlreadyProcessed) {
+          // Traiter comme un succès déjà consommé : on n'affiche pas d'erreur bloquante
+          setStatus('already_used');
+          setShouldAutoRedirect(true);
+          return;
+        }
+
+        setStatus('error');
+        setError(callbackResult.message || 'Erreur lors du traitement du paiement');
       };
 
       if (normalizedStatus === 'paid') {
