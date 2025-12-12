@@ -4,10 +4,9 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
 import './globals.css';
-import RootLayoutClient from './RootLayoutClient';
+import ClientProviders from './ClientProviders';
+import HeaderContent from './HeaderContent';
  
-
-// Optimisation de la police avec preload et display swap
 const inter = Inter({
   subsets: ['latin', 'latin-ext'],
   display: 'swap',
@@ -42,7 +41,7 @@ export const metadata: Metadata = {
     'carte du ciel',
     'astrologie karmique'
   ],
-  authors: [{ name: 'Mon Étoile', url: 'https://www.monetoile.fr' }],
+  authors: [{ name: 'Mon Étoile', url: 'https://www.monetoile.org' }],
   creator: 'Mon Étoile',
   publisher: 'Mon Étoile',
   formatDetection: {
@@ -50,7 +49,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://www.monetoile.fr'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://www.monetoile.org'),
   alternates: {
     canonical: '/',
     languages: {
@@ -128,7 +127,7 @@ export const viewport: Viewport = {
     { media: '(prefers-color-scheme: light)', color: '#8b5cf6' },
     { media: '(prefers-color-scheme: dark)', color: '#6d28d9' },
   ],
-  colorScheme: 'light',
+  colorScheme: 'light dark',
 };
 
 export default function RootLayout({
@@ -144,21 +143,32 @@ export default function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
-        {/* Preconnect pour optimiser les performances */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Meta tags supplémentaires pour PWA */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Mon Étoile" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="application-name" content="Mon Étoile" />
-        
-        {/* Optimisation pour iOS */}
         <meta name="format-detection" content="telephone=no" />
         
-        {/* Schema.org structured data */}
+        {/* Script pour éviter le flash de thème - CRITIQUE */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                const theme = localStorage.getItem('theme') || 'system';
+                const isDark = theme === 'dark' || 
+                  (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                if (isDark) {
+                  document.documentElement.classList.add('dark');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+        
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -166,11 +176,11 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'WebSite',
               name: 'Mon Étoile',
-              url: 'https://www.monetoile.fr',
+              url: 'https://www.monetoile.org',
               description: 'Plateforme spirituelle pour voyance, astrologie et guidance',
               potentialAction: {
                 '@type': 'SearchAction',
-                target: 'https://www.monetoile.fr/search?q={search_term_string}',
+                target: 'https://www.monetoile.org/search?q={search_term_string}',
                 'query-input': 'required name=search_term_string',
               },
             }),
@@ -179,39 +189,29 @@ export default function RootLayout({
       </head>
       
       <body 
-        className={`${inter.className} antialiased bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50`}
+        className={`${inter.className} antialiased bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 
+                    dark:from-slate-950 dark:via-purple-950 dark:to-slate-900 transition-colors duration-300`}
         suppressHydrationWarning
       >
-        {/* Skip to main content pour accessibilité */}
         <a 
           href="#main-content" 
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-6 focus:py-3 focus:bg-violet-600 focus:text-white focus:rounded-xl focus:shadow-2xl focus:font-bold focus:outline-none focus:ring-4 focus:ring-violet-300"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-6 focus:py-3 
+                     focus:bg-violet-600 focus:text-white focus:rounded-xl focus:shadow-2xl focus:font-bold 
+                     focus:outline-none focus:ring-4 focus:ring-violet-300 dark:focus:ring-violet-800"
         >
           Aller au contenu principal
         </a>
 
-        <ErrorBoundary>
-          <AuthProvider>
-            <RootLayoutClient>
-              <Suspense fallback={<LoadingFallback />}>
-                <main 
-                  id="main-content"
-                  className="min-h-screen relative"
-                  role="main"
-                  aria-label="Contenu principal"
-                >
-                  {children}
-                </main>
-              </Suspense>
-            </RootLayoutClient>
-          </AuthProvider>
-        </ErrorBoundary>
 
-        {/* Portail pour les modals et toasts */}
+        <ClientProviders>
+          
+          <main id="main-content" className="min-h-screen relative" role="main" aria-label="Contenu principal">
+            {children}
+          </main>
+        </ClientProviders>
+
         <div id="modal-root" />
         <div id="toast-root" />
-
-        {/* Service Worker désactivé pour debug mobile */}
       </body>
     </html>
   );

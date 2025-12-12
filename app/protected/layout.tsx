@@ -1,5 +1,7 @@
-'use client';
 
+
+
+export const dynamic = "force-dynamic";
 import { ErrorBoundary, LoadingFallback } from '@/components/ErrorBoundary';
 import { ProtectedRoute } from '@/components/auth';
 import { Suspense } from 'react';

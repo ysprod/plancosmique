@@ -1,36 +1,46 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ArrowUp, 
-  Sparkles, 
-  Wifi, 
-  WifiOff,
-  Moon,
-  Sun
+import { useAuth } from '@/lib/auth/AuthContext';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { Role } from '@/types/auth.types';
+import {
+  User,
+  LogOut,
+  Menu,
+  X,
+  Home,
+  FileText,
+  Settings,
+  Sparkles,
+  ChevronDown,
+  LayoutDashboard,
+  BookOpen,
+  ShoppingBag,
+  Crown,
+  Zap,
+  Heart
 } from 'lucide-react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import NotificationBell from '@/components/NotificationBell';
+import ThemeToggle from '@/components/ThemeToggle';
 
-export default function RootLayoutClient({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [showScrollTop, setShowScrollTop] = useState(false);
-  const [isOnline, setIsOnline] = useState(true);
-  const [showOfflineToast, setShowOfflineToast] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [isLoading, setIsLoading] = useState(true);
-  const [isHydrated, setIsHydrated] = useState(false);
+export default function HeaderContent() {
+  const { logout, user, hasRole } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const { scrollY } = useScroll();
 
-  // Détection du scroll pour le bouton "Retour en haut"
+  const progressWidth = useTransform(scrollY, [0, 300], ['0%', '100%']);
+
   useEffect(() => {
     let ticking = false;
-
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setShowScrollTop(window.scrollY > 400);
+          setIsScrolled(window.scrollY > 10);
           ticking = false;
         });
         ticking = true;
@@ -41,325 +51,517 @@ export default function RootLayoutClient({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Détection du statut en ligne/hors ligne
   useEffect(() => {
-    const handleOnline = () => {
-      setIsOnline(true);
-      setShowOfflineToast(false);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (showUserMenu && !(e.target as Element).closest('.user-menu-container')) {
+        setShowUserMenu(false);
+      }
     };
 
-    const handleOffline = () => {
-      setIsOnline(false);
-      setShowOfflineToast(true);
-    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [showUserMenu]);
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
-
-  // Détection du thème préféré
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setTheme(mediaQuery.matches ? 'dark' : 'light');
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setTheme(e.matches ? 'dark' : 'light');
-    };
-
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
-
-  // Animation de chargement initial
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Marquer comme hydraté après montage client
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
-
-  // Masquer le toast offline après 5 secondes
-  useEffect(() => {
-    if (showOfflineToast && isOnline) {
-      const timer = setTimeout(() => {
-        setShowOfflineToast(false);
-      }, 3000);
-      return () => clearTimeout(timer);
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
-  }, [showOfflineToast, isOnline]);
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
+  const handleLogout = useCallback(() => {
+    if (confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
+      setMobileMenuOpen(false);
+      setShowUserMenu(false);
+      logout();
+    }
+  }, [logout]);
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-  };
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+  }, []);
+
+  const navItems = useMemo(() => [
+    ...(hasRole(Role.SUPER_ADMIN) ? [
+      { href: "/admin", label: "Administration", icon: LayoutDashboard }
+    ] : []),
+    { href: "/protected/profil", label: "Mon Profil", icon: Home },
+    { href: "/protected/consultations", label: "Consultations", icon: FileText },
+    { href: "/protected/spiritualite", label: "Blog", icon: BookOpen },
+    { href: "/protected/marcheoffrandes", label: "Marché", icon: ShoppingBag },
+  ], [hasRole]);
+
+  const quickActions = useMemo(() => [
+    { href: "/protected/profil", label: "Nouvelle Consultation", icon: Zap, gradient: "from-violet-500 to-purple-600" },
+    { href: "/protected/mes-favoris", label: "Favoris", icon: Heart, gradient: "from-pink-500 to-rose-600" },
+  ], []);
 
   return (
     <>
-      {/* Loading Screen Initial */}
-      <AnimatePresence>
-        {isLoading && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-[9999] bg-gradient-to-br from-violet-600 via-fuchsia-600 to-pink-600 flex items-center justify-center"
-          >
-            <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="text-center"
-            >
-              {isHydrated && (
-                <motion.div
-                  animate={{ 
-                    rotate: 360,
-                    scale: [1, 1.2, 1]
-                  }}
-                  transition={{ 
-                    rotate: { duration: 2, repeat: Infinity, ease: "linear" },
-                    scale: { duration: 1.5, repeat: Infinity }
-                  }}
-                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-6"
-                >
-                  <Sparkles className="w-full h-full text-white drop-shadow-2xl" />
-                </motion.div>
-              )}
-              {!isHydrated && (
-                <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-6" />
-              )}
-              
-              <motion.h2
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="text-2xl sm:text-3xl font-bold text-white mb-2"
-              >
-                Mon Étoile
-              </motion.h2>
-              
-              <motion.p
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="text-sm sm:text-base text-white/80"
-              >
-                Votre guide spirituel se prépare...
-              </motion.p>
-
-              {/* Barre de progression */}
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: '100%' }}
-                transition={{ duration: 0.5 }}
-                className="mt-6 h-1 bg-white/30 rounded-full overflow-hidden max-w-xs mx-auto"
-              >
-                <motion.div
-                  animate={{ x: ['-100%', '100%'] }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  className="h-full w-1/3 bg-white rounded-full"
-                />
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Background Animated Blobs */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-violet-300/30 to-pink-300/30 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            rotate: [90, 0, 90],
-            opacity: [0.5, 0.3, 0.5]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-blue-300/30 to-purple-300/30 rounded-full blur-3xl"
-        />
-        
-        {/* Floating particles */}
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={i}
-            animate={{
-              y: [0, -30, 0],
-              x: [0, Math.random() * 20 - 10, 0],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
-            className="absolute"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          >
-            <Sparkles 
-              className="text-violet-400/40" 
-              size={12 + Math.random() * 8}
-            />
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Contenu principal */}
-      <div className="relative z-10">
-        {children}
-      </div>
-
-      {/* Bouton "Retour en haut" */}
-      <AnimatePresence>
-        {showScrollTop && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.5, y: 100 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.5, y: 100 }}
-            whileHover={{ scale: 1.1, y: -4 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-50 p-3 sm:p-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-full shadow-2xl hover:shadow-violet-500/50 transition-all duration-300 group"
-            aria-label="Retour en haut de la page"
-          >
-            <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-y-1 transition-transform" />
-            
-            {/* Effet de pulsation */}
-            <motion.div
-              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="absolute inset-0 rounded-full bg-violet-400 -z-10"
-            />
-          </motion.button>
-        )}
-      </AnimatePresence>
-
-      {/* Toggle Theme Button (Desktop only) */}
-      <motion.button
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={toggleTheme}
-        className="hidden lg:flex fixed top-24 right-6 z-40 p-3 bg-white/80 backdrop-blur-md text-violet-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-        aria-label={`Passer en mode ${theme === 'light' ? 'sombre' : 'clair'}`}
+      {/* Barre de progression */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 z-50 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 origin-left"
+        style={{ scaleX: scrollY.get() > 0 ? progressWidth : 0 }}
       >
-        <AnimatePresence mode="wait">
-          {theme === 'light' ? (
-            <motion.div
-              key="moon"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Moon className="w-5 h-5" />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="sun"
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Sun className="w-5 h-5" />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.button>
+        <motion.div
+          animate={{ x: ["-100%", "100%"] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+          className="h-full w-1/4 bg-gradient-to-r from-transparent via-white/50 to-transparent"
+        />
+      </motion.div>
 
-      {/* Toast de statut de connexion */}
-      <AnimatePresence>
-        {showOfflineToast && (
-          <motion.div
-            initial={{ opacity: 0, y: -100, x: '-50%' }}
-            animate={{ opacity: 1, y: 0, x: '-50%' }}
-            exit={{ opacity: 0, y: -100, x: '-50%' }}
-            className="fixed top-20 left-1/2 z-[9999] px-4 py-3 sm:px-6 sm:py-4 bg-white rounded-2xl shadow-2xl border-2 max-w-[90vw] sm:max-w-md"
-            style={{
-              borderColor: isOnline ? '#10b981' : '#ef4444',
-            }}
-          >
-            <div className="flex items-center gap-3">
+      {/* Header Principal */}
+      <motion.header
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, type: "spring", stiffness: 120 }}
+        className={`fixed ${user ? 'top-1' : 'top-0'} left-0 right-0 z-40 transition-all duration-300 ${
+          isScrolled
+            ? 'bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl shadow-lg shadow-violet-500/5 dark:shadow-violet-500/10 border-b border-violet-100/50 dark:border-slate-800'
+            : 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-md'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3">
+          <div className="flex items-center justify-between gap-2 sm:gap-4">
+            {/* Logo */}
+            <Link href="/protected/profil" className="flex items-center gap-2 sm:gap-2.5 group">
               <motion.div
-                animate={{ rotate: isOnline ? 0 : 360 }}
-                transition={{ duration: 0.5 }}
-                className={`p-2 rounded-full ${
-                  isOnline ? 'bg-green-100' : 'bg-red-100'
-                }`}
+                whileHover={{ rotate: 360, scale: 1.08 }}
+                transition={{ duration: 0.6, type: "spring" }}
+                className="relative"
               >
-                {isOnline ? (
-                  <Wifi className="w-5 h-5 text-green-600" />
-                ) : (
-                  <WifiOff className="w-5 h-5 text-red-600" />
-                )}
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-violet-500 via-fuchsia-500 to-violet-600 p-[2px] shadow-xl shadow-violet-500/40">
+                  <div className="w-full h-full rounded-xl bg-white dark:bg-slate-900 flex items-center justify-center overflow-hidden">
+                    <Image
+                      src="/logo.png"
+                      alt="Mon Étoile"
+                      width={40}
+                      height={40}
+                      className="w-6 h-6 sm:w-8 sm:h-8 object-contain"
+                      priority
+                    />
+                  </div>
+                </div>
+
+                <motion.div
+                  animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.8, 0.4] }}
+                  transition={{ duration: 2.5, repeat: Infinity }}
+                  className="absolute inset-0 rounded-xl bg-violet-400 blur-lg opacity-40 -z-10"
+                />
+
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                  className="absolute -top-1 -right-1"
+                >
+                  <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 drop-shadow-lg" />
+                </motion.div>
               </motion.div>
-              
-              <div className="flex-1 min-w-0">
-                <h4 className={`text-sm sm:text-base font-bold ${
-                  isOnline ? 'text-green-700' : 'text-red-700'
-                }`}>
-                  {isOnline ? 'Connexion rétablie' : 'Pas de connexion'}
-                </h4>
-                <p className="text-xs sm:text-sm text-gray-600">
-                  {isOnline 
-                    ? 'Vous êtes de nouveau en ligne'
-                    : 'Vérifiez votre connexion internet'
-                  }
+
+              <div className="hidden sm:block">
+                <h1 className="text-lg sm:text-xl font-black bg-gradient-to-r from-violet-600 via-fuchsia-600 to-violet-600 text-transparent bg-clip-text flex items-center gap-1.5">
+                  Mon Étoile
+                  <motion.div
+                    animate={{ rotate: [0, 15, -15, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
+                  >
+                    <Sparkles className="w-4 h-4 text-violet-500" />
+                  </motion.div>
+                </h1>
+                <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-semibold -mt-0.5 tracking-wide">
+                  Votre guide spirituel ✨
                 </p>
               </div>
 
+              <div className="sm:hidden">
+                <h1 className="text-base font-black bg-gradient-to-r from-violet-600 to-fuchsia-600 text-transparent bg-clip-text">
+                  Mon Étoile
+                </h1>
+              </div>
+            </Link>
+
+            {/* Navigation Desktop */}
+            <nav className="hidden lg:flex items-center gap-1">
+              {navItems.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <Link key={item.href} href={item.href}>
+                    <motion.button
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.08 }}
+                      whileHover={{ scale: 1.03, y: -1 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="relative flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-bold
+                                 text-slate-700 dark:text-slate-200 
+                                 hover:text-violet-600 dark:hover:text-violet-400
+                                 hover:bg-violet-50/80 dark:hover:bg-violet-950/50
+                                 transition-all duration-200 group"
+                    >
+                      <Icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                      <span>{item.label}</span>
+                    </motion.button>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Actions Desktop */}
+            <div className="hidden lg:flex items-center gap-2">
+              <ThemeToggle />
+              <NotificationBell />
+
+              {/* Menu Utilisateur */}
+              <div className="relative user-menu-container">
+                <motion.button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl 
+                             bg-gradient-to-br from-violet-50 to-fuchsia-50 
+                             dark:from-violet-950/50 dark:to-fuchsia-950/50
+                             border-2 border-violet-100 dark:border-violet-800
+                             hover:border-violet-300 dark:hover:border-violet-600
+                             hover:shadow-lg hover:shadow-violet-500/20
+                             transition-all duration-300"
+                >
+                  <div className="relative">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-600 
+                                    flex items-center justify-center shadow-lg">
+                      <User className="w-5 h-5 text-white" />
+                    </div>
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                      className="absolute -top-1 -right-1"
+                    >
+                      <Crown className="w-4 h-4 text-yellow-400 drop-shadow-lg" />
+                    </motion.div>
+                  </div>
+
+                  <div className="text-left">
+                    <p className="text-sm font-bold text-slate-900 dark:text-white leading-tight max-w-[120px] truncate">
+                      {user?.username || "Utilisateur"}
+                    </p>
+                    <p className="text-xs bg-gradient-to-r from-violet-600 to-fuchsia-600 text-transparent bg-clip-text font-black">
+                      Premium ⭐
+                    </p>
+                  </div>
+
+                  <motion.div
+                    animate={{ rotate: showUserMenu ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ChevronDown className="w-4 h-4 text-violet-600 dark:text-violet-400" />
+                  </motion.div>
+                </motion.button>
+
+                {/* Dropdown Menu - Reste inchangé */}
+                <AnimatePresence>
+                  {showUserMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 top-full mt-2 w-64 
+                                 bg-white dark:bg-slate-800 rounded-2xl 
+                                 shadow-2xl border-2 border-violet-100 dark:border-slate-700 
+                                 overflow-hidden z-50"
+                    >
+                      {/* Header du menu */}
+                      <div className="px-4 py-3 bg-gradient-to-br from-violet-50 to-fuchsia-50 
+                                    dark:from-violet-950/50 dark:to-fuchsia-950/50
+                                    border-b border-violet-100 dark:border-slate-700">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-600 
+                                          flex items-center justify-center shadow-md relative">
+                            <User className="w-6 h-6 text-white" />
+                            <Crown className="absolute -top-1 -right-1 w-4 h-4 text-yellow-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-gray-900 dark:text-white truncate max-w-[150px]">
+                              {user?.username}
+                            </p>
+                            <p className="text-xs text-violet-600 dark:text-violet-400 font-semibold">Membre Premium</p>
+                          </div>
+                        </div>
+                        {user?.email && (
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 truncate">{user.email}</p>
+                        )}
+                      </div>
+
+                      {/* Quick Actions */}
+                      <div className="p-2 border-b border-gray-100 dark:border-slate-700">
+                        {quickActions.map((action) => {
+                          const Icon = action.icon;
+                          return (
+                            <Link key={action.href} href={action.href} onClick={() => setShowUserMenu(false)}>
+                              <motion.button
+                                whileHover={{ scale: 1.02, x: 4 }}
+                                whileTap={{ scale: 0.98 }}
+                                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl 
+                                           bg-gradient-to-r ${action.gradient} text-white
+                                           font-semibold text-sm mb-1.5 shadow-md hover:shadow-lg
+                                           transition-all`}
+                              >
+                                <Icon className="w-5 h-5" />
+                                {action.label}
+                              </motion.button>
+                            </Link>
+                          );
+                        })}
+                      </div>
+
+                      {/* Menu Items */}
+                      <div className="p-2">
+                        <Link href="/protected/settings" onClick={() => setShowUserMenu(false)}>
+                          <motion.button
+                            whileHover={{ scale: 1.02, x: 4 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl
+                                       text-slate-700 dark:text-slate-200 
+                                       hover:bg-violet-50 dark:hover:bg-violet-950/50
+                                       hover:text-violet-600 dark:hover:text-violet-400
+                                       transition-all font-semibold text-sm"
+                          >
+                            <Settings className="w-5 h-5" />
+                            Paramètres
+                          </motion.button>
+                        </Link>
+
+                        <motion.button
+                          whileHover={{ scale: 1.02, x: 4 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={handleLogout}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl
+                                     text-red-600 dark:text-red-400 
+                                     hover:bg-red-50 dark:hover:bg-red-950/50
+                                     transition-all font-semibold text-sm"
+                        >
+                          <LogOut className="w-5 h-5" />
+                          Déconnexion
+                        </motion.button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* Actions Mobile */}
+            <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
+              <ThemeToggle />
+              <NotificationBell />
+
               <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setShowOfflineToast(false)}
-                className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
-                aria-label="Fermer la notification"
+                whileTap={{ scale: 0.9, rotate: 90 }}
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-xl bg-gradient-to-br from-violet-100 to-fuchsia-100 
+                           dark:from-violet-950/50 dark:to-fuchsia-950/50
+                           text-violet-600 dark:text-violet-400
+                           hover:shadow-lg hover:shadow-violet-500/20
+                           transition-all"
               >
-                <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <AnimatePresence mode="wait">
+                  {mobileMenuOpen ? (
+                    <motion.div
+                      key="close"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <X className="w-6 h-6" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="menu"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Menu className="w-6 h-6" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.button>
             </div>
-          </motion.div>
+          </div>
+        </div>
+      </motion.header>
+
+      {/* Menu Mobile - Reste du code inchangé mais avec dark: classes ajoutées */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeMobileMenu}
+              className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30"
+              style={{ top: user ? '64px' : '60px' }}
+            />
+
+            <motion.div
+              initial={{ x: '100%', opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: '100%', opacity: 0 }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              className="lg:hidden fixed right-0 bottom-0 w-[85vw] max-w-sm
+                         bg-white dark:bg-slate-900 shadow-2xl z-40 overflow-y-auto rounded-l-3xl"
+              style={{ top: user ? '64px' : '60px' }}
+            >
+              <div className="p-4 space-y-4">
+                {/* User Card Mobile */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="p-4 rounded-2xl bg-gradient-to-br from-violet-50 via-fuchsia-50 to-violet-50
+                             dark:from-violet-950/50 dark:via-fuchsia-950/50 dark:to-violet-950/50
+                             border-2 border-violet-100 dark:border-slate-700 shadow-lg"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="relative">
+                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-600 
+                                      flex items-center justify-center shadow-xl">
+                        <User className="w-8 h-8 text-white" />
+                      </div>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                        className="absolute -top-2 -right-2"
+                      >
+                        <Crown className="w-6 h-6 text-yellow-400 drop-shadow-lg" />
+                      </motion.div>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <p className="text-base font-black text-slate-900 dark:text-white truncate">
+                        {user?.username || "Utilisateur"}
+                      </p>
+                      <p className="text-sm bg-gradient-to-r from-violet-600 to-fuchsia-600 text-transparent bg-clip-text font-bold">
+                        Membre Premium ⭐
+                      </p>
+                      {user?.email && (
+                        <p className="text-xs text-slate-600 dark:text-slate-400 truncate mt-0.5">{user.email}</p>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Quick Actions Mobile */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 }}
+                  className="grid grid-cols-2 gap-2"
+                >
+                  {quickActions.map((action, index) => {
+                    const Icon = action.icon;
+                    return (
+                      <Link key={action.href} href={action.href} onClick={closeMobileMenu}>
+                        <motion.button
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.2 + index * 0.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={`w-full flex flex-col items-center justify-center gap-2 p-4 rounded-2xl
+                                     bg-gradient-to-br ${action.gradient} text-white shadow-lg
+                                     font-bold text-sm hover:shadow-xl transition-all`}
+                        >
+                          <Icon className="w-6 h-6" />
+                          <span className="text-xs leading-tight text-center">{action.label}</span>
+                        </motion.button>
+                      </Link>
+                    );
+                  })}
+                </motion.div>
+
+                {/* Navigation Links Mobile */}
+                <nav className="space-y-1">
+                  {navItems.map((item, index) => {
+                    const Icon = item.icon;
+                    return (
+                      <motion.div
+                        key={item.href}
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.25 + index * 0.05 }}
+                      >
+                        <Link href={item.href} onClick={closeMobileMenu}>
+                          <motion.button
+                            whileTap={{ scale: 0.97 }}
+                            className="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl 
+                                       text-slate-700 dark:text-slate-200
+                                       hover:bg-violet-50 dark:hover:bg-violet-950/50
+                                       hover:text-violet-600 dark:hover:text-violet-400
+                                       font-bold transition-all text-left relative overflow-hidden
+                                       border-2 border-transparent hover:border-violet-200 dark:hover:border-violet-800"
+                          >
+                            <div className="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-950/50 flex items-center justify-center">
+                              <Icon className="w-5 h-5" />
+                            </div>
+                            <span className="flex-1">{item.label}</span>
+                          </motion.button>
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </nav>
+
+                {/* Settings Button Mobile */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35 }}
+                >
+                  <Link href="/protected/settings" onClick={closeMobileMenu}>
+                    <motion.button
+                      whileTap={{ scale: 0.97 }}
+                      className="w-full flex items-center justify-center gap-3 px-6 py-4
+                                 rounded-2xl bg-gradient-to-br from-violet-50 to-fuchsia-50
+                                 dark:from-violet-950/50 dark:to-fuchsia-950/50
+                                 text-violet-600 dark:text-violet-400 font-bold 
+                                 border-2 border-violet-200 dark:border-violet-800
+                                 hover:border-violet-300 dark:hover:border-violet-600 
+                                 hover:shadow-lg transition-all"
+                    >
+                      <Settings className="w-5 h-5" />
+                      <span>Paramètres du compte</span>
+                    </motion.button>
+                  </Link>
+                </motion.div>
+
+                {/* Logout Button Mobile */}
+                <motion.button
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  onClick={handleLogout}
+                  whileTap={{ scale: 0.97 }}
+                  className="w-full flex items-center justify-center gap-3 px-6 py-4
+                             rounded-2xl bg-gradient-to-r from-red-500 to-rose-600 
+                             text-white font-black shadow-xl hover:shadow-2xl 
+                             hover:shadow-red-500/40 transition-all"
+                >
+                  <LogOut className="w-5 h-5" />
+                  <span>Se déconnecter</span>
+                </motion.button>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
-      {/* Indicateur de chargement de page (pour les navigations) */}
-      <div id="page-loading-indicator" className="fixed top-0 left-0 right-0 z-[9999] pointer-events-none">
-        <div id="loading-bar" className="h-1 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-600 transform origin-left scale-x-0 transition-transform duration-300" />
-      </div>
+      <div className={user ? "h-[60px] sm:h-[68px]" : "h-[56px] sm:h-[64px]"} />
     </>
   );
 }
