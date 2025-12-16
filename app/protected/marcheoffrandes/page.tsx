@@ -16,7 +16,6 @@ import {
     Hero,
     InfoBox,
     CartModal,
-    AlternativesModal,
     CheckoutModal,
     Header
 } from './components';
@@ -136,18 +135,10 @@ function usePhoneValidation() {
  */
 function useModals() {
     const [showCart, setShowCart] = useState(false);
-    const [showAlternatives, setShowAlternatives] = useState(false);
     const [showCheckout, setShowCheckout] = useState(false);
-    const [selectedOffering, setSelectedOffering] = useState<Offering | null>(null);
 
     const openCart = useCallback(() => setShowCart(true), []);
     const closeCart = useCallback(() => setShowCart(false), []);
-    
-    const openAlternatives = useCallback((offering: Offering) => {
-        setSelectedOffering(offering);
-        setShowAlternatives(true);
-    }, []);
-    const closeAlternatives = useCallback(() => setShowAlternatives(false), []);
     
     const openCheckout = useCallback(() => {
         setShowCart(false);
@@ -162,13 +153,9 @@ function useModals() {
 
     return {
         showCart,
-        showAlternatives,
         showCheckout,
-        selectedOffering,
         openCart,
         closeCart,
-        openAlternatives,
-        closeAlternatives,
         openCheckout,
         closeCheckout,
         backToCart
@@ -204,13 +191,9 @@ export default function MarcheOffrandes() {
 
     const {
         showCart,
-        showAlternatives,
         showCheckout,
-        selectedOffering,
         openCart,
         closeCart,
-        openAlternatives,
-        closeAlternatives,
         openCheckout,
         closeCheckout,
         backToCart
@@ -231,19 +214,25 @@ export default function MarcheOffrandes() {
     }, [cart.length, openCheckout]);
 
     const handlePayment = useCallback(async () => {
+        // Validation du numéro de téléphone
         if (!validatePhone(phoneNumber)) {
-            console.log('[DEBUG] Validation du numéro échouée');
+            console.log('[MoneyFusion] ❌ Validation du numéro échouée');
             return;
         }
 
+        console.log('[MoneyFusion] ✅ Numéro validé, préparation du paiement...');
+
+        // Préparation du nom du client
         const customerName = user?.firstName && user?.lastName
             ? `${user.firstName} ${user.lastName}`
-            : user?.email || 'Client';
+            : user?.email || 'Client MonÉtoile';
 
+        // Préparation des items pour MoneyFusion
         const items = cart.map(item => ({
             [item.name]: item.price * item.quantity
         }));
 
+        // Configuration du paiement
         const paymentConfig = {
             amount: cartTotal,
             items,
@@ -251,36 +240,65 @@ export default function MarcheOffrandes() {
             customerName,
             metadata: {
                 userId: user?._id || 'guest',
+                userEmail: user?.email || 'non-renseigné',
                 type: 'OFFRANDES',
+                orderDate: new Date().toISOString(),
                 cart: JSON.stringify(cart.map(item => ({
                     id: item.id,
                     name: item.name,
                     quantity: item.quantity,
-                    price: item.price
+                    unitPrice: item.price,
+                    totalPrice: item.price * item.quantity
                 })))
             }
         };
 
-        console.log('[DEBUG] Configuration de paiement:', paymentConfig);
+        console.log('[MoneyFusion] 📦 Configuration du paiement:', {
+            amount: paymentConfig.amount,
+            phoneNumber: paymentConfig.phoneNumber,
+            customerName: paymentConfig.customerName,
+            itemsCount: items.length
+        });
 
         try {
+            console.log('[MoneyFusion] 🚀 Initiation du paiement...');
+            
             const result = await initiatePayment(paymentConfig);
             
-            console.log('[DEBUG] Résultat initiation:', result);
+            console.log('[MoneyFusion] 📥 Résultat de l\'initiation:', result);
 
+            // Vérification du succès et de l'URL de paiement
             if (result.success && result.paymentUrl) {
-                console.log('[DEBUG] Redirection vers:', result.paymentUrl);
+                console.log('[MoneyFusion] ✅ URL de paiement reçue:', result.paymentUrl);
+                console.log('[MoneyFusion] 🔄 Redirection vers la page de paiement...');
+                
+                // Fermer le modal avant la redirection
+                closeCheckout();
+                
+                // Redirection immédiate vers la page de paiement MoneyFusion
                 window.location.href = result.paymentUrl;
+                
             } else {
-                console.error('[DEBUG] Échec paiement:', result.error);
+                console.error('[MoneyFusion] ❌ Échec de l\'initiation du paiement:', {
+                    success: result.success,
+                    error: result.error,
+                    // message: result.message
+                });
+                
+                // Afficher un message d'erreur à l'utilisateur
+                alert(`Erreur de paiement: ${result.error  || 'Erreur inconnue'}`);
             }
         } catch (error) {
-            console.error('[DEBUG] Exception handlePayment:', error);
+            console.error('[MoneyFusion] 💥 Exception lors du handlePayment:', error);
+            
+            // Message d'erreur détaillé
+            const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
+            alert(`Une erreur est survenue lors de l'initiation du paiement: ${errorMessage}`);
         }
-    }, [phoneNumber, validatePhone, cart, cartTotal, user, initiatePayment]);
+    }, [phoneNumber, validatePhone, cart, cartTotal, user, initiatePayment, closeCheckout]);
 
     return (
-        <div className="relative min-h-screen bg-white pb-20">
+        <div className="relative min-h-screen bg-white dark:bg-slate-950 pb-20">
             {/* Header */}
             <Header cartCount={cartCount} cartTotal={cartTotal} />
 
@@ -307,13 +325,23 @@ export default function MarcheOffrandes() {
                             key={offering.id}
                             offering={offering}
                             onAddToCart={addToCart}
-                            onShowAlternatives={openAlternatives}
                         />
                     ))}
                 </motion.div>
 
-                {/* Info box */}
-                <InfoBox />
+                                {/* Info box */}
+                                <InfoBox />
+
+                                {/* Bouton Aller à la page de paiement MoneyFusion */}
+                                <div className="flex justify-center mt-8">
+                                    <button
+                                        className="px-6 py-3 rounded-lg bg-gradient-to-r from-fuchsia-600 to-violet-700 text-white font-semibold shadow-lg hover:from-fuchsia-700 hover:to-violet-800 transition disabled:opacity-50"
+                                        onClick={handlePayment}
+                                        disabled={paymentLoading || cart.length === 0}
+                                    >
+                                        {paymentLoading ? 'Redirection en cours...' : 'Aller à la page de paiement MoneyFusion'}
+                                    </button>
+                                </div>
             </div>
 
             {/* Panier flottant */}
@@ -330,14 +358,6 @@ export default function MarcheOffrandes() {
                 onUpdateQuantity={updateQuantity}
                 onRemoveFromCart={removeFromCart}
                 onClearCart={clearCart}
-            />
-
-            <AlternativesModal
-                showAlternatives={showAlternatives}
-                selectedOffering={selectedOffering}
-                onClose={closeAlternatives}
-                onAddToCart={addToCart}
-                onShowCart={openCart}
             />
 
             <CheckoutModal
