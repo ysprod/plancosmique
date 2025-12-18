@@ -7,7 +7,7 @@ export const offerings: Offering[] = [
     {
         id: 'poulet-blanc',
         name: 'Poulet blanc',
-        price: 5000,
+        price: 200,
         priceUSD: 8.9,
         category: 'animal',
         icon: '🐓',
@@ -16,7 +16,7 @@ export const offerings: Offering[] = [
     {
         id: 'poulet-noir',
         name: 'Poulet noir',
-        price: 7000,
+        price: 200,
         priceUSD: 12.4,
         category: 'animal',
         icon: '🐔',
@@ -34,7 +34,7 @@ export const offerings: Offering[] = [
     {
         id: 'mouton-blanc',
         name: 'Mouton blanc',
-        price: 35000,
+        price: 200,
         priceUSD: 62.1,
         category: 'animal',
         icon: '🐑',
@@ -43,7 +43,7 @@ export const offerings: Offering[] = [
     {
         id: 'mouton-noir',
         name: 'Mouton noir',
-        price: 40000,
+        price: 200,
         priceUSD: 71.0,
         category: 'animal',
         icon: '🐑',
@@ -52,7 +52,7 @@ export const offerings: Offering[] = [
     {
         id: 'boeuf',
         name: 'Bœuf',
-        price: 350000,
+        price: 200,
         priceUSD: 620.6,
         category: 'animal',
         icon: '🐂',
@@ -61,7 +61,7 @@ export const offerings: Offering[] = [
     {
         id: 'chameau',
         name: 'Chameau',
-        price: 600000,
+        price: 200,
         priceUSD: 1064.6,
         category: 'animal',
         icon: '🐪',
@@ -72,7 +72,7 @@ export const offerings: Offering[] = [
     {
         id: 'bol-mil',
         name: 'Bol de mil',
-        price: 2500,
+        price: 200,
         priceUSD: 4.4,
         category: 'vegetal',
         icon: '🌾',
@@ -81,7 +81,7 @@ export const offerings: Offering[] = [
     {
         id: 'bol-mais',
         name: 'Bol de maïs',
-        price: 2000,
+        price: 200,
         priceUSD: 3.5,
         category: 'vegetal',
         icon: '🌽',
@@ -90,7 +90,7 @@ export const offerings: Offering[] = [
     {
         id: 'bol-riz',
         name: 'Bol de riz',
-        price: 3000,
+        price: 200,
         priceUSD: 5.3,
         category: 'vegetal',
         icon: '🍚',
@@ -99,7 +99,7 @@ export const offerings: Offering[] = [
     {
         id: 'cola-rouge',
         name: 'Cola rouge',
-        price: 1000,
+        price: 200,
         priceUSD: 1.8,
         category: 'vegetal',
         icon: '🔴',
@@ -108,7 +108,7 @@ export const offerings: Offering[] = [
     {
         id: 'cola-blanche',
         name: 'Cola blanche',
-        price: 1200,
+        price: 200,
         priceUSD: 2.1,
         category: 'vegetal',
         icon: '⚪',
@@ -119,7 +119,7 @@ export const offerings: Offering[] = [
     {
         id: 'vin-palme',
         name: 'Vin de palme',
-        price: 1500,
+        price: 200,
         priceUSD: 2.7,
         category: 'beverage',
         icon: '🍷',
@@ -128,7 +128,7 @@ export const offerings: Offering[] = [
     {
         id: 'liqueur',
         name: 'Liqueur',
-        price: 3500,
+        price: 200,
         priceUSD: 6.2,
         category: 'beverage',
         icon: '🥃',

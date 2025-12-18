@@ -9,11 +9,6 @@ export const Hero: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-6 sm:mb-10"
         >
-            <div className="inline-block mb-4">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl sm:rounded-3xl flex items-center justify-center shadow-xl">
-                    <Star className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-white" />
-                </div>
-            </div>
 
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-black mb-3 sm:mb-4 leading-tight">
                 Bienvenue au marché des offrandes.

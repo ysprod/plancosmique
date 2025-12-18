@@ -1,4 +1,3 @@
-// ==================== TYPES ====================
 
 export interface Offering {
     id: string;

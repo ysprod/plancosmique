@@ -1,30 +1,13 @@
 'use client';
-
-import React, { useState, useMemo, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { useMoneyFusion } from '@/lib/hooks/useMoneyFusion';
 import { useAuth } from '@/lib/auth/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useCallback, useMemo, useState } from 'react';
 import {
-    type Offering,
-    type CartItem,
-    type Category,
-    offerings,
-    staggerContainer,
-    OfferingCard,
-    FloatingCart,
-    CategoryFilters,
-    Hero,
-    InfoBox,
-    CartModal,
-    CheckoutModal,
-    Header
+    type CartItem, CartModal,
+    type Category, CategoryFilters, CheckoutModal, FloatingCart, Header, Hero, InfoBox,
+    type Offering, OfferingCard, offerings, staggerContainer
 } from './components';
 
-// ==================== HOOKS PERSONNALISÉS ====================
-
-/**
- * Hook pour gérer le panier d'offrandes
- */
 function useCart() {
     const [cart, setCart] = useState<CartItem[]>([]);
 
@@ -84,55 +67,6 @@ function useCart() {
     };
 }
 
-/**
- * Hook pour gérer la validation du téléphone
- */
-function usePhoneValidation() {
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [phoneError, setPhoneError] = useState('');
-
-    const validatePhone = useCallback((phone: string): boolean => {
-        const cleaned = phone.replace(/\s/g, '');
-
-        if (cleaned.length < 8) {
-            setPhoneError('Numéro trop court (min. 8 chiffres)');
-            return false;
-        }
-        if (cleaned.length > 15) {
-            setPhoneError('Numéro trop long (max. 15 chiffres)');
-            return false;
-        }
-        if (!/^\+?[0-9]+$/.test(cleaned)) {
-            setPhoneError('Format invalide (chiffres uniquement)');
-            return false;
-        }
-
-        setPhoneError('');
-        return true;
-    }, []);
-
-    const handlePhoneChange = useCallback((value: string) => {
-        setPhoneNumber(value);
-        if (phoneError) validatePhone(value);
-    }, [phoneError, validatePhone]);
-
-    const handlePhoneBlur = useCallback(() => {
-        validatePhone(phoneNumber);
-    }, [phoneNumber, validatePhone]);
-
-    return {
-        phoneNumber,
-        phoneError,
-        validatePhone,
-        handlePhoneChange,
-        handlePhoneBlur,
-        setPhoneError
-    };
-}
-
-/**
- * Hook pour gérer l'état des modals
- */
 function useModals() {
     const [showCart, setShowCart] = useState(false);
     const [showCheckout, setShowCheckout] = useState(false);
@@ -144,6 +78,7 @@ function useModals() {
         setShowCart(false);
         setShowCheckout(true);
     }, []);
+
     const closeCheckout = useCallback(() => setShowCheckout(false), []);
 
     const backToCart = useCallback(() => {
@@ -162,44 +97,12 @@ function useModals() {
     };
 }
 
-// ==================== COMPOSANT PRINCIPAL ====================
-
 export default function MarcheOffrandes() {
     const [selectedCategory, setSelectedCategory] = useState<Category>('all');
-
     const { user } = useAuth();
-    const { initiatePayment, loading: paymentLoading, error: paymentError } = useMoneyFusion();
+    const { cart, cartTotal, cartCount, addToCart, removeFromCart, updateQuantity, clearCart } = useCart();
+    const { showCart, showCheckout, openCart, closeCart, openCheckout, closeCheckout, backToCart } = useModals();
 
-    // Hooks personnalisés
-    const {
-        cart,
-        cartTotal,
-        cartCount,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart
-    } = useCart();
-
-    const {
-        phoneNumber,
-        phoneError,
-        validatePhone,
-        handlePhoneChange,
-        handlePhoneBlur
-    } = usePhoneValidation();
-
-    const {
-        showCart,
-        showCheckout,
-        openCart,
-        closeCart,
-        openCheckout,
-        closeCheckout,
-        backToCart
-    } = useModals();
-
-    // Offrandes filtrées
     const filteredOfferings = useMemo(() =>
         selectedCategory === 'all'
             ? offerings
@@ -207,169 +110,167 @@ export default function MarcheOffrandes() {
         [selectedCategory]
     );
 
-    // Gestion du paiement
     const handleProceedToCheckout = useCallback(() => {
         if (cart.length === 0) return;
         openCheckout();
     }, [cart.length, openCheckout]);
 
-    const handlePayment = useCallback(async () => {
-        // Validation du numéro de téléphone
-        if (!validatePhone(phoneNumber)) {
-            console.log('[MoneyFusion] ❌ Validation du numéro échouée');
-            return;
-        }
-
-        console.log('[MoneyFusion] ✅ Numéro validé, préparation du paiement...');
-
-        // Préparation du nom du client
-        const customerName = user?.firstName && user?.lastName
-            ? `${user.firstName} ${user.lastName}`
-            : user?.email || 'Client MonÉtoile';
-
-        // Préparation des items pour MoneyFusion
-        const items = cart.map(item => ({
-            [item.name]: item.price * item.quantity
-        }));
-
-        // Configuration du paiement
-        const paymentConfig = {
-            amount: cartTotal,
-            items,
-            phoneNumber: phoneNumber.replace(/\s/g, ''),
-            customerName,
-            metadata: {
-                userId: user?._id || 'guest',
-                userEmail: user?.email || 'non-renseigné',
-                type: 'OFFRANDES',
-                orderDate: new Date().toISOString(),
-                cart: JSON.stringify(cart.map(item => ({
-                    id: item.id,
-                    name: item.name,
-                    quantity: item.quantity,
-                    unitPrice: item.price,
-                    totalPrice: item.price * item.quantity
-                })))
-            }
-        };
-
-        console.log('[MoneyFusion] 📦 Configuration du paiement:', {
-            amount: paymentConfig.amount,
-            phoneNumber: paymentConfig.phoneNumber,
-            customerName: paymentConfig.customerName,
-            itemsCount: items.length
-        });
-
-        try {
-            console.log('[MoneyFusion] 🚀 Initiation du paiement...');
-
-            const result = await initiatePayment(paymentConfig);
-
-            console.log('[MoneyFusion] 📥 Résultat de l\'initiation:', result);
-
-            // Vérification du succès et de l'URL de paiement
-            if (result.success && result.paymentUrl) {
-                console.log('[MoneyFusion] ✅ URL de paiement reçue:', result.paymentUrl);
-                console.log('[MoneyFusion] 🔄 Redirection vers la page de paiement...');
-
-                // Fermer le modal avant la redirection
-                closeCheckout();
-
-                // Redirection immédiate vers la page de paiement MoneyFusion
-                window.location.href = result.paymentUrl;
-
-            } else {
-                console.error('[MoneyFusion] ❌ Échec de l\'initiation du paiement:', {
-                    success: result.success,
-                    error: result.error,
-                });
-
-                // Afficher un message d'erreur à l'utilisateur
-                alert(`Erreur de paiement: ${result.error || 'Erreur inconnue'}`);
-            }
-        } catch (error) {
-            console.error('[MoneyFusion] 💥 Exception lors du handlePayment:', error);
-
-            // Message d'erreur détaillé
-            const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
-            alert(`Une erreur est survenue lors de l'initiation du paiement: ${errorMessage}`);
-        }
-    }, [phoneNumber, validatePhone, cart, cartTotal, user, initiatePayment, closeCheckout]);
-
     return (
-        <div className="relative min-h-screen     ">
-            {/* Header minimaliste */}
-            <Header cartCount={cartCount} cartTotal={cartTotal} />
+        <div className="relative min-h-screen bg-white">
+            {/* Header avec ombre subtile */}
+            <div className="sticky top-0 z-40 bg-white/95  backdrop-blur-md border-b border-gray-100 shadow-sm">
+                <Header cartCount={cartCount} cartTotal={cartTotal} />
+            </div>
 
-            {/* Conteneur principal ultra-compact */}
-            <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-7xl">
-                
-                {/* Hero compact */}
+            {/* Container principal ultra-compact */}
+            <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-3 sm:py-4 max-w-7xl">
+
+                {/* Hero section élégante */}
                 <motion.div
-                    initial={{ opacity: 0, y: -20 }}
+                    initial={{ opacity: 0, y: -15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-6 sm:mb-8"
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="mb-4 sm:mb-6"
                 >
                     <Hero />
                 </motion.div>
 
-                {/* Filtres modernes */}
+                {/* Filtres modernes avec scroll horizontal sur mobile */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="mb-4 sm:mb-6"
+                    transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+                    className="mb-4 sm:mb-5"
                 >
-                    <CategoryFilters
-                        selectedCategory={selectedCategory}
-                        onSelectCategory={setSelectedCategory}
-                    />
+                    <div className="relative">
+                        {/* Gradient fade sur les bords (mobile) */}
+                        <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-white dark:from-slate-950 to-transparent z-10 pointer-events-none sm:hidden" />
+                        <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-white dark:from-slate-950 to-transparent z-10 pointer-events-none sm:hidden" />
+
+                        <CategoryFilters
+                            selectedCategory={selectedCategory}
+                            onSelectCategory={setSelectedCategory}
+                        />
+                    </div>
                 </motion.div>
 
-                {/* Grille offrandes optimisée */}
-                <motion.div
-                    key={selectedCategory}
-                    variants={staggerContainer}
-                    initial="hidden"
-                    animate="visible"
-                    className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-3 md:gap-4 mb-6 sm:mb-8"
-                >
-                    {filteredOfferings.map((offering, index) => (
-                        <motion.div
-                            key={offering.id}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: index * 0.05 }}
+                {/* Compteur d'articles */}
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={`${selectedCategory}-${filteredOfferings.length}`}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.2 }}
+                        className="mb-3 sm:mb-4"
+                    >
+                        <div className="flex items-center justify-between px-1">
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium">
+                                {filteredOfferings.length} offrande{filteredOfferings.length > 1 ? 's' : ''} disponible{filteredOfferings.length > 1 ? 's' : ''}
+                            </p>
+                            {selectedCategory !== 'all' && (
+                                <button
+                                    onClick={() => setSelectedCategory('all')}
+                                    className="text-xs text-amber-600 dark:text-amber-500 hover:text-amber-700 
+                                             dark:hover:text-amber-400 font-semibold transition-colors
+                                             hover:underline underline-offset-2"
+                                >
+                                    Voir tout
+                                </button>
+                            )}
+                        </div>
+                    </motion.div>
+                </AnimatePresence>
+
+                {/* Grille offrandes avec animations séquentielles */}
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={selectedCategory}
+                        variants={staggerContainer}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 
+                                 gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 mb-6 sm:mb-8"
+                    >
+                        {filteredOfferings.map((offering, index) => (
+                            <motion.div
+                                key={offering.id}
+                                initial={{ opacity: 0, scale: 0.92, y: 20 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.92, y: -20 }}
+                                transition={{
+                                    duration: 0.3,
+                                    delay: index * 0.03,
+                                    ease: "easeOut"
+                                }}
+                                whileHover={{ y: -4, scale: 1.02 }}
+                                className="h-full"
+                            >
+                                <OfferingCard
+                                    offering={offering}
+                                    onAddToCart={addToCart}
+                                />
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </AnimatePresence>
+
+                {/* Message si aucune offrande */}
+                {filteredOfferings.length === 0 && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="flex flex-col items-center justify-center py-16 sm:py-20"
+                    >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 dark:bg-slate-800 
+                                      rounded-full flex items-center justify-center mb-4">
+                            <span className="text-3xl sm:text-4xl">🔍</span>
+                        </div>
+                        <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2">
+                            Aucune offrande trouvée
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 text-center max-w-sm mb-4">
+                            Essayez une autre catégorie ou consultez toutes les offrandes disponibles
+                        </p>
+                        <button
+                            onClick={() => setSelectedCategory('all')}
+                            className="px-4 py-2 bg-amber-500 hover:bg-amber-600 dark:bg-amber-600 
+                                     dark:hover:bg-amber-700 text-white text-sm font-semibold 
+                                     rounded-lg transition-colors"
                         >
-                            <OfferingCard
-                                offering={offering}
-                                onAddToCart={addToCart}
-                            />
-                        </motion.div>
-                    ))}
-                </motion.div>
+                            Voir toutes les offrandes
+                        </button>
+                    </motion.div>
+                )}
 
                 {/* Info box élégante */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
+                    transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
                 >
                     <InfoBox />
                 </motion.div>
             </div>
 
-            {/* Panier flottant moderne */}
-            {cartCount > 0 && (
-                <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
-                    <FloatingCart count={cartCount} onClick={openCart} />
-                </motion.div>
-            )}
+            {/* Panier flottant avec badge animé */}
+            <AnimatePresence>
+                {cartCount > 0 && (
+                    <motion.div
+                        initial={{ scale: 0, opacity: 0, y: 20 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0, opacity: 0, y: 20 }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 25
+                        }}
+                    >
+                        <FloatingCart count={cartCount} onClick={openCart} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Modals */}
             <CartModal
@@ -388,15 +289,13 @@ export default function MarcheOffrandes() {
                 showCheckout={showCheckout}
                 cart={cart}
                 cartTotal={cartTotal}
-                paymentLoading={paymentLoading}
-                paymentError={paymentError}
                 onClose={closeCheckout}
                 onBackToCart={backToCart}
                 user={user}
             />
- 
-            {/* Espacement bottom pour mobile - réduit */}
-            <div className="h-20 sm:h-24" />
+
+            {/* Espacement bottom optimisé */}
+            <div className="h-16 sm:h-20" />
         </div>
     );
 }

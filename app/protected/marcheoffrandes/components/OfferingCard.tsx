@@ -9,7 +9,6 @@ interface OfferingCardProps {
     onAddToCart: (offering: Offering) => void;
 }
 
-
 export const OfferingCard: React.FC<OfferingCardProps> = ({ offering, onAddToCart }) => {
     return (
         <motion.div
@@ -51,9 +50,7 @@ export const OfferingCard: React.FC<OfferingCardProps> = ({ offering, onAddToCar
                 >
                     <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
                     Ajouter
-                </button>
-
-                
+                </button>                
             </div>
         </motion.div>
     );
