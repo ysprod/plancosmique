@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
   // Liste des routes publiques (peut être étendue)
   // /callback est autorisé sans authentification car c'est la redirection MoneyFusion
   // /auth/logout est autorisé pour permettre la déconnexion sans boucle infinie
-  const publicRoutes = ['/', '/auth/login', '/auth/register', '/auth/logout', '/callback'];
+  const publicRoutes = ['/', '/auth/login', '/auth/register', '/auth/logout', '/callback', '/wallet'];
   const isPublicRoute = publicRoutes.some(route => pathname === route);
 
   // Liste des routes protégées (toutes les routes commençant par /protected)

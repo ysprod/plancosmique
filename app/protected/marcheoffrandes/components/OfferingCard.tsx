@@ -1,19 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Leaf } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Offering } from './types';
-import { alternatives } from './data';
 import { fadeInUp } from './animations';
 
 interface OfferingCardProps {
     offering: Offering;
     onAddToCart: (offering: Offering) => void;
-    onShowAlternatives: (offering: Offering) => void;
 }
 
-export const OfferingCard: React.FC<OfferingCardProps> = ({ offering, onAddToCart, onShowAlternatives }) => {
-    const hasAlternatives = offering.category === 'animal' && alternatives[offering.id];
 
+export const OfferingCard: React.FC<OfferingCardProps> = ({ offering, onAddToCart }) => {
     return (
         <motion.div
             variants={fadeInUp}
@@ -56,15 +53,7 @@ export const OfferingCard: React.FC<OfferingCardProps> = ({ offering, onAddToCar
                     Ajouter
                 </button>
 
-                {hasAlternatives && (
-                    <button
-                        onClick={() => onShowAlternatives(offering)}
-                        className="w-full bg-green-50 text-green-700 py-2 sm:py-2.5 rounded-xl font-semibold hover:bg-green-100 active:scale-95 transition-all flex items-center justify-center gap-2 text-xs sm:text-sm border border-green-200"
-                    >
-                        <Leaf className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                        Alternatives
-                    </button>
-                )}
+                
             </div>
         </motion.div>
     );

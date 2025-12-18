@@ -60,7 +60,7 @@ export default function WelcomePage() {
         {/* Questions en stack mobile, inline desktop */}
         <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 mb-6">
           {QUESTIONS.map((item, i) => (
-            <Link key={item.q} href="/auth/login" className="w-full sm:w-auto">
+            <Link key={item.q} href="/protected/profil" className="w-full sm:w-auto">
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}

@@ -10,11 +10,6 @@ export interface Offering {
     description: string;
 }
 
-export interface Alternative {
-    items: { name: string; quantity: number }[];
-    total: number;
-}
-
 export interface CartItem extends Offering {
     quantity: number;
 }

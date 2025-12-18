@@ -1,4 +1,4 @@
-import { Offering, Alternative } from './types';
+import { Offering } from './types';
 
 // ==================== DONNÉES ====================
 
@@ -135,34 +135,3 @@ export const offerings: Offering[] = [
         description: 'Offrande de prestige'
     },
 ];
-
-export const alternatives: Record<string, Alternative[]> = {
-    'poulet-blanc': [
-        { items: [{ name: 'Cola rouge', quantity: 5 }], total: 5000 },
-        { items: [{ name: 'Liqueur', quantity: 1 }, { name: 'Vin de palme', quantity: 1 }], total: 5000 }
-    ],
-    'poulet-noir': [
-        { items: [{ name: 'Cola rouge', quantity: 7 }], total: 7000 },
-        { items: [{ name: 'Bol de mil', quantity: 2 }, { name: 'Cola rouge', quantity: 2 }], total: 7000 }
-    ],
-    'coq-rouge': [
-        { items: [{ name: 'Cola rouge', quantity: 9 }], total: 9000 },
-        { items: [{ name: 'Bol de mil', quantity: 2 }, { name: 'Bol de maïs', quantity: 2 }], total: 9000 }
-    ],
-    'mouton-blanc': [
-        { items: [{ name: 'Cola rouge', quantity: 35 }], total: 35000 },
-        { items: [{ name: 'Liqueur', quantity: 10 }], total: 35000 }
-    ],
-    'mouton-noir': [
-        { items: [{ name: 'Cola rouge', quantity: 40 }], total: 40000 },
-        { items: [{ name: 'Bol de riz', quantity: 13 }, { name: 'Cola rouge', quantity: 1 }], total: 40000 }
-    ],
-    'boeuf': [
-        { items: [{ name: 'Cola rouge', quantity: 350 }], total: 350000 },
-        { items: [{ name: 'Liqueur', quantity: 100 }], total: 350000 }
-    ],
-    'chameau': [
-        { items: [{ name: 'Cola blanche', quantity: 500 }], total: 600000 },
-        { items: [{ name: 'Bol de mil', quantity: 240 }], total: 600000 }
-    ]
-};
