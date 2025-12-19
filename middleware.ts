@@ -23,7 +23,13 @@ export function middleware(request: NextRequest) {
   }
 
   // Si connecté et essaie d'accéder à login/register, rediriger vers dashboard
-  if (token && isPublicRoute && pathname !== '/' && pathname !== '/callback') {
+  if (
+    token &&
+    isPublicRoute &&
+    pathname !== '/' &&
+    pathname !== '/callback' &&
+    pathname !== '/wallet'
+  ) {
     return NextResponse.redirect(new URL('/secured/profil', request.url));
   }
 
