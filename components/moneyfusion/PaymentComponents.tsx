@@ -1,33 +1,18 @@
-/**
- * Composants UI réutilisables pour l'intégration MoneyFusion
- * 
- * Ce fichier contient tous les composants visuels nécessaires pour
- * intégrer les paiements MoneyFusion:
- * - PaymentButton: Bouton de paiement avec loading
- * - PaymentModal: Modal de confirmation de paiement
- * - PaymentStatusCard: Affichage du statut de paiement
- * - PaymentProcessing: Écran de traitement
- * - PaymentSuccess: Écran de succès
- * - PaymentError: Écran d'erreur
- */
-
 'use client';
-
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  CheckCircle2,
-  XCircle,
-  Loader2,
-  CreditCard,
-  ArrowRight,
-  AlertCircle,
-  Shield,
-  Phone,
-  User,
-  Info,
-} from 'lucide-react';
-import React from 'react';
 import type { PaymentStatus } from '@/types/moneyfusion.types';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  AlertCircle,
+  ArrowRight,
+  CheckCircle2,
+  CreditCard,
+  Info,
+  Loader2,
+  Phone,
+  Shield,
+  User,
+  XCircle,
+} from 'lucide-react';
 
 // ==================== PAYMENTBUTTON ====================
 

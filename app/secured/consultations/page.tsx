@@ -26,7 +26,14 @@ import { useEffect, useState } from 'react';
 
 // ==================== TYPES ====================
 
-type ConsultationType = 'SPIRITUALITE' | 'VIE_PERSONNELLE' | 'RELATIONS' | 'PROFESSIONNEL' | 'OFFRANDES';
+type ConsultationType =
+  | 'SPIRITUALITE'
+  | 'VIE_PERSONNELLE'
+  | 'RELATIONS'
+  | 'PROFESSIONNEL'
+  | 'OFFRANDES'
+  | 'ASTROLOGIE_AFRICAINE'
+  | 'HOROSCOPE';
 type ConsultationStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
 
 interface ConsultationFormData {
@@ -111,7 +118,9 @@ const TYPE_LABELS: Record<ConsultationType, { label: string; color: string; icon
   VIE_PERSONNELLE: { label: 'Vie Personnelle', color: 'from-blue-500 to-cyan-500', icon: User },
   RELATIONS: { label: 'Relations', color: 'from-rose-500 to-red-500', icon: Star },
   PROFESSIONNEL: { label: 'Professionnel', color: 'from-green-500 to-emerald-500', icon: TrendingUp },
-  OFFRANDES: { label: 'Offrandes', color: 'from-amber-500 to-orange-500', icon: Star }
+  OFFRANDES: { label: 'Offrandes', color: 'from-amber-500 to-orange-500', icon: Star },
+  ASTROLOGIE_AFRICAINE: { label: 'Astrologie Africaine', color: 'from-yellow-500 to-orange-600', icon: Sparkles },
+  HOROSCOPE: { label: 'Horoscope', color: 'from-indigo-500 to-blue-500', icon: Calendar }
 };
 
 const STATUS_CONFIG: Record<ConsultationStatus, { label: string; color: string; icon: typeof CheckCircle }> = {

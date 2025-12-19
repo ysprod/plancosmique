@@ -1,27 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
 import { usersService } from "@/lib/api/services/users.service";
 import { Role } from "@/types/auth.types";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-    ArrowLeft,
-    Briefcase,
-    Calendar,
-    Check,
-    FileText,
-    Globe,
-    Loader2,
-    Lock,
-    Mail,
-    MapPin,
-    Phone,
-    Save,
-    Shield,
-    Star,
-    Tag,
-    User,
-    X
+  ArrowLeft,
+  Briefcase,
+  Calendar,
+  Check,
+  FileText,
+  Globe,
+  Loader2,
+  Lock,
+  Mail,
+  MapPin,
+  Phone,
+  Save,
+  Shield,
+  Star,
+  Tag,
+  User,
+  X
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

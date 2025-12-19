@@ -2,10 +2,10 @@
 
 
 export const dynamic = "force-dynamic";
-import { ErrorBoundary, LoadingFallback } from '@/components/ErrorBoundary';
+import { ErrorBoundary, LoadingFallback } from '@/components/commons/ErrorBoundary';
 import { ProtectedRoute } from '@/components/auth';
 import { Suspense } from 'react';
-import HeaderContent from '../../components/HeaderContent';
+import HeaderContent from '../../components/commons/HeaderContent';
 import { AuthProvider } from '@/lib/auth/AuthContext';
 
 interface ProtectedLayoutProps {

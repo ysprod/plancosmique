@@ -109,9 +109,8 @@ const PlanetCard: React.FC<PlanetCardProps> = ({ position, index }) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: index * 0.05 }}
-    className={`bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all ${
-      position.retrograde ? 'border-red-500/30' : ''
-    }`}
+    className={`bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all ${position.retrograde ? 'border-red-500/30' : ''
+      }`}
   >
     <div className="flex items-center justify-between mb-2">
       <div className="flex items-center gap-3">
@@ -228,7 +227,7 @@ const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => (
         hr: ({ ...props }) => (
           <hr className="my-8 border-white/20" {...props} />
         ),
-        code: ({  inline, ...props }: any) => 
+        code: ({ inline, ...props }: any) =>
           inline ? (
             <code className="bg-white/10 px-2 py-1 rounded text-purple-300 text-sm" {...props} />
           ) : (
@@ -260,7 +259,7 @@ export default function ConsultationResultPage() {
       try {
         console.log('[Client] Récupération de l\'analyse:', consultationId);
         const response = await api.get(`/consultations/analysis/${consultationId}`);
-        
+
         console.log('Réponse API:', response.data);
 
         if (response.status !== 200) {
@@ -293,19 +292,19 @@ export default function ConsultationResultPage() {
     const positions = analyse.carteDuCiel.positions;
 
     return {
-      principales: positions.filter(p => 
+      principales: positions.filter(p =>
         ['Soleil', 'Ascendant', 'Lune', 'Milieu du Ciel'].includes(p.planete)
       ),
-      personnelles: positions.filter(p => 
+      personnelles: positions.filter(p =>
         ['Mercure', 'Vénus', 'Mars'].includes(p.planete)
       ),
-      sociales: positions.filter(p => 
+      sociales: positions.filter(p =>
         ['Jupiter', 'Jupiter RÉTROGRADE', 'Saturne', 'Saturne RÉTROGRADE'].some(n => p.planete.includes(n.split(' ')[0]))
       ),
-      transpersonnelles: positions.filter(p => 
+      transpersonnelles: positions.filter(p =>
         ['Uranus', 'Neptune', 'Pluton'].some(n => p.planete.includes(n))
       ),
-      points: positions.filter(p => 
+      points: positions.filter(p =>
         ['Chiron', 'Nœud Nord', 'Nœud Sud', 'Vertex', 'Lilith', 'Pallas', 'Vesta', 'Cérès', 'Part de Fortune', 'Junon'].some(n => p.planete.includes(n))
       )
     };
@@ -356,7 +355,7 @@ export default function ConsultationResultPage() {
             onClick={() => router.push('/admin/consultations/')}
             className="px-6 py-3 bg-white/20 hover:bg-white/30 rounded-xl font-semibold text-white transition-all"
           >
-            Retour 
+            Retour
           </button>
         </motion.div>
       </div>
@@ -376,7 +375,7 @@ export default function ConsultationResultPage() {
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
               <span className="hidden sm:inline font-semibold">Retour</span>
             </button>
-            
+
             <div className="flex-1 text-center">
               <h1 className="text-lg sm:text-xl font-black text-white flex items-center justify-center gap-2">
                 <Star className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-300" />

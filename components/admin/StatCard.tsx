@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 
@@ -36,19 +35,18 @@ export function StatCard({ title, value, icon: Icon, trend, color, onClick }: St
         <div className="flex-1">
           <p className="text-sm text-gray-600 font-medium mb-1">{title}</p>
           <p className="text-3xl font-bold text-gray-900 mb-2">{value}</p>
-          
+
           {trend && (
             <div className="flex items-center gap-1">
-              <span className={`text-sm font-medium ${
-                trend.isPositive ? 'text-green-600' : 'text-red-600'
-              }`}>
+              <span className={`text-sm font-medium ${trend.isPositive ? 'text-green-600' : 'text-red-600'
+                }`}>
                 {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%
               </span>
               <span className="text-xs text-gray-500">vs hier</span>
             </div>
           )}
         </div>
-        
+
         <div className={`p-3 rounded-lg bg-gradient-to-br ${colorClasses[color]} 
                         shadow-sm`}>
           <Icon className="w-6 h-6 text-white" />

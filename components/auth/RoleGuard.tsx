@@ -1,15 +1,10 @@
 'use client';
-
-/**
- * Composant de protection par rôle
- */
-
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { config } from '@/lib/config';
 import { useAuth } from '@/lib/hooks';
 import { Role } from '@/types/auth.types';
-import { config } from '@/lib/config';
-import { ShieldAlert, Loader2 } from 'lucide-react';
+import { Loader2, ShieldAlert } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 
 interface RoleGuardProps {
   children: React.ReactNode;
@@ -72,13 +67,9 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
   return <>{children}</>;
 };
 
-/**
- * Composant d'accès refusé
- */
+
 const AccessDenied: React.FC<{ message: string; userRole?: Role }> = ({
-  message,
-  userRole,
-}) => {
+  message, userRole, }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-red-50 p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center border border-red-200">

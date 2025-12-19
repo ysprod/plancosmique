@@ -1,6 +1,6 @@
 "use client";
 
-import StatsCounter from "@/components/StatsCounter";
+import StatsCounter from "@/components/commons/StatsCounter";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { motion } from "framer-motion";
 import {

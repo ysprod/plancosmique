@@ -1,20 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-
-import { useState, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  FileText,
-  Clock, CheckCircle, XCircle, AlertCircle,
-  Download, Eye, RefreshCw,
-  User, Calendar, DollarSign, Loader,
-  Mail, Phone, MapPin, Star, MessageSquare,
-  Sparkles, Zap, ChevronLeft, ChevronRight,
-  ChevronsLeft, ChevronsRight
-} from 'lucide-react';
-
-import Link from 'next/link';
 import { useAdminConsultations } from '@/hooks/useAdminConsultations';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  AlertCircle,
+  Calendar,
+  CheckCircle,
+  ChevronLeft, ChevronRight,
+  ChevronsLeft, ChevronsRight,
+  Clock,
+  DollarSign,
+  Download, Eye,
+  FileText,
+  Loader,
+  Mail,
+  MapPin,
+  MessageSquare,
+  Phone,
+  RefreshCw,
+  Sparkles,
+  Star,
+  User,
+  XCircle,
+  Zap
+} from 'lucide-react';
+import Link from 'next/link';
+import { useCallback, useMemo, useState } from 'react';
 
 type ConsultationStatus = 'all' | 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR';
 type ConsultationType = 'all' | 'SPIRITUALITE' | 'TAROT' | 'ASTROLOGIE' | 'NUMEROLOGIE';

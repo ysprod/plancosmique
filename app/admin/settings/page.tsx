@@ -1,5 +1,4 @@
 'use client';
-
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   AlertCircle,
@@ -97,13 +96,12 @@ export default function SettingsPage() {
               onClick={handleSave}
               disabled={isSaving}
               className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 text-sm rounded-lg 
-                         font-semibold transition-all ${
-                isSaving
+                         font-semibold transition-all ${isSaving
                   ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   : saveSuccess
-                  ? 'bg-green-600 text-white'
-                  : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-lg'
-              }`}
+                    ? 'bg-green-600 text-white'
+                    : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-lg'
+                }`}
             >
               {isSaving ? (
                 <>
@@ -155,11 +153,10 @@ export default function SettingsPage() {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm 
-                               rounded-lg transition-all mb-1 ${
-                      activeTab === tab.id
+                               rounded-lg transition-all mb-1 ${activeTab === tab.id
                         ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold'
                         : 'text-gray-700 hover:bg-gray-50 font-medium'
-                    }`}
+                      }`}
                   >
                     <Icon className="w-4 h-4" />
                     {tab.label}
@@ -238,15 +235,13 @@ export default function SettingsPage() {
                             <button
                               onClick={() => setMaintenanceMode(!maintenanceMode)}
                               className={`relative inline-flex h-6 w-11 items-center rounded-full 
-                                         transition-colors ${
-                                maintenanceMode ? 'bg-red-600' : 'bg-gray-200'
-                              }`}
+                                         transition-colors ${maintenanceMode ? 'bg-red-600' : 'bg-gray-200'
+                                }`}
                             >
                               <span
                                 className={`inline-block h-4 w-4 transform rounded-full bg-white 
-                                           transition-transform ${
-                                  maintenanceMode ? 'translate-x-6' : 'translate-x-1'
-                                }`}
+                                           transition-transform ${maintenanceMode ? 'translate-x-6' : 'translate-x-1'
+                                  }`}
                               />
                             </button>
                           </label>
@@ -274,15 +269,13 @@ export default function SettingsPage() {
                           <button
                             onClick={() => setEmailNotifications(!emailNotifications)}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full 
-                                       transition-colors ${
-                              emailNotifications ? 'bg-blue-600' : 'bg-gray-200'
-                            }`}
+                                       transition-colors ${emailNotifications ? 'bg-blue-600' : 'bg-gray-200'
+                              }`}
                           >
                             <span
                               className={`inline-block h-4 w-4 transform rounded-full bg-white 
-                                         transition-transform ${
-                                emailNotifications ? 'translate-x-6' : 'translate-x-1'
-                              }`}
+                                         transition-transform ${emailNotifications ? 'translate-x-6' : 'translate-x-1'
+                                }`}
                             />
                           </button>
                         </div>
@@ -295,15 +288,13 @@ export default function SettingsPage() {
                           <button
                             onClick={() => setNewUserNotif(!newUserNotif)}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full 
-                                       transition-colors ${
-                              newUserNotif ? 'bg-blue-600' : 'bg-gray-200'
-                            }`}
+                                       transition-colors ${newUserNotif ? 'bg-blue-600' : 'bg-gray-200'
+                              }`}
                           >
                             <span
                               className={`inline-block h-4 w-4 transform rounded-full bg-white 
-                                         transition-transform ${
-                                newUserNotif ? 'translate-x-6' : 'translate-x-1'
-                              }`}
+                                         transition-transform ${newUserNotif ? 'translate-x-6' : 'translate-x-1'
+                                }`}
                             />
                           </button>
                         </div>
@@ -316,15 +307,13 @@ export default function SettingsPage() {
                           <button
                             onClick={() => setNewConsultationNotif(!newConsultationNotif)}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full 
-                                       transition-colors ${
-                              newConsultationNotif ? 'bg-blue-600' : 'bg-gray-200'
-                            }`}
+                                       transition-colors ${newConsultationNotif ? 'bg-blue-600' : 'bg-gray-200'
+                              }`}
                           >
                             <span
                               className={`inline-block h-4 w-4 transform rounded-full bg-white 
-                                         transition-transform ${
-                                newConsultationNotif ? 'translate-x-6' : 'translate-x-1'
-                              }`}
+                                         transition-transform ${newConsultationNotif ? 'translate-x-6' : 'translate-x-1'
+                                }`}
                             />
                           </button>
                         </div>
@@ -337,15 +326,13 @@ export default function SettingsPage() {
                           <button
                             onClick={() => setPaymentNotif(!paymentNotif)}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full 
-                                       transition-colors ${
-                              paymentNotif ? 'bg-blue-600' : 'bg-gray-200'
-                            }`}
+                                       transition-colors ${paymentNotif ? 'bg-blue-600' : 'bg-gray-200'
+                              }`}
                           >
                             <span
                               className={`inline-block h-4 w-4 transform rounded-full bg-white 
-                                         transition-transform ${
-                                paymentNotif ? 'translate-x-6' : 'translate-x-1'
-                              }`}
+                                         transition-transform ${paymentNotif ? 'translate-x-6' : 'translate-x-1'
+                                }`}
                             />
                           </button>
                         </div>
@@ -372,15 +359,13 @@ export default function SettingsPage() {
                           <button
                             onClick={() => setTwoFactorAuth(!twoFactorAuth)}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full 
-                                       transition-colors ${
-                              twoFactorAuth ? 'bg-green-600' : 'bg-gray-200'
-                            }`}
+                                       transition-colors ${twoFactorAuth ? 'bg-green-600' : 'bg-gray-200'
+                              }`}
                           >
                             <span
                               className={`inline-block h-4 w-4 transform rounded-full bg-white 
-                                         transition-transform ${
-                                twoFactorAuth ? 'translate-x-6' : 'translate-x-1'
-                              }`}
+                                         transition-transform ${twoFactorAuth ? 'translate-x-6' : 'translate-x-1'
+                                }`}
                             />
                           </button>
                         </div>
@@ -465,15 +450,13 @@ export default function SettingsPage() {
                                   orangeMoney: !prev.orangeMoney
                                 }))}
                                 className={`relative inline-flex h-6 w-11 items-center rounded-full 
-                                           transition-colors ${
-                                  paymentMethods.orangeMoney ? 'bg-orange-600' : 'bg-gray-200'
-                                }`}
+                                           transition-colors ${paymentMethods.orangeMoney ? 'bg-orange-600' : 'bg-gray-200'
+                                  }`}
                               >
                                 <span
                                   className={`inline-block h-4 w-4 transform rounded-full bg-white 
-                                             transition-transform ${
-                                    paymentMethods.orangeMoney ? 'translate-x-6' : 'translate-x-1'
-                                  }`}
+                                             transition-transform ${paymentMethods.orangeMoney ? 'translate-x-6' : 'translate-x-1'
+                                    }`}
                                 />
                               </button>
                             </label>
@@ -486,15 +469,13 @@ export default function SettingsPage() {
                                   mtnMoney: !prev.mtnMoney
                                 }))}
                                 className={`relative inline-flex h-6 w-11 items-center rounded-full 
-                                           transition-colors ${
-                                  paymentMethods.mtnMoney ? 'bg-yellow-600' : 'bg-gray-200'
-                                }`}
+                                           transition-colors ${paymentMethods.mtnMoney ? 'bg-yellow-600' : 'bg-gray-200'
+                                  }`}
                               >
                                 <span
                                   className={`inline-block h-4 w-4 transform rounded-full bg-white 
-                                             transition-transform ${
-                                    paymentMethods.mtnMoney ? 'translate-x-6' : 'translate-x-1'
-                                  }`}
+                                             transition-transform ${paymentMethods.mtnMoney ? 'translate-x-6' : 'translate-x-1'
+                                    }`}
                                 />
                               </button>
                             </label>
@@ -507,15 +488,13 @@ export default function SettingsPage() {
                                   moovMoney: !prev.moovMoney
                                 }))}
                                 className={`relative inline-flex h-6 w-11 items-center rounded-full 
-                                           transition-colors ${
-                                  paymentMethods.moovMoney ? 'bg-blue-600' : 'bg-gray-200'
-                                }`}
+                                           transition-colors ${paymentMethods.moovMoney ? 'bg-blue-600' : 'bg-gray-200'
+                                  }`}
                               >
                                 <span
                                   className={`inline-block h-4 w-4 transform rounded-full bg-white 
-                                             transition-transform ${
-                                    paymentMethods.moovMoney ? 'translate-x-6' : 'translate-x-1'
-                                  }`}
+                                             transition-transform ${paymentMethods.moovMoney ? 'translate-x-6' : 'translate-x-1'
+                                    }`}
                                 />
                               </button>
                             </label>
@@ -528,15 +507,13 @@ export default function SettingsPage() {
                                   wave: !prev.wave
                                 }))}
                                 className={`relative inline-flex h-6 w-11 items-center rounded-full 
-                                           transition-colors ${
-                                  paymentMethods.wave ? 'bg-pink-600' : 'bg-gray-200'
-                                }`}
+                                           transition-colors ${paymentMethods.wave ? 'bg-pink-600' : 'bg-gray-200'
+                                  }`}
                               >
                                 <span
                                   className={`inline-block h-4 w-4 transform rounded-full bg-white 
-                                             transition-transform ${
-                                    paymentMethods.wave ? 'translate-x-6' : 'translate-x-1'
-                                  }`}
+                                             transition-transform ${paymentMethods.wave ? 'translate-x-6' : 'translate-x-1'
+                                    }`}
                                 />
                               </button>
                             </label>

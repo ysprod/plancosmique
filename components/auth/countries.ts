@@ -1,4 +1,3 @@
-// Liste exhaustive des pays (Côte d’Ivoire en premier)
 export const countries = [
   'Côte d’Ivoire',
   'Afghanistan', 'Afrique du Sud', 'Albanie', 'Algérie', 'Allemagne', 'Andorre', 'Angola', 'Antigua-et-Barbuda', 'Arabie saoudite', 'Argentine', 'Arménie', 'Australie', 'Autriche', 'Azerbaïdjan',

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { User, LogOut, Menu, X } from "lucide-react";
-import NotificationBell from "@/components/NotificationBell";
+import NotificationBell from "@/components/commons/NotificationBell";
 
 export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handleLogout }: {
   user: any;

@@ -36,7 +36,7 @@ export default function LogoutPage() {
         setStatus("error");
         setTimeout(() => {
           router.replace("/auth/login");
-        }, 3000);
+        }, 1000);
       }
     };
     logout();

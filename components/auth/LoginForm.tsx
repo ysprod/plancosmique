@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-
-import React, { useState, memo, useCallback, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Lock, Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
-import Link from 'next/link';
 import { useAuth } from '@/lib/hooks';
+import { motion } from 'framer-motion';
+import { AlertCircle, Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 
 // Types
 
@@ -14,7 +13,6 @@ interface FormData {
   username: string;
   password: string;
 }
-
 
 interface FormErrors {
   username?: string;

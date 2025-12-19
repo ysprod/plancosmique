@@ -1,7 +1,3 @@
-/**
- * Export centralisé des composants d'authentification
- */
-
 export * from './LoginForm';
 export * from './RegisterForm';
 export * from './ProtectedRoute';

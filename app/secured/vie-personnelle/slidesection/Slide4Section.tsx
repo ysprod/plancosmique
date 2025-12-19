@@ -78,7 +78,7 @@ export default function Slide4Section() {
       console.log('[Wallet] 🔍 Vérification des offrandes dans le wallet...');
       
       // Récupérer les offrandes du wallet de l'utilisateur
-      const walletRes = await api.get('/wallet/offerings');
+      const walletRes: { status: number; data?: { offerings?: any[] } } = await api.get('/wallet/offerings');
       
       if (walletRes.status !== 200 || !walletRes.data?.offerings) {
         console.log('[Wallet] ⚠️ Impossible de récupérer le wallet');

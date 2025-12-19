@@ -1,30 +1,28 @@
 'use client';
-
+import NotificationBell from '@/components/commons/NotificationBell';
+import ThemeToggle from '@/components/commons/ThemeToggle';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Role } from '@/types/auth.types';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import {
-  User,
+  ChevronDown,
+  Crown,
+  FileText,
+  Heart,
+  Home,
+  LayoutDashboard,
   LogOut,
   Menu,
-  X,
-  Home,
-  FileText,
   Settings,
-  Sparkles,
-  ChevronDown,
-  LayoutDashboard,
-  BookOpen,
   ShoppingBag,
-  Crown,
-  Zap,
-  Heart
+  Sparkles,
+  User,
+  X,
+  Zap
 } from 'lucide-react';
-import { useState, useCallback, useEffect, useMemo } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import NotificationBell from '@/components/NotificationBell';
-import ThemeToggle from '@/components/ThemeToggle';
+import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export default function HeaderContent() {
   const { logout, user, hasRole } = useAuth();
@@ -90,8 +88,7 @@ export default function HeaderContent() {
       { href: "/admin", label: "Administration", icon: LayoutDashboard }
     ] : []),
     { href: "/secured/profil", label: "Mon Profil", icon: Home },
-    { href: "/secured/consultations", label: "Consultations", icon: FileText },
-    { href: "/secured/spiritualite", label: "Blog", icon: BookOpen },
+    { href: "/secured/consultations", label: "Mes Consultations", icon: FileText },
     { href: "/secured/marcheoffrandes", label: "Marché", icon: ShoppingBag },
   ], [hasRole]);
 

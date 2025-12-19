@@ -64,3 +64,29 @@ body {
 .animate-glow {
   animation: glow 3s ease-in-out infinite;
 }
+
+
+/* Dans globals.css */
+@layer base {
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.015;
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+      );
+  }
+  
+  .dark body::after {
+    opacity: 0.025;
+  }
+}
+

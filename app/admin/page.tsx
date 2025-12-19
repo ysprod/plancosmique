@@ -1,15 +1,25 @@
 'use client';
-import { useState, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Users, FileText, CreditCard, TrendingUp, 
-  AlertCircle, CheckCircle, Clock, DollarSign,
-  Activity, ArrowUpRight, ArrowDownRight, RefreshCw,
-  BarChart3, Target, Zap
-} from 'lucide-react';
 import { StatCard } from '@/components/admin/StatCard';
 import { useAdminStats } from '@/hooks/useAdminStats';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  Activity,
+  AlertCircle,
+  ArrowDownRight,
+  ArrowUpRight,
+  BarChart3,
+  CheckCircle, Clock,
+  CreditCard,
+  DollarSign,
+  FileText,
+  RefreshCw,
+  Target,
+  TrendingUp,
+  Users,
+  Zap
+} from 'lucide-react';
 import Link from 'next/link';
+import { useCallback, useMemo, useState } from 'react';
 
 export default function AdminDashboard() {
   const { stats, loading, error, refetch, lastUpdated } = useAdminStats();

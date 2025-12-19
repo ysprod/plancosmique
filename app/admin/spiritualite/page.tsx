@@ -1,33 +1,32 @@
 'use client';
-
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Database,
-  Check,
-  Flame,
-  Loader,
-  AlertCircle,
-  Plus,
-  Edit,
-  Trash2,
-  Eye,
-  EyeOff,
-  Save,
-  X,
-  ChevronDown,
-  ChevronUp,
-  Sparkles,
-  BookOpen,
-  List,
-  Target,
-  Lightbulb,
-  AlertTriangle,
-  Package,
-  Clock
-} from 'lucide-react';
 import { api } from '@/lib/api/client';
 import type { AxiosError } from 'axios';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  AlertCircle,
+  AlertTriangle,
+  BookOpen,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  Database,
+  Edit,
+  Eye,
+  EyeOff,
+  Flame,
+  Lightbulb,
+  List,
+  Loader,
+  Package,
+  Plus,
+  Save,
+  Sparkles,
+  Target,
+  Trash2,
+  X
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface SpiritualPractice {
   _id?: string;
@@ -88,14 +87,14 @@ export default function SpiritualiteAdmin() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  
+
   // États pour le formulaire
   const [showForm, setShowForm] = useState(false);
   const [editingPractice, setEditingPractice] = useState<SpiritualPractice | null>(null);
   const [formData, setFormData] = useState<SpiritualPractice>(emptyPractice);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['basic']));
   const [saving, setSaving] = useState(false);
-  
+
   // États pour la visualisation
   const [expandedPractices, setExpandedPractices] = useState<Set<string>>(new Set());
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -109,7 +108,7 @@ export default function SpiritualiteAdmin() {
       setLoading(true);
       setError(null);
       const { data } = await api.get<ApiResponse>('/spiritualite');
-      
+
       if (data?.data && Array.isArray(data.data)) {
         setPractices(data.data);
       } else {
@@ -164,7 +163,7 @@ export default function SpiritualiteAdmin() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validation
     if (!formData.title || !formData.slug || !formData.description) {
       showError('Veuillez remplir tous les champs obligatoires');
@@ -173,7 +172,7 @@ export default function SpiritualiteAdmin() {
 
     try {
       setSaving(true);
-      
+
       // Nettoyer les tableaux vides
       const cleanData = {
         ...formData,
@@ -387,7 +386,7 @@ export default function SpiritualiteAdmin() {
                       </div>
                       {expandedSections.has('basic') ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                     </button>
-                    
+
                     {expandedSections.has('basic') && (
                       <div className="p-4 space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -456,11 +455,10 @@ export default function SpiritualiteAdmin() {
                               <button
                                 type="button"
                                 onClick={() => setFormData({ ...formData, published: !formData.published })}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all ${
-                                  formData.published
+                                className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all ${formData.published
                                     ? 'bg-green-500 text-white'
                                     : 'bg-gray-200 text-gray-700'
-                                }`}
+                                  }`}
                               >
                                 {formData.published ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                                 {formData.published ? 'Publié' : 'Brouillon'}
@@ -631,7 +629,7 @@ export default function SpiritualiteAdmin() {
                     >
                       Annuler
                     </motion.button>
-                    
+
                     <motion.button
                       type="submit"
                       disabled={saving}
@@ -729,11 +727,10 @@ export default function SpiritualiteAdmin() {
                     </div>
 
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      <div className={`px-2 sm:px-3 py-1 rounded-full text-xs font-bold ${
-                        practice.published
+                      <div className={`px-2 sm:px-3 py-1 rounded-full text-xs font-bold ${practice.published
                           ? 'bg-green-500 text-white'
                           : 'bg-gray-300 text-gray-700'
-                      }`}>
+                        }`}>
                         {practice.published ? 'Publié' : 'Brouillon'}
                       </div>
 
@@ -763,7 +760,7 @@ export default function SpiritualiteAdmin() {
                       >
                         <div className="p-3 sm:p-4 space-y-3 text-xs sm:text-sm">
                           <p className="text-gray-700">{practice.description}</p>
-                          
+
                           <div className="flex flex-wrap gap-2">
                             <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-semibold">
                               {practice.category}

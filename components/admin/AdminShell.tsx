@@ -1,29 +1,27 @@
 "use client";
-
 import { MobileNav } from '@/components/admin/MobileNav';
-import { useAuth } from '@/lib/auth/AuthContext';
- 
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { RoleGuard } from '@/components/auth/RoleGuard';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/lib/auth/AuthContext';
+import { Role } from '@/types/auth.types';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   BookOpen,
+  ChevronRight,
   CreditCard,
   FileText,
   Flame,
   LayoutDashboard,
   LogOut,
-  Settings,
-  Users,
-  ChevronRight,
   Menu,
-  X,
-  Shield
+  Settings,
+  Shield,
+  Users,
+  X
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Role } from '@/types/auth.types';
 
 const navItems = [
   { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard, color: 'amber' },

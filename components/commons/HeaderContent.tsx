@@ -1,33 +1,31 @@
 'use client';
-
+import NotificationBell from '@/components/commons/NotificationBell';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Role } from '@/types/auth.types';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import {
-  User,
+  ChevronDown,
+  Crown,
+  FileText,
+  Heart,
+  Home,
+  LayoutDashboard,
   LogOut,
   Menu,
-  X,
-  Home,
-  FileText,
-  Settings,
-  Sparkles,
-  ChevronDown,
-  LayoutDashboard,
-  BookOpen,
-  ShoppingBag,
-  Crown,
-  Zap,
-  Heart,
-  Sun,
   Moon,
-  Wallet
+  Settings,
+  ShoppingBag,
+  Sparkles,
+  Sun,
+  User,
+  Wallet,
+  X,
+  Zap
 } from 'lucide-react';
-import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useTheme } from 'next-themes';
-import Link from 'next/link';
 import Image from 'next/image';
-import NotificationBell from '@/components/NotificationBell';
+import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export default function HeaderContent() {
   const { logout, user, hasRole } = useAuth();
@@ -107,13 +105,12 @@ export default function HeaderContent() {
   // Menu items avec mémoïsation
   const navItems = useMemo(() => [
     ...(hasRole(Role.SUPER_ADMIN) ? [
-      { href: "/admin", label: "Administration", icon: LayoutDashboard }
+      { href: "/admin", label: "Admin", icon: LayoutDashboard }
     ] : []),
-    { href: "/secured/profil", label: "Profil", icon: Home },
-    { href: "/secured/consultations", label: "Consultations", icon: FileText },
-    { href: "/secured/spiritualite", label: "Blog", icon: BookOpen },
-    { href: "/secured/wallet", label: "Panier", icon: Wallet },
-    { href: "/secured/marcheoffrandes", label: "Marché des offrandes", icon: ShoppingBag },
+    { href: "/secured/profil", label: "Mon Profil", icon: Home },
+    { href: "/secured/consultations", label: "Mes Consultations", icon: FileText },
+    { href: "/secured/wallet", label: "Mon Panier", icon: Wallet },
+    { href: "/secured/marcheoffrandes", label: "Marché", icon: ShoppingBag },
   ], [hasRole]);
 
   const quickActions = useMemo(() => [
@@ -141,8 +138,8 @@ export default function HeaderContent() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, type: "spring", stiffness: 120 }}
         className={`fixed ${user ? 'top-1' : 'top-0'} left-0 right-0 z-40 transition-all duration-300 ${isScrolled
-            ? 'bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl shadow-lg shadow-violet-500/5 border-b border-violet-100/50 dark:border-violet-900/50'
-            : 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-md'
+          ? 'bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl shadow-lg shadow-violet-500/5 border-b border-violet-100/50 dark:border-violet-900/50'
+          : 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-md'
           }`}
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3">

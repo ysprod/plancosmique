@@ -1,9 +1,8 @@
 'use client';
-
 import { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Users, Plus, Search, Filter, 
+import {
+  Users, Plus, Search, Filter,
   Mail, Phone, Shield, Globe, Calendar,
   CheckCircle, Edit, Trash2, Ban,
   X, AlertCircle, RefreshCw, Clock, Star, CreditCard, User, Zap,
@@ -40,7 +39,7 @@ export default function UsersPage() {
   const [roleFilter, setRoleFilter] = useState<UserRole>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
-  
+
   // États pour les modals
   const [deleteModal, setDeleteModal] = useState<{ show: boolean; user: UserData | null }>({
     show: false,
@@ -97,7 +96,7 @@ export default function UsersPage() {
 
       // Succès
       setDeleteSuccess(true);
-      
+
       // Fermer le modal après 1.5s
       setTimeout(() => {
         setDeleteModal({ show: false, user: null });
@@ -125,8 +124,8 @@ export default function UsersPage() {
 
   const cardVariants = {
     hidden: { opacity: 0, y: 8 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.3, ease: 'easeOut' }
     }
@@ -134,13 +133,13 @@ export default function UsersPage() {
 
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.95 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
       transition: { duration: 0.2 }
     },
-    exit: { 
-      opacity: 0, 
+    exit: {
+      opacity: 0,
       scale: 0.95,
       transition: { duration: 0.15 }
     }
@@ -155,7 +154,7 @@ export default function UsersPage() {
           className="text-center max-w-sm w-full bg-white rounded-xl shadow-xl border border-gray-200 p-6"
         >
           <motion.div
-            animate={{ 
+            animate={{
               rotate: [0, 10, -10, 10, 0],
               transition: { duration: 0.5, repeat: Infinity, repeatDelay: 2 }
             }}
@@ -369,11 +368,10 @@ export default function UsersPage() {
                 disabled={isRefreshing || loading}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`p-2 rounded-lg transition-all ${
-                  isRefreshing || loading
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                className={`p-2 rounded-lg transition-all ${isRefreshing || loading
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+                  }`}
               >
                 <RefreshCw className={`w-4 h-4 ${isRefreshing || loading ? 'animate-spin' : ''}`} />
               </motion.button>
@@ -413,7 +411,7 @@ export default function UsersPage() {
 
         {/* Stats compactes avec animations */}
         {stats && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-4"
@@ -449,7 +447,7 @@ export default function UsersPage() {
         )}
 
         {/* Barre de recherche et filtres */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -493,11 +491,10 @@ export default function UsersPage() {
               whileTap={{ scale: 0.98 }}
               className={`flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg 
                          font-medium transition-all disabled:opacity-50 
-                         disabled:cursor-not-allowed ${
-                showFilters || statusFilter !== 'all' || roleFilter !== 'all'
+                         disabled:cursor-not-allowed ${showFilters || statusFilter !== 'all' || roleFilter !== 'all'
                   ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md'
                   : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-              }`}
+                }`}
             >
               <Filter className="w-4 h-4" />
               <span className="hidden sm:inline">Filtres</span>
@@ -601,7 +598,7 @@ export default function UsersPage() {
 
           {users && users.length > 0 ? (
             <div className="space-y-4">
-              <motion.div 
+              <motion.div
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
@@ -689,21 +686,19 @@ export default function UsersPage() {
                     {/* Badges compacts */}
                     <div className="flex flex-wrap items-center gap-1.5 mb-3">
                       <span className={`inline-flex items-center gap-0.5 px-2 py-0.5 
-                                      rounded-full text-xs font-medium ${
-                        user.role === 'ADMIN'
+                                      rounded-full text-xs font-medium ${user.role === 'ADMIN'
                           ? 'bg-purple-100 text-purple-700'
                           : 'bg-blue-100 text-blue-700'
-                      }`}>
+                        }`}>
                         {user.role === 'ADMIN' && <Shield className="w-2.5 h-2.5" />}
                         {user.role}
                       </span>
 
                       <span className={`inline-flex items-center gap-0.5 px-2 py-0.5 
-                                      rounded-full text-xs font-medium ${
-                        user.isActive
+                                      rounded-full text-xs font-medium ${user.isActive
                           ? 'bg-green-100 text-green-700'
                           : 'bg-gray-100 text-gray-700'
-                      }`}>
+                        }`}>
                         {user.isActive ? (
                           <CheckCircle className="w-2.5 h-2.5" />
                         ) : (
@@ -755,7 +750,7 @@ export default function UsersPage() {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}

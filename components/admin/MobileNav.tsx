@@ -1,14 +1,21 @@
 'use client';
-
-import { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Menu, X, LayoutDashboard, Users, FileText, 
-  CreditCard, Settings, LogOut, Sparkles, Activity
+import { useAuth } from '@/lib/auth/AuthContext';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  Activity,
+  CreditCard,
+  FileText,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  Settings,
+  Sparkles,
+  Users,
+  X
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/auth/AuthContext';
+import { useCallback, useState } from 'react';
 
 const navItems = [
   { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard, color: 'amber' },

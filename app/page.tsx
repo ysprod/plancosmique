@@ -1,8 +1,7 @@
 'use client';
-
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, Compass, Eye, Sparkles, Star } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const QUESTIONS = [
@@ -12,7 +11,6 @@ const QUESTIONS = [
 ];
 
 export default function WelcomePage() {
-
   return (
     <div className=" bg-white">
       {/* Progress bar mobile-optimized */}
@@ -28,24 +26,22 @@ export default function WelcomePage() {
           className="h-full w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent"
         />
       </motion.div>
-
-       {/* Logo ultra-compact mobile */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center mb-6"
-        >
-          <Image
-            src="/logo.png"
-            alt="Mon Étoile"
-            width={80}
-            height={80}
-            className="mx-auto mb-2"
-            priority
-          />
-          <h1 className="text-3xl sm:text-4xl font-black text-black">MON ÉTOILE</h1>
-        </motion.div>
-
+      {/* Logo ultra-compact mobile */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="text-center mb-6"
+      >
+        <Image
+          src="/logo.png"
+          alt="Mon Étoile"
+          width={80}
+          height={80}
+          className="mx-auto mb-2"
+          priority
+        />
+        <h1 className="text-3xl sm:text-4xl font-black text-black">MON ÉTOILE</h1>
+      </motion.div>
       <div className="px-4 py-6 max-w-2xl mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
@@ -56,7 +52,6 @@ export default function WelcomePage() {
           Bienvenue dans ce temple virtuel, où chacun vient chercher une réponse aux trois grandes
           questions de l'existence :
         </motion.p>
-
         {/* Questions en stack mobile, inline desktop */}
         <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 mb-6">
           {QUESTIONS.map((item, i) => (
@@ -78,7 +73,6 @@ export default function WelcomePage() {
             </Link>
           ))}
         </div>
-
         {/* Bloc Mission ultra-compact mobile */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
@@ -90,7 +84,7 @@ export default function WelcomePage() {
         >
           {/* Déco légère animée */}
           <motion.div
-            animate={{ 
+            animate={{
               rotate: [0, 10, -10, 0],
               scale: [1, 1.1, 1]
             }}
@@ -100,7 +94,7 @@ export default function WelcomePage() {
             <Sparkles className="w-8 h-8 text-amber-200 opacity-20" />
           </motion.div>
           <motion.div
-            animate={{ 
+            animate={{
               rotate: [0, -10, 10, 0],
               scale: [1, 1.05, 1]
             }}
@@ -112,13 +106,13 @@ export default function WelcomePage() {
 
           <div className="relative z-10 text-center space-y-3">
             <p className="text-xs sm:text-sm text-gray-700 leading-snug">
-              Basée sur les connaissances initiatiques africaines et éclairée par la lecture des astres, 
-              notre guidance vous aide à mieux vous connaître, comprendre votre mission de vie, révéler 
+              Basée sur les connaissances initiatiques africaines et éclairée par la lecture des astres,
+              notre guidance vous aide à mieux vous connaître, comprendre votre mission de vie, révéler
               vos talents, harmoniser vos relations, et avancer avec clarté sur votre chemin spirituel.
             </p>
             <p className="text-xs sm:text-sm text-gray-700 leading-snug">
-              Parce qu'il existe un Plan Cosmique qui organise votre vie, votre thème astral devient ici 
-              une boussole sacrée, une mémoire profonde et une lumière qui vous éclaire, inspire vos choix 
+              Parce qu'il existe un Plan Cosmique qui organise votre vie, votre thème astral devient ici
+              une boussole sacrée, une mémoire profonde et une lumière qui vous éclaire, inspire vos choix
               et guide vos décisions.
             </p>
             <p className="text-base sm:text-lg font-black text-black leading-tight">
@@ -142,8 +136,6 @@ export default function WelcomePage() {
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </Link>
-
-         
           </div>
         </motion.div>
       </div>

@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useRef, useEffect } from 'react';
 import { Bell, CheckCheck, Trash2 } from 'lucide-react';
 import { useNotifications } from '@/lib/hooks';

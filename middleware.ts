@@ -5,11 +5,13 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('monetoile_access_token')?.value;
   const { pathname, search } = request.nextUrl;
 
-  // Liste des routes publiques (peut être étendue)
-  // /callback est autorisé sans authentification car c'est la redirection MoneyFusion
-  // /auth/logout est autorisé pour permettre la déconnexion sans boucle infinie
-  const publicRoutes = ['/', '/auth/login', '/auth/register', '/auth/logout', '/callback', '/wallet'];
+  // Liste des routes publiques
+  const publicRoutes = ['/', '/auth/login', '/auth/register', '/callback', '/wallet'];
   const isPublicRoute = publicRoutes.some(route => pathname === route);
+
+  // Routes d'authentification qui ne doivent PAS rediriger même si connecté
+  const authActionRoutes = ['/auth/logout'];
+  const isAuthAction = authActionRoutes.some(route => pathname === route);
 
   // Liste des routes protégées (toutes les routes commençant par /secured)
   const protectedRoutePrefixes = ['/admin', '/secured'];
@@ -22,10 +24,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(loginUrl, request.url));
   }
 
-  // Si connecté et essaie d'accéder à login/register, rediriger vers dashboard
+  // Si connecté et essaie d'accéder à login/register (mais PAS logout ou callback ou wallet)
+  // Rediriger vers dashboard
   if (
     token &&
     isPublicRoute &&
+    !isAuthAction && // ✅ Ne pas rediriger si c'est une action d'auth (logout)
     pathname !== '/' &&
     pathname !== '/callback' &&
     pathname !== '/wallet'
