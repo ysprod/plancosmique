@@ -5,7 +5,7 @@ export { CategoryFilters } from './CategoryFilters';
 export { Hero } from './Hero';
 export { InfoBox } from './InfoBox';
 export { CartModal } from './CartModal';
-export { CheckoutModal } from './CheckoutModal';
+export { default as CheckoutModal } from './CheckoutModal';
 export { Header } from './Header';
 
 // Export types and data

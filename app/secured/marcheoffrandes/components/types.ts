@@ -1,5 +1,6 @@
 
 export interface Offering {
+    _id: string;
     id: string;
     name: string;
     price: number;
@@ -10,6 +11,7 @@ export interface Offering {
 }
 
 export interface CartItem extends Offering {
+    _id: any;
     quantity: number;
 }
 
