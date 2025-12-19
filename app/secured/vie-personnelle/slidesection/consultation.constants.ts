@@ -60,8 +60,6 @@ export const CONSULTATION_CHOICES: ConsultationChoice[] = [
     description:
       "Connaître ma façon d'aimer et de recevoir l'amour. Je veux comprendre mes besoins affectifs, mes schémas relationnels et créer des relations plus harmonieuses et plus vraies.",
     requiredOfferings: [
-      { offeringId: 'coq-rouge', quantity: 1 },
-      { offeringId: 'cola-rouge', quantity: 2 },
       { offeringId: 'liqueur', quantity: 1 },
     ]
   },
