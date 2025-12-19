@@ -1,12 +1,13 @@
 'use client';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     type CartItem, CartModal,
     type Category, CategoryFilters, CheckoutModal, FloatingCart, Header, Hero, InfoBox,
-    type Offering, OfferingCard, offerings, staggerContainer
+    type Offering, OfferingCard, staggerContainer
 } from './components';
+import { api } from '@/lib/api/client';
 
 function useCart() {
     const [cart, setCart] = useState<CartItem[]>([]);
@@ -97,17 +98,42 @@ function useModals() {
     };
 }
 
+
 export default function MarcheOffrandes() {
     const [selectedCategory, setSelectedCategory] = useState<Category>('all');
     const { user } = useAuth();
     const { cart, cartTotal, cartCount, addToCart, removeFromCart, updateQuantity, clearCart } = useCart();
     const { showCart, showCheckout, openCart, closeCart, openCheckout, closeCheckout, backToCart } = useModals();
 
+    const [offerings, setOfferings] = useState<Offering[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchOfferings = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const response = await api.get('/offerings');
+                if (response.status === 200 && response.data?.offerings) {
+                    setOfferings(response.data.offerings);
+                } else {
+                    setError('Erreur lors du chargement des offrandes');
+                }
+            } catch (err: any) {
+                setError('Erreur lors du chargement des offrandes');
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchOfferings();
+    }, []);
+
     const filteredOfferings = useMemo(() =>
         selectedCategory === 'all'
             ? offerings
             : offerings.filter(o => o.category === selectedCategory),
-        [selectedCategory]
+        [selectedCategory, offerings]
     );
 
     const handleProceedToCheckout = useCallback(() => {
@@ -150,6 +176,7 @@ export default function MarcheOffrandes() {
                         <CategoryFilters
                             selectedCategory={selectedCategory}
                             onSelectCategory={setSelectedCategory}
+                            offerings={offerings}
                         />
                     </div>
                 </motion.div>
@@ -182,66 +209,80 @@ export default function MarcheOffrandes() {
                     </motion.div>
                 </AnimatePresence>
 
-                {/* Grille offrandes avec animations séquentielles */}
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={selectedCategory}
-                        variants={staggerContainer}
-                        initial="hidden"
-                        animate="visible"
-                        exit="exit"
-                        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 
-                                 gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 mb-6 sm:mb-8"
-                    >
-                        {filteredOfferings.map((offering, index) => (
+                {/* Grille offrandes avec animations séquentielles ou loader/erreur */}
+                {loading ? (
+                    <div className="flex flex-col items-center justify-center py-16 sm:py-20">
+                        <span className="text-3xl animate-spin mb-4">🌀</span>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Chargement des offrandes...</p>
+                    </div>
+                ) : error ? (
+                    <div className="flex flex-col items-center justify-center py-16 sm:py-20">
+                        <span className="text-3xl mb-4">❌</span>
+                        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+                    </div>
+                ) : (
+                    <>
+                        <AnimatePresence mode="wait">
                             <motion.div
-                                key={offering.id}
-                                initial={{ opacity: 0, scale: 0.92, y: 20 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.92, y: -20 }}
-                                transition={{
-                                    duration: 0.3,
-                                    delay: index * 0.03,
-                                    ease: "easeOut"
-                                }}
-                                whileHover={{ y: -4, scale: 1.02 }}
-                                className="h-full"
+                                key={selectedCategory}
+                                variants={staggerContainer}
+                                initial="hidden"
+                                animate="visible"
+                                exit="exit"
+                                className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 
+                                         gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 mb-6 sm:mb-8"
                             >
-                                <OfferingCard
-                                    offering={offering}
-                                    onAddToCart={addToCart}
-                                />
+                                {filteredOfferings.map((offering, index) => (
+                                    <motion.div
+                                        key={offering.id}
+                                        initial={{ opacity: 0, scale: 0.92, y: 20 }}
+                                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                                        exit={{ opacity: 0, scale: 0.92, y: -20 }}
+                                        transition={{
+                                            duration: 0.3,
+                                            delay: index * 0.03,
+                                            ease: "easeOut"
+                                        }}
+                                        whileHover={{ y: -4, scale: 1.02 }}
+                                        className="h-full"
+                                    >
+                                        <OfferingCard
+                                            offering={offering}
+                                            onAddToCart={addToCart}
+                                        />
+                                    </motion.div>
+                                ))}
                             </motion.div>
-                        ))}
-                    </motion.div>
-                </AnimatePresence>
+                        </AnimatePresence>
 
-                {/* Message si aucune offrande */}
-                {filteredOfferings.length === 0 && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="flex flex-col items-center justify-center py-16 sm:py-20"
-                    >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 dark:bg-slate-800 
-                                      rounded-full flex items-center justify-center mb-4">
-                            <span className="text-3xl sm:text-4xl">🔍</span>
-                        </div>
-                        <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2">
-                            Aucune offrande trouvée
-                        </h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 text-center max-w-sm mb-4">
-                            Essayez une autre catégorie ou consultez toutes les offrandes disponibles
-                        </p>
-                        <button
-                            onClick={() => setSelectedCategory('all')}
-                            className="px-4 py-2 bg-amber-500 hover:bg-amber-600 dark:bg-amber-600 
-                                     dark:hover:bg-amber-700 text-white text-sm font-semibold 
-                                     rounded-lg transition-colors"
-                        >
-                            Voir toutes les offrandes
-                        </button>
-                    </motion.div>
+                        {/* Message si aucune offrande */}
+                        {filteredOfferings.length === 0 && (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="flex flex-col items-center justify-center py-16 sm:py-20"
+                            >
+                                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 dark:bg-slate-800 
+                                              rounded-full flex items-center justify-center mb-4">
+                                    <span className="text-3xl sm:text-4xl">🔍</span>
+                                </div>
+                                <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2">
+                                    Aucune offrande trouvée
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 text-center max-w-sm mb-4">
+                                    Essayez une autre catégorie ou consultez toutes les offrandes disponibles
+                                </p>
+                                <button
+                                    onClick={() => setSelectedCategory('all')}
+                                    className="px-4 py-2 bg-amber-500 hover:bg-amber-600 dark:bg-amber-600 
+                                             dark:hover:bg-amber-700 text-white text-sm font-semibold 
+                                             rounded-lg transition-colors"
+                                >
+                                    Voir toutes les offrandes
+                                </button>
+                            </motion.div>
+                        )}
+                    </>
                 )}
 
                 {/* Info box élégante */}

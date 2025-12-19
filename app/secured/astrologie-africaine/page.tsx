@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, Globe, Heart, Mountain, Palmtree, Pyramid, Sparkles, Star, Users } from 'lucide-react';
 import { useState } from "react";
+import { MoonPhaseWidget } from '@/components/MoonPhaseWidget';
 
 // Types pour les onglets
 type TabId = 'signe' | 'compatibilite' | 'guidance' | 'divinite';
@@ -32,6 +33,11 @@ const SigneAfricainContent = () => (
           <h2 className="text-3xl font-black text-gray-900">Incantions et Rituels Magiques</h2>
           <p className="text-gray-600">Découvrez votre identité cosmique ancestrale</p>
         </div>
+      </div>
+
+      {/* PHASE LUNAIRE - RITUEL */}
+      <div className="mb-6">
+        <MoonPhaseWidget />
       </div>
 
       <div className="space-y-6">

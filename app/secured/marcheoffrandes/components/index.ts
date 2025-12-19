@@ -10,5 +10,4 @@ export { Header } from './Header';
 
 // Export types and data
 export * from './types';
-export * from './data';
 export * from './animations';

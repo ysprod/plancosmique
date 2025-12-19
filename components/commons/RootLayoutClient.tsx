@@ -87,15 +87,10 @@ export default function HeaderContent() {
     ...(hasRole(Role.SUPER_ADMIN) ? [
       { href: "/admin", label: "Administration", icon: LayoutDashboard }
     ] : []),
-    { href: "/secured/profil", label: "Mon Profil", icon: Home },
     { href: "/secured/consultations", label: "Mes Consultations", icon: FileText },
-    { href: "/secured/marcheoffrandes", label: "Marché", icon: ShoppingBag },
   ], [hasRole]);
 
-  const quickActions = useMemo(() => [
-    { href: "/secured/profil", label: "Nouvelle Consultation", icon: Zap, gradient: "from-violet-500 to-purple-600" },
-    { href: "/secured/mes-favoris", label: "Favoris", icon: Heart, gradient: "from-pink-500 to-rose-600" },
-  ], []);
+ 
 
   return (
     <>
@@ -292,27 +287,7 @@ export default function HeaderContent() {
                         )}
                       </div>
 
-                      {/* Quick Actions */}
-                      <div className="p-2 border-b border-gray-100 dark:border-slate-700">
-                        {quickActions.map((action) => {
-                          const Icon = action.icon;
-                          return (
-                            <Link key={action.href} href={action.href} onClick={() => setShowUserMenu(false)}>
-                              <motion.button
-                                whileHover={{ scale: 1.02, x: 4 }}
-                                whileTap={{ scale: 0.98 }}
-                                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl 
-                                           bg-gradient-to-r ${action.gradient} text-white
-                                           font-semibold text-sm mb-1.5 shadow-md hover:shadow-lg
-                                           transition-all`}
-                              >
-                                <Icon className="w-5 h-5" />
-                                {action.label}
-                              </motion.button>
-                            </Link>
-                          );
-                        })}
-                      </div>
+                      
 
                       {/* Menu Items */}
                       <div className="p-2">
@@ -454,33 +429,7 @@ export default function HeaderContent() {
                   </div>
                 </motion.div>
 
-                {/* Quick Actions Mobile */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 }}
-                  className="grid grid-cols-2 gap-2"
-                >
-                  {quickActions.map((action, index) => {
-                    const Icon = action.icon;
-                    return (
-                      <Link key={action.href} href={action.href} onClick={closeMobileMenu}>
-                        <motion.button
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.2 + index * 0.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className={`w-full flex flex-col items-center justify-center gap-2 p-4 rounded-2xl
-                                     bg-gradient-to-br ${action.gradient} text-white shadow-lg
-                                     font-bold text-sm hover:shadow-xl transition-all`}
-                        >
-                          <Icon className="w-6 h-6" />
-                          <span className="text-xs leading-tight text-center">{action.label}</span>
-                        </motion.button>
-                      </Link>
-                    );
-                  })}
-                </motion.div>
+               
 
                 {/* Navigation Links Mobile */}
                 <nav className="space-y-1">

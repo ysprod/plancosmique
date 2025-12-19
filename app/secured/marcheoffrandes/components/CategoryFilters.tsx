@@ -1,9 +1,8 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Package, Leaf, Wine, LucideIcon } from 'lucide-react';
-import { Category } from './types';
-import { staggerContainer, fadeInUp } from './animations';
-import { offerings } from './data';
+import { Leaf, LucideIcon, Package, Sparkles, Wine } from 'lucide-react';
+import React from 'react';
+import { fadeInUp, staggerContainer } from './animations';
+import { Category, Offering } from './types';
 
 interface CategoryInfo {
     id: Category;
@@ -15,9 +14,10 @@ interface CategoryInfo {
 interface CategoryFiltersProps {
     selectedCategory: Category;
     onSelectCategory: (category: Category) => void;
+    offerings: Offering[];
 }
 
-export const CategoryFilters: React.FC<CategoryFiltersProps> = ({ selectedCategory, onSelectCategory }) => {
+export const CategoryFilters: React.FC<CategoryFiltersProps> = ({ selectedCategory, onSelectCategory, offerings }) => {
     const categories: CategoryInfo[] = [
         { id: 'all' as const, name: 'Tout', icon: Sparkles, count: offerings.length },
         { id: 'animal' as const, name: 'Animales', icon: Package, count: offerings.filter(o => o.category === 'animal').length },

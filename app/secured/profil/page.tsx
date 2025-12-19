@@ -44,7 +44,7 @@ const mainCategories = [
   },
   {
     id: "spiritualite",
-    title: "SPIRITUALITÉ AFRICAINE",
+    title: "TESTAMENT DE LA CONNAISSANCE",
     subtitle: "Sagesse Ancestrale",
     icon: Flame,
     color: "from-orange-600 to-red-600",

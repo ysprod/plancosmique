@@ -29,6 +29,7 @@ const navItems = [
   { href: '/admin/consultations', label: 'Consultations', icon: FileText, color: 'green' },
   { href: '/admin/payments', label: 'Paiements', icon: CreditCard, color: 'purple' },
   { href: '/admin/books', label: 'Livres', icon: BookOpen, color: 'indigo' },
+  { href: '/admin/offrandes', label: 'Gestion des Offrandes', icon: Shield, color: 'violet' },
   { href: '/admin/spiritualite', label: 'Spiritualité', icon: Flame, color: 'orange' },
   { href: '/admin/settings', label: 'Paramètres', icon: Settings, color: 'gray' },
 ];
@@ -39,6 +40,7 @@ const colorClasses = {
   green: 'bg-green-50 text-green-700 hover:bg-green-100 dark:bg-green-950/30 dark:text-green-400',
   purple: 'bg-purple-50 text-purple-700 hover:bg-purple-100 dark:bg-purple-950/30 dark:text-purple-400',
   indigo: 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-950/30 dark:text-indigo-400',
+  violet: 'bg-violet-50 text-violet-700 hover:bg-violet-100 dark:bg-violet-950/30 dark:text-violet-400',
   orange: 'bg-orange-50 text-orange-700 hover:bg-orange-100 dark:bg-orange-950/30 dark:text-orange-400',
   gray: 'bg-gray-50 text-gray-700 hover:bg-gray-100 dark:bg-gray-950/30 dark:text-gray-400',
 };
