@@ -31,7 +31,7 @@ app/api/notifications/
 
 ### Composants UI
 - `components/NotificationBell.tsx` - Icône de cloche avec dropdown
-- `app/protected/notifications/page.tsx` - Page complète de gestion
+- `app/secured/notifications/page.tsx` - Page complète de gestion
 
 ### Hooks et Services
 - `lib/hooks/useNotifications.ts` - Hook React personnalisé
@@ -54,7 +54,7 @@ app/api/notifications/
 - "Tout marquer comme lu"
 - Auto-fermeture au clic extérieur
 
-### 2. Page Notifications (`/protected/notifications`)
+### 2. Page Notifications (`/secured/notifications`)
 - Vue d'ensemble complète
 - Filtres : Toutes, Non lues, Par type
 - Actions groupées
@@ -96,7 +96,7 @@ await fetch('/api/notifications', {
     type: 'consultation_ready',
     title: 'Votre consultation est prête',
     message: 'Cliquez pour découvrir vos résultats',
-    link: '/protected/tarot'
+    link: '/secured/tarot'
   })
 });
 ```
@@ -129,7 +129,7 @@ Le composant a été ajouté dans `components/profil/Header.tsx` et apparaît au
 
 ### 2. Pages disponibles
 - **Header** : Icône de cloche visible partout
-- **Page dédiée** : `/protected/notifications`
+- **Page dédiée** : `/secured/notifications`
 
 ### 3. Navigation
 Les utilisateurs peuvent :

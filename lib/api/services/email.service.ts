@@ -26,7 +26,7 @@ function generateAnalysisReadyEmail(
   nom: string,
   consultationId: string
 ): string {
-  const analyseUrl = `${APP_URL}/protected/consultations/${consultationId}`;
+  const analyseUrl = `${APP_URL}/secured/consultations/${consultationId}`;
   
   return `
 <!DOCTYPE html>
@@ -132,7 +132,7 @@ function generateAnalysisReadyTextEmail(
   nom: string,
   consultationId: string
 ): string {
-  const analyseUrl = `${APP_URL}/protected/consultations/${consultationId}`;
+  const analyseUrl = `${APP_URL}/secured/consultations/${consultationId}`;
   
   return `
 Bonjour ${prenoms} ${nom},

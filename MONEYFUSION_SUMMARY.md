@@ -173,7 +173,7 @@ Body: { token: string }
 ## 🚀 Utilisation dans le Projet
 
 ### Exemple Existant
-Le fichier `app/protected/vie-personnelle/slidesection/Slide4Section.tsx` utilise déjà une implémentation similaire qui peut maintenant être simplifiée :
+Le fichier `app/secured/vie-personnelle/slidesection/Slide4Section.tsx` utilise déjà une implémentation similaire qui peut maintenant être simplifiée :
 
 **Avant (code existant - 280 lignes):**
 ```tsx
@@ -276,7 +276,7 @@ const handlePay = async () => {
 1. **`MONEYFUSION_GUIDE.md`** - Guide complet avec exemples
 2. **JSDoc dans le code** - Documentation inline
 3. **Types TypeScript** - Auto-documentation via IntelliSense
-4. **Exemples dans `/app/protected/vie-personnelle`** - Code existant
+4. **Exemples dans `/app/secured/vie-personnelle`** - Code existant
 
 ---
 

@@ -9,7 +9,7 @@
 - ✅ Tous les endpoints API créés et fonctionnels
 
 ### Pages créées
-- ✅ `/protected/notifications` - Page complète de gestion
+- ✅ `/secured/notifications` - Page complète de gestion
 - ✅ Composant `NotificationBell` intégré dans le header
 
 ### Endpoints API créés
@@ -31,14 +31,14 @@ npm run dev
 ```
 
 ### 2. Tester le composant NotificationBell
-1. Aller sur n'importe quelle page protégée (ex: `/protected/profil`)
+1. Aller sur n'importe quelle page protégée (ex: `/secured/profil`)
 2. Vérifier que l'icône de cloche apparaît dans le header
 3. Vérifier le badge avec le compteur (devrait afficher 2)
 4. Cliquer sur la cloche pour ouvrir le dropdown
 5. Vérifier que les notifications mockées s'affichent
 
 ### 3. Tester la page complète
-1. Aller sur `/protected/notifications`
+1. Aller sur `/secured/notifications`
 2. Vérifier que les notifications s'affichent
 3. Tester les filtres (Toutes, Non lues, par type)
 4. Cliquer sur "Tout marquer comme lu"
@@ -70,7 +70,7 @@ curl -X POST http://localhost:3000/api/notifications \
     "type": "consultation_ready",
     "title": "Test notification",
     "message": "Ceci est un test",
-    "link": "/protected/tarot"
+    "link": "/secured/tarot"
   }'
 ```
 

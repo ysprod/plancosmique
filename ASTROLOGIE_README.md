@@ -72,7 +72,7 @@ app/api/
   └── webhooks/
       └── moneyfusion/           # Webhook pour les paiements
 
-app/protected/
+app/secured/
   ├── consultations/[id]/        # Page d'affichage des résultats
   └── vie-personnelle/
       └── slidesection/          # Formulaire de consultation
@@ -123,7 +123,7 @@ Reçoit les notifications de paiement de MoneyFusion et déclenche automatiqueme
 
 ## 🎨 Interface utilisateur
 
-### Page de résultats (`/protected/consultations/[id]`)
+### Page de résultats (`/secured/consultations/[id]`)
 
 - **Onglets de navigation** - Mission, Talents, Défis, Relations, Carrière, Spiritualité
 - **Chargement animé** - Pendant la génération de l'analyse

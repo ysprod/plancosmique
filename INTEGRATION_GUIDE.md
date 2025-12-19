@@ -107,7 +107,7 @@ curl -X POST http://localhost:3000/auth/login \
 #### Frontend
 1. Allez sur `http://localhost:3002/auth/login`
 2. Connectez-vous avec les identifiants de test
-3. Vérifiez que vous êtes redirigé vers `/protected/profil`
+3. Vérifiez que vous êtes redirigé vers `/secured/profil`
 
 ### Test 2 : Notifications
 
@@ -125,13 +125,13 @@ curl -X POST http://localhost:3000/notifications \
     "title": "Test notification",
     "message": "Ceci est une notification de test",
     "metadata": {
-      "url": "/protected/knowledge"
+      "url": "/secured/knowledge"
     }
   }'
 ```
 
 #### Vérifier sur le Frontend
-1. Allez sur `http://localhost:3002/protected/profil`
+1. Allez sur `http://localhost:3002/secured/profil`
 2. Vérifiez que l'icône de cloche apparaît dans le header
 3. Le badge devrait afficher le nombre de notifications
 4. Cliquez sur la cloche pour voir le dropdown
@@ -161,7 +161,7 @@ curl -X POST http://localhost:3000/knowledge \
 ```
 
 #### Vérifier sur le Frontend
-1. Allez sur `http://localhost:3002/protected/knowledge`
+1. Allez sur `http://localhost:3002/secured/knowledge`
 2. La connaissance devrait apparaître dans la liste
 3. Testez les filtres par catégorie
 4. Cliquez sur la connaissance pour voir le détail
@@ -387,10 +387,10 @@ curl -X PATCH http://localhost:3000/knowledge/KNOWLEDGE_ID \
 
 **Résultat attendu :**
 - Notification `NEW_KNOWLEDGE` créée
-- Connaissance visible sur `/protected/knowledge`
+- Connaissance visible sur `/secured/knowledge`
 
 #### Étape 3 : Utilisateurs découvrent (Frontend)
-1. Aller sur `/protected/knowledge`
+1. Aller sur `/secured/knowledge`
 2. Voir la nouvelle connaissance
 3. Cliquer pour lire le détail
 4. Compteur de vues incrémenté automatiquement

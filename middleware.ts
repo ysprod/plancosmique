@@ -11,8 +11,8 @@ export function middleware(request: NextRequest) {
   const publicRoutes = ['/', '/auth/login', '/auth/register', '/auth/logout', '/callback', '/wallet'];
   const isPublicRoute = publicRoutes.some(route => pathname === route);
 
-  // Liste des routes protégées (toutes les routes commençant par /protected)
-  const protectedRoutePrefixes = ['/admin', '/protected', '/dashboard'];
+  // Liste des routes protégées (toutes les routes commençant par /secured)
+  const protectedRoutePrefixes = ['/admin', '/secured'];
   const isProtectedRoute = protectedRoutePrefixes.some(prefix => pathname.startsWith(prefix));
 
   // Si la route est protégée et pas de token, rediriger vers login avec returnTo
@@ -24,7 +24,7 @@ export function middleware(request: NextRequest) {
 
   // Si connecté et essaie d'accéder à login/register, rediriger vers dashboard
   if (token && isPublicRoute && pathname !== '/' && pathname !== '/callback') {
-    return NextResponse.redirect(new URL('/protected/profil', request.url));
+    return NextResponse.redirect(new URL('/secured/profil', request.url));
   }
 
   return NextResponse.next();

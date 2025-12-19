@@ -17,7 +17,7 @@ Contient:
 - ✅ Constante `tableSchema` avec le schéma PostgreSQL complet
 
 ### 2. Page d'administration
-**Fichier**: `app/protected/spiritualite/admin/page.tsx`
+**Fichier**: `app/secured/spiritualite/admin/page.tsx`
 
 Interface web pour:
 - ✅ Visualiser les 5 pratiques spirituelles
@@ -25,7 +25,7 @@ Interface web pour:
 - ✅ Copier ou télécharger les données
 - ✅ Statistiques en temps réel
 
-**URL**: `http://localhost:3000/protected/spiritualite/admin`
+**URL**: `http://localhost:3000/secured/spiritualite/admin`
 
 ## 🚀 Utilisation
 
@@ -33,7 +33,7 @@ Interface web pour:
 
 1. **Accédez à l'admin**:
    ```
-   http://localhost:3000/protected/spiritualite/admin
+   http://localhost:3000/secured/spiritualite/admin
    ```
 
 2. **Choisissez votre format**:
@@ -195,7 +195,7 @@ export async function GET(
 
 ### Étape 4: Adapter le frontend
 
-Modifiez `app/protected/spiritualite/page.tsx` pour fetcher depuis l'API:
+Modifiez `app/secured/spiritualite/page.tsx` pour fetcher depuis l'API:
 
 ```typescript
 'use client';
@@ -293,7 +293,7 @@ Les noms d'icônes référencent `lucide-react`:
 
 ### Recommandations
 
-1. **Protection admin**: Restreindre `/protected/spiritualite/admin` aux admins
+1. **Protection admin**: Restreindre `/secured/spiritualite/admin` aux admins
 2. **Validation**: Valider tous les inputs avant insertion
 3. **Sanitization**: Échapper les caractères spéciaux
 4. **Rate limiting**: Limiter les requêtes API
@@ -306,11 +306,11 @@ Les noms d'icônes référencent `lucide-react`:
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
-  if (pathname.startsWith('/protected/spiritualite/admin')) {
+  if (pathname.startsWith('/secured/spiritualite/admin')) {
     const session = await getSession(request);
     
     if (!session?.user?.isAdmin) {
-      return NextResponse.redirect(new URL('/protected/profil', request.url));
+      return NextResponse.redirect(new URL('/secured/profil', request.url));
     }
   }
   

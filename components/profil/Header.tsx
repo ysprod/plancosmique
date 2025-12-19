@@ -51,7 +51,7 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
 
           {/* Navigation Desktop */}
           <nav className="hidden lg:flex items-center gap-2">
-            <Link href="/protected/profil">
+            <Link href="/secured/profil">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -60,7 +60,7 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
                 Tableau de bord
               </motion.button>
             </Link>
-            <Link href="/protected/consultations">
+            <Link href="/secured/consultations">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

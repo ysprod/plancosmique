@@ -17,7 +17,7 @@ components/
 └── NotificationBell.tsx          # Bouton de notification avec dropdown
 
 app/
-├── protected/
+├── secured/
 │   └── notifications/
 │       └── page.tsx               # Page complète de gestion des notifications
 └── api/
@@ -98,7 +98,7 @@ await fetch('/api/notifications', {
     type: 'consultation_ready',
     title: 'Votre consultation est prête',
     message: 'Votre consultation de tarot est maintenant disponible.',
-    link: '/protected/tarot',
+    link: '/secured/tarot',
   })
 });
 ```
@@ -222,7 +222,7 @@ async function completeConsultation(consultationId: string) {
       type: 'consultation_ready',
       title: 'Votre consultation est prête',
       message: `Votre consultation ${consultation.type} est maintenant disponible.`,
-      link: `/protected/${consultation.type}`,
+      link: `/secured/${consultation.type}`,
     }
   });
 }

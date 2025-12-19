@@ -379,7 +379,7 @@ export default function UsersPage() {
               </motion.button>
 
               <Link
-                href="/dashboard/admin/users/new"
+                href="/admin/users/new"
                 className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r 
                            from-blue-600 to-blue-700 text-white text-sm rounded-lg 
                            font-semibold hover:shadow-md transition-all"

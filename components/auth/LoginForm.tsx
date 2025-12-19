@@ -153,7 +153,7 @@ const LoginForm = () => {
       // 🔥 La redirection se fait APRÈS le login réussi
       // Utiliser setTimeout pour laisser le state se mettre à jour
       setTimeout(() => {
-        router.push(returnTo || '/protected/profil');
+        router.push(returnTo || '/secured/profil');
       }, 50);
 
     } catch (err: any) {

@@ -1,13 +1,24 @@
 'use client';
-
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  BookOpen, Plus, Edit, Trash2, Eye, Loader2, RefreshCw, 
-  Search, Filter, X, ChevronDown, Save, Upload, Image as ImageIcon,
-  ArrowRight, ArrowLeft, CheckCircle
-} from 'lucide-react';
-import { useEffect, useState, useMemo } from 'react';
 import { api } from '@/lib/api/client';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  ArrowLeft,
+  ArrowRight,
+  BookOpen,
+  CheckCircle,
+  ChevronDown,
+  Edit,
+  Eye,
+  Filter,
+  Loader2,
+  Plus,
+  RefreshCw,
+  Save,
+  Search,
+  Trash2,
+  X
+} from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface Book {
   _id: string;
@@ -53,7 +64,7 @@ export default function AdminBooksPage() {
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Filtres et recherche
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -212,16 +223,16 @@ export default function AdminBooksPage() {
       };
 
       await api.post('/books', bookData);
-      
+
       // Réinitialiser le formulaire
       setFormData(initialFormData);
       setFormErrors({});
       setCurrentStep(1);
       setShowAddModal(false);
-      
+
       // Rafraîchir la liste
       fetchBooks();
-      
+
       alert('Livre ajouté avec succès !');
     } catch (err) {
       console.error('Erreur ajout livre:', err);
@@ -259,7 +270,7 @@ export default function AdminBooksPage() {
   // Filtrage et tri
   const filteredAndSortedBooks = useMemo(() => {
     let filtered = books.filter(book => {
-      const matchesSearch = searchQuery === '' || 
+      const matchesSearch = searchQuery === '' ||
         book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         book.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
         book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -267,7 +278,7 @@ export default function AdminBooksPage() {
 
       const matchesCategory = selectedCategory === 'all' || book.category === selectedCategory;
 
-      const matchesStatus = statusFilter === 'all' || 
+      const matchesStatus = statusFilter === 'all' ||
         (statusFilter === 'active' && book.isActive) ||
         (statusFilter === 'inactive' && !book.isActive);
 
@@ -526,11 +537,10 @@ export default function AdminBooksPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${
-                  showFilters
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${showFilters
                     ? 'bg-indigo-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                  }`}
               >
                 <Filter className="w-5 h-5" />
                 Filtres
@@ -704,16 +714,15 @@ export default function AdminBooksPage() {
                         </div>
                       </div>
                     </div>
-                    
+
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleToggleActive(book.bookId, book.isActive)}
-                      className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex-shrink-0 ${
-                        book.isActive
+                      className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex-shrink-0 ${book.isActive
                           ? 'bg-green-100 text-green-700 hover:bg-green-200'
                           : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
+                        }`}
                     >
                       {book.isActive ? '✓ Actif' : '✗ Inactif'}
                     </motion.button>
@@ -727,7 +736,7 @@ export default function AdminBooksPage() {
                     <div>
                       <p className="text-xs text-gray-500 mb-1">Prix de vente</p>
                       <p className="text-2xl font-black text-gray-900">
-                        {book.price.toLocaleString('fr-FR')} 
+                        {book.price.toLocaleString('fr-FR')}
                         <span className="text-sm font-normal text-gray-600"> FCFA</span>
                       </p>
                     </div>
@@ -814,11 +823,10 @@ export default function AdminBooksPage() {
                 {/* Indicateur de progression */}
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2 flex-1">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
-                      currentStep === 1
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${currentStep === 1
                         ? 'bg-indigo-600 text-white'
                         : 'bg-green-100 text-green-700'
-                    }`}>
+                      }`}>
                       {currentStep === 1 ? '1' : <CheckCircle className="w-5 h-5" />}
                     </div>
                     <div className="flex-1">
@@ -837,11 +845,10 @@ export default function AdminBooksPage() {
                   </div>
 
                   <div className="flex items-center gap-2 flex-1">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
-                      currentStep === 2
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${currentStep === 2
                         ? 'bg-indigo-600 text-white'
                         : 'bg-gray-200 text-gray-500'
-                    }`}>
+                      }`}>
                       2
                     </div>
                     <div className="flex-1">
@@ -882,11 +889,10 @@ export default function AdminBooksPage() {
                           type="text"
                           value={formData.title}
                           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${
-                            formErrors.title
+                          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${formErrors.title
                               ? 'border-red-300 focus:border-red-500'
                               : 'border-gray-200 focus:border-indigo-500'
-                          }`}
+                            }`}
                           placeholder="Ex: Guide Complet du Développement Web"
                           disabled={submitting}
                         />
@@ -904,11 +910,10 @@ export default function AdminBooksPage() {
                           type="text"
                           value={formData.subtitle}
                           onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${
-                            formErrors.subtitle
+                          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${formErrors.subtitle
                               ? 'border-red-300 focus:border-red-500'
                               : 'border-gray-200 focus:border-indigo-500'
-                          }`}
+                            }`}
                           placeholder="Ex: De débutant à expert en 30 jours"
                           disabled={submitting}
                         />
@@ -929,11 +934,10 @@ export default function AdminBooksPage() {
                           value={formData.description}
                           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                           rows={6}
-                          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all resize-none ${
-                            formErrors.description
+                          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all resize-none ${formErrors.description
                               ? 'border-red-300 focus:border-red-500'
                               : 'border-gray-200 focus:border-indigo-500'
-                          }`}
+                            }`}
                           placeholder="Décrivez le contenu du livre en détail, les sujets abordés, ce que les lecteurs apprendront..."
                           disabled={submitting}
                         />
@@ -985,11 +989,10 @@ export default function AdminBooksPage() {
                             type="text"
                             value={formData.author}
                             onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                            className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${
-                              formErrors.author
+                            className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${formErrors.author
                                 ? 'border-red-300 focus:border-red-500'
                                 : 'border-gray-200 focus:border-indigo-500'
-                            }`}
+                              }`}
                             placeholder="Ex: Jean Dupont"
                             disabled={submitting}
                           />
@@ -1006,11 +1009,10 @@ export default function AdminBooksPage() {
                             type="text"
                             value={formData.category}
                             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                            className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${
-                              formErrors.category
+                            className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${formErrors.category
                                 ? 'border-red-300 focus:border-red-500'
                                 : 'border-gray-200 focus:border-indigo-500'
-                            }`}
+                              }`}
                             placeholder="Ex: Programmation"
                             disabled={submitting}
                             list="categories-list"
@@ -1039,11 +1041,10 @@ export default function AdminBooksPage() {
                               type="number"
                               value={formData.price}
                               onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${
-                                formErrors.price
+                              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${formErrors.price
                                   ? 'border-red-300 focus:border-red-500'
                                   : 'border-gray-200 focus:border-indigo-500'
-                              }`}
+                                }`}
                               placeholder="5000"
                               min="0"
                               step="100"
@@ -1066,11 +1067,10 @@ export default function AdminBooksPage() {
                             type="number"
                             value={formData.pageCount}
                             onChange={(e) => setFormData({ ...formData, pageCount: e.target.value })}
-                            className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${
-                              formErrors.pageCount
+                            className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${formErrors.pageCount
                                 ? 'border-red-300 focus:border-red-500'
                                 : 'border-gray-200 focus:border-indigo-500'
-                            }`}
+                              }`}
                             placeholder="250"
                             min="1"
                             disabled={submitting}

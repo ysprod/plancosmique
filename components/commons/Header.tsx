@@ -39,7 +39,7 @@ export default function HeaderContent() {
   // Menu items
   const navItems = [
     ...(hasRole(Role.SUPER_ADMIN) ? [{ href: "/admin", label: "Tableau de bord", icon: Home }] : []),
-    { href: "/protected/consultations", label: "Mes Consultations", icon: FileText },
+    { href: "/secured/consultations", label: "Mes Consultations", icon: FileText },
   ];
 
   return (
@@ -73,7 +73,7 @@ export default function HeaderContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between gap-4">
             {/* Logo - TOUJOURS VISIBLE */}
-            <Link href={user ? "/protected/profil" : "/"} className="flex items-center gap-2.5 group">
+            <Link href={user ? "/secured/profil" : "/"} className="flex items-center gap-2.5 group">
               <motion.div
                 whileHover={{ rotate: 360, scale: 1.05 }}
                 transition={{ duration: 0.6 }}
@@ -196,7 +196,7 @@ export default function HeaderContent() {
                           <p className="text-xs text-gray-500">{user?.email}</p>
                         </div>
 
-                        <Link href="/protected/settings" onClick={() => setShowUserMenu(false)}>
+                        <Link href="/secured/settings" onClick={() => setShowUserMenu(false)}>
                           <button
                             className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm
                                          text-slate-700 hover:bg-violet-50 hover:text-violet-600 transition-colors font-medium"
@@ -345,7 +345,7 @@ export default function HeaderContent() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.25 }}
                 >
-                  <Link href="/protected/settings" onClick={closeMobileMenu}>
+                  <Link href="/secured/settings" onClick={closeMobileMenu}>
                     <motion.button
                       whileTap={{ scale: 0.98 }}
                       className="w-full flex items-center justify-center gap-2 px-6 py-3 

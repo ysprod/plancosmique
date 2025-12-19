@@ -26,7 +26,7 @@ Sauvegarde l'analyse générée en base de données.
 }
 ```
 
-**Appelé depuis:** `app/protected/vie-personnelle/slidesection/Slide4Section.tsx` (ligne ~170)
+**Appelé depuis:** `app/secured/vie-personnelle/slidesection/Slide4Section.tsx` (ligne ~170)
 
 ---
 
@@ -58,7 +58,7 @@ Récupère la liste de toutes les consultations de l'utilisateur.
 }
 ```
 
-**Appelé depuis:** `app/protected/consultations/page.tsx` (ligne ~40)
+**Appelé depuis:** `app/secured/consultations/page.tsx` (ligne ~40)
 
 ---
 
@@ -84,7 +84,7 @@ Récupère une consultation spécifique avec son analyse complète.
 ```
 
 **Appelé depuis:** 
-- `app/protected/consultations/[id]/page.tsx` (ligne ~38)
+- `app/secured/consultations/[id]/page.tsx` (ligne ~38)
 - `app/api/consultations/[id]/download-pdf/route.ts` (ligne ~23)
 
 ---
@@ -114,9 +114,9 @@ Interfaces exportées:
 
 ## 🔧 Fichiers modifiés
 
-1. ✅ `app/protected/vie-personnelle/slidesection/Slide4Section.tsx` - Sauvegarde via API
-2. ✅ `app/protected/consultations/page.tsx` - Chargement liste via API
-3. ✅ `app/protected/consultations/[id]/page.tsx` - Chargement détail via API
+1. ✅ `app/secured/vie-personnelle/slidesection/Slide4Section.tsx` - Sauvegarde via API
+2. ✅ `app/secured/consultations/page.tsx` - Chargement liste via API
+3. ✅ `app/secured/consultations/[id]/page.tsx` - Chargement détail via API
 4. ✅ `app/api/consultations/[id]/download-pdf/route.route.ts` - Suppression storageService
 6. ✅ `types/consultation-api.types.ts` - Types d'API créés
 
@@ -137,11 +137,11 @@ Interfaces exportées:
 
 1. Lancez votre backend et vérifiez qu'il répond aux 3 endpoints
 2. Testez le flow complet:
-   - Créer une consultation (`/protected/vie-personnelle`)
+   - Créer une consultation (`/secured/vie-personnelle`)
    - Générer l'analyse (2-5 minutes)
    - Vérifier la sauvegarde (devrait appeler `POST /api/consultations/{id}/save-analysis`)
-   - Voir la liste (`/protected/consultations`) 
-   - Voir le détail (`/protected/consultations/{id}`)
+   - Voir la liste (`/secured/consultations`) 
+   - Voir le détail (`/secured/consultations/{id}`)
    - Télécharger le PDF
 
 3. Vérifiez les logs de la console navigateur pour les appels API

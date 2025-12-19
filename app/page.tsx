@@ -60,7 +60,7 @@ export default function WelcomePage() {
         {/* Questions en stack mobile, inline desktop */}
         <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 mb-6">
           {QUESTIONS.map((item, i) => (
-            <Link key={item.q} href="/protected/profil" className="w-full sm:w-auto">
+            <Link key={item.q} href="/secured/profil" className="w-full sm:w-auto">
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -128,7 +128,7 @@ export default function WelcomePage() {
             </p>
 
             {/* CTA mobile-optimized */}
-            <Link href="/protected/profil" className="block">
+            <Link href="/secured/profil" className="block">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.96 }}

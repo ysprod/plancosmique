@@ -19,12 +19,12 @@ Le frontend Next.js est maintenant **entièrement configuré** pour communiquer 
 
 ### 3️⃣ **Composants UI adaptés**
 - ✅ `NotificationBell` - Badge et dropdown avec les nouveaux types
-- ✅ `/protected/notifications` - Page complète avec filtres
+- ✅ `/secured/notifications` - Page complète avec filtres
 - ✅ Hook `useNotifications` mis à jour pour utiliser `_id`
 
 ### 4️⃣ **Nouvelles pages créées**
-- ✅ `/protected/knowledge` - Liste des connaissances avec filtres par catégorie
-- ✅ `/protected/knowledge/[id]` - Détail d'une connaissance avec système de likes
+- ✅ `/secured/knowledge` - Liste des connaissances avec filtres par catégorie
+- ✅ `/secured/knowledge/[id]` - Détail d'une connaissance avec système de likes
 
 ### 5️⃣ **Nettoyage**
 - ✅ Routes API Next.js mockées supprimées (`app/api/notifications/*`)
@@ -131,12 +131,12 @@ npm run dev
 
 ### 3. Tester les notifications
 1. Connectez-vous avec un utilisateur
-2. Allez sur `/protected/profil`
+2. Allez sur `/secured/profil`
 3. Vérifiez que l'icône de cloche apparaît dans le header
 4. Le badge devrait afficher le nombre de notifications non lues (depuis votre API)
 
 ### 4. Tester les connaissances
-1. Allez sur `/protected/knowledge`
+1. Allez sur `/secured/knowledge`
 2. Vous devriez voir la liste des connaissances depuis votre API
 3. Testez les filtres par catégorie
 4. Cliquez sur une connaissance pour voir le détail
@@ -273,16 +273,16 @@ Authorization: Bearer <your-jwt-token>
 ## 🎨 Pages et Routes
 
 ### Routes de navigation
-- `/protected/profil` - Profil avec NotificationBell dans header
-- `/protected/notifications` - Gestion des notifications
-- `/protected/knowledge` - Liste des connaissances
-- `/protected/knowledge/[id]` - Détail d'une connaissance
+- `/secured/profil` - Profil avec NotificationBell dans header
+- `/secured/notifications` - Gestion des notifications
+- `/secured/knowledge` - Liste des connaissances
+- `/secured/knowledge/[id]` - Détail d'une connaissance
 
 ### Liens à ajouter dans votre navigation
 Vous pouvez ajouter un lien vers les connaissances dans votre menu principal :
 
 ```tsx
-<Link href="/protected/knowledge">
+<Link href="/secured/knowledge">
   <BookOpen className="w-5 h-5" />
   Connaissances
 </Link>

@@ -233,9 +233,9 @@ export default function CallbackPage() {
             label: status === 'success' ? 'Voir ma consultation' : 'Réessayer',
             onClick: () => {
               if (status === 'success') {
-                router.push('/protected/consultations');
+                router.push('/secured/consultations');
               } else {
-                router.push('/protected/paiement');
+                router.push('/secured/paiement');
               }
             },
           }}
@@ -454,7 +454,7 @@ Carte d'affichage du statut:
   reference="TRX_123456"
   action={{
     label: 'Continuer',
-    onClick: () => router.push('/dashboard'),
+    onClick: () => router.push('/admin'),
   }}
 />
 ```
@@ -670,7 +670,7 @@ import { MONEYFUSION_ERROR_MESSAGES } from '@/types/moneyfusion.types';
 - **Service:** `lib/api/services/moneyfusion.service.ts`
 - **Hook:** `lib/hooks/useMoneyFusion.ts`
 - **Composants:** `components/moneyfusion/PaymentComponents.tsx`
-- **Exemple complet:** `app/protected/vie-personnelle/slidesection/Slide4Section.tsx`
+- **Exemple complet:** `app/secured/vie-personnelle/slidesection/Slide4Section.tsx`
 
 ---
 

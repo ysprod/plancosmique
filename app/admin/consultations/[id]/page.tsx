@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 'use client';
-
 import { api } from '@/lib/api/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import {

@@ -195,7 +195,7 @@ export default function NotificationBell() {
             {notifications.length > 0 && (
               <div className="px-4 py-3 border-t border-white/10">
                 <a
-                  href="/protected/notifications"
+                  href="/secured/notifications"
                   className="block text-center text-sm text-purple-400 hover:text-purple-300 transition-colors"
                 >
                   Voir toutes les notifications

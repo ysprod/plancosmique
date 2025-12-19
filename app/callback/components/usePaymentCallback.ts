@@ -376,7 +376,7 @@ export function usePaymentCallback(token: string | null) {
 
   const handleViewConsultation = useCallback(() => {
     if (consultationId) {
-      router.push(`/protected/consultations/${consultationId}`);
+      router.push(`/secured/consultations/${consultationId}`);
     }
   }, [consultationId, router]);
 
@@ -391,16 +391,16 @@ export function usePaymentCallback(token: string | null) {
   }, []);
 
   const handleGoHome = useCallback(() => {
-    router.push('/protected/profil');
+    router.push('/secured/profil');
   }, [router]);
 
   const handleAutoRedirect = useCallback(() => {
     if (downloadUrl) {
-      router.push('/protected/bibliotheque');
+      router.push('/secured/bibliotheque');
     } else if (consultationId) {
-      router.push(`/protected/consultations/${consultationId}`);
+      router.push(`/secured/consultations/${consultationId}`);
     } else {
-      router.push('/protected/consultations');
+      router.push('/secured/consultations');
     }
   }, [consultationId, downloadUrl, router]);
 

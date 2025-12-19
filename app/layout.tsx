@@ -4,8 +4,9 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
 import './globals.css';
-import ClientProviders from './ClientProviders';
-import HeaderContent from './HeaderContent';
+import ClientProviders from '../components/ClientProviders';
+import { ThemeProvider } from 'next-themes';
+import HeaderContent from '../components/HeaderContent';
  
 const inter = Inter({
   subsets: ['latin', 'latin-ext'],
@@ -203,12 +204,14 @@ export default function RootLayout({
         </a>
 
 
-        <ClientProviders>
-          
-          <main id="main-content" className="min-h-screen relative" role="main" aria-label="Contenu principal">
-            {children}
-          </main>
-        </ClientProviders>
+
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <ClientProviders>
+            <main id="main-content" className="min-h-screen relative" role="main" aria-label="Contenu principal">
+              {children}
+            </main>
+          </ClientProviders>
+        </ThemeProvider>
 
         <div id="modal-root" />
         <div id="toast-root" />
