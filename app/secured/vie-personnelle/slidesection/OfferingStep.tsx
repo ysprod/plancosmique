@@ -8,9 +8,12 @@ import {
   AlertTriangle,
   Sparkles,
   ChevronRight,
-  Info
+  Info,
+  ArrowRight,
+  ShoppingBag
 } from "lucide-react";
 import { useMemo, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 // =====================================================
 // TYPES & INTERFACES
@@ -200,10 +203,6 @@ const OfferingCard = ({
             <CategoryBadge category={offering.category} />
           </div>
           
-          <p className="text-xs font-semibold text-purple-600 dark:text-purple-400 mb-1">
-            {offering.price.toLocaleString()} FCFA
-          </p>
-
           {/* ✅ Affichage de la quantité requise */}
           <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
             Requis: <span className="font-bold text-gray-900 dark:text-gray-100">{offering.requiredQuantity}</span>
@@ -259,11 +258,10 @@ const WalletSummary = ({
       </div>
       
       <div className="text-right">
-        <p className="text-xs text-gray-600 dark:text-gray-400">Valeur totale</p>
-        <p className="text-xl font-bold text-purple-600 dark:text-purple-400">
-          {totalValue.toLocaleString()}
+        <p className="text-xs text-gray-600 dark:text-gray-400">Sélectionnées</p>
+        <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
+          ✓
         </p>
-        <p className="text-[10px] text-gray-500 dark:text-gray-500">FCFA</p>
       </div>
     </div>
 
@@ -285,6 +283,8 @@ export default function OfferingStep({
   onNext,
   onBack,
 }: OfferingStepProps) {
+  const router = useRouter();
+
   // Normaliser les offrandes au chargement
   const normalizedOfferings = useMemo(
     () => normalizeOfferings(requiredOfferings, walletOfferings),
@@ -293,6 +293,12 @@ export default function OfferingStep({
 
   // État de sélection (stocke les IDs normalisés)
   const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  // Navigation vers le marché des offrandes
+  const handleGoToMarket = useCallback(() => {
+    console.log('🛒 [Navigation] Redirection vers le marché des offrandes');
+    router.push('/secured/marcheoffrandes');
+  }, [router]);
 
   // Handler de toggle avec logs détaillés
   const handleToggleSelection = useCallback((offeringId: string) => {
@@ -443,6 +449,21 @@ export default function OfferingStep({
           </p>
         </motion.div>
       )}
+
+       {/* Bouton marché (toujours visible) */}
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={handleGoToMarket}
+            className="w-full h-11 rounded-xl border-2 border-purple-300 dark:border-purple-700
+                     bg-purple-50 dark:bg-purple-900/20
+                     text-purple-700 dark:text-purple-300 font-semibold text-sm
+                     hover:bg-purple-100 dark:hover:bg-purple-900/30
+                     flex items-center justify-center gap-2 transition-all"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            <span>Aller au marché des offrandes</span>
+            <ArrowRight className="w-4 h-4" />
+          </motion.button>
     </motion.div>
   );
 }
