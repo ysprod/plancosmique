@@ -23,7 +23,7 @@ interface CheckoutModalProps {
   isOpen: boolean;
   onClose: () => void;
   cart: Array<{
-    _id: any;
+    _id: string;
     id: string;
     name: string;
     price: number;
@@ -154,7 +154,7 @@ export default function CheckoutModal({
   onClearCart,
 }: CheckoutModalProps) {
   const router = useRouter();
-  const {user} =useAuth();
+  const { user } = useAuth();
   const [simulationStep, setSimulationStep] = useState<SimulationStep>("idle");
   const [error, setError] = useState<string | null>(null);
 
@@ -189,29 +189,43 @@ export default function CheckoutModal({
       const paymentToken = `SIM-${timestamp}-${randomSuffix}`;
       const transactionId = `TXN-SIM-${timestamp}`;
 
-      // Préparation des données
+      // ✅ CORRECTION : Préparation des données avec _id OU id
       const transactionData = {
         userId: user?._id,
         transactionId,
         paymentToken,
         status: "completed",
         totalAmount,
-        items: cart.map((item) => ({
-  offeringId: item._id,
-  name: item.name,
-  quantity: item.quantity,
-  unitPrice: item.price,
-  totalPrice: item.price * item.quantity,
-  category: item.category,
-  icon: item.icon,
-  
-          price: item.price,
+        items: cart.map((item) => {
+          const offeringId = item._id || item.id; // ✅ Support _id ET id
           
-})), 
-        
+          return {
+            offeringId,
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+            category: item.category,
+            icon: item.icon,
+            unitPrice: item.price,
+            totalPrice: item.price * item.quantity,
+          
+    
+          };
+        }),
         paymentMethod: "simulation",
         completedAt: new Date().toISOString(),
       };
+
+      // ✅ Log de debug avant envoi
+      console.log("📦 [CheckoutModal] Transaction data:", {
+        totalAmount: transactionData.totalAmount,
+        itemsCount: transactionData.items.length,
+        items: transactionData.items.map(i => ({
+          offeringId: i.offeringId,
+          name: i.name,
+          quantity: i.quantity
+        }))
+      });
 
       // Étape 4 : Sauvegarde (0.6s + appel API)
       await new Promise((resolve) => setTimeout(resolve, SIMULATION_STEPS.saving.duration));
@@ -219,8 +233,24 @@ export default function CheckoutModal({
       // Appel API
       const response = await api.post("/wallet/transactions", transactionData);
 
+      console.log("✅ [CheckoutModal] Réponse API:", response.status);
+
       if (response.status !== 200 && response.status !== 201) {
         throw new Error(response.data?.message || "Échec de l'enregistrement");
+      }
+
+      // ✅ NOUVEAU : Ajouter les offrandes au wallet
+      try {
+        await api.post("/wallet/offerings/add", {
+          items: cart.map((item) => ({
+            offeringId: item._id || item.id,
+            quantity: item.quantity,
+          })),
+        });
+        console.log("✅ [CheckoutModal] Offrandes ajoutées au wallet");
+      } catch (walletErr) {
+        console.error("⚠️ [CheckoutModal] Erreur ajout wallet:", walletErr);
+        // Ne pas bloquer si échec ajout wallet
       }
 
       // Sauvegarde locale
@@ -236,11 +266,11 @@ export default function CheckoutModal({
       onClearCart();
       router.push("/secured/wallet");
     } catch (err: any) {
-      console.error("❌ Erreur simulation:", err);
+      console.error("❌ [CheckoutModal] Erreur simulation:", err);
       setError(err.message || "Une erreur est survenue lors de la simulation");
       setSimulationStep("idle");
     }
-  }, [cart, totalAmount, onClearCart, router]);
+  }, [cart, totalAmount, onClearCart, router, user]);
 
   const handleRetry = useCallback(() => {
     setError(null);
@@ -342,30 +372,33 @@ export default function CheckoutModal({
                     Récapitulatif
                   </h4>
                   <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 space-y-2">
-                    {cart.map((item, idx) => (
-                      <motion.div
-                        key={item.id}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.05 }}
-                        className="flex items-center justify-between"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">{item.icon}</span>
-                          <div>
-                            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                              {item.name}
-                            </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                              Qté: {item.quantity}
-                            </p>
+                    {cart.map((item, idx) => {
+                      const itemId = item._id || item.id;
+                      return (
+                        <motion.div
+                          key={itemId}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: idx * 0.05 }}
+                          className="flex items-center justify-between"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">{item.icon}</span>
+                            <div>
+                              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                {item.name}
+                              </p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                Qté: {item.quantity}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                        <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
-                          {item.price * item.quantity} FCFA
-                        </p>
-                      </motion.div>
-                    ))}
+                          <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                            {(item.price * item.quantity).toLocaleString()} FCFA
+                          </p>
+                        </motion.div>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -378,7 +411,7 @@ export default function CheckoutModal({
                     Total à payer
                   </span>
                   <span className="text-xl font-bold text-purple-600 dark:text-purple-400">
-                    {totalAmount} FCFA
+                    {totalAmount.toLocaleString()} FCFA
                   </span>
                 </div>
               </div>
@@ -392,13 +425,15 @@ export default function CheckoutModal({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleSimulatedPayment}
+                disabled={cart.length === 0}
                 className="w-full h-12 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 
                          hover:from-purple-700 hover:to-pink-700 
                          text-white font-semibold shadow-lg 
-                         flex items-center justify-center gap-2 transition-all"
+                         flex items-center justify-center gap-2 transition-all
+                         disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <CreditCard className="w-5 h-5" />
-                <span>Simuler le paiement</span>
+                <span>Simuler le paiement ({cart.length} item{cart.length > 1 ? 's' : ''})</span>
               </motion.button>
             </div>
           )}

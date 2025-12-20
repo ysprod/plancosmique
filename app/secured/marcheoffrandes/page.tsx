@@ -1,8 +1,7 @@
 'use client';
-
-import { useAuth } from '@/lib/auth/AuthContext';
 import { api } from '@/lib/api/client';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/lib/auth/AuthContext';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   type CartItem,
@@ -19,10 +18,12 @@ import {
   staggerContainer
 } from './components';
 
-// ==================== CUSTOM HOOKS ====================
+// =====================================================
+// HOOKS PERSONNALISÉS
+// =====================================================
 
 /**
- * Hook de gestion du panier avec mémorisation optimale
+ * Hook de gestion du panier avec normalisation _id/id
  */
 function useCart() {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -38,43 +39,110 @@ function useCart() {
   );
 
   const addToCart = useCallback((offering: Offering) => {
+    console.log("➕ [addToCart] Offrande reçue:", {
+      _id: offering._id,
+      id: offering.id,
+      name: offering.name,
+    });
+
     setCart(prev => {
-      const existingIndex = prev.findIndex(item => item.id === offering.id);
+      console.log("📦 [addToCart] Panier actuel:", prev.map(item => ({
+        _id: item._id,
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity
+      })));
+
+      // ✅ Utiliser _id OU id comme clé unique
+      const uniqueId = offering._id || offering.id;
       
+      if (!uniqueId) {
+        console.error("❌ [addToCart] ERREUR : Aucun ID trouvé pour l'offrande", offering);
+        return prev;
+      }
+
+      const existingIndex = prev.findIndex(
+        item => (item._id === uniqueId) || (item.id === uniqueId)
+      );
+
+      console.log("🔍 [addToCart] Index trouvé:", existingIndex, "pour ID:", uniqueId);
+
       if (existingIndex !== -1) {
-        // Mise à jour immutable
+        // Item existe déjà → incrémenter quantité
         const updated = [...prev];
         updated[existingIndex] = {
           ...updated[existingIndex],
           quantity: updated[existingIndex].quantity + 1
         };
+        
+        console.log("✏️ [addToCart] Quantité mise à jour:", {
+          name: updated[existingIndex].name,
+          quantity: updated[existingIndex].quantity
+        });
         return updated;
       }
+
+      // Item n'existe pas → ajouter nouveau
+      const newItem = { 
+        ...offering, 
+        _id: uniqueId,
+        id: uniqueId,
+        quantity: 1 
+      };
+
+      console.log("🆕 [addToCart] Nouvel item ajouté:", {
+        _id: newItem._id,
+        name: newItem.name,
+        quantity: newItem.quantity
+      });
       
-      return [...prev, { ...offering, quantity: 1 }];
+      return [...prev, newItem];
     });
   }, []);
 
   const removeFromCart = useCallback((id: string) => {
-    setCart(prev => prev.filter(item => item.id !== id));
+    console.log("🗑️ [removeFromCart] Suppression ID:", id);
+    setCart(prev => prev.filter(item => item._id !== id && item.id !== id));
   }, []);
 
   const updateQuantity = useCallback((id: string, delta: number) => {
+    console.log("🔄 [updateQuantity] ID:", id, "Delta:", delta);
+    
     setCart(prev => {
       const updated = prev
         .map(item => {
-          if (item.id !== id) return item;
-          
+          if (item._id !== id && item.id !== id) return item;
+
           const newQuantity = Math.max(0, item.quantity + delta);
+          console.log(`📊 [updateQuantity] ${item.name}: ${item.quantity} → ${newQuantity}`);
+          
           return newQuantity === 0 ? null : { ...item, quantity: newQuantity };
         })
         .filter(Boolean) as CartItem[];
-      
+
       return updated;
     });
   }, []);
 
-  const clearCart = useCallback(() => setCart([]), []);
+  const clearCart = useCallback(() => {
+    console.log("🧹 [clearCart] Panier vidé");
+    setCart([]);
+  }, []);
+
+  // Log du panier à chaque changement
+  useEffect(() => {
+    console.log("🛒 [useCart] État du panier mis à jour:", {
+      items: cart.length,
+      total: cartTotal,
+      count: cartCount,
+      details: cart.map(item => ({
+        _id: item._id,
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity
+      }))
+    });
+  }, [cart, cartTotal, cartCount]);
 
   return {
     cart,
@@ -88,7 +156,7 @@ function useCart() {
 }
 
 /**
- * Hook de gestion des modals avec transitions fluides
+ * Hook de gestion des modales
  */
 function useModals() {
   const [showCart, setShowCart] = useState(false);
@@ -121,7 +189,7 @@ function useModals() {
 }
 
 /**
- * Hook de chargement des offrandes avec gestion d'erreurs
+ * Hook de chargement des offrandes avec normalisation
  */
 function useOfferings() {
   const [offerings, setOfferings] = useState<Offering[]>([]);
@@ -137,20 +205,38 @@ function useOfferings() {
 
       try {
         const response = await api.get('/offerings');
-        
+
         if (!isMounted) return;
 
         if (response.status === 200 && response.data?.offerings) {
-          setOfferings(response.data.offerings);
+          // ✅ NORMALISATION : Ajouter "id" comme alias de "_id"
+          const normalizedOfferings = response.data.offerings.map((offering: any) => {
+            const normalizedId = offering._id || offering.id;
+            
+            console.log("🔧 [Normalisation]", {
+              original_id: offering._id,
+              name: offering.name,
+              normalized_id: normalizedId
+            });
+
+            return {
+              ...offering,
+              _id: normalizedId,
+              id: normalizedId,
+            };
+          });
+
+          console.log("✅ [useOfferings] Offrandes normalisées:", normalizedOfferings.length, "items");
+          setOfferings(normalizedOfferings);
         } else {
           throw new Error('Format de réponse invalide');
         }
       } catch (err: any) {
         if (!isMounted) return;
-        
+
         console.error('[Offerings] Erreur de chargement:', err);
         setError(
-          err.response?.data?.message || 
+          err.response?.data?.message ||
           'Impossible de charger les offrandes. Veuillez réessayer.'
         );
       } finally {
@@ -168,11 +254,10 @@ function useOfferings() {
   return { offerings, loading, error };
 }
 
-// ==================== COMPOSANTS ====================
+// =====================================================
+// COMPOSANTS D'ÉTAT
+// =====================================================
 
-/**
- * Composant de chargement réutilisable
- */
 function LoadingState() {
   return (
     <motion.div
@@ -194,9 +279,6 @@ function LoadingState() {
   );
 }
 
-/**
- * Composant d'erreur réutilisable
- */
 function ErrorState({ error, onRetry }: { error: string; onRetry?: () => void }) {
   return (
     <motion.div
@@ -227,9 +309,6 @@ function ErrorState({ error, onRetry }: { error: string; onRetry?: () => void })
   );
 }
 
-/**
- * Composant d'état vide
- */
 function EmptyState({ onReset }: { onReset: () => void }) {
   return (
     <motion.div
@@ -261,9 +340,6 @@ function EmptyState({ onReset }: { onReset: () => void }) {
   );
 }
 
-/**
- * Grille d'offrandes avec animations optimisées
- */
 function OfferingsGrid({
   offerings,
   selectedCategory,
@@ -286,13 +362,13 @@ function OfferingsGrid({
       >
         {offerings.map((offering, index) => (
           <motion.div
-            key={offering.id}
+            key={offering._id || offering.id}
             initial={{ opacity: 0, scale: 0.92, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: -20 }}
             transition={{
               duration: 0.3,
-              delay: Math.min(index * 0.03, 0.5), // Cap du délai à 0.5s
+              delay: Math.min(index * 0.03, 0.5),
               ease: 'easeOut'
             }}
             whileHover={{ y: -4, scale: 1.02 }}
@@ -306,12 +382,14 @@ function OfferingsGrid({
   );
 }
 
-// ==================== COMPOSANT PRINCIPAL ====================
+// =====================================================
+// COMPOSANT PRINCIPAL
+// =====================================================
 
 export default function MarcheOffrandes() {
   const { user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<Category>('all');
-  
+
   // Hooks personnalisés
   const { cart, cartTotal, cartCount, addToCart, removeFromCart, updateQuantity, clearCart } = useCart();
   const { showCart, showCheckout, openCart, closeCart, openCheckout, closeCheckout, backToCart } = useModals();
@@ -319,8 +397,8 @@ export default function MarcheOffrandes() {
 
   // Offrandes filtrées avec mémorisation
   const filteredOfferings = useMemo(
-    () => selectedCategory === 'all' 
-      ? offerings 
+    () => selectedCategory === 'all'
+      ? offerings
       : offerings.filter(o => o.category === selectedCategory),
     [selectedCategory, offerings]
   );
@@ -328,8 +406,9 @@ export default function MarcheOffrandes() {
   // Handlers
   const handleProceedToCheckout = useCallback(() => {
     if (cart.length === 0) return;
+    console.log("💳 [MarcheOffrandes] Procéder au checkout avec:", cart.length, "items");
     openCheckout();
-  }, [cart.length, openCheckout]);
+  }, [cart.length, openCheckout, cart]);
 
   const handleResetCategory = useCallback(() => {
     setSelectedCategory('all');
@@ -350,7 +429,7 @@ export default function MarcheOffrandes() {
 
       {/* Container principal */}
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-3 sm:py-4 max-w-7xl">
-        
+
         {/* Hero section */}
         <motion.div
           initial={{ opacity: 0, y: -15 }}
@@ -369,7 +448,6 @@ export default function MarcheOffrandes() {
           className="mb-4 sm:mb-5"
         >
           <div className="relative">
-            {/* Gradients de fade sur mobile */}
             <div className="absolute left-0 top-0 bottom-0 w-4 
                           bg-gradient-to-r from-white dark:from-gray-950 to-transparent 
                           z-10 pointer-events-none sm:hidden" />
@@ -397,7 +475,7 @@ export default function MarcheOffrandes() {
           >
             <div className="flex items-center justify-between px-1">
               <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium">
-                {filteredOfferings.length} offrande{filteredOfferings.length !== 1 ? 's' : ''} 
+                {filteredOfferings.length} offrande{filteredOfferings.length !== 1 ? 's' : ''}
                 {' '}disponible{filteredOfferings.length !== 1 ? 's' : ''}
               </p>
               {selectedCategory !== 'all' && (
@@ -471,10 +549,7 @@ export default function MarcheOffrandes() {
         cart={cart}
         totalAmount={cartTotal}
         onClearCart={clearCart}
-        // cartTotal={cartTotal}
         onClose={closeCheckout}
-        // onBackToCart={backToCart}
-        // user={user}
       />
 
       {/* Espacement bottom */}

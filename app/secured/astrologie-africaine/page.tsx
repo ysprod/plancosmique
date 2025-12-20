@@ -25,78 +25,119 @@ const SigneAfricainContent = () => (
     className="space-y-4"
   >
     <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-3xl p-4 border border-orange-200">
+      {/* Message d'introduction et bienvenue - RITUEL ET INVOCATION */}
       <div className="flex items-center gap-4 mb-6">
         <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg">
           <Globe className="w-8 h-8 text-white" />
         </div>
         <div>
-          <h2 className="text-3xl font-black text-gray-900">Incantions et Rituels Magiques</h2>
-          <p className="text-gray-600">Découvrez votre identité cosmique ancestrale</p>
+          <h2 className="text-3xl font-black text-gray-900">Rituels et Invocations</h2>
+          <p className="text-gray-600">Connectez-vous aux forces cosmiques ancestrales à travers les cycles lunaires</p>
         </div>
       </div>
 
-      {/* PHASE LUNAIRE - RITUEL */}
+      {/* Message d'introduction */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 mb-6">
+        <p className="text-gray-700 leading-relaxed">
+          Bienvenue dans l'espace sacré des rituels et invocations magiques. Découvrez comment les phases lunaires 
+          influencent vos pratiques spirituelles et apprenez à harmoniser vos intentions avec les énergies cosmiques. 
+          Laissez-vous guider par la sagesse ancestrale pour manifester vos désirs les plus profonds.
+        </p>
+      </div>
+
+      {/* CALENDRIER LUNAIRE - affiché après le message d'introduction */}
       <div className="mb-6">
         <MoonPhaseWidget />
       </div>
 
+      {/* SOUS-RUBRIQUES: INVOCATIONS et RITUELS */}
       <div className="space-y-6">
+        {/* SOUS-RUBRIQUE 1: INVOCATIONS */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-orange-600" />
-            Les 12 Signes Africains Traditionnels
+          <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-orange-600" />
+            Invocations
           </h3>
+          <p className="text-gray-600 mb-6 leading-relaxed">
+            Les invocations sont des appels sacrés aux forces spirituelles et aux divinités. 
+            Prononcez ces paroles avec respect et intention pour établir une connexion divine.
+          </p>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              { name: "Le Baobab", period: "4 jan - 3 fév", traits: "Sagesse, longévité, protection" },
-              { name: "La Richesse de l'Or", period: "4 fév - 5 mar", traits: "Prospérité, valeur, prestige" },
-              { name: "La Famille", period: "6 mar - 4 avr", traits: "Union, communauté, amour" },
-              { name: "Le Petit Service", period: "5 avr - 4 mai", traits: "Humilité, aide, générosité" },
-              { name: "Le Marché", period: "5 mai - 4 juin", traits: "Commerce, échange, abondance" },
-              { name: "L'Ancêtre", period: "5 juin - 4 juil", traits: "Transmission, mémoire, guidance" },
-              { name: "Le Juge", period: "5 juil - 4 août", traits: "Équité, justice, vérité" },
-              { name: "La Kola", period: "5 août - 3 sept", traits: "Hospitalité, partage, célébration" },
-              { name: "Le Voyageur", period: "4 sept - 3 oct", traits: "Aventure, découverte, liberté" },
-              { name: "La Distance", period: "4 oct - 3 nov", traits: "Perspective, recul, vision" },
-              { name: "L'Enfant du Monde", period: "4 nov - 3 déc", traits: "Innocence, curiosité, ouverture" },
-              { name: "La Moisson", period: "4 déc - 3 jan", traits: "Récolte, accomplissement, gratitude" }
-            ].map((signe, idx) => (
+              { name: "Invocation de Protection", purpose: "Bouclier spirituel et sécurité", element: "Terre" },
+              { name: "Invocation d'Amour", purpose: "Attirer l'amour et l'harmonie", element: "Eau" },
+              { name: "Invocation de Prospérité", purpose: "Abondance et richesse", element: "Or" },
+              { name: "Invocation de Sagesse", purpose: "Clarté mentale et intuition", element: "Air" },
+              { name: "Invocation de Guérison", purpose: "Santé et vitalité", element: "Lumière" },
+              { name: "Invocation des Ancêtres", purpose: "Guidance et bénédiction", element: "Esprit" }
+            ].map((invocation, idx) => (
               <motion.div
                 key={idx}
                 whileHover={{ scale: 1.02, x: 4 }}
                 className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-4 border border-orange-200 hover:border-orange-400 transition-all cursor-pointer"
               >
                 <div className="flex items-start justify-between mb-2">
-                  <h4 className="font-bold text-gray-900">{signe.name}</h4>
+                  <h4 className="font-bold text-gray-900">{invocation.name}</h4>
                   <span className="text-xs font-semibold text-orange-600 bg-orange-100 px-2 py-1 rounded-full">
-                    {signe.period}
+                    {invocation.element}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600">{signe.traits}</p>
+                <p className="text-sm text-gray-600">{invocation.purpose}</p>
               </motion.div>
             ))}
           </div>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full mt-6 py-4 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+          >
+            <Sparkles className="w-5 h-5" />
+            Découvrir toutes les invocations
+          </motion.button>
         </div>
 
+        {/* SOUS-RUBRIQUE 2: RITUELS */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Calculez votre signe</h3>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Date de naissance</label>
-              <input
-                type="date"
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all outline-none"
-              />
-            </div>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
-            >
-              <Sparkles className="w-5 h-5" />
-              Découvrir mon signe africain
-            </motion.button>
+          <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <Calendar className="w-6 h-6 text-orange-600" />
+            Rituels
+          </h3>
+          <p className="text-gray-600 mb-6 leading-relaxed">
+            Les rituels sont des cérémonies sacrées qui alignent vos intentions avec les cycles cosmiques. 
+            Chaque rituel est conçu pour une phase lunaire spécifique afin de maximiser son efficacité.
+          </p>
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              { name: "Rituel de Nouvelle Lune", phase: "Nouvelle Lune", goal: "Nouveaux départs, intentions" },
+              { name: "Rituel de Lune Croissante", phase: "Croissante", goal: "Croissance, expansion" },
+              { name: "Rituel de Pleine Lune", phase: "Pleine Lune", goal: "Manifestation, gratitude" },
+              { name: "Rituel de Lune Décroissante", phase: "Décroissante", goal: "Libération, purification" },
+              { name: "Rituel de Purification", phase: "Toutes phases", goal: "Nettoyage énergétique" },
+              { name: "Rituel d'Abondance", phase: "Pleine Lune", goal: "Prospérité matérielle" }
+            ].map((ritual, idx) => (
+              <motion.div
+                key={idx}
+                whileHover={{ scale: 1.02, x: 4 }}
+                className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-4 border border-orange-200 hover:border-orange-400 transition-all cursor-pointer"
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <h4 className="font-bold text-gray-900">{ritual.name}</h4>
+                  <span className="text-xs font-semibold text-orange-600 bg-orange-100 px-2 py-1 rounded-full">
+                    {ritual.phase}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-600">{ritual.goal}</p>
+              </motion.div>
+            ))}
           </div>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full mt-6 py-4 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+          >
+            <Star className="w-5 h-5" />
+            Explorer tous les rituels
+          </motion.button>
         </div>
       </div>
     </div>
