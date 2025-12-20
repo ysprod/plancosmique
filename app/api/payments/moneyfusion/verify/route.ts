@@ -22,9 +22,6 @@ export async function POST(request: NextRequest) {
 
         // URL de vérification MoneyFusion (endpoint public de notification)
         const verifyUrl = `https://www.pay.moneyfusion.net/paiementNotif/${token}`;
-
-        console.log('[MoneyFusion API] Vérification du token (GET):', verifyUrl);
-
         // Appel à l'API MoneyFusion pour vérifier le paiement
         const response = await axios.get(
             verifyUrl,
@@ -35,9 +32,6 @@ export async function POST(request: NextRequest) {
                 timeout: 30000, // 30 secondes
             }
         );
-
-        console.log('[MoneyFusion API] Réponse de vérification:', response.data);
-
         // Traiter la réponse selon la structure MoneyFusion
         const data = response.data;
 

@@ -70,7 +70,6 @@ export default function AdminOffrandes() {
         setStatsError(null);
         try {
             const response = await api.get('/admin/offerings/stats');
-            console.log('[Admin] Statistiques chargées:', response);
             if (response.status === 200 && response.data?.stats) {
                 setStats(response.data.stats);
             } else {
@@ -87,11 +86,8 @@ export default function AdminOffrandes() {
         setLoading(true);
         try {
             const response = await api.get('/offerings');
-            console.log('[Admin] Offrandes chargées:', response);
             if (response.status === 200 && response.data?.offerings) {
                 setOfferings(response.data.offerings);
-                console.log('[Admin] ✅ Offrandes chargées:', response.data.offerings);
-                console.log('[Admin] ✅ Offrandes chargées:', response.data.offerings.length);
             }
         } catch (err: any) {
             console.error('[Admin] ❌ Erreur chargement:', err);
@@ -114,9 +110,6 @@ export default function AdminOffrandes() {
 
             if (response.status === 200 || response.status === 201) {
                 setSuccessMessage(`✅ ${offerings.length} offrandes sauvegardées avec succès !`);
-                console.log('[Admin] ✅ Sauvegarde réussie');
-
-                // Recharger pour obtenir les IDs MongoDB
                 await fetchOfferings();
 
                 setTimeout(() => setSuccessMessage(null), 5000);

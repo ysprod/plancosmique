@@ -199,14 +199,12 @@ export function usePaymentCallback(token: string | null) {
     const connect = () => {
       try {
         const url = `${SSE_BASE_URL}/api/v1/analysis/progress/${consultationId}`;
-        console.log('📡 SSE Connection:', url);
 
         const eventSource = new EventSource(url);
         eventSourceRef.current = eventSource;
 
         eventSource.onopen = () => {
           if (!isMounted) return;
-          console.log('✅ SSE connected');
           setSseConnected(true);
           reconnectAttemptsRef.current = 0;
         };
@@ -222,7 +220,6 @@ export function usePaymentCallback(token: string | null) {
             setSseCompleted(data.completed);
 
             if (data.completed) {
-              console.log('✅ Analyse terminée via SSE');
               eventSource.close();
             }
           } catch (err) {
@@ -285,7 +282,6 @@ export function usePaymentCallback(token: string | null) {
           return;
         }
 
-        console.log('🔍 Vérification paiement:', token);
         const verifyRes = await api.get(`/payments/verify?token=${token}`);
 
         if (!verifyRes.data?.success || !verifyRes.data?.data) {
@@ -312,13 +308,11 @@ export function usePaymentCallback(token: string | null) {
         setIsGeneratingAnalysis(true);
 
         try {
-          console.log('📊 Traitement consultation:', { token, type: 'consultation' });
           const processRes = await api.post('/payments/process-consultation', {
             token,
             paymentData,
           });
 
-          console.log('✅ Consultation traitée:', processRes.data);
 
           if (processRes.data?.success) {
             setConsultationId(processRes.data.consultationId || null);
@@ -359,7 +353,6 @@ export function usePaymentCallback(token: string | null) {
   // Stop generation when analysis completes
   useEffect(() => {
     if (sseCompleted) {
-      console.log('✅ Analyse terminée, arrêt de la génération');
       setIsGeneratingAnalysis(false);
     }
   }, [sseCompleted]);

@@ -10,8 +10,6 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
         
-        console.log('[MoneyFusion Webhook] Notification reçue:', JSON.stringify(body, null, 2));
-
         // Structure attendue de MoneyFusion
         const {
             token,
@@ -35,39 +33,22 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Log des informations importantes
-        console.log('[MoneyFusion Webhook] Détails du paiement:', {
-            token,
-            montant,
-            numeroSend,
-            nomclient,
-            reference,
-            date_paiement,
-            statut,
-            code_statut,
-            message,
-        });
 
         // Récupérer les métadonnées si disponibles
         let metadata = null;
         if (personal_Info && Array.isArray(personal_Info) && personal_Info.length > 0) {
             metadata = personal_Info[0];
-            console.log('[MoneyFusion Webhook] Métadonnées:', metadata);
         }
 
         // Traiter selon le code statut
         if (code_statut === 1) {
             // Paiement réussi
-            console.log('[MoneyFusion Webhook] ✅ Paiement réussi:', token);
-            
             // TODO: Mettre à jour la base de données selon le type de paiement
             if (metadata?.type === 'OFFRANDES') {
-                console.log('[MoneyFusion Webhook] Type: Offrandes - Cart:', metadata.cart);
                 // Marquer la commande comme payée
                 // Envoyer notification au client
                 // Enregistrer la transaction
             } else if (metadata?.type === 'CONSULTATION') {
-                console.log('[MoneyFusion Webhook] Type: Consultation - ID:', metadata.consultationId);
                 
                 // Marquer la consultation comme payée
                 // TODO: Mettre à jour le statut dans la DB
@@ -78,9 +59,7 @@ export async function POST(request: NextRequest) {
 
                 // L'analyse a déjà été générée AVANT le paiement
                 // On ne déclenche plus la génération ici
-                console.log('[MoneyFusion Webhook] ✅ Analyse déjà générée avant le paiement');
-                console.log('[MoneyFusion Webhook] Consultation marquée comme payée');
-                
+            
                 // Optionnel: Envoyer un email de confirmation de paiement
                 // (différent de l'email d'analyse déjà envoyé)
                 
@@ -93,21 +72,18 @@ export async function POST(request: NextRequest) {
             });
         } else if (code_statut === 2) {
             // Paiement déjà traité
-            console.log('[MoneyFusion Webhook] ⚠️ Paiement déjà traité:', token);
             return NextResponse.json({
                 success: true,
                 message: 'Paiement déjà traité',
             });
         } else if (code_statut === 3) {
             // Paiement en attente
-            console.log('[MoneyFusion Webhook] ⏳ Paiement en attente:', token);
             return NextResponse.json({
                 success: true,
                 message: 'Paiement en attente',
             });
         } else {
             // Paiement échoué ou autre statut
-            console.log('[MoneyFusion Webhook] ❌ Paiement échoué:', token, message);
             return NextResponse.json({
                 success: true,
                 message: 'Notification reçue',

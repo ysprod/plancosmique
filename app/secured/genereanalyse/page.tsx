@@ -434,7 +434,6 @@ export default function GenereAnalysePage() {
   const generateAnalysis = async (consultationId: string) => {
     try {
       setStep('fetching');
-      console.log('[Analyse] 🚀 Début génération:', consultationId);
       
       const res = await api.post(`/consultations/${consultationId}/generate-analysis`);
       

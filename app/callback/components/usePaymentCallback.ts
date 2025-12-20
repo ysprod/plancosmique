@@ -150,21 +150,18 @@ export function usePaymentCallback(token: string | null) {
   const setupSSEConnection = useCallback((targetConsultationId: string) => {
     // Éviter les connexions multiples
     if (isSSEConnectedRef.current || eventSourceRef.current) {
-      console.log('⚠️ SSE déjà connecté, éviter doublon');
       return;
     }
 
     const connect = () => {
       try {
         const url = `${SSE_BASE_URL}/api/v1/analysis/progress/${targetConsultationId}`;
-        console.log('📡 SSE Connection directe:', url);
 
         const eventSource = new EventSource(url);
         eventSourceRef.current = eventSource;
         isSSEConnectedRef.current = true;
 
         eventSource.onopen = () => {
-          console.log('✅ SSE connected');
           setSseConnected(true);
           reconnectAttemptsRef.current = 0;
         };
@@ -172,8 +169,6 @@ export function usePaymentCallback(token: string | null) {
         eventSource.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data);
-            console.log('📊 SSE Progress:', data);
-
             setSseProgress(data.progress);
             setCurrentStage(data.stage);
             setSseStageIndex(data.stageIndex);
@@ -181,7 +176,6 @@ export function usePaymentCallback(token: string | null) {
             setSseCompleted(data.completed);
 
             if (data.completed) {
-              console.log('✅ Analyse terminée via SSE');
               eventSource.close();
               isSSEConnectedRef.current = false;
             }
@@ -200,11 +194,6 @@ export function usePaymentCallback(token: string | null) {
           if (reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS) {
             reconnectAttemptsRef.current++;
             const delay = RECONNECT_DELAY * reconnectAttemptsRef.current;
-
-            console.log(
-              `🔄 SSE Reconnection attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS} in ${delay}ms`
-            );
-
             reconnectTimeoutRef.current = setTimeout(() => {
               if (!sseCompleted) {
                 connect();
@@ -248,9 +237,7 @@ export function usePaymentCallback(token: string | null) {
         };
       } else {
         try {
-          console.log('🔍 Vérification paiement:', token);
           const response = await api.get(`/payments/verify?token=${token}`);
-          console.log('✅ Paiement vérifié:', response.data.status);
           verification = response.data;
         } catch (error: any) {
           console.error('❌ Erreur vérification paiement:', error.message);
@@ -282,7 +269,6 @@ export function usePaymentCallback(token: string | null) {
       };
 
       // ========== 3. TRAITER LA CONSULTATION ==========
-      console.log('🚀 FORCE START: Lancement génération analyse');
       setIsGeneratingAnalysis(true);
 
       let result: ProcessResult;
@@ -294,8 +280,6 @@ export function usePaymentCallback(token: string | null) {
           token,
           paymentData,
         });
-
-        console.log('✅ Consultation traitée:', response.data);
         result = response.data;
       } catch (error: any) {
         console.error('❌ Erreur traitement consultation:', error.message);
@@ -315,8 +299,6 @@ export function usePaymentCallback(token: string | null) {
 
       // ========== 5. CONNECTER SSE IMMÉDIATEMENT SI consultationId DISPONIBLE ==========
       if (resultConsultationId) {
-        console.log('🔌 Connexion SSE immédiate avec consultationId:', resultConsultationId);
-
         // 🔥 CONNEXION SSE DIRECTE (pas d'attente d'un useEffect)
         setupSSEConnection(resultConsultationId);
 

@@ -16,14 +16,9 @@ import {
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
+import { navItems } from './AdminShell';
 
-const navItems = [
-  { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard, color: 'amber' },
-  { href: '/admin/users', label: 'Utilisateurs', icon: Users, color: 'blue' },
-  { href: '/admin/consultations', label: 'Consultations', icon: FileText, color: 'green' },
-  { href: '/admin/payments', label: 'Paiements', icon: CreditCard, color: 'purple' },
-  { href: '/admin/settings', label: 'Paramètres', icon: Settings, color: 'gray' },
-];
+ 
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);

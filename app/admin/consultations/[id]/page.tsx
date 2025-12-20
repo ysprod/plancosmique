@@ -257,11 +257,7 @@ export default function ConsultationResultPage() {
 
     const loadAnalysis = async () => {
       try {
-        console.log('[Client] Récupération de l\'analyse:', consultationId);
         const response = await api.get(`/consultations/analysis/${consultationId}`);
-
-        console.log('Réponse API:', response.data);
-
         if (response.status !== 200) {
           throw new Error('Analyse non trouvée');
         }

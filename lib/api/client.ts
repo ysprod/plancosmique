@@ -132,12 +132,12 @@ apiClient.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError as Error, null);
         clearAuth();
-        
+
         // Rediriger vers la page de connexion
         if (typeof window !== 'undefined') {
           window.location.href = config.routes.login;
         }
-        
+
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
