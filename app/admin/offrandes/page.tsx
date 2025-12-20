@@ -69,7 +69,8 @@ export default function AdminOffrandes() {
         setStatsLoading(true);
         setStatsError(null);
         try {
-            const response = await api.get('/stats/offerings');
+            const response = await api.get('/admin/offerings/stats');
+            console.log('[Admin] Statistiques chargées:', response);
             if (response.status === 200 && response.data?.stats) {
                 setStats(response.data.stats);
             } else {
@@ -89,6 +90,7 @@ export default function AdminOffrandes() {
             console.log('[Admin] Offrandes chargées:', response);
             if (response.status === 200 && response.data?.offerings) {
                 setOfferings(response.data.offerings);
+                console.log('[Admin] ✅ Offrandes chargées:', response.data.offerings);
                 console.log('[Admin] ✅ Offrandes chargées:', response.data.offerings.length);
             }
         } catch (err: any) {

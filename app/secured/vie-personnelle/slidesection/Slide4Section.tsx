@@ -4,13 +4,32 @@ import { api } from '@/lib/api/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useCallback, useState } from 'react';
-import { CONSULTATION_TYPE_MAP } from './consultation.constants';
+import React, { useCallback, useEffect, useState } from 'react';
+import { CONSULTATION_CHOICES, CONSULTATION_TYPE_MAP } from './consultation.constants';
 import type { ConsultationChoice, FormData, FormErrors, StepType } from './consultation.types';
 import ConsultationForm from './ConsultationForm';
 import ConsultationSelection from './ConsultationSelection';
 import OfferingStep from './OfferingStep';
 import PaymentProcessing from './PaymentProcessing';
+import { useAuth } from '@/lib/auth/AuthContext';
+
+interface RequiredOffering {
+  _id: string;
+  name: string;
+  price: number;
+  icon: string;
+  category: string;
+  quantity: number;
+}
+
+interface WalletOffering {
+  offeringId: string;
+  quantity: number;
+  name: string;
+  icon: string;
+  category: string;
+  price: number;
+}
 
 const validateForm = (form: FormData): FormErrors => {
   const errors: FormErrors = {};
@@ -28,7 +47,9 @@ const validateForm = (form: FormData): FormErrors => {
 
 export default function Slide4Section() {
   const router = useRouter();
-  const [selected, setSelected] = useState<ConsultationChoice | null>(null);
+  const { user } = useAuth();
+  // États principaux
+  const [selected, setSelected] = useState<ConsultationChoice | null>(CONSULTATION_CHOICES[0]);
   const [form, setForm] = useState<FormData>({
     nom: '',
     prenoms: '',
@@ -46,6 +67,14 @@ export default function Slide4Section() {
   const [backActivated, setBackActivated] = useState(false);
   const [createdConsultationId, setCreatedConsultationId] = useState<string | null>(null);
 
+  // États pour les offrandes
+  const [requiredOfferingsDetails, setRequiredOfferingsDetails] = useState<RequiredOffering[]>([]);
+  const [walletOfferings, setWalletOfferings] = useState<WalletOffering[]>([]);
+  const [loadingOfferings, setLoadingOfferings] = useState(false);
+
+  // =====================================================
+  // HANDLERS FORMULAIRE
+  // =====================================================
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
@@ -65,71 +94,128 @@ export default function Slide4Section() {
   );
 
   const handleSelectConsultation = useCallback((choice: ConsultationChoice) => {
+    console.log('[Consultation] 📋 Consultation sélectionnée:', choice);
     setSelected(choice);
     setBackActivated(true);
     setStep('form');
   }, []);
 
-  /**
-   * Vérifie si l'utilisateur dispose de toutes les offrandes requises dans son wallet
-   */
-  const checkUserWalletOfferings = useCallback(async (requiredOfferings: Array<{ offeringId: string; quantity: number }>): Promise<boolean> => {
+  // =====================================================
+  // CHARGEMENT DES OFFRANDES DU WALLET
+  // =====================================================
+  const fetchWalletOfferings = useCallback(async () => {
     try {
-      console.log('[Wallet] 🔍 Vérification des offrandes dans le wallet...');
+      console.log('[Wallet] � Chargement des offrandes du wallet...');
+      const response = await api.get(`/offering-stock/available?userId=${user?._id}`);
+      console.log('[Wallet] 📦 Réponse des offrandes du wallet:', response);
+
+      // L'API retourne directement un tableau dans response.data
+      const offeringsData = Array.isArray(response.data) ? response.data : response.data?.offerings || [];
       
-      // Récupérer les offrandes du wallet de l'utilisateur
-      const walletRes: { status: number; data?: { offerings?: any[] } } = await api.get('/wallet/offerings');
-      
-      if (walletRes.status !== 200 || !walletRes.data?.offerings) {
-        console.log('[Wallet] ⚠️ Impossible de récupérer le wallet');
-        return false;
+      if (response.status === 200 && offeringsData.length > 0) {
+        const offerings: WalletOffering[] = offeringsData.map((o: any) => ({
+          offeringId: o.offeringId || o._id,
+          quantity: o.quantity || o.availableQuantity || 0,
+          name: o.name || 'Offrande inconnue',
+          icon: o.icon || '📦',
+          category: o.category || 'animal',
+          price: o.price || 0,
+        }));
+
+        setWalletOfferings(offerings);
+        console.log('[Wallet] ✅ Offrandes chargées:', offerings);
+      } else {
+        console.warn('[Wallet] ⚠️ Aucune offrande trouvée dans le wallet');
+        setWalletOfferings([]);
       }
-
-      const userOfferings = walletRes.data.offerings;
-      console.log('[Wallet] 📦 Offrandes disponibles:', userOfferings);
-
-      // Vérifier chaque offrande requise
-      for (const required of requiredOfferings) {
-        const userOffering = userOfferings.find((o: any) => o.offeringId === required.offeringId);
-        
-        if (!userOffering || userOffering.quantity < required.quantity) {
-          console.log(`[Wallet] ❌ Offrande insuffisante: ${required.offeringId} (requis: ${required.quantity}, disponible: ${userOffering?.quantity || 0})`);
-          return false;
-        }
-      }
-
-      console.log('[Wallet] ✅ Toutes les offrandes sont disponibles!');
-      return true;
     } catch (err: any) {
-      console.error('[Wallet] ❌ Erreur lors de la vérification:', err);
-      return false;
+      console.error('[Wallet] ❌ Erreur lors du chargement:', err);
+      setWalletOfferings([]);
     }
   }, []);
 
-  /**
-   * Consomme les offrandes du wallet pour la consultation
-   */
-  const consumeWalletOfferings = useCallback(async (consultationId: string, requiredOfferings: Array<{ offeringId: string; quantity: number }>): Promise<boolean> => {
+  // =====================================================
+  // ENRICHISSEMENT DES OFFRANDES REQUISES
+  // =====================================================
+  const enrichRequiredOfferings = useCallback(async () => {
+    if (!selected?.requiredOfferings || selected.requiredOfferings.length === 0) {
+      console.log('[Offerings] ℹ️ Aucune offrande requise à enrichir');
+      setRequiredOfferingsDetails([]);
+      return;
+    }
+
     try {
-      console.log('[Wallet] 🔄 Consommation des offrandes du wallet...');
-      
-      const consumeRes = await api.post('/wallet/consume-offerings', {
-        consultationId,
-        offerings: requiredOfferings
+      console.log('[Offerings] 🔄 Enrichissement des offrandes requises...');
+      console.log('[Offerings] 📦 selected.requiredOfferings:', selected.requiredOfferings);
+
+      // Récupérer les IDs des offrandes requises
+      const offeringIds = selected.requiredOfferings.map((o: any) => o.offeringId);
+      console.log('[Offerings] 🎯 IDs à enrichir:', offeringIds);
+
+      // Charger les détails depuis l'API
+      const response = await api.get('/offerings');
+
+      if (response.status === 200 && response.data?.offerings) {
+        const allOfferings = response.data.offerings;
+        console.log('[Offerings] 📚 Toutes les offrandes disponibles:', allOfferings.length);
+
+        // Filtrer et mapper les offrandes requises avec leurs détails
+        const enriched: RequiredOffering[] = selected.requiredOfferings
+          .map((req: any) => {
+            const details = allOfferings.find((o: any) => o._id === req.offeringId);
+
+            if (details) {
+              console.log(`  ✅ Détails trouvés pour ${req.offeringId}:`, details.name);
+              return {
+                _id: details._id,
+                name: details.name,
+                price: details.price,
+                icon: details.icon,
+                category: details.category,
+                quantity: req.quantity, // ✅ Inclure la quantité requise
+              };
+            }
+
+            console.warn(`  ⚠️ Détails non trouvés pour ${req.offeringId}`);
+            return null;
+          })
+          .filter((o): o is RequiredOffering => o !== null);
+
+        console.log('[Offerings] ✅ Offrandes enrichies:', enriched);
+        setRequiredOfferingsDetails(enriched);
+      } else {
+        console.warn('[Offerings] ⚠️ Impossible de charger les détails des offrandes');
+        setRequiredOfferingsDetails([]);
+      }
+    } catch (err: any) {
+      console.error('[Offerings] ❌ Erreur lors de l\'enrichissement:', err);
+      setRequiredOfferingsDetails([]);
+      setApiError('Impossible de charger les détails des offrandes requises.');
+    }
+  }, [selected]);
+
+  // =====================================================
+  // EFFET : Charger les offrandes quand on arrive à l'étape "offering"
+  // =====================================================
+  useEffect(() => {
+    if (step === 'offering') {
+      console.log('[Effect] 🎯 Étape "offering" atteinte, chargement des offrandes...');
+
+      setLoadingOfferings(true);
+
+      // Exécuter les deux chargements en parallèle
+      Promise.all([
+        fetchWalletOfferings(),
+        enrichRequiredOfferings()
+      ]).finally(() => {
+        setLoadingOfferings(false);
       });
-
-      if (consumeRes.status !== 200) {
-        throw new Error(consumeRes.data?.message || 'Erreur lors de la consommation des offrandes');
-      }
-
-      console.log('[Wallet] ✅ Offrandes consommées avec succès');
-      return true;
-    } catch (err: any) {
-      console.error('[Wallet] ❌ Erreur lors de la consommation:', err);
-      return false;
     }
-  }, []);
+  }, [step]); // ⚠️ CORRECTION : Ne dépendre que de 'step' pour éviter la boucle infinie
 
+  // =====================================================
+  // SOUMISSION DU FORMULAIRE
+  // =====================================================
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -151,7 +237,8 @@ export default function Slide4Section() {
 
       try {
         console.log('[Consultation] 📝 Création de la consultation...');
-        
+        console.log('[Consultation] 📋 Selected requiredOfferings:', selected.requiredOfferings);
+
         // 1. Créer la consultation
         const payload = {
           serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
@@ -171,45 +258,12 @@ export default function Slide4Section() {
 
         const consultationId = consultationRes.data?.id || consultationRes.data?.consultationId;
         setCreatedConsultationId(consultationId);
-        
+
         console.log('[Consultation] ✅ Consultation créée avec ID:', consultationId);
 
-        // 2. Vérifier si l'utilisateur possède les offrandes requises
-        const hasOfferings = await checkUserWalletOfferings(selected.requiredOfferings);
-
-        if (hasOfferings) {
-          console.log('[Wallet] 🎉 L\'utilisateur possède toutes les offrandes requises!');
-          
-          // 3. Consommer les offrandes du wallet
-          const consumed = await consumeWalletOfferings(consultationId, selected.requiredOfferings);
-          
-          if (consumed) {
-            // 4. Mettre à jour le statut de la consultation
-            await api.patch(`/consultations/${consultationId}`, {
-              status: 'paid',
-              paymentMethod: 'wallet_offerings'
-            });
-
-            console.log('[Consultation] ✅ Statut mis à jour : paid');
-            
-            // 5. Redirection vers la page de génération d'analyse
-            console.log('[Consultation] 🚀 Redirection vers /secured/genereanalyse');
-            
-            setTimeout(() => {
-              router.push(`/secured/genereanalyse?id=${consultationId}`);
-            }, 1000);
-          } else {
-            // Échec de la consommation, passer à l'étape des offrandes
-            console.log('[Wallet] ⚠️ Échec de la consommation, redirection vers le marché');
-            setPaymentLoading(false);
-            setStep('offering');
-          }
-        } else {
-          // L'utilisateur n'a pas les offrandes, passer à l'étape des offrandes
-          console.log('[Wallet] 💰 Offrandes manquantes, redirection vers le marché');
-          setPaymentLoading(false);
-          setStep('offering');
-        }
+        // 2. Passer à l'étape de sélection des offrandes
+        setPaymentLoading(false);
+        setStep('offering');
 
       } catch (err: any) {
         let errorMessage = 'Erreur lors de la création de la consultation';
@@ -220,15 +274,93 @@ export default function Slide4Section() {
         } else if (err.message) {
           errorMessage = err.message;
         }
-        
+
         console.error('[Consultation] ❌ Erreur:', err);
         setApiError(errorMessage);
         setPaymentLoading(false);
       }
     },
-    [form, selected, router, checkUserWalletOfferings, consumeWalletOfferings]
+    [form, selected]
   );
 
+  // =====================================================
+  // VALIDATION DE LA SÉLECTION D'OFFRANDES
+  // =====================================================
+  const handleOfferingValidation = useCallback(
+    async (selectedOfferingIds: string[]) => {
+      if (!createdConsultationId || !selected) {
+        setApiError('Consultation introuvable');
+        return;
+      }
+
+      try {
+        setPaymentLoading(true);
+        console.log('[Offerings] ✅ Offrandes sélectionnées:', selectedOfferingIds);
+
+        // Construire la liste des offrandes à consommer
+        const offeringsToConsume = selectedOfferingIds.map((id) => {
+          const required = selected.requiredOfferings.find((r: any) => r.offeringId === id);
+          return {
+            offeringId: id,
+            quantity: required?.quantity || 1,
+          };
+        });
+
+        console.log('[Wallet] 🔄 Consommation des offrandes:', offeringsToConsume);
+
+        // 1. Consommer les offrandes du wallet (le backend attend userId + consultationId + offerings)
+        if (!user?._id) {
+          throw new Error('Utilisateur introuvable pour la consommation des offrandes');
+        }
+
+        const consumeRes = await api.post('/wallet/consume-offerings', {
+          userId: user._id,
+          consultationId: createdConsultationId,
+          offerings: offeringsToConsume,
+        });
+
+        console.log('[Wallet] ↩️ Réponse consommation:', consumeRes.status, consumeRes.data);
+
+        if (consumeRes.status !== 200 && consumeRes.status !== 201) {
+          throw new Error(consumeRes.data?.message || 'Erreur lors de la consommation des offrandes');
+        }
+
+        console.log('[Wallet] ✅ Offrandes consommées avec succès');
+
+        // 2. Mettre à jour le statut de la consultation
+        await api.patch(`/consultations/${createdConsultationId}`, {
+          status: 'paid',
+          paymentMethod: 'wallet_offerings',
+        });
+
+        console.log('[Consultation] ✅ Statut mis à jour : paid');
+
+        // 3. Redirection vers la page de génération d'analyse
+        setTimeout(() => {
+          console.log('[Consultation] 🚀 Redirection vers /secured/genereanalyse');
+          router.push(`/secured/genereanalyse?id=${createdConsultationId}`);
+        }, 1000);
+
+      } catch (err: any) {
+        console.error('[Offerings] ❌ Erreur lors de la validation:', err);
+
+        let errorMessage = 'Erreur lors de la validation des offrandes';
+        if (err.response?.data?.message) {
+          errorMessage = err.response.data.message;
+        } else if (err.message) {
+          errorMessage = err.message;
+        }
+
+        setApiError(errorMessage);
+        setPaymentLoading(false);
+      }
+    },
+    [createdConsultationId, selected, router]
+  );
+
+  // =====================================================
+  // NAVIGATION
+  // =====================================================
   const handleBackToForm = useCallback(() => {
     setStep('form');
   }, []);
@@ -251,8 +383,27 @@ export default function Slide4Section() {
     setBackActivated(false);
     setCreatedConsultationId(null);
     setPaymentLoading(false);
+    setRequiredOfferingsDetails([]);
+    setWalletOfferings([]);
   }, []);
 
+  // =====================================================
+  // DEBUG : Afficher les états actuels
+  // =====================================================
+  useEffect(() => {
+    console.log('[DEBUG] 🔍 État actuel:', {
+      step,
+      selectedTitle: selected?.title,
+      requiredOfferingsCount: selected?.requiredOfferings?.length || 0,
+      enrichedCount: requiredOfferingsDetails.length,
+      walletCount: walletOfferings.length,
+      loadingOfferings,
+    });
+  }, [step, selected, requiredOfferingsDetails, walletOfferings, loadingOfferings]);
+
+  // =====================================================
+  // RENDER
+  // =====================================================
   return (
     <div className="min-h-screen p-4 sm:p-6 bg-gradient-to-br from-purple-50 via-fuchsia-50 to-pink-50 
                     dark:from-gray-950 dark:via-purple-950/20 dark:to-fuchsia-950/20">
@@ -280,7 +431,7 @@ export default function Slide4Section() {
         {/* Workflow multi-étapes */}
         <AnimatePresence mode="wait">
           {/* Étape 1 : Formulaire */}
-          {step === 'form' && selected && (
+          {step === 'form' && selected && !paymentLoading && (
             <motion.div
               key="form"
               initial={{ opacity: 0, y: 20 }}
@@ -296,13 +447,12 @@ export default function Slide4Section() {
                 handleSubmit={handleSubmit}
                 resetSelection={resetSelection}
                 selectedTitle={selected.title}
-                // isLoading={paymentLoading}
               />
             </motion.div>
           )}
 
-          {/* Étape 2 : Offrandes */}
-          {step === 'offering' && selected && createdConsultationId && (
+          {/* Étape 2 : Sélection des offrandes */}
+          {step === 'offering' && !paymentLoading && (
             <motion.div
               key="offering"
               initial={{ opacity: 0, scale: 0.95 }}
@@ -310,17 +460,37 @@ export default function Slide4Section() {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.4 }}
             >
-              <OfferingStep
-                selected={selected}
-                consultationId={createdConsultationId}
-                paymentLoading={paymentLoading}
-                onBackToForm={handleBackToForm}
-              />
+              {loadingOfferings ? (
+                <div className="flex items-center justify-center min-h-[400px]">
+                  <div className="text-center">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                      className="w-12 h-12 mx-auto mb-4 rounded-full border-4 
+                               border-purple-200 dark:border-purple-800 
+                               border-t-purple-600 dark:border-t-purple-400"
+                    />
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                      Chargement de vos offrandes...
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500">
+                      Vérification de votre wallet et des offrandes requises
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <OfferingStep
+                  requiredOfferings={requiredOfferingsDetails}
+                  walletOfferings={walletOfferings}
+                  onNext={handleOfferingValidation}
+                  onBack={handleBackToForm}
+                />
+              )}
             </motion.div>
           )}
 
-          {/* Étape 3 : Traitement */}
-          {paymentLoading && step === 'form' && (
+          {/* Étape 3 : Traitement du paiement */}
+          {paymentLoading && (
             <motion.div
               key="processing"
               initial={{ opacity: 0, scale: 0.95 }}
@@ -332,6 +502,18 @@ export default function Slide4Section() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Message d'erreur API global */}
+        {apiError && step === 'offering' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 
+                     rounded-xl text-sm text-red-600 dark:text-red-400"
+          >
+            {apiError}
+          </motion.div>
+        )}
       </div>
     </div>
   );

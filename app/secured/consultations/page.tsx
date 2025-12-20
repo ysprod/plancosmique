@@ -130,6 +130,9 @@ const STATUS_CONFIG: Record<ConsultationStatus, { label: string; color: string; 
   FAILED: { label: 'Erreur', color: 'bg-red-100 text-red-800', icon: AlertCircle }
 };
 
+// Fallback pour les statuts non reconnus
+const DEFAULT_STATUS_CONFIG = { label: 'Inconnu', color: 'bg-gray-100 text-gray-800', icon: Clock };
+
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('fr-FR', {
     day: 'numeric',
@@ -143,11 +146,11 @@ const formatDate = (dateString: string) => {
 // ==================== COMPOSANTS ====================
 
 interface StatusBadgeProps {
-  status: ConsultationStatus;
+  status: ConsultationStatus | string;
 }
 
 const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
-  const config = STATUS_CONFIG[status];
+  const config = STATUS_CONFIG[status as ConsultationStatus] || DEFAULT_STATUS_CONFIG;
   const Icon = config.icon;
   
   return (
