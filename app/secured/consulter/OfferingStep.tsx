@@ -1,26 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
-import { 
-  CheckCircle2, 
-  Circle, 
-  Wallet, 
-  AlertTriangle,
-  Sparkles,
-  ChevronRight,
-  Info,
-  ArrowRight,
-  ShoppingBag
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  AlertTriangle, ArrowRight, CheckCircle2, ChevronRight, Circle, Package, ShoppingBag
 } from "lucide-react";
-import { useMemo, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { memo, useCallback, useMemo, useState } from "react";
 
-// =====================================================
-// TYPES & INTERFACES
-// =====================================================
+type Category = 'animal' | 'vegetal' | 'beverage';
 
 interface OfferingAlternative {
-  category: 'animal' | 'vegetal' | 'beverage';
+  category: Category;
   offeringId: string;
   quantity: number;
   name?: string;
@@ -29,14 +19,13 @@ interface OfferingAlternative {
 }
 
 interface WalletOffering {
-  offeringId: string; // ID de l'offrande
+  offeringId: string;
   quantity: number;
   name: string;
   icon: string;
   category: string;
   price: number;
 }
-
 
 interface OfferingStepProps {
   requiredOfferings: OfferingAlternative[];
@@ -45,7 +34,200 @@ interface OfferingStepProps {
   onBack: () => void;
 }
 
+const CATEGORY_CONFIG: Record<Category, {
+  label: string;
+  icon: string;
+  gradient: string;
+  lightBg: string;
+  darkBg: string;
+}> = {
+  animal: {
+    label: "Animal",
+    icon: "🐾",
+    gradient: "from-amber-500 to-orange-500",
+    lightBg: "bg-amber-50",
+    darkBg: "dark:bg-amber-900/20"
+  },
+  vegetal: {
+    label: "Végétal",
+    icon: "🌿",
+    gradient: "from-green-500 to-emerald-500",
+    lightBg: "bg-green-50",
+    darkBg: "dark:bg-green-900/20"
+  },
+  beverage: {
+    label: "Boisson",
+    icon: "🥤",
+    gradient: "from-blue-500 to-cyan-500",
+    lightBg: "bg-blue-50",
+    darkBg: "dark:bg-blue-900/20"
+  }
+};
 
+
+const TabButton = memo(({
+  category,
+  isActive,
+  onClick,
+  count
+}: {
+  category: Category;
+  isActive: boolean;
+  onClick: () => void;
+  count: number;
+}) => {
+  const config = CATEGORY_CONFIG[category];
+
+  return (
+    <button
+      onClick={onClick}
+      className={`
+        flex-1 relative py-3 px-4 rounded-xl font-semibold text-sm transition-all
+        ${isActive
+          ? `bg-gradient-to-r ${config.gradient} text-white shadow-lg`
+          : `${config.lightBg} ${config.darkBg} text-gray-700 dark:text-gray-300 hover:opacity-80`
+        }
+      `}
+    >
+      <span className="flex items-center justify-center gap-1.5">
+        <span className="text-base">{config.icon}</span>
+        <span>{config.label}</span>
+      </span>
+       
+    </button>
+  );
+});
+TabButton.displayName = 'TabButton';
+
+const OfferingCard = memo(({
+  offering,
+  isSelected,
+  availableQuantity,
+  onSelect,
+  index
+}: {
+  offering: OfferingAlternative;
+  isSelected: boolean;
+  availableQuantity: number;
+  onSelect: () => void;
+  index: number;
+}) => {
+  const isSufficient = availableQuantity >= offering.quantity;
+  const config = CATEGORY_CONFIG[offering.category];
+
+  return (
+    <motion.button
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.05 }}
+      onClick={isSufficient ? onSelect : undefined}
+      disabled={!isSufficient}
+      className={`
+        w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left
+        ${isSelected
+          ? `border-purple-500 ${config.lightBg} ${config.darkBg} shadow-md`
+          : isSufficient
+            ? "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-purple-300 active:scale-[0.98]"
+            : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 opacity-50 cursor-not-allowed"
+        }
+      `}
+    >
+      {/* Checkbox */}
+      <div className="flex-shrink-0">
+        {isSelected ? (
+          <CheckCircle2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+        ) : (
+          <Circle className="w-5 h-5 text-gray-300 dark:text-gray-600" />
+        )}
+      </div>
+
+      {/* Icon */}
+      <div className={`
+        w-10 h-10 rounded-lg flex items-center justify-center text-xl flex-shrink-0
+        ${isSelected
+          ? `bg-gradient-to-br ${config.gradient} text-white shadow-sm`
+          : "bg-gray-100 dark:bg-gray-700"
+        }
+      `}>
+        {offering.icon || config.icon}
+      </div>
+
+      {/* Info */}
+      <div className="flex-1 min-w-0">
+        <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 truncate">
+          {offering.name || `${config.label} ${index + 1}`}
+        </h4>
+        <div className="flex items-center gap-2 text-[11px] text-gray-600 dark:text-gray-400">
+          <span>Requis: <strong>{offering.quantity}</strong></span>
+          <span>•</span>
+          <span className={isSufficient ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+            Dispo: <strong>{availableQuantity}</strong>
+          </span>
+        </div>
+      </div>
+    </motion.button>
+  );
+});
+OfferingCard.displayName = 'OfferingCard';
+
+const StatusBanner = memo(({
+  hasSelection,
+  isSufficient
+}: {
+  hasSelection: boolean;
+  isSufficient: boolean;
+}) => {
+  if (!hasSelection) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: -5 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-start gap-2 p-3 rounded-xl bg-yellow-50 dark:bg-yellow-900/20 
+                 border border-yellow-200 dark:border-yellow-800"
+      >
+        <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0" />
+        <p className="text-xs text-yellow-700 dark:text-yellow-300">
+          Sélectionnez une alternative disponible pour continuer
+        </p>
+      </motion.div>
+    );
+  }
+
+  if (!isSufficient) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: -5 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-start gap-2 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 
+                 border border-red-200 dark:border-red-800"
+      >
+        <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+        <p className="text-xs text-red-700 dark:text-red-300">
+          Quantité insuffisante. Rendez-vous au marché pour acquérir cette offrande.
+        </p>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="flex items-start gap-2 p-3 rounded-xl bg-green-50 dark:bg-green-900/20 
+               border border-green-200 dark:border-green-800"
+    >
+      <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+      <p className="text-xs text-green-700 dark:text-green-300">
+        Alternative sélectionnée et disponible. Prêt à continuer !
+      </p>
+    </motion.div>
+  );
+});
+StatusBanner.displayName = 'StatusBanner';
+
+// =====================================================
+// COMPOSANT PRINCIPAL
+// =====================================================
 export default function OfferingStep({
   requiredOfferings,
   walletOfferings,
@@ -53,130 +235,207 @@ export default function OfferingStep({
   onBack,
 }: OfferingStepProps) {
   const router = useRouter();
-  // On suppose requiredOfferings = alternatives[]
-  const [selected, setSelected] = useState<string | null>(null);
 
-  // Trouver l'alternative sélectionnée
-  const selectedAlternative = requiredOfferings.find((alt) => alt.offeringId === selected);
+  // État local (minimal pour éviter re-renders)
+  const [activeTab, setActiveTab] = useState<Category>('animal');
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  // Vérifier la disponibilité dans le wallet
-  const getAvailableQuantity = (offeringId: string) => {
-    const found = walletOfferings.find((w) => w.offeringId === offeringId);
-    return found?.quantity || 0;
-  };
+  // Memoization des calculs coûteux
+  const walletMap = useMemo(() => {
+    const map = new Map<string, number>();
+    walletOfferings.forEach(w => map.set(w.offeringId, w.quantity));
+    return map;
+  }, [walletOfferings]);
 
-  const canProceed = !!selectedAlternative && getAvailableQuantity(selectedAlternative.offeringId) >= selectedAlternative.quantity;
+  const offeringsByCategory = useMemo(() => {
+    const grouped: Record<Category, OfferingAlternative[]> = {
+      animal: [],
+      vegetal: [],
+      beverage: []
+    };
+    requiredOfferings.forEach(off => {
+      grouped[off.category].push(off);
+    });
+    return grouped;
+  }, [requiredOfferings]);
 
-  const handleNext = () => {
-    if (selectedAlternative) {
-      onNext(selectedAlternative);
+  const categoryCounts = useMemo(() => ({
+    animal: offeringsByCategory.animal.length,
+    vegetal: offeringsByCategory.vegetal.length,
+    beverage: offeringsByCategory.beverage.length
+  }), [offeringsByCategory]);
+
+  const selectedOffering = useMemo(
+    () => requiredOfferings.find(off => off.offeringId === selectedId),
+    [requiredOfferings, selectedId]
+  );
+
+  const availableQty = useMemo(
+    () => selectedOffering ? (walletMap.get(selectedOffering.offeringId) || 0) : 0,
+    [selectedOffering, walletMap]
+  );
+
+  const canProceed = useMemo(
+    () => !!selectedOffering && availableQty >= selectedOffering.quantity,
+    [selectedOffering, availableQty]
+  );
+
+  // Handlers mémorisés
+  const handleTabChange = useCallback((category: Category) => {
+    setActiveTab(category);
+  }, []);
+
+  const handleSelect = useCallback((offeringId: string) => {
+    setSelectedId(offeringId);
+  }, []);
+
+  const handleNext = useCallback(() => {
+    if (selectedOffering && canProceed) {
+      onNext(selectedOffering);
     }
-  };
+  }, [selectedOffering, canProceed, onNext]);
 
-  // Aller au marché
   const handleGoToMarket = useCallback(() => {
     router.push('/secured/marcheoffrandes');
   }, [router]);
 
+  const currentOfferings = offeringsByCategory[activeTab];
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="space-y-6"
-    >
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-purple-500" />
-          Choisissez votre alternative d'offrande
-        </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Sélectionnez une alternative (animal, végétal ou boisson) pour cette consultation
-        </p>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
+                  dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900 
+                  flex flex-col">
+      {/* Header fixe */}
+      <div className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl 
+                    border-b border-gray-200 dark:border-gray-800 shadow-sm">
+        <div className="max-w-2xl mx-auto px-4 py-3">
+          <div className="flex items-center gap-3 mb-3">
+            <Package className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            <div className="flex-1">
+              <h1 className="text-base font-bold text-gray-900 dark:text-gray-100">
+                Offrandes
+              </h1>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Choisissez une alternative
+              </p>
+            </div>
+          </div>
+
+          {/* Tabs */}
+          <div className="flex gap-2">
+            {(['animal', 'vegetal', 'beverage'] as Category[]).map(cat => (
+              <TabButton
+                key={cat}
+                category={cat}
+                isActive={activeTab === cat}
+                onClick={() => handleTabChange(cat)}
+                count={categoryCounts[cat]}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div className="space-y-3 max-w-md mx-auto">
-        {requiredOfferings.map((alt, idx) => {
-          const available = getAvailableQuantity(alt.offeringId);
-          const isSelected = selected === alt.offeringId;
-          return (
-            <motion.button
-              key={alt.offeringId}
-              type="button"
-              whileHover={{ scale: available >= alt.quantity ? 1.02 : 1 }}
-              whileTap={{ scale: available >= alt.quantity ? 0.98 : 1 }}
-              onClick={() => available >= alt.quantity && setSelected(alt.offeringId)}
-              className={`w-full flex items-center justify-between px-4 py-4 rounded-xl border-2 transition-all font-semibold text-lg mb-2
-                ${isSelected ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 shadow-lg' : available >= alt.quantity ? 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-purple-300' : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 opacity-60 cursor-not-allowed'}`}
+      {/* Contenu scrollable */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-2xl mx-auto px-4 py-4 space-y-3 pb-32">
+
+          {/* Status banner */}
+          <AnimatePresence mode="wait">
+            <StatusBanner
+              hasSelection={!!selectedOffering}
+              isSufficient={canProceed}
+            />
+          </AnimatePresence>
+
+          {/* Liste des offrandes de la catégorie active */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.2 }}
+              className="space-y-2"
             >
-              <span className="capitalize flex items-center gap-2">
-                {alt.icon || ''} {alt.category}
-              </span>
-              <span className="text-xs text-gray-500">x{alt.quantity} {alt.name ? `- ${alt.name}` : ''}</span>
-              <span className="ml-4 text-xs">
-                {available >= alt.quantity ? `Disponible: ${available}` : `Manquant`}
-              </span>
-            </motion.button>
-          );
-        })}
+              {currentOfferings.length === 0 ? (
+                <div className="text-center py-12 px-4">
+                  <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 
+                                flex items-center justify-center mx-auto mb-3">
+                    <Package className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Aucune offrande dans cette catégorie
+                  </p>
+                </div>
+              ) : (
+                currentOfferings.map((offering, index) => (
+                  <OfferingCard
+                    key={offering.offeringId}
+                    offering={offering}
+                    isSelected={selectedId === offering.offeringId}
+                    availableQuantity={walletMap.get(offering.offeringId) || 0}
+                    onSelect={() => handleSelect(offering.offeringId)}
+                    index={index}
+                  />
+                ))
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
 
-      <div className="flex gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={onBack}
-          className="flex-1 h-12 rounded-xl border-2 border-gray-300 dark:border-gray-600
-                   text-gray-700 dark:text-gray-300 font-semibold
-                   hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
-        >
-          Retour
-        </motion.button>
+      {/* Actions bottom sticky */}
+      <div className="sticky bottom-0 z-40 bg-white dark:bg-gray-900 
+                    border-t border-gray-200 dark:border-gray-800 
+                    shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
+        <div className="max-w-2xl mx-auto px-4 py-3 space-y-2">
 
-        <motion.button
-          whileHover={{ scale: canProceed ? 1.02 : 1 }}
-          whileTap={{ scale: canProceed ? 0.98 : 1 }}
-          onClick={handleNext}
-          disabled={!canProceed}
-          className={`
-            flex-1 h-12 rounded-xl font-semibold flex items-center justify-center gap-2
-            transition-all
-            ${canProceed
-              ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg"
-              : "bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
-            }
-          `}
-        >
-          <span>Valider l'alternative</span>
-          <ChevronRight className="w-5 h-5" />
-        </motion.button>
+          {/* Boutons principaux */}
+          <div className="flex gap-2">
+            <button
+              onClick={onBack}
+              className="px-4 h-11 rounded-xl border-2 border-gray-300 dark:border-gray-600
+                       text-gray-700 dark:text-gray-300 font-semibold text-sm
+                       hover:bg-gray-50 dark:hover:bg-gray-800 transition-all
+                       active:scale-[0.98]"
+            >
+              Retour
+            </button>
+
+            <button
+              onClick={handleNext}
+              disabled={!canProceed}
+              className={`
+                flex-1 h-11 rounded-xl font-semibold text-sm flex items-center justify-center gap-2
+                transition-all active:scale-[0.98]
+                ${canProceed
+                  ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg"
+                  : "bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+                }
+              `}
+            >
+              <span>Valider</span>
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Bouton marché */}
+          <button
+            onClick={handleGoToMarket}
+            className="w-full h-10 rounded-xl border-2 border-purple-300 dark:border-purple-700
+                     bg-purple-50 dark:bg-purple-900/20
+                     text-purple-700 dark:text-purple-300 font-semibold text-sm
+                     hover:bg-purple-100 dark:hover:bg-purple-900/30
+                     flex items-center justify-center gap-2 transition-all
+                     active:scale-[0.98]"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            <span>Marché des offrandes</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
-
-      {!canProceed && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-start gap-2 p-3 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800"
-        >
-          <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0" />
-          <p className="text-xs text-yellow-700 dark:text-yellow-300">
-            Veuillez sélectionner une alternative disponible pour continuer
-          </p>
-        </motion.div>
-      )}
-
-      <motion.button
-        whileTap={{ scale: 0.98 }}
-        onClick={handleGoToMarket}
-        className="w-full h-11 rounded-xl border-2 border-purple-300 dark:border-purple-700
-                 bg-purple-50 dark:bg-purple-900/20
-                 text-purple-700 dark:text-purple-300 font-semibold text-sm
-                 hover:bg-purple-100 dark:hover:bg-purple-900/30
-                 flex items-center justify-center gap-2 transition-all"
-      >
-        <ShoppingBag className="w-4 h-4" />
-        <span>Aller au marché des offrandes</span>
-        <ArrowRight className="w-4 h-4" />
-      </motion.button>
-    </motion.div>
+    </div>
   );
 }

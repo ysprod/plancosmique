@@ -1,157 +1,262 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { api } from '@/lib/api/client';
-import { AnimatePresence, motion } from 'framer-motion';
-import { AlertCircle, ArrowLeft, Download, Share2 } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from "react";
-import LoadingSpinner from './LoadingSpinner';
-import SubjectCard from './SubjectCard';
-import SkyChartSection from './SkyChartSection';
-import MissionSection from './MissionSection';
-import MetadataFooter from './MetadataFooter';
-import type { AnalyseData, GenerationStep } from './types';
+import { motion } from 'framer-motion';
+import { 
+  ArrowLeft, 
+  CheckCircle2, 
+  Clock, 
+  Sparkles, 
+  User, 
+  Bell,
+  Mail
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { memo, useCallback } from 'react';
 
+// =====================================================
+// SOUS-COMPOSANTS MÉMORISÉS
+// =====================================================
+const SuccessIcon = memo(() => (
+  <motion.div
+    initial={{ scale: 0, rotate: -180 }}
+    animate={{ scale: 1, rotate: 0 }}
+    transition={{ 
+      type: "spring", 
+      stiffness: 200, 
+      damping: 15,
+      delay: 0.1 
+    }}
+    className="relative mx-auto mb-6"
+  >
+    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-green-600 
+                    flex items-center justify-center shadow-2xl">
+      <CheckCircle2 className="w-12 h-12 text-white" />
+    </div>
+    <motion.div
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ delay: 0.3, duration: 0.5 }}
+      className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-yellow-400 
+                 flex items-center justify-center shadow-lg"
+    >
+      <Sparkles className="w-5 h-5 text-yellow-900" />
+    </motion.div>
+  </motion.div>
+));
+SuccessIcon.displayName = 'SuccessIcon';
+
+const InfoCard = memo(({ 
+  icon: Icon, 
+  title, 
+  description,
+  delay = 0 
+}: { 
+  icon: any; 
+  title: string; 
+  description: string;
+  delay?: number;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, x: -20 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ delay, duration: 0.3 }}
+    className="flex items-start gap-3 p-4 rounded-xl bg-white/50 dark:bg-gray-800/50 
+               border border-gray-200 dark:border-gray-700 backdrop-blur-sm
+               hover:bg-white/80 dark:hover:bg-gray-800/80 transition-colors"
+  >
+    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 
+                    flex items-center justify-center shadow-md">
+      <Icon className="w-5 h-5 text-white" />
+    </div>
+    <div className="flex-1 min-w-0">
+      <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 mb-1">
+        {title}
+      </h4>
+      <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+        {description}
+      </p>
+    </div>
+  </motion.div>
+));
+InfoCard.displayName = 'InfoCard';
+
+const TimelineBadge = memo(() => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ delay: 0.5, duration: 0.4 }}
+    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full 
+               bg-gradient-to-r from-blue-500 to-cyan-500 shadow-lg"
+  >
+    <Clock className="w-4 h-4 text-white" />
+    <span className="text-sm font-bold text-white">
+      Délai maximum : 1 heure
+    </span>
+  </motion.div>
+));
+TimelineBadge.displayName = 'TimelineBadge';
+
+// =====================================================
+// COMPOSANT PRINCIPAL
+// =====================================================
 export default function GenereAnalysePage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const [step, setStep] = useState<GenerationStep>('loading');
-  const [analyseData, setAnalyseData] = useState<AnalyseData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const handleBack = useCallback(() => {
+    router.push('/secured/consultations');
+  }, [router]);
 
-  const generateAnalysis = async (consultationId: string) => {
-    try {
-      setStep('fetching');
+  const handleNotify = useCallback(() => {
+    // Logique de notification (optionnel)
+    alert('Vous serez notifié par email dès que votre analyse sera prête.');
+  }, []);
 
-      const res = await api.post(`/consultations/${consultationId}/generate-analysis`);
-
-      if (res.status !== 200 && res.status !== 201) {
-        throw new Error(res.data?.message || 'Erreur de génération');
-      }
-
-      const analyse = res.data?.analyse;
-      if (!analyse) {
-        throw new Error('Aucune analyse reçue');
-      }
-
-      console.log('[Analyse] ✅ Analyse reçue');
-      setAnalyseData(analyse);
-      setStep('success');
-
-    } catch (err: any) {
-      console.error('[Analyse] ❌ Erreur:', err);
-      setError(err.response?.data?.message || err.message || 'Erreur inconnue');
-      setStep('error');
-    }
-  };
-
-  useEffect(() => {
-    const id = searchParams.get('id');
-    if (!id) {
-      setError('ID consultation manquant');
-      setStep('error');
-      return;
-    }
-    generateAnalysis(id);
-  }, [searchParams]);
-
-  // =====================================================
-  // HANDLERS
-  // =====================================================
-  const handleRetry = () => {
-    const id = searchParams.get('id');
-    if (id) {
-      setError(null);
-      setStep('loading');
-      generateAnalysis(id);
-    }
-  };
-
-  
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
                   dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
-      {/* Header fixe */}
-      <div className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl 
-                    border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      
+      {/* Header sticky ultra-compact */}
+      <div className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl 
+                    border-b border-gray-200 dark:border-gray-800 shadow-sm">
+        <div className="max-w-3xl mx-auto px-4 py-3">
           <button
-            onClick={() => router.push('/secured/consultations')}
+            onClick={handleBack}
             className="flex items-center gap-2 text-gray-700 dark:text-gray-300 
-                     hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                     hover:text-gray-900 dark:hover:text-gray-100 transition-colors
+                     active:scale-95"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-4 h-4" />
             <span className="font-semibold text-sm">Retour</span>
           </button>
-
-          {step === 'success' && (
-            <div className="flex gap-2">
-              <button
-                onClick={() => window.print()}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 
-                         hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                <Download className="w-4 h-4 text-gray-700 dark:text-gray-300" />
-              </button>
-              <button
-                onClick={() => navigator.share?.({
-                  title: 'Analyse Astrologique',
-                  text: 'Découvrez mon analyse astrologique'
-                })}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 
-                         hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                <Share2 className="w-4 h-4 text-gray-700 dark:text-gray-300" />
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Contenu */}
-      <div className="max-w-4xl mx-auto px-4 py-6 space-y-4">
-        <AnimatePresence mode="wait">
-          {/* Loading */}
-          {(step === 'loading'  || step === 'fetching' || step === 'generating') && (
-            <motion.div key="loading">
-              <LoadingSpinner step={step} />
-            </motion.div>
-          )}
+      {/* Contenu principal */}
+      <div className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 
+                   dark:border-gray-700 p-6 sm:p-8 space-y-6"
+        >
+          
+          {/* Icône succès */}
+          <SuccessIcon />
 
-          {/* Success */}
-          {step === 'success' && analyseData && (
-            <motion.div key="success" className="space-y-4 pb-8">
-              <SubjectCard sujet={analyseData.carteDuCiel.sujet} />
-              <SkyChartSection carteDuCiel={analyseData.carteDuCiel} />
-              <MissionSection missionDeVie={analyseData.missionDeVie} />
-              <MetadataFooter metadata={analyseData.metadata} />
-            </motion.div>
-          )}
+          {/* Titre */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-center space-y-2"
+          >
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
+              Félicitations !
+            </h1>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Votre demande a bien été enregistrée
+            </p>
+          </motion.div>
 
-          {/* Error */}
-          {step === 'error' && (
-            <motion.div key="error" className="py-8 px-4 text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-900/30 
-                            flex items-center justify-center">
-                <AlertCircle className="w-8 h-8 text-red-600 dark:text-red-400" />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
-                Erreur
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                {error}
-              </p>
-              <button
-                onClick={handleRetry}
-                className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white 
-                         rounded-xl font-semibold transition-colors"
-              >
-                Réessayer
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          {/* Badge timeline */}
+          <div className="flex justify-center">
+            <TimelineBadge />
+          </div>
+
+          {/* Message principal */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="p-4 sm:p-5 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 
+                     dark:from-purple-900/20 dark:to-pink-900/20 
+                     border border-purple-200 dark:border-purple-800"
+          >
+            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed text-center">
+              Nous transmettons actuellement votre requête de consultation à un{' '}
+              <strong className="text-purple-700 dark:text-purple-300">
+                Maître spirituel qualifié
+              </strong>{' '}
+              et disponible, qui procédera à l'étude de votre situation avec attention et discernement.
+            </p>
+          </motion.div>
+
+          {/* Cards informatives */}
+          <div className="space-y-3">
+            <InfoCard
+              icon={User}
+              title="Attribution au Maître"
+              description="Votre consultation est assignée à un expert qualifié selon votre type de demande."
+              delay={0.4}
+            />
+            <InfoCard
+              icon={Sparkles}
+              title="Analyse en cours"
+              description="Le Maître procède à une étude approfondie et personnalisée de votre situation."
+              delay={0.5}
+            />
+            <InfoCard
+              icon={Mail}
+              title="Résultats garantis"
+              description="Vous recevrez les résultats détaillés dans un délai maximum d'une heure."
+              delay={0.6}
+            />
+          </div>
+
+          {/* Actions */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="flex flex-col sm:flex-row gap-3 pt-4"
+          >
+            <button
+              onClick={handleBack}
+              className="flex-1 h-11 px-4 rounded-xl bg-gray-100 dark:bg-gray-700 
+                       text-gray-700 dark:text-gray-300 font-semibold text-sm
+                       hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors
+                       active:scale-[0.98]"
+            >
+              Retour aux consultations
+            </button>
+            <button
+              onClick={handleNotify}
+              className="flex-1 h-11 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 
+                       text-white font-semibold text-sm shadow-lg
+                       hover:from-purple-700 hover:to-pink-700 transition-all
+                       active:scale-[0.98] flex items-center justify-center gap-2"
+            >
+              <Bell className="w-4 h-4" />
+              Me notifier
+            </button>
+          </motion.div>
+
+          {/* Footer message */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="text-xs text-center text-gray-500 dark:text-gray-400 pt-4 border-t 
+                     border-gray-200 dark:border-gray-700"
+          >
+            Nous vous remercions pour votre confiance. 🙏
+          </motion.p>
+        </motion.div>
+
+        {/* Note additionnelle */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9 }}
+          className="mt-6 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 
+                   border border-blue-200 dark:border-blue-800"
+        >
+          <p className="text-xs text-blue-700 dark:text-blue-300 text-center leading-relaxed">
+            💡 <strong>Astuce :</strong> Vous pouvez fermer cette page en toute sécurité. 
+            Vous recevrez une notification par email dès que votre analyse sera disponible.
+          </p>
+        </motion.div>
       </div>
     </div>
   );

@@ -6,11 +6,15 @@ import {
   AlertCircle,
   Calendar,
   CheckCircle,
-  ChevronLeft, ChevronRight,
-  ChevronsLeft, ChevronsRight,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
   Clock,
   DollarSign,
-  Download, Eye,
+  Download,
+  Edit,
+  Eye,
   FileText,
   Loader,
   Mail,
@@ -25,18 +29,366 @@ import {
   Zap
 } from 'lucide-react';
 import Link from 'next/link';
-import { useCallback, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api/client';
+import { useCallback, useMemo, useState, memo } from 'react';
 
 type ConsultationStatus = 'all' | 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR';
 type ConsultationType = 'all' | 'SPIRITUALITE' | 'TAROT' | 'ASTROLOGIE' | 'NUMEROLOGIE';
 
 const ITEMS_PER_PAGE = 5;
 
+// =====================================================
+// SOUS-COMPOSANTS MÉMORISÉS
+// =====================================================
+
+const StatusBadge = memo(({ status }: { status: string }) => {
+  const config = useMemo(() => {
+    const configs: Record<string, { color: string; icon: JSX.Element; text: string }> = {
+      'COMPLETED': {
+        color: 'bg-green-100 text-green-700 border-green-200',
+        icon: <CheckCircle className="w-2.5 h-2.5" />,
+        text: 'Complétée'
+      },
+      'GENERATING': {
+        color: 'bg-blue-100 text-blue-700 border-blue-200',
+        icon: <Loader className="w-2.5 h-2.5 animate-spin" />,
+        text: 'En cours'
+      },
+      'PENDING': {
+        color: 'bg-orange-100 text-orange-700 border-orange-200',
+        icon: <Clock className="w-2.5 h-2.5" />,
+        text: 'En attente'
+      },
+      'ERROR': {
+        color: 'bg-red-100 text-red-700 border-red-200',
+        icon: <XCircle className="w-2.5 h-2.5" />,
+        text: 'Erreur'
+      }
+    };
+    return configs[status] || {
+      color: 'bg-gray-100 text-gray-700 border-gray-200',
+      icon: <AlertCircle className="w-2.5 h-2.5" />,
+      text: status
+    };
+  }, [status]);
+
+  return (
+    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border ${config.color}`}>
+      {config.icon}
+      {config.text}
+    </span>
+  );
+});
+StatusBadge.displayName = 'StatusBadge';
+
+const ConsultationCard = memo(({
+  consultation,
+  onGenerateAnalysis,
+  onModifyAnalysis,
+  isGenerating
+}: {
+  consultation: any;
+  onGenerateAnalysis: (id: string) => void;
+  onModifyAnalysis: (id: string) => void;
+  isGenerating: boolean;
+}) => {
+  const typeConfig = useMemo(() => {
+    const configs: Record<string, { icon: string; text: string }> = {
+      'SPIRITUALITE': { icon: '🌟', text: 'Spiritualité' },
+      'TAROT': { icon: '🃏', text: 'Tarot' },
+      'ASTROLOGIE': { icon: '⭐', text: 'Astrologie' },
+      'NUMEROLOGIE': { icon: '🔢', text: 'Numérologie' }
+    };
+    return configs[consultation.type] || { icon: '📋', text: consultation.type };
+  }, [consultation.type]);
+
+  const hasAnalysis = useMemo(() => 
+    consultation.status === 'COMPLETED' && consultation.resultData,
+    [consultation.status, consultation.resultData]
+  );
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      whileHover={{ x: 2, boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
+      className="bg-white rounded-xl border border-gray-200 p-3 transition-shadow"
+    >
+      {/* Header compact */}
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <span className="text-xl flex-shrink-0">{typeConfig.icon}</span>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm font-bold text-gray-900 truncate">
+              {typeConfig.text}
+            </h3>
+            <p className="text-[11px] text-gray-500 truncate">
+              {consultation.title}
+            </p>
+          </div>
+        </div>
+        <StatusBadge status={consultation.status} />
+      </div>
+
+      {/* Infos client compact (2 colonnes mobile) */}
+      <div className="grid grid-cols-2 gap-1.5 mb-2 text-[11px]">
+        <div className="flex items-center gap-1 text-gray-600 truncate">
+          <User className="w-3 h-3 flex-shrink-0" />
+          <span className="truncate font-medium">
+            {consultation.formData?.prenoms} {consultation.formData?.nom}
+          </span>
+        </div>
+        {consultation.clientId?.email && (
+          <div className="flex items-center gap-1 text-gray-600 truncate">
+            <Mail className="w-3 h-3 flex-shrink-0" />
+            <span className="truncate">{consultation.clientId.email}</span>
+          </div>
+        )}
+        {consultation.formData?.numeroSend && (
+          <div className="flex items-center gap-1 text-gray-600">
+            <Phone className="w-3 h-3 flex-shrink-0" />
+            <span>{consultation.formData.numeroSend}</span>
+          </div>
+        )}
+        {consultation.formData?.paysNaissance && (
+          <div className="flex items-center gap-1 text-gray-600 truncate">
+            <MapPin className="w-3 h-3 flex-shrink-0" />
+            <span className="truncate">
+              {consultation.formData.villeNaissance}, {consultation.formData.paysNaissance}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Badges métriques (scrollable horizontal mobile) */}
+      <div className="flex gap-1.5 overflow-x-auto scrollbar-hide mb-3 pb-1">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200 flex-shrink-0">
+          <Calendar className="w-2.5 h-2.5" />
+          {new Date(consultation.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
+        </span>
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-green-50 text-green-700 border border-green-200 flex-shrink-0">
+          <DollarSign className="w-2.5 h-2.5" />
+          {consultation.price ? `${consultation.price} F` : 'Gratuit'}
+        </span>
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium border flex-shrink-0 ${
+          consultation.isPaid
+            ? 'bg-green-50 text-green-700 border-green-200'
+            : 'bg-red-50 text-red-700 border-red-200'
+        }`}>
+          {consultation.isPaid ? '✓ Payé' : '✗ Non payé'}
+        </span>
+        {consultation.rating && (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-50 text-amber-700 border border-amber-200 flex-shrink-0">
+            <Star className="w-2.5 h-2.5 fill-amber-500" />
+            {consultation.rating}/5
+          </span>
+        )}
+        {consultation.review && (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-purple-50 text-purple-700 border border-purple-200 flex-shrink-0">
+            <MessageSquare className="w-2.5 h-2.5" />
+            Avis
+          </span>
+        )}
+      </div>
+
+      {/* Actions compactes - 2x2 grid */}
+      <div className="grid grid-cols-2 gap-2">
+        {/* Bouton Détails - Toujours visible */}
+        <Link
+          href={`/admin/consultations/${consultation.id}`}
+          className="flex items-center justify-center gap-1.5 px-3 py-2
+                     bg-purple-600 text-white text-xs rounded-lg font-medium
+                     hover:bg-purple-700 transition-colors active:scale-[0.98]"
+        >
+          <Eye className="w-3.5 h-3.5" />
+          Détails
+        </Link>
+
+        {/* Bouton Générer/Régénérer - Toujours visible */}
+        <button
+          onClick={() => onGenerateAnalysis(consultation.id)}
+          disabled={isGenerating}
+          className="flex items-center justify-center gap-1.5 px-3 py-2
+                     bg-blue-600 text-white text-xs rounded-lg font-medium
+                     hover:bg-blue-700 transition-colors active:scale-[0.98]
+                     disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <Sparkles className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
+          {isGenerating ? 'Génération...' : (hasAnalysis ? 'Régénérer' : 'Générer')}
+        </button>
+
+        {/* Boutons supplémentaires si analyse existe */}
+        {hasAnalysis && (
+          <>
+            <button
+              onClick={() => onModifyAnalysis(consultation.id)}
+              className="flex items-center justify-center gap-1.5 px-3 py-2
+                       bg-orange-600 text-white text-xs rounded-lg font-medium
+                       hover:bg-orange-700 transition-colors active:scale-[0.98]"
+            >
+              <Edit className="w-3.5 h-3.5" />
+              Modifier
+            </button>
+            <button
+              className="flex items-center justify-center gap-1.5 px-3 py-2
+                       bg-green-600 text-white text-xs rounded-lg font-medium
+                       hover:bg-green-700 transition-colors active:scale-[0.98]"
+            >
+              <Download className="w-3.5 h-3.5" />
+              PDF
+            </button>
+          </>
+        )}
+      </div>
+    </motion.div>
+  );
+});
+ConsultationCard.displayName = 'ConsultationCard';
+
+const PaginationControls = memo(({
+  currentPage,
+  totalPages,
+  total,
+  itemsPerPage,
+  onPageChange,
+  loading
+}: {
+  currentPage: number;
+  totalPages: number;
+  total: number;
+  itemsPerPage: number;
+  onPageChange: (page: number) => void;
+  loading: boolean;
+}) => {
+  const getVisiblePageNumbers = useMemo(() => {
+    const pages: (number | string)[] = [];
+    const maxVisible = 5;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) pages.push(i);
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i);
+      } else {
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) pages.push(i);
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+    return pages;
+  }, [currentPage, totalPages]);
+
+  if (totalPages <= 1) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white rounded-xl border border-gray-200 p-3 shadow-sm"
+    >
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+        {/* Info */}
+        <div className="text-xs text-gray-600">
+          <span className="font-semibold text-gray-900">
+            {((currentPage - 1) * itemsPerPage) + 1}
+          </span> - <span className="font-semibold text-gray-900">
+            {Math.min(currentPage * itemsPerPage, total)}
+          </span> sur <span className="font-semibold text-gray-900">{total}</span>
+        </div>
+
+        {/* Controls */}
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => onPageChange(1)}
+            disabled={currentPage === 1 || loading}
+            className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50
+                     disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <ChevronsLeft className="w-3.5 h-3.5 text-gray-600" />
+          </button>
+
+          <button
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1 || loading}
+            className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50
+                     disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <ChevronLeft className="w-3.5 h-3.5 text-gray-600" />
+          </button>
+
+          <div className="hidden sm:flex items-center gap-1">
+            {getVisiblePageNumbers.map((page, index) => (
+              page === '...' ? (
+                <span key={`ellipsis-${index}`} className="px-2 text-gray-400 text-sm">...</span>
+              ) : (
+                <button
+                  key={page}
+                  onClick={() => onPageChange(page as number)}
+                  disabled={loading}
+                  className={`min-w-[32px] px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    page === currentPage
+                      ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-sm'
+                      : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                  } disabled:opacity-40`}
+                >
+                  {page}
+                </button>
+              )
+            ))}
+          </div>
+
+          <div className="sm:hidden px-2.5 py-1.5 bg-gradient-to-r from-purple-500 to-purple-600
+                        text-white rounded-lg text-xs font-semibold">
+            {currentPage} / {totalPages}
+          </div>
+
+          <button
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages || loading}
+            className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50
+                     disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <ChevronRight className="w-3.5 h-3.5 text-gray-600" />
+          </button>
+
+          <button
+            onClick={() => onPageChange(totalPages)}
+            disabled={currentPage === totalPages || loading}
+            className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50
+                     disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <ChevronsRight className="w-3.5 h-3.5 text-gray-600" />
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+});
+PaginationControls.displayName = 'PaginationControls';
+
+// =====================================================
+// COMPOSANT PRINCIPAL
+// =====================================================
 export default function ConsultationsPage() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<ConsultationStatus>('all');
   const [typeFilter, setTypeFilter] = useState<ConsultationType>('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [generatingIds, setGeneratingIds] = useState<Set<string>>(new Set());
 
   const { consultations, total, loading, error, refetch } = useAdminConsultations({
     search: searchQuery,
@@ -46,171 +398,68 @@ export default function ConsultationsPage() {
     limit: ITEMS_PER_PAGE,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const stats = useMemo(() => {
-    if (!consultations) return null;
-    return {
-      total: consultations.length,
-      pending: consultations.filter(c => c.status === 'PENDING').length,
-      generating: consultations.filter(c => c.status === 'GENERATING').length,
-      completed: consultations.filter(c => c.status === 'COMPLETED').length,
-      error: consultations.filter(c => c.status === 'ERROR').length,
-      paid: consultations.filter(c => c.isPaid).length,
-      totalRevenue: consultations.reduce((sum, c) => sum + (c.price || 0), 0),
-      avgRating: consultations.filter(c => c.rating).length > 0
-        ? (consultations.reduce((sum, c) => sum + (c.rating || 0), 0) / consultations.filter(c => c.rating).length).toFixed(1)
-        : 0,
-    };
-  }, [consultations]);
-
   const [isRefreshing, setIsRefreshing] = useState(false);
+
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
     await refetch();
     setTimeout(() => setIsRefreshing(false), 500);
   }, [refetch]);
 
-  const handleResetFilters = useCallback(() => {
-    setSearchQuery('');
-    setStatusFilter('all');
-    setTypeFilter('all');
-    setCurrentPage(1);
-  }, []);
-
-  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
-
-  // Fonction pour gérer le changement de page
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
-    // Scroll vers le haut avec animation
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  // Génération des numéros de pages visibles
-  const getVisiblePageNumbers = useMemo(() => {
-    const pages: (number | string)[] = [];
-    const maxVisible = 5; // Nombre maximum de boutons de page visibles
-
-    if (totalPages <= maxVisible) {
-      // Si peu de pages, afficher toutes
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
+  const handleGenerateAnalysis = useCallback(async (id: string) => {
+    setGeneratingIds(prev => new Set(prev).add(id));
+    try {
+      const res = await api.post(`/consultations/${id}/generate-analysis`);
+      if (res.status === 200 || res.status === 201) {
+        // On refetch pour obtenir le statut à jour
+        await refetch();
+         router.push(`/admin/consultations/${id}`);
+        // On attend que la consultation soit bien en COMPLETED avec resultData
+        // const pollForAnalysis = async (retries = 10) => {
+        //   for (let i = 0; i < retries; i++) {
+        //     const refreshed = await api.get(`/consultations/${id}`);
+        //     const c = refreshed.data?.consultation || refreshed.data;
+        //     if (c.status === 'COMPLETED' && c.resultData) {
+             
+        //       return;
+        //     }
+        //     await new Promise(r => setTimeout(r, 1500));
+        //   }
+        // };
+        // pollForAnalysis();
       }
-    } else {
-      // Logique pour afficher les pages avec ellipses
-      if (currentPage <= 3) {
-        // Début : 1 2 3 4 ... 10
-        for (let i = 1; i <= 4; i++) {
-          pages.push(i);
-        }
-        pages.push('...');
-        pages.push(totalPages);
-      } else if (currentPage >= totalPages - 2) {
-        // Fin : 1 ... 7 8 9 10
-        pages.push(1);
-        pages.push('...');
-        for (let i = totalPages - 3; i <= totalPages; i++) {
-          pages.push(i);
-        }
-      } else {
-        // Milieu : 1 ... 4 5 6 ... 10
-        pages.push(1);
-        pages.push('...');
-        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-          pages.push(i);
-        }
-        pages.push('...');
-        pages.push(totalPages);
-      }
+    } catch (err) {
+      alert('Erreur lors de la génération de l\'analyse');
+    } finally {
+      setGeneratingIds(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(id);
+        return newSet;
+      });
     }
+  }, [refetch, router]);
 
-    return pages;
-  }, [currentPage, totalPages]);
+  const handleModifyAnalysis = useCallback((id: string) => {
+    router.push(`/secured/genereanalyse?id=${id}`);
+  }, [router]);
 
-  // Helpers pour affichage (identiques à avant)
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'COMPLETED': return 'bg-green-100 text-green-700 border-green-200';
-      case 'GENERATING': return 'bg-blue-100 text-blue-700 border-blue-200';
-      case 'PENDING': return 'bg-orange-100 text-orange-700 border-orange-200';
-      case 'ERROR': return 'bg-red-100 text-red-700 border-red-200';
-      default: return 'bg-gray-100 text-gray-700 border-gray-200';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'COMPLETED': return <CheckCircle className="w-2.5 h-2.5" />;
-      case 'GENERATING': return <Loader className="w-2.5 h-2.5 animate-spin" />;
-      case 'PENDING': return <Clock className="w-2.5 h-2.5" />;
-      case 'ERROR': return <XCircle className="w-2.5 h-2.5" />;
-      default: return <AlertCircle className="w-2.5 h-2.5" />;
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    const map: Record<string, string> = {
-      'COMPLETED': 'Complétée',
-      'GENERATING': 'En cours',
-      'PENDING': 'En attente',
-      'ERROR': 'Erreur'
-    };
-    return map[status] || status;
-  };
-
-  const getTypeText = (type: string) => {
-    const map: Record<string, string> = {
-      'SPIRITUALITE': 'Spiritualité',
-      'TAROT': 'Tarot',
-      'ASTROLOGIE': 'Astrologie',
-      'NUMEROLOGIE': 'Numérologie'
-    };
-    return map[type] || type;
-  };
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'SPIRITUALITE': return '🌟';
-      case 'TAROT': return '🃏';
-      case 'ASTROLOGIE': return '⭐';
-      case 'NUMEROLOGIE': return '🔢';
-      default: return '📋';
-    }
-  };
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.05 }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 8 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.3, ease: 'easeOut' }
-    }
-  };
+  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
 
   if (loading && !consultations) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           className="text-center"
         >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-            className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full mx-auto mb-3"
-          />
-          <p className="text-sm text-gray-900 font-semibold">Chargement des consultations...</p>
-          <p className="text-xs text-gray-500 mt-1">Veuillez patienter</p>
+          <Loader className="w-10 h-10 text-purple-600 animate-spin mx-auto mb-2" />
+          <p className="text-sm font-semibold text-gray-900">Chargement...</p>
         </motion.div>
       </div>
     );
@@ -218,31 +467,21 @@ export default function ConsultationsPage() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
+      <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center max-w-sm w-full bg-white rounded-xl shadow-xl border border-gray-200 p-6"
+          className="text-center max-w-sm bg-white rounded-xl shadow-xl border p-6"
         >
-          <motion.div
-            animate={{ 
-              rotate: [0, 10, -10, 10, 0],
-              transition: { duration: 0.5, repeat: Infinity, repeatDelay: 2 }
-            }}
-          >
-            <AlertCircle className="w-14 h-14 text-red-500 mx-auto mb-3" />
-          </motion.div>
-          <h3 className="text-lg font-bold text-gray-900 mb-2">Erreur de chargement</h3>
-          <p className="text-sm text-gray-600 mb-4 leading-relaxed">{error}</p>
+          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-3" />
+          <h3 className="text-lg font-bold text-gray-900 mb-2">Erreur</h3>
+          <p className="text-sm text-gray-600 mb-4">{error}</p>
           <button
             onClick={handleRefresh}
-            disabled={isRefreshing}
-            className="w-full px-4 py-2.5 bg-gradient-to-r from-purple-500 to-purple-600 
-                       text-white text-sm rounded-lg font-semibold hover:shadow-lg 
-                       transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full px-4 py-2.5 bg-gradient-to-r from-purple-500 to-purple-600
+                     text-white rounded-lg font-semibold hover:shadow-lg transition-all"
           >
-            <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-            {isRefreshing ? 'Chargement...' : 'Réessayer'}
+            Réessayer
           </button>
         </motion.div>
       </div>
@@ -251,373 +490,78 @@ export default function ConsultationsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* En-tête (identique) */}
+      {/* Header sticky */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3">
-          <div className="flex items-center justify-between gap-3">
+        <div className="max-w-5xl mx-auto px-3 py-3">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg">
                 <FileText className="w-4 h-4 text-white" />
               </div>
               <div>
-                <h1 className="text-lg sm:text-xl font-bold text-gray-900">
-                  Consultations
-                </h1>
+                <h1 className="text-base font-bold text-gray-900">Consultations</h1>
                 <p className="text-xs text-gray-500 flex items-center gap-1">
                   <Zap className="w-3 h-3" />
-                  {total} au total
+                  {total} total
                 </p>
               </div>
             </div>
 
-            <motion.button
+            <button
               onClick={handleRefresh}
               disabled={isRefreshing || loading}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               className={`p-2 rounded-lg transition-all ${
                 isRefreshing || loading
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                  ? 'bg-gray-100 text-gray-400'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
               <RefreshCw className={`w-4 h-4 ${isRefreshing || loading ? 'animate-spin' : ''}`} />
-            </motion.button>
+            </button>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
-        {/* Bannière + Stats (identique au code précédent) */}
-        <AnimatePresence>
-          {(loading || isRefreshing) && consultations && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="mb-4 bg-gradient-to-r from-purple-500 to-purple-600 text-white 
-                         rounded-lg p-3 flex items-center justify-center gap-2 shadow-md"
-            >
-              <Loader className="w-4 h-4 animate-spin" />
-              <span className="text-sm font-medium">
-                Mise à jour des données en cours...
-              </span>
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div className="max-w-5xl mx-auto px-3 py-4 space-y-3">
+        {/* Liste consultations */}
+        {consultations && consultations.length > 0 ? (
+          <>
+            <AnimatePresence mode="popLayout">
+              {consultations.map((consultation: any) => (
+                <ConsultationCard
+                  key={consultation.id}
+                  consultation={consultation}
+                  onGenerateAnalysis={handleGenerateAnalysis}
+                  onModifyAnalysis={handleModifyAnalysis}
+                  isGenerating={generatingIds.has(consultation.id)}
+                />
+              ))}
+            </AnimatePresence>
 
-        {/* Stats (code identique à avant - je le skip pour la concision) */}
-        {/* ... (Stats principales et secondaires) ... */}
-
-        {/* Barre de recherche (identique) */}
-        {/* ... (Code de recherche et filtres) ... */}
-
-        {/* Grille consultations */}
-        <div className="relative">
-          <AnimatePresence>
-            {loading && consultations && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-white/70 backdrop-blur-sm z-10 
-                           rounded-lg flex items-center justify-center"
-              >
-                <div className="bg-white rounded-lg shadow-xl border border-gray-200 p-4 
-                                flex items-center gap-3">
-                  <Loader className="w-5 h-5 text-purple-600 animate-spin" />
-                  <p className="text-sm font-semibold text-gray-900">
-                    Chargement...
-                  </p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {consultations && consultations.length > 0 ? (
-            <div className="space-y-4">
-              {/* Cards en liste verticale (5 max) */}
-              <motion.div 
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                key={currentPage} // Force re-animation à chaque changement de page
-                className="space-y-3"
-              >
-                {consultations.map((consultation: any) => (
-                  <motion.div
-                    key={consultation.id}
-                    variants={cardVariants}
-                    whileHover={{ x: 4, boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}
-                    className="bg-white rounded-lg border border-gray-200 p-4 transition-all"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                      {/* Colonne gauche : Type + Infos */}
-                      <div className="flex-1 space-y-3">
-                        {/* Type et statut */}
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="text-2xl">{getTypeIcon(consultation.type)}</span>
-                            <div>
-                              <h3 className="text-sm font-bold text-gray-900">
-                                {getTypeText(consultation.type)}
-                              </h3>
-                              <p className="text-xs text-gray-500 line-clamp-1">
-                                {consultation.title}
-                              </p>
-                            </div>
-                          </div>
-                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 
-                                          rounded-full text-xs font-medium border ${
-                            getStatusColor(consultation.status)
-                          }`}>
-                            {getStatusIcon(consultation.status)}
-                            {getStatusText(consultation.status)}
-                          </span>
-                        </div>
-
-                        {/* Infos client */}
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                          <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                            <User className="w-3.5 h-3.5 flex-shrink-0" />
-                            <span className="truncate font-medium">
-                              {consultation.formData?.prenoms} {consultation.formData?.nom}
-                            </span>
-                          </div>
-                          {consultation.clientId?.email && (
-                            <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                              <Mail className="w-3.5 h-3.5 flex-shrink-0" />
-                              <span className="truncate">{consultation.clientId.email}</span>
-                            </div>
-                          )}
-                          {consultation.formData?.numeroSend && (
-                            <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                              <Phone className="w-3.5 h-3.5 flex-shrink-0" />
-                              <span>{consultation.formData.numeroSend}</span>
-                            </div>
-                          )}
-                          {consultation.formData?.paysNaissance && (
-                            <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                              <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-                              <span className="truncate">
-                                {consultation.formData.villeNaissance}, {consultation.formData.paysNaissance}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Badges et métriques */}
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 
-                                         rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
-                            <Calendar className="w-3 h-3" />
-                            {new Date(consultation.createdAt).toLocaleDateString('fr-FR')}
-                          </span>
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 
-                                         rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">
-                            <DollarSign className="w-3 h-3" />
-                            {consultation.price ? `${consultation.price} F` : 'Gratuit'}
-                          </span>
-                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 
-                                         rounded-full text-xs font-medium border ${
-                            consultation.isPaid 
-                              ? 'bg-green-50 text-green-700 border-green-200' 
-                              : 'bg-red-50 text-red-700 border-red-200'
-                          }`}>
-                            {consultation.isPaid ? 'Payé' : 'Non payé'}
-                          </span>
-                          {consultation.rating && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 
-                                           rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
-                              <Star className="w-3 h-3 fill-amber-500" />
-                              {consultation.rating}/5
-                            </span>
-                          )}
-                          {consultation.review && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 
-                                           rounded-full text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200">
-                              <MessageSquare className="w-3 h-3" />
-                              Avis
-                            </span>
-                          )}
-                          {consultation.resultData && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 
-                                           rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">
-                              <Sparkles className="w-3 h-3" />
-                              Résultat
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Colonne droite : Actions */}
-                      <div className="flex sm:flex-col gap-2 sm:w-32">
-                        <Link
-                          href={`/admin/consultations/${consultation.id}`}
-                          className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 
-                                     px-4 py-2 bg-purple-600 text-white text-sm 
-                                     rounded-lg font-medium hover:bg-purple-700 transition-colors"
-                        >
-                          <Eye className="w-4 h-4" />
-                          Détails
-                        </Link>
-                        {consultation.status === 'COMPLETED' && consultation.resultData && (
-                          <button
-                            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 
-                                       px-4 py-2 bg-green-600 text-white text-sm 
-                                       rounded-lg font-medium hover:bg-green-700 transition-colors"
-                          >
-                            <Download className="w-4 h-4" />
-                            PDF
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              {/* Pagination Ultra-Moderne */}
-              {totalPages > 1 && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm"
-                >
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                    {/* Info pagination */}
-                    <div className="text-sm text-gray-600">
-                      Affichage de <span className="font-semibold text-gray-900">
-                        {((currentPage - 1) * ITEMS_PER_PAGE) + 1}
-                      </span> à <span className="font-semibold text-gray-900">
-                        {Math.min(currentPage * ITEMS_PER_PAGE, total)}
-                      </span> sur <span className="font-semibold text-gray-900">{total}</span> résultats
-                    </div>
-
-                    {/* Boutons pagination */}
-                    <div className="flex items-center gap-1">
-                      {/* Première page */}
-                      <motion.button
-                        onClick={() => handlePageChange(1)}
-                        disabled={currentPage === 1 || loading}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 
-                                   disabled:opacity-40 disabled:cursor-not-allowed
-                                   transition-colors"
-                        title="Première page"
-                      >
-                        <ChevronsLeft className="w-4 h-4 text-gray-600" />
-                      </motion.button>
-
-                      {/* Page précédente */}
-                      <motion.button
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1 || loading}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 
-                                   disabled:opacity-40 disabled:cursor-not-allowed
-                                   transition-colors"
-                        title="Page précédente"
-                      >
-                        <ChevronLeft className="w-4 h-4 text-gray-600" />
-                      </motion.button>
-
-                      {/* Numéros de pages */}
-                      <div className="hidden sm:flex items-center gap-1">
-                        {getVisiblePageNumbers.map((page, index) => (
-                          page === '...' ? (
-                            <span key={`ellipsis-${index}`} className="px-3 py-2 text-gray-400">
-                              ...
-                            </span>
-                          ) : (
-                            <motion.button
-                              key={page}
-                              onClick={() => handlePageChange(page as number)}
-                              disabled={loading}
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              className={`min-w-[36px] px-3 py-2 rounded-lg text-sm font-medium 
-                                         transition-all ${
-                                page === currentPage
-                                  ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md'
-                                  : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                              } disabled:opacity-40 disabled:cursor-not-allowed`}
-                            >
-                              {page}
-                            </motion.button>
-                          )
-                        ))}
-                      </div>
-
-                      {/* Page actuelle (mobile) */}
-                      <div className="sm:hidden px-3 py-2 bg-gradient-to-r from-purple-500 to-purple-600 
-                                      text-white rounded-lg text-sm font-semibold">
-                        {currentPage} / {totalPages}
-                      </div>
-
-                      {/* Page suivante */}
-                      <motion.button
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages || loading}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 
-                                   disabled:opacity-40 disabled:cursor-not-allowed
-                                   transition-colors"
-                        title="Page suivante"
-                      >
-                        <ChevronRight className="w-4 h-4 text-gray-600" />
-                      </motion.button>
-
-                      {/* Dernière page */}
-                      <motion.button
-                        onClick={() => handlePageChange(totalPages)}
-                        disabled={currentPage === totalPages || loading}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 
-                                   disabled:opacity-40 disabled:cursor-not-allowed
-                                   transition-colors"
-                        title="Dernière page"
-                      >
-                        <ChevronsRight className="w-4 h-4 text-gray-600" />
-                      </motion.button>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white rounded-lg border border-gray-200 p-8 text-center"
-            >
-              <FileText className="w-14 h-14 text-gray-300 mx-auto mb-3" />
-              <h3 className="text-base font-bold text-gray-900 mb-1">
-                Aucune consultation trouvée
-              </h3>
-              <p className="text-sm text-gray-500 mb-4">
-                {searchQuery || statusFilter !== 'all' || typeFilter !== 'all'
-                  ? 'Aucun résultat ne correspond à vos critères'
-                  : 'Les consultations apparaîtront ici'}
-              </p>
-              {(searchQuery || statusFilter !== 'all' || typeFilter !== 'all') && (
-                <button
-                  onClick={handleResetFilters}
-                  className="px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 
-                             text-white text-sm rounded-lg font-medium hover:shadow-md
-                             transition-all"
-                >
-                  Réinitialiser les filtres
-                </button>
-              )}
-            </motion.div>
-          )}
-        </div>
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              total={total}
+              itemsPerPage={ITEMS_PER_PAGE}
+              onPageChange={handlePageChange}
+              loading={loading}
+            />
+          </>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="bg-white rounded-xl border p-8 text-center"
+          >
+            <FileText className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+            <h3 className="text-base font-bold text-gray-900 mb-1">
+              Aucune consultation
+            </h3>
+            <p className="text-sm text-gray-500">
+              Les consultations apparaîtront ici
+            </p>
+          </motion.div>
+        )}
       </div>
     </div>
   );
