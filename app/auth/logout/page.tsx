@@ -30,7 +30,7 @@ export default function LogoutPage() {
         setStatus("success");
         setTimeout(() => {
           router.replace("/auth/login");
-        }, 3000);
+        }, 2000);
       } catch (error) {
         console.error("Logout error:", error);
         setStatus("error");

@@ -50,7 +50,7 @@ interface HoroscopeResult {
 const getZodiacSign = (date: Date): string => {
   const day = date.getDate()
   const month = date.getMonth() + 1
-  
+
   if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "Bélier"
   if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "Taureau"
   if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return "Gémeaux"
@@ -90,11 +90,46 @@ const generateHoroscope = async (
   birthDate: Date,
   partnerSign?: string
 ): Promise<HoroscopeResult> => {
-  await new Promise(resolve => setTimeout(resolve, 2000))
-
   const element = getZodiacElement(zodiacSign)
   const symbol = getZodiacSymbol(zodiacSign)
-  
+
+  // Appel à l'API backend qui utilise DeepSeek
+  try {
+    const response = await fetch('/api/horoscope/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        zodiacSign,
+        horoscopeType,
+        birthDate: birthDate.toISOString(),
+        partnerSign,
+        element,
+        symbol
+      })
+    })
+
+    if (!response.ok) {
+      throw new Error('Erreur lors de la génération de l\'horoscope')
+    }
+
+    const data = await response.json()
+    return data.horoscope
+  } catch (error) {
+    console.error('Erreur génération horoscope:', error)
+    // Fallback en cas d'erreur
+    return generateFallbackHoroscope(zodiacSign, horoscopeType, birthDate, partnerSign, element, symbol)
+  }
+}
+
+const generateFallbackHoroscope = (
+  zodiacSign: string,
+  horoscopeType: string,
+  birthDate: Date,
+  partnerSign: string | undefined,
+  element: string,
+  symbol: string
+): HoroscopeResult => {
+
   const africanWisdom: { [key: string]: string[] } = {
     "Quotidien": [
       "Comme le dit le proverbe bambara : 'Le soleil du matin ne dure pas toute la journée.' Profitez de chaque instant.",
@@ -118,8 +153,6 @@ const generateHoroscope = async (
     ]
   }
 
-  const randomWisdom = africanWisdom[horoscopeType][Math.floor(Math.random() * africanWisdom[horoscopeType].length)]
-
   const luckyColors: { [key: string]: string } = {
     "Feu": "Rouge rubis et or",
     "Terre": "Vert émeraude et brun",
@@ -129,8 +162,8 @@ const generateHoroscope = async (
 
   let periodText = ""
   let generalForecast = ""
-  
-  switch(horoscopeType) {
+
+  switch (horoscopeType) {
     case "Quotidien":
       const today = new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
       periodText = today
@@ -156,6 +189,8 @@ const generateHoroscope = async (
       break
   }
 
+  const randomWisdom = africanWisdom[horoscopeType][Math.floor(Math.random() * africanWisdom[horoscopeType].length)]
+
   return {
     zodiacSign,
     symbol,
@@ -163,7 +198,7 @@ const generateHoroscope = async (
     period: periodText,
     horoscopeType,
     generalForecast,
-    love: horoscopeType === "Amoureux" 
+    love: horoscopeType === "Amoureux"
       ? `${partnerSign ? `Avec ${partnerSign}, v` : "V"}otre cœur résonne au rythme des tambours ancestraux. ${partnerSign ? "Cette union possède une synergie naturelle qui transcende les différences." : "Une rencontre significative pourrait illuminer votre chemin."} Laissez la vulnérabilité devenir votre force et l'authenticité votre langage d'amour.`
       : `En amour, ${element === "Feu" ? "votre passion naturelle attire les regards" : element === "Eau" ? "votre profondeur émotionnelle touche les cœurs" : element === "Air" ? "votre charme communicatif séduit naturellement" : "votre fidélité rassure et construit"}. ${horoscopeType === "Quotidien" ? "Aujourd'hui" : horoscopeType === "Mensuel" ? "Ce mois-ci" : "Cette année"}, soyez ouvert aux surprises que l'univers vous réserve.`,
     work: `Sur le plan professionnel, ${element === "Feu" ? "votre dynamisme ouvre des portes" : element === "Eau" ? "votre intuition vous guide vers le succès" : element === "Air" ? "vos idées innovantes impressionnent" : "votre persévérance porte ses fruits"}. Comme le forgeron africain qui façonne le métal avec patience et précision, vous créerez votre succès par un travail méthodique et inspiré.`,
@@ -188,7 +223,7 @@ const ResultDisplay = ({ result }: { result: HoroscopeResult }) => (
   >
     {/* En-tête */}
     <div className="text-center pb-6 border-b border-gray-200">
-      <motion.div 
+      <motion.div
         className="text-6xl md:text-7xl mb-4"
         animate={{ rotate: [0, 10, -10, 0] }}
         transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
@@ -222,7 +257,7 @@ const ResultDisplay = ({ result }: { result: HoroscopeResult }) => (
 
     {/* Domaines de vie */}
     <div className="grid gap-4">
-      <motion.div 
+      <motion.div
         whileHover={{ scale: 1.02 }}
         className="bg-white rounded-2xl p-5 border-2 border-gray-100 hover:border-rose-200 transition-all"
       >
@@ -237,7 +272,7 @@ const ResultDisplay = ({ result }: { result: HoroscopeResult }) => (
         </div>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         whileHover={{ scale: 1.02 }}
         className="bg-white rounded-2xl p-5 border-2 border-gray-100 hover:border-blue-200 transition-all"
       >
@@ -252,7 +287,7 @@ const ResultDisplay = ({ result }: { result: HoroscopeResult }) => (
         </div>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         whileHover={{ scale: 1.02 }}
         className="bg-white rounded-2xl p-5 border-2 border-gray-100 hover:border-green-200 transition-all"
       >
@@ -370,7 +405,7 @@ export default function HoroscopePage() {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 py-6 sm:py-8 max-w-4xl">
-        
+
 
         {/* Header */}
         <motion.div
@@ -404,11 +439,10 @@ export default function HoroscopePage() {
                 onClick={() => setActiveTab(tab.id)}
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className={`relative p-4 rounded-2xl border-2 transition-all ${
-                  activeTab === tab.id
+                className={`relative p-4 rounded-2xl border-2 transition-all ${activeTab === tab.id
                     ? 'bg-gradient-to-br from-purple-500 to-pink-600 border-purple-600 text-white shadow-lg'
                     : 'bg-white border-gray-200 hover:border-purple-300 text-gray-700'
-                }`}
+                  }`}
               >
                 {activeTab === tab.id && (
                   <motion.div
@@ -418,17 +452,14 @@ export default function HoroscopePage() {
                   />
                 )}
                 <div className="relative z-10 text-center">
-                  <tab.icon className={`w-6 h-6 mx-auto mb-2 ${
-                    activeTab === tab.id ? 'text-white' : 'text-gray-600'
-                  }`} />
-                  <div className={`font-bold text-sm ${
-                    activeTab === tab.id ? 'text-white' : 'text-gray-900'
-                  }`}>
+                  <tab.icon className={`w-6 h-6 mx-auto mb-2 ${activeTab === tab.id ? 'text-white' : 'text-gray-600'
+                    }`} />
+                  <div className={`font-bold text-sm ${activeTab === tab.id ? 'text-white' : 'text-gray-900'
+                    }`}>
                     {tab.title}
                   </div>
-                  <div className={`text-xs mt-1 ${
-                    activeTab === tab.id ? 'text-purple-100' : 'text-gray-500'
-                  }`}>
+                  <div className={`text-xs mt-1 ${activeTab === tab.id ? 'text-purple-100' : 'text-gray-500'
+                    }`}>
                     {tab.subtitle}
                   </div>
                 </div>
@@ -503,12 +534,12 @@ export default function HoroscopePage() {
               {loading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Consultation des astres...
+                  Analyse en cours...
                 </>
               ) : (
                 <>
                   <Sparkles className="w-5 h-5" />
-                  Générer mon horoscope
+                  Voir mon horoscope
                 </>
               )}
             </button>
@@ -522,11 +553,41 @@ export default function HoroscopePage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="bg-white rounded-2xl p-12 border-2 border-gray-200 text-center"
+              className="bg-white rounded-2xl p-8 border-2 border-purple-200 shadow-sm"
             >
-              <Loader2 className="w-12 h-12 mx-auto mb-4 text-purple-600 animate-spin" />
-              <p className="text-gray-600 font-medium">Consultation des étoiles ancestrales...</p>
+              <div className="text-center">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  className="w-16 h-16 mx-auto mb-4 text-purple-600"
+                >
+                  <Sparkles className="w-full h-full" />
+                </motion.div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  🔮 Consultation des astres avec Mon Etoile
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Mon Etoile analyse votre thème astrologique...
+                </p>
+                <div className="space-y-2 text-sm text-gray-500">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
+                    <span>Calcul de votre signe zodiacal</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+                    <span>Analyse des énergies planétaires</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
+                    <span>Intégration de la sagesse africaine</span>
+                  </div>
+                </div>
+              </div>
             </motion.div>
+          )}
+          {result && !loading && (
+            <ResultDisplay result={result} />
           )}
 
           {!loading && !result && (
@@ -543,12 +604,10 @@ export default function HoroscopePage() {
                 Prêt à découvrir votre destinée ?
               </h3>
               <p className="text-gray-600 text-sm">
-                Remplissez le formulaire pour recevoir votre horoscope personnalisé
+                Remplissez le formulaire pour recevoir votre horoscope personnalisé 
               </p>
             </motion.div>
           )}
-
-          {!loading && result && <ResultDisplay result={result} />}
         </AnimatePresence>
       </div>
     </div>

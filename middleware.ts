@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
   // Liste des routes publiques
-  const publicRoutes = ['/', '/auth/login', '/auth/register', '/callback', '/wallet'];
+  const publicRoutes = ['/', '/auth/login', '/auth/register', '/callback', '/wallet', '/terms'];
   const isPublicRoute = publicRoutes.some(route => pathname === route);
 
   // Routes d'authentification qui ne doivent PAS rediriger même si connecté
