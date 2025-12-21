@@ -163,14 +163,6 @@ export default function AstrologiePage() {
                       {section.description}
                     </p>
 
-                    {/* Stats */}
-                    {section.stats && (
-                      <div className="flex items-center gap-2 mb-4 text-xs sm:text-sm font-semibold text-purple-700">
-                        <Star className="w-4 h-4 fill-purple-500 text-purple-500" />
-                        <span>{section.stats}</span>
-                      </div>
-                    )}
-
                     {/* CTA animé */}
                     <motion.div
                       className="flex items-center gap-2 text-sm sm:text-base font-bold text-purple-700 group-hover:text-purple-900 transition-colors"
