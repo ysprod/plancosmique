@@ -6,9 +6,10 @@ import type { ConsultationChoice } from './consultation.types';
 
 interface Props {
   onSelect: (choice: ConsultationChoice) => void;
+  title?: string;
 }
 
-const ConsultationSelection: React.FC<Props> = ({ onSelect }) => (
+const ConsultationSelection: React.FC<Props> = ({ onSelect, title }) => (
   <>
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -16,8 +17,8 @@ const ConsultationSelection: React.FC<Props> = ({ onSelect }) => (
       className="text-center mb-8"
     >
       <h2 className="text-xl sm:text-xl lg:text-xl font-bold mb-3">
-        Souhaitez-vous vraiment une consultation sur votre Vie Personnelle ?
-      </h2> 
+        {title || 'Veuillez choisir une consultation'}
+      </h2>
     </motion.div>
     <motion.div
       initial={{ opacity: 0 }}

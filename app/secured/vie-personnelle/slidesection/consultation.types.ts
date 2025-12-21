@@ -1,14 +1,23 @@
 // Types partagés pour la consultation
 
+
+export interface OfferingAlternative {
+  category: 'animal' | 'vegetal' | 'beverage';
+  offeringId: string;
+  quantity: number;
+}
+
+export interface ConsultationOffering {
+  alternatives: OfferingAlternative[];
+}
+
 export interface ConsultationChoice {
   id: string;
   title: string;
   description: string;
-  requiredOfferings: {
-    offeringId: string;
-    quantity: number;
-  }[];
+  offering: ConsultationOffering;
 }
+ 
 
 export interface FormData {
   nom: string;

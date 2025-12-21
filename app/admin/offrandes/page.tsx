@@ -86,6 +86,7 @@ export default function AdminOffrandes() {
         setLoading(true);
         try {
             const response = await api.get('/offerings');
+            console.log('Offrandes chargées:', response.data);
             if (response.status === 200 && response.data?.offerings) {
                 setOfferings(response.data.offerings);
             }

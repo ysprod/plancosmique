@@ -1,14 +1,6 @@
 // Types partagés pour la consultation
 
-export interface ConsultationChoice {
-  id: string;
-  title: string;
-  description: string;
-  requiredOfferings: {
-    offeringId: string;
-    quantity: number;
-  }[];
-}
+ 
 
 export interface FormData {
   nom: string;

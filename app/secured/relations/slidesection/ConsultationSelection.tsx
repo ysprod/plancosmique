@@ -2,7 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import ConsultationCard from './ConsultationCard';
 import { CONSULTATION_CHOICES } from './consultation.constants';
-import type { ConsultationChoice } from './consultation.types';
+import { ConsultationChoice } from '../../vie-personnelle/slidesection/consultation.types';
+ 
 
 interface Props {
   onSelect: (choice: ConsultationChoice) => void;

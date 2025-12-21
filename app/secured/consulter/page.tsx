@@ -12,13 +12,14 @@ import ErrorState from './ErrorState';
 import LoadingSpinner from './LoadingSpinner';
 import OfferingStep from './OfferingStep';
 
-interface RequiredOffering {
-  _id: string;
-  name: string;
-  price: number;
-  icon: string;
-  category: string;
+
+interface OfferingAlternative {
+  category: 'animal' | 'vegetal' | 'beverage';
+  offeringId: string;
   quantity: number;
+  name?: string;
+  price?: number;
+  icon?: string;
 }
 
 interface WalletOffering {
@@ -30,15 +31,17 @@ interface WalletOffering {
   price: number;
 }
 
+
 interface ConsultationData {
   _id: string;
   title: string;
   description: string;
-  requiredOfferings: Array<{ offeringId: string; quantity: number }>;
-  requiredOfferingsDetails?: RequiredOffering[];
+  alternatives: { offeringId: string; quantity: number }[];
   formData?: any;
   status: string;
+  // autres champs potentiels selon le backend
 }
+
 
 function ConsulterPage() {
   const router = useRouter();
@@ -46,15 +49,72 @@ function ConsulterPage() {
   const { user } = useAuth();
 
   const consultationId = searchParams.get('id');
+  const urlForm = searchParams.get('form');
+  const urlOffering = searchParams.get('offering');
+  const urlType = searchParams.get('type');
+  const urlTitle = searchParams.get('title');
+  const urlDescription = searchParams.get('description');
 
   const [consultation, setConsultation] = useState<ConsultationData | null>(null);
   const [loading, setLoading] = useState(true);
   const [step, setStep] = useState<'offering' | 'processing'>('offering');
   const [apiError, setApiError] = useState<string | null>(null);
   const [paymentLoading, setPaymentLoading] = useState(false);
-  const [requiredOfferingsDetails, setRequiredOfferingsDetails] = useState<RequiredOffering[]>([]);
   const [walletOfferings, setWalletOfferings] = useState<WalletOffering[]>([]);
   const [loadingOfferings, setLoadingOfferings] = useState(false);
+
+  // Création de la consultation si pas d'id mais données présentes dans l'URL
+  useEffect(() => {
+    if (!consultationId && urlForm && urlOffering && urlType && urlTitle && urlDescription) {
+      const createConsultation = async () => {
+        setLoading(true);
+        setApiError(null);
+        try {
+          const formData = JSON.parse(urlForm);
+          const offering = JSON.parse(urlOffering);
+          // Enrichir l'alternative sélectionnée
+          let details = null;
+          try {
+            const response = await api.get('/offerings');
+            if (response.status === 200 && response.data?.offerings) {
+              const allOfferings = response.data.offerings;
+              details = allOfferings.find((o: any) => o._id === offering.offeringId);
+            }
+          } catch (err) {
+            details = null;
+          }
+          if (!details) throw new Error("Offrande inconnue");
+          const payload = {
+            serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
+            type: urlType,
+            title: urlTitle,
+            description: urlDescription,
+            formData,
+            status: 'pending_payment',
+            requiredOfferings: [offering],
+            requiredOfferingsDetails: [{
+              _id: details._id,
+              name: details.name,
+              price: details.price,
+              icon: details.icon,
+              category: details.category,
+              quantity: offering.quantity,
+            }],
+          };
+          const consultationRes = await api.post('/consultations', payload);
+          if (consultationRes.status !== 200 && consultationRes.status !== 201) {
+            throw new Error(consultationRes.data?.message || 'Erreur lors de la création');
+          }
+          const newId = consultationRes.data?.id || consultationRes.data?.consultationId;
+          router.replace(`/secured/consulter?id=${newId}`);
+        } catch (err: any) {
+          setApiError(err.message || 'Erreur lors de la création de la consultation');
+          setLoading(false);
+        }
+      };
+      createConsultation();
+    }
+  }, [consultationId, urlForm, urlOffering, urlType, urlTitle, urlDescription, router]);
 
   const fetchConsultation = useCallback(async () => {
     if (!consultationId) {
@@ -66,16 +126,34 @@ function ConsulterPage() {
     try {
       const response = await api.get(`/consultations/${consultationId}`);
 
+      console.log('Consultation fetch response:', response);
+
       if (response.status !== 200) {
         throw new Error('Consultation introuvable');
       }
 
-      const consultationData = response.data?.consultation || response.data;
-
-      if (consultationData.requiredOfferingsDetails?.length > 0) {
-        setRequiredOfferingsDetails(consultationData.requiredOfferingsDetails);
-      }
-
+      const raw = response.data?.consultation || response.data;
+      // Harmonisation des champs pour la structure locale
+      // On mappe les alternatives pour leur donner la forme attendue par l'UI (category, etc.)
+      const alternatives: OfferingAlternative[] = (raw.alternatives || []).map((alt: any, idx: number) => ({
+        offeringId: alt.offeringId,
+        quantity: alt.quantity,
+        // On tente d'inférer la catégorie par l'ordre ou on laisse vide si inconnu
+        category: ['animal', 'vegetal', 'beverage'][idx] || 'animal',
+        name: alt.name || '',
+        price: alt.price || 0,
+        icon: alt.icon || '',
+      }));
+      const consultationData: ConsultationData = {
+        _id: raw._id || raw.id || raw.consultationId,
+        title: raw.title || raw.titre || '',
+        description: raw.description || '',
+        alternatives,
+        formData: raw.formData || {},
+        status: raw.status || raw.statut || '',
+        // autres champs si besoin
+      };
+      console.log('[Consultation] ✅ Chargée:', consultationData);
       setConsultation(consultationData);
     } catch (err: any) {
       console.error('[Consultation] ❌', err);
@@ -115,43 +193,8 @@ function ConsulterPage() {
   }, [user?._id]);
 
 
-  const enrichRequiredOfferings = useCallback(async () => {
-    if (consultation?.requiredOfferingsDetails && consultation.requiredOfferingsDetails.length > 0) return;
-    if (!consultation?.requiredOfferings?.length) {
-      setRequiredOfferingsDetails([]);
-      return;
-    }
 
-    try {
-      const response = await api.get('/offerings');
-
-      if (response.status === 200 && response.data?.offerings) {
-        const allOfferings = response.data.offerings;
-        const enriched: RequiredOffering[] = consultation.requiredOfferings
-          .map((req: any) => {
-            const details = allOfferings.find((o: any) => o._id === req.offeringId);
-            return details ? {
-              _id: details._id,
-              name: details.name,
-              price: details.price,
-              icon: details.icon,
-              category: details.category,
-              quantity: req.quantity,
-            } : null;
-          })
-          .filter((o): o is RequiredOffering => o !== null);
-
-        setRequiredOfferingsDetails(enriched);
-        console.log('[Offerings] ✅ Enrichies:', enriched.length);
-      } else {
-        setRequiredOfferingsDetails([]);
-      }
-    } catch (err: any) {
-      console.error('[Offerings] ❌', err);
-      setRequiredOfferingsDetails([]);
-      setApiError('Impossible de charger les détails');
-    }
-  }, [consultation]);
+  // enrichRequiredOfferings supprimé (plus utile)
 
   useEffect(() => {
     fetchConsultation();
@@ -160,20 +203,12 @@ function ConsulterPage() {
   useEffect(() => {
     if (consultation && step === 'offering') {
       setLoadingOfferings(true);
-
-      if (consultation.requiredOfferingsDetails && consultation.requiredOfferingsDetails.length > 0) {
-        fetchWalletOfferings().finally(() => setLoadingOfferings(false));
-      } else {
-        Promise.all([
-          fetchWalletOfferings(),
-          enrichRequiredOfferings()
-        ]).finally(() => setLoadingOfferings(false));
-      }
+      fetchWalletOfferings().finally(() => setLoadingOfferings(false));
     }
-  }, [step, consultation, fetchWalletOfferings, enrichRequiredOfferings]);
+  }, [step, consultation, fetchWalletOfferings]);
 
   const handleOfferingValidation = useCallback(
-    async (selectedOfferingIds: string[]) => {
+    async (selectedAlternative: OfferingAlternative) => {
       if (!consultationId) {
         setApiError('Consultation introuvable');
         return;
@@ -182,15 +217,7 @@ function ConsulterPage() {
       try {
         setPaymentLoading(true);
         setStep('processing');
-        console.log('[Offerings] ✅ Sélectionnées:', selectedOfferingIds.length);
-
-        const offeringsToConsume = selectedOfferingIds.map((id) => {
-          const required = consultation?.requiredOfferings.find((r: any) => r.offeringId === id);
-          return {
-            offeringId: id,
-            quantity: required?.quantity || 1,
-          };
-        });
+        console.log('[Offerings] ✅ Alternative sélectionnée:', selectedAlternative);
 
         if (!user?._id) {
           throw new Error('Utilisateur introuvable');
@@ -199,14 +226,17 @@ function ConsulterPage() {
         const consumeRes = await api.post('/wallet/consume-offerings', {
           userId: user._id,
           consultationId,
-          offerings: offeringsToConsume,
+          offerings: [{
+            offeringId: selectedAlternative.offeringId,
+            quantity: selectedAlternative.quantity,
+          }],
         });
 
         if (consumeRes.status !== 200 && consumeRes.status !== 201) {
           throw new Error(consumeRes.data?.message || 'Erreur consommation');
         }
 
-        console.log('[Wallet] ✅ Consommées');
+        console.log('[Wallet] ✅ Consommée');
 
         await api.patch(`/consultations/${consultationId}`, {
           status: 'paid',
@@ -214,8 +244,6 @@ function ConsulterPage() {
         });
 
         console.log('[Consultation] ✅ Statut: paid');
-
-
 
         setTimeout(() => {
           router.push(`/secured/genereanalyse?id=${consultationId}`);
@@ -227,7 +255,7 @@ function ConsulterPage() {
         setPaymentLoading(false);
       }
     },
-    [consultationId, consultation, user, router]
+    [consultationId, user, router]
   );
 
   const handleBack = useCallback(() => {
@@ -294,7 +322,7 @@ function ConsulterPage() {
                 </div>
               ) : (
                 <OfferingStep
-                  requiredOfferings={requiredOfferingsDetails}
+                  requiredOfferings={consultation.alternatives as any}
                   walletOfferings={walletOfferings}
                   onNext={handleOfferingValidation}
                   onBack={handleBack}
