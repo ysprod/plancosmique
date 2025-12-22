@@ -1,13 +1,9 @@
-export interface OfferingAlternative {
-  category: 'animal' | 'vegetal' | 'beverage';  
-  offeringId: string;
-  quantity: number;
-}
+import { OfferingAlternative } from "@/lib/interfaces";
 
+ 
 export interface ConsultationOffering {
   alternatives: OfferingAlternative[];
 }
-
 
 export interface ConsultationChoice {
   id: string;

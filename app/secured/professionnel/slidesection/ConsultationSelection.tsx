@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import ConsultationCard from './ConsultationCard';
 import { CONSULTATION_CHOICES } from './consultation.constants';
 import { ConsultationChoice } from '../../vie-personnelle/slidesection/consultation.types';
- 
+
 interface Props {
   onSelect: (choice: ConsultationChoice) => void;
 }
@@ -17,7 +17,7 @@ const ConsultationSelection: React.FC<Props> = ({ onSelect }) => (
     >
       <h2 className="text-xl sm:text-xl lg:text-xl font-bold mb-3">
         Souhaitez-vous vraiment une consultation sur votre Vie Professionnelle ?
-      </h2> 
+      </h2>
     </motion.div>
     <motion.div
       initial={{ opacity: 0 }}

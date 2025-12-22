@@ -4,7 +4,6 @@ import ConsultationCard from './ConsultationCard';
 import { CONSULTATION_CHOICES } from './consultation.constants';
 import { ConsultationChoice } from '../../vie-personnelle/slidesection/consultation.types';
  
-
 interface Props {
   onSelect: (choice: ConsultationChoice) => void;
 }

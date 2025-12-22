@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { BookOpen, Download, Calendar, Loader2 } from 'lucide-react';
 import Link from 'next/link';
@@ -65,9 +64,7 @@ export default function MesLivresPage() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="mb-8">
-         
-
+        <div className="mb-8">       
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

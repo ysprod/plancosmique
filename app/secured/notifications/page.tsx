@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Bell, CheckCheck, Trash2, Settings, Filter, ArrowLeft } from 'lucide-react';

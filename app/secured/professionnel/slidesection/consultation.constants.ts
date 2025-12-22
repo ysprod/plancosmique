@@ -1,21 +1,11 @@
+import { OfferingAlternative } from "@/lib/interfaces";
 import { ConsultationChoice } from "../../vie-personnelle/slidesection/consultation.types";
-
-export interface OfferingAlternative {
-  category: 'animal' | 'vegetal' | 'beverage';
-  offeringId: string;
-  quantity: number;
-}
-
+ 
 export interface ConsultationOffering {
   alternatives: OfferingAlternative[];
 }
 
-
- 
-
-
-// Remplacer les valeurs offeringId/quantity par les vraies valeurs pour chaque alternative selon la logique métier
-export const CONSULTATION_CHOICES: ConsultationChoice[] = [
+ export const CONSULTATION_CHOICES: ConsultationChoice[] = [
   {
     id: 'carriere',
     title: 'ORIENTATION DE CARRIÈRE',

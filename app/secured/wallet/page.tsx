@@ -5,14 +5,13 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Calendar,
-  CheckCircle2,
   ChevronDown,
+  Package,
   RefreshCw,
   Search,
   ShoppingBag,
   Sparkles,
-  TrendingUp,
-  Package,
+  TrendingUp
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";

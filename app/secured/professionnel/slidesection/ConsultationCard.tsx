@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { ConsultationChoice } from '../../vie-personnelle/slidesection/consultation.types';
  
-
 const getLabel = (cat: string) => {
   if (cat === 'animal') return 'Animal';
   if (cat === 'vegetal') return 'Végétal';

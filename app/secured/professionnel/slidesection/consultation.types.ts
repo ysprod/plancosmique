@@ -1,6 +1,3 @@
-// Types partagés pour la consultation
-
-
 export interface FormData {
   nom: string;
   prenoms: string;

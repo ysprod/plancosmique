@@ -2,10 +2,10 @@
 import { motion } from 'framer-motion';
 import { AlertCircle, Info, Sparkles } from 'lucide-react';
 import React from 'react';
-import { birthCountries } from '../birthCountries';
 import InputField from './InputField';
 import SelectField from './SelectField';
 import { GENRE_OPTIONS } from './genreOptions';
+import { birthCountries } from '@/lib/birthCountries';
 
 interface Props {
   form: any;

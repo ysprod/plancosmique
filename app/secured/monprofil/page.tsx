@@ -1,10 +1,8 @@
 "use client";
-
-import { motion, AnimatePresence } from "framer-motion";
-import { Map, Sparkles, Star, User, Clock, Mail, Loader2, AlertCircle } from "lucide-react";
+import { motion } from "framer-motion";
+import { AlertCircle, Clock, Loader2, Mail, Map, Sparkles, Star, User } from "lucide-react";
 import Image from "next/image";
-import { memo, useMemo, useCallback, useState } from "react";
-
+import { memo, useCallback, useMemo, useState } from "react";
 import { useAuth } from "@/lib/auth/AuthContext";
 
 // =====================================================

@@ -18,7 +18,6 @@ export interface ConsultationChoice {
   offering: ConsultationOffering;
 }
  
-
 export interface FormData {
   nom: string;
   prenoms: string;
