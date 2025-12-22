@@ -51,8 +51,13 @@ export default function NotificationBell() {
     if (!notification.isRead) {
       await markAsRead(notification._id);
     }
-    
-    // Naviguer vers le lien si disponible dans metadata
+
+    // Rediriger vers /secured/consultations pour les notifications de consultation
+    if (notification.type === 'CONSULTATION_RESULT') {
+      window.location.href = '/secured/consultations';
+      return;
+    }
+    // Sinon, naviguer vers le lien si disponible dans metadata
     if (notification.metadata?.url) {
       window.location.href = notification.metadata.url;
     }

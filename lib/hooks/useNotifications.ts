@@ -5,7 +5,7 @@ import { notificationsService } from '@/lib/api/services';
 import { useAuth } from '@/lib/hooks/useAuth';
 import type { Notification } from '@/types/notification.types';
 
-export function useNotifications(pollingInterval: number = 30000) {
+export function useNotifications(pollingInterval: number = 100) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);

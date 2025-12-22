@@ -42,16 +42,28 @@ function Slide4Section() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [selected, setSelected] = useState<ConsultationChoice | null>(null);
-  const [form, setForm] = useState<FormData>({
-    nom: '',
-    prenoms: '',
-    genre: '',
-    dateNaissance: '',
-    paysNaissance: '',
-    villeNaissance: '',
-    heureNaissance: '',
-    numeroSend: '0758385387',
-  });
+  // Pré-remplir le formulaire avec les données du localStorage si présentes
+  const getInitialForm = () => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('consultationForm');
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch {}
+      }
+    }
+    return {
+      nom: '',
+      prenoms: '',
+      genre: '',
+      dateNaissance: '',
+      paysNaissance: '',
+      villeNaissance: '',
+      heureNaissance: '',
+      numeroSend: '0758385387',
+    };
+  };
+  const [form, setForm] = useState<FormData>(getInitialForm);
   const [errors, setErrors] = useState<FormErrors>({});
   const [apiError, setApiError] = useState<string | null>(null);
   const [step, setStep] = useState<StepType>('selection');
@@ -95,6 +107,11 @@ function Slide4Section() {
         setApiError('Veuillez sélectionner une consultation.');
         setPaymentLoading(false);
         return;
+      }
+
+      // Sauvegarde du formulaire en localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('consultationForm', JSON.stringify(form));
       }
 
       try {

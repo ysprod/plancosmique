@@ -43,7 +43,13 @@ function ConsulterPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user } = useAuth();
+
   const consultationId = searchParams.get('id');
+  const urlForm = searchParams.get('form');
+  const urlOffering = searchParams.get('offering');
+  const urlType = searchParams.get('type');
+  const urlTitle = searchParams.get('title');
+  const urlDescription = searchParams.get('description');
 
   const [consultation, setConsultation] = useState<ConsultationData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -52,6 +58,57 @@ function ConsulterPage() {
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [walletOfferings, setWalletOfferings] = useState<WalletOffering[]>([]);
   const [loadingOfferings, setLoadingOfferings] = useState(false);
+
+  useEffect(() => {
+    if (!consultationId && urlForm && urlOffering && urlType && urlTitle && urlDescription) {
+      const createConsultation = async () => {
+        setLoading(true);
+        setApiError(null);
+        try {
+          const formData = JSON.parse(urlForm);
+          const offering = JSON.parse(urlOffering);
+              let details = null;
+          try {
+            const response = await api.get('/offerings');
+            if (response.status === 200 && response.data?.offerings) {
+              const allOfferings = response.data.offerings;
+              details = allOfferings.find((o: any) => o._id === offering.offeringId);
+            }
+          } catch (err) {
+            details = null;
+          }
+          if (!details) throw new Error("Offrande inconnue");
+          const payload = {
+            serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
+            type: urlType,
+            title: urlTitle,
+            description: urlDescription,
+            formData,
+            status: 'pending_payment',
+            requiredOfferings: [offering],
+            requiredOfferingsDetails: [{
+              _id: details._id,
+              name: details.name,
+              price: details.price,
+              icon: details.icon,
+              category: details.category,
+              quantity: offering.quantity,
+            }],
+          };
+          const consultationRes = await api.post('/consultations', payload);
+          if (consultationRes.status !== 200 && consultationRes.status !== 201) {
+            throw new Error(consultationRes.data?.message || 'Erreur lors de la création');
+          }
+          const newId = consultationRes.data?.id || consultationRes.data?.consultationId;
+          router.replace(`/secured/consulter?id=${newId}`);
+        } catch (err: any) {
+          setApiError(err.message || 'Erreur lors de la création de la consultation');
+          setLoading(false);
+        }
+      };
+      createConsultation();
+    }
+  }, [consultationId, urlForm, urlOffering, urlType, urlTitle, urlDescription, router]);
 
   const fetchConsultation = useCallback(async () => {
     if (!consultationId) {
@@ -62,14 +119,20 @@ function ConsulterPage() {
 
     try {
       const response = await api.get(`/consultations/${consultationId}`);
+
+      console.log('Consultation fetch response:', response);
+
       if (response.status !== 200) {
         throw new Error('Consultation introuvable');
       }
 
       const raw = response.data?.consultation || response.data;
+      // Harmonisation des champs pour la structure locale
+      // On mappe les alternatives pour leur donner la forme attendue par l'UI (category, etc.)
       const alternatives: OfferingAlternative[] = (raw.alternatives || []).map((alt: any, idx: number) => ({
         offeringId: alt.offeringId,
         quantity: alt.quantity,
+        // On tente d'inférer la catégorie par l'ordre ou on laisse vide si inconnu
         category: ['animal', 'vegetal', 'beverage'][idx] || 'animal',
         name: alt.name || '',
         price: alt.price || 0,
@@ -82,7 +145,9 @@ function ConsulterPage() {
         alternatives,
         formData: raw.formData || {},
         status: raw.status || raw.statut || '',
+        // autres champs si besoin
       };
+      console.log('[Consultation] ✅ Chargée:', consultationData);
       setConsultation(consultationData);
     } catch (err: any) {
       console.error('[Consultation] ❌', err);
@@ -111,6 +176,7 @@ function ConsulterPage() {
         }));
 
         setWalletOfferings(offerings);
+        console.log('[Wallet] ✅ Chargées:', offerings.length);
       } else {
         setWalletOfferings([]);
       }
@@ -119,6 +185,10 @@ function ConsulterPage() {
       setWalletOfferings([]);
     }
   }, [user?._id]);
+
+
+
+  // enrichRequiredOfferings supprimé (plus utile)
 
   useEffect(() => {
     fetchConsultation();
@@ -141,11 +211,14 @@ function ConsulterPage() {
       try {
         setPaymentLoading(true);
         setStep('processing');
+        console.log('[Offerings] ✅ Alternative sélectionnée:', selectedAlternative);
+
         if (!user?._id) {
           throw new Error('Utilisateur introuvable');
         }
 
         const consumeRes = await api.post('/wallet/consume-offerings', {
+
           userId: user._id,
           consultationId,
           offerings: [{
@@ -158,10 +231,14 @@ function ConsulterPage() {
           throw new Error(consumeRes.data?.message || 'Erreur consommation');
         }
 
+        console.log('[Wallet] ✅ Consommée');
+
         await api.patch(`/consultations/${consultationId}`, {
           status: 'paid',
           paymentMethod: 'wallet_offerings',
         });
+
+        console.log('[Consultation] ✅ Statut: paid');
 
         setTimeout(() => {
           router.push(`/secured/genereanalyse?id=${consultationId}`);
@@ -197,6 +274,8 @@ function ConsulterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
                     dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
+
+      {/* Header sticky */}
       {step === 'offering' && !paymentLoading && (
         <div className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl 
                       border-b border-gray-200 dark:border-gray-800 px-4 py-3">
@@ -206,8 +285,11 @@ function ConsulterPage() {
         </div>
       )}
 
+      {/* Contenu */}
       <div className="max-w-6xl mx-auto p-4 sm:p-6">
+        {/* Workflow */}
         <AnimatePresence mode="wait">
+          {/* Étape offrandes */}
           {step === 'offering' && !paymentLoading && (
             <motion.div
               key="offering"
@@ -234,6 +316,7 @@ function ConsulterPage() {
             </motion.div>
           )}
 
+          {/* Étape traitement */}
           {step === 'processing' && (
             <motion.div
               key="processing"
@@ -246,6 +329,8 @@ function ConsulterPage() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Erreur */}
         {apiError && step === 'offering' && <ErrorAlert message={apiError} />}
       </div>
     </div>

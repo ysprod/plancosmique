@@ -4,6 +4,7 @@ import { useAdminConsultations } from '@/hooks/useAdminConsultations';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   AlertCircle,
+  Bell,
   Calendar,
   CheckCircle,
   ChevronLeft,
@@ -11,7 +12,6 @@ import {
   ChevronsLeft,
   ChevronsRight,
   Clock,
-  DollarSign,
   Download,
   Edit,
   Eye,
@@ -25,13 +25,14 @@ import {
   Sparkles,
   Star,
   User,
+  X,
   XCircle,
   Zap
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api/client';
-import { useCallback, useMemo, useState, memo } from 'react';
+import { useCallback, useMemo, useState, memo, useEffect } from 'react';
 
 type ConsultationStatus = 'all' | 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR';
 type ConsultationType = 'all' | 'SPIRITUALITE' | 'TAROT' | 'ASTROLOGIE' | 'NUMEROLOGIE';
@@ -39,42 +40,73 @@ type ConsultationType = 'all' | 'SPIRITUALITE' | 'TAROT' | 'ASTROLOGIE' | 'NUMER
 const ITEMS_PER_PAGE = 5;
 
 // =====================================================
-// SOUS-COMPOSANTS MÉMORISÉS
+// TOAST NOTIFICATION COMPONENT
 // =====================================================
+const Toast = memo(({ message, onClose }: { message: string; onClose: () => void }) => {
+  useEffect(() => {
+    const timer = setTimeout(onClose, 3500);
+    return () => clearTimeout(timer);
+  }, [onClose]);
 
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+      className="fixed bottom-4 right-4 z-50 max-w-sm"
+    >
+      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white 
+                    px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-3 border border-white/20">
+        <Bell className="w-4 h-4 flex-shrink-0 animate-pulse" />
+        <p className="text-sm font-medium flex-1">{message}</p>
+        <button
+          onClick={onClose}
+          className="p-1 hover:bg-white/20 rounded-lg transition-colors"
+        >
+          <X className="w-3.5 h-3.5" />
+        </button>
+      </div>
+    </motion.div>
+  );
+});
+Toast.displayName = 'Toast';
+
+// =====================================================
+// STATUS BADGE COMPONENT
+// =====================================================
 const StatusBadge = memo(({ status }: { status: string }) => {
   const config = useMemo(() => {
     const configs: Record<string, { color: string; icon: JSX.Element; text: string }> = {
       'COMPLETED': {
-        color: 'bg-green-100 text-green-700 border-green-200',
+        color: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400',
         icon: <CheckCircle className="w-2.5 h-2.5" />,
         text: 'Complétée'
       },
       'GENERATING': {
-        color: 'bg-blue-100 text-blue-700 border-blue-200',
+        color: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400',
         icon: <Loader className="w-2.5 h-2.5 animate-spin" />,
         text: 'En cours'
       },
       'PENDING': {
-        color: 'bg-orange-100 text-orange-700 border-orange-200',
+        color: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400',
         icon: <Clock className="w-2.5 h-2.5" />,
         text: 'En attente'
       },
       'ERROR': {
-        color: 'bg-red-100 text-red-700 border-red-200',
+        color: 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-900/30 dark:text-rose-400',
         icon: <XCircle className="w-2.5 h-2.5" />,
         text: 'Erreur'
       }
     };
     return configs[status] || {
-      color: 'bg-gray-100 text-gray-700 border-gray-200',
+      color: 'bg-gray-50 text-gray-700 border-gray-200',
       icon: <AlertCircle className="w-2.5 h-2.5" />,
       text: status
     };
   }, [status]);
 
   return (
-    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border ${config.color}`}>
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border ${config.color}`}>
       {config.icon}
       {config.text}
     </span>
@@ -82,25 +114,36 @@ const StatusBadge = memo(({ status }: { status: string }) => {
 });
 StatusBadge.displayName = 'StatusBadge';
 
+// =====================================================
+// CONSULTATION CARD COMPONENT (Ultra-compact)
+// =====================================================
 const ConsultationCard = memo(({
   consultation,
   onGenerateAnalysis,
   onModifyAnalysis,
-  isGenerating
+  onNotifyUser,
+  isGenerating,
+  isNotifying
 }: {
   consultation: any;
   onGenerateAnalysis: (id: string) => void;
   onModifyAnalysis: (id: string) => void;
+  onNotifyUser: (id: string) => void;
   isGenerating: boolean;
+  isNotifying: boolean;
 }) => {
   const typeConfig = useMemo(() => {
-    const configs: Record<string, { icon: string; text: string }> = {
-      'SPIRITUALITE': { icon: '🌟', text: 'Spiritualité' },
-      'TAROT': { icon: '🃏', text: 'Tarot' },
-      'ASTROLOGIE': { icon: '⭐', text: 'Astrologie' },
-      'NUMEROLOGIE': { icon: '🔢', text: 'Numérologie' }
+    const configs: Record<string, { icon: string; text: string; gradient: string }> = {
+      'SPIRITUALITE': { icon: '🌟', text: 'Spiritualité', gradient: 'from-purple-500 to-pink-500' },
+      'TAROT': { icon: '🃏', text: 'Tarot', gradient: 'from-indigo-500 to-purple-500' },
+      'ASTROLOGIE': { icon: '⭐', text: 'Astrologie', gradient: 'from-blue-500 to-cyan-500' },
+      'NUMEROLOGIE': { icon: '🔢', text: 'Numérologie', gradient: 'from-emerald-500 to-teal-500' }
     };
-    return configs[consultation.type] || { icon: '📋', text: consultation.type };
+    return configs[consultation.type] || { 
+      icon: '📋', 
+      text: consultation.type,
+      gradient: 'from-gray-500 to-gray-600'
+    };
   }, [consultation.type]);
 
   const hasAnalysis = useMemo(() => 
@@ -111,21 +154,27 @@ const ConsultationCard = memo(({
   return (
     <motion.div
       layout
+      layoutId={`card-${consultation.id}`}
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
-      whileHover={{ x: 2, boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
-      className="bg-white rounded-xl border border-gray-200 p-3 transition-shadow"
+      whileHover={{ y: -2, boxShadow: '0 8px 24px rgba(0,0,0,0.12)' }}
+      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+      className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 
+               dark:border-gray-800 p-2.5 transition-shadow overflow-hidden relative"
     >
-      {/* Header compact */}
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2 flex-1 min-w-0">
-          <span className="text-xl flex-shrink-0">{typeConfig.icon}</span>
+      {/* Gradient accent bar */}
+      <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${typeConfig.gradient}`} />
+
+      {/* Header ultra-compact */}
+      <div className="flex items-start justify-between mb-1.5 mt-1">
+        <div className="flex items-center gap-1.5 flex-1 min-w-0">
+          <span className="text-lg flex-shrink-0">{typeConfig.icon}</span>
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-bold text-gray-900 truncate">
+            <h3 className="text-xs font-bold text-gray-900 dark:text-gray-100 truncate">
               {typeConfig.text}
             </h3>
-            <p className="text-[11px] text-gray-500 truncate">
+            <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate leading-tight">
               {consultation.title}
             </p>
           </div>
@@ -133,29 +182,29 @@ const ConsultationCard = memo(({
         <StatusBadge status={consultation.status} />
       </div>
 
-      {/* Infos client compact (2 colonnes mobile) */}
-      <div className="grid grid-cols-2 gap-1.5 mb-2 text-[11px]">
-        <div className="flex items-center gap-1 text-gray-600 truncate">
-          <User className="w-3 h-3 flex-shrink-0" />
+      {/* Infos client ultra-compact (2 colonnes) */}
+      <div className="grid grid-cols-2 gap-1 mb-1.5 text-[10px]">
+        <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400 truncate">
+          <User className="w-2.5 h-2.5 flex-shrink-0" />
           <span className="truncate font-medium">
             {consultation.formData?.prenoms} {consultation.formData?.nom}
           </span>
         </div>
         {consultation.clientId?.email && (
-          <div className="flex items-center gap-1 text-gray-600 truncate">
-            <Mail className="w-3 h-3 flex-shrink-0" />
+          <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400 truncate">
+            <Mail className="w-2.5 h-2.5 flex-shrink-0" />
             <span className="truncate">{consultation.clientId.email}</span>
           </div>
         )}
         {consultation.formData?.numeroSend && (
-          <div className="flex items-center gap-1 text-gray-600">
-            <Phone className="w-3 h-3 flex-shrink-0" />
-            <span>{consultation.formData.numeroSend}</span>
+          <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400 truncate">
+            <Phone className="w-2.5 h-2.5 flex-shrink-0" />
+            <span className="truncate">{consultation.formData.numeroSend}</span>
           </div>
         )}
         {consultation.formData?.paysNaissance && (
-          <div className="flex items-center gap-1 text-gray-600 truncate">
-            <MapPin className="w-3 h-3 flex-shrink-0" />
+          <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400 truncate">
+            <MapPin className="w-2.5 h-2.5 flex-shrink-0" />
             <span className="truncate">
               {consultation.formData.villeNaissance}, {consultation.formData.paysNaissance}
             </span>
@@ -163,91 +212,122 @@ const ConsultationCard = memo(({
         )}
       </div>
 
-      {/* Badges métriques (scrollable horizontal mobile) */}
-      <div className="flex gap-1.5 overflow-x-auto scrollbar-hide mb-3 pb-1">
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200 flex-shrink-0">
-          <Calendar className="w-2.5 h-2.5" />
-          {new Date(consultation.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
-        </span>
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-green-50 text-green-700 border border-green-200 flex-shrink-0">
-          <DollarSign className="w-2.5 h-2.5" />
-          {consultation.price ? `${consultation.price} F` : 'Gratuit'}
-        </span>
-        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium border flex-shrink-0 ${
-          consultation.isPaid
-            ? 'bg-green-50 text-green-700 border-green-200'
-            : 'bg-red-50 text-red-700 border-red-200'
-        }`}>
-          {consultation.isPaid ? '✓ Payé' : '✗ Non payé'}
+      {/* Badges métriques compacts */}
+      <div className="flex gap-1 overflow-x-auto scrollbar-hide mb-2 pb-0.5">
+        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] 
+                       font-semibold bg-blue-50 text-blue-700 border border-blue-200 flex-shrink-0
+                       dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800">
+          <Calendar className="w-2 h-2" />
+          {new Date(consultation.createdAt).toLocaleDateString('fr-FR', { 
+            day: '2-digit', 
+            month: 'short' 
+          })}
         </span>
         {consultation.rating && (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-50 text-amber-700 border border-amber-200 flex-shrink-0">
-            <Star className="w-2.5 h-2.5 fill-amber-500" />
+          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] 
+                         font-semibold bg-amber-50 text-amber-700 border border-amber-200 flex-shrink-0
+                         dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800">
+            <Star className="w-2 h-2 fill-amber-500" />
             {consultation.rating}/5
           </span>
         )}
         {consultation.review && (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-purple-50 text-purple-700 border border-purple-200 flex-shrink-0">
-            <MessageSquare className="w-2.5 h-2.5" />
+          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] 
+                         font-semibold bg-purple-50 text-purple-700 border border-purple-200 flex-shrink-0
+                         dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800">
+            <MessageSquare className="w-2 h-2" />
             Avis
           </span>
         )}
       </div>
 
-      {/* Actions compactes - 2x2 grid */}
-      <div className="grid grid-cols-2 gap-2">
-        {/* Bouton Détails - Toujours visible */}
+      {/* Actions ultra-compactes - Grid responsive */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+        {/* Bouton Détails */}
         <Link
           href={`/admin/consultations/${consultation.id}`}
-          className="flex items-center justify-center gap-1.5 px-3 py-2
-                     bg-purple-600 text-white text-xs rounded-lg font-medium
-                     hover:bg-purple-700 transition-colors active:scale-[0.98]"
+          className="flex items-center justify-center gap-1 px-2.5 py-1.5
+                     bg-gradient-to-r from-purple-600 to-purple-700 text-white 
+                     text-[10px] rounded-lg font-semibold
+                     hover:from-purple-700 hover:to-purple-800 
+                     transition-all active:scale-95 shadow-sm hover:shadow-md"
         >
-          <Eye className="w-3.5 h-3.5" />
+          <Eye className="w-3 h-3" />
           Détails
         </Link>
 
-        {/* Bouton Générer/Régénérer - Toujours visible */}
+        {/* Bouton Générer/Régénérer */}
         <button
           onClick={() => onGenerateAnalysis(consultation.id)}
           disabled={isGenerating}
-          className="flex items-center justify-center gap-1.5 px-3 py-2
-                     bg-blue-600 text-white text-xs rounded-lg font-medium
-                     hover:bg-blue-700 transition-colors active:scale-[0.98]
-                     disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center justify-center gap-1 px-2.5 py-1.5
+                     bg-gradient-to-r from-blue-600 to-blue-700 text-white 
+                     text-[10px] rounded-lg font-semibold
+                     hover:from-blue-700 hover:to-blue-800 
+                     transition-all active:scale-95 shadow-sm hover:shadow-md
+                     disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-sm"
         >
-          <Sparkles className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
-          {isGenerating ? 'Génération...' : (hasAnalysis ? 'Régénérer' : 'Générer')}
+          <Sparkles className={`w-3 h-3 ${isGenerating ? 'animate-spin' : ''}`} />
+          {isGenerating ? 'Génération' : (hasAnalysis ? 'Régénérer' : 'Générer')}
         </button>
 
-        {/* Boutons supplémentaires si analyse existe */}
-        {hasAnalysis && (
-          <>
-            <button
-              onClick={() => onModifyAnalysis(consultation.id)}
-              className="flex items-center justify-center gap-1.5 px-3 py-2
-                       bg-orange-600 text-white text-xs rounded-lg font-medium
-                       hover:bg-orange-700 transition-colors active:scale-[0.98]"
-            >
-              <Edit className="w-3.5 h-3.5" />
-              Modifier
-            </button>
-            <button
-              className="flex items-center justify-center gap-1.5 px-3 py-2
-                       bg-green-600 text-white text-xs rounded-lg font-medium
-                       hover:bg-green-700 transition-colors active:scale-[0.98]"
-            >
-              <Download className="w-3.5 h-3.5" />
-              PDF
-            </button>
-          </>
-        )}
+        {/* Bouton Modifier */}
+        <button
+          onClick={() => onModifyAnalysis(consultation.id)}
+          className="flex items-center justify-center gap-1 px-2.5 py-1.5
+                     bg-gradient-to-r from-orange-600 to-orange-700 text-white 
+                     text-[10px] rounded-lg font-semibold
+                     hover:from-orange-700 hover:to-orange-800 
+                     transition-all active:scale-95 shadow-sm hover:shadow-md"
+        >
+          <Edit className="w-3 h-3" />
+          Modifier
+        </button>
+
+        {/* Bouton PDF */}
+        <button
+          className="flex items-center justify-center gap-1 px-2.5 py-1.5
+                     bg-gradient-to-r from-emerald-600 to-emerald-700 text-white 
+                     text-[10px] rounded-lg font-semibold
+                     hover:from-emerald-700 hover:to-emerald-800 
+                     transition-all active:scale-95 shadow-sm hover:shadow-md"
+        >
+          <Download className="w-3 h-3" />
+          PDF
+        </button>
+
+        {/* Bouton Notifier */}
+        <button
+          onClick={() => onNotifyUser(consultation.id)}
+          disabled={isNotifying}
+          className="flex items-center justify-center gap-1 px-2.5 py-1.5
+                     bg-gradient-to-r from-indigo-600 to-indigo-700 text-white 
+                     text-[10px] rounded-lg font-semibold
+                     hover:from-indigo-700 hover:to-indigo-800 
+                     transition-all active:scale-95 shadow-sm hover:shadow-md
+                     disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-sm
+                     col-span-2 sm:col-span-1"
+        >
+          <Mail className={`w-3 h-3 ${isNotifying ? 'animate-pulse' : ''}`} />
+          {isNotifying ? 'Envoi...' : 'Notifier'}
+        </button>
       </div>
     </motion.div>
+  );
+}, (prevProps, nextProps) => {
+  // Custom comparison pour éviter re-renders inutiles
+  return (
+    prevProps.consultation.id === nextProps.consultation.id &&
+    prevProps.consultation.status === nextProps.consultation.status &&
+    prevProps.isGenerating === nextProps.isGenerating &&
+    prevProps.isNotifying === nextProps.isNotifying
   );
 });
 ConsultationCard.displayName = 'ConsultationCard';
 
+// =====================================================
+// PAGINATION CONTROLS
+// =====================================================
 const PaginationControls = memo(({
   currentPage,
   totalPages,
@@ -297,16 +377,21 @@ const PaginationControls = memo(({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-xl border border-gray-200 p-3 shadow-sm"
+      className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 
+               dark:border-gray-800 p-2.5 shadow-sm"
     >
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5">
         {/* Info */}
-        <div className="text-xs text-gray-600">
-          <span className="font-semibold text-gray-900">
+        <div className="text-[10px] text-gray-600 dark:text-gray-400 font-medium">
+          <span className="font-bold text-gray-900 dark:text-gray-100">
             {((currentPage - 1) * itemsPerPage) + 1}
-          </span> - <span className="font-semibold text-gray-900">
+          </span>
+          {' - '}
+          <span className="font-bold text-gray-900 dark:text-gray-100">
             {Math.min(currentPage * itemsPerPage, total)}
-          </span> sur <span className="font-semibold text-gray-900">{total}</span>
+          </span>
+          {' sur '}
+          <span className="font-bold text-gray-900 dark:text-gray-100">{total}</span>
         </div>
 
         {/* Controls */}
@@ -314,35 +399,39 @@ const PaginationControls = memo(({
           <button
             onClick={() => onPageChange(1)}
             disabled={currentPage === 1 || loading}
-            className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50
-                     disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="p-1 rounded-lg border border-gray-300 dark:border-gray-700 
+                     hover:bg-gray-50 dark:hover:bg-gray-800
+                     disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
-            <ChevronsLeft className="w-3.5 h-3.5 text-gray-600" />
+            <ChevronsLeft className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />
           </button>
 
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1 || loading}
-            className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50
-                     disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="p-1 rounded-lg border border-gray-300 dark:border-gray-700 
+                     hover:bg-gray-50 dark:hover:bg-gray-800
+                     disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
-            <ChevronLeft className="w-3.5 h-3.5 text-gray-600" />
+            <ChevronLeft className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />
           </button>
 
           <div className="hidden sm:flex items-center gap-1">
             {getVisiblePageNumbers.map((page, index) => (
               page === '...' ? (
-                <span key={`ellipsis-${index}`} className="px-2 text-gray-400 text-sm">...</span>
+                <span key={`ellipsis-${index}`} className="px-1.5 text-gray-400 text-[10px]">
+                  •••
+                </span>
               ) : (
                 <button
                   key={page}
                   onClick={() => onPageChange(page as number)}
                   disabled={loading}
-                  className={`min-w-[32px] px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  className={`min-w-[28px] px-2 py-1 rounded-lg text-[10px] font-bold transition-all ${
                     page === currentPage
-                      ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-sm'
-                      : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                  } disabled:opacity-40`}
+                      ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md scale-105'
+                      : 'border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                  } disabled:opacity-30`}
                 >
                   {page}
                 </button>
@@ -350,27 +439,29 @@ const PaginationControls = memo(({
             ))}
           </div>
 
-          <div className="sm:hidden px-2.5 py-1.5 bg-gradient-to-r from-purple-500 to-purple-600
-                        text-white rounded-lg text-xs font-semibold">
+          <div className="sm:hidden px-2.5 py-1 bg-gradient-to-r from-purple-600 to-purple-700
+                        text-white rounded-lg text-[10px] font-bold shadow-md">
             {currentPage} / {totalPages}
           </div>
 
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages || loading}
-            className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50
-                     disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="p-1 rounded-lg border border-gray-300 dark:border-gray-700 
+                     hover:bg-gray-50 dark:hover:bg-gray-800
+                     disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
-            <ChevronRight className="w-3.5 h-3.5 text-gray-600" />
+            <ChevronRight className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />
           </button>
 
           <button
             onClick={() => onPageChange(totalPages)}
             disabled={currentPage === totalPages || loading}
-            className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50
-                     disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="p-1 rounded-lg border border-gray-300 dark:border-gray-700 
+                     hover:bg-gray-50 dark:hover:bg-gray-800
+                     disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
-            <ChevronsRight className="w-3.5 h-3.5 text-gray-600" />
+            <ChevronsRight className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />
           </button>
         </div>
       </div>
@@ -380,7 +471,7 @@ const PaginationControls = memo(({
 PaginationControls.displayName = 'PaginationControls';
 
 // =====================================================
-// COMPOSANT PRINCIPAL
+// MAIN COMPONENT
 // =====================================================
 export default function ConsultationsPage() {
   const router = useRouter();
@@ -389,6 +480,8 @@ export default function ConsultationsPage() {
   const [typeFilter, setTypeFilter] = useState<ConsultationType>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [generatingIds, setGeneratingIds] = useState<Set<string>>(new Set());
+  const [notifyingIds, setNotifyingIds] = useState<Set<string>>(new Set());
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const { consultations, total, loading, error, refetch } = useAdminConsultations({
     search: searchQuery,
@@ -416,25 +509,12 @@ export default function ConsultationsPage() {
     try {
       const res = await api.post(`/consultations/${id}/generate-analysis`);
       if (res.status === 200 || res.status === 201) {
-        // On refetch pour obtenir le statut à jour
         await refetch();
-         router.push(`/admin/consultations/${id}`);
-        // On attend que la consultation soit bien en COMPLETED avec resultData
-        // const pollForAnalysis = async (retries = 10) => {
-        //   for (let i = 0; i < retries; i++) {
-        //     const refreshed = await api.get(`/consultations/${id}`);
-        //     const c = refreshed.data?.consultation || refreshed.data;
-        //     if (c.status === 'COMPLETED' && c.resultData) {
-             
-        //       return;
-        //     }
-        //     await new Promise(r => setTimeout(r, 1500));
-        //   }
-        // };
-        // pollForAnalysis();
+        setToastMessage('✨ Analyse générée avec succès !');
+        router.push(`/admin/consultations/${id}`);
       }
     } catch (err) {
-      alert('Erreur lors de la génération de l\'analyse');
+      setToastMessage('❌ Erreur lors de la génération');
     } finally {
       setGeneratingIds(prev => {
         const newSet = new Set(prev);
@@ -448,18 +528,38 @@ export default function ConsultationsPage() {
     router.push(`/secured/genereanalyse?id=${id}`);
   }, [router]);
 
+  const handleNotifyUser = useCallback(async (id: string) => {
+    setNotifyingIds(prev => new Set(prev).add(id));
+    try {
+      const res = await api.post(`/consultations/${id}/notify-user`);
+      if (res.status === 200 || res.status === 201) {
+        setToastMessage('📧 Notification envoyée avec succès !');
+      } else {
+        setToastMessage('⚠️ Erreur lors de l\'envoi');
+      }
+    } catch (err) {
+      setToastMessage('❌ Erreur lors de l\'envoi');
+    } finally {
+      setNotifyingIds(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(id);
+        return newSet;
+      });
+    }
+  }, []);
+
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
 
   if (loading && !consultations) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-950">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
           className="text-center"
         >
           <Loader className="w-10 h-10 text-purple-600 animate-spin mx-auto mb-2" />
-          <p className="text-sm font-semibold text-gray-900">Chargement...</p>
+          <p className="text-sm font-bold text-gray-900 dark:text-gray-100">Chargement...</p>
         </motion.div>
       </div>
     );
@@ -467,19 +567,20 @@ export default function ConsultationsPage() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
+      <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-950 p-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center max-w-sm bg-white rounded-xl shadow-xl border p-6"
+          className="text-center max-w-sm bg-white dark:bg-gray-900 rounded-xl shadow-2xl border 
+                   border-gray-200 dark:border-gray-800 p-6"
         >
-          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-3" />
-          <h3 className="text-lg font-bold text-gray-900 mb-2">Erreur</h3>
-          <p className="text-sm text-gray-600 mb-4">{error}</p>
+          <AlertCircle className="w-12 h-12 text-rose-500 mx-auto mb-3" />
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">Erreur</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{error}</p>
           <button
             onClick={handleRefresh}
-            className="w-full px-4 py-2.5 bg-gradient-to-r from-purple-500 to-purple-600
-                     text-white rounded-lg font-semibold hover:shadow-lg transition-all"
+            className="w-full px-4 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700
+                     text-white rounded-lg font-bold hover:shadow-lg transition-all active:scale-95"
           >
             Réessayer
           </button>
@@ -489,20 +590,23 @@ export default function ConsultationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header sticky */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
-        <div className="max-w-5xl mx-auto px-3 py-3">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      {/* Header sticky ultra-compact */}
+      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl 
+                    border-b border-gray-200 dark:border-gray-800 sticky top-0 z-30 shadow-sm">
+        <div className="max-w-5xl mx-auto px-3 py-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg">
-                <FileText className="w-4 h-4 text-white" />
+              <div className="p-1.5 bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg shadow-md">
+                <FileText className="w-3.5 h-3.5 text-white" />
               </div>
               <div>
-                <h1 className="text-base font-bold text-gray-900">Consultations</h1>
-                <p className="text-xs text-gray-500 flex items-center gap-1">
-                  <Zap className="w-3 h-3" />
-                  {total} total
+                <h1 className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                  Consultations
+                </h1>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                  <Zap className="w-2.5 h-2.5" />
+                  {total} au total
                 </p>
               </div>
             </div>
@@ -510,19 +614,19 @@ export default function ConsultationsPage() {
             <button
               onClick={handleRefresh}
               disabled={isRefreshing || loading}
-              className={`p-2 rounded-lg transition-all ${
+              className={`p-1.5 rounded-lg transition-all shadow-sm ${
                 isRefreshing || loading
-                  ? 'bg-gray-100 text-gray-400'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-400'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
-              <RefreshCw className={`w-4 h-4 ${isRefreshing || loading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing || loading ? 'animate-spin' : ''}`} />
             </button>
           </div>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-3 py-4 space-y-3">
+      <div className="max-w-5xl mx-auto px-3 py-3 space-y-2.5">
         {/* Liste consultations */}
         {consultations && consultations.length > 0 ? (
           <>
@@ -533,7 +637,9 @@ export default function ConsultationsPage() {
                   consultation={consultation}
                   onGenerateAnalysis={handleGenerateAnalysis}
                   onModifyAnalysis={handleModifyAnalysis}
+                  onNotifyUser={handleNotifyUser}
                   isGenerating={generatingIds.has(consultation.id)}
+                  isNotifying={notifyingIds.has(consultation.id)}
                 />
               ))}
             </AnimatePresence>
@@ -549,20 +655,28 @@ export default function ConsultationsPage() {
           </>
         ) : (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="bg-white rounded-xl border p-8 text-center"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 
+                     dark:border-gray-800 p-12 text-center"
           >
-            <FileText className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <h3 className="text-base font-bold text-gray-900 mb-1">
+            <FileText className="w-16 h-16 text-gray-300 dark:text-gray-700 mx-auto mb-4" />
+            <h3 className="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">
               Aucune consultation
             </h3>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               Les consultations apparaîtront ici
             </p>
           </motion.div>
         )}
       </div>
+
+      {/* Toast notification */}
+      <AnimatePresence>
+        {toastMessage && (
+          <Toast message={toastMessage} onClose={() => setToastMessage(null)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

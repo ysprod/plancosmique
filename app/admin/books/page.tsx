@@ -538,8 +538,8 @@ export default function AdminBooksPage() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setShowFilters(!showFilters)}
                 className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${showFilters
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
               >
                 <Filter className="w-5 h-5" />
@@ -720,8 +720,8 @@ export default function AdminBooksPage() {
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleToggleActive(book.bookId, book.isActive)}
                       className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex-shrink-0 ${book.isActive
-                          ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                         }`}
                     >
                       {book.isActive ? '✓ Actif' : '✗ Inactif'}
@@ -824,8 +824,8 @@ export default function AdminBooksPage() {
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2 flex-1">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${currentStep === 1
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-green-100 text-green-700'
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-green-100 text-green-700'
                       }`}>
                       {currentStep === 1 ? '1' : <CheckCircle className="w-5 h-5" />}
                     </div>
@@ -846,8 +846,8 @@ export default function AdminBooksPage() {
 
                   <div className="flex items-center gap-2 flex-1">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${currentStep === 2
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-gray-200 text-gray-500'
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-gray-200 text-gray-500'
                       }`}>
                       2
                     </div>
@@ -890,8 +890,8 @@ export default function AdminBooksPage() {
                           value={formData.title}
                           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                           className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${formErrors.title
-                              ? 'border-red-300 focus:border-red-500'
-                              : 'border-gray-200 focus:border-indigo-500'
+                            ? 'border-red-300 focus:border-red-500'
+                            : 'border-gray-200 focus:border-indigo-500'
                             }`}
                           placeholder="Ex: Guide Complet du Développement Web"
                           disabled={submitting}
@@ -911,8 +911,8 @@ export default function AdminBooksPage() {
                           value={formData.subtitle}
                           onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
                           className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${formErrors.subtitle
-                              ? 'border-red-300 focus:border-red-500'
-                              : 'border-gray-200 focus:border-indigo-500'
+                            ? 'border-red-300 focus:border-red-500'
+                            : 'border-gray-200 focus:border-indigo-500'
                             }`}
                           placeholder="Ex: De débutant à expert en 30 jours"
                           disabled={submitting}
@@ -935,8 +935,8 @@ export default function AdminBooksPage() {
                           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                           rows={6}
                           className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all resize-none ${formErrors.description
-                              ? 'border-red-300 focus:border-red-500'
-                              : 'border-gray-200 focus:border-indigo-500'
+                            ? 'border-red-300 focus:border-red-500'
+                            : 'border-gray-200 focus:border-indigo-500'
                             }`}
                           placeholder="Décrivez le contenu du livre en détail, les sujets abordés, ce que les lecteurs apprendront..."
                           disabled={submitting}
@@ -990,8 +990,8 @@ export default function AdminBooksPage() {
                             value={formData.author}
                             onChange={(e) => setFormData({ ...formData, author: e.target.value })}
                             className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${formErrors.author
-                                ? 'border-red-300 focus:border-red-500'
-                                : 'border-gray-200 focus:border-indigo-500'
+                              ? 'border-red-300 focus:border-red-500'
+                              : 'border-gray-200 focus:border-indigo-500'
                               }`}
                             placeholder="Ex: Jean Dupont"
                             disabled={submitting}
@@ -1010,8 +1010,8 @@ export default function AdminBooksPage() {
                             value={formData.category}
                             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                             className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${formErrors.category
-                                ? 'border-red-300 focus:border-red-500'
-                                : 'border-gray-200 focus:border-indigo-500'
+                              ? 'border-red-300 focus:border-red-500'
+                              : 'border-gray-200 focus:border-indigo-500'
                               }`}
                             placeholder="Ex: Programmation"
                             disabled={submitting}
@@ -1042,8 +1042,8 @@ export default function AdminBooksPage() {
                               value={formData.price}
                               onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                               className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${formErrors.price
-                                  ? 'border-red-300 focus:border-red-500'
-                                  : 'border-gray-200 focus:border-indigo-500'
+                                ? 'border-red-300 focus:border-red-500'
+                                : 'border-gray-200 focus:border-indigo-500'
                                 }`}
                               placeholder="5000"
                               min="0"
@@ -1068,8 +1068,8 @@ export default function AdminBooksPage() {
                             value={formData.pageCount}
                             onChange={(e) => setFormData({ ...formData, pageCount: e.target.value })}
                             className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all ${formErrors.pageCount
-                                ? 'border-red-300 focus:border-red-500'
-                                : 'border-gray-200 focus:border-indigo-500'
+                              ? 'border-red-300 focus:border-red-500'
+                              : 'border-gray-200 focus:border-indigo-500'
                               }`}
                             placeholder="250"
                             min="1"

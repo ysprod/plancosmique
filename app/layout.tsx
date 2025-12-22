@@ -191,21 +191,18 @@ export default function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
-        {/* Preconnect pour optimiser les performances */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+          {/* Preconnect pour optimiser les performances */}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         
-        {/* PWA - Métadonnées pour mobile */}
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Mon Étoile" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="application-name" content="Mon Étoile" />
-        <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
-        
-        {/* Performance hints */}
-        <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+          {/* PWA - Métadonnées pour mobile */}
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+          <meta name="apple-mobile-web-app-title" content="Mon Étoile" />
+          <meta name="mobile-web-app-capable" content="yes" />
+          <meta name="application-name" content="Mon Étoile" />
+          <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
         
         {/* Script anti-flash de thème - CRITIQUE pour UX */}
         <script
