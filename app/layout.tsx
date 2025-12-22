@@ -352,7 +352,6 @@ export default function RootLayout({
           </ClientProviders>
         </ThemeProvider>
 
-        {/* Portails pour modales et notifications */}
         <div id="modal-root" aria-live="polite" />
         <div id="toast-root" aria-live="assertive" aria-atomic="true" />
       </body>
