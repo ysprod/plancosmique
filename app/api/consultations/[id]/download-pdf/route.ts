@@ -9,76 +9,317 @@ import { NextResponse } from 'next/server';
 import { renderToStream } from '@react-pdf/renderer';
 import { AnalysisDocument } from '@/lib/pdf/analysis-pdf';
 import { createElement } from 'react';
+import { api } from '@/lib/api/client';
 
+// =====================================================
+// TYPES
+// =====================================================
+interface Position {
+  planete?: string;
+  astre?: string;
+  signe?: string;
+  maison?: string | number;
+  degre?: number;
+  retrograde?: boolean;
+}
+
+interface Sujet {
+  nom: string;
+  prenoms: string;
+  dateNaissance: string;
+  lieuNaissance: string;
+  heureNaissance: string;
+}
+
+interface CarteDuCiel {
+  sujet: Sujet;
+  positions: Position[];
+  aspectsTexte: string;
+}
+
+interface MissionDeVie {
+  titre: string;
+  contenu: string; // Markdown format
+}
+
+interface AnalyseData {
+  _id: string;
+  userId: string;
+  consultationId: string;
+  carteDuCiel: CarteDuCiel;
+  missionDeVie: MissionDeVie;
+  dateGeneration: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+interface BackendResponse {
+  success?: boolean;
+  analyse: AnalyseData;
+}
+
+// =====================================================
+// UTILITAIRES
+// =====================================================
+
+/**
+ * Valide la structure de l'analyse reçue du backend
+ */
+function validateAnalyse(analyse: any): analyse is AnalyseData {
+  if (!analyse) return false;
+  
+  const hasCarteDuCiel = analyse.carteDuCiel && 
+                        analyse.carteDuCiel.sujet &&
+                        analyse.carteDuCiel.positions &&
+                        Array.isArray(analyse.carteDuCiel.positions);
+  
+  const hasMissionDeVie = analyse.missionDeVie && 
+                         analyse.missionDeVie.titre &&
+                         analyse.missionDeVie.contenu;
+  
+  return hasCarteDuCiel && hasMissionDeVie;
+}
+
+/**
+ * Génère un nom de fichier sécurisé et descriptif
+ */
+function generateFilename(sujet: Sujet): string {
+  const sanitize = (str: string) => 
+    str.trim()
+       .replace(/[^a-zA-Z0-9\s-]/g, '')
+       .replace(/\s+/g, '-')
+       .toLowerCase()
+       .substring(0, 30); // Limite stricte
+
+  const prenoms = sanitize(sujet.prenoms);
+  const nom = sanitize(sujet.nom);
+  const date = new Date().toISOString().split('T')[0];
+  
+  return `analyse-${nom}-${prenoms}-${date}.pdf`;
+}
+
+/**
+ * Formatte les données d'analyse pour le logging (tronque contenu)
+ */
+function formatAnalyseForLog(analyse: AnalyseData): object {
+  return {
+    _id: analyse._id,
+    consultationId: analyse.consultationId,
+    sujet: {
+      nom: analyse.carteDuCiel.sujet.nom,
+      prenoms: analyse.carteDuCiel.sujet.prenoms.substring(0, 20),
+      dateNaissance: analyse.carteDuCiel.sujet.dateNaissance
+    },
+    positionsCount: analyse.carteDuCiel.positions.length,
+    missionLength: analyse.missionDeVie.contenu.length,
+    dateGeneration: analyse.dateGeneration
+  };
+}
+
+// =====================================================
+// HANDLER PRINCIPAL
+// =====================================================
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
+  const startTime = Date.now();
+  
   try {
     const consultationId = params.id;
     
-    if (!consultationId) {
+    // Validation ID (MongoDB ObjectId = 24 chars hex)
+    if (!consultationId || consultationId.length !== 24 || !/^[a-f0-9]{24}$/i.test(consultationId)) {
+      console.warn('[PDF] ⚠️ ID de consultation invalide:', consultationId);
       return NextResponse.json(
-        { success: false, error: 'ID de consultation manquant' },
+        { 
+          success: false, 
+          error: 'ID de consultation invalide',
+          code: 'INVALID_ID'
+        },
         { status: 400 }
       );
     }
 
-    // Récupérer l'analyse depuis l'API backend
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/consultations/${consultationId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    console.log('[PDF] 📄 Génération PDF pour consultation:', consultationId);
 
-    if (!response.ok) {
+    // Récupération analyse depuis le backend
+    let backendData: BackendResponse;
+    try {
+      console.log('[PDF] 🔍 Récupération analyse depuis API...');
+      const response = await api.get<BackendResponse>(
+        `/consultations/analysis/${consultationId}`,
+        {
+          timeout: 15000,
+          headers: {
+            'Accept': 'application/json'
+          }
+        }
+      );
+
+      backendData = response.data;
+      
+      if (!backendData || !backendData.analyse) {
+        console.error('[PDF] ❌ Réponse API invalide:', {
+          status: response.status,
+          hasData: !!backendData,
+          hasAnalyse: !!(backendData && backendData.analyse)
+        });
+        
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Structure de réponse API invalide',
+            code: 'INVALID_API_RESPONSE'
+          },
+          { status: 500 }
+        );
+      }
+
+      console.log('[PDF] ✅ Analyse récupérée:', formatAnalyseForLog(backendData.analyse));
+
+    } catch (err: any) {
+      console.error('[PDF] ❌ Erreur récupération analyse:', {
+        message: err.message,
+        status: err.response?.status,
+        statusText: err.response?.statusText
+      });
+
+      if (err.response?.status === 404) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Analyse non trouvée. Veuillez générer l\'analyse d\'abord.',
+            code: 'ANALYSIS_NOT_FOUND'
+          },
+          { status: 404 }
+        );
+      }
+
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Accès non autorisé à cette analyse',
+            code: 'UNAUTHORIZED'
+          },
+          { status: 403 }
+        );
+      }
+
+      if (err.code === 'ECONNABORTED' || err.code === 'ETIMEDOUT') {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Délai d\'attente dépassé',
+            code: 'TIMEOUT'
+          },
+          { status: 504 }
+        );
+      }
+
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Analyse non trouvée. Veuillez générer l\'analyse d\'abord.' 
+        {
+          success: false,
+          error: 'Erreur lors de la récupération de l\'analyse',
+          code: 'API_ERROR',
+          details: process.env.NODE_ENV === 'development' ? err.message : undefined
         },
-        { status: 404 }
+        { status: 500 }
       );
     }
 
-    const data = await response.json();
-    const analyse = data.consultation?.analyse || data.consultation;
+    const analyse = backendData.analyse;
 
-    if (!analyse) {
+    // Validation structure analyse
+    // if (!validateAnalyse(analyse)) {
+    //   console.error('[PDF] ❌ Structure d\'analyse invalide:', {
+    //     hasCarteDuCiel: !!analyse?.carteDuCiel,
+    //     hasSujet: !!analyse?.carteDuCiel?.sujet,
+    //     hasPositions: !!analyse?.carteDuCiel?.positions,
+    //     hasMissionDeVie: !!analyse?.missionDeVie
+    //   });
+
+    //   return NextResponse.json(
+    //     { 
+    //       success: false, 
+    //       error: 'Structure d\'analyse invalide ou incomplète',
+    //       code: 'INVALID_ANALYSIS_STRUCTURE'
+    //     },
+    //     { status: 422 }
+    //   );
+    // }
+
+    // Génération du document PDF
+    console.log('[PDF] 🎨 Création du document PDF...');
+    let pdfDocument;
+    try {
+      pdfDocument = createElement(AnalysisDocument, { analyse });
+    } catch (err: any) {
+      console.error('[PDF] ❌ Erreur création document:', err);
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Analyse non disponible.' 
+        {
+          success: false,
+          error: 'Erreur lors de la création du document PDF',
+          code: 'PDF_CREATION_ERROR',
+          details: process.env.NODE_ENV === 'development' ? err.message : undefined
         },
-        { status: 404 }
+        { status: 500 }
       );
     }
-
-    // Créer le document PDF avec React.createElement
-    const pdfDocument = createElement(AnalysisDocument, { analyse });
     
-    // Générer le stream PDF (cast pour éviter les erreurs de type)
-    const stream = await renderToStream(pdfDocument as any);
+    // Génération du stream PDF
+    console.log('[PDF] 📦 Génération du stream PDF...');
+    let stream;
+    try {
+      stream = await renderToStream(pdfDocument as any);
+    } catch (err: any) {
+      console.error('[PDF] ❌ Erreur génération stream:', err);
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Erreur lors de la génération du flux PDF',
+          code: 'PDF_RENDER_ERROR',
+          details: process.env.NODE_ENV === 'development' ? err.message : undefined
+        },
+        { status: 500 }
+      );
+    }
 
-    // Nom du fichier PDF
-    const filename = `analyse-astrologique-${analyse.carteDuCiel.sujet.prenoms}-${analyse.carteDuCiel.sujet.nom}-${new Date().toISOString().split('T')[0]}.pdf`;
+    // Génération nom fichier sécurisé
+    const filename = generateFilename(analyse.carteDuCiel.sujet);
+    
+    const duration = Date.now() - startTime;
+    console.log(`[PDF] ✅ PDF généré avec succès en ${duration}ms:`, filename);
 
-    // Retourner le PDF en tant que téléchargement
+    // Retour du PDF en streaming
     return new NextResponse(stream as unknown as ReadableStream, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${filename}"`,
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'X-Generation-Time': `${duration}ms`,
+        'X-Analysis-ID': analyse._id
       },
     });
 
-  } catch (error) {
-    console.error('[PDF] Erreur génération PDF:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
-    
+  } catch (error: any) {
+    const duration = Date.now() - startTime;
+    console.error('[PDF] ❌ Erreur inattendue génération PDF:', {
+      message: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+      duration: `${duration}ms`
+    });
+
     return NextResponse.json(
       {
         success: false,
-        error: `Erreur lors de la génération du PDF: ${errorMessage}`,
+        error: 'Erreur inattendue lors de la génération du PDF',
+        code: 'UNEXPECTED_ERROR',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
       },
       { status: 500 }
     );

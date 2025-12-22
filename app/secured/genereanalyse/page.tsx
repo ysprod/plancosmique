@@ -95,10 +95,7 @@ const TimelineBadge = memo(() => (
   </motion.div>
 ));
 TimelineBadge.displayName = 'TimelineBadge';
-
-// =====================================================
-// COMPOSANT PRINCIPAL
-// =====================================================
+ 
 export default function GenereAnalysePage() {
   const router = useRouter();
 
@@ -106,13 +103,8 @@ export default function GenereAnalysePage() {
     router.push('/secured/consultations');
   }, [router]);
 
-  const handleNotify = useCallback(() => {
-    // Logique de notification (optionnel)
-    alert('Vous serez notifié par email dès que votre analyse sera prête.');
-  }, []);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
+    <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
                   dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
       
       {/* Header sticky ultra-compact */}
@@ -204,7 +196,20 @@ export default function GenereAnalysePage() {
             />
           </div>
 
-          {/* Actions */}
+         
+
+          {/* Footer message */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="text-xs text-center text-gray-500 dark:text-gray-400 pt-4 border-t 
+                     border-gray-200 dark:border-gray-700"
+          >
+            Nous vous remercions pour votre confiance. 🙏
+          </motion.p>
+
+           {/* Actions */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -220,43 +225,10 @@ export default function GenereAnalysePage() {
             >
               Retour aux consultations
             </button>
-            <button
-              onClick={handleNotify}
-              className="flex-1 h-11 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 
-                       text-white font-semibold text-sm shadow-lg
-                       hover:from-purple-700 hover:to-pink-700 transition-all
-                       active:scale-[0.98] flex items-center justify-center gap-2"
-            >
-              <Bell className="w-4 h-4" />
-              Me notifier
-            </button>
+           
           </motion.div>
-
-          {/* Footer message */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="text-xs text-center text-gray-500 dark:text-gray-400 pt-4 border-t 
-                     border-gray-200 dark:border-gray-700"
-          >
-            Nous vous remercions pour votre confiance. 🙏
-          </motion.p>
         </motion.div>
 
-        {/* Note additionnelle */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9 }}
-          className="mt-6 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 
-                   border border-blue-200 dark:border-blue-800"
-        >
-          <p className="text-xs text-blue-700 dark:text-blue-300 text-center leading-relaxed">
-            💡 <strong>Astuce :</strong> Vous pouvez fermer cette page en toute sécurité. 
-            Vous recevrez une notification par email dès que votre analyse sera disponible.
-          </p>
-        </motion.div>
       </div>
     </div>
   );

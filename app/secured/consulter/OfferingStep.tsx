@@ -93,7 +93,7 @@ const TabButton = memo(({
         <span className="text-base">{config.icon}</span>
         <span>{config.label}</span>
       </span>
-       
+
     </button>
   );
 });
@@ -305,18 +305,44 @@ export default function OfferingStep({
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
                   dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900 
                   flex flex-col">
+
+      {/* Titre */}
+      <motion.h1
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ type: 'spring', stiffness: 120, damping: 12, delay: 0.2 }}
+        className="text-center text-2xl sm:text-2xl md:text-2xl font-extrabold mb-8 select-none relative"
+      >
+        <span
+          className="block bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 bg-clip-text text-transparent animate-gradient-x drop-shadow-lg"
+          style={{
+            WebkitTextStroke: '1px rgba(80,0,80,0.08)',
+            filter: 'drop-shadow(0 2px 16px #e879f9aa) drop-shadow(0 0px 8px #a21caf66)'
+          }}
+        >
+          <motion.span
+            initial={{ textShadow: '0 0 0px #190404ff' }}
+             
+            className="inline-block"
+          >
+            OFFRANDES
+          </motion.span>
+        </span>
+      </motion.h1>
       {/* Header fixe */}
       <div className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl 
                     border-b border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center gap-3 mb-3">
-            <Package className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+        
             <div className="flex-1">
-              <h1 className="text-base font-bold text-gray-900 dark:text-gray-100">
-                Offrandes
-              </h1>
+
+              <p className="text-xs text-gray-500 dark:text-gray-400 font-bold">
+                Cette requête nécessite que vous fassiez une offrande.
+              </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                Choisissez une alternative
+
+                Choisissez entre une offrande animale, végétale ou boisson.
               </p>
             </div>
           </div>
