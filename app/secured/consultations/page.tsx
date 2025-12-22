@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-
 import { api } from '@/lib/api/client';
+import { CarteDuCiel } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   AlertCircle,
@@ -23,9 +23,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-// ==================== TYPES ====================
-
+ 
 type ConsultationType =
   | 'SPIRITUALITE'
   | 'VIE_PERSONNELLE'
@@ -46,23 +44,6 @@ interface ConsultationFormData {
   heureNaissance: string;
   numeroSend?: string;
   email?: string;
-}
-
-interface CarteDuCiel {
-  sujet: {
-    nom: string;
-    prenoms: string;
-    dateNaissance: string;
-    lieuNaissance: string;
-    heureNaissance: string;
-  };
-  positions: Array<{
-    planete: string;
-    signe: string;
-    maison: number;
-    retrograde: boolean;
-  }>;
-  aspectsTexte: string;
 }
 
 interface MissionDeVie {
@@ -141,9 +122,6 @@ const formatDate = (dateString: string) => {
   });
 };
 
- 
-
-// ==================== COMPOSANTS ====================
 
 interface StatusBadgeProps {
   status: ConsultationStatus | string;
@@ -152,7 +130,7 @@ interface StatusBadgeProps {
 const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const config = STATUS_CONFIG[status as ConsultationStatus] || DEFAULT_STATUS_CONFIG;
   const Icon = config.icon;
-  
+
   return (
     <span className={`inline-flex items-center gap-1.5 px-3 py-1 ${config.color} rounded-full text-xs font-semibold`}>
       <Icon className={`w-3.5 h-3.5 ${status === 'PROCESSING' ? 'animate-spin' : ''}`} />
@@ -168,7 +146,7 @@ interface TypeBadgeProps {
 const TypeBadge: React.FC<TypeBadgeProps> = ({ type }) => {
   const config = TYPE_LABELS[type];
   const Icon = config.icon;
-  
+
   return (
     <div className={`inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r ${config.color} text-white rounded-lg text-xs font-bold`}>
       <Icon className="w-4 h-4" />
@@ -187,7 +165,7 @@ interface ConsultationCardProps {
 const ConsultationCard: React.FC<ConsultationCardProps> = ({ consultation, index, onView, onDownload }) => {
   const typeConfig = TYPE_LABELS[consultation.type];
   const Icon = typeConfig.icon;
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -227,7 +205,7 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ consultation, index
             {consultation.formData.prenoms} {consultation.formData.nom}
           </span>
         </div>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-purple-300">
           <div className="flex items-center gap-2">
             <Calendar className="w-3.5 h-3.5 flex-shrink-0" />
@@ -305,7 +283,7 @@ export default function ConsultationsListPage() {
   const [filteredConsultations, setFilteredConsultations] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Filtres
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<ConsultationType | 'ALL'>('ALL');
@@ -323,7 +301,7 @@ export default function ConsultationsListPage() {
   const loadConsultations = async () => {
     try {
       const token = localStorage.getItem('monetoile_access_token');
-      
+
       if (!token) {
         setError('Vous devez être connecté pour voir vos consultations');
         setLoading(false);
@@ -331,7 +309,7 @@ export default function ConsultationsListPage() {
       }
 
       const response = await api.get('/consultations/my');
-      
+
       if (response.status !== 200) {
         throw new Error('Erreur lors du chargement des consultations');
       }
@@ -343,13 +321,13 @@ export default function ConsultationsListPage() {
       setLoading(false);
     } catch (err: any) {
       console.error('❌ Erreur chargement consultations:', err);
-      
+
       if (err.response?.status === 403 || err.response?.status === 401) {
         setError('Session expirée. Veuillez vous reconnecter.');
       } else {
         setError('Erreur lors du chargement des consultations');
       }
-      
+
       setLoading(false);
     }
   };
@@ -366,7 +344,7 @@ export default function ConsultationsListPage() {
 
     // Filtre par recherche
     if (searchQuery) {
-      filtered = filtered.filter(c => 
+      filtered = filtered.filter(c =>
         c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         c.formData.prenoms.toLowerCase().includes(searchQuery.toLowerCase()) ||
         c.formData.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -412,7 +390,7 @@ export default function ConsultationsListPage() {
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 py-8 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">        
+        <div className="mb-8">
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
@@ -520,8 +498,8 @@ export default function ConsultationsListPage() {
           >
             <Sparkles className="w-16 h-16 text-purple-300 mx-auto mb-4" />
             <h3 className="text-2xl font-bold text-white mb-2">
-              {consultations.length === 0 
-                ? 'Aucune consultation pour le moment' 
+              {consultations.length === 0
+                ? 'Aucune consultation pour le moment'
                 : 'Aucun résultat trouvé'}
             </h3>
             <p className="text-purple-200 mb-6">

@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Heart, Eye, Calendar, User, Tag, ArrowLeft, Share2 } from 'lucide-react';

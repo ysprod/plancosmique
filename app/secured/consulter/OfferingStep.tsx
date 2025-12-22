@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import { OfferingAlternative, WalletOffering } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   AlertTriangle, ArrowRight, CheckCircle2, ChevronRight, Circle, Package, ShoppingBag
@@ -8,24 +9,6 @@ import { useRouter } from "next/navigation";
 import { memo, useCallback, useMemo, useState } from "react";
 
 type Category = 'animal' | 'vegetal' | 'beverage';
-
-interface OfferingAlternative {
-  category: Category;
-  offeringId: string;
-  quantity: number;
-  name?: string;
-  price?: number;
-  icon?: string;
-}
-
-interface WalletOffering {
-  offeringId: string;
-  quantity: number;
-  name: string;
-  icon: string;
-  category: string;
-  price: number;
-}
 
 interface OfferingStepProps {
   requiredOfferings: OfferingAlternative[];
@@ -63,7 +46,6 @@ const CATEGORY_CONFIG: Record<Category, {
     darkBg: "dark:bg-blue-900/20"
   }
 };
-
 
 const TabButton = memo(({
   category,
@@ -322,7 +304,7 @@ export default function OfferingStep({
         >
           <motion.span
             initial={{ textShadow: '0 0 0px #190404ff' }}
-             
+
             className="inline-block"
           >
             OFFRANDES
@@ -334,7 +316,7 @@ export default function OfferingStep({
                     border-b border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center gap-3 mb-3">
-        
+
             <div className="flex-1">
 
               <p className="text-xs text-gray-500 dark:text-gray-400 font-bold">

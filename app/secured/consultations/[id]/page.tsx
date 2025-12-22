@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 'use client';
-
 import { api } from '@/lib/api/client';
+import { AnalyseAstrologique, SubjectInfo } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import {
   AlertCircle,
@@ -22,47 +21,6 @@ import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-// ==================== TYPES ====================
-
-interface SubjectInfo {
-  nom: string;
-  prenoms: string;
-  dateNaissance: string;
-  lieuNaissance: string;
-  heureNaissance: string;
-}
-
-interface Position {
-  planete: string;
-  signe: string;
-  maison: number;
-  retrograde: boolean;
-}
-
-interface CarteDuCiel {
-  sujet: SubjectInfo;
-  positions: Position[];
-  aspectsTexte: string;
-}
-
-interface Section {
-  titre: string;
-  contenu: string;
-}
-
-interface AnalyseAstrologique {
-  _id: string;
-  userId: string;
-  consultationId: string;
-  carteDuCiel: CarteDuCiel;
-  missionDeVie: Section;
-  dateGeneration: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-// ==================== HELPERS ====================
-
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('fr-FR', {
     day: 'numeric',
@@ -70,8 +28,6 @@ const formatDate = (dateString: string) => {
     year: 'numeric'
   });
 };
-
-// ==================== COMPOSANTS ====================
 
 interface SubjectHeaderProps {
   sujet: SubjectInfo;
@@ -170,7 +126,7 @@ const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => (
         hr: ({ ...props }) => (
           <hr className="my-8 border-white/20" {...props} />
         ),
-        code: ({  inline, ...props }: any) => 
+        code: ({ inline, ...props }: any) =>
           inline ? (
             <code className="bg-white/10 px-2 py-1 rounded text-purple-300 text-sm" {...props} />
           ) : (
@@ -182,8 +138,6 @@ const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => (
     </ReactMarkdown>
   </div>
 );
-
-// ==================== PAGE PRINCIPALE ====================
 
 export default function ConsultationResultPage() {
   const params = useParams();
@@ -200,7 +154,7 @@ export default function ConsultationResultPage() {
     const loadAnalysis = async () => {
       try {
         const response = await api.get(`/consultations/analysis/${consultationId}`);
-        
+
         console.log('Réponse API:', response.data);
 
         if (response.status !== 200) {
@@ -291,7 +245,7 @@ export default function ConsultationResultPage() {
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
               <span className="hidden sm:inline font-semibold">Retour</span>
             </button>
-            
+
             <div className="flex-1 text-center">
               <h1 className="text-lg sm:text-xl font-black text-white flex items-center justify-center gap-2">
                 <Star className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-300" />
@@ -318,8 +272,6 @@ export default function ConsultationResultPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         {/* Subject Header */}
         <SubjectHeader sujet={analyse.carteDuCiel.sujet} />
- 
-
         {/* Mission de Vie (Markdown) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -328,21 +280,6 @@ export default function ConsultationResultPage() {
           className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 sm:p-8 border border-white/20"
         >
           <MarkdownContent content={analyse.missionDeVie.contenu} />
-        </motion.div>
-
-        {/* Footer Info */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mt-8 text-center p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10"
-        >
-          <p className="text-purple-300 text-sm mb-2">
-            Analyse générée le {formatDate(analyse.dateGeneration)}
-          </p>
-          <p className="text-purple-400 text-xs">
-            Cette analyse est personnalisée selon votre thème natal complet
-          </p>
         </motion.div>
       </div>
     </div>

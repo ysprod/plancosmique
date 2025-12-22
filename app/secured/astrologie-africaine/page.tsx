@@ -39,8 +39,8 @@ const SigneAfricainContent = () => (
       {/* Message d'introduction */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 mb-6">
         <p className="text-gray-700 leading-relaxed">
-          Bienvenue dans l'espace sacré des rituels et invocations magiques. Découvrez comment les phases lunaires 
-          influencent vos pratiques spirituelles et apprenez à harmoniser vos intentions avec les énergies cosmiques. 
+          Bienvenue dans l'espace sacré des rituels et invocations magiques. Découvrez comment les phases lunaires
+          influencent vos pratiques spirituelles et apprenez à harmoniser vos intentions avec les énergies cosmiques.
           Laissez-vous guider par la sagesse ancestrale pour manifester vos désirs les plus profonds.
         </p>
       </div>
@@ -59,7 +59,7 @@ const SigneAfricainContent = () => (
             Invocations
           </h3>
           <p className="text-gray-600 mb-6 leading-relaxed">
-            Les invocations sont des appels sacrés aux forces spirituelles et aux divinités. 
+            Les invocations sont des appels sacrés aux forces spirituelles et aux divinités.
             Prononcez ces paroles avec respect et intention pour établir une connexion divine.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
@@ -103,7 +103,7 @@ const SigneAfricainContent = () => (
             Rituels
           </h3>
           <p className="text-gray-600 mb-6 leading-relaxed">
-            Les rituels sont des cérémonies sacrées qui alignent vos intentions avec les cycles cosmiques. 
+            Les rituels sont des cérémonies sacrées qui alignent vos intentions avec les cycles cosmiques.
             Chaque rituel est conçu pour une phase lunaire spécifique afin de maximiser son efficacité.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
@@ -484,7 +484,7 @@ export default function AstrologieAfricainePage() {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 py-12 lg:py-16 max-w-7xl">
-        
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -502,7 +502,7 @@ export default function AstrologieAfricainePage() {
             </div>
           </motion.div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-4 tracking-tight">
-           Incantions et Rituels Magiques
+            Incantions et Rituels Magiques
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
             Découvrez la sagesse ancestrale et les traditions astrologiques africaines millénaires

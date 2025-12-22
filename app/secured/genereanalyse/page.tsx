@@ -13,9 +13,6 @@ import {
 import { useRouter } from 'next/navigation';
 import { memo, useCallback } from 'react';
 
-// =====================================================
-// SOUS-COMPOSANTS MÉMORISÉS
-// =====================================================
 const SuccessIcon = memo(() => (
   <motion.div
     initial={{ scale: 0, rotate: -180 }}

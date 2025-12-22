@@ -1,12 +1,11 @@
 'use client';
-
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { BookOpen, Heart, Eye, Calendar, User, Tag, Search, Filter, TrendingUp, Clock } from 'lucide-react';
 import { knowledgeService } from '@/lib/api/services';
 import type { Knowledge, KnowledgeCategory } from '@/lib/types/knowledge.types';
-import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { BookOpen, Calendar, Clock, Eye, Filter, Heart, Search, Tag, TrendingUp, User } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const categoryLabels: Record<KnowledgeCategory, string> = {
   ASTROLOGIE: 'Astrologie',

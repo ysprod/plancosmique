@@ -18,13 +18,6 @@ import {
   staggerContainer
 } from './components';
 
-// =====================================================
-// HOOKS PERSONNALISÉS
-// =====================================================
-
-/**
- * Hook de gestion du panier avec normalisation _id/id
- */
 function useCart() {
   const [cart, setCart] = useState<CartItem[]>([]);
 

@@ -34,6 +34,8 @@ export interface CarteDuCiel {
   aspectsTexte: string;
 }
 
+
+
 export interface Section {
   titre: string;
   contenu: string;
@@ -77,3 +79,40 @@ export interface UserData {
     newsletter?: boolean;
   };
 }
+type Category = 'animal' | 'vegetal' | 'beverage';
+export interface OfferingAlternative {
+  category: Category;
+  offeringId: string;
+  quantity: number;
+  name?: string;
+  price?: number;
+  icon?: string;
+}
+
+export interface WalletOffering {
+  offeringId: string;
+  quantity: number;
+  name: string;
+  icon: string;
+  category: string;
+  price: number;
+}
+
+
+// interface OfferingAlternative {
+//   category: 'animal' | 'vegetal' | 'beverage';
+//   offeringId: string;
+//   quantity: number;
+//   name?: string;
+//   price?: number;
+//   icon?: string;
+// }
+
+// interface WalletOffering {
+//   offeringId: string;
+//   quantity: number;
+//   name: string;
+//   icon: string;
+//   category: string;
+//   price: number;
+// }

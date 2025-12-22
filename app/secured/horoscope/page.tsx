@@ -14,11 +14,7 @@ import {
   TrendingUp, Users
 } from 'lucide-react'
 import React, { useState } from 'react'
-
-// ============================================================================
-// TYPES & INTERFACES
-// ============================================================================
-
+ 
 type HoroscopeTypeId = 'quotidien' | 'mensuel' | 'annuel' | 'amoureux'
 
 interface Tab {

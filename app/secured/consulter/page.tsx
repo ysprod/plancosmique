@@ -11,24 +11,7 @@ import ErrorAlert from './ErrorAlert';
 import ErrorState from './ErrorState';
 import LoadingSpinner from './LoadingSpinner';
 import OfferingStep from './OfferingStep';
-
-interface OfferingAlternative {
-  category: 'animal' | 'vegetal' | 'beverage';
-  offeringId: string;
-  quantity: number;
-  name?: string;
-  price?: number;
-  icon?: string;
-}
-
-interface WalletOffering {
-  offeringId: string;
-  quantity: number;
-  name: string;
-  icon: string;
-  category: string;
-  price: number;
-}
+import { OfferingAlternative, WalletOffering } from '@/lib/interfaces';
 
 interface ConsultationData {
   _id: string;
@@ -44,7 +27,6 @@ function ConsulterPage() {
   const searchParams = useSearchParams();
   const { user } = useAuth();
   const consultationId = searchParams.get('id');
-
   const [consultation, setConsultation] = useState<ConsultationData | null>(null);
   const [loading, setLoading] = useState(true);
   const [step, setStep] = useState<'offering' | 'processing'>('offering');

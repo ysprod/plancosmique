@@ -1,11 +1,10 @@
 "use client";
 import { motion } from "framer-motion";
-import { ArrowRight, Briefcase, Calendar, Heart, Star, Users } from "lucide-react";
+import { ArrowRight, Briefcase, Calendar, Heart, Users } from "lucide-react";
 import Link from "next/link";
 
 const ICONS = { Heart, Users, Briefcase, Calendar };
 
-// Les 4 sous-rubriques de l'astrologie
 const astrologySections = [
   {
     id: "vie-personnelle",
@@ -82,8 +81,6 @@ export default function AstrologiePage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-         
-
           {/* Titre */}
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
@@ -132,7 +129,6 @@ export default function AstrologiePage() {
                   whileTap={{ scale: 0.98 }}
                   className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 border-2 border-gray-200 shadow-lg hover:shadow-2xl hover:border-purple-300 transition-all h-full overflow-hidden"
                 >
-
 
                   {/* Effet de brillance au survol */}
                   <motion.div
