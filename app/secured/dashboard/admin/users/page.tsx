@@ -1,7 +1,7 @@
 'use client';
 import { ProtectedRoute, RoleGuard } from '@/components/auth';
 import { UsersList } from '@/components/users/UsersList';
-import { Role } from '@/types/auth.types';
+import { Role } from '@/lib/types/auth.types';
 
 export default function UsersManagementPage() {
   return (

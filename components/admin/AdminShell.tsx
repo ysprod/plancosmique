@@ -3,7 +3,7 @@ import { MobileNav } from '@/components/admin/MobileNav';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { RoleGuard } from '@/components/auth/RoleGuard';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { Role } from '@/types/auth.types';
+import { Role } from '@/lib/types/auth.types';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   BookOpen,

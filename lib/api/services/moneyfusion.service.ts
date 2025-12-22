@@ -34,8 +34,8 @@ import type {
   MoneyFusionVerifyRequest,
   MoneyFusionVerifyResponse,
   VerifyPaymentResult,
-} from '@/types/moneyfusion.types';
-import { MONEYFUSION_ERROR_MESSAGES } from '@/types/moneyfusion.types';
+} from '@/lib/types/moneyfusion.types';
+import { MONEYFUSION_ERROR_MESSAGES } from '@/lib/types/moneyfusion.types';
 
 // ==================== CONFIGURATION ====================
 

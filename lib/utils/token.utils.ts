@@ -4,7 +4,7 @@
  */
 
 import { config } from '../config';
-import type { TokenPayload } from '@/types/auth.types';
+import type { TokenPayload } from '@/lib/types/auth.types';
 
 /**
  * Stocke le token d'accès

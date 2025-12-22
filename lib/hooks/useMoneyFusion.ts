@@ -6,7 +6,7 @@ import type {
     PaymentState,
     PaymentStatus,
     VerifyPaymentResult,
-} from '@/types/moneyfusion.types';
+} from '@/lib/types/moneyfusion.types';
 
 // ==================== TYPES ====================
 

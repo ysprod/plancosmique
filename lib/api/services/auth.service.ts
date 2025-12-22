@@ -9,7 +9,7 @@ import type {
   RegisterDto,
   AuthResponse,
   User,
-} from '@/types/auth.types';
+} from '@/lib/types/auth.types';
 import {
   setAccessToken,
   setRefreshToken,

@@ -11,7 +11,7 @@ import type {
   ConsultationStatus,
   PaginatedResponse,
   QueryParams,
-} from '@/types/api.types';
+} from '@/lib/types/api.types';
 
 export interface CreateConsultationDto {
   serviceType: ConsultationType;

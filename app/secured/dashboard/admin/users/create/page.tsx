@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { usersService } from "@/lib/api/services/users.service";
-import { Role } from "@/types/auth.types";
+import { Role } from "@/lib/types/auth.types";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowLeft,

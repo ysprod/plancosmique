@@ -17,7 +17,7 @@ import type {
   PointAstrologique,
   Asteroide,
   SigneZodiacal
-} from '@/types/astrology.types';
+} from '@/lib/types/astrology.types';
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 // ==================== CONFIGURATION ====================

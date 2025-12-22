@@ -1,5 +1,5 @@
 import apiClient from '../client';
-import type { NotificationResponse, NotificationPreferences } from '@/types/notification.types';
+import type { NotificationResponse, NotificationPreferences } from '@/lib/types/notification.types';
 
 export const notificationsService = {
   /**

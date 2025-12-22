@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Heart, Eye, Calendar, User, Tag, ArrowLeft, Share2 } from 'lucide-react';
 import { knowledgeService } from '@/lib/api/services';
-import type { Knowledge } from '@/types/knowledge.types';
+import type { Knowledge } from '@/lib/types/knowledge.types';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';

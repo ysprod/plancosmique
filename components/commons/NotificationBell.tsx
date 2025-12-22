@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Bell, CheckCheck, Trash2 } from 'lucide-react';
 import { useNotifications } from '@/lib/hooks';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Notification } from '@/types/notification.types';
+import type { Notification } from '@/lib/types/notification.types';
 
 const notificationIcons = {
   CONSULTATION_RESULT: '✨',
@@ -52,9 +52,9 @@ export default function NotificationBell() {
       await markAsRead(notification._id);
     }
 
-    // Rediriger vers /secured/consultations pour les notifications de consultation
-    if (notification.type === 'CONSULTATION_RESULT') {
-      window.location.href = '/secured/consultations';
+    // Rediriger vers /secured/consultations/[id] pour les notifications de consultation
+    if (notification.type === 'CONSULTATION_RESULT' && notification.metadata?.consultationId) {
+      window.location.href = `/secured/consultations/${notification.metadata.consultationId}`;
       return;
     }
     // Sinon, naviguer vers le lien si disponible dans metadata

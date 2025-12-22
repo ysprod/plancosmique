@@ -6,8 +6,8 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import type { User, LoginDto, RegisterDto, Permission } from '@/types/auth.types';
-import { Role } from '@/types/auth.types';
+import type { User, LoginDto, RegisterDto, Permission } from '@/lib/types/auth.types';
+import { Role } from '@/lib/types/auth.types';
 import { authService } from '@/lib/api/services';
 import { getUser, clearAuth, getAccessToken } from '@/lib/utils/token.utils';
 import { config } from '@/lib/config';

@@ -5,7 +5,7 @@ import type {
   CreateKnowledgeDto,
   UpdateKnowledgeDto,
   KnowledgeQueryParams,
-} from '@/types/knowledge.types';
+} from '@/lib/types/knowledge.types';
 
 export const knowledgeService = {
   /**

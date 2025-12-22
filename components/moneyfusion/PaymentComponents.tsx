@@ -1,5 +1,5 @@
 'use client';
-import type { PaymentStatus } from '@/types/moneyfusion.types';
+import type { PaymentStatus } from '@/lib/types/moneyfusion.types';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   AlertCircle,

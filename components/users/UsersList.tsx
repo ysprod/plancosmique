@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useUser } from '@/lib/hooks';
-import type { User } from '@/types/auth.types';
-import { Role } from '@/types/auth.types';
+import type { User } from '@/lib/types/auth.types';
+import { Role } from '@/lib/types/auth.types';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Calendar, ChevronLeft, ChevronRight, Download, Edit, Eye,

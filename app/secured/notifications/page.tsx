@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Bell, CheckCheck, Trash2, Settings, Filter, ArrowLeft } from 'lucide-react';
 import { useNotifications } from '@/lib/hooks';
 import Link from 'next/link';
-import type { Notification } from '@/types/notification.types';
+import type { Notification } from '@/lib/types/notification.types';
 
 const notificationIcons = {
   CONSULTATION_RESULT: '✨',

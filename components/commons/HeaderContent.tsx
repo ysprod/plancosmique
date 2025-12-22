@@ -1,7 +1,7 @@
 'use client';
 import NotificationBell from '@/components/commons/NotificationBell';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { Role } from '@/types/auth.types';
+import { Role } from '@/lib/types/auth.types';
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import {
   ChevronDown,

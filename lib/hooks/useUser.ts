@@ -8,8 +8,8 @@
 import { useState, useCallback } from 'react';
 import { usersService } from '@/lib/api/services';
   
-import type { User, Role, Permission } from '@/types/auth.types';
-import type { PaginatedResponse, QueryParams } from '@/types/api.types';
+import type { User, Role, Permission } from '@/lib/types/auth.types';
+import type { PaginatedResponse, QueryParams } from '@/lib/types/api.types';
 import type {
   CreateUserDto,
   UpdateUserDto,

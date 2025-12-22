@@ -4,7 +4,7 @@
  * À remplacer par une vraie DB en production
  */
 
-import type { AnalyseAstrologique, StatutConsultation } from '@/types/astrology.types';
+import type { AnalyseAstrologique, StatutConsultation } from '@/lib/types/astrology.types';
 
 const STORAGE_KEY_PREFIX = 'astro_analysis_';
 const STORAGE_STATUS_PREFIX = 'astro_status_';
