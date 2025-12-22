@@ -1,34 +1,25 @@
 "use client";
-
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { api } from '@/lib/api/client';
+import { Offering } from '@/lib/interfaces';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-    Plus,
-    Save,
-    Trash2,
-    Edit2,
-    X,
     AlertCircle,
     CheckCircle2,
+    DollarSign,
+    Edit2,
+    FileText,
     Loader2,
     Package,
-    DollarSign,
+    Plus,
+    RefreshCw,
+    Save,
     Tag,
-    FileText,
-    RefreshCw
+    Trash2,
+    X
 } from 'lucide-react';
-import { api } from '@/lib/api/client';
+import { useEffect, useState } from 'react';
 
-interface Offering {
-    _id?: string;
-    id: string;
-    name: string;
-    price: number;
-    priceUSD: number;
-    category: 'animal' | 'vegetal' | 'beverage';
-    icon: string;
-    description: string;
-}
+ 
 
 const CATEGORIES = [
     { value: 'animal', label: 'Animaux', emoji: '🐓', color: 'from-red-500 to-orange-500' },

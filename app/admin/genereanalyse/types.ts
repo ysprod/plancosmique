@@ -2,23 +2,13 @@
 // TYPES & INTERFACES
 // =====================================================
 
+import { CarteDuCiel } from "@/lib/interfaces";
+
 export interface Position {
   planete: string;
   signe: string;
   maison: number;
   retrograde: boolean;
-}
-
-export interface CarteDuCiel {
-  sujet: {
-    nom: string;
-    prenoms: string;
-    dateNaissance: string;
-    lieuNaissance: string;
-    heureNaissance: string;
-  };
-  positions: Position[];
-  aspectsTexte?: string;
 }
 
 export interface MissionDeVie {

@@ -1,7 +1,3 @@
-/**
- * API Route pour générer des horoscopes avec DeepSeek
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || '';

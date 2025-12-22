@@ -54,7 +54,6 @@ export default function ConsultationsPage() {
       if (res.status === 200 || res.status === 201) {
         await refetch();
         setToastMessage('✨ Analyse générée avec succès !');
-       // router.push(`/admin/consultations/${id}`);
       }
     } catch (err) {
       setToastMessage('❌ Erreur lors de la génération');
@@ -179,9 +178,7 @@ export default function ConsultationsPage() {
                   <ConsultationCard
                     consultation={consultation}
                     onGenerateAnalysis={handleGenerateAnalysis}
-                    onModifyAnalysis={handleModifyAnalysis}
-                    onNotifyUser={handleNotifyUser}
-                    isGenerating={generatingIds.has(consultation.id)}
+                     isGenerating={generatingIds.has(consultation.id)}
                     isNotifying={notifyingIds.has(consultation.id)}
                   />
                 </div>

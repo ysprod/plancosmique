@@ -39,7 +39,7 @@ export default function PaymentsPage() {
 
   const stats = useMemo(() => {
     if (!payments) return null;
-    
+
     const totalAmount = payments.reduce((sum, p) => sum + (p.amount || 0), 0);
     const completedAmount = payments
       .filter(p => p.status === 'completed')
@@ -183,11 +183,10 @@ export default function PaymentsPage() {
               <button
                 onClick={handleRefresh}
                 disabled={isRefreshing}
-                className={`p-2 rounded-lg transition-all ${
-                  isRefreshing 
-                    ? 'bg-gray-100 text-gray-400' 
+                className={`p-2 rounded-lg transition-all ${isRefreshing
+                    ? 'bg-gray-100 text-gray-400'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+                  }`}
               >
                 <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
               </button>
@@ -295,11 +294,10 @@ export default function PaymentsPage() {
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg 
-                         font-medium transition-all ${
-                showFilters || statusFilter !== 'all' || methodFilter !== 'all'
+                         font-medium transition-all ${showFilters || statusFilter !== 'all' || methodFilter !== 'all'
                   ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
                   : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-              }`}
+                }`}
             >
               <Filter className="w-4 h-4" />
               <span className="hidden sm:inline">Filtres</span>
@@ -422,18 +420,16 @@ export default function PaymentsPage() {
                   {/* Badges */}
                   <div className="flex flex-wrap gap-1.5 mb-3">
                     <span className={`inline-flex items-center gap-0.5 px-2 py-0.5 
-                                    rounded-full text-xs font-medium ${
-                      getStatusColor(payment.status)
-                    }`}>
+                                    rounded-full text-xs font-medium ${getStatusColor(payment.status)
+                      }`}>
                       {getStatusIcon(payment.status)}
                       {getStatusText(payment.status)}
                     </span>
 
                     {payment.method && (
                       <span className={`inline-flex items-center px-2 py-0.5 
-                                      rounded-full text-xs font-medium ${
-                        getMethodColor(payment.method)
-                      }`}>
+                                      rounded-full text-xs font-medium ${getMethodColor(payment.method)
+                        }`}>
                         <CreditCard className="w-2.5 h-2.5 mr-0.5" />
                         {getMethodText(payment.method)}
                       </span>

@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
-import { useSearchParams } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
-import { usePaymentCallback } from './components/usePaymentCallback';
-import { useAnimationVariants } from './components/useAnimationVariants';
-import { CompletionBanner, StatusCard, ActionButtons, SecurityNote, BackgroundBlobs } from './components';
+import { useSearchParams } from 'next/navigation';
+import { ActionButtons, BackgroundBlobs, CompletionBanner, SecurityNote, StatusCard } from './components';
 import type { AnalysisStage } from './components/types';
+import { useAnimationVariants } from './components/useAnimationVariants';
+import { usePaymentCallback } from './components/usePaymentCallback';
 
 type AnalysisProgressBarProps = {
   analysisProgress: number;

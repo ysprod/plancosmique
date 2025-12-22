@@ -1,6 +1,3 @@
-
-
-
 export const dynamic = "force-dynamic";
 import { ErrorBoundary, LoadingFallback } from '@/components/commons/ErrorBoundary';
 import { ProtectedRoute } from '@/components/auth';

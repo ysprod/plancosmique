@@ -46,9 +46,7 @@ interface Stats {
   totalSimulated: number;
 }
 
-// =====================================================
-// STATUS CONFIG
-// =====================================================
+
 const statusConfig = {
   success: {
     icon: CheckCircle2,
@@ -80,9 +78,7 @@ const statusConfig = {
   },
 };
 
-// =====================================================
-// SUB-COMPONENTS
-// =====================================================
+
 const LoadingScreen = () => (
   <motion.div
     initial={{ opacity: 0 }}
@@ -288,7 +284,7 @@ const TransactionCard = ({ transaction, index }: { transaction: Transaction; ind
 // =====================================================
 function WalletCallbackContent() {
   const router = useRouter();
-    const { user } = useAuth();
+  const { user } = useAuth();
   const searchParams = useSearchParams();
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>("loading");
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -307,7 +303,7 @@ function WalletCallbackContent() {
   const fetchTransactions = useCallback(async () => {
     try {
 
-        const response = await api.get(`/wallet/transactions?userId=${user?._id}`);
+      const response = await api.get(`/wallet/transactions?userId=${user?._id}`);
       setTransactions(response.data.transactions || []);
       // const response = await api.get("/wallet/transactions");
       // if (response.status === 200 && Array.isArray(response.data)) {

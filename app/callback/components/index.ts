@@ -1,21 +1,14 @@
-// ==================== EXPORTS CENTRALISÉS ====================
-
-// Composants visuels
+export { ActionButtons } from './ActionButtons';
 export { BackgroundBlobs } from './BackgroundBlobs';
 export { CompletionBanner } from './CompletionBanner';
-export { StatusCard } from './StatusCard';
-export { ActionButtons } from './ActionButtons';
 export { SecurityNote } from './SecurityNote';
+export { StatusCard } from './StatusCard';
 
 // Hooks
-export { usePaymentCallback } from './usePaymentCallback';
-export { useAnimationVariants } from './useAnimationVariants';
 export { useAnalysisProgress } from '@/hooks/useAnalysisProgress';
+export { useAnimationVariants } from './useAnimationVariants';
+export { usePaymentCallback } from './usePaymentCallback';
 // Types
 export type {
-  PaymentStatus,
-  PaymentData,
-  StatusConfig,
-  AnalysisStage,
-  AnalysisProgressData,
+  AnalysisProgressData, AnalysisStage, PaymentData, PaymentStatus, StatusConfig
 } from './types';

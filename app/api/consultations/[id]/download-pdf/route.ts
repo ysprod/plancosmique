@@ -1,19 +1,11 @@
-/**
- * API Route pour télécharger l'analyse en PDF
- * GET /api/consultations/[id]/download-pdf
- */
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { NextResponse } from 'next/server';
-import { renderToStream } from '@react-pdf/renderer';
-import { AnalysisDocument } from '@/lib/pdf/analysis-pdf';
-import { createElement } from 'react';
 import { api } from '@/lib/api/client';
+import { AnalysisDocument } from '@/lib/pdf/analysis-pdf';
+import { renderToStream } from '@react-pdf/renderer';
+import { NextResponse } from 'next/server';
+import { createElement } from 'react';
 
-// =====================================================
-// TYPES
-// =====================================================
 interface Position {
   planete?: string;
   astre?: string;

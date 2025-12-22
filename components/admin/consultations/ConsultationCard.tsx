@@ -9,8 +9,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface ConsultationCardProps {
     consultation: any;
     onGenerateAnalysis: (id: string) => void;
-    onModifyAnalysis: (id: string) => void;
-    onNotifyUser: (id: string) => void;
     isGenerating: boolean;
     isNotifying: boolean;
 }
@@ -44,10 +42,6 @@ const AnalysisSection = memo(({
         return String(content);
     }, [content]);
 
-    const preview = useMemo(() => {
-        const lines = displayContent.split('\n').filter(l => l.trim());
-        return lines.slice(0, 1).join('\n');
-    }, [displayContent]);
 
     if (!content || displayContent.length === 0) return null;
 
@@ -236,11 +230,7 @@ AnalysisPreview.displayName = 'AnalysisPreview';
 const ConsultationCard = memo(({
     consultation,
     onGenerateAnalysis,
-    onModifyAnalysis,
-    onNotifyUser,
-    isGenerating,
-    isNotifying
-}: ConsultationCardProps) => {
+    isGenerating }: ConsultationCardProps) => {
     const typeConfig = useMemo(() => {
         const configs: Record<string, { icon: string; text: string; gradient: string }> = {
             'SPIRITUALITE': { icon: '🌟', text: 'Spiritualité', gradient: 'from-purple-500 to-pink-500' },
@@ -254,8 +244,6 @@ const ConsultationCard = memo(({
             gradient: 'from-gray-500 to-gray-600'
         };
     }, [consultation.type]);
-
-    console.log('Consultation data:', consultation);
 
     const hasAnalysis = useMemo(() =>
         consultation.status === 'COMPLETED' && consultation.analysis,
@@ -271,7 +259,6 @@ const ConsultationCard = memo(({
             className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 
                dark:border-gray-800 p-2.5 transition-shadow overflow-hidden relative"
         >
-            {/* Gradient accent bar */}
             <motion.div
                 className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${typeConfig.gradient}`}
                 animate={{
@@ -284,8 +271,6 @@ const ConsultationCard = memo(({
                 }}
                 style={{ backgroundSize: '200% 200%' }}
             />
-
-            {/* Header */}
             <div className="flex items-start justify-between mb-1.5 mt-1">
                 <div className="flex items-center gap-1.5 flex-1 min-w-0">
                     <span className="text-lg flex-shrink-0">{typeConfig.icon}</span>
@@ -300,8 +285,6 @@ const ConsultationCard = memo(({
                 </div>
                 <StatusBadge status={consultation.status} />
             </div>
-
-            {/* Client Info */}
             <div className="grid grid-cols-2 gap-1 mb-1.5 text-[10px]">
                 <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400 truncate">
                     <User className="w-2.5 h-2.5 flex-shrink-0" />
@@ -330,8 +313,6 @@ const ConsultationCard = memo(({
                     </div>
                 )}
             </div>
-
-            {/* Badges */}
             <div className="flex gap-1 overflow-x-auto scrollbar-hide mb-2 pb-0.5">
                 <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] 
                        font-semibold bg-blue-50 text-blue-700 border border-blue-200 flex-shrink-0
@@ -356,21 +337,19 @@ const ConsultationCard = memo(({
                     </span>
                 )}
             </div>
-
-
-            {/* Action Buttons - Détails et Générer en haut */}
             <div className="grid grid-cols-2 gap-1.5 mt-2">
-                <a
-                    href={`/admin/consultations/${consultation.id}`}
-                    className="flex items-center justify-center gap-1 px-2.5 py-1.5 
+                {hasAnalysis && (
+                    <a
+                        href={`/admin/consultations/${consultation.id}`}
+                        className="flex items-center justify-center gap-1 px-2.5 py-1.5 
                    bg-gradient-to-r from-purple-600 to-purple-700 text-white 
                    text-[10px] rounded-lg font-semibold
                    hover:from-purple-700 hover:to-purple-800 
                    transition-all active:scale-95 shadow-sm hover:shadow-md"
-                >
-                    <Eye className="w-3 h-3" />
-                    Détails
-                </a>
+                    >
+                        <Eye className="w-3 h-3" />
+                        Détails
+                    </a>)}
                 <button
                     onClick={() => onGenerateAnalysis(consultation.id)}
                     disabled={isGenerating || hasAnalysis}
@@ -385,46 +364,9 @@ const ConsultationCard = memo(({
                     {isGenerating ? 'Génération' : hasAnalysis ? 'Déjà généré' : 'Générer'}
                 </button>
             </div>
-
-            {/* Indicateur si déjà généré */}
             {hasAnalysis && (
                 <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 mb-1">Analyse déjà générée.</div>
             )}
-
-            {/* Analysis Preview - Expandable Sections (inchangé) */}
-            <AnimatePresence>
-                {hasAnalysis && consultation.analysis && (
-                    <AnalysisPreview analysis={consultation.analysis} />
-                )}
-            </AnimatePresence>
-
-            {/* Boutons NOTIFIER et MODIFIER sous l'analyse */}
-            <div className="grid grid-cols-2 gap-1.5 mt-2">
-                <button
-                    onClick={() => onNotifyUser(consultation.id)}
-                    disabled={isNotifying || consultation.notified || consultation.notificationSent}
-                    className="flex items-center justify-center gap-1 px-2.5 py-1.5 
-                   bg-gradient-to-r from-indigo-600 to-indigo-700 text-white 
-                   text-[10px] rounded-lg font-semibold
-                   hover:from-indigo-700 hover:to-indigo-800 
-                   transition-all active:scale-95 shadow-sm hover:shadow-md
-                   disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-sm"
-                >
-                    <Mail className={`w-3 h-3 ${isNotifying ? 'animate-pulse' : ''}`} />
-                    {isNotifying ? 'Envoi...' : (consultation.notified || consultation.notificationSent) ? 'Déjà envoyé' : 'Envoyer'}
-                </button>
-                <button
-                    onClick={() => onModifyAnalysis(consultation.id)}
-                    className="flex items-center justify-center gap-1 px-2.5 py-1.5 
-                   bg-gradient-to-r from-orange-600 to-orange-700 text-white 
-                   text-[10px] rounded-lg font-semibold
-                   hover:from-orange-700 hover:to-orange-800 
-                   transition-all active:scale-95 shadow-sm hover:shadow-md"
-                >
-                    <Edit className="w-3 h-3" />
-                    Modifier
-                </button>
-            </div>
         </motion.div>
     );
 }, (prevProps, nextProps) => {

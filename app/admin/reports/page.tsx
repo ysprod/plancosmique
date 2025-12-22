@@ -1,8 +1,7 @@
 'use client';
-
-import { useState, useEffect } from 'react';
-import { BarChart3, TrendingUp, Users, DollarSign, Download, Filter } from 'lucide-react';
 import { api } from '@/lib/api/client';
+import { BarChart3, DollarSign, Download, Filter, TrendingUp, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface ReportMetric {
   label: string;

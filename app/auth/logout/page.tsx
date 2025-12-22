@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { authService } from "@/lib/api/services/auth.service";
-import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, LogOut, Check, Star, Sparkles, Shield, Zap } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Check, Loader2, LogOut, Shield, Sparkles, Star, Zap } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function LogoutPage() {
   const router = useRouter();

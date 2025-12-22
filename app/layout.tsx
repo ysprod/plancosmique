@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     'oracle divinatoire',
     'cartomancie',
     'prédictions futures',
-    
+
     // Astrologie
     'astrologie personnalisée',
     'thème astral complet',
@@ -44,14 +44,14 @@ export const metadata: Metadata = {
     'ascendant astrologique',
     'maisons astrologiques',
     'révolution solaire',
-    
+
     // Numérologie
     'numérologie',
     'chemin de vie',
     'nombre de destinée',
     'année personnelle',
     'numérologie kabbalistique',
-    
+
     // Spiritualité
     'développement spirituel',
     'éveil de conscience',
@@ -145,12 +145,10 @@ export const metadata: Metadata = {
   manifest: '/site.webmanifest',
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
-    yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,    
+    yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
   },
   category: 'Spiritualité & Bien-être',
   classification: 'Développement Personnel, Spiritualité, Guidance',
-  
-  // Métadonnées supplémentaires pour PWA et SEO
   applicationName: 'Mon Étoile',
   referrer: 'origin-when-cross-origin',
   appleWebApp: {
@@ -184,26 +182,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html 
-      lang="fr" 
-      className={inter.variable} 
+    <html
+      lang="fr"
+      className={inter.variable}
       suppressHydrationWarning
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
-          {/* Preconnect pour optimiser les performances */}
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        
-          {/* PWA - Métadonnées pour mobile */}
-          <meta name="apple-mobile-web-app-capable" content="yes" />
-          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-          <meta name="apple-mobile-web-app-title" content="Mon Étoile" />
-          <meta name="mobile-web-app-capable" content="yes" />
-          <meta name="application-name" content="Mon Étoile" />
-          <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
-        
+        {/* Preconnect pour optimiser les performances */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+        {/* PWA - Métadonnées pour mobile */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Mon Étoile" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="application-name" content="Mon Étoile" />
+        <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
+
         {/* Script anti-flash de thème - CRITIQUE pour UX */}
         <script
           dangerouslySetInnerHTML={{
@@ -228,7 +226,7 @@ export default function RootLayout({
             `,
           }}
         />
-        
+
         {/* Structured Data - SEO avancé */}
         <script
           type="application/ld+json"
@@ -293,8 +291,8 @@ export default function RootLayout({
           }}
         />
       </head>
-      
-      <body 
+
+      <body
         className={`${inter.className} antialiased min-h-screen
                     bg-white dark:bg-gray-950 
                     text-gray-900 dark:text-gray-50
@@ -304,8 +302,8 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         {/* Skip to main content - Accessibilité */}
-        <a 
-          href="#main-content" 
+        <a
+          href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 
                      focus:z-[9999] focus:px-6 focus:py-3 
                      focus:bg-gradient-to-r focus:from-violet-600 focus:to-purple-600 
@@ -319,34 +317,34 @@ export default function RootLayout({
           ⚡ Aller au contenu principal
         </a>
 
-        <ThemeProvider 
-          attribute="class" 
-          defaultTheme="light" 
-          enableSystem 
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
           disableTransitionOnChange={false}
           storageKey="monetoile-theme"
         >
           <ClientProviders>
             {/* Gradient de fond subtil et moderne */}
-            <div 
+            <div
               className="fixed inset-0 -z-10 pointer-events-none
                          bg-gradient-to-br from-white via-violet-50/30 to-purple-50/40
                          dark:from-gray-950 dark:via-violet-950/20 dark:to-purple-950/30
                          transition-colors duration-500"
               aria-hidden="true"
             />
-            
+
             {/* Effet de grain subtil pour texture */}
-            <div 
+            <div
               className="fixed inset-0 -z-10 pointer-events-none opacity-[0.015] dark:opacity-[0.025]
                          bg-[url('/noise.png')] bg-repeat"
               aria-hidden="true"
             />
 
-            <main 
-              id="main-content" 
-              className="relative min-h-screen" 
-              role="main" 
+            <main
+              id="main-content"
+              className="relative min-h-screen"
+              role="main"
               aria-label="Contenu principal"
             >
               {children}

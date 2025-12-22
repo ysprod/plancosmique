@@ -1,5 +1,6 @@
 'use client';
 import { api } from '@/lib/api/client';
+import { Book } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   ArrowLeft,
@@ -20,19 +21,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
-interface Book {
-  _id: string;
-  bookId: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  price: number;
-  pageCount: number;
-  category: string;
-  author: string;
-  isActive: boolean;
-  createdAt: string;
-}
+
 
 interface BookFormData {
   title: string;

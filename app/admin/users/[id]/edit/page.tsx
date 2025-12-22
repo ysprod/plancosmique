@@ -1,38 +1,25 @@
 'use client';
-
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useRouter, useParams } from 'next/navigation';
-import { 
-  User, Mail, Phone, Globe, Shield, 
-  Save, X, Loader2, CheckCircle, AlertCircle,
-  ArrowLeft, CreditCard, Star
-} from 'lucide-react';
+import { countries } from '@/components/auth/countries';
 import { api } from '@/lib/api/client';
+import { UserData } from '@/lib/interfaces';
+import { motion } from 'framer-motion';
+import {
+  AlertCircle,
+  ArrowLeft,
+  CheckCircle,
+  CreditCard,
+  Globe,
+  Loader2,
+  Mail, Phone,
+  Save,
+  Shield,
+  Star,
+  User,
+  X
+} from 'lucide-react';
 import Link from 'next/link';
-
-interface UserData {
-  _id: string;
-  username: string;
-  email: string;
-  phone?: string;
-  country?: string;
-  gender?: 'M' | 'F' | 'Other';
-  role: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
-  isActive: boolean;
-  emailVerified: boolean;
-  credits?: number;
-  preferences?: {
-    notifications?: boolean;
-    newsletter?: boolean;
-  };
-}
-
-const COUNTRIES = [
-  'France', 'Belgique', 'Suisse', 'Canada', 'États-Unis',
-  'Côte d\'Ivoire', 'Sénégal', 'Cameroun', 'Mali', 'Burkina Faso',
-  'Autre'
-];
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function EditUserPage() {
   const router = useRouter();
@@ -126,7 +113,7 @@ export default function EditUserPage() {
             <ArrowLeft className="w-4 h-4" />
             Retour aux utilisateurs
           </Link>
-          
+
           <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-3">
             <User className="w-8 h-8 text-violet-600" />
             Modifier l'utilisateur
@@ -185,7 +172,7 @@ export default function EditUserPage() {
               <User className="w-5 h-5 text-violet-600" />
               Informations de base
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Username */}
               <div>
@@ -254,7 +241,7 @@ export default function EditUserPage() {
                              focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
                   >
                     <option value="">Sélectionner un pays</option>
-                    {COUNTRIES.map((country) => (
+                    {countries.map((country) => (
                       <option key={country} value={country}>
                         {country}
                       </option>
@@ -306,7 +293,7 @@ export default function EditUserPage() {
               <Shield className="w-5 h-5 text-violet-600" />
               Rôle et permissions
             </h2>
-            
+
             <div className="space-y-4">
               {/* Role */}
               <div>
@@ -358,7 +345,7 @@ export default function EditUserPage() {
               <Star className="w-5 h-5 text-violet-600" />
               Préférences
             </h2>
-            
+
             <div className="space-y-3">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -407,7 +394,7 @@ export default function EditUserPage() {
               <X className="w-5 h-5" />
               Annuler
             </Link>
-            
+
             <button
               type="submit"
               disabled={saving || success}

@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { memo } from 'react';
 import PlanetChip from './PlanetChip';
-import type { CarteDuCiel } from './types';
+import { CarteDuCiel } from '@/lib/interfaces';
+ 
 
 const SkyChartSection = memo(({ carteDuCiel }: { carteDuCiel: CarteDuCiel }) => (
   <motion.div

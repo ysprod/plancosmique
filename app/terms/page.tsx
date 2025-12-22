@@ -1,13 +1,9 @@
 'use client';
-
 import { motion } from 'framer-motion';
-import { ArrowLeft, FileText, Shield, UserCheck, AlertCircle, Mail, Phone, MapPin } from 'lucide-react';
+import { AlertCircle, ArrowLeft, FileText, Mail, MapPin, Phone, Shield, UserCheck } from 'lucide-react';
 import Link from 'next/link';
 import { memo } from 'react';
 
-// =====================================================
-// SOUS-COMPOSANTS MEMOÏSÉS
-// =====================================================
 const Header = memo(() => (
     <div className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl 
                 border-b border-gray-200 dark:border-gray-800 shadow-sm">

@@ -13,7 +13,6 @@ const QUESTIONS = [
 export default function WelcomePage() {
   return (
     <div className=" bg-white">
-      {/* Progress bar mobile-optimized */}
       <motion.div
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
@@ -26,7 +25,6 @@ export default function WelcomePage() {
           className="h-full w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent"
         />
       </motion.div>
-      {/* Logo ultra-compact mobile */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}

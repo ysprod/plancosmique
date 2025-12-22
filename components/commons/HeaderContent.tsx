@@ -107,9 +107,10 @@ export default function HeaderContent() {
     ...(hasRole(Role.SUPER_ADMIN) ? [
       { href: "/admin", label: "Admin", icon: LayoutDashboard }
     ] : []),
+    { href: "/secured/monprofil", label: "Mon Profil", icon: User },
     { href: "/secured/consultations", label: "Mes Consultations", icon: FileText },
     { href: "/secured/wallet", label: "Mon Panier", icon: Wallet },
-   ], [hasRole]);
+  ], [hasRole]);
 
 
 
@@ -359,7 +360,7 @@ export default function HeaderContent() {
                         )}
                       </div>
 
-                      
+
 
                       {/* Menu Items */}
                       <div className="p-2">
@@ -538,7 +539,7 @@ export default function HeaderContent() {
                   </div>
                 </motion.div>
 
-                
+
 
                 {/* Navigation Links */}
                 <nav className="space-y-1">

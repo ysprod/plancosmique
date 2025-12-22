@@ -25,14 +25,12 @@ export default function AdminDashboard() {
   const { stats, loading, error, refetch, lastUpdated } = useAdminStats();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Gestion du rafraîchissement avec animation
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
     await refetch();
     setTimeout(() => setIsRefreshing(false), 500);
   }, [refetch]);
 
-  // Calcul des statistiques dérivées
   const derivedStats = useMemo(() => {
     if (!stats) return null;
 
