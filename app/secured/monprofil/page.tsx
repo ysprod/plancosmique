@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   AlertCircle, 
   Clock, 
@@ -15,15 +15,55 @@ import {
   Calendar,
   Globe,
   Phone,
-  Award
+  Award,
+  ChevronDown,
+  ChevronUp,
+  BookOpen,
+  TrendingUp,
+  Zap
 } from "lucide-react";
-import Image from "next/image";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { api } from "@/lib/api/client";
 
 // =====================================================
 // TYPES & INTERFACES
 // =====================================================
+interface Position {
+  planete: string;
+  signe: string;
+  maison: number;
+  retrograde: boolean;
+}
+
+interface CarteDuCielData {
+  sujet: {
+    nom: string;
+    prenoms: string;
+    dateNaissance: string;
+    lieuNaissance: string;
+    heureNaissance: string;
+  };
+  positions: Position[];
+  aspectsTexte: string;
+}
+
+interface MissionDeVie {
+  titre: string;
+  contenu: string;
+}
+
+interface CarteDuCiel {
+  sessionId: string;
+  timestamp: string;
+  carteDuCiel: CarteDuCielData;
+  missionDeVie: MissionDeVie;
+  metadata: {
+    processingTime: number;
+    tokensUsed: number;
+    model: string;
+  };
+}
+
 interface UserData {
   _id: string;
   username: string;
@@ -45,7 +85,8 @@ interface UserData {
   prenoms?: string;
   paysNaissance?: string;
   villeNaissance?: string;
-  lastLogin?: string;
+  carteDuCiel?: CarteDuCiel;
+  [key: string]: any;
 }
 
 interface ProcessedUserData {
@@ -63,50 +104,44 @@ interface ProcessedUserData {
   totalConsultations: number;
   rating: number;
   emailVerified: boolean;
+  carteDuCiel?: CarteDuCiel;
 }
 
 // =====================================================
 // CONSTANTS
 // =====================================================
-const PORTES = [
-  { 
-    id: 1, 
-    nom: "Porte de l'Origine", 
-    description: "Votre source profonde et racine spirituelle.",
-    gradient: "from-purple-500 to-indigo-500",
-    icon: "🌌"
-  },
-  { 
-    id: 2, 
-    nom: "Porte de la Mission", 
-    description: "Votre vocation et mission de vie.",
-    gradient: "from-pink-500 to-rose-500",
-    icon: "🎯"
-  },
-  { 
-    id: 3, 
-    nom: "Porte de l'Expression", 
-    description: "Votre manière unique de rayonner.",
-    gradient: "from-amber-500 to-orange-500",
-    icon: "✨"
-  },
-  { 
-    id: 4, 
-    nom: "Porte de l'Expansion", 
-    description: "Votre potentiel d'évolution.",
-    gradient: "from-cyan-500 to-blue-500",
-    icon: "🚀"
-  },
-  { 
-    id: 5, 
-    nom: "Porte de la Réalisation", 
-    description: "L'accomplissement de votre étoile.",
-    gradient: "from-emerald-500 to-teal-500",
-    icon: "🌟"
-  },
-] as const;
+const PLANET_ICONS: Record<string, string> = {
+  'Soleil': '☉',
+  'Lune': '☽',
+  'Mercure': '☿',
+  'Vénus': '♀',
+  'Mars': '♂',
+  'Jupiter': '♃',
+  'Saturne': '♄',
+  'Uranus': '♅',
+  'Neptune': '♆',
+  'Pluton': '♇',
+  'Ascendant': '↑',
+  'Milieu du Ciel': 'MC',
+  'Chiron': '⚷',
+  'Nœud Nord': '☊',
+  'Nœud Sud': '☋'
+};
 
-const SKY_CHART_URL = "/images/carte-du-ciel-demo.png";
+const PLANET_COLORS: Record<string, string> = {
+  'Soleil': 'from-amber-500 to-orange-500',
+  'Lune': 'from-slate-300 to-gray-400',
+  'Mercure': 'from-sky-400 to-blue-500',
+  'Vénus': 'from-pink-400 to-rose-500',
+  'Mars': 'from-red-500 to-orange-600',
+  'Jupiter': 'from-purple-400 to-indigo-500',
+  'Saturne': 'from-gray-600 to-slate-700',
+  'Uranus': 'from-cyan-400 to-teal-500',
+  'Neptune': 'from-blue-500 to-indigo-600',
+  'Pluton': 'from-purple-700 to-indigo-900',
+  'Ascendant': 'from-emerald-400 to-green-500',
+  'Milieu du Ciel': 'from-violet-400 to-purple-500'
+};
 
 // =====================================================
 // ANIMATION VARIANTS
@@ -126,20 +161,6 @@ const cardVariants = {
   })
 };
 
-const porteVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: (custom: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: {
-      delay: custom * 0.05,
-      type: "spring",
-      stiffness: 250,
-      damping: 25
-    }
-  })
-};
-
 const statVariants = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: (custom: number) => ({
@@ -149,6 +170,20 @@ const statVariants = {
       delay: custom * 0.08,
       type: "spring",
       stiffness: 300,
+      damping: 25
+    }
+  })
+};
+
+const positionVariants = {
+  hidden: { opacity: 0, x: -10 },
+  visible: (custom: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: custom * 0.03,
+      type: "spring",
+      stiffness: 250,
       damping: 25
     }
   })
@@ -190,6 +225,7 @@ const processUserData = (userData: UserData | null): ProcessedUserData | null =>
     totalConsultations: userData.totalConsultations,
     rating: userData.rating,
     emailVerified: userData.emailVerified,
+    carteDuCiel: userData.carteDuCiel
   };
 };
 
@@ -294,7 +330,6 @@ const StatBadge = memo(({
     className={`relative p-3 rounded-xl bg-gradient-to-br ${gradient} 
                border border-white/20 shadow-lg overflow-hidden`}
   >
-    {/* Shimmer effect */}
     <motion.div
       className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
       animate={{ x: ['-100%', '200%'] }}
@@ -325,7 +360,6 @@ const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
              rounded-3xl border border-white/20 p-5 sm:p-6 shadow-2xl 
              relative overflow-hidden"
   >
-    {/* Animated background */}
     <motion.div
       className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-pink-600/10 to-blue-600/20"
       animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
@@ -333,12 +367,9 @@ const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
       style={{ backgroundSize: '200% 200%' }}
     />
 
-    {/* Glow effect */}
     <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-48 h-24 bg-purple-500/20 blur-2xl rounded-full pointer-events-none" />
 
-    {/* Header content */}
     <div className="relative z-10 flex flex-col sm:flex-row items-center gap-4 mb-4">
-      {/* Avatar with premium badge */}
       <motion.div
         whileHover={{ scale: 1.08, rotate: 4 }}
         transition={{ type: "spring", stiffness: 300 }}
@@ -363,7 +394,6 @@ const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
         )}
       </motion.div>
 
-      {/* User info */}
       <div className="flex-1 min-w-0 text-center sm:text-left">
         <motion.h1
           initial={{ opacity: 0, x: -20 }}
@@ -403,7 +433,6 @@ const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
           )}
         </motion.div>
 
-        {/* Role badge */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -424,7 +453,6 @@ const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
       </div>
     </div>
 
-    {/* Stats Grid */}
     <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
       <StatBadge 
         icon={Award} 
@@ -456,7 +484,6 @@ const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
       />
     </div>
 
-    {/* Birth info Grid */}
     <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-2">
       <InfoItem icon={Calendar} value={userData.dateNaissance} iconColor="text-amber-400" index={0} />
       <InfoItem icon={Clock} value={userData.heureNaissance} iconColor="text-blue-400" index={1} />
@@ -467,185 +494,244 @@ const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
 ProfileHeader.displayName = 'ProfileHeader';
 
 // =====================================================
-// SKY CHART COMPONENT
+// POSITION CARD COMPONENT (NOUVEAU)
 // =====================================================
-const SkyChart = memo(() => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-
-  const handleImageLoad = useCallback(() => {
-    setImageLoaded(true);
-  }, []);
-
-  const handleImageError = useCallback(() => {
-    setImageError(true);
-  }, []);
+const PositionCard = memo(({ 
+  position, 
+  index 
+}: { 
+  position: Position; 
+  index: number;
+}) => {
+  const gradient = PLANET_COLORS[position.planete] || 'from-gray-500 to-slate-600';
+  const icon = PLANET_ICONS[position.planete] || '●';
 
   return (
-    <motion.section
-      custom={1}
-      variants={cardVariants}
+    <motion.div
+      custom={index}
+      variants={positionVariants}
       initial="hidden"
       animate="visible"
-      className="bg-gradient-to-br from-indigo-900/30 to-purple-900/20 
-               backdrop-blur-xl rounded-2xl border border-white/15 
-               p-4 sm:p-5 shadow-xl"
+      whileHover={{ scale: 1.03, y: -2 }}
+      className="flex items-center gap-2 p-2.5 rounded-xl
+               bg-white/5 backdrop-blur-sm border border-white/10
+               hover:bg-white/10 hover:border-white/20
+               transition-all shadow-sm"
     >
-      <motion.h2
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-base sm:text-lg font-bold text-white mb-3 
-                 flex items-center gap-2"
+      <motion.div
+        whileHover={{ rotate: 360 }}
+        transition={{ duration: 0.6 }}
+        className={`w-9 h-9 rounded-lg bg-gradient-to-br ${gradient}
+                 flex items-center justify-center text-white font-bold text-sm
+                 shadow-md border border-white/20 flex-shrink-0`}
       >
-        <motion.div
-          animate={{ rotate: [0, 360] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        >
-          <Star className="w-5 h-5 text-indigo-400" />
-        </motion.div>
-        Carte du ciel
-      </motion.h2>
+        {icon}
+      </motion.div>
 
-      <div className="relative w-full flex justify-center">
-        {/* Skeleton loader */}
-        {!imageLoaded && !imageError && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <motion.div
-              animate={{ opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-full aspect-square max-w-sm bg-white/5 rounded-xl"
-            />
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs font-bold text-white truncate">{position.planete}</span>
+          {position.retrograde && (
+            <span className="text-[9px] text-amber-400 font-bold">℞</span>
+          )}
+        </div>
+        <p className="text-[10px] text-white/70">
+          {position.signe} • Maison {position.maison}
+        </p>
+      </div>
+    </motion.div>
+  );
+});
+PositionCard.displayName = 'PositionCard';
+
+// =====================================================
+// SKY CHART COMPONENT (AMÉLIORÉ)
+// =====================================================
+const SkyChart = memo(({ carteDuCiel }: { carteDuCiel?: CarteDuCiel }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [expandedMission, setExpandedMission] = useState(false);
+
+  const toggleExpanded = useCallback(() => {
+    setIsExpanded(prev => !prev);
+  }, []);
+
+  const toggleMission = useCallback(() => {
+    setExpandedMission(prev => !prev);
+  }, []);
+
+  if (!carteDuCiel) {
+    return (
+      <motion.section
+        custom={1}
+        variants={cardVariants}
+        initial="hidden"
+        animate="visible"
+        className="bg-gradient-to-br from-indigo-900/30 to-purple-900/20 
+                 backdrop-blur-xl rounded-2xl border border-white/15 
+                 p-5 shadow-xl"
+      >
+        <div className="text-center py-8">
+          <AlertCircle className="w-12 h-12 text-white/40 mx-auto mb-3" />
+          <p className="text-white/60 text-sm">Carte du ciel non disponible</p>
+        </div>
+      </motion.section>
+    );
+  }
+
+  const positions = carteDuCiel.carteDuCiel.positions || [];
+  const mainPositions = positions.slice(0, 6);
+  const otherPositions = positions.slice(6);
+
+  return (
+    <>
+      {/* Positions Planétaires */}
+      <motion.section
+        custom={1}
+        variants={cardVariants}
+        initial="hidden"
+        animate="visible"
+        className="bg-gradient-to-br from-indigo-900/30 to-purple-900/20 
+                 backdrop-blur-xl rounded-2xl border border-white/15 
+                 p-4 sm:p-5 shadow-xl"
+      >
+        <motion.h2
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-base sm:text-lg font-bold text-white mb-4 
+                   flex items-center gap-2"
+        >
+          <motion.div
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          >
+            <Star className="w-5 h-5 text-indigo-400" />
+          </motion.div>
+          Carte du Ciel • Positions Planétaires
+          <span className="ml-auto text-xs text-white/60 font-normal">
+            {positions.length} positions
+          </span>
+        </motion.h2>
+
+        {/* Positions principales */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+          {mainPositions.map((position, index) => (
+            <PositionCard key={index} position={position} index={index} />
+          ))}
+        </div>
+
+        {/* Bouton "Voir plus" */}
+        {otherPositions.length > 0 && (
+          <>
+            <button
+              onClick={toggleExpanded}
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl
+                       bg-white/5 border border-white/10 hover:bg-white/10
+                       text-white text-xs font-semibold transition-all"
+            >
+              <TrendingUp className="w-3.5 h-3.5" />
+              {isExpanded ? 'Masquer' : `Voir ${otherPositions.length} positions supplémentaires`}
+              {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+
+            <AnimatePresence>
+              {isExpanded && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden mt-3"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {otherPositions.map((position, index) => (
+                      <PositionCard 
+                        key={index + mainPositions.length} 
+                        position={position} 
+                        index={index + mainPositions.length} 
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </>
+        )}
+
+        {/* Metadata */}
+        {carteDuCiel.metadata && (
+          <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-white/50">
+            <span className="flex items-center gap-1">
+              <Zap className="w-3 h-3" />
+              {(carteDuCiel.metadata.processingTime / 1000).toFixed(1)}s
+            </span>
+            <span>{carteDuCiel.metadata.model}</span>
           </div>
         )}
+      </motion.section>
 
-        {/* Image */}
-        {!imageError && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ 
-              opacity: imageLoaded ? 1 : 0,
-              scale: imageLoaded ? 1 : 0.9
-            }}
-            transition={{ duration: 0.5 }}
-            className="relative"
+      {/* Mission de Vie */}
+      {carteDuCiel.missionDeVie && (
+        <motion.section
+          custom={2}
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+          className="bg-gradient-to-br from-pink-900/20 to-purple-900/10 
+                   backdrop-blur-xl rounded-2xl border border-white/15 
+                   p-4 sm:p-5 shadow-xl"
+        >
+          <button
+            onClick={toggleMission}
+            className="w-full flex items-center justify-between gap-2 mb-3"
           >
-            <Image
-              src={SKY_CHART_URL}
-              alt="Carte du ciel de naissance"
-              width={400}
-              height={400}
-              className="rounded-xl border border-white/10 shadow-2xl 
-                       object-contain bg-white/5 max-w-full h-auto"
-              onLoad={handleImageLoad}
-              onError={handleImageError}
-              priority
-            />
-          </motion.div>
-        )}
+            <h2 className="text-base sm:text-lg font-bold text-white 
+                         flex items-center gap-2">
+              <motion.div
+                animate={{ 
+                  rotate: [0, 10, -10, 0],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <BookOpen className="w-5 h-5 text-pink-400" />
+              </motion.div>
+              {carteDuCiel.missionDeVie.titre}
+            </h2>
+            {expandedMission ? <ChevronUp className="w-5 h-5 text-white/60" /> : <ChevronDown className="w-5 h-5 text-white/60" />}
+          </button>
 
-        {/* Error state */}
-        {imageError && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="w-full aspect-square max-w-sm bg-white/5 rounded-xl 
-                     flex flex-col items-center justify-center text-white/60"
-          >
-            <AlertCircle className="w-12 h-12 mb-2" />
-            <p className="text-sm">Image non disponible</p>
-          </motion.div>
-        )}
-      </div>
-    </motion.section>
+          <AnimatePresence>
+            {expandedMission && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
+                <div className="prose prose-sm prose-invert max-w-none
+                             bg-white/5 rounded-xl p-4 border border-white/10
+                             max-h-96 overflow-y-auto scrollbar-thin
+                             scrollbar-thumb-purple-500 scrollbar-track-transparent">
+                  <pre className="text-xs text-white/80 whitespace-pre-wrap font-sans leading-relaxed">
+                    {carteDuCiel.missionDeVie.contenu}
+                  </pre>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {!expandedMission && (
+            <p className="text-xs text-white/60 line-clamp-2">
+              {carteDuCiel.missionDeVie.contenu.substring(0, 150)}...
+            </p>
+          )}
+        </motion.section>
+      )}
+    </>
   );
 });
 SkyChart.displayName = 'SkyChart';
-
-// =====================================================
-// PORTE ITEM COMPONENT
-// =====================================================
-const PorteItem = memo(({ 
-  porte, 
-  index 
-}: { 
-  porte: typeof PORTES[number]; 
-  index: number;
-}) => (
-  <motion.li
-    custom={index}
-    variants={porteVariants}
-    initial="hidden"
-    animate="visible"
-    whileHover={{ scale: 1.02, x: 4 }}
-    className="flex items-start gap-2.5 p-3 rounded-xl
-             bg-white/5 backdrop-blur-sm border border-white/10
-             hover:bg-white/10 hover:border-white/20
-             transition-all shadow-md hover:shadow-lg"
-  >
-    {/* Badge numéro avec gradient */}
-    <motion.div
-      whileHover={{ rotate: 360 }}
-      transition={{ duration: 0.5 }}
-      className={`inline-flex items-center justify-center w-8 h-8 rounded-full 
-                bg-gradient-to-br ${porte.gradient} text-white font-bold text-sm 
-                shadow-lg border border-white/30 flex-shrink-0`}
-    >
-      {porte.id}
-    </motion.div>
-
-    {/* Contenu */}
-    <div className="flex-1 min-w-0">
-      <div className="flex items-center gap-1.5 mb-1">
-        <span className="text-lg">{porte.icon}</span>
-        <h3 className="font-bold text-white text-sm truncate">{porte.nom}</h3>
-      </div>
-      <p className="text-xs text-white/80 leading-relaxed">
-        {porte.description}
-      </p>
-    </div>
-  </motion.li>
-));
-PorteItem.displayName = 'PorteItem';
-
-// =====================================================
-// PORTES SECTION COMPONENT
-// =====================================================
-const PortesSection = memo(() => (
-  <motion.section
-    custom={2}
-    variants={cardVariants}
-    initial="hidden"
-    animate="visible"
-    className="bg-gradient-to-br from-pink-900/20 to-indigo-900/10 
-             backdrop-blur-xl rounded-2xl border border-white/15 
-             p-4 sm:p-5 shadow-xl"
-  >
-    <motion.h2
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="text-base sm:text-lg font-bold text-white mb-4 
-               flex items-center gap-2"
-    >
-      <motion.div
-        animate={{ 
-          rotate: [0, 10, -10, 0],
-          scale: [1, 1.1, 1]
-        }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <Sparkles className="w-5 h-5 text-pink-400" />
-      </motion.div>
-      Les 5 portes de mon étoile
-    </motion.h2>
-
-    <ol className="space-y-2">
-      {PORTES.map((porte, index) => (
-        <PorteItem key={porte.id} porte={porte} index={index} />
-      ))}
-    </ol>
-  </motion.section>
-));
-PortesSection.displayName = 'PortesSection';
 
 // =====================================================
 // MAIN COMPONENT
@@ -655,7 +741,6 @@ export default function MonProfilPage() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
 
-  // Fetch user data
   useEffect(() => {
     if (user?._id) {
       setIsLoadingUser(true);
@@ -675,21 +760,17 @@ export default function MonProfilPage() {
     }
   }, [user?._id]);
 
-  // Process user data
   const processedData = useMemo(() => 
     processUserData(userData), 
     [userData]
   );
 
-  // Combined loading state
   const isLoading = authLoading || isLoadingUser;
 
-  // Loading state
   if (isLoading) {
     return <LoadingState />;
   }
 
-  // Error state
   if (!user || !processedData) {
     return <ErrorState />;
   }
@@ -697,10 +778,9 @@ export default function MonProfilPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950 
                    p-3 sm:p-6 space-y-4 sm:space-y-6">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <ProfileHeader userData={processedData} />
-        <SkyChart />
-        <PortesSection />
+        <SkyChart carteDuCiel={processedData.carteDuCiel} />
       </div>
     </main>
   );

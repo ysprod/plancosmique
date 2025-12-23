@@ -30,6 +30,7 @@ export const navItems = [
   { href: '/admin/payments', label: 'Paiements', icon: CreditCard, color: 'purple' },
   { href: '/admin/books', label: 'Livres', icon: BookOpen, color: 'indigo' },
   { href: '/admin/offrandes', label: 'Offrandes', icon: Shield, color: 'violet' },
+  { href: '/admin/rubriques', label: 'Rubriques', icon: FileText, color: 'pink' },
   { href: '/admin/spiritualite', label: 'Spiritualité', icon: Flame, color: 'orange' },
   { href: '/admin/settings', label: 'Paramètres', icon: Settings, color: 'gray' },
 ];

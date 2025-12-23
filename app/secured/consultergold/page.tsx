@@ -145,15 +145,34 @@ function ConsulterPage() {
           paymentMethod: 'wallet_offerings',
         });
 
+
+        
+
         setTimeout(() => {
-          // Met à jour l'utilisateur pour le passer en premium avant la redirection
-          api.patch('/users/me', { premium: true })
-            .catch((err: any) => {
-              // Optionnel : log l'erreur mais continue la navigation
-              console.error('[User Premium Update] ❌', err);
+          // Récupère la carte du ciel de l'utilisateur avant la mise à jour premium
+          api.get('/users/me/sky-chart')
+            .then(res => {
+              const carteDuCiel = res.data;
+              console.log('[Sky Chart] ✅', carteDuCiel);
+              // Met à jour le champ carteDuCiel de l'utilisateur puis premium
+              api.patch('/users/me', { carteDuCiel, premium: true })
+                .catch((err: any) => {
+                  console.error('[User Update] ❌', err);
+                })
+                .finally(() => {
+                  router.push(`/secured/genereanalysegold?id=${consultationId}`);
+                });
             })
-            .finally(() => {
-              router.push(`/secured/genereanalysegold?id=${consultationId}`);
+            .catch((err: any) => {
+              console.error('[Sky Chart] ❌', err);
+              // Même en cas d'échec, passe premium
+              api.patch('/users/me', { premium: true })
+                .catch((err: any) => {
+                  console.error('[User Premium Update] ❌', err);
+                })
+                .finally(() => {
+                  router.push(`/secured/genereanalysegold?id=${consultationId}`);
+                });
             });
         }, 500);
 
