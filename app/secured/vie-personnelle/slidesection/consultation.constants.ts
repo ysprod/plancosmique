@@ -1,19 +1,5 @@
-import { OfferingAlternative } from "@/lib/interfaces";
+import { ConsultationChoice } from "@/lib/interfaces";
 
- 
-export interface ConsultationOffering {
-  alternatives: OfferingAlternative[];
-}
-
-export interface ConsultationChoice {
-  id: string;
-  title: string;
-  description: string;
-  offering: ConsultationOffering;
-}
-
-
-// Remplacer les valeurs offeringId/quantity par les vraies valeurs pour chaque alternative selon la logique métier
 export const CONSULTATION_CHOICES: ConsultationChoice[] = [
   {
     id: 'mission',
@@ -159,13 +145,3 @@ export const CONSULTATION_TYPE_MAP: Record<string, string> = {
   invisible: 'SPIRITUALITE',
   theme: 'ASTROLOGIE_AFRICAINE',
 };
-
-export interface Offering {
-  id: string;
-  name: string;
-  price: number;
-  priceUSD: number;
-  category: 'animal' | 'vegetal' | 'beverage';  
-  icon: string;
-  description: string;
-}

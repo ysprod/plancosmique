@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { BookOpen, Download, ShoppingCart, Loader2 } from 'lucide-react';
 import { useState, useEffect } from 'react';

@@ -5,7 +5,6 @@ import { Calendar, Globe, Heart, Mountain, Palmtree, Pyramid, Sparkles, Star, Us
 import { useState } from "react";
 import { MoonPhaseWidget } from '@/components/MoonPhaseWidget';
 
-// Types pour les onglets
 type TabId = 'signe' | 'compatibilite' | 'guidance' | 'divinite';
 
 interface Tab {
@@ -15,7 +14,6 @@ interface Tab {
   description: string;
 }
 
-// Composants de contenu pour chaque section
 const SigneAfricainContent = () => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}

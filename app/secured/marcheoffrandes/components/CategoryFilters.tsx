@@ -2,7 +2,8 @@ import { motion } from 'framer-motion';
 import { Leaf, LucideIcon, Package, Sparkles, Wine } from 'lucide-react';
 import React from 'react';
 import { fadeInUp, staggerContainer } from './animations';
-import { Category, Offering } from './types';
+import { Category } from './types';
+import { Offering } from '@/lib/interfaces';
 
 interface CategoryInfo {
     id: Category;
@@ -39,8 +40,8 @@ export const CategoryFilters: React.FC<CategoryFiltersProps> = ({ selectedCatego
                     onClick={() => onSelectCategory(cat.id)}
                     whileTap={{ scale: 0.95 }}
                     className={`flex-shrink-0 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full sm:rounded-2xl font-bold flex items-center gap-2 transition-all text-sm sm:text-base shadow-sm ${selectedCategory === cat.id
-                            ? 'bg-black text-white shadow-lg scale-105'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:scale-95'
+                        ? 'bg-black text-white shadow-lg scale-105'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:scale-95'
                         }`}
                 >
                     <cat.icon className="w-4 h-4 sm:w-5 sm:h-5" />

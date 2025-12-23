@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { api } from '@/lib/api/client';
+import { formatDate } from '@/lib/functions';
 import { AnalyseAstrologique, SubjectInfo } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import {
@@ -20,15 +21,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString('fr-FR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  });
-};
-
+ 
 interface SubjectHeaderProps {
   sujet: SubjectInfo;
 }

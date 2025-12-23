@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
 import { api } from "@/lib/api/client";
 import { useAuth } from "@/lib/hooks";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,9 +15,6 @@ import {
 import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
 
-// =====================================================
-// TYPES & INTERFACES
-// =====================================================
 interface CheckoutModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -37,9 +33,6 @@ interface CheckoutModalProps {
 
 type SimulationStep = "idle" | "processing" | "validating" | "saving" | "success";
 
-// =====================================================
-// SIMULATION CONFIG
-// =====================================================
 const SIMULATION_STEPS = {
   processing: { duration: 1200, label: "Traitement de la commande..." },
   validating: { duration: 800, label: "Validation des offrandes..." },
@@ -47,9 +40,7 @@ const SIMULATION_STEPS = {
   success: { duration: 800, label: "Commande simulée avec succès !" },
 };
 
-// =====================================================
-// SUB-COMPONENTS
-// =====================================================
+
 const SimulationProgress = ({ step }: { step: SimulationStep }) => {
   const steps: SimulationStep[] = ["processing", "validating", "saving", "success"];
   const currentIndex = steps.indexOf(step);
@@ -61,11 +52,11 @@ const SimulationProgress = ({ step }: { step: SimulationStep }) => {
         <motion.div
           className="absolute inset-y-0 left-0 bg-gradient-to-r from-purple-500 to-pink-500"
           initial={{ width: "0%" }}
-          animate={{ 
-            width: step === "idle" ? "0%" : 
-                   step === "processing" ? "25%" : 
-                   step === "validating" ? "50%" : 
-                   step === "saving" ? "75%" : "100%" 
+          animate={{
+            width: step === "idle" ? "0%" :
+              step === "processing" ? "25%" :
+                step === "validating" ? "50%" :
+                  step === "saving" ? "75%" : "100%"
           }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
         />
@@ -82,16 +73,16 @@ const SimulationProgress = ({ step }: { step: SimulationStep }) => {
               key={s}
               className="flex flex-col items-center gap-2"
               initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ 
-                opacity: isActive ? 1 : 0.4, 
-                scale: isCurrent ? 1.1 : 1 
+              animate={{
+                opacity: isActive ? 1 : 0.4,
+                scale: isCurrent ? 1.1 : 1
               }}
               transition={{ duration: 0.3 }}
             >
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300
-                  ${isActive 
-                    ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg" 
+                  ${isActive
+                    ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
                     : "bg-gray-200 dark:bg-gray-700 text-gray-400"
                   }`}
               >
@@ -198,7 +189,7 @@ export default function CheckoutModal({
         totalAmount,
         items: cart.map((item) => {
           const offeringId = item._id || item.id; // ✅ Support _id ET id
-          
+
           return {
             offeringId,
             name: item.name,
@@ -208,8 +199,8 @@ export default function CheckoutModal({
             icon: item.icon,
             unitPrice: item.price,
             totalPrice: item.price * item.quantity,
-          
-    
+
+
           };
         }),
         paymentMethod: "simulation",

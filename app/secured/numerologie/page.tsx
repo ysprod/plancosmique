@@ -6,7 +6,6 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-// Interface pour les résultats de numérologie
 interface NumerologyResult {
   lifePathNumber: number;
   expressionNumber: number;

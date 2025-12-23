@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { ShoppingBag, ArrowRight, Sparkles, ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';

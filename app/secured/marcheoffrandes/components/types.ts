@@ -1,14 +1,5 @@
-
-export interface Offering {
-    _id: string;
-    id: string;
-    name: string;
-    price: number;
-    priceUSD: number;
-    category: 'animal' | 'vegetal' | 'beverage';
-    icon: string;
-    description: string;
-}
+import { Offering } from "@/lib/interfaces";
+export type { Offering };
 
 export interface CartItem extends Offering {
     _id: any;

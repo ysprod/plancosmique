@@ -6,10 +6,11 @@ import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { memo, useCallback, useState, useTransition } from 'react';
 import { CONSULTATION_TYPE_MAP } from './consultation.constants';
-import type { ConsultationChoice, FormData, FormErrors, StepType } from './consultation.types';
+import type {   FormData,  StepType } from './consultation.types';
 import ConsultationForm from './ConsultationForm';
 import ConsultationSelection from './ConsultationSelection';
 import PaymentProcessing from './PaymentProcessing';
+import { ConsultationChoice, FormErrors } from '@/lib/interfaces';
 
 const validateForm = (form: FormData): FormErrors => {
   const errors: FormErrors = {};

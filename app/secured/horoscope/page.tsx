@@ -38,11 +38,7 @@ interface HoroscopeResult {
   luckyColor: string
   dominantPlanet: string
 }
-
-// ============================================================================
-// UTILITAIRES ASTROLOGIQUES
-// ============================================================================
-
+ 
 const getZodiacSign = (date: Date): string => {
   const day = date.getDate()
   const month = date.getMonth() + 1

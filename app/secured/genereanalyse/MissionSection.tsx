@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { memo, useMemo } from 'react';
 import CollapsibleSection from './CollapsibleSection';
-import type { MissionDeVie } from './types';
+import { MissionDeVie } from '@/lib/interfaces'; 
 
 const parseMarkdownToSections = (markdown: string) => {
   const sections = markdown.split('\n## ').filter(Boolean);

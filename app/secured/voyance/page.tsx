@@ -1,9 +1,9 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Eye, 
-  Sparkles, 
-  Moon, 
+import {
+  Eye,
+  Sparkles,
+  Moon,
   Star,
   Heart,
   Briefcase,
@@ -66,7 +66,7 @@ export default function VoyancePage() {
     if (!selectedCategory || !name) return;
 
     setIsRevealing(true);
-    
+
     // Simulate cosmic revelation delay
     setTimeout(() => {
       const categoryPredictions = predictions[selectedCategory];
@@ -110,7 +110,7 @@ export default function VoyancePage() {
       </div>
 
       <div className="relative z-10 container mx-auto px-6 py-12 max-w-4xl">
-        
+
 
         {/* Header */}
         <motion.div
@@ -164,11 +164,10 @@ export default function VoyancePage() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => setSelectedCategory(cat.id)}
-                      className={`relative p-6 rounded-2xl border-2 transition-all duration-300 ${
-                        selectedCategory === cat.id
+                      className={`relative p-6 rounded-2xl border-2 transition-all duration-300 ${selectedCategory === cat.id
                           ? 'border-purple-400 bg-purple-500/20'
                           : 'border-purple-500/30 bg-slate-700/30 hover:border-purple-400/60'
-                      }`}
+                        }`}
                     >
                       <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center`}>
                         <cat.icon className="w-6 h-6 text-white" />
@@ -312,7 +311,7 @@ export default function VoyancePage() {
                 >
                   Nouvelle prédiction
                 </motion.button>
-                
+
               </div>
             </motion.div>
           )}

@@ -2,10 +2,10 @@
 import { motion } from 'framer-motion';
 import { AlertCircle, Info, Sparkles } from 'lucide-react';
 import React from 'react';
-import InputField from './InputField';
-import SelectField from './SelectField';
-import { GENRE_OPTIONS } from './genreOptions';
 import { birthCountries } from '@/lib/birthCountries';
+import InputField from '../../vie-personnelle/slidesection/InputField';
+import SelectField from '../../vie-personnelle/slidesection/SelectField';
+import { GENRE_OPTIONS } from '../../vie-personnelle/slidesection/genreOptions';
 
 interface Props {
   form: any;

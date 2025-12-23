@@ -1,23 +1,4 @@
-// Types partagés pour la consultation
 
-
-export interface OfferingAlternative {
-  category: 'animal' | 'vegetal' | 'beverage';
-  offeringId: string;
-  quantity: number;
-}
-
-export interface ConsultationOffering {
-  alternatives: OfferingAlternative[];
-}
-
-export interface ConsultationChoice {
-  id: string;
-  title: string;
-  description: string;
-  offering: ConsultationOffering;
-}
- 
 export interface FormData {
   nom: string;
   prenoms: string;
@@ -28,10 +9,6 @@ export interface FormData {
   heureNaissance: string;
   numeroSend?: string;
   email?: string; // Email pour notifications
-}
-
-export interface FormErrors {
-  [key: string]: string;
 }
 
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';

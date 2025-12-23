@@ -13,10 +13,11 @@ import {
   Header,
   Hero,
   InfoBox,
-  type Offering,
+ 
   OfferingCard,
   staggerContainer
 } from './components';
+import { Offering } from '@/lib/interfaces';
 
 function useCart() {
   const [cart, setCart] = useState<CartItem[]>([]);

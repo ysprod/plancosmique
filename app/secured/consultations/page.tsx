@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { api } from '@/lib/api/client';
-import { CarteDuCiel } from '@/lib/interfaces';
+import { formatDate } from '@/lib/functions';
+import { CarteDuCiel, MissionDeVie } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   AlertCircle,
@@ -23,7 +24,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
- 
+
 type ConsultationType =
   | 'SPIRITUALITE'
   | 'VIE_PERSONNELLE'
@@ -44,11 +45,6 @@ interface ConsultationFormData {
   heureNaissance: string;
   numeroSend?: string;
   email?: string;
-}
-
-interface MissionDeVie {
-  titre: string;
-  contenu: string;
 }
 
 interface ResultData {
@@ -92,8 +88,6 @@ interface Consultation {
   updatedAt: string;
 }
 
-// ==================== HELPERS ====================
-
 const TYPE_LABELS: Record<ConsultationType, { label: string; color: string; icon: typeof Star }> = {
   SPIRITUALITE: { label: 'Spiritualité', color: 'from-purple-500 to-pink-500', icon: Sparkles },
   VIE_PERSONNELLE: { label: 'Vie Personnelle', color: 'from-blue-500 to-cyan-500', icon: User },
@@ -111,17 +105,7 @@ const STATUS_CONFIG: Record<ConsultationStatus, { label: string; color: string; 
   FAILED: { label: 'Erreur', color: 'bg-red-100 text-red-800', icon: AlertCircle }
 };
 
-// Fallback pour les statuts non reconnus
 const DEFAULT_STATUS_CONFIG = { label: 'Inconnu', color: 'bg-gray-100 text-gray-800', icon: Clock };
-
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString('fr-FR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  });
-};
-
 
 interface StatusBadgeProps {
   status: ConsultationStatus | string;
@@ -275,7 +259,6 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ consultation, index
   );
 };
 
-// ==================== PAGE PRINCIPALE ====================
 
 export default function ConsultationsListPage() {
   const router = useRouter();
@@ -364,8 +347,6 @@ export default function ConsultationsListPage() {
 
     setFilteredConsultations(filtered);
   };
-
-
 
   const handleView = (id: string) => {
     router.push(`/secured/consultations/${id}`);

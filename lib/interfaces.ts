@@ -77,7 +77,7 @@ export interface Offering {
     priceUSD: number;
     category: 'animal' | 'vegetal' | 'beverage';
     icon: string;
-    description: string;
+    description: string;   
 }
 
 export interface UserData {
@@ -122,3 +122,46 @@ export interface WalletOffering {
   price: number;
 }
  
+
+export interface ConsultationOffering {
+  alternatives: OfferingAlternative[];
+}
+
+
+// Types partagés pour la consultation
+
+
+export interface OfferingAlternative {
+  category: 'animal' | 'vegetal' | 'beverage';
+  offeringId: string;
+  quantity: number;
+}
+
+export interface ConsultationOffering {
+  alternatives: OfferingAlternative[];
+}
+
+export interface ConsultationChoice {
+  id: string;
+  title: string;
+  description: string;
+  offering: ConsultationOffering;
+}
+
+export interface FormErrors {
+  [key: string]: string;
+}
+
+export interface FormData {
+  nom: string;
+  prenoms: string;
+  genre: string;
+  dateNaissance: string;
+  paysNaissance: string;
+  villeNaissance: string;
+  heureNaissance: string;
+  numeroSend?: string;
+  email?: string;
+}
+
+export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';

@@ -1,11 +1,6 @@
-import { OfferingAlternative } from "@/lib/interfaces";
-import { ConsultationChoice } from "../../vie-personnelle/slidesection/consultation.types";
- 
-export interface ConsultationOffering {
-  alternatives: OfferingAlternative[];
-}
+import { ConsultationChoice } from "@/lib/interfaces";
 
- export const CONSULTATION_CHOICES: ConsultationChoice[] = [
+export const CONSULTATION_CHOICES: ConsultationChoice[] = [
   {
     id: 'carriere',
     title: 'ORIENTATION DE CARRIÈRE',

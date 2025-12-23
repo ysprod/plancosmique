@@ -1,27 +1,27 @@
 'use client';
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api/client';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  BookOpen,
-  Clock,
-  TrendingUp,
-  Search,
-  Filter,
-  Calendar,
-  User,
-  Heart,
-  MessageCircle,
-  Sparkles,
-  Eye,
-  ArrowRight,
-  Loader2,
   AlertCircle,
-  Star,
+  ArrowRight,
+  BookOpen,
+  Calendar,
+  Clock,
+  Eye,
+  Filter,
   Flame,
+  Heart,
+  Loader2,
+  MessageCircle,
+  Search,
+  Sparkles,
+  Star,
+  TrendingUp,
+  User,
   Zap
 } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 interface SpiritualPractice {
   _id: string;
@@ -570,8 +570,7 @@ export default function SpiritualiteBlogPage() {
               </motion.button>
             </motion.div>
           )}
-        </AnimatePresence>
- 
+        </AnimatePresence> 
       </div>
     </div>
   );

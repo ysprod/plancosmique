@@ -1,7 +1,6 @@
+import { ConsultationChoice } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
-import { ConsultationChoice } from './consultation.types';
-
-
+ 
 const ConsultationCard: React.FC<{
   choice: ConsultationChoice;
   onSelect: () => void;

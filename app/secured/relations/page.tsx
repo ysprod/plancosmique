@@ -1,5 +1,4 @@
 'use client';
-
 import { AnimatePresence, motion } from 'framer-motion';
 import Slide4Section from './slidesection/Slide4Section';
 

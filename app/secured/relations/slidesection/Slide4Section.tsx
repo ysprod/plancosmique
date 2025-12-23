@@ -6,12 +6,11 @@ import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { memo, useCallback, useState, useTransition } from 'react';
 import { CONSULTATION_TYPE_MAP } from './consultation.constants';
-import type {   FormData, FormErrors, StepType } from './consultation.types';
 import ConsultationForm from './ConsultationForm';
 import ConsultationSelection from './ConsultationSelection';
 import PaymentProcessing from './PaymentProcessing';
-import { ConsultationChoice } from '../../vie-personnelle/slidesection/consultation.types';
-
+import { ConsultationChoice, FormErrors, FormData, StepType } from '@/lib/interfaces';
+ 
 const validateForm = (form: FormData): FormErrors => {
 	const errors: FormErrors = {};
 	if (!form.nom.trim()) errors.nom = 'Nom requis';

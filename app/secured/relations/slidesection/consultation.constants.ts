@@ -1,9 +1,4 @@
-import { OfferingAlternative } from "@/lib/interfaces";
-import { ConsultationChoice } from "../../vie-personnelle/slidesection/consultation.types";
- 
-export interface ConsultationOffering {
-  alternatives: OfferingAlternative[];
-}
+import { ConsultationChoice } from "@/lib/interfaces";
 
 export const CONSULTATION_CHOICES: ConsultationChoice[] = [
   {
@@ -150,13 +145,3 @@ export const CONSULTATION_TYPE_MAP: Record<string, string> = {
   karma: 'RELATIONS',
   rencontre: 'RELATIONS',
 };
-
-export interface Offering {
-  id: string;
-  name: string;
-  price: number;
-  priceUSD: number;
-  category: 'animal' | 'vegetal' | 'beverage';
-  icon: string;
-  description: string;
-}

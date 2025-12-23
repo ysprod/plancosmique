@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Plus } from 'lucide-react';
-import { Offering } from './types';
 import { fadeInUp } from './animations';
+import { Offering } from '@/lib/interfaces';
 
 interface OfferingCardProps {
     offering: Offering;
