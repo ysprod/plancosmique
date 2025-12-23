@@ -22,10 +22,13 @@ export interface SubjectInfo {
 }
 
 export interface Position {
-  planete: string;
-  signe: string;
-  maison: number;
-  retrograde: boolean;
+ 
+   planete?: string;
+  astre?: string;
+  signe?: string;
+  maison?: string | number;
+  degre?: number;
+  retrograde?: boolean;
 }
 
 export interface CarteDuCiel {
@@ -34,7 +37,21 @@ export interface CarteDuCiel {
   aspectsTexte: string;
 }
 
+ 
+export interface Sujet {
+  nom: string;
+  prenoms: string;
+  dateNaissance: string;
+  lieuNaissance: string;
+  heureNaissance: string;
+}
 
+ 
+
+export interface MissionDeVie {
+  titre: string;
+  contenu: string; // Markdown format
+}
 
 export interface Section {
   titre: string;
@@ -64,7 +81,8 @@ export interface Offering {
 }
 
 export interface UserData {
-  _id: string;
+  _id?: string;
+  id: string; 
   username: string;
   email: string;
   phone?: string;
@@ -77,7 +95,13 @@ export interface UserData {
   preferences?: {
     notifications?: boolean;
     newsletter?: boolean;
-  };
+  };  
+ 
+  totalConsultations: number;
+  rating: number;
+
+
+  createdAt: string;
 }
 type Category = 'animal' | 'vegetal' | 'beverage';
 export interface OfferingAlternative {
@@ -97,22 +121,4 @@ export interface WalletOffering {
   category: string;
   price: number;
 }
-
-
-// interface OfferingAlternative {
-//   category: 'animal' | 'vegetal' | 'beverage';
-//   offeringId: string;
-//   quantity: number;
-//   name?: string;
-//   price?: number;
-//   icon?: string;
-// }
-
-// interface WalletOffering {
-//   offeringId: string;
-//   quantity: number;
-//   name: string;
-//   icon: string;
-//   category: string;
-//   price: number;
-// }
+ 

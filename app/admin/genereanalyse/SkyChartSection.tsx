@@ -2,7 +2,16 @@ import { motion } from 'framer-motion';
 import { memo } from 'react';
 import PlanetChip from './PlanetChip';
 import { CarteDuCiel } from '@/lib/interfaces';
+import type { Position as LocalPosition } from './types';
  
+
+
+const mapToLocalPosition = (pos: any): LocalPosition => ({
+  planete: pos.planete || pos.astre || '',
+  signe: pos.signe || '',
+  maison: typeof pos.maison === 'number' ? pos.maison : Number(pos.maison) || 0,
+  retrograde: !!pos.retrograde,
+});
 
 const SkyChartSection = memo(({ carteDuCiel }: { carteDuCiel: CarteDuCiel }) => (
   <motion.div
@@ -18,7 +27,7 @@ const SkyChartSection = memo(({ carteDuCiel }: { carteDuCiel: CarteDuCiel }) => 
 
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
       {carteDuCiel.positions.map((pos, idx) => (
-        <PlanetChip key={idx} position={pos} />
+        <PlanetChip key={idx} position={mapToLocalPosition(pos)} />
       ))}
     </div>
   </motion.div>

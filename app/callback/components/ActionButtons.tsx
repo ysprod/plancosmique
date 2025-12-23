@@ -14,11 +14,7 @@ interface ActionButtonsProps {
   onGoHome: () => void;
   itemVariants: Variants;
 }
-
-/**
- * Composant de boutons d'action contextuels
- * Affiche les boutons appropriés selon le statut du paiement
- */
+ 
 export function ActionButtons({
   status,
   downloadUrl,

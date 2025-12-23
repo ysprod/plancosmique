@@ -343,7 +343,7 @@ export default function RootLayout({
 
             <main
               id="main-content"
-              className="relative min-h-screen"
+              className="relative"
               role="main"
               aria-label="Contenu principal"
             >

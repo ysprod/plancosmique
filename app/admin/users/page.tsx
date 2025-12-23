@@ -1,37 +1,36 @@
 'use client';
-import { useState, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Users, Plus, Search, Filter,
-  Mail, Phone, Shield, Globe, Calendar,
-  CheckCircle, Edit, Trash2, Ban,
-  X, AlertCircle, RefreshCw, Clock, Star, CreditCard, User, Zap,
-  AlertTriangle, Loader2
-} from 'lucide-react';
 import { useAdminUsers } from '@/hooks/useAdminUsers';
+import { UserData } from '@/lib/interfaces';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  AlertCircle,
+  AlertTriangle,
+  Ban,
+  Calendar,
+  CheckCircle,
+  Clock,
+  CreditCard,
+  Edit,
+  Filter,
+  Globe,
+  Loader2,
+  Mail, Phone,
+  Plus,
+  RefreshCw,
+  Search,
+  Shield,
+  Star,
+  Trash2,
+  User,
+  Users,
+  X,
+  Zap
+} from 'lucide-react';
 import Link from 'next/link';
+import { useCallback, useMemo, useState } from 'react';
 
 type UserStatus = 'all' | 'active' | 'inactive';
 type UserRole = 'all' | 'USER' | 'ADMIN';
-
-interface UserData {
-  id: string;
-  username: string;
-  email: string;
-  phone?: string;
-  country?: string;
-  gender?: string;
-  role: string;
-  isActive: boolean;
-  emailVerified: boolean;
-  totalConsultations: number;
-  rating: number;
-  credits: number;
-  preferences?: {
-    notifications?: boolean;
-  };
-  createdAt: string;
-}
 
 export default function UsersPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -48,13 +47,34 @@ export default function UsersPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
 
-  const { users, total, loading, error, refetch } = useAdminUsers({
+  const { users: apiUsers, total, loading, error, refetch } = useAdminUsers({
     search: searchQuery,
     status: statusFilter,
     role: roleFilter,
     page: currentPage,
     limit: 18,
   });
+
+  // Map API User to UserData
+  const mapUserToUserData = (user: any): UserData => ({
+    id: user.id,
+    _id: user._id,
+    username: user.username,
+    email: user.email,
+    phone: user.phone || user.telephone,
+    country: user.country,
+    gender: user.gender === 'M' || user.gender === 'F' || user.gender === 'Other' ? user.gender : 'Other',
+    role: user.role,
+    isActive: user.isActive,
+    emailVerified: user.emailVerified,
+    credits: user.credits,
+    preferences: user.preferences,
+    totalConsultations: user.totalConsultations ?? user.consultationsCount ?? 0,
+    rating: user.rating,
+    createdAt: user.createdAt,
+  });
+
+  const users: UserData[] = useMemo(() => (apiUsers ? apiUsers.map(mapUserToUserData) : []), [apiUsers]);
 
   const stats = useMemo(() => {
     if (!users) return null;
@@ -315,7 +335,11 @@ export default function UsersPage() {
                         Annuler
                       </button>
                       <button
-                        onClick={() => handleDeleteUser(deleteModal.user!.id)}
+                        onClick={() => {
+                          if (deleteModal.user && deleteModal.user.id) {
+                            handleDeleteUser(deleteModal.user.id);
+                          }
+                        }}
                         disabled={isDeleting}
                         className="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-600 to-red-700 
                                    text-white rounded-lg font-semibold hover:shadow-lg 
@@ -369,8 +393,8 @@ export default function UsersPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={`p-2 rounded-lg transition-all ${isRefreshing || loading
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
               >
                 <RefreshCw className={`w-4 h-4 ${isRefreshing || loading ? 'animate-spin' : ''}`} />
@@ -652,7 +676,7 @@ export default function UsersPage() {
                       {user.gender && (
                         <div className="flex items-center gap-1.5 text-xs text-gray-600">
                           <User className="w-3 h-3 flex-shrink-0" />
-                          {user.gender === 'male' ? 'Homme' : 'Femme'}
+                          {user.gender === 'M' ? 'Homme' : user.gender === 'F' ? 'Femme' : 'Autre'}
                         </div>
                       )}
                       <div className="flex items-center gap-1.5 text-xs text-gray-600">

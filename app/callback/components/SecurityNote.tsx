@@ -5,11 +5,7 @@ import { motion, type Variants } from 'framer-motion';
 interface SecurityNoteProps {
   itemVariants: Variants;
 }
-
-/**
- * Note de sécurité indiquant le fournisseur de paiement
- * Composant simple avec lien externe
- */
+ 
 export function SecurityNote({ itemVariants }: SecurityNoteProps) {
   return (
     <motion.div

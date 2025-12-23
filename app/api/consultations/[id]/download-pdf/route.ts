@@ -1,38 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { api } from '@/lib/api/client';
+import { CarteDuCiel, MissionDeVie, Sujet } from '@/lib/interfaces';
 import { AnalysisDocument } from '@/lib/pdf/analysis-pdf';
 import { renderToStream } from '@react-pdf/renderer';
 import { NextResponse } from 'next/server';
 import { createElement } from 'react';
-
-interface Position {
-  planete?: string;
-  astre?: string;
-  signe?: string;
-  maison?: string | number;
-  degre?: number;
-  retrograde?: boolean;
-}
-
-interface Sujet {
-  nom: string;
-  prenoms: string;
-  dateNaissance: string;
-  lieuNaissance: string;
-  heureNaissance: string;
-}
-
-interface CarteDuCiel {
-  sujet: Sujet;
-  positions: Position[];
-  aspectsTexte: string;
-}
-
-interface MissionDeVie {
-  titre: string;
-  contenu: string; // Markdown format
-}
 
 interface AnalyseData {
   _id: string;
@@ -51,43 +23,18 @@ interface BackendResponse {
   analyse: AnalyseData;
 }
 
-// =====================================================
-// UTILITAIRES
-// =====================================================
-
-/**
- * Valide la structure de l'analyse reçue du backend
- */
-function validateAnalyse(analyse: any): analyse is AnalyseData {
-  if (!analyse) return false;
-  
-  const hasCarteDuCiel = analyse.carteDuCiel && 
-                        analyse.carteDuCiel.sujet &&
-                        analyse.carteDuCiel.positions &&
-                        Array.isArray(analyse.carteDuCiel.positions);
-  
-  const hasMissionDeVie = analyse.missionDeVie && 
-                         analyse.missionDeVie.titre &&
-                         analyse.missionDeVie.contenu;
-  
-  return hasCarteDuCiel && hasMissionDeVie;
-}
-
-/**
- * Génère un nom de fichier sécurisé et descriptif
- */
 function generateFilename(sujet: Sujet): string {
-  const sanitize = (str: string) => 
+  const sanitize = (str: string) =>
     str.trim()
-       .replace(/[^a-zA-Z0-9\s-]/g, '')
-       .replace(/\s+/g, '-')
-       .toLowerCase()
-       .substring(0, 30); // Limite stricte
+      .replace(/[^a-zA-Z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .toLowerCase()
+      .substring(0, 30); // Limite stricte
 
   const prenoms = sanitize(sujet.prenoms);
   const nom = sanitize(sujet.nom);
   const date = new Date().toISOString().split('T')[0];
-  
+
   return `analyse-${nom}-${prenoms}-${date}.pdf`;
 }
 
@@ -109,24 +56,21 @@ function formatAnalyseForLog(analyse: AnalyseData): object {
   };
 }
 
-// =====================================================
-// HANDLER PRINCIPAL
-// =====================================================
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   const startTime = Date.now();
-  
+
   try {
     const consultationId = params.id;
-    
+
     // Validation ID (MongoDB ObjectId = 24 chars hex)
     if (!consultationId || consultationId.length !== 24 || !/^[a-f0-9]{24}$/i.test(consultationId)) {
       console.warn('[PDF] ⚠️ ID de consultation invalide:', consultationId);
       return NextResponse.json(
-        { 
-          success: false, 
+        {
+          success: false,
           error: 'ID de consultation invalide',
           code: 'INVALID_ID'
         },
@@ -151,14 +95,14 @@ export async function GET(
       );
 
       backendData = response.data;
-      
+
       if (!backendData || !backendData.analyse) {
         console.error('[PDF] ❌ Réponse API invalide:', {
           status: response.status,
           hasData: !!backendData,
           hasAnalyse: !!(backendData && backendData.analyse)
         });
-        
+
         return NextResponse.json(
           {
             success: false,
@@ -223,28 +167,7 @@ export async function GET(
     }
 
     const analyse = backendData.analyse;
-
-    // Validation structure analyse
-    // if (!validateAnalyse(analyse)) {
-    //   console.error('[PDF] ❌ Structure d\'analyse invalide:', {
-    //     hasCarteDuCiel: !!analyse?.carteDuCiel,
-    //     hasSujet: !!analyse?.carteDuCiel?.sujet,
-    //     hasPositions: !!analyse?.carteDuCiel?.positions,
-    //     hasMissionDeVie: !!analyse?.missionDeVie
-    //   });
-
-    //   return NextResponse.json(
-    //     { 
-    //       success: false, 
-    //       error: 'Structure d\'analyse invalide ou incomplète',
-    //       code: 'INVALID_ANALYSIS_STRUCTURE'
-    //     },
-    //     { status: 422 }
-    //   );
-    // }
-
     // Génération du document PDF
-    console.log('[PDF] 🎨 Création du document PDF...');
     let pdfDocument;
     try {
       pdfDocument = createElement(AnalysisDocument, { analyse });
@@ -260,7 +183,7 @@ export async function GET(
         { status: 500 }
       );
     }
-    
+
     // Génération du stream PDF
     console.log('[PDF] 📦 Génération du stream PDF...');
     let stream;
@@ -281,7 +204,7 @@ export async function GET(
 
     // Génération nom fichier sécurisé
     const filename = generateFilename(analyse.carteDuCiel.sujet);
-    
+
     const duration = Date.now() - startTime;
     console.log(`[PDF] ✅ PDF généré avec succès en ${duration}ms:`, filename);
 

@@ -1,13 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { memo, useMemo, useState, useCallback } from 'react';
-import {
-    Calendar, Star, MessageSquare, MapPin, Phone, Mail, User, Edit, Download, Eye, Sparkles,
-    ChevronDown, BookOpen, Sparkle, TrendingUp, Clock
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { AnalyseAstrologique } from '@/lib/interfaces';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+    BookOpen,
+    Calendar,
+    ChevronDown,
+    Clock,
+    Edit,
+    Mail,
+    MapPin,
+    Sparkle,
+    Sparkles,
+    TrendingUp,
+    User
+} from 'lucide-react';
+import { memo, useCallback, useMemo, useState } from 'react';
 
 // =====================================================
 // UTILITIES

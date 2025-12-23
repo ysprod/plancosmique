@@ -19,8 +19,6 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
- 
-
 const CATEGORIES = [
     { value: 'animal', label: 'Animaux', emoji: '🐓', color: 'from-red-500 to-orange-500' },
     { value: 'vegetal', label: 'Végétaux', emoji: '🌾', color: 'from-green-500 to-emerald-500' },
@@ -29,7 +27,7 @@ const CATEGORIES = [
 
 export default function AdminOffrandes() {
     const [offerings, setOfferings] = useState<Offering[]>([]);
-    const [stats, setStats] = useState<any[]>([]);
+    const [statsData, setStatsData] = useState<any>(null);
     const [statsLoading, setStatsLoading] = useState(true);
     const [statsError, setStatsError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -49,8 +47,6 @@ export default function AdminOffrandes() {
         description: ''
     });
 
-
-    // Charger les offrandes et stats depuis le backend
     useEffect(() => {
         fetchOfferings();
         fetchStats();
@@ -61,8 +57,9 @@ export default function AdminOffrandes() {
         setStatsError(null);
         try {
             const response = await api.get('/admin/offerings/stats');
-            if (response.status === 200 && response.data?.stats) {
-                setStats(response.data.stats);
+            console.log('Stats response:', response);
+            if (response.status === 200 && response.data) {
+                setStatsData(response.data);
             } else {
                 setStatsError('Erreur lors du chargement des statistiques');
             }
@@ -77,7 +74,6 @@ export default function AdminOffrandes() {
         setLoading(true);
         try {
             const response = await api.get('/offerings');
-            console.log('Offrandes chargées:', response.data);
             if (response.status === 200 && response.data?.offerings) {
                 setOfferings(response.data.offerings);
             }
@@ -89,7 +85,6 @@ export default function AdminOffrandes() {
         }
     };
 
-    // Sauvegarder toutes les offrandes
     const handleSaveAll = async () => {
         setSaving(true);
         setErrorMessage(null);
@@ -114,7 +109,6 @@ export default function AdminOffrandes() {
         }
     };
 
-    // Ajouter une nouvelle offrande
     const handleAdd = () => {
         setFormData({
             id: '',
@@ -129,14 +123,12 @@ export default function AdminOffrandes() {
         setShowAddModal(true);
     };
 
-    // Éditer une offrande existante
     const handleEdit = (offering: Offering) => {
         setFormData(offering);
         setEditingId(offering.id);
         setShowAddModal(true);
     };
 
-    // Confirmer l'ajout/modification
     const handleConfirm = () => {
         if (!formData.id || !formData.name) {
             setErrorMessage('ID et Nom sont requis');
@@ -159,14 +151,12 @@ export default function AdminOffrandes() {
         setEditingId(null);
     };
 
-    // Supprimer une offrande
     const handleDelete = (id: string) => {
         if (confirm('Êtes-vous sûr de vouloir supprimer cette offrande ?')) {
             setOfferings(offerings.filter(o => o.id !== id));
         }
     };
 
-    // Calculer automatiquement le prix USD
     useEffect(() => {
         if (formData.price > 0) {
             setFormData(prev => ({ ...prev, priceUSD: Math.round(prev.price / 563.5 * 100) / 100 }));
@@ -176,7 +166,6 @@ export default function AdminOffrandes() {
     return (
         <div className="min-h-screen bg-white dark:bg-gray-950 p-4 sm:p-6">
             <div className="max-w-7xl mx-auto">
-                {/* Statistiques Offrandes */}
                 <div className="mb-8">
                     <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
                         <Package className="w-5 h-5 text-violet-500" /> Statistiques des ventes d'offrandes
@@ -185,32 +174,96 @@ export default function AdminOffrandes() {
                         <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Chargement...</div>
                     ) : statsError ? (
                         <div className="text-sm text-red-600 dark:text-red-400">{statsError}</div>
-                    ) : stats.length === 0 ? (
+                    ) : !statsData ? (
                         <div className="text-sm text-gray-500 dark:text-gray-400">Aucune donnée de vente.</div>
                     ) : (
-                        <div className="overflow-x-auto">
-                            <table className="min-w-[400px] w-full text-sm border rounded-xl overflow-hidden">
-                                <thead className="bg-gray-100 dark:bg-gray-800">
-                                    <tr>
-                                        <th className="px-3 py-2 text-left font-bold">Offrande</th>
-                                        <th className="px-3 py-2 text-left font-bold">Quantité vendue</th>
-                                        <th className="px-3 py-2 text-left font-bold">Chiffre d'affaires (F)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {stats.map((s) => (
-                                        <tr key={s.offeringId} className="border-b last:border-b-0">
-                                            <td className="px-3 py-2 font-mono">{s.name}</td>
-                                            <td className="px-3 py-2">{s.totalSold}</td>
-                                            <td className="px-3 py-2">{s.totalRevenue.toLocaleString()}</td>
+                        <>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                {/* Vue d'ensemble */}
+                                <div className="bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900 dark:to-violet-950 rounded-2xl p-6 flex flex-col gap-2 shadow">
+                                    <div className="text-xs font-bold text-violet-700 dark:text-violet-300 mb-1">Vue d'ensemble</div>
+                                    <div className="flex flex-col gap-1">
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-semibold text-gray-700 dark:text-gray-200">Chiffre d'affaires</span>
+                                            <span className="font-black text-lg text-violet-700 dark:text-violet-300">{statsData.overview.revenue.toLocaleString()} F</span>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-semibold text-gray-700 dark:text-gray-200">Quantité vendue</span>
+                                            <span className="font-black text-lg text-violet-700 dark:text-violet-300">{statsData.overview.quantitySold}</span>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-semibold text-gray-700 dark:text-gray-200">Transactions</span>
+                                            <span className="font-black text-lg text-violet-700 dark:text-violet-300">{statsData.overview.transactionsCount}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* Par catégorie */}
+                                <div className="bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-900 dark:to-green-950 rounded-2xl p-6 flex flex-col gap-2 shadow">
+                                    <div className="text-xs font-bold text-emerald-700 dark:text-emerald-300 mb-1">Par catégorie</div>
+                                    <div className="flex flex-col gap-1">
+                                        {statsData.byCategory.map((cat: any) => (
+                                            <div key={cat.category || 'autre'} className="flex items-center justify-between">
+                                                <span className="font-semibold text-gray-700 dark:text-gray-200">{cat.category ? (CATEGORIES.find(c => c.value === cat.category)?.label || cat.category) : 'Autre'}</span>
+                                                <span className="font-black text-md text-emerald-700 dark:text-emerald-300">{cat.revenue.toLocaleString()} F</span>
+                                                <span className="text-xs text-gray-500 ml-2">({cat.quantitySold})</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                {/* Par période */}
+                                <div className="bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900 dark:to-purple-950 rounded-2xl p-6 flex flex-col gap-2 shadow">
+                                    <div className="text-xs font-bold text-pink-700 dark:text-pink-300 mb-1">Par période</div>
+                                    <div className="flex flex-col gap-1">
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-semibold text-gray-700 dark:text-gray-200">Aujourd'hui</span>
+                                            <span className="font-black text-md text-pink-700 dark:text-pink-300">{statsData.periods.today.revenue.toLocaleString()} F</span>
+                                            <span className="text-xs text-gray-500 ml-2">({statsData.periods.today.quantitySold})</span>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-semibold text-gray-700 dark:text-gray-200">7 derniers jours</span>
+                                            <span className="font-black text-md text-pink-700 dark:text-pink-300">{statsData.periods.last7.revenue.toLocaleString()} F</span>
+                                            <span className="text-xs text-gray-500 ml-2">({statsData.periods.last7.quantitySold})</span>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-semibold text-gray-700 dark:text-gray-200">30 derniers jours</span>
+                                            <span className="font-black text-md text-pink-700 dark:text-pink-300">{statsData.periods.last30.revenue.toLocaleString()} F</span>
+                                            <span className="text-xs text-gray-500 ml-2">({statsData.periods.last30.quantitySold})</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Tableau par offrande */}
+                            <div className="overflow-x-auto mt-6">
+                                <table className="min-w-[400px] w-full text-sm border rounded-xl overflow-hidden">
+                                    <thead className="bg-gray-100 dark:bg-gray-800">
+                                        <tr>
+                                            <th className="px-3 py-2 text-left font-bold">Offrande</th>
+                                            <th className="px-3 py-2 text-left font-bold">Catégorie</th>
+                                            <th className="px-3 py-2 text-left font-bold">Quantité</th>
+                                            <th className="px-3 py-2 text-left font-bold">CA (F)</th>
+                                            <th className="px-3 py-2 text-left font-bold">Prix unitaire (moyen)</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody>
+                                        {statsData.byOffering.map((o: any) => (
+                                            <tr key={o.offeringId} className="border-b last:border-b-0">
+                                                <td className="px-3 py-2 font-mono flex items-center gap-2">
+                                                    <span className="text-lg">{o.icon}</span>
+                                                    {o.name || <span className="italic text-gray-400">(inconnu)</span>}
+                                                </td>
+                                                <td className="px-3 py-2">{o.category ? (CATEGORIES.find(c => c.value === o.category)?.label || o.category) : '-'}</td>
+                                                <td className="px-3 py-2">{o.quantitySold}</td>
+                                                <td className="px-3 py-2">{o.revenue.toLocaleString()}</td>
+                                                <td className="px-3 py-2">{o.avgUnitPrice ? o.avgUnitPrice.toLocaleString() : '-'}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </>
                     )}
                 </div>
-                {/* Header */}
+
                 <div className="mb-6">
                     <div className="flex items-center justify-between mb-4">
                         <div>
@@ -275,7 +328,6 @@ export default function AdminOffrandes() {
                         </div>
                     </div>
 
-                    {/* Messages */}
                     <AnimatePresence>
                         {successMessage && (
                             <motion.div
@@ -334,7 +386,6 @@ export default function AdminOffrandes() {
                     })}
                 </div>
 
-                {/* Liste des offrandes */}
                 {loading ? (
                     <div className="text-center py-16 bg-gray-50 dark:bg-gray-900 rounded-2xl">
                         <Loader2 className="w-12 h-12 text-violet-500 mx-auto mb-4 animate-spin" />
@@ -366,7 +417,7 @@ export default function AdminOffrandes() {
                             const category = CATEGORIES.find(c => c.value === offering.category);
                             return (
                                 <motion.div
-                                    key={offering.id}
+                                    key={offering.id || index}
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.05 }}
@@ -436,13 +487,6 @@ export default function AdminOffrandes() {
                                             </p>
                                         </div>
                                     </div>
-
-                                    {/* ID */}
-                                    <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
-                                        <p className="text-[10px] font-mono text-gray-400 dark:text-gray-600 truncate">
-                                            ID: {offering.id}
-                                        </p>
-                                    </div>
                                 </motion.div>
                             );
                         })}
@@ -450,7 +494,6 @@ export default function AdminOffrandes() {
                 )}
             </div>
 
-            {/* Modal Ajout/Édition */}
             <AnimatePresence>
                 {showAddModal && (
                     <>

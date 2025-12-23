@@ -54,8 +54,8 @@ export default function AdminDashboard() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 15 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.4, ease: 'easeOut' }
     }
@@ -104,7 +104,7 @@ export default function AdminDashboard() {
                      border border-gray-200 p-8"
         >
           <motion.div
-            animate={{ 
+            animate={{
               rotate: [0, 10, -10, 10, 0],
               transition: { duration: 0.5, repeat: Infinity, repeatDelay: 2 }
             }}
@@ -152,15 +152,15 @@ export default function AdminDashboard() {
                 {lastUpdated && (
                   <p className="text-xs text-gray-500 flex items-center gap-1">
                     <Clock className="w-3 h-3" />
-                    {new Date(lastUpdated).toLocaleTimeString('fr-FR', { 
-                      hour: '2-digit', 
-                      minute: '2-digit' 
+                    {new Date(lastUpdated).toLocaleTimeString('fr-FR', {
+                      hour: '2-digit',
+                      minute: '2-digit'
                     })}
                   </p>
                 )}
               </div>
             </div>
-            
+
             {/* Boutons d'action */}
             <div className="flex items-center gap-2">
               <motion.button
@@ -169,11 +169,10 @@ export default function AdminDashboard() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg 
-                           font-semibold text-sm transition-all ${
-                  isRefreshing || loading
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                           font-semibold text-sm transition-all ${isRefreshing || loading
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                     : 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md hover:shadow-lg'
-                }`}
+                  }`}
               >
                 <RefreshCw className={`w-4 h-4 ${isRefreshing || loading ? 'animate-spin' : ''}`} />
                 <span className="hidden sm:inline">
@@ -250,7 +249,7 @@ export default function AdminDashboard() {
                     <p className="text-white/80 text-xs">Statistiques en temps réel</p>
                   </div>
                 </div>
-                
+
                 <motion.div
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
@@ -261,7 +260,7 @@ export default function AdminDashboard() {
                   <span className="text-xs font-semibold">LIVE</span>
                 </motion.div>
               </div>
-              
+
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
                 {[
                   { icon: Users, label: 'Utilisateurs', value: stats.activity.todayUsers, percent: ((stats.activity.todayUsers / stats.users.total) * 100).toFixed(1) },
@@ -290,8 +289,8 @@ export default function AdminDashboard() {
                       )}
                     </div>
                     <p className="text-white/70 text-xs mt-0.5">
-                      {item.percent && (typeof item.percent === 'string' && item.percent.includes('Moy') 
-                        ? item.percent 
+                      {item.percent && (typeof item.percent === 'string' && item.percent.includes('Moy')
+                        ? item.percent
                         : `+${item.percent}%`
                       )}
                     </p>
@@ -302,7 +301,7 @@ export default function AdminDashboard() {
           </motion.div>
 
           {/* Statistiques principales - Grid compact */}
-          <motion.div 
+          <motion.div
             variants={itemVariants}
             className="grid grid-cols-2 lg:grid-cols-4 gap-3"
           >
@@ -316,7 +315,7 @@ export default function AdminDashboard() {
                 isPositive: stats.users.new > 0
               }}
             />
-            
+
             <StatCard
               title="Consultations"
               value={stats.consultations.total.toLocaleString()}
@@ -327,7 +326,7 @@ export default function AdminDashboard() {
                 isPositive: stats.consultations.completed > stats.consultations.pending
               }}
             />
-            
+
             <StatCard
               title="Paiements Réussis"
               value={stats.payments.completed.toLocaleString()}
@@ -338,7 +337,7 @@ export default function AdminDashboard() {
                 isPositive: stats.payments.completed > stats.payments.failed
               }}
             />
-            
+
             <StatCard
               title="Revenu Total"
               value={`${stats.consultations.revenue.toLocaleString()} F`}
@@ -352,7 +351,7 @@ export default function AdminDashboard() {
           </motion.div>
 
           {/* Cards détails - Version compacte */}
-          <motion.div 
+          <motion.div
             variants={itemVariants}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"
           >
@@ -377,7 +376,7 @@ export default function AdminDashboard() {
                   Voir tout →
                 </Link>
               </div>
-              
+
               <div className="space-y-2.5">
                 {[
                   { icon: CheckCircle, label: 'Actifs', value: stats.users.active, color: 'green' },
@@ -440,7 +439,7 @@ export default function AdminDashboard() {
                   Voir tout →
                 </Link>
               </div>
-              
+
               <div className="space-y-2.5">
                 {[
                   { icon: Clock, label: 'En attente', value: stats.consultations.pending, color: 'orange' },
@@ -503,7 +502,7 @@ export default function AdminDashboard() {
                   Voir tout →
                 </Link>
               </div>
-              
+
               <div className="space-y-2.5">
                 {[
                   { icon: Clock, label: 'En attente', value: stats.payments.pending, color: 'orange' },

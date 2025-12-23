@@ -1,12 +1,7 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { PartyPopper } from 'lucide-react';
-
-/**
- * Bannière de célébration affichée quand l'analyse est terminée
- * Avec animations de rotation et gradient animé
- */
+ 
 export function CompletionBanner() {
   return (
     <motion.div

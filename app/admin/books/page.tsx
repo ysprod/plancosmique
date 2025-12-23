@@ -21,8 +21,6 @@ import {
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
-
-
 interface BookFormData {
   title: string;
   subtitle: string;
@@ -323,7 +321,7 @@ export default function AdminBooksPage() {
   }
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto">
+    <div className="p-4 lg:p-6 max-w-7xl mx-auto">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -412,7 +410,7 @@ export default function AdminBooksPage() {
       </AnimatePresence>
 
       {/* Stats rapides */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -458,22 +456,7 @@ export default function AdminBooksPage() {
             </div>
             <div className="text-3xl">💰</div>
           </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-white rounded-2xl shadow-lg p-6 border-2 border-amber-100"
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs text-gray-600 font-semibold mb-1">Total Pages</p>
-              <p className="text-3xl font-black text-gray-900">{stats.totalPages}</p>
-            </div>
-            <div className="text-3xl">📄</div>
-          </div>
-        </motion.div>
+        </motion.div>        
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -749,16 +732,7 @@ export default function AdminBooksPage() {
                         <Trash2 className="w-4 h-4" />
                       </motion.button>
                     </div>
-                  </div>
-
-                  <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
-                    <p className="text-xs text-gray-400 font-mono">
-                      ID: {book.bookId}
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      Créé le {new Date(book.createdAt).toLocaleDateString('fr-FR')}
-                    </p>
-                  </div>
+                  </div>                  
                 </div>
               </motion.div>
             ))}

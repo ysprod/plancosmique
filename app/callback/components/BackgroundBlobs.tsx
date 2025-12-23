@@ -1,11 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-
-/**
- * Composant de fond animé avec blobs flottants
- * Optimisé pour la performance avec will-change et GPU acceleration
- */
+ 
 export function BackgroundBlobs() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">

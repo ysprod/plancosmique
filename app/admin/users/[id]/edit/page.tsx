@@ -7,7 +7,6 @@ import {
   AlertCircle,
   ArrowLeft,
   CheckCircle,
-  CreditCard,
   Globe,
   Loader2,
   Mail, Phone,
@@ -264,30 +263,9 @@ export default function EditUserPage() {
                   <option value="M">Masculin</option>
                   <option value="F">Féminin</option>
                 </select>
-              </div>
-
-              {/* Credits */}
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Crédits
-                </label>
-                <div className="relative">
-                  <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                  <input
-                    type="number"
-                    min="0"
-                    value={formData.credits || 0}
-                    onChange={(e) => setFormData({ ...formData, credits: parseInt(e.target.value) || 0 })}
-                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg 
-                             focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
-                    placeholder="0"
-                  />
-                </div>
-              </div>
+              </div> 
             </div>
-          </div>
-
-          {/* Rôle et permissions */}
+          </div> 
           <div>
             <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
               <Shield className="w-5 h-5 text-violet-600" />
@@ -363,23 +341,7 @@ export default function EditUserPage() {
                 />
                 <span className="text-sm font-medium text-slate-700">Notifications actives</span>
               </label>
-
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.preferences?.newsletter || false}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    preferences: {
-                      ...formData.preferences,
-                      newsletter: e.target.checked
-                    }
-                  })}
-                  className="w-5 h-5 text-violet-600 border-slate-300 rounded focus:ring-2 
-                           focus:ring-violet-500"
-                />
-                <span className="text-sm font-medium text-slate-700">Newsletter abonné</span>
-              </label>
+ 
             </div>
           </div>
 

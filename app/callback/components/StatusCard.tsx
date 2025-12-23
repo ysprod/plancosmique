@@ -1,5 +1,4 @@
 'use client';
-
 import { motion, type Variants } from 'framer-motion';
 import { Clock, Loader2 } from 'lucide-react';
 import type { PaymentStatus, StatusConfig } from './types';
@@ -16,10 +15,6 @@ interface StatusCardProps {
   pulseVariants: Variants;
 }
 
-/**
- * Composant de carte de statut principal
- * Affiche le statut du paiement avec icône, titre et description
- */
 export function StatusCard({
   status,
   statusConfig,

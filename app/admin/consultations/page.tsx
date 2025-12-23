@@ -178,7 +178,7 @@ export default function ConsultationsPage() {
                   <ConsultationCard
                     consultation={consultation}
                     onGenerateAnalysis={handleGenerateAnalysis}
-                     isGenerating={generatingIds.has(consultation.id)}
+                    isGenerating={generatingIds.has(consultation.id)}
                     isNotifying={notifyingIds.has(consultation.id)}
                   />
                 </div>
