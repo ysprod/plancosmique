@@ -36,7 +36,7 @@ const SubjectHeader: React.FC<SubjectHeaderProps> = ({ sujet }) => (
         <h2 className="text-2xl sm:text-3xl font-black text-white">
           {sujet.prenoms} {sujet.nom}
         </h2>
-        <p className="text-purple-200">Thème Natal Complet</p>
+        <p className="text-purple-200">Thème</p>
       </div>
     </div>
 
@@ -242,8 +242,7 @@ export default function ConsultationResultPage() {
             <div className="flex-1 text-center">
               <h1 className="text-lg sm:text-xl font-black text-white flex items-center justify-center gap-2">
                 <Star className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-300" />
-                <span className="hidden sm:inline">Analyse Astrologique Complète</span>
-                <span className="sm:hidden">Analyse</span>
+                 <span className="sm:hidden">Analyse</span>
               </h1>
             </div>
 

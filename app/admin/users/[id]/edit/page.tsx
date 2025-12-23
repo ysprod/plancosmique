@@ -288,62 +288,9 @@ export default function EditUserPage() {
                   <option value="ADMIN">Administrateur</option>
                   <option value="SUPER_ADMIN">Super Admin</option>
                 </select>
-              </div>
-
-              {/* Statut */}
-              <div className="flex items-center gap-6">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.isActive || false}
-                    onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                    className="w-5 h-5 text-violet-600 border-slate-300 rounded focus:ring-2 
-                             focus:ring-violet-500"
-                  />
-                  <span className="text-sm font-medium text-slate-700">Compte actif</span>
-                </label>
-
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.emailVerified || false}
-                    onChange={(e) => setFormData({ ...formData, emailVerified: e.target.checked })}
-                    className="w-5 h-5 text-violet-600 border-slate-300 rounded focus:ring-2 
-                             focus:ring-violet-500"
-                  />
-                  <span className="text-sm font-medium text-slate-700">Email vérifié</span>
-                </label>
-              </div>
+              </div>              
             </div>
-          </div>
-
-          {/* Préférences */}
-          <div>
-            <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <Star className="w-5 h-5 text-violet-600" />
-              Préférences
-            </h2>
-
-            <div className="space-y-3">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.preferences?.notifications || false}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    preferences: {
-                      ...formData.preferences,
-                      notifications: e.target.checked
-                    }
-                  })}
-                  className="w-5 h-5 text-violet-600 border-slate-300 rounded focus:ring-2 
-                           focus:ring-violet-500"
-                />
-                <span className="text-sm font-medium text-slate-700">Notifications actives</span>
-              </label>
- 
-            </div>
-          </div>
+          </div>         
 
           {/* Actions */}
           <div className="flex gap-3 pt-4 border-t border-slate-200">

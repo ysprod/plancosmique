@@ -172,7 +172,7 @@ export default function ProfilPage() {
           </motion.p>
         </motion.div>
 
-        {/* Grid ultra-compact et moderne */}
+        {user?.firstName && ( 
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3 md:gap-4 mb-6 sm:mb-8">
           {mainCategories.map((category, index) => {
             const CategoryIcon = category.icon;
@@ -262,7 +262,10 @@ export default function ProfilPage() {
               </Link>
             );
           })}
-        </div> 
+        </div> )} 
+       
+
+        
       </div>
 
       {/* Compteurs crédibilité */}

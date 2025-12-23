@@ -26,7 +26,6 @@ const PageHeader = memo(({ onBack }: { onBack: () => void }) => (
           className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20"
         >
           <Sparkles className="w-3.5 h-3.5 text-purple-300" />
-          <span className="text-xs font-bold text-white">Analyse Complète</span>
         </motion.div>
       </div>
     </div>

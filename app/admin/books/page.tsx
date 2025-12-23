@@ -51,19 +51,13 @@ export default function AdminBooksPage() {
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Filtres et recherche
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
   const [sortField, setSortField] = useState<SortField>('createdAt');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [showFilters, setShowFilters] = useState(false);
-
-  // Modal de suppression
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
-
-  // Modal d'ajout/édition - Multi-étapes
   const [showAddModal, setShowAddModal] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<BookFormData>(initialFormData);
@@ -125,7 +119,6 @@ export default function AdminBooksPage() {
     }
   };
 
-  // Validation de l'étape 1
   const validateStep1 = (): boolean => {
     const errors: Partial<BookFormData> = {};
 
@@ -456,7 +449,7 @@ export default function AdminBooksPage() {
             </div>
             <div className="text-3xl">💰</div>
           </div>
-        </motion.div>        
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -732,7 +725,7 @@ export default function AdminBooksPage() {
                         <Trash2 className="w-4 h-4" />
                       </motion.button>
                     </div>
-                  </div>                  
+                  </div>
                 </div>
               </motion.div>
             ))}

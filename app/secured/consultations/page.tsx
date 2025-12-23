@@ -8,7 +8,6 @@ import {
   AlertCircle,
   Calendar,
   CheckCircle,
-  ChevronDown,
   Clock,
   Download,
   Eye,
@@ -387,14 +386,6 @@ export default function ConsultationsListPage() {
                 </p>
               </div>
             </div>
-
-            <button
-              onClick={() => router.push('/secured/vie-personnelle')}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl hover:shadow-2xl hover:scale-105 transition-all"
-            >
-              <Sparkles className="w-5 h-5" />
-              Nouvelle analyse
-            </button>
           </div>
         </div>
 
@@ -416,39 +407,7 @@ export default function ConsultationsListPage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-purple-300 focus:outline-none focus:border-purple-400 transition-colors"
                 />
-              </div>
-
-              {/* Filtre Type */}
-              <div className="relative">
-                <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
-                <select
-                  value={typeFilter}
-                  onChange={(e) => setTypeFilter(e.target.value as ConsultationType | 'ALL')}
-                  className="w-full pl-12 pr-10 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-purple-400 transition-colors appearance-none cursor-pointer"
-                >
-                  <option value="ALL">Tous les types</option>
-                  {Object.entries(TYPE_LABELS).map(([key, config]) => (
-                    <option key={key} value={key}>{config.label}</option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300 pointer-events-none" />
-              </div>
-
-              {/* Filtre Statut */}
-              <div className="relative">
-                <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
-                <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value as ConsultationStatus | 'ALL')}
-                  className="w-full pl-12 pr-10 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-purple-400 transition-colors appearance-none cursor-pointer"
-                >
-                  <option value="ALL">Tous les statuts</option>
-                  {Object.entries(STATUS_CONFIG).map(([key, config]) => (
-                    <option key={key} value={key}>{config.label}</option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300 pointer-events-none" />
-              </div>
+              </div> 
             </div>
           </motion.div>
         )}

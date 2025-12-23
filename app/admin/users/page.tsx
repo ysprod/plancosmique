@@ -1,5 +1,6 @@
 'use client';
 import { useAdminUsers } from '@/hooks/useAdminUsers';
+import api from '@/lib/api/client';
 import { UserData } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -30,7 +31,7 @@ import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
 
 type UserStatus = 'all' | 'active' | 'inactive';
-type UserRole = 'all' | 'USER' | 'ADMIN';
+type UserRole = 'all' | 'USER' | 'ADMIN' | 'SUPER_ADMIN';
 
 export default function UsersPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -105,28 +106,17 @@ export default function UsersPage() {
   const handleDeleteUser = useCallback(async (userId: string) => {
     setIsDeleting(true);
     try {
-      const response = await fetch(`/api/admin/users/${userId}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Erreur lors de la suppression');
-      }
-
-      // Succès
+      await api.delete(`/admin/users/${userId}`);
       setDeleteSuccess(true);
-
-      // Fermer le modal après 1.5s
       setTimeout(() => {
         setDeleteModal({ show: false, user: null });
         setDeleteSuccess(false);
         setIsDeleting(false);
-        refetch(); // Rafraîchir la liste
+        refetch();
       }, 1500);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erreur suppression:', error);
-      alert(error instanceof Error ? error.message : 'Erreur lors de la suppression');
+      alert(error?.response?.data?.message || error?.message || 'Erreur lors de la suppression');
       setIsDeleting(false);
     }
   }, [refetch]);

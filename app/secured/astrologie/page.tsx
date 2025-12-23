@@ -51,7 +51,6 @@ const astrologySections = [
 export default function AstrologiePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 relative overflow-hidden">
-      {/* Éléments décoratifs d'arrière-plan */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           animate={{

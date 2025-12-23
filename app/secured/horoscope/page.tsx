@@ -15,7 +15,7 @@ import {
 } from 'lucide-react'
 import React, { useState } from 'react'
  
-type HoroscopeTypeId = 'quotidien' | 'mensuel' | 'annuel' | 'amoureux'
+type HoroscopeTypeId = 'mensuel' | 'annuel'
 
 interface Tab {
   id: HoroscopeTypeId
@@ -327,7 +327,7 @@ const ResultDisplay = ({ result }: { result: HoroscopeResult }) => (
 // ============================================================================
 
 export default function HoroscopePage() {
-  const [activeTab, setActiveTab] = useState<HoroscopeTypeId>('quotidien')
+  const [activeTab, setActiveTab] = useState<HoroscopeTypeId>('mensuel')
   const [birthDate, setBirthDate] = useState<string>('')
   const [partnerSign, setPartnerSign] = useState<string>('')
   const [result, setResult] = useState<HoroscopeResult | null>(null)
@@ -335,10 +335,8 @@ export default function HoroscopePage() {
   const [error, setError] = useState<string>('')
 
   const tabs: Tab[] = [
-    { id: 'quotidien', icon: Sun, title: "Quotidien", subtitle: "Aujourd'hui" },
     { id: 'mensuel', icon: Calendar, title: "Mensuel", subtitle: "Ce mois" },
     { id: 'annuel', icon: TrendingUp, title: "Annuel", subtitle: "Cette année" },
-    { id: 'amoureux', icon: Heart, title: "Amour", subtitle: "Compatibilité" },
   ]
 
   const zodiacSigns = [
@@ -368,9 +366,9 @@ export default function HoroscopePage() {
     try {
       const horoscope = await generateHoroscope(
         zodiacSign,
-        tabs.find(t => t.id === activeTab)?.title || 'Quotidien',
+        tabs.find(t => t.id === activeTab)?.title || 'Mensuel',
         date,
-        activeTab === 'amoureux' && partnerSign ? partnerSign : undefined
+        undefined
       )
       setResult(horoscope)
     } catch (err) {
@@ -424,7 +422,7 @@ export default function HoroscopePage() {
 
         {/* Navigation par onglets */}
         <div className="mb-8">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {tabs.map((tab) => (
               <motion.button
                 key={tab.id}
@@ -483,30 +481,7 @@ export default function HoroscopePage() {
               </p>
             </div>
 
-            {activeTab === 'amoureux' && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-              >
-                <label className="block text-sm font-bold text-gray-900 mb-2">
-                  <Users className="w-4 h-4 inline mr-1" />
-                  Signe de votre partenaire (optionnel)
-                </label>
-                <select
-                  value={partnerSign}
-                  onChange={(e) => setPartnerSign(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all outline-none text-gray-900"
-                >
-                  <option value="">Sélectionner un signe</option>
-                  {zodiacSigns.map((sign) => (
-                    <option key={sign} value={sign}>
-                      {sign} {getZodiacSymbol(sign)}
-                    </option>
-                  ))}
-                </select>
-              </motion.div>
-            )}
+
 
             {error && (
               <motion.div
