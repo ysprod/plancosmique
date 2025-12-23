@@ -348,7 +348,7 @@ const ConsultationCard = memo(({
                    transition-all active:scale-95 shadow-sm hover:shadow-md"
                     >
                         <Eye className="w-3 h-3" />
-                        Détails
+                        Voir l'analyse
                     </a>)}
                 <button
                     onClick={() => onGenerateAnalysis(consultation.id)}
