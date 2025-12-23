@@ -2,15 +2,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { api } from '@/lib/api/client';
+import { ConsultationChoice, FormData, FormErrors, StepType } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { memo, useCallback, useState, useTransition } from 'react';
-import { CONSULTATION_TYPE_MAP } from './consultation.constants';
- import ConsultationSelection from './ConsultationSelection';
-import { ConsultationChoice, FormErrors, FormData, StepType } from '@/lib/interfaces';
 import ConsultationForm from '../../vie-personnelle/slidesection/ConsultationForm';
 import PaymentProcessing from '../../vie-personnelle/slidesection/PaymentProcessing';
+import ConsultationSelection from './ConsultationSelection';
 
 const validateForm = (form: FormData): FormErrors => {
   const errors: FormErrors = {};
@@ -102,7 +101,7 @@ function Slide4Section() {
         // Crée la consultation sans offrande (l'alternative sera choisie sur /consulter)
         const payload = {
           serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
-          type: CONSULTATION_TYPE_MAP[selected.id] || 'AUTRE',
+          type: 'CINQ_ETOILES' ,
           title: selected.title,
           description: selected.description,
           formData: form,
