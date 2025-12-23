@@ -58,9 +58,11 @@ export interface UserProfile {
 
 export interface User {
   _id: string;
+  premium: boolean;
   firstName: string;
   username: string;
   lastName: string;
+  client: boolean;
   email: string;
   role: Role;
   avatar?: string;
