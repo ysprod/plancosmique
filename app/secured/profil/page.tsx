@@ -13,7 +13,7 @@ import {
   Zap
 } from "lucide-react";
 import Link from "next/link";
-import Slide4Section from "../cinqetoiles/slidesection/Slide4Section";
+import Slide4Section from "../cinqetoiles/Slide4Section";
 
 const mainCategories = [
   {
@@ -96,13 +96,25 @@ const mainCategories = [
   },
 ];
 
+import { useEffect, useState } from "react";
+import { api } from "@/lib/api/client";
+
 export default function ProfilPage() {
   const { user } = useAuth();
+  const [userdata, setUserdata] = useState<any>(null);
+  useEffect(() => {
+    if (user?._id) {
+      // Utilise la route sécurisée pour l'utilisateur courant
+      api.get(`/users/me`)
+        .then(res => setUserdata(res.data))
+        .catch(() => setUserdata(null));
+    }
+  }, [user?._id]);
+
+  console.log('Données utilisateur complètes :', userdata);
 
   return (
-    <div className="min-h-screen bg-white   ">
-
-      {/* Background subtil - Uniquement sur desktop */}
+    <div>
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40 hidden sm:block">
         <motion.div
           animate={{
@@ -122,7 +134,6 @@ export default function ProfilPage() {
         />
       </div>
 
-      {/* Progress bar minimaliste */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 via-pink-500 to-violet-500 z-50"
         animate={{
@@ -134,14 +145,12 @@ export default function ProfilPage() {
 
       <div className="relative z-10 px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 max-w-7xl mx-auto">
 
-        {/* Hero Section Ultra-Compact */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="mb-6 sm:mb-8"
         >
-          {/* Titre principal compact */}
           <motion.h1
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -160,7 +169,6 @@ export default function ProfilPage() {
             </motion.span>
           </motion.h1>
 
-          {/* Sous-titre compact */}
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -173,7 +181,7 @@ export default function ProfilPage() {
           </motion.p>
         </motion.div>
 
-        {user?.premium && (
+        {userdata?.premium && (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3 md:gap-4 mb-6 sm:mb-8">
             {mainCategories.map((category, index) => {
               const CategoryIcon = category.icon;
@@ -265,7 +273,7 @@ export default function ProfilPage() {
             })}
           </div>)}
 
-        {!user?.premium && (
+        {!userdata?.premium && (
           <div className="max-w-7xl mx-auto">
             <AnimatePresence mode="wait">
               <motion.div
@@ -274,7 +282,6 @@ export default function ProfilPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.5 }}
-                className="bg-white"
               >
                 <Slide4Section />
               </motion.div>
@@ -283,10 +290,8 @@ export default function ProfilPage() {
         )}
       </div>
 
-      {/* Compteurs crédibilité */}
       <StatsCounter />
-
-      {/* Espacement bottom */}
+ 
       <div className="h-16 sm:h-20" />
     </div>
   );

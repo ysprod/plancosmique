@@ -2,14 +2,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { api } from '@/lib/api/client';
+import { getRubriqueById } from '@/lib/api/services/rubriques.service';
 import { ConsultationChoice, FormData, FormErrors, StepType } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { memo, useCallback, useState, useTransition } from 'react';
-import ConsultationForm from '../../vie-personnelle/slidesection/ConsultationForm';
-import PaymentProcessing from '../../vie-personnelle/slidesection/PaymentProcessing';
-import ConsultationSelection from './ConsultationSelection';
+import React, { memo, useCallback, useEffect, useState, useTransition } from 'react';
+import PaymentProcessing from '../vie-personnelle/slidesection/PaymentProcessing';
+import BackButton from './BackButton';
+import ConsultationCard from './ConsultationCard';
+import ConsultationForm from './ConsultationForm';
+import { s } from 'framer-motion/client';
 
 const validateForm = (form: FormData): FormErrors => {
   const errors: FormErrors = {};
@@ -23,20 +25,22 @@ const validateForm = (form: FormData): FormErrors => {
   return errors;
 };
 
-const BackButton = memo(({ onClick }: { onClick: () => void }) => (
-  <motion.button
-    initial={{ opacity: 0, x: -20 }}
-    animate={{ opacity: 1, x: 0 }}
-    onClick={onClick}
-    className="flex items-center gap-2 text-gray-700 dark:text-gray-300 \
-             hover:text-gray-900 dark:hover:text-gray-100 \
-             transition-colors mb-4 group"
-  >
-    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-    <span className="font-semibold text-sm">Retour</span>
-  </motion.button>
-));
-BackButton.displayName = 'BackButton';
+const containerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, scale: 0.98 },
+  visible: { opacity: 1, scale: 1 },
+};
 
 function Slide4Section() {
   const router = useRouter();
@@ -56,6 +60,8 @@ function Slide4Section() {
   const [apiError, setApiError] = useState<string | null>(null);
   const [step, setStep] = useState<StepType>('selection');
   const [paymentLoading, setPaymentLoading] = useState(false);
+  const [choices, setChoices] = useState<ConsultationChoice[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -73,16 +79,25 @@ function Slide4Section() {
     []
   );
 
-  const handleSelectConsultation = useCallback((choice: ConsultationChoice) => {
-    setSelected(choice);
+  const handleSelect = useCallback(() => {
     setStep('form');
+  }, [setStep]);
+
+  useEffect(() => {
+    getRubriqueById('694acf59bd12675f59e7a7f2')
+      .then(rubrique => {
+        const arr = rubrique.consultationChoices || [];
+        setChoices(arr);
+        if (arr.length > 0) setSelected(arr[0]);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
-      setApiError(null);
-      setPaymentLoading(true);
+       setPaymentLoading(true);
+      setApiError(null);     
 
       const validationErrors = validateForm(form);
       if (Object.keys(validationErrors).length > 0) {
@@ -98,10 +113,25 @@ function Slide4Section() {
       }
 
       try {
-        // Crée la consultation sans offrande (l'alternative sera choisie sur /consulter)
+        let gender: 'male' | 'female' | 'other' = 'other';
+        if (form.genre?.toLowerCase() === 'homme' || form.genre?.toLowerCase() === 'male') gender = 'male';
+        else if (form.genre?.toLowerCase() === 'femme' || form.genre?.toLowerCase() === 'female') gender = 'female';
+
+        const userUpdatePayload = {
+          nom: form.nom,
+          prenoms: form.prenoms,
+          genre: form.genre,
+          gender,
+          dateNaissance: form.dateNaissance,
+          paysNaissance: form.paysNaissance,
+          villeNaissance: form.villeNaissance,
+          heureNaissance: form.heureNaissance,
+        };
+        await api.patch('/users/me', userUpdatePayload);
+
         const payload = {
           serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
-          type: 'CINQ_ETOILES' ,
+          type: 'CINQ_ETOILES',
           title: selected.title,
           description: selected.description,
           formData: form,
@@ -114,7 +144,7 @@ function Slide4Section() {
         }
         const consultationId = consultationRes.data?.id || consultationRes.data?.consultationId;
         startTransition(() => {
-          router.push(`/secured/consulter?id=${consultationId}`);
+          router.push(`/secured/consultergold?id=${consultationId}`);
         });
       } catch (err: any) {
         const errorMessage =
@@ -163,8 +193,6 @@ function Slide4Section() {
 
       <div className="max-w-6xl mx-auto p-4 sm:p-6">
         <AnimatePresence mode="wait">
-
-          {/* Étape sélection */}
           {step === 'selection' && (
             <motion.div
               key="selection"
@@ -172,11 +200,73 @@ function Slide4Section() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <ConsultationSelection onSelect={handleSelectConsultation} />
+              <motion.section
+                initial="hidden"
+                animate="visible"
+                variants={containerVariants}
+                className="flex flex-col items-center justify-center px-2 py-4 sm:px-6 sm:py-8"
+                style={{ minHeight: '40vh' }}
+              >
+                <h2 className="text-lg sm:text-xl font-bold text-cosmic-100 mb-2 tracking-tight animate-glow">
+                  Les 5 portes de votre étoile
+                </h2>
+                <p className="text-xs sm:text-sm text-cosmic-200 leading-snug mb-1">
+                  Découvrez les 5 forces qui structurent votre identité cosmique&nbsp;:
+                </p>
+                <ol className="flex flex-col gap-2 items-center text-cosmic-300 text-xs sm:text-sm mb-2 list-none">
+                  {[
+                    'Essence',
+                    'Présence',
+                    'Âme intime',
+                    'Direction de vie',
+                    'Relation à l’Autre',
+                  ].map((label, idx) => (
+                    <li
+                      key={label}
+                      className="w-full max-w-xs relative px-2 py-1 rounded bg-cosmic-800/40 flex items-center gap-1 shadow-sm animate-fadein"
+                    >
+                      <span className="inline-block w-5 h-5 mr-1 rounded-full bg-gradient-to-br from-cosmic-600 to-cosmic-400 text-cosmic-950 font-bold text-[0.85em] flex items-center justify-center shadow-md animate-pulse">
+                        {idx + 1}
+                      </span>
+                      <span>{label}</span>
+                    </li>
+                  ))}
+                </ol>
+                <p className="text-xs sm:text-sm text-cosmic-300">
+                  Une étape fondamentale pour comprendre qui vous êtes, comment vous vibrez et la manière dont vous vous reliez au monde.
+                </p><br /><br />
+                <motion.div
+                  variants={containerVariants}
+                  className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5"
+                >
+                  {loading ? (
+                    <div className="col-span-2 text-center text-cosmic-400 py-8">Chargement...</div>
+                  ) : (
+                    choices.map((choice) => (
+                      <motion.div
+                        key={choice.id}
+                        variants={itemVariants}
+                        whileHover={{ scale: 1.03, boxShadow: '0 0 16px #fff3' }}
+                        whileTap={{ scale: 0.97 }}
+                        className="transition-transform duration-200"
+                      >
+                        <ConsultationCard choice={choice} />
+                      </motion.div>
+                    ))
+                  )}
+                  <div className="col-span-2 flex justify-center">
+                    <button
+                      onClick={() => handleSelect()}
+                      className="px-4 py-3 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-semibold rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all"
+                    >
+                      Consulter Maintenant
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.section>
             </motion.div>
           )}
 
-          {/* Étape formulaire */}
           {step === 'form' && selected && !paymentLoading && (
             <motion.div
               key="form"
@@ -192,12 +282,10 @@ function Slide4Section() {
                 apiError={apiError}
                 handleSubmit={handleSubmit}
                 resetSelection={resetSelection}
-                selectedTitle={selected.title}
               />
             </motion.div>
           )}
 
-          {/* Étape traitement */}
           {paymentLoading && (
             <motion.div
               key="processing"

@@ -164,6 +164,14 @@ export interface FormData {
   email?: string;
 }
 
-
+export interface Rubrique {
+  _id?: string;
+  titre: string;
+  description: string;
+  categorie: string;
+  consultationChoices: ConsultationChoice[];
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';
