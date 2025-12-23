@@ -153,13 +153,14 @@ export default function GenereAnalysePage() {
             <TimelineBadge />
           </div>
 
+
           {/* Message principal */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="p-4 sm:p-5 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 
-                     dark:from-purple-900/20 dark:to-pink-900/20 
+            className="p-4 sm:p-5 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 \
+                     dark:from-purple-900/20 dark:to-pink-900/20 \
                      border border-purple-200 dark:border-purple-800"
           >
             <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed text-center">
@@ -168,6 +169,18 @@ export default function GenereAnalysePage() {
                 Maître spirituel qualifié
               </strong>{' '}
               et disponible, qui procédera à l'étude de votre situation avec attention et discernement.
+            </p>
+          </motion.div>
+
+          {/* Garantie confidentialité */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35 }}
+            className="p-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-center"
+          >
+            <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-300">
+              <strong>Confidentialité garantie :</strong> Toutes vos informations et demandes sont strictement confidentielles et protégées. Elles ne seront jamais partagées avec des tiers.
             </p>
           </motion.div>
 

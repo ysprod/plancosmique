@@ -315,15 +315,12 @@ export default function OfferingStep({
       <div className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl 
                     border-b border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="max-w-2xl mx-auto px-4 py-3">
-          <div className="flex items-center gap-3 mb-3">
-
-            <div className="flex-1">
-
-              <p className="text-xs text-gray-500 dark:text-gray-400 font-bold">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="flex flex-col items-center justify-center text-center">
+              <p className="text-base text-gray-500 dark:text-gray-400 font-bold">
                 Cette requête nécessite que vous fassiez une offrande.
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-
+              <p className="text-base text-gray-500 dark:text-gray-400">
                 Choisissez entre une offrande animale, végétale ou boisson.
               </p>
             </div>
