@@ -19,7 +19,7 @@ interface ConsulterGoldContentProps {
     consultation: ConsultationData;
 }
 
-const ANIMATION_DURATION = 0.2;  
+const ANIMATION_DURATION = 0.2;
 
 const fadeSlideVariants = {
     hidden: { opacity: 0, y: 15, scale: 0.985 },
@@ -85,7 +85,97 @@ export default function ConsulterGoldContentComponent({
         !!apiError && step === 'offering',
         [apiError, step]
     );
- 
+
+    const handleOfferingValidation3 = useCallback(async (
+        selectedAlternative: OfferingAlternative
+    ) => {
+        if (!consultationId || !user?._id) {
+            setApiError(consultationId ? 'Utilisateur introuvable' : 'Consultation introuvable');
+            return;
+        }
+
+        setIsProcessing(true);
+        setApiError(null);
+        setStep('processing');
+
+        try {
+
+            // 1. Consommer les offerings
+            const consumeRes = await api.post('/wallet/consume-offerings', {
+                userId: user._id,
+                consultationId,
+                offerings: [{
+                    offeringId: selectedAlternative.offeringId,
+                    quantity: selectedAlternative.quantity,
+                }],
+            });
+            if (consumeRes.status !== 200 && consumeRes.status !== 201) {
+                throw new Error(consumeRes.data?.message || 'Erreur lors de la consommation');
+            }
+
+            // 2. Mise à jour du statut de consultation
+            await api.patch(`/consultations/${consultationId}`, {
+                status: 'paid',
+                paymentMethod: 'wallet_offerings',
+            });
+
+            // 3. Récupération des infos utilisateur pour la carte du ciel
+            const userRes = await api.get('/users/me');
+            if (userRes.status !== 200) {
+                throw new Error('Impossible de récupérer les infos utilisateur');
+            }
+            const userData = userRes.data;
+            console.log('[ConsulterGold] ✅ Infos utilisateur récupérées:', userData);
+
+            // 4. Mapping et vérification des champs nécessaires pour la carte du ciel
+
+            // Mapping amélioré pour supporter les champs du backend
+            const birthPayload = {
+                name: userData.nom || userData.name || userData.username || 'Utilisateur',
+                prenoms: userData.prenoms,
+                birthDate: userData.birthDate || userData.dateNaissance,
+                birthTime: userData.birthTime || userData.heureNaissance,
+                birthPlace: userData.birthPlace || userData.villeNaissance,
+                birthCountry: userData.birthCountry || userData.paysNaissance || userData.country,
+                birthCoordinates: userData.birthCoordinates
+            };
+            // Vérification minimale améliorée
+            if (!birthPayload.birthDate || !birthPayload.birthTime || !birthPayload.birthPlace) {
+                throw new Error('Profil incomplet : date, heure ou lieu de naissance manquant.');
+            }
+
+            const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+            const skyChartRes = await api.post(`${baseUrl}/api/users/me/sky-chart`, birthPayload);
+            if (skyChartRes.status !== 200) {
+                throw new Error('Erreur lors du calcul de la carte du ciel');
+            }
+            console.log('[ConsulterGold] ✅ Carte du ciel reçue:', skyChartRes.data);
+
+            // 5. Mise à jour du profil utilisateur avec la carte du ciel
+            await api.patch('/users/me', {
+                carteDuCiel: skyChartRes.data,
+                premium: true,
+                skyChartCalculatedAt: new Date().toISOString()
+            });
+            console.log('[ConsulterGold] ✅ Profil utilisateur mis à jour avec carte du ciel');
+
+            // 6. Passage à l'étape analyse
+            setStep('analyse');
+
+        } catch (err: any) {
+            console.error('[ConsulterGold] ❌', err);
+            const errorMessage = err.response?.data?.message ||
+                err.message ||
+                'Erreur lors de la validation';
+            setApiError(errorMessage);
+            setStep('offering');
+
+        } finally {
+            setIsProcessing(false);
+        }
+    }, [consultationId, user?._id]);
+
+
     const handleOfferingValidation = useCallback(async (
         selectedAlternative: OfferingAlternative
     ) => {
@@ -147,7 +237,7 @@ export default function ConsulterGoldContentComponent({
     const handleErrorClose = useCallback(() => {
         setApiError(null);
     }, []);
- 
+
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50/50 via-white to-purple-50/20 \
                       dark:from-gray-950 dark:via-gray-900 dark:to-purple-950/5">

@@ -2,11 +2,11 @@
 "use client";
 import { api } from '@/lib/api/client';
 import { getRubriqueById } from '@/lib/api/services/rubriques.service';
+import { useAuth } from '@/lib/auth/AuthContext';
 import { ConsultationChoice, FormData, FormErrors, OfferingAlternative, StepType, WalletOffering } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useAuth } from '@/lib/auth/AuthContext';
-import React, { memo, useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { Loader2, Sparkles, Star } from 'lucide-react';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PaymentProcessing from '../vie-personnelle/slidesection/PaymentProcessing';
 import BackButton from './BackButton';
 import ConsultationCard from './ConsultationCard';
@@ -27,14 +27,6 @@ type ExtendedStepType = StepType | 'gold';
 const RUBRIQUE_ID = '694acf59bd12675f59e7a7f2';
 const SERVICE_ID = process.env.NEXT_PUBLIC_SERVICE_ID;
 const DEFAULT_PHONE = '0758385387';
-
-const PORTES_LABELS = [
-  'Essence',
-  'Présence',
-  'Âme intime',
-  'Direction de vie',
-  'Relation à Autre',
-] as const;
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -156,11 +148,11 @@ const SelectionHeader = memo(() => (
       <Sparkles className="w-6 h-6 text-purple-600" />
       <h2 className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-purple-600 
                    to-pink-600 bg-clip-text text-transparent">
-        LES 5 PORTES DE MON ÉTOILE 
+        LES 5 PORTES DE MON ÉTOILE
       </h2>
       <Star className="w-6 h-6 text-pink-600" />
     </motion.div>
-     
+
 
     <motion.p
       initial={{ opacity: 0 }}
@@ -169,11 +161,11 @@ const SelectionHeader = memo(() => (
       className="text-base sm:text-sm text-gray-600 dark:text-gray-400 max-w-xl mx-auto 
                leading-relaxed px-4"
     >
-     Commençons par une consultation qui dévoile les cinq forces essentielles qui structurent 
-votre identité cosmique.
-C’est une étape préalable et fondamentale pour comprendre qui vous êtes, comment 
-vous vibrez, ce que vous ressentez, ce vers quoi vous avancez, et la manière dont vous 
-vous reliez au monde.
+      Commençons par une consultation qui dévoile les cinq forces essentielles qui structurent
+      votre identité cosmique.
+      C’est une étape préalable et fondamentale pour comprendre qui vous êtes, comment
+      vous vibrez, ce que vous ressentez, ce vers quoi vous avancez, et la manière dont vous
+      vous reliez au monde.
     </motion.p>
   </motion.div>
 ));

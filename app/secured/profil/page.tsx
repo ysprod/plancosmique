@@ -58,7 +58,7 @@ const HIGHLIGHT_CARDS: HighlightCard[] = [
     icon: Compass,
     color: "from-blue-600 to-cyan-600",
     gradient: "from-blue-500/10 to-cyan-500/10",
-    link: "/secured/monprofil",
+    link: "/secured/carteduciel",
     badge: "Exclusif"
   },
   {
@@ -68,7 +68,7 @@ const HIGHLIGHT_CARDS: HighlightCard[] = [
     icon: Stars,
     color: "from-purple-600 to-pink-600",
     gradient: "from-purple-500/10 to-pink-500/10",
-    link: "/secured/monprofil",
+    link: "/secured/cinqportes",
     badge: "Premium"
   }
 ];
@@ -463,7 +463,11 @@ export default function ProfilPage() {
       <TopProgressBar />
 
       <div className="relative z-10 px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 max-w-7xl mx-auto">
-        <Header username={username} />
+         {!userdata?.premium && (
+         <Header username={username} />
+        )}
+        
+        
 
         {/* HIGHLIGHT CARDS (Carte du Ciel + 5 Portes) */}
         {userdata?.premium && (
