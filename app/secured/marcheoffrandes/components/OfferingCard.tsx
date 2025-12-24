@@ -11,12 +11,7 @@ interface OfferingCardProps {
 
 export const OfferingCard: React.FC<OfferingCardProps> = ({ offering, onAddToCart }) => {
     const handleAddToCart = () => {
-        console.log("🛒 [OfferingCard] Clic sur:", {
-            _id: offering._id,
-            id: offering.id,
-            name: offering.name
-        });
-        
+     
         onAddToCart(offering);
     };
 

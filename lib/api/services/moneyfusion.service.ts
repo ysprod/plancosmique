@@ -204,10 +204,6 @@ class MoneyFusionService {
    * @example
    * ```typescript
    * const result = await moneyFusionService.verifyPayment(token);
-   * 
-   * if (result.success && result.status === 'success') {
-   *   console.log('Paiement réussi:', result.payment);
-   * }
    * ```
    */
   public async verifyPayment(token: string): Promise<VerifyPaymentResult> {

@@ -431,7 +431,6 @@ function WalletPageContent() {
     setUnusedError(null);
     try {
       const res = await api.get(`/offering-stock/available?userId=${user._id}`);
-      console.log("[Wallet] ✅ Offrandes non utilisées chargées:", res);
       if (res.status === 200 && Array.isArray(res.data)) {
         setUnusedOfferings(res.data);
       } else if (res.data && Array.isArray(res.data.unusedOfferings)) {
@@ -470,7 +469,6 @@ function WalletPageContent() {
       }
 
       const response = await api.get(`/wallet/transactions?userId=${user._id}`);
-      console.log("[Wallet] ✅ Transactions chargées:", response.data);
 
       if (response.status === 200) {
         const txData = response.data.transactions || response.data || [];

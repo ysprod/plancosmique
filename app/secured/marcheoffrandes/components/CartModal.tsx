@@ -27,18 +27,7 @@ export const CartModal: React.FC<CartModalProps> = ({
     onRemoveFromCart,
     onClearCart
 }) => {
-    // Log à l'ouverture
-    useEffect(() => {
-        if (showCart) {
-            console.log("👁️ [CartModal] Ouverture avec panier:", cart.map(item => ({
-                _id: item._id,
-                id: item.id,
-                name: item.name,
-                quantity: item.quantity
-            })));
-        }
-    }, [showCart, cart]);
-
+   
     return (
         <AnimatePresence>
             {showCart && (

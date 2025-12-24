@@ -125,11 +125,6 @@ export default function ConsulterGoldContentComponent({
                 throw new Error('Impossible de récupérer les infos utilisateur');
             }
             const userData = userRes.data;
-            console.log('[ConsulterGold] ✅ Infos utilisateur récupérées:', userData);
-
-            // 4. Mapping et vérification des champs nécessaires pour la carte du ciel
-
-            // Mapping amélioré pour supporter les champs du backend
             const birthPayload = {
                 name: userData.nom || userData.name || userData.username || 'Utilisateur',
                 prenoms: userData.prenoms,
@@ -149,17 +144,12 @@ export default function ConsulterGoldContentComponent({
             if (skyChartRes.status !== 200) {
                 throw new Error('Erreur lors du calcul de la carte du ciel');
             }
-            console.log('[ConsulterGold] ✅ Carte du ciel reçue:', skyChartRes.data);
-
-            // 5. Mise à jour du profil utilisateur avec la carte du ciel
             await api.patch('/users/me', {
                 carteDuCiel: skyChartRes.data,
                 premium: true,
                 skyChartCalculatedAt: new Date().toISOString()
             });
-            console.log('[ConsulterGold] ✅ Profil utilisateur mis à jour avec carte du ciel');
 
-            // 6. Passage à l'étape analyse
             setStep('analyse');
 
         } catch (err: any) {

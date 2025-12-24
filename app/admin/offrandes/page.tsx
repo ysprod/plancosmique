@@ -57,7 +57,6 @@ export default function AdminOffrandes() {
         setStatsError(null);
         try {
             const response = await api.get('/admin/offerings/stats');
-            console.log('Stats response:', response);
             if (response.status === 200 && response.data) {
                 setStatsData(response.data);
             } else {

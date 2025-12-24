@@ -498,8 +498,6 @@ export default function MonProfilPage() {
     return <ErrorState />;
   }
 
-  console.log('Données utilisateur carte du ciel:', processedData.carteDuCiel);
-
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950 
                    p-3 sm:p-6 space-y-4 sm:space-y-6">

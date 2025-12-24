@@ -207,24 +207,9 @@ export default function CheckoutModal({
         completedAt: new Date().toISOString(),
       };
 
-      // ✅ Log de debug avant envoi
-      console.log("📦 [CheckoutModal] Transaction data:", {
-        totalAmount: transactionData.totalAmount,
-        itemsCount: transactionData.items.length,
-        items: transactionData.items.map(i => ({
-          offeringId: i.offeringId,
-          name: i.name,
-          quantity: i.quantity
-        }))
-      });
-
-      // Étape 4 : Sauvegarde (0.6s + appel API)
       await new Promise((resolve) => setTimeout(resolve, SIMULATION_STEPS.saving.duration));
 
-      // Appel API
       const response = await api.post("/wallet/transactions", transactionData);
-
-      console.log("✅ [CheckoutModal] Réponse API:", response.status);
 
       if (response.status !== 200 && response.status !== 201) {
         throw new Error(response.data?.message || "Échec de l'enregistrement");
@@ -238,10 +223,8 @@ export default function CheckoutModal({
             quantity: item.quantity,
           })),
         });
-        console.log("✅ [CheckoutModal] Offrandes ajoutées au wallet");
       } catch (walletErr) {
         console.error("⚠️ [CheckoutModal] Erreur ajout wallet:", walletErr);
-        // Ne pas bloquer si échec ajout wallet
       }
 
       // Sauvegarde locale

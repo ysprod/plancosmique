@@ -75,12 +75,9 @@ export async function GET(
       );
     }
 
-    console.log('[PDF] 📄 Génération PDF pour consultation:', consultationId);
-
     // Récupération analyse depuis le backend
     let backendData: BackendResponse;
     try {
-      console.log('[PDF] 🔍 Récupération analyse depuis API...');
       const response = await api.get<BackendResponse>(
         `/consultations/analysis/${consultationId}`,
         {
@@ -109,8 +106,6 @@ export async function GET(
           { status: 500 }
         );
       }
-
-      console.log('[PDF] ✅ Analyse récupérée:', formatAnalyseForLog(backendData.analyse));
 
     } catch (err: any) {
       console.error('[PDF] ❌ Erreur récupération analyse:', {
@@ -181,8 +176,6 @@ export async function GET(
       );
     }
 
-    // Génération du stream PDF
-    console.log('[PDF] 📦 Génération du stream PDF...');
     let stream;
     try {
       stream = await renderToStream(pdfDocument as any);
@@ -203,9 +196,7 @@ export async function GET(
     const filename = generateFilename(analyse.carteDuCiel.sujet);
 
     const duration = Date.now() - startTime;
-    console.log(`[PDF] ✅ PDF généré avec succès en ${duration}ms:`, filename);
 
-    // Retour du PDF en streaming
     return new NextResponse(stream as unknown as ReadableStream, {
       headers: {
         'Content-Type': 'application/pdf',

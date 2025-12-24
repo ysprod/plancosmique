@@ -52,7 +52,6 @@ export function useAnalysisProgress(
         const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
         const url = `${baseUrl}/api/v1/analysis/progress/${consultationId}`;
 
-        console.log('📡 Connexion SSE:', url);
 
         // Créer l'EventSource
         const eventSource = new EventSource(url);
@@ -62,7 +61,7 @@ export function useAnalysisProgress(
         eventSource.onopen = () => {
           if (!isMounted) return;
           
-          console.log('✅ SSE connecté');
+ 
           setIsConnected(true);
           setError(null);
           reconnectAttemptsRef.current = 0;
@@ -75,7 +74,7 @@ export function useAnalysisProgress(
           try {
             const data: AnalysisProgressData = JSON.parse(event.data);
             
-            console.log('📥 Progression reçue:', data);
+  
 
             setProgress(data.progress);
             setStage(data.stage);
@@ -85,7 +84,7 @@ export function useAnalysisProgress(
 
             // Fermer la connexion si terminé
             if (data.completed) {
-              console.log('🎉 Analyse terminée, fermeture SSE');
+    
               eventSource.close();
             }
           } catch (err) {
@@ -107,9 +106,7 @@ export function useAnalysisProgress(
           if (reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS) {
             reconnectAttemptsRef.current++;
             const delay = RECONNECT_DELAY * reconnectAttemptsRef.current;
-            
-            console.log(`🔄 Reconnexion dans ${delay}ms (tentative ${reconnectAttemptsRef.current})`);
-            
+                        
             reconnectTimeoutRef.current = setTimeout(() => {
               if (isMounted && !completed) {
                 connect();
@@ -134,7 +131,6 @@ export function useAnalysisProgress(
       isMounted = false;
       
       if (eventSourceRef.current) {
-        console.log('🧹 Fermeture connexion SSE');
         eventSourceRef.current.close();
         eventSourceRef.current = null;
       }

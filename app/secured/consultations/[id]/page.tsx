@@ -148,8 +148,6 @@ export default function ConsultationResultPage() {
       try {
         const response = await api.get(`/consultations/analysis/${consultationId}`);
 
-        console.log('Réponse API:', response.data);
-
         if (response.status !== 200) {
           throw new Error('Analyse non trouvée');
         }

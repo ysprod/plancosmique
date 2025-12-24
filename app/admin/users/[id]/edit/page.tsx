@@ -50,7 +50,6 @@ export default function EditUserPage() {
       try {
         setLoading(true);
         const { data } = await api.get(`/admin/users/${userId}`);
-        console.log(data);
         setFormData(data);
       } catch (err) {
         const error = err as { response?: { data?: { message?: string } } };

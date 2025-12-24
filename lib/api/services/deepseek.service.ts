@@ -419,8 +419,7 @@ function extractList(texte: string, keyword: string): string[] {
  * Génère la carte du ciel complète
  */
 export async function genererCarteDuCiel(birthData: BirthData): Promise<CarteDuCiel> {
-  console.log('[DeepSeek] Génération carte du ciel pour', birthData.prenoms, birthData.nom);
-
+ 
   const messages: DeepSeekMessage[] = [
     { role: 'system', content: SYSTEM_PROMPT },
     { role: 'user', content: generateCarteDuCielPrompt(birthData) },
@@ -429,8 +428,7 @@ export async function genererCarteDuCiel(birthData: BirthData): Promise<CarteDuC
   const response = await callDeepSeek(messages);
   const carteDuCiel = parseCarteDuCiel(response, birthData);
 
-  console.log('[DeepSeek] Carte du ciel générée:', carteDuCiel.positions.length, 'positions');
-  return carteDuCiel;
+   return carteDuCiel;
 }
 
 /**
@@ -440,8 +438,7 @@ export async function genererMissionDeVie(
   birthData: BirthData, 
   carteDuCiel: CarteDuCiel
 ): Promise<MissionDeVie> {
-  console.log('[DeepSeek] Génération Mission de Vie');
-
+ 
   const carteDuCielTexte = carteDuCiel.aspectsTexte || '';
   const messages: DeepSeekMessage[] = [
     { role: 'system', content: SYSTEM_PROMPT },
@@ -451,8 +448,7 @@ export async function genererMissionDeVie(
   const response = await callDeepSeek(messages);
   const missionDeVie = parseMissionDeVie(response);
 
-  console.log('[DeepSeek] Mission de Vie générée');
-  return missionDeVie;
+   return missionDeVie;
 }
 
 /**
@@ -462,8 +458,7 @@ export async function genererTalentsNaturels(
   birthData: BirthData, 
   carteDuCiel: CarteDuCiel
 ): Promise<TalentsNaturels> {
-  console.log('[DeepSeek] Génération Talents Naturels');
-
+ 
   const carteDuCielTexte = carteDuCiel.aspectsTexte || '';
   const messages: DeepSeekMessage[] = [
     { role: 'system', content: SYSTEM_PROMPT },
@@ -473,8 +468,7 @@ export async function genererTalentsNaturels(
   const response = await callDeepSeek(messages);
   const talents = parseTalentsNaturels(response);
 
-  console.log('[DeepSeek] Talents Naturels générés');
-  return talents;
+   return talents;
 }
 
 /**
@@ -484,8 +478,7 @@ export async function genererRelations(
   birthData: BirthData,
   carteDuCiel: CarteDuCiel
 ): Promise<Relations> {
-  console.log('[DeepSeek] Génération Relations');
-
+ 
   const carteDuCielTexte = carteDuCiel.aspectsTexte || '';
   const messages: DeepSeekMessage[] = [
     { role: 'system', content: SYSTEM_PROMPT },
@@ -520,8 +513,7 @@ export async function genererRelations(
     synthese: extractList(response, 'Synthèse'),
   };
 
-  console.log('[DeepSeek] Relations générées');
-  return relations;
+   return relations;
 }
 
 /**
@@ -531,8 +523,7 @@ export async function genererCarriere(
   birthData: BirthData,
   carteDuCiel: CarteDuCiel
 ): Promise<CarriereVocation> {
-  console.log('[DeepSeek] Génération Carrière');
-
+ 
   const carteDuCielTexte = carteDuCiel.aspectsTexte || '';
   const messages: DeepSeekMessage[] = [
     { role: 'system', content: SYSTEM_PROMPT },
@@ -561,8 +552,7 @@ export async function genererCarriere(
     synthese: extractList(response, 'Synthèse'),
   };
 
-  console.log('[DeepSeek] Carrière générée');
-  return carriere;
+   return carriere;
 }
 
 /**
@@ -572,8 +562,7 @@ export async function genererSpiritualite(
   birthData: BirthData,
   carteDuCiel: CarteDuCiel
 ): Promise<SpiritualiteCroissance> {
-  console.log('[DeepSeek] Génération Spiritualité');
-
+ 
   const carteDuCielTexte = carteDuCiel.aspectsTexte || '';
   const messages: DeepSeekMessage[] = [
     { role: 'system', content: SYSTEM_PROMPT },
@@ -602,16 +591,14 @@ export async function genererSpiritualite(
     synthese: extractList(response, 'Synthèse'),
   };
 
-  console.log('[DeepSeek] Spiritualité générée');
-  return spiritualite;
+   return spiritualite;
 }
 
 /**
  * Génère l'analyse complète (toutes les sections)
  */
 export async function genererAnalyseComplete(birthData: BirthData) {
-  console.log('[DeepSeek] Début génération analyse complète');
-
+ 
   // 1. Générer la carte du ciel
   const carteDuCiel = await genererCarteDuCiel(birthData);
 
@@ -624,8 +611,7 @@ export async function genererAnalyseComplete(birthData: BirthData) {
     genererSpiritualite(birthData, carteDuCiel),
   ]);
 
-  console.log('[DeepSeek] Analyse complète générée');
-
+ 
   return {
     carteDuCiel,
     missionDeVie,

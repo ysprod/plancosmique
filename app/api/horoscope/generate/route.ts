@@ -115,7 +115,6 @@ export async function POST(request: NextRequest) {
       }
     } catch (parseError) {
       console.error('Erreur parsing JSON:', parseError);
-      console.log('Réponse DeepSeek:', aiResponse);
       throw new Error('Format de réponse invalide');
     }
 

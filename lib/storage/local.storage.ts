@@ -21,7 +21,6 @@ export function saveAnalyse(analyse: AnalyseAstrologique): void {
     
     if (typeof window !== 'undefined') {
       localStorage.setItem(key, data);
-      console.log('[Storage] Analyse sauvegardée:', analyse.consultationId);
     }
   } catch (error) {
     console.error('[Storage] Erreur sauvegarde:', error);
@@ -38,7 +37,6 @@ export function saveStatut(statut: StatutConsultation): void {
     
     if (typeof window !== 'undefined') {
       localStorage.setItem(key, data);
-      console.log('[Storage] Statut sauvegardé:', statut.consultationId, statut.statut);
     }
   } catch (error) {
     console.error('[Storage] Erreur sauvegarde statut:', error);
@@ -133,7 +131,6 @@ export function deleteAnalyse(consultationId: string): void {
     localStorage.removeItem(key);
     localStorage.removeItem(statusKey);
     
-    console.log('[Storage] Analyse supprimée:', consultationId);
   } catch (error) {
     console.error('[Storage] Erreur suppression:', error);
   }
@@ -159,7 +156,6 @@ export function cleanOldAnalyses(): void {
           
           if (ageMs > thirtyDays) {
             localStorage.removeItem(key);
-            console.log('[Storage] Analyse expirée supprimée:', analyse.consultationId);
           }
         }
       }

@@ -33,21 +33,8 @@ function useCart() {
   );
 
   const addToCart = useCallback((offering: Offering) => {
-    console.log("➕ [addToCart] Offrande reçue:", {
-      _id: offering._id,
-      id: offering.id,
-      name: offering.name,
-    });
 
     setCart(prev => {
-      console.log("📦 [addToCart] Panier actuel:", prev.map(item => ({
-        _id: item._id,
-        id: item.id,
-        name: item.name,
-        quantity: item.quantity
-      })));
-
-      // ✅ Utiliser _id OU id comme clé unique
       const uniqueId = offering._id || offering.id;
       
       if (!uniqueId) {
@@ -58,9 +45,6 @@ function useCart() {
       const existingIndex = prev.findIndex(
         item => (item._id === uniqueId) || (item.id === uniqueId)
       );
-
-      console.log("🔍 [addToCart] Index trouvé:", existingIndex, "pour ID:", uniqueId);
-
       if (existingIndex !== -1) {
         // Item existe déjà → incrémenter quantité
         const updated = [...prev];
@@ -69,10 +53,6 @@ function useCart() {
           quantity: updated[existingIndex].quantity + 1
         };
         
-        console.log("✏️ [addToCart] Quantité mise à jour:", {
-          name: updated[existingIndex].name,
-          quantity: updated[existingIndex].quantity
-        });
         return updated;
       }
 
@@ -83,33 +63,22 @@ function useCart() {
         id: uniqueId,
         quantity: 1 
       };
-
-      console.log("🆕 [addToCart] Nouvel item ajouté:", {
-        _id: newItem._id,
-        name: newItem.name,
-        quantity: newItem.quantity
-      });
       
       return [...prev, newItem];
     });
   }, []);
 
   const removeFromCart = useCallback((id: string) => {
-    console.log("🗑️ [removeFromCart] Suppression ID:", id);
     setCart(prev => prev.filter(item => item._id !== id && item.id !== id));
   }, []);
 
   const updateQuantity = useCallback((id: string, delta: number) => {
-    console.log("🔄 [updateQuantity] ID:", id, "Delta:", delta);
-    
     setCart(prev => {
       const updated = prev
         .map(item => {
           if (item._id !== id && item.id !== id) return item;
 
-          const newQuantity = Math.max(0, item.quantity + delta);
-          console.log(`📊 [updateQuantity] ${item.name}: ${item.quantity} → ${newQuantity}`);
-          
+          const newQuantity = Math.max(0, item.quantity + delta);          
           return newQuantity === 0 ? null : { ...item, quantity: newQuantity };
         })
         .filter(Boolean) as CartItem[];
@@ -119,24 +88,8 @@ function useCart() {
   }, []);
 
   const clearCart = useCallback(() => {
-    console.log("🧹 [clearCart] Panier vidé");
     setCart([]);
   }, []);
-
-  // Log du panier à chaque changement
-  useEffect(() => {
-    console.log("🛒 [useCart] État du panier mis à jour:", {
-      items: cart.length,
-      total: cartTotal,
-      count: cartCount,
-      details: cart.map(item => ({
-        _id: item._id,
-        id: item.id,
-        name: item.name,
-        quantity: item.quantity
-      }))
-    });
-  }, [cart, cartTotal, cartCount]);
 
   return {
     cart,
@@ -206,13 +159,7 @@ function useOfferings() {
           // ✅ NORMALISATION : Ajouter "id" comme alias de "_id"
           const normalizedOfferings = response.data.offerings.map((offering: any) => {
             const normalizedId = offering._id || offering.id;
-            
-            console.log("🔧 [Normalisation]", {
-              original_id: offering._id,
-              name: offering.name,
-              normalized_id: normalizedId
-            });
-
+           
             return {
               ...offering,
               _id: normalizedId,
@@ -220,7 +167,6 @@ function useOfferings() {
             };
           });
 
-          console.log("✅ [useOfferings] Offrandes normalisées:", normalizedOfferings.length, "items");
           setOfferings(normalizedOfferings);
         } else {
           throw new Error('Format de réponse invalide');
@@ -400,7 +346,6 @@ export default function MarcheOffrandes() {
   // Handlers
   const handleProceedToCheckout = useCallback(() => {
     if (cart.length === 0) return;
-    console.log("💳 [MarcheOffrandes] Procéder au checkout avec:", cart.length, "items");
     openCheckout();
   }, [cart.length, openCheckout, cart]);
 

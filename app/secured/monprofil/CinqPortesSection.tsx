@@ -153,7 +153,6 @@ const CinqPortesSection = memo<CinqPortesSectionProps>(({
 }) => {
   // Extraction mémoïsée des 5 portes
   const cinqPortes = useMemo(() => {
-    console.log('[CinqPortesSection] Extraction des 5 portes...');
     return extractCinqPortes(carteDuCiel);
   }, [carteDuCiel]);
 

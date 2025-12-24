@@ -274,8 +274,6 @@ export function usePaymentCallback(token: string | null) {
       let result: ProcessResult;
 
       try {
-        console.log('📊 Traitement consultation:', { token, type: 'consultation' });
-
         const response = await api.post('/payments/process-consultation', {
           token,
           paymentData,
@@ -341,7 +339,6 @@ export function usePaymentCallback(token: string | null) {
     // Cleanup SSE au démontage du composant
     return () => {
       if (eventSourceRef.current) {
-        console.log('🧹 Cleanup: Fermeture SSE');
         eventSourceRef.current.close();
         eventSourceRef.current = null;
         isSSEConnectedRef.current = false;
@@ -469,7 +466,6 @@ export function usePaymentCallback(token: string | null) {
   // Arrêter la génération quand l'analyse est terminée
   useEffect(() => {
     if (sseCompleted) {
-      console.log('✅ Analyse terminée, arrêt de la génération');
       setIsGeneratingAnalysis(false);
     }
   }, [sseCompleted]);
@@ -477,8 +473,6 @@ export function usePaymentCallback(token: string | null) {
   // Compte à rebours auto-redirect
   useEffect(() => {
     if (!shouldAutoRedirect || !sseCompleted) return;
-
-    console.log('⏱️ Démarrage compte à rebours auto-redirect (15s)');
 
     const interval = setInterval(() => {
       setAutoRedirectCountdown((prev) => {

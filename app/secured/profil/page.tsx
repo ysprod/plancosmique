@@ -442,7 +442,6 @@ export default function ProfilPage() {
     api.get(`/users/me`)
       .then(res => {
         setUserdata(res.data);
-        console.log('✅ Données utilisateur:', res.data);
       })
       .catch(err => {
         console.error('❌ Erreur chargement user:', err);
@@ -454,8 +453,6 @@ export default function ProfilPage() {
   // Mémoisation
   const isPremium = useMemo(() => userdata?.premium, [userdata?.premium]);
   const username = useMemo(() => user?.username, [user?.username]);
-
-  console.log('🔄user', userdata);
 
   return (
     <div>

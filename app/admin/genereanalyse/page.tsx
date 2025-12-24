@@ -35,7 +35,6 @@ export default function GenereAnalysePage() {
         throw new Error('Aucune analyse reçue');
       }
 
-      console.log('[Analyse] ✅ Analyse reçue');
       setAnalyseData(analyse);
       setStep('success');
 

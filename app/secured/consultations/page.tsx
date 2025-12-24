@@ -297,7 +297,6 @@ export default function ConsultationsListPage() {
       }
 
       const data = response.data;
-      console.log('📊 Consultations reçues:', data);
 
       setConsultations(data.consultations || []);
       setLoading(false);

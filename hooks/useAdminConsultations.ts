@@ -67,8 +67,6 @@ export function useAdminConsultations(options: UseAdminConsultationsOptions = {}
         timeout: 10000,
       });
 
-      console.log('Consultations:', response);
-
       setConsultations(response.data.consultations || []);
       setTotal(response.data.total || 0);
     } catch (err: any) {

@@ -174,9 +174,7 @@ export async function sendAnalysisReadyEmail(
   
   // Si Resend n'est pas configuré, simuler l'envoi (mode dev)
   if (!resend) {
-    console.log('[Email] Mode simulation - Email non envoyé (RESEND_API_KEY manquante)');
-    console.log(`[Email] Destinataire: ${email}`);
-    console.log(`[Email] Consultation: ${consultationId}`);
+
     return { success: true };
   }
 
@@ -192,8 +190,7 @@ export async function sendAnalysisReadyEmail(
       text: textContent,
     });
 
-    console.log('[Email] Email envoyé avec succès:', result);
-    return { success: true };
+     return { success: true };
 
   } catch (error) {
     console.error('[Email] Erreur envoi email:', error);
@@ -209,8 +206,7 @@ export async function sendAnalysisReadyEmail(
  * Teste l'envoi d'email (pour debug)
  */
 export async function testEmailService(email: string): Promise<void> {
-  console.log('[Email] Test du service email...');
-  const result = await sendAnalysisReadyEmail(
+   const result = await sendAnalysisReadyEmail(
     email,
     'Test',
     'Utilisateur',

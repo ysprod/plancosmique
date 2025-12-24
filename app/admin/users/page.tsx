@@ -64,7 +64,6 @@ export default function UsersPage() {
   });
 
   const users: UserData[] = useMemo(() => (apiUsers ? apiUsers.map(mapUserToUserData) : []), [apiUsers]);
-  console.log(users);
   const stats = useMemo(() => {
     if (!users) return null;
     return {

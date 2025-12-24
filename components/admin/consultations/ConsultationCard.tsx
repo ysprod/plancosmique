@@ -106,7 +106,6 @@ AnalysisSection.displayName = 'AnalysisSection';
 // ANALYSIS PREVIEW CONTAINER
 // =====================================================
 const AnalysisPreview = memo(({ analysis }: { analysis: any }) => {
-    console.log('Analysis data:', analysis);
     const [isMainExpanded, setIsMainExpanded] = useState(false);
 
     const analysisData = useMemo(() => {

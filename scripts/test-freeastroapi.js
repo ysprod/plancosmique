@@ -18,7 +18,7 @@ async function testFreeAstroAPI() {
     })
   });
   const data = await response.json();
-  console.log('API response:', data);
+
 }
 
 testFreeAstroAPI().catch(console.error);

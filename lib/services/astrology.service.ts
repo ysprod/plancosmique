@@ -122,7 +122,6 @@ const API_KEY = process.env.FREEASTRO_API_KEY || ''; // Optionnel selon l'API
 
 export async function getCarteDuCiel(birthData: BirthData): Promise<any> {
   try {
-    console.log('[AstrologyService] 📡 Récupération carte du ciel...', birthData);
 
     // Appel à FreeAstroAPI
     const response = await axios.post<NatalChartResponse>(
@@ -156,7 +155,6 @@ export async function getCarteDuCiel(birthData: BirthData): Promise<any> {
     // Transformation des données au format attendu
     const carteDuCiel = transformNatalChartToCarteDuCiel(natalChart, birthData);
 
-    console.log('[AstrologyService] ✅ Carte du ciel récupérée avec succès');
     return carteDuCiel;
 
   } catch (error: any) {
