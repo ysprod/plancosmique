@@ -1,31 +1,24 @@
 'use client';
-
 import { countries } from '@/components/auth/countries';
 import { api } from '@/lib/api/client';
 import { UserData } from '@/lib/interfaces';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   AlertCircle,
   ArrowLeft,
   CheckCircle,
   Globe,
   Loader2,
-  Mail,
   Phone,
   Save,
   Shield,
   User,
-  X,
-  Eye,
-  EyeOff
+  X
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState, useCallback, useMemo, memo } from 'react';
-
-// =====================================================
-// TYPES
-// =====================================================
+import { memo, useCallback, useMemo, useState } from 'react';
+ 
 type Gender = 'M' | 'F' | 'Other';
 type Role = 'USER' | 'ADMIN' | 'SUPER_ADMIN';
 
@@ -35,9 +28,7 @@ interface FormErrors {
   phone?: string;
 }
 
-// =====================================================
-// CONSTANTS
-// =====================================================
+ 
 const ROLE_OPTIONS: { value: Role; label: string; description: string }[] = [
   { value: 'USER', label: 'Utilisateur', description: 'Accès standard' },
   { value: 'ADMIN', label: 'Administrateur', description: 'Gestion de contenu' },
@@ -49,10 +40,7 @@ const GENDER_OPTIONS: { value: Gender; label: string; icon: string }[] = [
   { value: 'F', label: 'Féminin', icon: '👩' },
   { value: 'Other', label: 'Autre', icon: '🧑' }
 ];
-
-// =====================================================
-// VALIDATION
-// =====================================================
+ 
 const validateEmail = (email: string): boolean => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
@@ -60,10 +48,7 @@ const validateEmail = (email: string): boolean => {
 const validatePhone = (phone: string): boolean => {
   return /^\+?[\d\s-()]+$/.test(phone);
 };
-
-// =====================================================
-// TOAST NOTIFICATION
-// =====================================================
+  
 const Toast = memo(({ 
   type, 
   message, 
@@ -116,9 +101,7 @@ const Toast = memo(({
 ));
 Toast.displayName = 'Toast';
 
-// =====================================================
-// INPUT FIELD COMPONENT
-// =====================================================
+  
 const InputField = memo(({
   label,
   icon: Icon,
@@ -169,9 +152,7 @@ const InputField = memo(({
 ));
 InputField.displayName = 'InputField';
 
-// =====================================================
-// SELECT FIELD COMPONENT
-// =====================================================
+  
 const SelectField = memo(({
   label,
   icon: Icon,

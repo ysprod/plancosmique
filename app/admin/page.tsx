@@ -91,8 +91,7 @@ export default function AdminDashboard() {
       </div>
     );
   }
-
-  // État d'erreur
+ 
   if (error || !stats) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
@@ -413,7 +412,7 @@ export default function AdminDashboard() {
                   />
                 </div>
               </div>
-            </motion.div> 
+            </motion.div>
 
             <motion.div
               whileHover={{ y: -3 }}
@@ -475,7 +474,7 @@ export default function AdminDashboard() {
                   />
                 </div>
               </div>
-            </motion.div> 
+            </motion.div>
 
             <motion.div
               whileHover={{ y: -3 }}

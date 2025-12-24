@@ -66,30 +66,6 @@ export default function ConsultationsPage() {
     }
   }, [refetch, router]);
 
-  const handleModifyAnalysis = useCallback((id: string) => {
-    router.push(`/secured/genereanalyse?id=${id}`);
-  }, [router]);
-
-  const handleNotifyUser = useCallback(async (id: string) => {
-    setNotifyingIds(prev => new Set(prev).add(id));
-    try {
-      const res = await api.post(`/consultations/${id}/notify-user`);
-      if (res.status === 200 || res.status === 201) {
-        setToastMessage('📧 Notification envoyée avec succès !');
-      } else {
-        setToastMessage('⚠️ Erreur lors de l\'envoi');
-      }
-    } catch (err) {
-      setToastMessage('❌ Erreur lors de l\'envoi');
-    } finally {
-      setNotifyingIds(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(id);
-        return newSet;
-      });
-    }
-  }, []);
-
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
 
   if (loading && !consultations) {
@@ -211,7 +187,7 @@ export default function ConsultationsPage() {
           </motion.div>
         )}
       </div>
-      
+
       <AnimatePresence>
         {toastMessage && (
           <Toast message={toastMessage} onClose={() => setToastMessage(null)} />

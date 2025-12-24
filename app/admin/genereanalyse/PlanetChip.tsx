@@ -1,6 +1,7 @@
+import { Position } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import { memo } from 'react';
-import type { Position } from './types';
+ 
 
 const PLANET_SYMBOLS: Record<string, string> = {
   'Soleil': '☉',
@@ -28,7 +29,7 @@ const getPlanetSymbol = (planetName: string): string => {
 };
 
 const PlanetChip = memo(({ position }: { position: Position }) => {
-  const symbol = getPlanetSymbol(position.planete);
+  const symbol = getPlanetSymbol(position.planete!);
   const isRetrograde = position.retrograde;
 
   return (
@@ -57,7 +58,7 @@ const PlanetChip = memo(({ position }: { position: Position }) => {
       {/* Infos */}
       <div className="flex-1 min-w-0">
         <p className="text-xs font-semibold text-gray-900 dark:text-gray-100 truncate">
-          {position.planete.replace(' RÉTROGRADE', '').replace(' Vraie', '')}
+          {position.planete!.replace(' RÉTROGRADE', '').replace(' Vraie', '')}
         </p>
         <p className="text-[10px] text-gray-600 dark:text-gray-400">
           {position.signe} • M{position.maison}
@@ -78,4 +79,5 @@ const PlanetChip = memo(({ position }: { position: Position }) => {
 PlanetChip.displayName = 'PlanetChip';
 
 export default PlanetChip;
+
 export { getPlanetSymbol };

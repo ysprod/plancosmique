@@ -445,9 +445,7 @@ export default function PaymentsPage() {
                   </Link>
                 </motion.div>
               ))}
-            </div>
-
-            {/* Pagination compacte */}
+            </div>  
             {totalPages > 1 && (
               <div className="flex items-center justify-between bg-white 
                               rounded-lg border border-gray-200 px-3 py-2">

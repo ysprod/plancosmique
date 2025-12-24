@@ -165,7 +165,6 @@ export default function AdminBooksPage() {
     return Object.keys(errors).length === 0;
   };
 
-  // Passer à l'étape suivante
   const handleNextStep = () => {
     if (currentStep === 1 && validateStep1()) {
       setCurrentStep(2);
@@ -173,13 +172,11 @@ export default function AdminBooksPage() {
     }
   };
 
-  // Revenir à l'étape précédente
   const handlePrevStep = () => {
     setCurrentStep(1);
     setFormErrors({});
   };
 
-  // Gestion de l'ajout de livre
   const handleAddBook = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -203,13 +200,11 @@ export default function AdminBooksPage() {
 
       await api.post('/books', bookData);
 
-      // Réinitialiser le formulaire
       setFormData(initialFormData);
       setFormErrors({});
       setCurrentStep(1);
       setShowAddModal(false);
 
-      // Rafraîchir la liste
       fetchBooks();
 
       alert('Livre ajouté avec succès !');
@@ -223,7 +218,6 @@ export default function AdminBooksPage() {
     }
   };
 
-  // Ouvrir le modal d'ajout
   const openAddModal = () => {
     setFormData(initialFormData);
     setFormErrors({});
@@ -231,7 +225,6 @@ export default function AdminBooksPage() {
     setShowAddModal(true);
   };
 
-  // Fermer le modal
   const closeAddModal = () => {
     if (submitting) return;
     setShowAddModal(false);
@@ -240,13 +233,11 @@ export default function AdminBooksPage() {
     setCurrentStep(1);
   };
 
-  // Catégories uniques
   const categories = useMemo(() => {
     const cats = new Set(books.map(b => b.category));
     return Array.from(cats).sort();
   }, [books]);
 
-  // Filtrage et tri
   const filteredAndSortedBooks = useMemo(() => {
     let filtered = books.filter(book => {
       const matchesSearch = searchQuery === '' ||

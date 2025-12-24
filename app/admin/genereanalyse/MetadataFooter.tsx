@@ -1,7 +1,8 @@
+import { Metadata } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
 import { memo } from 'react';
-import type { Metadata } from './types';
+ 
 
 const MetadataFooter = memo(({ metadata }: { metadata: Metadata }) => (
   <motion.div

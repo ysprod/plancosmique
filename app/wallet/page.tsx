@@ -302,10 +302,7 @@ function WalletCallbackContent() {
 
       const response = await api.get(`/wallet/transactions?userId=${user?._id}`);
       setTransactions(response.data.transactions || []);
-      // const response = await api.get("/wallet/transactions");
-      // if (response.status === 200 && Array.isArray(response.data)) {
-      //   setTransactions(response.data);
-      // }
+ 
     } catch (err) {
       console.error("❌ Erreur fetch transactions:", err);
     }

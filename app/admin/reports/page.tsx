@@ -94,10 +94,7 @@ const CHART_COLORS = {
   users: '#8b5cf6', // purple-500
   gradient: ['#3b82f6', '#60a5fa', '#93c5fd'] // blue gradient
 };
-
-// =====================================================
-// ANIMATION VARIANTS
-// =====================================================
+ 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: (custom: number) => ({
@@ -107,9 +104,7 @@ const cardVariants = {
   })
 };
 
-// =====================================================
-// CUSTOM TOOLTIP
-// =====================================================
+ 
 const CustomTooltip = memo(({ active, payload, label }: any) => {
   if (!active || !payload || !payload.length) return null;
 
@@ -135,10 +130,7 @@ const CustomTooltip = memo(({ active, payload, label }: any) => {
   );
 });
 CustomTooltip.displayName = 'CustomTooltip';
-
-// =====================================================
-// LOADING STATE
-// =====================================================
+ 
 const LoadingState = memo(() => (
   <div className="flex flex-col items-center justify-center min-h-screen gap-4">
     <motion.div
@@ -175,9 +167,7 @@ const ErrorState = memo(({ error }: { error: string }) => (
 ));
 ErrorState.displayName = 'ErrorState';
 
-// =====================================================
-// METRIC CARD
-// =====================================================
+ 
 const MetricCard = memo(({
   metric,
   index

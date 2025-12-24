@@ -276,3 +276,63 @@ export interface GetAnalysisResponse {
   statut?: StatutConsultation;
   erreur?: string;
 }
+
+
+
+// Types pour carteDuCiel
+export interface CarteDuCielPosition {
+  planete: string;
+  signe: string;
+  maison: number;
+  retrograde?: boolean;
+}
+
+export interface CarteDuCielData {
+  sujet: {
+    nom: string;
+    prenoms: string;
+    dateNaissance: string;
+    lieuNaissance: string;
+    heureNaissance: string;
+  };
+  positions: CarteDuCielPosition[];
+}
+
+// Type pour les 5 Portes
+export interface CinqPortes {
+  signesolaire: {
+    label: string;
+    valeur: string;
+    description: string;
+    icon: string;
+    gradient: string;
+  };
+  ascendant: {
+    label: string;
+    valeur: string;
+    description: string;
+    icon: string;
+    gradient: string;
+  };
+  signeLunaire: {
+    label: string;
+    valeur: string;
+    description: string;
+    icon: string;
+    gradient: string;
+  };
+  milieuDuCiel: {
+    label: string;
+    valeur: string;
+    description: string;
+    icon: string;
+    gradient: string;
+  };
+  descendant: {
+    label: string;
+    valeur: string;
+    description: string;
+    icon: string;
+    gradient: string;
+  };
+}

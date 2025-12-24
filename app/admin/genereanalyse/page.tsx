@@ -10,7 +10,7 @@ import SubjectCard from './SubjectCard';
 import SkyChartSection from './SkyChartSection';
 import MissionSection from './MissionSection';
 import MetadataFooter from './MetadataFooter';
-import type { AnalyseData, GenerationStep } from './types';
+import { AnalyseData, GenerationStep } from '@/lib/interfaces'; 
 
 export default function GenereAnalysePage() {
   const router = useRouter();

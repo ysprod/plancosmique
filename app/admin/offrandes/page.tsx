@@ -178,7 +178,6 @@ export default function AdminOffrandes() {
                     ) : (
                         <>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                                {/* Vue d'ensemble */}
                                 <div className="bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900 dark:to-violet-950 rounded-2xl p-6 flex flex-col gap-2 shadow">
                                     <div className="text-xs font-bold text-violet-700 dark:text-violet-300 mb-1">Vue d'ensemble</div>
                                     <div className="flex flex-col gap-1">
@@ -196,7 +195,6 @@ export default function AdminOffrandes() {
                                         </div>
                                     </div>
                                 </div>
-                                {/* Par catégorie */}
                                 <div className="bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-900 dark:to-green-950 rounded-2xl p-6 flex flex-col gap-2 shadow">
                                     <div className="text-xs font-bold text-emerald-700 dark:text-emerald-300 mb-1">Par catégorie</div>
                                     <div className="flex flex-col gap-1">
@@ -208,8 +206,7 @@ export default function AdminOffrandes() {
                                             </div>
                                         ))}
                                     </div>
-                                </div>
-                                {/* Par période */}
+                                </div> 
                                 <div className="bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900 dark:to-purple-950 rounded-2xl p-6 flex flex-col gap-2 shadow">
                                     <div className="text-xs font-bold text-pink-700 dark:text-pink-300 mb-1">Par période</div>
                                     <div className="flex flex-col gap-1">
@@ -230,8 +227,7 @@ export default function AdminOffrandes() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            {/* Tableau par offrande */}
+                            </div> 
                             <div className="overflow-x-auto mt-6">
                                 <table className="min-w-[400px] w-full text-sm border rounded-xl overflow-hidden">
                                     <thead className="bg-gray-100 dark:bg-gray-800">
@@ -661,9 +657,7 @@ export default function AdminOffrandes() {
                                focus:border-violet-500 dark:focus:border-violet-500
                                transition-colors"
                                         />
-                                    </div>
-
-                                    {/* Description */}
+                                    </div> 
                                     <div>
                                         <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
                                             Description *

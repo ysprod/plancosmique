@@ -72,13 +72,6 @@ export default function UserCard({ user, cardVariants, setDeleteModal }: UserCar
             <p className="text-sm font-bold text-gray-900">{user.rating}</p>
           </div>
         </div>
-        <div className="text-center">
-          <p className="text-xs text-gray-500">Crédits</p>
-          <div className="flex items-center justify-center gap-0.5">
-            <CreditCard className="w-3 h-3 text-green-500" />
-            <p className="text-sm font-bold text-gray-900">{user.credits}</p>
-          </div>
-        </div>
       </div>
       {/* Badges compacts */}
       <div className="flex flex-wrap items-center gap-1.5 mb-3">

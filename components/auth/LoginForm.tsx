@@ -188,6 +188,24 @@ const LoginForm = () => {
   });
   const [errors, setErrors] = useState<FormErrors>({});
 
+  // Synchronise le state avec les valeurs auto-remplies au montage
+  React.useEffect(() => {
+    const usernameInput = document.querySelector<HTMLInputElement>('input[name="username"]');
+    const passwordInput = document.querySelector<HTMLInputElement>('input[name="password"]');
+    if (usernameInput && passwordInput) {
+      const username = usernameInput.value;
+      const password = passwordInput.value;
+      // Si le navigateur a auto-rempli, on met à jour le state
+      if (username || password) {
+        setFormData((prev) => ({
+          ...prev,
+          username,
+          password,
+        }));
+      }
+    }
+  }, []);
+
   // Handlers memoïsés
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

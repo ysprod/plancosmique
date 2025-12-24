@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { api } from "@/lib/api/client";
+import CinqPortesSection from "./CinqPortesSection";
 
 // =====================================================
 // TYPES & INTERFACES
@@ -455,13 +456,6 @@ const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
 
     <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
       <StatBadge 
-        icon={Award} 
-        label="Crédits" 
-        value={userData.credits}
-        gradient="from-amber-500 to-orange-500"
-        index={0}
-      />
-      <StatBadge 
         icon={Star} 
         label="Consultations" 
         value={userData.totalConsultations}
@@ -775,11 +769,18 @@ export default function MonProfilPage() {
     return <ErrorState />;
   }
 
+  console.log('Données utilisateur carte du ciel:', processedData.carteDuCiel);
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950 
                    p-3 sm:p-6 space-y-4 sm:space-y-6">
       <div className="max-w-4xl mx-auto">
         <ProfileHeader userData={processedData} />
+        {/* ✨ NOUVELLE SECTION: Les 5 Portes */}
+        <CinqPortesSection 
+          carteDuCiel={processedData?.carteDuCiel?.carteDuCiel ?? null}
+          isPremium={user.premium}
+        />
         <SkyChart carteDuCiel={processedData.carteDuCiel} />
       </div>
     </main>

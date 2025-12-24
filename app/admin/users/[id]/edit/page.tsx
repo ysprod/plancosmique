@@ -9,7 +9,7 @@ import {
   CheckCircle,
   Globe,
   Loader2,
-  Mail, Phone,
+  Phone,
   Save,
   Shield,
   Star,
@@ -32,7 +32,6 @@ export default function EditUserPage() {
 
   const [formData, setFormData] = useState<Partial<UserData>>({
     username: '',
-    // email: '',
     phone: '',
     country: '',
     gender: 'Other',
@@ -46,7 +45,6 @@ export default function EditUserPage() {
     },
   });
 
-  // Charger les données utilisateur
   useEffect(() => {
     const fetchUser = async () => {
       try {

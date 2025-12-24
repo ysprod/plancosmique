@@ -238,7 +238,6 @@ const PaymentCallbackContent = () => {
             itemVariants={itemVariants}
           />
 
-          {/* 🔒 Note de sécurité */}
           <SecurityNote itemVariants={itemVariants} />
         </motion.div>
       </AnimatePresence>

@@ -116,6 +116,7 @@ export default function ConsultationResultPage() {
           onNotifyUser={handleNotifyUser}
         />
       </motion.div>
+      
       <AnimatePresence>
         {toast && (
           <Toast

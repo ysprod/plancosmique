@@ -2,7 +2,8 @@
 import { CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { memo } from 'react';
-import type { GenerationStep } from './types';
+import { GenerationStep } from '@/lib/interfaces';
+ 
 
 interface LoadingSpinnerProps {
   step: GenerationStep;
