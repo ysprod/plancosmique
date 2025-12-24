@@ -53,4 +53,5 @@ const ErrorState = memo(({
   </div>
 ));
 ErrorState.displayName = 'ErrorState';
+
 export default ErrorState;

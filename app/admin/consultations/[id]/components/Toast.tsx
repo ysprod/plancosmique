@@ -57,4 +57,5 @@ const Toast = memo(({
   );
 });
 Toast.displayName = 'Toast';
+
 export default Toast;

@@ -50,7 +50,7 @@ export default function WelcomePage() {
           Bienvenue dans ce temple virtuel, où chacun vient chercher une réponse aux trois grandes
           questions de l'existence :
         </motion.p>
-        {/* Questions en stack mobile, inline desktop */}
+  
         <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 mb-6">
           {QUESTIONS.map((item, i) => (
             <Link key={item.q} href="/secured/profil" className="w-full sm:w-auto">

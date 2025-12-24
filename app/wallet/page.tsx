@@ -297,9 +297,6 @@ function WalletCallbackContent() {
     setIsMounted(true);
   }, []);
 
-  // =====================================================
-  // FETCH TRANSACTIONS
-  // =====================================================
   const fetchTransactions = useCallback(async () => {
     try {
 

@@ -21,25 +21,18 @@ export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [showApiKey, setShowApiKey] = useState(false);
-
-  // États des paramètres généraux
   const [siteName, setSiteName] = useState('Mon Étoile');
   const [siteEmail, setSiteEmail] = useState('contact@monetoile.com');
   const [sitePhone, setSitePhone] = useState('+225 07 00 00 00 00');
   const [maintenanceMode, setMaintenanceMode] = useState(false);
-
-  // États des notifications
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [newUserNotif, setNewUserNotif] = useState(true);
   const [newConsultationNotif, setNewConsultationNotif] = useState(true);
   const [paymentNotif, setPaymentNotif] = useState(true);
-
-  // États de sécurité
   const [twoFactorAuth, setTwoFactorAuth] = useState(false);
   const [sessionTimeout, setSessionTimeout] = useState('30');
   const [passwordExpiry, setPasswordExpiry] = useState('90');
 
-  // États de paiement
   const [moneyFusionApiKey, setMoneyFusionApiKey] = useState('mf_test_xxxxxxxxxxxxx');
   const [paymentMethods, setPaymentMethods] = useState({
     orangeMoney: true,
@@ -48,7 +41,6 @@ export default function SettingsPage() {
     wave: false,
   });
 
-  // États système
   const [maxUploadSize, setMaxUploadSize] = useState('10');
   const [backupFrequency, setBackupFrequency] = useState('daily');
   const [logLevel, setLogLevel] = useState('error');
@@ -57,7 +49,6 @@ export default function SettingsPage() {
     setIsSaving(true);
     setSaveSuccess(false);
 
-    // Simulation d'appel API
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     setIsSaving(false);

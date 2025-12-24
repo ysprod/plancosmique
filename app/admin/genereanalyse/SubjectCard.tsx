@@ -1,8 +1,7 @@
 import { Calendar, Clock, MapPin, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { memo } from 'react';
-import { CarteDuCiel } from '@/lib/interfaces';
- 
+import { CarteDuCiel } from '@/lib/interfaces'; 
 
 type CarteDuCielSubjet = CarteDuCiel['sujet'];
 

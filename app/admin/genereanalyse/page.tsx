@@ -105,10 +105,8 @@ export default function GenereAnalysePage() {
         </div>
       </div>
 
-      {/* Contenu */}
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-4">
         <AnimatePresence mode="wait">
-          {/* Loading */}
           {(step === 'loading'  || step === 'fetching' || step === 'generating') && (
             <motion.div key="loading">
               <LoadingSpinner step={step} />

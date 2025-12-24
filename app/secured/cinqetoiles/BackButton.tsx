@@ -15,6 +15,7 @@ const BackButton = memo(({ onClick }: { onClick: () => void }) => (
     <span className="font-semibold text-sm">Retour</span>
   </motion.button>
 ));
+
 BackButton.displayName = 'BackButton';
 
 export default BackButton;

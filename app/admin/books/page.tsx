@@ -140,7 +140,6 @@ export default function AdminBooksPage() {
     return Object.keys(errors).length === 0;
   };
 
-  // Validation de l'étape 2
   const validateStep2 = (): boolean => {
     const errors: Partial<BookFormData> = {};
 

@@ -211,6 +211,7 @@ export default function ConsultationsPage() {
           </motion.div>
         )}
       </div>
+      
       <AnimatePresence>
         {toastMessage && (
           <Toast message={toastMessage} onClose={() => setToastMessage(null)} />

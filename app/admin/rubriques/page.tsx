@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useCallback, useMemo, memo, useEffect } from "react";
 import { offeringsService, type Offering } from '@/lib/api/services/offerings.service';
 import { motion, AnimatePresence } from "framer-motion";

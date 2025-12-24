@@ -1,28 +1,17 @@
 'use client';
+import DeleteUserModal from '@/components/users/DeleteUserModal';
+import UserCard from '@/components/users/UserCard';
+import UsersStats from '@/components/users/UsersStats';
 import { useAdminUsers } from '@/hooks/useAdminUsers';
 import api from '@/lib/api/client';
 import { UserData } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   AlertCircle,
-  AlertTriangle,
-  Ban,
-  Calendar,
-  CheckCircle,
-  Clock,
-  CreditCard,
-  Edit,
   Filter,
-  Globe,
-  Loader2,
-  Mail, Phone,
   Plus,
   RefreshCw,
   Search,
-  Shield,
-  Star,
-  Trash2,
-  User,
   Users,
   X,
   Zap
@@ -39,14 +28,13 @@ export default function UsersPage() {
   const [roleFilter, setRoleFilter] = useState<UserRole>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
-
-  // États pour les modals
   const [deleteModal, setDeleteModal] = useState<{ show: boolean; user: UserData | null }>({
     show: false,
     user: null
   });
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { users: apiUsers, total, loading, error, refetch } = useAdminUsers({
     search: searchQuery,
@@ -56,7 +44,6 @@ export default function UsersPage() {
     limit: 18,
   });
 
-  // Map API User to UserData
   const mapUserToUserData = (user: any): UserData => ({
     id: user.id,
     _id: user._id,
@@ -73,10 +60,11 @@ export default function UsersPage() {
     totalConsultations: user.totalConsultations ?? user.consultationsCount ?? 0,
     rating: user.rating,
     createdAt: user.createdAt,
+    premium: user.premium || false,
   });
 
   const users: UserData[] = useMemo(() => (apiUsers ? apiUsers.map(mapUserToUserData) : []), [apiUsers]);
-
+console.log(users);
   const stats = useMemo(() => {
     if (!users) return null;
     return {
@@ -88,7 +76,8 @@ export default function UsersPage() {
     };
   }, [users]);
 
-  const [isRefreshing, setIsRefreshing] = useState(false);
+
+
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
     await refetch();
@@ -123,7 +112,6 @@ export default function UsersPage() {
 
   const totalPages = Math.ceil(total / 18);
 
-  // Animations variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -210,154 +198,20 @@ export default function UsersPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Modal de confirmation de suppression */}
-      <AnimatePresence>
-        {deleteModal.show && deleteModal.user && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => !isDeleting && setDeleteModal({ show: false, user: null })}
-          >
-            <motion.div
-              variants={modalVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
-            >
-              {deleteSuccess ? (
-                // État de succès
-                <div className="p-6 text-center">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-                    className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
-                  >
-                    <CheckCircle className="w-8 h-8 text-green-600" />
-                  </motion.div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    Utilisateur supprimé !
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    L'utilisateur a été supprimé avec succès.
-                  </p>
-                </div>
-              ) : (
-                <>
-                  {/* En-tête du modal */}
-                  <div className="bg-gradient-to-r from-red-500 to-red-600 p-6 text-white">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                        <AlertTriangle className="w-6 h-6" />
-                      </div>
-                      <h3 className="text-xl font-bold">Confirmer la suppression</h3>
-                    </div>
-                    <p className="text-sm text-white/90">
-                      Cette action est irréversible
-                    </p>
-                  </div>
+      <DeleteUserModal
+        show={deleteModal.show}
+        user={deleteModal.user}
+        isDeleting={isDeleting}
+        deleteSuccess={deleteSuccess}
+        onClose={() => setDeleteModal({ show: false, user: null })}
+        onDelete={() => {
+          if (deleteModal.user && deleteModal.user.id) {
+            handleDeleteUser(deleteModal.user.id);
+          }
+        }}
+        modalVariants={modalVariants}
+      />
 
-                  {/* Corps du modal */}
-                  <div className="p-6">
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-                      <p className="text-sm text-gray-700 mb-2">
-                        Êtes-vous sûr de vouloir supprimer cet utilisateur ?
-                      </p>
-                      <div className="flex items-center gap-2 mt-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 
-                                        rounded-full flex items-center justify-center text-white font-bold">
-                          {deleteModal.user.username[0]?.toUpperCase()}
-                        </div>
-                        <div>
-                          <p className="text-sm font-bold text-gray-900">
-                            {deleteModal.user.username}
-                          </p>
-                          <p className="text-xs text-gray-600">
-                            {deleteModal.user.email}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Informations de l'utilisateur */}
-                    <div className="bg-gray-50 rounded-lg p-3 mb-4 text-sm">
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <span className="text-gray-600">Rôle :</span>
-                          <span className="font-semibold text-gray-900 ml-1">
-                            {deleteModal.user.role}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Consultations :</span>
-                          <span className="font-semibold text-gray-900 ml-1">
-                            {deleteModal.user.totalConsultations}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Statut :</span>
-                          <span className="font-semibold text-gray-900 ml-1">
-                            {deleteModal.user.isActive ? 'Actif' : 'Inactif'}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Crédits :</span>
-                          <span className="font-semibold text-gray-900 ml-1">
-                            {deleteModal.user.credits}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Boutons d'action */}
-                    <div className="flex gap-3">
-                      <button
-                        onClick={() => setDeleteModal({ show: false, user: null })}
-                        disabled={isDeleting}
-                        className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg 
-                                   font-semibold hover:bg-gray-200 transition-all
-                                   disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        Annuler
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (deleteModal.user && deleteModal.user.id) {
-                            handleDeleteUser(deleteModal.user.id);
-                          }
-                        }}
-                        disabled={isDeleting}
-                        className="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-600 to-red-700 
-                                   text-white rounded-lg font-semibold hover:shadow-lg 
-                                   transition-all disabled:opacity-50 disabled:cursor-not-allowed
-                                   flex items-center justify-center gap-2"
-                      >
-                        {isDeleting ? (
-                          <>
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                            Suppression...
-                          </>
-                        ) : (
-                          <>
-                            <Trash2 className="w-4 h-4" />
-                            Supprimer
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* En-tête compact et sticky */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3">
           <div className="flex items-center justify-between gap-3">
@@ -405,7 +259,6 @@ export default function UsersPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
-        {/* Bannière de rafraîchissement */}
         <AnimatePresence>
           {(loading || isRefreshing) && users && (
             <motion.div
@@ -423,44 +276,10 @@ export default function UsersPage() {
           )}
         </AnimatePresence>
 
-        {/* Stats compactes avec animations */}
         {stats && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-4"
-          >
-            {[
-              { icon: Users, label: 'Total', value: stats.total, color: 'blue' },
-              { icon: CheckCircle, label: 'Actifs', value: stats.active, color: 'green' },
-              { icon: Clock, label: 'Inactifs', value: stats.inactive, color: 'gray' },
-              { icon: Shield, label: 'Admins', value: stats.admins, color: 'purple' },
-              { icon: Mail, label: 'Vérifiés', value: stats.verified, color: 'amber', span: 'col-span-2 sm:col-span-1' },
-            ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ scale: 1.02 }}
-                className={`bg-white rounded-lg p-2.5 border border-gray-200 
-                           hover:shadow-md transition-all ${stat.span || ''}`}
-              >
-                <div className="flex items-center gap-2">
-                  <div className={`p-1 bg-${stat.color}-50 rounded`}>
-                    <stat.icon className={`w-3.5 h-3.5 text-${stat.color}-600`} />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500">{stat.label}</p>
-                    <p className="text-lg font-bold text-gray-900">{stat.value}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+          <UsersStats stats={stats} />
         )}
 
-        {/* Barre de recherche et filtres */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -588,7 +407,6 @@ export default function UsersPage() {
           </AnimatePresence>
         </motion.div>
 
-        {/* Grille utilisateurs avec overlay de chargement */}
         <div className="relative">
           <AnimatePresence>
             {loading && users && (
@@ -619,150 +437,15 @@ export default function UsersPage() {
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"
               >
                 {users.map((user) => (
-                  <motion.div
+                  <UserCard
                     key={user.id}
-                    variants={cardVariants}
-                    whileHover={{ y: -4, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
-                    className="bg-white rounded-lg border border-gray-200 p-3 transition-all"
-                  >
-                    {/* En-tête utilisateur */}
-                    <div className="flex items-center gap-2.5 mb-2.5">
-                      <div className="relative">
-                        <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 
-                                        rounded-full flex items-center justify-center 
-                                        text-white font-bold text-sm shadow-md">
-                          {user.username[0]?.toUpperCase() || 'U'}
-                        </div>
-                        {user.isActive && (
-                          <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 
-                                          bg-green-500 rounded-full border-2 border-white" />
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-bold text-gray-900 truncate">
-                          {user.username}
-                        </h3>
-                        <p className="text-xs text-gray-500 truncate flex items-center gap-1">
-                          <Mail className="w-3 h-3 flex-shrink-0" />
-                          {user.email}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Informations compactes */}
-                    <div className="space-y-1 mb-2.5 pb-2.5 border-b border-gray-100">
-                      {user.phone && (
-                        <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                          <Phone className="w-3 h-3 flex-shrink-0" />
-                          {user.phone}
-                        </div>
-                      )}
-                      {user.country && (
-                        <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                          <Globe className="w-3 h-3 flex-shrink-0" />
-                          {user.country}
-                        </div>
-                      )}
-                      {user.gender && (
-                        <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                          <User className="w-3 h-3 flex-shrink-0" />
-                          {user.gender === 'M' ? 'Homme' : user.gender === 'F' ? 'Femme' : 'Autre'}
-                        </div>
-                      )}
-                      <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                        <Calendar className="w-3 h-3 flex-shrink-0" />
-                        {new Date(user.createdAt).toLocaleDateString('fr-FR')}
-                      </div>
-                    </div>
-
-                    {/* Métriques utilisateur */}
-                    <div className="grid grid-cols-3 gap-1.5 mb-2.5 pb-2.5 border-b border-gray-100">
-                      <div className="text-center">
-                        <p className="text-xs text-gray-500">Consultations</p>
-                        <p className="text-sm font-bold text-gray-900">{user.totalConsultations}</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-xs text-gray-500">Note</p>
-                        <div className="flex items-center justify-center gap-0.5">
-                          <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
-                          <p className="text-sm font-bold text-gray-900">{user.rating}</p>
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-xs text-gray-500">Crédits</p>
-                        <div className="flex items-center justify-center gap-0.5">
-                          <CreditCard className="w-3 h-3 text-green-500" />
-                          <p className="text-sm font-bold text-gray-900">{user.credits}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Badges compacts */}
-                    <div className="flex flex-wrap items-center gap-1.5 mb-3">
-                      <span className={`inline-flex items-center gap-0.5 px-2 py-0.5 
-                                      rounded-full text-xs font-medium ${user.role === 'ADMIN'
-                          ? 'bg-purple-100 text-purple-700'
-                          : 'bg-blue-100 text-blue-700'
-                        }`}>
-                        {user.role === 'ADMIN' && <Shield className="w-2.5 h-2.5" />}
-                        {user.role}
-                      </span>
-
-                      <span className={`inline-flex items-center gap-0.5 px-2 py-0.5 
-                                      rounded-full text-xs font-medium ${user.isActive
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-gray-100 text-gray-700'
-                        }`}>
-                        {user.isActive ? (
-                          <CheckCircle className="w-2.5 h-2.5" />
-                        ) : (
-                          <Ban className="w-2.5 h-2.5" />
-                        )}
-                        {user.isActive ? 'Actif' : 'Inactif'}
-                      </span>
-
-                      {user.emailVerified && (
-                        <span className="inline-flex items-center gap-0.5 px-2 py-0.5 
-                                       rounded-full text-xs font-medium bg-green-100 text-green-700">
-                          <CheckCircle className="w-2.5 h-2.5" />
-                          Vérifié
-                        </span>
-                      )}
-
-                      {user.preferences?.notifications && (
-                        <span className="inline-flex items-center px-1.5 py-0.5 
-                                       rounded-full text-xs bg-blue-50">
-                          🔔
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Boutons d'action */}
-                    <div className="flex gap-1.5">
-                      <Link
-                        href={`/admin/users/${user.id}/edit`}
-                        className="flex-1 flex items-center justify-center gap-1 
-                                   px-2 py-1.5 bg-blue-600 text-white text-xs 
-                                   rounded font-medium hover:bg-blue-700 transition-colors"
-                      >
-                        <Edit className="w-3 h-3" />
-                        Modifier
-                      </Link>
-                      <button
-                        onClick={() => setDeleteModal({ show: true, user })}
-                        className="flex-1 flex items-center justify-center gap-1 
-                                   px-2 py-1.5 bg-red-600 text-white text-xs 
-                                   rounded font-medium hover:bg-red-700 transition-colors"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                        Supprimer
-                      </button>
-                    </div>
-                  </motion.div>
+                    user={user}
+                    cardVariants={cardVariants}
+                    setDeleteModal={setDeleteModal}
+                  />
                 ))}
               </motion.div>
 
-              {/* Pagination */}
               {totalPages > 1 && (
                 <motion.div
                   initial={{ opacity: 0 }}

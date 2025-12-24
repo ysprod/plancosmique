@@ -81,6 +81,7 @@ export interface Offering {
 }
 
 export interface UserData {
+  premium?: boolean;
   _id?: string;
   id: string; 
   username: string;

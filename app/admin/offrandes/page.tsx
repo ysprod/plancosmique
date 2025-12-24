@@ -136,7 +136,6 @@ export default function AdminOffrandes() {
         }
 
         if (editingId) {
-            // Modification
             setOfferings(offerings.map(o => o.id === editingId ? formData : o));
         } else {
             // Ajout

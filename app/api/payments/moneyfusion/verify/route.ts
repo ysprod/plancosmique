@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
-/**
- * API Route pour vérifier un paiement MoneyFusion
- * POST /api/payments/moneyfusion/verify
- */
+ 
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();

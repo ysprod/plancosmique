@@ -3,8 +3,6 @@ import { memo } from 'react';
 import PlanetChip from './PlanetChip';
 import { CarteDuCiel } from '@/lib/interfaces';
 import type { Position as LocalPosition } from './types';
- 
-
 
 const mapToLocalPosition = (pos: any): LocalPosition => ({
   planete: pos.planete || pos.astre || '',

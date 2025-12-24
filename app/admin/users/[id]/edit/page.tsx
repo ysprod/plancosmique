@@ -32,7 +32,7 @@ export default function EditUserPage() {
 
   const [formData, setFormData] = useState<Partial<UserData>>({
     username: '',
-    email: '',
+    // email: '',
     phone: '',
     country: '',
     gender: 'Other',
@@ -52,6 +52,7 @@ export default function EditUserPage() {
       try {
         setLoading(true);
         const { data } = await api.get(`/admin/users/${userId}`);
+        console.log(data);
         setFormData(data);
       } catch (err) {
         const error = err as { response?: { data?: { message?: string } } };
@@ -188,27 +189,6 @@ export default function EditUserPage() {
                   placeholder="Entrez le nom d'utilisateur"
                 />
               </div>
-
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Email *
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                  <input
-                    type="email"
-                    value={formData.email || ''}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg 
-                             focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
-                    placeholder="utilisateur@example.com"
-                  />
-                </div>
-              </div>
-
-              {/* Phone */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">
                   Téléphone
@@ -264,6 +244,20 @@ export default function EditUserPage() {
                   <option value="F">Féminin</option>
                 </select>
               </div> 
+            </div>
+            {/* Premium */}
+            <div>
+              <label className="inline-flex items-center mt-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={!!formData.premium}
+                  onChange={e => setFormData({ ...formData, premium: e.target.checked })}
+                  className="form-checkbox h-5 w-5 text-yellow-500 border-gray-300 rounded focus:ring-yellow-400"
+                />
+                <span className="ml-2 text-sm text-yellow-700 font-semibold flex items-center gap-1">
+                  <Star className="w-4 h-4 text-yellow-500" /> Premium
+                </span>
+              </label>
             </div>
           </div> 
           <div>

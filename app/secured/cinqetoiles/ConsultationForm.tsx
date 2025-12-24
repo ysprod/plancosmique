@@ -2,7 +2,6 @@
 import { motion } from 'framer-motion';
 import { AlertCircle, Info, Sparkles } from 'lucide-react';
 import React from 'react';
- 
 import { birthCountries } from '@/lib/birthCountries';
 import InputField from '../vie-personnelle/slidesection/InputField';
 import SelectField from '../vie-personnelle/slidesection/SelectField';
@@ -33,7 +32,6 @@ const ConsultationForm: React.FC<Props> = ({
       exit={{ opacity: 0, y: -20 }}
       className="mt-6 bg-white p-6 sm:p-8 rounded-3xl shadow-2xl border-2 border-purple-200 max-w-3xl mx-auto"
     >
-      {/* Header avec titre de consultation */}
       <div className="mb-8 pb-6 border-b-2 border-purple-100">
         <div className="flex items-start gap-3 mb-4">
           <Sparkles className="w-8 h-8 text-purple-600 flex-shrink-0" />
@@ -41,11 +39,10 @@ const ConsultationForm: React.FC<Props> = ({
             <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-fuchsia-600">
               Informations Requises
             </h2>
-            
+
           </div>
         </div>
 
-        {/* Info importante */}
         <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
           <div className="flex items-start gap-3">
             <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
@@ -58,7 +55,6 @@ const ConsultationForm: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* Formulaire */}
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Nom et Prénoms */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -129,9 +125,7 @@ const ConsultationForm: React.FC<Props> = ({
           onChange={handleChange}
           error={errors.heureNaissance}
         />
- 
 
-        {/* Erreur API */}
         {apiError && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
@@ -145,7 +139,6 @@ const ConsultationForm: React.FC<Props> = ({
           </motion.div>
         )}
 
-        {/* Boutons */}
         <div className="space-y-3 pt-4">
           <motion.button
             type="submit"

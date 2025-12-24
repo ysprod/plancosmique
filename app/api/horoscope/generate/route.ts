@@ -119,7 +119,6 @@ export async function POST(request: NextRequest) {
       throw new Error('Format de réponse invalide');
     }
 
-    // Construire l'horoscope complet
     const date = new Date(body.birthDate);
     let periodText = '';
     

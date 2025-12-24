@@ -1,8 +1,3 @@
-/**
- * API Endpoint pour récupérer une pratique spirituelle par slug
- * GET /api/spiritual-practices/[slug]
- */
-
 import { NextRequest, NextResponse } from 'next/server';
  
 

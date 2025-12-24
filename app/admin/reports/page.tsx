@@ -1,5 +1,4 @@
 'use client';
-
 import { api } from '@/lib/api/client';
 import { motion } from 'framer-motion';
 import {
@@ -26,9 +25,6 @@ import {
   Cell
 } from 'recharts';
 
-// =====================================================
-// TYPES
-// =====================================================
 interface BackendStats {
   users: {
     total: number;
@@ -454,7 +450,6 @@ export default function ReportsPage() {
         </div>
       </motion.div>
 
-      {/* Date Range */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}

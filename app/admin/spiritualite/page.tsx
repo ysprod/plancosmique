@@ -349,7 +349,6 @@ export default function SpiritualiteAdmin() {
                 onClick={(e) => e.stopPropagation()}
                 className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl my-8"
               >
-                {/* Header du formulaire */}
                 <div className="sticky top-0 z-10 bg-gradient-to-r from-amber-600 to-red-600 text-white px-4 sm:px-6 py-4 rounded-t-2xl flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Sparkles className="w-6 h-6" />

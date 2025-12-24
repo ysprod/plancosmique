@@ -104,14 +104,11 @@ const AnalysisPreview = ({ consultationId, downloadUrl, itemVariants }: Analysis
   );
 };
 
-/**
- * Composant principal de callback de paiement
- * Gère l'affichage de la progression d'analyse et des résultats
- */
+ 
 const PaymentCallbackContent = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-  
+
   const {
     isLoading,
     isProcessing,
@@ -152,11 +149,11 @@ const PaymentCallbackContent = () => {
             <div className="absolute inset-0 bg-purple-400 rounded-full blur-xl opacity-50 animate-pulse" />
             <Loader2 className="w-16 h-16 text-purple-600 relative z-10" />
           </motion.div>
-          
+
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
             Vérification du paiement
           </h2>
-          
+
           <p className="text-gray-600 text-sm md:text-base px-4">
             Veuillez patienter pendant que nous vérifions votre transaction...
           </p>
@@ -181,12 +178,12 @@ const PaymentCallbackContent = () => {
           className="w-full max-w-3xl relative z-10"
         >
 
-           <AnalysisProgressBar
-              analysisProgress={analysisProgress}
-              currentStageIndex={currentStageIndex}
-              currentStageMessage={currentStageMessage}
-              analysisStages={analysisStages}
-            />
+          <AnalysisProgressBar
+            analysisProgress={analysisProgress}
+            currentStageIndex={currentStageIndex}
+            currentStageMessage={currentStageMessage}
+            analysisStages={analysisStages}
+          />
           {/* 🔮 Barre de progression d'analyse */}
           {isGeneratingAnalysis && (
             <AnalysisProgressBar
@@ -203,16 +200,16 @@ const PaymentCallbackContent = () => {
           )}
 
           {/* 📖 Aperçu de l'analyse */}
-          {analysisCompleted && 
-           !isGeneratingAnalysis && 
-           status === 'paid' && 
-           (consultationId || downloadUrl) && (
-            <AnalysisPreview
-              consultationId={consultationId}
-              downloadUrl={downloadUrl}
-              itemVariants={itemVariants}
-            />
-          )}
+          {analysisCompleted &&
+            !isGeneratingAnalysis &&
+            status === 'paid' &&
+            (consultationId || downloadUrl) && (
+              <AnalysisPreview
+                consultationId={consultationId}
+                downloadUrl={downloadUrl}
+                itemVariants={itemVariants}
+              />
+            )}
 
           {/* 📋 Carte de statut principale */}
           <StatusCard

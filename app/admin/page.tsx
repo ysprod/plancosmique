@@ -61,7 +61,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // État de chargement initial
   if (loading && !stats) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -300,7 +299,6 @@ export default function AdminDashboard() {
             </div>
           </motion.div>
 
-          {/* Statistiques principales - Grid compact */}
           <motion.div
             variants={itemVariants}
             className="grid grid-cols-2 lg:grid-cols-4 gap-3"
@@ -350,7 +348,6 @@ export default function AdminDashboard() {
             />
           </motion.div>
 
-          {/* Cards détails - Version compacte */}
           <motion.div
             variants={itemVariants}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"
@@ -416,9 +413,8 @@ export default function AdminDashboard() {
                   />
                 </div>
               </div>
-            </motion.div>
+            </motion.div> 
 
-            {/* Card Consultations */}
             <motion.div
               whileHover={{ y: -3 }}
               className="bg-white rounded-xl shadow-sm hover:shadow-md 
@@ -479,9 +475,8 @@ export default function AdminDashboard() {
                   />
                 </div>
               </div>
-            </motion.div>
+            </motion.div> 
 
-            {/* Card Paiements */}
             <motion.div
               whileHover={{ y: -3 }}
               className="bg-white rounded-xl shadow-sm hover:shadow-md 

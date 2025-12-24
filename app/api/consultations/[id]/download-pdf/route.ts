@@ -38,9 +38,6 @@ function generateFilename(sujet: Sujet): string {
   return `analyse-${nom}-${prenoms}-${date}.pdf`;
 }
 
-/**
- * Formatte les données d'analyse pour le logging (tronque contenu)
- */
 function formatAnalyseForLog(analyse: AnalyseData): object {
   return {
     _id: analyse._id,

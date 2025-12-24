@@ -1,5 +1,4 @@
 'use client';
-
 import { CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { memo } from 'react';

@@ -1,11 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-/**
- * Webhook MoneyFusion
- * POST /api/webhooks/moneyfusion
- * 
- * Reçoit les notifications de paiement de MoneyFusion
- */
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();

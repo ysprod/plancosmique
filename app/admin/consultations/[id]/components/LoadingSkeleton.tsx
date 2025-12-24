@@ -48,4 +48,5 @@ const LoadingSkeleton = memo(() => (
   </div>
 ));
 LoadingSkeleton.displayName = 'LoadingSkeleton';
+
 export default LoadingSkeleton;

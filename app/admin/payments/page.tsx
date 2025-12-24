@@ -72,7 +72,6 @@ export default function PaymentsPage() {
 
   const totalPages = Math.ceil(total / 18);
 
-  // Helper pour les couleurs de statut
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed': return 'bg-green-100 text-green-700';
@@ -264,7 +263,6 @@ export default function PaymentsPage() {
           </div>
         )}
 
-        {/* Barre de recherche compacte */}
         <div className="mb-4">
           <div className="flex gap-2">
             <div className="flex-1 relative">
@@ -304,7 +302,6 @@ export default function PaymentsPage() {
             </button>
           </div>
 
-          {/* Panneau filtres compact */}
           <AnimatePresence>
             {showFilters && (
               <motion.div
