@@ -25,6 +25,7 @@ const InfoItem = memo(({
     <span className="text-xs text-white/90 font-medium truncate">{value}</span>
   </motion.div>
 ));
+
 InfoItem.displayName = 'InfoItem';
 
 export default InfoItem;

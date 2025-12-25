@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Bell, CheckCheck, Trash2, Settings, Filter, ArrowLeft } from 'lucide-react';
 import { useNotifications } from '@/lib/hooks';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import type { Notification } from '@/lib/types/notification.types';
 
 const notificationIcons = {
@@ -32,18 +33,20 @@ const filterOptions: { value: string; label: string }[] = [
   { value: 'SYSTEM_ANNOUNCEMENT', label: 'Annonces système' },
 ];
 
+
 export default function NotificationsPage() {
   const [filter, setFilter] = useState<string>('all');
   const [showSettings, setShowSettings] = useState(false);
-  
-  const { 
-    notifications, 
-    unreadCount, 
-    isLoading, 
-    markAsRead, 
+  const router = useRouter();
+
+  const {
+    notifications,
+    unreadCount,
+    isLoading,
+    markAsRead,
     markAllAsRead,
     deleteNotification,
-    fetchNotifications 
+    fetchNotifications
   } = useNotifications(0); // Pas de polling automatique sur cette page
 
   // Recharger à l'ouverture
@@ -55,9 +58,19 @@ export default function NotificationsPage() {
     if (!notification.isRead) {
       await markAsRead(notification._id);
     }
-    
+
+    // Redirection intelligente selon le type de notification
     if (notification.metadata?.url) {
       window.location.href = notification.metadata.url;
+      return;
+    }
+    // Si notification liée à une consultation
+    if (
+      (notification.type === 'CONSULTATION_RESULT' || notification.type === 'CONSULTATION_ASSIGNED') &&
+      notification.metadata?.consultationId
+    ) {
+      router.push(`/secured/consultations/${notification.metadata.consultationId}`);
+      return;
     }
   };
 
@@ -239,8 +252,7 @@ export default function NotificationsPage() {
         )}
       </div>
 
-      {/* Panel de paramètres (optionnel pour une future version) */}
-      {showSettings && (
+       {showSettings && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

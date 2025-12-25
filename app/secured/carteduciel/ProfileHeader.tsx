@@ -73,6 +73,7 @@ const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
                      rounded-full flex items-center justify-center shadow-2xl border-4 border-white/20">
           <User className="w-10 h-10 sm:w-12 sm:h-12 text-white drop-shadow-lg" />
         </div>
+        
         {userData.premium && (
           <motion.div
             initial={{ scale: 0 }}

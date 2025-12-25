@@ -12,6 +12,7 @@ const BackButton = memo(({ onClick }: { onClick: () => void }) => (
              transition-colors mb-4 group"
   >
     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+   
     <span className="font-semibold text-sm">Retour</span>
   </motion.button>
 ));

@@ -217,7 +217,6 @@ export default function KnowledgeDetailPage() {
             </motion.button>
           </div>
 
-          {/* Tags */}
           {knowledge.tags && knowledge.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-8">
               {knowledge.tags.map((tag, i) => (

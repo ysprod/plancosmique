@@ -10,8 +10,8 @@ interface OfferingCardProps {
 }
 
 export const OfferingCard: React.FC<OfferingCardProps> = ({ offering, onAddToCart }) => {
+
     const handleAddToCart = () => {
-     
         onAddToCart(offering);
     };
 
@@ -24,25 +24,21 @@ export const OfferingCard: React.FC<OfferingCardProps> = ({ offering, onAddToCar
                      border-2 border-gray-200 dark:border-gray-700 
                      shadow-md hover:shadow-xl transition-all group"
         >
-            {/* Icône */}
             <div className="text-5xl sm:text-6xl mb-3 sm:mb-4 text-center 
                           group-hover:scale-110 transition-transform">
                 {offering.icon}
             </div>
 
-            {/* Nom */}
             <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white mb-1 text-center 
                          group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
                 {offering.name}
             </h3>
 
-            {/* Description */}
             <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-center 
                         mb-3 sm:mb-4 min-h-[32px] sm:min-h-[40px] px-1 line-clamp-2">
                 {offering.description}
             </p>
 
-            {/* Prix */}
             <div className="text-center mb-3 sm:mb-4 py-2 bg-gray-50 dark:bg-gray-900/50 rounded-xl">
                 <p className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
                     {offering.price.toLocaleString()} F
@@ -52,7 +48,6 @@ export const OfferingCard: React.FC<OfferingCardProps> = ({ offering, onAddToCar
                 </p>
             </div>
 
-            {/* Actions */}
             <div className="space-y-2">
                 <button
                     onClick={handleAddToCart}
@@ -67,7 +62,6 @@ export const OfferingCard: React.FC<OfferingCardProps> = ({ offering, onAddToCar
                 </button>
             </div>
 
-            {/* Debug Info (à retirer en production) */}
             {process.env.NODE_ENV === 'development' && (
                 <p className="text-[9px] text-gray-400 dark:text-gray-600 text-center mt-2 font-mono truncate">
                     ID: {offering._id || offering.id}

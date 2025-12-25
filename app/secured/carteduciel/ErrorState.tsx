@@ -20,6 +20,7 @@ const ErrorState = memo(() => (
         </div>
     </motion.div>
 ));
+
 ErrorState.displayName = 'ErrorState';
 
 export default ErrorState;

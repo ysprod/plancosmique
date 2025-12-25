@@ -27,7 +27,7 @@ export const CartModal: React.FC<CartModalProps> = ({
     onRemoveFromCart,
     onClearCart
 }) => {
-   
+
     return (
         <AnimatePresence>
             {showCart && (

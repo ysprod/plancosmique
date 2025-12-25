@@ -57,6 +57,7 @@ const ErrorToast = memo(({    message,    onClose}: {
                         {message}
                     </p>
                 </div>
+             
                 <button
                     onClick={handleClose}
                     className="flex-shrink-0 w-6 h-6 rounded-full bg-white/10 \

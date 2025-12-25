@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Sparkles } from 'lucide-react';
 import { memo, useCallback, useEffect, useState } from 'react';
 
-
 const SuccessIcon = memo(() => (
   <motion.div
     initial={{ scale: 0, rotate: -180 }}
@@ -135,9 +134,7 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
                 Les résultats sont disponibles dans votre espace personnel.
               </span>
             </p>
-          </motion.div>
-
-          {/* Détails supplémentaires (optionnel) */}
+          </motion.div> 
           <motion.div
             variants={itemVariants}
             className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4"
@@ -195,7 +192,7 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
         </motion.div>
       </main>
 
-      {/* Background décoratif subtil */}
+ 
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-72 h-72 bg-purple-300/10 \
                       dark:bg-purple-500/5 rounded-full blur-3xl" />

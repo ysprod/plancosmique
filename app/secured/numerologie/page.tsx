@@ -1,10 +1,12 @@
 'use client';
+import { api } from '@/lib/api/client';
+import type { UserData } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Award, Calculator, Calendar, Compass, Drama, Hash,
   Heart, Loader2, Sparkles, Target, User
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface NumerologyResult {
   lifePathNumber: number;
@@ -15,7 +17,6 @@ interface NumerologyResult {
   interpretation: string;
 }
 
-// Interface pour les nombres sacrés
 interface SacredNumber {
   id: string;
   title: string;
@@ -39,6 +40,19 @@ export default function NumerologiePage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<NumerologyResult | null>(null);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    api.get<UserData>('/users/me')
+      .then(res => {
+        const user = res.data;
+        setFormData(prev => ({
+          firstName: user.prenoms || user.firstName || '',
+          lastName: user.nom || user.lastName || '',
+          birthDate: user.dateNaissance || user.birthDate || '',
+        }));
+      })
+      .catch(() => { });
+  }, []);
 
   // Données des 5 nombres sacrés
   const sacredNumbers: SacredNumber[] = [
@@ -292,380 +306,379 @@ export default function NumerologiePage() {
 
   const activeSacredNumber = sacredNumbers.find(num => num.id === activeTab);
   return (
- 
-      <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 overflow-hidden">
-        {/* Progress bar */}
+
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 overflow-hidden">
+      {/* Progress bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 z-50 origin-left"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 0.5 }}
+      />
+
+      {/* Background subtil */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f5f5f5_1px,transparent_1px),linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-[size:60px_60px]" />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 py-12 lg:py-16 max-w-7xl">
+
+        {/* Header */}
         <motion.div
-          className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 z-50 origin-left"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.5 }}
-        />
-
-        {/* Background subtil */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#f5f5f5_1px,transparent_1px),linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-[size:60px_60px]" />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 py-12 lg:py-16 max-w-7xl">
-        
-
-          {/* Header */}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ rotate: 360 }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            className="inline-block mb-6"
           >
-            <motion.div
-              whileHover={{ rotate: 360 }}
-              transition={{ duration: 0.6 }}
-              className="inline-block mb-6"
-            >
-              <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-2xl bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center shadow-lg">
-                <Hash className="w-10 h-10 lg:w-12 lg:h-12 text-white" />
-              </div>
-            </motion.div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black bg-gradient-to-r from-amber-700 to-orange-600 bg-clip-text text-transparent mb-4 tracking-tight">
-              NUMÉROLOGIE
-            </h1>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-              Découvrez les secrets cachés dans vos nombres personnels et votre destinée chiffrée
-            </p>
+            <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-2xl bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center shadow-lg">
+              <Hash className="w-10 h-10 lg:w-12 lg:h-12 text-white" />
+            </div>
           </motion.div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black bg-gradient-to-r from-amber-700 to-orange-600 bg-clip-text text-transparent mb-4 tracking-tight">
+            NUMÉROLOGIE
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+            Découvrez les secrets cachés dans vos nombres personnels et votre destinée chiffrée
+          </p>
+        </motion.div>
 
-          {/* Navigation par onglets */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 mb-8"
-          >
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-              {/* Onglet Calculateur */}
+        {/* Navigation par onglets */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 mb-8"
+        >
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+            {/* Onglet Calculateur */}
+            <motion.button
+              layoutId={activeTab === 'calculator' ? "activeTab" : undefined}
+              onClick={() => setActiveTab('calculator')}
+              className={`relative p-4 rounded-xl transition-all duration-300 ${activeTab === 'calculator'
+                ? 'bg-gradient-to-br from-amber-600 to-orange-600 text-white shadow-lg scale-105'
+                : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div className="flex flex-col items-center gap-2">
+                <Calculator className="w-5 h-5" />
+                <span className="text-xs sm:text-sm font-semibold text-center leading-tight">
+                  Calculateur
+                </span>
+              </div>
+            </motion.button>
+
+            {/* Onglets Nombres Sacrés */}
+            {sacredNumbers.map((number) => (
               <motion.button
-                layoutId={activeTab === 'calculator' ? "activeTab" : undefined}
-                onClick={() => setActiveTab('calculator')}
-                className={`relative p-4 rounded-xl transition-all duration-300 ${activeTab === 'calculator'
-                    ? 'bg-gradient-to-br from-amber-600 to-orange-600 text-white shadow-lg scale-105'
-                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                key={number.id}
+                layoutId={activeTab === number.id ? "activeTab" : undefined}
+                onClick={() => setActiveTab(number.id)}
+                className={`relative p-4 rounded-xl transition-all duration-300 ${activeTab === number.id
+                  ? 'bg-gradient-to-br from-amber-600 to-orange-600 text-white shadow-lg scale-105'
+                  : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                   }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <div className="flex flex-col items-center gap-2">
-                  <Calculator className="w-5 h-5" />
+                  {number.icon}
                   <span className="text-xs sm:text-sm font-semibold text-center leading-tight">
-                    Calculateur
+                    {number.title}
                   </span>
                 </div>
               </motion.button>
+            ))}
+          </div>
+        </motion.div>
 
-              {/* Onglets Nombres Sacrés */}
-              {sacredNumbers.map((number) => (
-                <motion.button
-                  key={number.id}
-                  layoutId={activeTab === number.id ? "activeTab" : undefined}
-                  onClick={() => setActiveTab(number.id)}
-                  className={`relative p-4 rounded-xl transition-all duration-300 ${activeTab === number.id
-                      ? 'bg-gradient-to-br from-amber-600 to-orange-600 text-white shadow-lg scale-105'
-                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-                    }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <div className="flex flex-col items-center gap-2">
-                    {number.icon}
-                    <span className="text-xs sm:text-sm font-semibold text-center leading-tight">
-                      {number.title}
-                    </span>
+        {/* Contenu de l'onglet actif */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'calculator' ? (
+            <motion.div
+              key="calculator"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+                {/* Formulaire */}
+                <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                  <div className="flex items-center gap-3 mb-6">
+                    <Calculator className="w-6 h-6 text-amber-600" />
+                    <h2 className="text-2xl font-bold text-gray-900">Calculez votre profil numérologique</h2>
                   </div>
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Contenu de l'onglet actif */}
-          <AnimatePresence mode="wait">
-            {activeTab === 'calculator' ? (
-              <motion.div
-                key="calculator"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-                  {/* Formulaire */}
-                  <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
-                    <div className="flex items-center gap-3 mb-6">
-                      <Calculator className="w-6 h-6 text-amber-600" />
-                      <h2 className="text-2xl font-bold text-gray-900">Calculez votre profil numérologique</h2>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                      <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                        <User className="w-4 h-4" />
+                        Prénom
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.firstName}
+                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-amber-600 focus:ring-2 focus:ring-amber-200 transition-all outline-none"
+                        placeholder="Votre prénom"
+                        required
+                      />
                     </div>
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div>
-                        <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                          <User className="w-4 h-4" />
-                          Prénom
-                        </label>
-                        <input
-                          type="text"
-                          value={formData.firstName}
-                          onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-amber-600 focus:ring-2 focus:ring-amber-200 transition-all outline-none"
-                          placeholder="Votre prénom"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                          <User className="w-4 h-4" />
-                          Nom
-                        </label>
-                        <input
-                          type="text"
-                          value={formData.lastName}
-                          onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-amber-600 focus:ring-2 focus:ring-amber-200 transition-all outline-none"
-                          placeholder="Votre nom"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                          <Calendar className="w-4 h-4" />
-                          Date de naissance
-                        </label>
-                        <input
-                          type="date"
-                          value={formData.birthDate}
-                          onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
-                          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-amber-600 focus:ring-2 focus:ring-amber-200 transition-all outline-none"
-                          required
-                        />
-                      </div>
-                      {error && (
-                        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-                          {error}
-                        </div>
-                      )}
-                      <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full py-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white rounded-lg font-bold shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                      >
-                        {loading ? (
-                          <>
-                            <Loader2 className="w-5 h-5 animate-spin" />
-                            Calcul en cours...
-                          </>
-                        ) : (
-                          <>
-                            <Sparkles className="w-5 h-5" />
-                            Découvrir mon profil
-                          </>
-                        )}
-                      </button>
-                    </form>
-                  </div>
-
-                  {/* Résultats */}
-                  <div>
-                    {result ? (
-                      <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6">Votre Profil Numérologique</h2>
-                        <div className="space-y-6">
-                          <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-5 border-2 border-amber-200">
-                            <div className="flex items-center gap-3 mb-2">
-                              <Compass className="w-5 h-5 text-amber-700" />
-                              <span className="font-semibold text-gray-700">Chemin de Vie</span>
-                            </div>
-                            <div className="text-4xl font-bold text-amber-700">
-                              {result.lifePathNumber}
-                            </div>
-                            <p className="text-sm text-gray-600 mt-2">{result.interpretation}</p>
-                          </div>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Award className="w-4 h-4 text-gray-700" />
-                                <span className="font-semibold text-gray-700 text-sm">Naissance</span>
-                              </div>
-                              <div className="text-3xl font-bold text-gray-900">{result.birthNumber}</div>
-                            </div>
-                            <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Target className="w-4 h-4 text-gray-700" />
-                                <span className="font-semibold text-gray-700 text-sm">Expression</span>
-                              </div>
-                              <div className="text-3xl font-bold text-gray-900">{result.expressionNumber}</div>
-                            </div>
-                            <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Heart className="w-4 h-4 text-gray-700" />
-                                <span className="font-semibold text-gray-700 text-sm">Âme</span>
-                              </div>
-                              <div className="text-3xl font-bold text-gray-900">{result.soulNumber}</div>
-                            </div>
-                            <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Drama className="w-4 h-4 text-gray-700" />
-                                <span className="font-semibold text-gray-700 text-sm">Personnalité</span>
-                              </div>
-                              <div className="text-3xl font-bold text-gray-900">{result.personalityNumber}</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 flex flex-col items-center justify-center h-full min-h-[400px]">
-                        <Hash className="w-16 h-16 text-gray-300 mb-4" />
-                        <p className="text-gray-500 text-center">
-                          Remplissez le formulaire pour découvrir<br />votre profil numérologique complet
-                        </p>
+                    <div>
+                      <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                        <User className="w-4 h-4" />
+                        Nom
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.lastName}
+                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-amber-600 focus:ring-2 focus:ring-amber-200 transition-all outline-none"
+                        placeholder="Votre nom"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                        <Calendar className="w-4 h-4" />
+                        Date de naissance
+                      </label>
+                      <input
+                        type="date"
+                        value={formData.birthDate}
+                        onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-amber-600 focus:ring-2 focus:ring-amber-200 transition-all outline-none"
+                        required
+                      />
+                    </div>
+                    {error && (
+                      <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                        {error}
                       </div>
                     )}
-                  </div>
-                </div>
-              </motion.div>
-            ) : activeSacredNumber && (
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.5 }}
-                className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 lg:p-12"
-              >
-                {/* En-tête du nombre sacré */}
-                <div className="mb-8 pb-6 border-b border-amber-100">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
-                      {activeSacredNumber.icon}
-                    </div>
-                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-amber-700 to-orange-600 bg-clip-text text-transparent">
-                      {activeSacredNumber.title}
-                    </h2>
-                  </div>
-                  <p className="text-base sm:text-lg text-gray-700 leading-relaxed italic mb-4">
-                    {activeSacredNumber.description}
-                  </p>
-                  <p className="text-gray-600 leading-relaxed">
-                    {activeSacredNumber.introduction}
-                  </p>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="w-full py-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white rounded-lg font-bold shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Calcul en cours...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-5 h-5" />
+                          Découvrir mon profil
+                        </>
+                      )}
+                    </button>
+                  </form>
                 </div>
 
-                {/* Comment calculer */}
-                <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border-2 border-blue-200">
-                  <h3 className="text-xl sm:text-2xl font-bold text-blue-700 mb-3 flex items-center gap-2">
-                    <Calculator className="w-6 h-6" />
-                    Comment le Calculer
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {activeSacredNumber.howToCalculate}
-                  </p>
-                </div>
-
-                {/* Significations par nombre */}
-                <div className="mb-8">
-                  <h3 className="text-xl sm:text-2xl font-bold text-amber-700 mb-4">
-                    📖 Significations des Nombres
-                  </h3>
-                  <div className="space-y-4">
-                    {Object.entries(activeSacredNumber.meaningByNumber).map(([num, meaning]) => (
-                      <motion.div
-                        key={num}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: parseInt(num) * 0.05 }}
-                        className="p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200"
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 bg-amber-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
-                            <span className="text-white text-xl font-bold">{num}</span>
+                {/* Résultats */}
+                <div>
+                  {result ? (
+                    <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                      <h2 className="text-2xl font-bold text-gray-900 mb-6">Votre Profil Numérologique</h2>
+                      <div className="space-y-6">
+                        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-5 border-2 border-amber-200">
+                          <div className="flex items-center gap-3 mb-2">
+                            <Compass className="w-5 h-5 text-amber-700" />
+                            <span className="font-semibold text-gray-700">Chemin de Vie</span>
                           </div>
-                          <p className="text-gray-700 leading-relaxed pt-2">{meaning}</p>
+                          <div className="text-4xl font-bold text-amber-700">
+                            {result.lifePathNumber}
+                          </div>
+                          <p className="text-sm text-gray-600 mt-2">{result.interpretation}</p>
                         </div>
-                      </motion.div>
-                    ))}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Award className="w-4 h-4 text-gray-700" />
+                              <span className="font-semibold text-gray-700 text-sm">Naissance</span>
+                            </div>
+                            <div className="text-3xl font-bold text-gray-900">{result.birthNumber}</div>
+                          </div>
+                          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Target className="w-4 h-4 text-gray-700" />
+                              <span className="font-semibold text-gray-700 text-sm">Expression</span>
+                            </div>
+                            <div className="text-3xl font-bold text-gray-900">{result.expressionNumber}</div>
+                          </div>
+                          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Heart className="w-4 h-4 text-gray-700" />
+                              <span className="font-semibold text-gray-700 text-sm">Âme</span>
+                            </div>
+                            <div className="text-3xl font-bold text-gray-900">{result.soulNumber}</div>
+                          </div>
+                          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Drama className="w-4 h-4 text-gray-700" />
+                              <span className="font-semibold text-gray-700 text-sm">Personnalité</span>
+                            </div>
+                            <div className="text-3xl font-bold text-gray-900">{result.personalityNumber}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 flex flex-col items-center justify-center h-full min-h-[400px]">
+                      <Hash className="w-16 h-16 text-gray-300 mb-4" />
+                      <p className="text-gray-500 text-center">
+                        Remplissez le formulaire pour découvrir<br />votre profil numérologique complet
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ) : activeSacredNumber && (
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.5 }}
+              className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 lg:p-12"
+            >
+              {/* En-tête du nombre sacré */}
+              <div className="mb-8 pb-6 border-b border-amber-100">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+                    {activeSacredNumber.icon}
                   </div>
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-amber-700 to-orange-600 bg-clip-text text-transparent">
+                    {activeSacredNumber.title}
+                  </h2>
                 </div>
+                <p className="text-base sm:text-lg text-gray-700 leading-relaxed italic mb-4">
+                  {activeSacredNumber.description}
+                </p>
+                <p className="text-gray-600 leading-relaxed">
+                  {activeSacredNumber.introduction}
+                </p>
+              </div>
 
-                {/* Insights clés */}
-                <div className="mb-8">
-                  <h3 className="text-xl sm:text-2xl font-bold text-amber-700 mb-4">
-                    ✨ Points Clés à Retenir
-                  </h3>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {activeSacredNumber.keyInsights.map((insight, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="p-4 bg-white border-2 border-amber-200 rounded-lg hover:shadow-lg transition-shadow"
-                      >
-                        <p className="text-gray-700 leading-relaxed">🔢 {insight}</p>
-                      </motion.div>
-                    ))}
-                  </div>
+              {/* Comment calculer */}
+              <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border-2 border-blue-200">
+                <h3 className="text-xl sm:text-2xl font-bold text-blue-700 mb-3 flex items-center gap-2">
+                  <Calculator className="w-6 h-6" />
+                  Comment le Calculer
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  {activeSacredNumber.howToCalculate}
+                </p>
+              </div>
+
+              {/* Significations par nombre */}
+              <div className="mb-8">
+                <h3 className="text-xl sm:text-2xl font-bold text-amber-700 mb-4">
+                  📖 Significations des Nombres
+                </h3>
+                <div className="space-y-4">
+                  {Object.entries(activeSacredNumber.meaningByNumber).map(([num, meaning]) => (
+                    <motion.div
+                      key={num}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: parseInt(num) * 0.05 }}
+                      className="p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 bg-amber-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                          <span className="text-white text-xl font-bold">{num}</span>
+                        </div>
+                        <p className="text-gray-700 leading-relaxed pt-2">{meaning}</p>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
+              </div>
 
-                {/* Application pratique */}
-                <div className="mb-8 p-6 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 rounded-xl border-2 border-green-200">
-                  <h3 className="text-xl sm:text-2xl font-bold text-green-700 mb-3">
-                    🎯 Application Pratique
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
-                    {activeSacredNumber.practicalApplication}
-                  </p>
+              {/* Insights clés */}
+              <div className="mb-8">
+                <h3 className="text-xl sm:text-2xl font-bold text-amber-700 mb-4">
+                  ✨ Points Clés à Retenir
+                </h3>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {activeSacredNumber.keyInsights.map((insight, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="p-4 bg-white border-2 border-amber-200 rounded-lg hover:shadow-lg transition-shadow"
+                    >
+                      <p className="text-gray-700 leading-relaxed">🔢 {insight}</p>
+                    </motion.div>
+                  ))}
                 </div>
+              </div>
 
-                {/* Affirmation */}
-                <div className="p-6 bg-gradient-to-br from-amber-100 via-orange-100 to-yellow-100 rounded-xl border-2 border-amber-300 text-center">
-                  <h3 className="text-xl sm:text-2xl font-bold text-amber-800 mb-3">
-                    💫 Affirmation Numérologique
-                  </h3>
-                  <p className="text-gray-800 leading-relaxed text-lg sm:text-xl font-semibold italic">
-                    "{activeSacredNumber.affirmation}"
-                  </p>
-                </div>
+              {/* Application pratique */}
+              <div className="mb-8 p-6 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 rounded-xl border-2 border-green-200">
+                <h3 className="text-xl sm:text-2xl font-bold text-green-700 mb-3">
+                  🎯 Application Pratique
+                </h3>
+                <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
+                  {activeSacredNumber.practicalApplication}
+                </p>
+              </div>
 
-                {/* CTA */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="mt-8 text-center"
+              {/* Affirmation */}
+              <div className="p-6 bg-gradient-to-br from-amber-100 via-orange-100 to-yellow-100 rounded-xl border-2 border-amber-300 text-center">
+                <h3 className="text-xl sm:text-2xl font-bold text-amber-800 mb-3">
+                  💫 Affirmation Numérologique
+                </h3>
+                <p className="text-gray-800 leading-relaxed text-lg sm:text-xl font-semibold italic">
+                  "{activeSacredNumber.affirmation}"
+                </p>
+              </div>
+
+              {/* CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="mt-8 text-center"
+              >
+                <button
+                  onClick={() => setActiveTab('calculator')}
+                  className="px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-lg"
                 >
-                  <button
-                    onClick={() => setActiveTab('calculator')}
-                    className="px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-lg"
-                  >
-                    🔢 Calculer Mon Nombre {activeSacredNumber.title}
-                  </button>
-                </motion.div>
+                  🔢 Calculer Mon Nombre {activeSacredNumber.title}
+                </button>
               </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* CTA flottant */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
-          className="fixed bottom-8 right-8 z-50"
-        >
-          <button
-            onClick={() => setActiveTab('calculator')}
-            className="px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-bold rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 flex items-center gap-2"
-          >
-            <Calculator className="w-5 h-5" />
-            <span className="hidden sm:inline">Calculer</span>
-          </button>
-        </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-   
+
+      {/* CTA flottant */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1 }}
+        className="fixed bottom-8 right-8 z-50"
+      >
+        <button
+          onClick={() => setActiveTab('calculator')}
+          className="px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-bold rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 flex items-center gap-2"
+        >
+          <Calculator className="w-5 h-5" />
+          <span className="hidden sm:inline">Calculer</span>
+        </button>
+      </motion.div>
+    </div>
+
   );
 }

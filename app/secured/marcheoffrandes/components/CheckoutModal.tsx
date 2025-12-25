@@ -227,7 +227,6 @@ export default function CheckoutModal({
         console.error("⚠️ [CheckoutModal] Erreur ajout wallet:", walletErr);
       }
 
-      // Sauvegarde locale
       localStorage.setItem("last_simulated_purchase", JSON.stringify(transactionData));
       localStorage.setItem("payment_token", paymentToken);
       localStorage.setItem("transaction_id", transactionId);

@@ -169,7 +169,6 @@ export default function KnowledgePage() {
         </div>
       </div>
 
-      {/* Filtres par catégorie */}
       <div className="container mx-auto px-4 py-6">
         <div className="flex items-center gap-2 overflow-x-auto pb-2">
           <Filter className="w-5 h-5 text-gray-400 flex-shrink-0" />

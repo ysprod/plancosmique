@@ -1,24 +1,11 @@
 'use client';
-import { motion } from 'framer-motion';
-import { BookOpen, Download, ShoppingCart, Loader2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/lib/auth/AuthContext';
-import axios from 'axios';
 import { api } from '@/lib/api/client';
-
-interface Book {
-  _id: string;
-  bookId: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  price: number;
-  pageCount: number;
-  coverImage?: string;
-  category: string;
-  author: string;
-  isActive?: boolean;
-}
+import { useAuth } from '@/lib/auth/AuthContext';
+import { Book } from '@/lib/interfaces';
+import axios from 'axios';
+import { motion } from 'framer-motion';
+import { BookOpen, Download, Loader2, ShoppingCart } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function LivresPage() {
   const { user } = useAuth();
@@ -32,7 +19,6 @@ export default function LivresPage() {
     const fetchBooks = async () => {
       try {
         const response = await api.get('/books');
-        // Le backend peut retourner soit un tableau directement, soit un objet avec une propriété books
         const booksData = Array.isArray(response.data) ? response.data : (response.data?.books || []);
         setBooks(booksData);
       } catch (err) {
@@ -115,7 +101,7 @@ export default function LivresPage() {
               </h1>
             </div>
             <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-              Accédez instantanément à nos livres numériques en PDF. Téléchargez et conservez 
+              Accédez instantanément à nos livres numériques en PDF. Téléchargez et conservez
               ces connaissances précieuses pour toujours.
             </p>
           </motion.div>
@@ -214,8 +200,6 @@ export default function LivresPage() {
             ))
           )}
         </div>
-
-        {/* Info téléchargement */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -227,7 +211,7 @@ export default function LivresPage() {
             Téléchargement instantané
           </h3>
           <p className="text-gray-700">
-            Après paiement, vous recevrez un lien de téléchargement direct pour votre livre PDF. 
+            Après paiement, vous recevrez un lien de téléchargement direct pour votre livre PDF.
             Vous pourrez le télécharger et le conserver à vie sur tous vos appareils.
           </p>
         </motion.div>

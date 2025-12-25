@@ -10,6 +10,10 @@ export interface Book {
   author: string;
   isActive: boolean;
   createdAt: string;
+
+  
+  coverImage?: string;
+  updatedAt?: string;
 }
 
 
@@ -103,8 +107,23 @@ export interface UserData {
 
 
   createdAt: string;
+
+ 
+  
+ 
+  dateNaissance?: string;
+  genre?: string;
+  heureNaissance?: string;
+  nom?: string;
+  prenoms?: string;
+  paysNaissance?: string;
+  villeNaissance?: string;
+  carteDuCiel?: CarteDuCiel;
+  [key: string]: any;
 }
+
 type Category = 'animal' | 'vegetal' | 'beverage';
+
 export interface OfferingAlternative {
   category: Category;
   offeringId: string;
@@ -213,3 +232,70 @@ export interface ConsultationData {
 }
 
 export type GenerationStep = 'loading' | 'fetching' | 'generating' | 'success' | 'error';
+
+
+
+
+export type ConsultationType =
+  | 'SPIRITUALITE'
+  | 'VIE_PERSONNELLE'
+  | 'RELATIONS'
+  | 'PROFESSIONNEL'
+  | 'OFFRANDES'
+  | 'ASTROLOGIE_AFRICAINE'
+  | 'HOROSCOPE';
+export type ConsultationStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+
+export interface ConsultationFormData {
+  nom: string;
+  prenoms: string;
+  genre: string;
+  dateNaissance: string;
+  paysNaissance: string;
+  villeNaissance: string;
+  heureNaissance: string;
+  numeroSend?: string;
+  email?: string;
+}
+
+export interface ResultData {
+  consultationId: string;
+  sessionId: string;
+  timestamp: string;
+  carteDuCiel: CarteDuCiel;
+  missionDeVie: MissionDeVie;
+  metadata: {
+    processingTime: number;
+    tokensUsed: number;
+    model: string;
+  };
+  dateGeneration: string;
+}
+
+export interface Consultation {
+  _id: string;
+  clientId: {
+    _id: string;
+    email: string;
+  };
+  consultantId: string | null;
+  type: ConsultationType;
+  status: ConsultationStatus;
+  title: string;
+  description: string;
+  formData: ConsultationFormData;
+  result: any;
+  resultData: ResultData | null;
+  scheduledDate: string | null;
+  completedDate: string | null;
+  price: number;
+  isPaid: boolean;
+  paymentId: string | null;
+  rating: number | null;
+  review: string | null;
+  attachments: string[];
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+ 

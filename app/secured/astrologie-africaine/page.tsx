@@ -306,26 +306,6 @@ const GuidanceContent = () => (
             </motion.button>
           </div>
         </div>
-
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Sagesses Ancestrales</h3>
-          <div className="space-y-3">
-            {[
-              "« L'arbre qui tombe fait plus de bruit que la forêt qui pousse »",
-              "« Si tu veux aller vite, marche seul. Si tu veux aller loin, marchons ensemble »",
-              "« La patience peut cuire une pierre »",
-              "« C'est en regardant l'eau calme qu'on apprend à nager »"
-            ].map((proverbe, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ x: 4 }}
-                className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-4 border-l-4 border-emerald-500"
-              >
-                <p className="text-gray-700 italic">{proverbe}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   </motion.div>
@@ -465,7 +445,6 @@ export default function AstrologieAfricainePage() {
 
   return (
     <div className="relative min-h-screen bg-white overflow-hidden">
-      {/* Progress bar décoratif */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-amber-500 to-red-500 z-50 origin-left"
         initial={{ scaleX: 0 }}
@@ -473,7 +452,6 @@ export default function AstrologieAfricainePage() {
         transition={{ duration: 0.5 }}
       />
 
-      {/* Background subtil */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f5f5f5_1px,transparent_1px),linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-[size:60px_60px]" />
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-orange-100/30 to-amber-100/30 rounded-full blur-3xl" />
@@ -496,7 +474,7 @@ export default function AstrologieAfricainePage() {
             Découvrez la sagesse ancestrale et les traditions astrologiques africaines millénaires
           </p>
         </motion.div>
- 
+
         <div className="mb-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {tabs.map((tab) => (
@@ -532,8 +510,8 @@ export default function AstrologieAfricainePage() {
               </motion.button>
             ))}
           </div>
-        </div> 
-        
+        </div>
+
         <AnimatePresence mode="wait">
           {renderContent()}
         </AnimatePresence>

@@ -444,8 +444,7 @@ export default function SpiritualiteBlogPage() {
             </Link>
           </motion.div>
         )}
-
-        {/* Regular Articles Grid */}
+   
         <AnimatePresence mode="wait">
           {regularArticles.length > 0 ? (
             <motion.div

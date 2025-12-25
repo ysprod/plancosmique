@@ -14,6 +14,7 @@ const ErrorAlert = memo(({ message }: ErrorAlertProps) => (
              rounded-xl flex items-start gap-2"
   >
     <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+  
     <p className="text-xs text-red-700 dark:text-red-300 leading-relaxed">
       {message}
     </p>

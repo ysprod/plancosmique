@@ -199,7 +199,6 @@ const SkyChart = memo(({ carteDuCiel }: { carteDuCiel?: CarteDuCiel }) => {
           </span>
         </motion.h2>
 
-        {/* Positions principales */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
           {mainPositions.map((position, index) => (
             <PositionCard key={index} position={position} index={index} />

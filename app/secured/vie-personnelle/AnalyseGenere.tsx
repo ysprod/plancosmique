@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { motion } from 'framer-motion';
-import { 
-  ArrowLeft, 
-  CheckCircle2, 
-  Clock, 
-  Sparkles, 
-  User, 
-  Bell,
-  Mail
+import {
+  CheckCircle2,
+  Clock,
+  Mail,
+  Sparkles,
+  User
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { memo, useCallback } from 'react';
@@ -103,10 +101,7 @@ export default function AnalyseGenere() {
   return (
     <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
                   dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
-      
-     
-
-      {/* Contenu principal */}
+          
       <div className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -116,10 +111,8 @@ export default function AnalyseGenere() {
                    dark:border-gray-700 p-6 sm:p-8 space-y-6"
         >
           
-          {/* Icône succès */}
           <SuccessIcon />
 
-          {/* Titre */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -139,8 +132,6 @@ export default function AnalyseGenere() {
             <TimelineBadge />
           </div>
 
-
-          {/* Message principal */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -158,7 +149,6 @@ export default function AnalyseGenere() {
             </p>
           </motion.div>
 
-          {/* Garantie confidentialité */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -170,7 +160,6 @@ export default function AnalyseGenere() {
             </p>
           </motion.div>
 
-          {/* Cards informatives */}
           <div className="space-y-3">
             <InfoCard
               icon={User}
@@ -192,9 +181,7 @@ export default function AnalyseGenere() {
             />
           </div>
 
-         
 
-          {/* Footer message */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -205,7 +192,6 @@ export default function AnalyseGenere() {
             Nous vous remercions pour votre confiance. 🙏
           </motion.p>
 
-           {/* Actions */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}

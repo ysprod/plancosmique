@@ -132,16 +132,3 @@ export const CONSULTATION_CHOICES: ConsultationChoice[] = [
     }
   },
 ];
-
-export const CONSULTATION_TYPE_MAP: Record<string, string> = {
-  amoureuse: 'RELATIONS',
-  couple: 'RELATIONS',
-  harmonie: 'RELATIONS',
-  communication: 'RELATIONS',
-  sexualite: 'RELATIONS',
-  famille: 'RELATIONS',
-  amitie: 'RELATIONS',
-  rupture: 'RELATIONS',
-  karma: 'RELATIONS',
-  rencontre: 'RELATIONS',
-};

@@ -8,6 +8,5 @@ export { CartModal } from './CartModal';
 export { default as CheckoutModal } from './CheckoutModal';
 export { Header } from './Header';
 
-// Export types and data
 export * from './types';
 export * from './animations';

@@ -132,16 +132,4 @@ export const CONSULTATION_CHOICES: ConsultationChoice[] = [
     }
   },
 ];
-
-export const CONSULTATION_TYPE_MAP: Record<string, string> = {
-  carriere: 'PROFESSIONNEL',
-  reconversion: 'PROFESSIONNEL',
-  entreprise: 'PROFESSIONNEL',
-  partenariat: 'PROFESSIONNEL',
-  finances: 'PROFESSIONNEL',
-  leadership: 'PROFESSIONNEL',
-  blocages: 'PROFESSIONNEL',
-  timing: 'PROFESSIONNEL',
-  vocation: 'PROFESSIONNEL',
-  conflit: 'PROFESSIONNEL',
-};
+ 

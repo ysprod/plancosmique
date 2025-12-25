@@ -22,7 +22,6 @@ const categories = [
   { id: 'famille', icon: Users, label: 'Famille', color: 'from-green-500 to-emerald-600' }
 ];
 
-// Sample predictions
 const predictions: Record<string, string[]> = {
   amour: [
     "Les étoiles s'alignent en votre faveur. Une rencontre marquante se profile à l'horizon dans les 3 prochaines semaines.",

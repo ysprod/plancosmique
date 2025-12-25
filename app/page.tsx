@@ -119,7 +119,6 @@ export default function WelcomePage() {
               Découvrez ce que votre âme est venue accomplir.
             </p>
 
-            {/* CTA mobile-optimized */}
             <Link href="/secured/profil" className="block">
               <motion.button
                 whileHover={{ scale: 1.02 }}

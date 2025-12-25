@@ -109,9 +109,7 @@ export default function MonProfilPage() {
     if (user?._id) {
       setIsLoadingUser(true);
       api.get(`/users/me`)
-        .then(res => {
-          setUserData(res.data);
-        })
+        .then(res => { setUserData(res.data); })
         .catch(err => {
           console.error('Erreur chargement utilisateur:', err);
           setUserData(null);

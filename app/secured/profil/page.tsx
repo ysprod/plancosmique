@@ -19,9 +19,6 @@ import { useEffect, useState, memo, useMemo, useCallback } from "react";
 import { api } from "@/lib/api/client";
 import Slide4Section from "../cinqetoiles/Slide4Section";
 
-// =====================================================
-// TYPES & INTERFACES
-// =====================================================
 interface Category {
   id: string;
   title: string;
@@ -47,9 +44,6 @@ interface HighlightCard {
   badge?: string;
 }
 
-// =====================================================
-// CONSTANTS
-// =====================================================
 const HIGHLIGHT_CARDS: HighlightCard[] = [
   {
     id: "carte-du-ciel",
@@ -154,9 +148,6 @@ const MAIN_CATEGORIES: Category[] = [
   },
 ];
 
-// =====================================================
-// ANIMATED BACKGROUND (Mémorisé)
-// =====================================================
 const AnimatedBackground = memo(() => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40 hidden sm:block">
     <motion.div
@@ -179,9 +170,6 @@ const AnimatedBackground = memo(() => (
 ));
 AnimatedBackground.displayName = 'AnimatedBackground';
 
-// =====================================================
-// TOP PROGRESS BAR (Mémorisé)
-// =====================================================
 const TopProgressBar = memo(() => (
   <motion.div
     className="fixed top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 via-pink-500 to-violet-500 z-50"
@@ -192,18 +180,16 @@ const TopProgressBar = memo(() => (
 ));
 TopProgressBar.displayName = 'TopProgressBar';
 
-// =====================================================
-// HIGHLIGHT CARD (Nouveau composant)
-// =====================================================
-const HighlightCard = memo(({ 
-  card, 
-  index 
-}: { 
-  card: HighlightCard; 
+
+const HighlightCard = memo(({
+  card,
+  index
+}: {
+  card: HighlightCard;
   index: number;
 }) => {
   const CardIcon = card.icon;
-  
+
   return (
     <Link href={card.link}>
       <motion.div
@@ -292,18 +278,16 @@ const HighlightCard = memo(({
 });
 HighlightCard.displayName = 'HighlightCard';
 
-// =====================================================
-// CATEGORY CARD (Mémorisé)
-// =====================================================
-const CategoryCard = memo(({ 
-  category, 
-  index 
-}: { 
-  category: Category; 
+
+const CategoryCard = memo(({
+  category,
+  index
+}: {
+  category: Category;
   index: number;
 }) => {
   const CategoryIcon = category.icon;
-  
+
   return (
     <Link href={category.link}>
       <motion.div
@@ -381,9 +365,7 @@ const CategoryCard = memo(({
 });
 CategoryCard.displayName = 'CategoryCard';
 
-// =====================================================
-// HEADER COMPONENT (Mémorisé)
-// =====================================================
+
 const Header = memo(({ username }: { username?: string }) => (
   <motion.div
     initial={{ opacity: 0, y: 15 }}
@@ -424,9 +406,7 @@ const Header = memo(({ username }: { username?: string }) => (
 ));
 Header.displayName = 'Header';
 
-// =====================================================
-// MAIN COMPONENT
-// =====================================================
+
 export default function ProfilPage() {
   const { user } = useAuth();
   const [userdata, setUserdata] = useState<any>(null);
@@ -450,8 +430,6 @@ export default function ProfilPage() {
       .finally(() => setLoading(false));
   }, [user?._id]);
 
-  // Mémoisation
-  const isPremium = useMemo(() => userdata?.premium, [userdata?.premium]);
   const username = useMemo(() => user?.username, [user?.username]);
 
   return (
@@ -460,13 +438,9 @@ export default function ProfilPage() {
       <TopProgressBar />
 
       <div className="relative z-10 px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 max-w-7xl mx-auto">
-         {!userdata?.premium && (
-         <Header username={username} />
+        {!userdata?.premium && (
+          <Header username={username} />
         )}
-        
-        
-
-        {/* HIGHLIGHT CARDS (Carte du Ciel + 5 Portes) */}
         {userdata?.premium && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -480,7 +454,7 @@ export default function ProfilPage() {
           </motion.div>
         )}
 
-        {/* MAIN CATEGORIES */}
+
         {userdata?.premium && (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3 md:gap-4 mb-6 sm:mb-8">
             {MAIN_CATEGORIES.map((category, index) => (
@@ -489,7 +463,6 @@ export default function ProfilPage() {
           </div>
         )}
 
-        {/* NON-PREMIUM: CONSULTATION SECTION */}
         {!userdata?.premium && !loading && (
           <div className="max-w-7xl mx-auto">
             <AnimatePresence mode="wait">

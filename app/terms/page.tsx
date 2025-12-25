@@ -318,6 +318,7 @@ export default function TermsPage() {
                     </Section>
 
                     <ContactInfo />
+                    
                     <ActionButtons />
                 </motion.div>
             </div>

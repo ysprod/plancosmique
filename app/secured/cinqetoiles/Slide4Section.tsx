@@ -7,7 +7,7 @@ import { ConsultationChoice, FormData, FormErrors, OfferingAlternative, StepType
 import { AnimatePresence, motion } from 'framer-motion';
 import { Loader2, Sparkles, Star } from 'lucide-react';
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import PaymentProcessing from '../vie-personnelle/slidesection/PaymentProcessing';
+import PaymentProcessing from '../vie-personnelle/PaymentProcessing';
 import BackButton from './BackButton';
 import ConsultationCard from './ConsultationCard';
 import ConsultationForm from './ConsultationForm';
@@ -506,8 +506,7 @@ function Slide4Section() {
               <PaymentProcessing />
             </motion.div>
           )}
-
-          {/* GOLD STEP */}
+     
           {step === 'gold' && consultationId && !paymentLoading && consultation && (
             <motion.div
               key="gold"

@@ -1,14 +1,9 @@
 'use client';
-
 import { memo, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { CarteDuCielData } from '@/lib/types/astrology.types';
 import { extractCinqPortes } from '@/lib/utils/astrology.utils';
- 
 
-// ============================================================
-// TYPES
-// ============================================================
 interface CinqPortesSectionProps {
   carteDuCiel: CarteDuCielData | null;
   isPremium: boolean;
@@ -24,9 +19,6 @@ interface PorteCardProps {
   isPremium: boolean;
 }
 
-// ============================================================
-// COMPOSANT: PorteCard (Mémoïsé)
-// ============================================================
 const PorteCard = memo<PorteCardProps>(({
   label,
   valeur,
@@ -40,12 +32,12 @@ const PorteCard = memo<PorteCardProps>(({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ 
+      transition={{
         delay: index * 0.08,
         duration: 0.4,
         ease: [0.25, 0.46, 0.45, 0.94]
       }}
-      whileHover={{ 
+      whileHover={{
         scale: 1.03,
         y: -4,
         transition: { duration: 0.2 }
@@ -85,7 +77,7 @@ const PorteCard = memo<PorteCardProps>(({
                 {valeur}
               </h3>
             </div>
-            
+
             {/* Icon */}
             <motion.div
               whileHover={{ rotate: 360, scale: 1.2 }}
@@ -144,9 +136,6 @@ const PorteCard = memo<PorteCardProps>(({
 
 PorteCard.displayName = 'PorteCard';
 
-// ============================================================
-// COMPOSANT PRINCIPAL: CinqPortesSection
-// ============================================================
 const CinqPortesSection = memo<CinqPortesSectionProps>(({
   carteDuCiel,
   isPremium
@@ -195,7 +184,7 @@ const CinqPortesSection = memo<CinqPortesSectionProps>(({
             Découvrez les 5 dimensions fondamentales de votre être
           </p>
         </div>
-        
+
         {isPremium && (
           <motion.div
             animate={{ rotate: [0, 10, -10, 0] }}

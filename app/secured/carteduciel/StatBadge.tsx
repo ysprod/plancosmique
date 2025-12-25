@@ -54,4 +54,5 @@ const StatBadge = memo(({
 ));
 
 StatBadge.displayName = 'StatBadge';
+
 export default StatBadge;

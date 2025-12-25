@@ -99,7 +99,6 @@ export default function AstrologiePage() {
             Découvre Ton Chemin de Vie
           </motion.p>
 
-          {/* Description */}
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -111,7 +110,6 @@ export default function AstrologiePage() {
           </motion.p>
         </motion.div>
 
-        {/* Grid des 4 sous-rubriques */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
           {astrologySections.map((section, index) => {
             const Icon = ICONS[section.icon as keyof typeof ICONS];
@@ -131,10 +129,7 @@ export default function AstrologiePage() {
                     whileHover={{ x: '100%' }}
                     transition={{ duration: 0.6 }}
                   />
-
-                  {/* Contenu */}
                   <div className="relative z-10">
-                    {/* Icône */}
                     <motion.div
                       whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                       transition={{ duration: 0.5 }}
@@ -142,18 +137,12 @@ export default function AstrologiePage() {
                     >
                       <Icon className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                     </motion.div>
-
-                    {/* Titre */}
                     <h2 className={`text-xl sm:text-2xl font-bold bg-gradient-to-r ${section.color} bg-clip-text text-transparent mb-3`}>
                       {section.title}
                     </h2>
-
-                    {/* Description */}
                     <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4">
                       {section.description}
                     </p>
-
-                    {/* CTA animé */}
                     <motion.div
                       className="flex items-center gap-2 text-sm sm:text-base font-bold text-purple-700 group-hover:text-purple-900 transition-colors"
                       whileHover={{ x: 4 }}
@@ -162,8 +151,6 @@ export default function AstrologiePage() {
                       <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                     </motion.div>
                   </div>
-
-                  {/* Dégradé de fond au survol */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${section.gradient} opacity-0 group-hover:opacity-5 transition-opacity rounded-2xl sm:rounded-3xl`} />
                 </motion.div>
               </Link>

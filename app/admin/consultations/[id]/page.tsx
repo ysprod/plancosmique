@@ -70,7 +70,7 @@ export default function ConsultationResultPage() {
   }, [router]);
 
   const handleModifyAnalysis = useCallback((id: string) => {
-    router.push(`/secured/genereanalyse?id=${id}`);
+    router.push(`/admin/genereanalyse?id=${id}`);
   }, [router]);
 
   const handleNotifyUser = useCallback(async (id: string) => {

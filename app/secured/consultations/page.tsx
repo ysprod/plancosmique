@@ -2,7 +2,7 @@
 'use client';
 import { api } from '@/lib/api/client';
 import { formatDate } from '@/lib/functions';
-import { CarteDuCiel, MissionDeVie } from '@/lib/interfaces';
+import { Consultation, ConsultationStatus, ConsultationType } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   AlertCircle, Calendar, CheckCircle, Clock, Download,
@@ -11,69 +11,6 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-type ConsultationType =
-  | 'SPIRITUALITE'
-  | 'VIE_PERSONNELLE'
-  | 'RELATIONS'
-  | 'PROFESSIONNEL'
-  | 'OFFRANDES'
-  | 'ASTROLOGIE_AFRICAINE'
-  | 'HOROSCOPE';
-type ConsultationStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
-
-interface ConsultationFormData {
-  nom: string;
-  prenoms: string;
-  genre: string;
-  dateNaissance: string;
-  paysNaissance: string;
-  villeNaissance: string;
-  heureNaissance: string;
-  numeroSend?: string;
-  email?: string;
-}
-
-interface ResultData {
-  consultationId: string;
-  sessionId: string;
-  timestamp: string;
-  carteDuCiel: CarteDuCiel;
-  missionDeVie: MissionDeVie;
-  metadata: {
-    processingTime: number;
-    tokensUsed: number;
-    model: string;
-  };
-  dateGeneration: string;
-}
-
-interface Consultation {
-  _id: string;
-  clientId: {
-    _id: string;
-    email: string;
-  };
-  consultantId: string | null;
-  type: ConsultationType;
-  status: ConsultationStatus;
-  title: string;
-  description: string;
-  formData: ConsultationFormData;
-  result: any;
-  resultData: ResultData | null;
-  scheduledDate: string | null;
-  completedDate: string | null;
-  price: number;
-  isPaid: boolean;
-  paymentId: string | null;
-  rating: number | null;
-  review: string | null;
-  attachments: string[];
-  notes: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
 
 const TYPE_LABELS: Record<ConsultationType, { label: string; color: string; icon: typeof Star }> = {
   SPIRITUALITE: { label: 'Spiritualité', color: 'from-purple-500 to-pink-500', icon: Sparkles },
@@ -163,12 +100,10 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ consultation, index
         <StatusBadge status={consultation.status} />
       </div>
 
-      {/* Type Badge */}
       <div className="mb-4">
         <TypeBadge type={consultation.type} />
       </div>
 
-      {/* Info Client */}
       <div className="space-y-2 mb-4 p-4 bg-black/20 rounded-xl">
         <div className="flex items-center gap-2 text-sm text-purple-200">
           <User className="w-4 h-4 flex-shrink-0" />
@@ -193,7 +128,6 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ consultation, index
         </div>
       </div>
 
-      {/* Metadata */}
       <div className="flex flex-wrap gap-3 text-xs text-purple-300 mb-4">
         <div className="flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5" />
@@ -207,7 +141,6 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ consultation, index
         )}
       </div>
 
-      {/* Actions */}
       {consultation.status === 'COMPLETED' && (
         <div className="flex gap-2">
           <button
@@ -435,21 +368,21 @@ export default function ConsultationsListPage() {
                 : 'Essayez de modifier vos filtres de recherche'}
             </p>
 
-              {consultations.length >0 && (
-            <button
-              onClick={() => {
-                if (consultations.length === 0) {
-                  router.push('/secured/vie-personnelle');
-                } else {
-                  setSearchQuery('');
-                  setTypeFilter('ALL');
-                  setStatusFilter('ALL');
-                }
-              }}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all"
-            >           <Filter className="w-5 h-5" />
-                  Réinitialiser les filtres               
-            </button> )  }
+            {consultations.length > 0 && (
+              <button
+                onClick={() => {
+                  if (consultations.length === 0) {
+                    router.push('/secured/vie-personnelle');
+                  } else {
+                    setSearchQuery('');
+                    setTypeFilter('ALL');
+                    setStatusFilter('ALL');
+                  }
+                }}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all"
+              >           <Filter className="w-5 h-5" />
+                Réinitialiser les filtres
+              </button>)}
           </motion.div>
         ) : (
           <div className="grid gap-6">

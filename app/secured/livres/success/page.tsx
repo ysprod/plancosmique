@@ -30,9 +30,8 @@ function BookSuccessContent() {
       }
 
       try {
-        // Vérifier l'achat et récupérer le token de téléchargement
         const response = await api.post(`/books/${bookId}/check-purchase`, { phone });
-        
+
         if (response.data?.downloadUrl && response.data?.token) {
           setPurchaseInfo(response.data);
         } else {
@@ -101,7 +100,6 @@ function BookSuccessContent() {
         className="max-w-2xl w-full"
       >
         <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-12 text-center border-2 border-green-200">
-          {/* Icône de succès */}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -111,7 +109,6 @@ function BookSuccessContent() {
             <CheckCircle2 className="w-14 h-14 text-white" />
           </motion.div>
 
-          {/* Titre */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -161,7 +158,7 @@ function BookSuccessContent() {
             <div className="flex items-start gap-3">
               <BookOpen className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <p className="text-sm text-gray-700 text-left">
-                Votre livre sera également disponible dans votre espace personnel. 
+                Votre livre sera également disponible dans votre espace personnel.
                 Vous pourrez le télécharger à nouveau à tout moment depuis votre profil.
               </p>
             </div>

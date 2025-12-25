@@ -1,6 +1,6 @@
 'use client';
 import { AnimatePresence, motion } from 'framer-motion';
-import Slide4Section from './slidesection/Slide4Section';
+import Slide4Section from '../vie-personnelle/Slide4Section';
 
 const ProfessionnelPage = () => {
   return (
@@ -32,7 +32,8 @@ const ProfessionnelPage = () => {
             transition={{ duration: 0.5 }}
             className="bg-white"
           >
-            <Slide4Section />
+            <Slide4Section rubriqueId="694d32075b9d9dfa00bed231" typeconsultation="PROFESSIONNEL" />
+
           </motion.div>
         </AnimatePresence>
       </div>

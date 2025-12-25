@@ -5,7 +5,7 @@ import { useAuth } from '@/lib/auth/AuthContext';
 import { OfferingAlternative, WalletOffering } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useMemo, useState } from 'react';
-import PaymentProcessing from '../vie-personnelle/slidesection/PaymentProcessing';
+import PaymentProcessing from '../vie-personnelle/PaymentProcessing';
 import ErrorToast from './ErrorToast';
 import GenereAnalyseContent from './GenereAnalyseContent';
 import OfferingStep from './OfferingStep';
@@ -111,13 +111,11 @@ export default function ConsulterGoldContentComponent({
                 throw new Error(consumeRes.data?.message || 'Erreur lors de la consommation');
             }
 
-            // 2. Mise à jour du statut de consultation
             await api.patch(`/consultations/${consultationId}`, {
                 status: 'paid',
                 paymentMethod: 'wallet_offerings',
             });
 
-            // 3. Récupération des infos utilisateur pour la carte du ciel
             const userRes = await api.get('/users/me');
             if (userRes.status !== 200) {
                 throw new Error('Impossible de récupérer les infos utilisateur');
@@ -132,7 +130,7 @@ export default function ConsulterGoldContentComponent({
                 birthCountry: userData.birthCountry || userData.paysNaissance || userData.country,
                 birthCoordinates: userData.birthCoordinates
             };
-            // Vérification minimale améliorée
+   
             if (!birthPayload.birthDate || !birthPayload.birthTime || !birthPayload.birthPlace) {
                 throw new Error('Profil incomplet : date, heure ou lieu de naissance manquant.');
             }
@@ -214,7 +212,7 @@ export default function ConsulterGoldContentComponent({
             setIsProcessing(false);
 
         }
-    }, [consultationId, user?._id]); // Dépendances minimales
+    }, [consultationId, user?._id]);  
 
     const handleBack = useCallback(() => {
         if (typeof window !== 'undefined') {
@@ -229,15 +227,14 @@ export default function ConsulterGoldContentComponent({
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50/50 via-white to-purple-50/20 \
                       dark:from-gray-950 dark:via-gray-900 dark:to-purple-950/5">
-            {/* Background décoratif minimal */}
+      
             <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
                 <div className="absolute -top-20 -right-20 w-64 h-64 bg-purple-200/5 \
                               dark:bg-purple-500/3 rounded-full blur-3xl" />
                 <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-blue-200/5 \
                               dark:bg-blue-500/3 rounded-full blur-3xl" />
             </div>
-
-            {/* Contenu principal avec container fluide */}
+ 
             <div className="relative">
                 <AnimatePresence mode="wait">
                     {/* OFFERING STEP */}
@@ -272,9 +269,8 @@ export default function ConsulterGoldContentComponent({
                                 <PaymentProcessing />
                             </div>
                         </motion.div>
-                    )}
+                    )} 
 
-                    {/* ANALYSE STEP */}
                     {step === 'analyse' && (
                         <motion.div
                             key="analyse"
@@ -288,9 +284,8 @@ export default function ConsulterGoldContentComponent({
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </div>
+            </div> 
 
-            {/* ERROR TOAST (rendu conditionnel optimisé) */}
             <AnimatePresence>
                 {showErrorToast && (
                     <ErrorToast

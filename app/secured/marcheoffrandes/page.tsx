@@ -491,7 +491,6 @@ export default function MarcheOffrandes() {
         onClose={closeCheckout}
       />
 
-      {/* Espacement bottom */}
       <div className="h-16 sm:h-20" />
     </div>
   );

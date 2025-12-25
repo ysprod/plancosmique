@@ -21,7 +21,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
- 
+
 interface SubjectHeaderProps {
   sujet: SubjectInfo;
 }
@@ -186,12 +186,15 @@ export default function ConsultationResultPage() {
           >
             <Loader2 className="w-full h-full text-white" />
           </motion.div>
+
           <h2 className="text-2xl font-bold text-white mb-3">
             Chargement de votre analyse
           </h2>
+
           <p className="text-purple-200 mb-4">
             Préparation de votre thème natal complet...
           </p>
+
           <div className="flex items-center justify-center gap-2 text-sm text-purple-300">
             <Sparkles className="w-4 h-4 animate-pulse" />
             <span>Veuillez patienter</span>
@@ -239,7 +242,7 @@ export default function ConsultationResultPage() {
             <div className="flex-1 text-center">
               <h1 className="text-lg sm:text-xl font-black text-white flex items-center justify-center gap-2">
                 <Star className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-300" />
-                 <span className="sm:hidden">Analyse</span>
+                <span className="sm:hidden">Analyse</span>
               </h1>
             </div>
 

@@ -106,7 +106,7 @@ const processUserData = (userData: UserData | null): ProcessedUserData | null =>
     carteDuCiel: userData.carteDuCiel
   };
 };
- 
+
 export default function MonProfilPage() {
   const { user, isLoading: authLoading } = useAuth();
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -151,7 +151,7 @@ export default function MonProfilPage() {
                    p-3 sm:p-6 space-y-4 sm:space-y-6">
       <div className="max-w-4xl mx-auto">
         <ProfileHeader userData={processedData} />
-        <br />    <br />  
+        <br /><br />
         <CinqPortesSection
           carteDuCiel={processedData?.carteDuCiel?.carteDuCiel ?? null}
           isPremium={user.premium}

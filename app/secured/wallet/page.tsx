@@ -183,7 +183,6 @@ const FilterBar = ({
       </button>
     </div>
 
-    {/* Filtres et tri */}
     <div className="flex flex-wrap gap-2">
       <select
         value={filter}

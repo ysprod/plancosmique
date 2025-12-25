@@ -6,19 +6,23 @@ import { ConsultationChoice, ConsultationData, OfferingAlternative, UserData, Wa
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { containerVariants, processingVariants } from '../../../../lib/animation.constants';
-import OfferingStep from '../../consulter/OfferingStep';
-import AnalyseGenere from '../../genereanalyse/AnalyseGenere';
-import type { StepType } from './consultation.types';
+import { containerVariants, processingVariants } from '../../../lib/animation.constants';
+import OfferingStep from './OfferingStep';
+import AnalyseGenere from './AnalyseGenere'; 
 import ConsultationSelection from './ConsultationSelection';
 import ErrorToast from './ErrorToast';
 import LoadingOverlay from './LoadingOverlay';
 import PaymentProcessing from './PaymentProcessing';
 import { getRubriqueById } from '@/lib/api/services/rubriques.service';
 
-const RUBRIQUE_ID = '694cde9bde3392d3751a0fe9';
+interface Slide4SectionProps {
+  rubriqueId: string;
+  typeconsultation: string;
+}
 
-function Slide4SectionComponent() {
+export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm'| 'consulter'| 'genereanalyse';
+
+function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionProps) {
   const router = useRouter();
   const { user } = useAuth();
   const [step, setStep] = useState<StepType>('selection');
@@ -85,7 +89,7 @@ function Slide4SectionComponent() {
       if (choicesFetchedRef.current) return;
       choicesFetchedRef.current = true;
   
-      getRubriqueById(RUBRIQUE_ID)
+      getRubriqueById(rubriqueId)
         .then(rubrique => {
           const arr = rubrique.consultationChoices || [];
           setChoices(arr);
@@ -183,7 +187,7 @@ function Slide4SectionComponent() {
       console.log('formData généré pour payload:', mappedFormData);
       const payload = {
         serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
-        type: 'VIE_PERSONNELLE',
+        type: typeconsultation,
         title: choice.title,
         formData: mappedFormData,
         description: choice.description,

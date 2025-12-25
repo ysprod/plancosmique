@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import { AlertCircle, Info, Sparkles } from 'lucide-react';
 import React from 'react';
 import { birthCountries } from '@/lib/birthCountries';
-import InputField from '../vie-personnelle/slidesection/InputField';
-import SelectField from '../vie-personnelle/slidesection/SelectField';
-import { GENRE_OPTIONS } from '../vie-personnelle/slidesection/genreOptions';
+import InputField from '../vie-personnelle/InputField';
+import SelectField from '../vie-personnelle/SelectField';
+import { GENRE_OPTIONS } from '../vie-personnelle/genreOptions';
 
 interface Props {
   form: any;
@@ -75,7 +75,6 @@ const ConsultationForm: React.FC<Props> = ({
           />
         </div>
 
-        {/* Genre */}
         <SelectField
           label="Genre"
           name="genre"
