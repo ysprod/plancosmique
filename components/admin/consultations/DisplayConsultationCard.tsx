@@ -40,6 +40,7 @@ interface ConsultationCardProps {
     consultation: AnalyseAstrologique;
     onModifyAnalysis: (id: string) => void;
     onNotifyUser: (id: string) => void;
+    notifiedback: boolean;
 }
 
 // =====================================================
@@ -209,7 +210,7 @@ const AnalysisPreview = memo(({ analysis }: { analysis: any }) => {
             >
                 <div className="flex items-center gap-1.5">
                     <motion.div
-                        animate={{ 
+                        animate={{
                             rotate: isMainExpanded ? [0, 10, -10, 0] : 0,
                             scale: isMainExpanded ? [1, 1.1, 1] : 1
                         }}
@@ -315,16 +316,16 @@ AnalysisPreview.displayName = 'AnalysisPreview';
 // =====================================================
 // INFO CARD (Nouveau composant pour infos du sujet)
 // =====================================================
-const InfoCard = memo(({ 
-    icon: Icon, 
-    label, 
-    value, 
+const InfoCard = memo(({
+    icon: Icon,
+    label,
+    value,
     iconColor,
     index = 0
-}: { 
-    icon: any; 
-    label: string; 
-    value: string; 
+}: {
+    icon: any;
+    label: string;
+    value: string;
     iconColor: string;
     index?: number;
 }) => (
@@ -392,9 +393,13 @@ const DisplayConsultationCard = memo(({
     consultation,
     onModifyAnalysis,
     onNotifyUser,
+    notifiedback
 }: ConsultationCardProps) => {
     const consultationId = useMemo(() => consultation?.consultationId, [consultation]);
     const sujet = useMemo(() => consultation?.carteDuCiel?.sujet, [consultation]);
+
+    // State local pour désactiver le bouton après clic
+    const [notified, setNotified] = useState(notifiedback);
 
     // Handlers mémorisés
     const handleModify = useCallback(() => {
@@ -402,8 +407,11 @@ const DisplayConsultationCard = memo(({
     }, [consultationId, onModifyAnalysis]);
 
     const handleNotify = useCallback(() => {
-        if (consultationId) onNotifyUser(consultationId);
-    }, [consultationId, onNotifyUser]);
+        if (consultationId && !notified) {
+            setNotified(true);
+            onNotifyUser(consultationId);
+        }
+    }, [consultationId, onNotifyUser, notified]);
 
     if (!consultation || !sujet) return null;
 
@@ -453,8 +461,9 @@ const DisplayConsultationCard = memo(({
                 <ActionButton
                     onClick={handleNotify}
                     icon={Mail}
-                    label="Notifier"
+                    label={notified || consultation.analysisNotified === true ? 'Déjà notifié' : 'Notifier'}
                     gradient="from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800"
+                    disabled={notified || consultation.analysisNotified === true}
                 />
                 <ActionButton
                     onClick={handleModify}

@@ -1,32 +1,7 @@
 import { ConsultationChoice } from "@/lib/interfaces";
 
-export const CONSULTATION_CHOICES: ConsultationChoice[] = [
-  {
-    id: 'amoureuse',
-    title: 'MA RELATION AMOUREUSE FUTURE',
-    description:
-      "Qui vais-je rencontrer ? Quand la rencontre aura-t-elle lieu ? Je veux connaître le profil de mon futur partenaire et les circonstances de notre rencontre pour m'y préparer consciemment.",
-    offering: {
-      alternatives: [
-        { category: 'animal', offeringId: '6945ae01b8af14d5f56cec16', quantity: 1 },
-        { category: 'vegetal', offeringId: '6945ae01b8af14d5f56cec14', quantity: 1 },
-        { category: 'beverage', offeringId: '6945ae01b8af14d5f56cec15', quantity: 1 },
-      ]
-    }
-  },
-  {
-    id: 'couple',
-    title: 'MON COUPLE ET NOTRE DESTINÉE COMMUNE',
-    description:
-      "Comprendre ma relation actuelle. Je veux savoir si c'est la bonne personne pour moi, où va notre relation et comment créer une union plus forte et plus harmonieuse.",
-    offering: {
-      alternatives: [
-        { category: 'animal', offeringId: '6945ae01b8af14d5f56cec16', quantity: 1 },
-        { category: 'vegetal', offeringId: '6945ae01b8af14d5f56cec14', quantity: 1 },
-        { category: 'beverage', offeringId: '6945ae01b8af14d5f56cec15', quantity: 1 },
-      ]
-    }
-  },
+export const CONSULTATION_CHOICES: ConsultationChoice[] = [  
+  
   {
     id: 'harmonie',
     title: 'HARMONIE ET COMPATIBILITÉ ASTROLOGIQUE',

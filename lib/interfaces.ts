@@ -63,6 +63,7 @@ export interface Section {
 }
 
 export interface AnalyseAstrologique {
+  analysisNotified: boolean;
   _id: string;
   userId: string;
   consultationId: string;

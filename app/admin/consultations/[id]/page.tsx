@@ -18,6 +18,8 @@ export default function ConsultationResultPage() {
 
   const [analyse, setAnalyse] = useState<AnalyseAstrologique | null>(null);
   const [loading, setLoading] = useState(true);
+      const [notified, setNotified] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<{
     message: string;
@@ -46,9 +48,11 @@ export default function ConsultationResultPage() {
       }
 
       const data = response.data;
+      console.log('✅ Analyse récupérée:', data);
 
       if (data?.analyse) {
         setAnalyse(data.analyse);
+        setNotified(data.analysisNotified === true);
       } else {
         throw new Error('Analyse non disponible');
       }
@@ -96,6 +100,7 @@ export default function ConsultationResultPage() {
     return <ErrorState error={error || 'Analyse introuvable'} onRetry={handleBack} />;
   }
 
+  console.log('✅ Analyse chargée:', analyse);
   return (
     <div className="bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
       <PageHeader onBack={handleBack} />
@@ -114,6 +119,7 @@ export default function ConsultationResultPage() {
           consultation={analyse}
           onModifyAnalysis={handleModifyAnalysis}
           onNotifyUser={handleNotifyUser}
+          notifiedback={notified}
         />
       </motion.div>
       

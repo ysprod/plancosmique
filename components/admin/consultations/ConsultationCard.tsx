@@ -349,6 +349,18 @@ const ConsultationCard = memo(({
                         <Eye className="w-3 h-3" />
                         Voir l'analyse
                     </a>)}
+
+                {consultation.analysisNotified === true && (
+                    <span
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-gradient-to-r from-emerald-400 via-green-500 to-lime-400 text-white shadow-lg border-0 animate-pulse ring-2 ring-green-300/40 dark:from-emerald-600 dark:via-green-700 dark:to-lime-600 dark:text-white dark:ring-green-700/40"
+                        title="Le client a déjà été notifié"
+                    >
+                        <Mail className="w-3 h-3 animate-bounce" />
+                        Déjà Notifié
+                    </span>
+                )}
+
+
                 <button
                     onClick={() => onGenerateAnalysis(consultation.id)}
                     disabled={isGenerating || hasAnalysis}
@@ -362,7 +374,7 @@ const ConsultationCard = memo(({
                     <Sparkles className={`w-3 h-3 ${isGenerating ? 'animate-spin' : ''}`} />
                     {isGenerating ? 'Génération' : hasAnalysis ? 'Déjà généré' : 'Générer'}
                 </button>
-            </div> 
+            </div>
         </motion.div>
     );
 }, (prevProps, nextProps) => {
