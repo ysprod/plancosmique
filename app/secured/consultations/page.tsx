@@ -5,21 +5,9 @@ import { formatDate } from '@/lib/functions';
 import { CarteDuCiel, MissionDeVie } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  AlertCircle,
-  Calendar,
-  CheckCircle,
-  Clock,
-  Download,
-  Eye,
-  FileText,
-  Filter,
-  Loader2,
-  MapPin,
-  Search,
-  Sparkles,
-  Star,
-  TrendingUp,
-  User
+  AlertCircle, Calendar, CheckCircle, Clock, Download,
+  Eye, FileText, Filter, Loader2, MapPin, Search,
+  Sparkles, Star, TrendingUp, User
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -406,7 +394,7 @@ export default function ConsultationsListPage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-purple-300 focus:outline-none focus:border-purple-400 transition-colors"
                 />
-              </div> 
+              </div>
             </div>
           </motion.div>
         )}
@@ -446,6 +434,8 @@ export default function ConsultationsListPage() {
                 ? 'Commandez votre première analyse astrologique pour découvrir votre destinée'
                 : 'Essayez de modifier vos filtres de recherche'}
             </p>
+
+              {consultations.length >0 && (
             <button
               onClick={() => {
                 if (consultations.length === 0) {
@@ -457,19 +447,9 @@ export default function ConsultationsListPage() {
                 }
               }}
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all"
-            >
-              {consultations.length === 0 ? (
-                <>
-                  <Star className="w-5 h-5" />
-                  Commander une analyse
-                </>
-              ) : (
-                <>
-                  <Filter className="w-5 h-5" />
-                  Réinitialiser les filtres
-                </>
-              )}
-            </button>
+            >           <Filter className="w-5 h-5" />
+                  Réinitialiser les filtres               
+            </button> )  }
           </motion.div>
         ) : (
           <div className="grid gap-6">

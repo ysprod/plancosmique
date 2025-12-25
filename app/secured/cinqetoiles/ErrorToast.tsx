@@ -2,10 +2,7 @@ import { motion } from "framer-motion";
 import { AlertCircle } from "lucide-react";
 import { memo, useRef, useEffect, useCallback } from "react";
 
-const ErrorToast = memo(({
-    message,
-    onClose
-}: {
+const ErrorToast = memo(({    message,    onClose}: {
     message: string;
     onClose: () => void;
 }) => {
@@ -74,5 +71,7 @@ const ErrorToast = memo(({
         </motion.div>
     );
 });
-ErrorToast.displayName = 'ErrorToast';  
+
+ErrorToast.displayName = 'ErrorToast';
+
 export default ErrorToast;

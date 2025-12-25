@@ -10,7 +10,7 @@ import ConsultationSelection from './ConsultationSelection';
 import { ConsultationChoice, FormErrors, FormData, StepType } from '@/lib/interfaces';
 import ConsultationForm from '../../vie-personnelle/slidesection/ConsultationForm';
 import PaymentProcessing from '../../vie-personnelle/slidesection/PaymentProcessing';
- 
+
 const validateForm = (form: FormData): FormErrors => {
 	const errors: FormErrors = {};
 	if (!form.nom.trim()) errors.nom = 'Nom requis';
@@ -50,7 +50,7 @@ function Slide4Section() {
 		paysNaissance: '',
 		villeNaissance: '',
 		heureNaissance: '',
-		numeroSend: '0758385387',
+		numeroSend: '',
 	});
 	const [errors, setErrors] = useState<FormErrors>({});
 	const [apiError, setApiError] = useState<string | null>(null);
@@ -216,4 +216,3 @@ function Slide4Section() {
 }
 
 export default memo(Slide4Section);
- 

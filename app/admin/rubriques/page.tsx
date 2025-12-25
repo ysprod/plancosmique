@@ -1,26 +1,23 @@
 "use client";
-import React, { useState, useCallback, useMemo, memo, useEffect } from "react";
+import { api } from "@/lib/api/client";
 import { offeringsService, type Offering } from '@/lib/api/services/offerings.service';
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  Plus,
-  Trash2,
-  Save,
-  X,
-  ChevronDown,
-  ChevronUp,
-  Loader2,
   AlertCircle,
   CheckCircle,
-  Package,
+  ChevronDown,
+  ChevronUp,
   DollarSign,
-  Search
+  Loader2,
+  Package,
+  Plus,
+  Save,
+  Search,
+  Trash2,
+  X
 } from "lucide-react";
-import { api } from "@/lib/api/client";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
-// =====================================================
-// TYPES
-// =====================================================
 type OfferingCategory = "animal" | "vegetal" | "beverage";
 
 interface ConsultationOffering {
@@ -48,40 +45,35 @@ interface Rubrique {
   updatedAt?: string;
 }
 
-// =====================================================
-// CONSTANTS
-// =====================================================
 const CATEGORY_CONFIG: Record<OfferingCategory, { icon: string; label: string; color: string; bgColor: string }> = {
-  animal: { 
-    icon: "🐾", 
-    label: "Animal", 
-    color: "text-amber-700 border-amber-300", 
-    bgColor: "bg-amber-50" 
+  animal: {
+    icon: "🐾",
+    label: "Animal",
+    color: "text-amber-700 border-amber-300",
+    bgColor: "bg-amber-50"
   },
-  vegetal: { 
-    icon: "🌿", 
-    label: "Végétal", 
-    color: "text-green-700 border-green-300", 
-    bgColor: "bg-green-50" 
+  vegetal: {
+    icon: "🌿",
+    label: "Végétal",
+    color: "text-green-700 border-green-300",
+    bgColor: "bg-green-50"
   },
-  beverage: { 
-    icon: "🥤", 
-    label: "Boisson", 
-    color: "text-blue-700 border-blue-300", 
-    bgColor: "bg-blue-50" 
+  beverage: {
+    icon: "🥤",
+    label: "Boisson",
+    color: "text-blue-700 border-blue-300",
+    bgColor: "bg-blue-50"
   }
 };
 
-// =====================================================
-// TOAST NOTIFICATION
-// =====================================================
-const Toast = memo(({ 
-  type, 
-  message, 
-  onClose 
-}: { 
-  type: "success" | "error"; 
-  message: string; 
+
+const Toast = memo(({
+  type,
+  message,
+  onClose
+}: {
+  type: "success" | "error";
+  message: string;
   onClose: () => void;
 }) => {
   useEffect(() => {
@@ -95,10 +87,10 @@ const Toast = memo(({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -20, scale: 0.95 }}
       className={`fixed top-4 right-4 z-50 max-w-md p-4 rounded-xl shadow-2xl border
-                ${type === "success" 
-                  ? "bg-green-50 border-green-200" 
-                  : "bg-red-50 border-red-200"
-                }`}
+                ${type === "success"
+          ? "bg-green-50 border-green-200"
+          : "bg-red-50 border-red-200"
+        }`}
     >
       <div className="flex items-center gap-3">
         {type === "success" ? (
@@ -106,9 +98,8 @@ const Toast = memo(({
         ) : (
           <AlertCircle className="w-5 h-5 text-red-600" />
         )}
-        <p className={`text-sm font-medium ${
-          type === "success" ? "text-green-900" : "text-red-900"
-        }`}>
+        <p className={`text-sm font-medium ${type === "success" ? "text-green-900" : "text-red-900"
+          }`}>
           {message}
         </p>
         <button onClick={onClose} className="ml-auto">
@@ -120,9 +111,6 @@ const Toast = memo(({
 });
 Toast.displayName = "Toast";
 
-// =====================================================
-// OFFERING SELECTOR (Amélioré avec recherche)
-// =====================================================
 const OfferingSelector = memo(({
   alternative,
   offerings,
@@ -133,22 +121,22 @@ const OfferingSelector = memo(({
   onChange: (updated: ConsultationOffering) => void;
 }) => {
   const [search, setSearch] = useState("");
-  
+
   const config = CATEGORY_CONFIG[alternative.category];
-  
+
   // Filtrer par catégorie et recherche
-  const filteredOfferings = useMemo(() => 
+  const filteredOfferings = useMemo(() =>
     offerings
       .filter(o => o.category === alternative.category)
-      .filter(o => 
-        search === "" || 
+      .filter(o =>
+        search === "" ||
         o.name.toLowerCase().includes(search.toLowerCase())
       ),
     [offerings, alternative.category, search]
   );
 
   // Offrande sélectionnée
-  const selectedOffering = useMemo(() => 
+  const selectedOffering = useMemo(() =>
     offerings.find(o => o._id === alternative.offeringId),
     [offerings, alternative.offeringId]
   );
@@ -172,7 +160,7 @@ const OfferingSelector = memo(({
         )}
       </div>
 
- 
+
       <div className="relative">
         <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
         <input
@@ -191,7 +179,7 @@ const OfferingSelector = memo(({
         value={alternative.offeringId}
         onChange={(e) => {
           onChange({ ...alternative, offeringId: e.target.value });
-          setSearch("");  
+          setSearch("");
         }}
         className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 
                  focus:ring-2 focus:ring-violet-500 focus:border-transparent
@@ -245,9 +233,6 @@ const OfferingSelector = memo(({
 });
 OfferingSelector.displayName = "OfferingSelector";
 
-// =====================================================
-// CONSULTATION CHOICE CARD
-// =====================================================
 const ConsultationChoiceCard = memo(({
   choice,
   onUpdate,
@@ -307,7 +292,7 @@ const ConsultationChoiceCard = memo(({
                      focus:ring-2 focus:ring-violet-500 focus:border-transparent"
           />
         </div>
-        
+
         <div className="flex gap-1">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
@@ -369,9 +354,6 @@ const ConsultationChoiceCard = memo(({
 });
 ConsultationChoiceCard.displayName = "ConsultationChoiceCard";
 
-// =====================================================
-// RUBRIQUE EDITOR
-// =====================================================
 const RubriqueEditor = memo(({
   rubrique,
   onUpdate,
@@ -524,9 +506,6 @@ const RubriqueEditor = memo(({
 });
 RubriqueEditor.displayName = "RubriqueEditor";
 
-// =====================================================
-// MAIN COMPONENT
-// =====================================================
 export default function RubriquesAdminPage() {
   const [rubriques, setRubriques] = useState<Rubrique[]>([]);
   const [selectedRubrique, setSelectedRubrique] = useState<Rubrique | null>(null);
@@ -537,7 +516,6 @@ export default function RubriquesAdminPage() {
   const [offerings, setOfferings] = useState<Offering[]>([]);
   const [offeringsLoading, setOfferingsLoading] = useState(false);
 
-  // Fetch offerings
   useEffect(() => {
     const fetchOfferings = async () => {
       setOfferingsLoading(true);
@@ -553,7 +531,6 @@ export default function RubriquesAdminPage() {
     fetchOfferings();
   }, []);
 
-  // Fetch rubriques
   const fetchRubriques = useCallback(async () => {
     try {
       setLoading(true);
@@ -570,7 +547,6 @@ export default function RubriquesAdminPage() {
     fetchRubriques();
   }, [fetchRubriques]);
 
-  // Create new rubrique
   const handleCreate = useCallback(() => {
     const newRubrique: Rubrique = {
       titre: "Nouvelle rubrique",
@@ -582,7 +558,7 @@ export default function RubriquesAdminPage() {
     setSelectedRubrique(null);
   }, []);
 
-  // Save rubrique
+
   const handleSave = useCallback(async () => {
     if (!editingRubrique) return;
 
@@ -598,9 +574,9 @@ export default function RubriquesAdminPage() {
       await fetchRubriques();
       setEditingRubrique(null);
     } catch (error: any) {
-      setToast({ 
-        type: "error", 
-        message: error.response?.data?.message || "Erreur de sauvegarde" 
+      setToast({
+        type: "error",
+        message: error.response?.data?.message || "Erreur de sauvegarde"
       });
     } finally {
       setSaving(false);
@@ -672,17 +648,19 @@ export default function RubriquesAdminPage() {
                   setSelectedRubrique(rub);
                   setEditingRubrique(rub);
                 }}
-                className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                  selectedRubrique?._id === rub._id
+                className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${selectedRubrique?._id === rub._id
                     ? "border-violet-500 bg-violet-50 shadow-lg"
                     : "border-slate-200 bg-white hover:border-slate-300"
-                }`}
+                  }`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h3 className="font-bold text-slate-900">{rub.titre}</h3>
                     <p className="text-xs text-slate-600 mt-1 line-clamp-2">
                       {rub.description}
+                    </p>
+                     <p className="text-xs text-slate-600 mt-1 line-clamp-2">
+                     # {rub._id}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <span className="text-xs font-semibold text-violet-600">

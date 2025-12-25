@@ -225,7 +225,6 @@ export default function ConsultationResultPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
-      {/* Header Fixed */}
       <div className="bg-white/10 backdrop-blur-lg border-b border-white/10 sticky top-0 z-50 shadow-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between gap-4">
@@ -258,11 +257,8 @@ export default function ConsultationResultPage() {
         </div>
       </div>
 
-      {/* Content */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-        {/* Subject Header */}
         <SubjectHeader sujet={analyse.carteDuCiel.sujet} />
-        {/* Mission de Vie (Markdown) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

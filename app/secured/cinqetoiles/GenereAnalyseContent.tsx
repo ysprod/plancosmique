@@ -4,13 +4,13 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Sparkles } from 'lucide-react';
 import { memo, useCallback, useEffect, useState } from 'react';
 
- 
+
 const SuccessIcon = memo(() => (
   <motion.div
     initial={{ scale: 0, rotate: -180 }}
     animate={{ scale: 1, rotate: 0 }}
-    transition={{ 
-      type: "spring", 
+    transition={{
+      type: "spring",
       stiffness: 260,
       damping: 20,
       mass: 0.8
@@ -24,8 +24,8 @@ const SuccessIcon = memo(() => (
     <motion.div
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ 
-        delay: 0.3, 
+      transition={{
+        delay: 0.3,
         type: "spring",
         stiffness: 300
       }}
@@ -41,7 +41,7 @@ SuccessIcon.displayName = 'SuccessIcon';
 // Composant principal optimisé
 export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }) {
   const [isMounted, setIsMounted] = useState(false);
-  
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -54,7 +54,6 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
     }
   }, [onBack]);
 
-  // Animation container pour stagger children
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -68,8 +67,8 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 10 },
-    show: { 
-      opacity: 1, 
+    show: {
+      opacity: 1,
       y: 0,
       transition: {
         type: "spring",
@@ -131,7 +130,7 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
             </h1>
             <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-md mx-auto \
                          leading-relaxed">
-              Votre consultation a été traitée avec succès. 
+              Votre consultation a été traitée avec succès.
               <span className="block mt-1 text-xs text-gray-500 dark:text-gray-500">
                 Les résultats sont disponibles dans votre espace personnel.
               </span>
@@ -159,7 +158,7 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
             </div>
           </motion.div>
 
-        
+
 
           {/* Footer léger */}
           <motion.div
@@ -170,11 +169,11 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
                          flex items-center justify-center gap-1.5">
               <span className="opacity-70">🙏</span>
               Merci pour votre confiance
-          
+
             </p>
           </motion.div>
 
-  {/* Bouton principal */}
+          {/* Bouton principal */}
           <motion.div
             variants={itemVariants}
             className="pt-6"

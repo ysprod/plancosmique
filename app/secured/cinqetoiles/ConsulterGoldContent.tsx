@@ -4,7 +4,7 @@ import { api } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { OfferingAlternative, WalletOffering } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import PaymentProcessing from '../vie-personnelle/slidesection/PaymentProcessing';
 import ErrorToast from './ErrorToast';
 import GenereAnalyseContent from './GenereAnalyseContent';
@@ -98,9 +98,7 @@ export default function ConsulterGoldContentComponent({
         setApiError(null);
         setStep('processing');
 
-        try {
-
-            // 1. Consommer les offerings
+        try {        
             const consumeRes = await api.post('/wallet/consume-offerings', {
                 userId: user._id,
                 consultationId,

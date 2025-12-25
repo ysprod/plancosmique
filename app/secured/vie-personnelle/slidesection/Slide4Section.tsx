@@ -1,236 +1,372 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { api } from '@/lib/api/client';
+import { useAuth } from '@/lib/auth/AuthContext';
+import { ConsultationChoice, ConsultationData, OfferingAlternative, UserData, WalletOffering } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { memo, useCallback, useState, useTransition } from 'react';
-import { CONSULTATION_TYPE_MAP } from './consultation.constants';
-import type {   FormData,  StepType } from './consultation.types';
-import ConsultationForm from './ConsultationForm';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { containerVariants, processingVariants } from '../../../../lib/animation.constants';
+import OfferingStep from '../../consulter/OfferingStep';
+import AnalyseGenere from '../../genereanalyse/AnalyseGenere';
+import type { StepType } from './consultation.types';
 import ConsultationSelection from './ConsultationSelection';
+import ErrorToast from './ErrorToast';
+import LoadingOverlay from './LoadingOverlay';
 import PaymentProcessing from './PaymentProcessing';
-import { ConsultationChoice, FormErrors } from '@/lib/interfaces';
+import { getRubriqueById } from '@/lib/api/services/rubriques.service';
 
-const validateForm = (form: FormData): FormErrors => {
-  const errors: FormErrors = {};
-  if (!form.nom.trim()) errors.nom = 'Nom requis';
-  if (!form.prenoms.trim()) errors.prenoms = 'Prénoms requis';
-  if (!form.genre) errors.genre = 'Genre requis';
-  if (!form.dateNaissance) errors.dateNaissance = 'Date de naissance requise';
-  if (!form.paysNaissance) errors.paysNaissance = 'Pays de naissance requis';
-  if (!form.villeNaissance.trim()) errors.villeNaissance = 'Ville de naissance requise';
-  if (!form.heureNaissance) errors.heureNaissance = 'Heure de naissance requise';
-  return errors;
-};
+const RUBRIQUE_ID = '694cde9bde3392d3751a0fe9';
 
-const BackButton = memo(({ onClick }: { onClick: () => void }) => (
-  <motion.button
-    initial={{ opacity: 0, x: -20 }}
-    animate={{ opacity: 1, x: 0 }}
-    onClick={onClick}
-    className="flex items-center gap-2 text-gray-700 dark:text-gray-300 
-             hover:text-gray-900 dark:hover:text-gray-100 
-             transition-colors mb-4 group"
-  >
-    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-    <span className="font-semibold text-sm">Retour</span>
-  </motion.button>
-));
-BackButton.displayName = 'BackButton';
-
-function Slide4Section() {
+function Slide4SectionComponent() {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-  const [selected, setSelected] = useState<ConsultationChoice | null>(null);
-  // Pré-remplir le formulaire avec les données du localStorage si présentes
-  const getInitialForm = () => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('consultationForm');
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch {}
-      }
-    }
-    return {
-      nom: '',
-      prenoms: '',
-      genre: '',
-      dateNaissance: '',
-      paysNaissance: '',
-      villeNaissance: '',
-      heureNaissance: '',
-      numeroSend: '0758385387',
-    };
-  };
-  const [form, setForm] = useState<FormData>(getInitialForm);
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [apiError, setApiError] = useState<string | null>(null);
+  const { user } = useAuth();
   const [step, setStep] = useState<StepType>('selection');
   const [paymentLoading, setPaymentLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [consultationId, setConsultationId] = useState<string | null>(null);
+  const [walletOfferings, setWalletOfferings] = useState<WalletOffering[]>([]);
+  const [consultation, setConsultation] = useState<any>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const choicesFetchedRef = useRef(false);
+    const [choices, setChoices] = useState<ConsultationChoice[]>([]);
+    const [loading, setLoading] = useState(true);
+  // Mapping formData frontend -> backend (strict)
+  function mapFormDataToBackend(form: any) {
+    if (!form) {
+      console.warn('mapFormDataToBackend: form is null or undefined');
+      return {};
+    }
+    const result = {
+      firstName: form.prenoms || form.firstName || '',
+      lastName: form.nom || form.lastName || '',
+      dateOfBirth: form.dateNaissance
+        ? new Date(form.dateNaissance).toISOString()
+        : (form.dateOfBirth ? new Date(form.dateOfBirth).toISOString() : ''),
+      timeOfBirth: form.heureNaissance || form.timeOfBirth || '',
+      countryOfBirth: form.paysNaissance || form.countryOfBirth || '',
+      cityOfBirth: form.villeNaissance || form.cityOfBirth || '',
+      gender: form.genre || form.gender || '',
+      phone: form.phone || form.numeroSend || '',
+      email: form.email || '',
+      country: form.country || form.paysNaissance || '',
+      question: form.question || '',
+      username: form.username || '',
+      // Ajoute d'autres champs backend utiles ici
+      ...form
+    };
+    console.log('mapFormDataToBackend input:', form);
+    console.log('mapFormDataToBackend output:', result);
+    return result;
+  }
 
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-      const { name, value } = e.target;
-      setForm((prev) => ({ ...prev, [name]: value }));
-      setErrors((prev) => {
-        if (!prev[name]) return prev;
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
-
-      setApiError(null);
-    },
-    []
-  );
-
-  const handleSelectConsultation = useCallback((choice: ConsultationChoice) => {
-    setSelected(choice);
-    setStep('form');
-  }, []);
-
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-      setApiError(null);
-      setPaymentLoading(true);
-
-      const validationErrors = validateForm(form);
-      if (Object.keys(validationErrors).length > 0) {
-        setErrors(validationErrors);
-        setPaymentLoading(false);
-        return;
-      }
-
-      if (!selected) {
-        setApiError('Veuillez sélectionner une consultation.');
-        setPaymentLoading(false);
-        return;
-      }
-
-      // Sauvegarde du formulaire en localStorage
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('consultationForm', JSON.stringify(form));
-      }
-
-      try {
-        // Crée la consultation sans offrande (l'alternative sera choisie sur /consulter)
-        const payload = {
-          serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
-          type: CONSULTATION_TYPE_MAP[selected.id] || 'AUTRE',
-          title: selected.title,
-          description: selected.description,
-          formData: form,
-          status: 'pending_payment',
-          alternatives: selected.offering.alternatives,
-        };
-        const consultationRes = await api.post('/consultations', payload);
-        if (consultationRes.status !== 200 && consultationRes.status !== 201) {
-          throw new Error(consultationRes.data?.message || 'Erreur lors de la création');
-        }
-        const consultationId = consultationRes.data?.id || consultationRes.data?.consultationId;
-        startTransition(() => {
-          router.push(`/secured/consulter?id=${consultationId}`);
+  useEffect(() => {
+    if (user?._id) {
+      api.get(`/users/me`)
+        .then(res => {
+          setUserData(res.data);
+          console.log('User data fetched successfully.', res.data);
+        })
+        .catch(err => {
+          console.error('Erreur chargement utilisateur:', err);
+          setUserData(null);
+        })
+        .finally(() => {
+          console.log('User data fetch attempt finished.');
         });
+    } else {
+      console.log('Utilisateur non connecté, pas de chargement des données utilisateur.');
+      setUserData(null);
+    }
+  }, [user?._id]);
+
+
+    useEffect(() => {
+      if (choicesFetchedRef.current) return;
+      choicesFetchedRef.current = true;
+  
+      getRubriqueById(RUBRIQUE_ID)
+        .then(rubrique => {
+          const arr = rubrique.consultationChoices || [];
+          setChoices(arr);
+        })
+        .catch(err => console.error('[Choices] ❌', err))
+        .finally(() => setLoading(false));
+    }, []);
+
+  console.log('Current userData:', userData);
+
+  const handleOfferingValidation = useCallback(
+    async (selectedAlternative: OfferingAlternative) => {
+      try {
+        setPaymentLoading(true);
+        setStep('processing');
+        if (!user?._id) { throw new Error('Utilisateur introuvable'); }
+
+        const consumeRes = await api.post('/wallet/consume-offerings', {
+          userId: user._id,
+          consultationId,
+          offerings: [{
+            offeringId: selectedAlternative.offeringId,
+            quantity: selectedAlternative.quantity,
+          }],
+        });
+
+        if (consumeRes.status !== 200 && consumeRes.status !== 201) {
+          throw new Error(consumeRes.data?.message || 'Erreur consommation');
+        }
+
+        await api.patch(`/consultations/${consultationId}`, {
+          status: 'paid',
+          paymentMethod: 'wallet_offerings',
+        });
+        setStep('genereanalyse');
+        setPaymentLoading(false);
       } catch (err: any) {
-        const errorMessage =
-          err.response?.data?.message ||
-          err.response?.data?.error ||
-          err.message ||
-          'Erreur lors de la création';
-        setApiError(errorMessage);
+        console.error('[Offerings] ❌', err);
+        setApiError(err.response?.data?.message || err.message || 'Erreur validation');
         setPaymentLoading(false);
       }
     },
-    [form, selected, router]
+    [consultationId, user]
   );
 
-  const resetSelection = useCallback(() => {
-    setSelected(null);
-    setForm({
-      nom: '',
-      prenoms: '',
-      genre: '',
-      dateNaissance: '',
-      paysNaissance: '',
-      villeNaissance: '',
-      heureNaissance: '',
-      numeroSend: '0758385387',
-    });
-    setErrors({});
-    setApiError(null);
-    setStep('selection');
-    setPaymentLoading(false);
-  }, []);
+  const handleBack = useCallback(() => {
+    router.back();
+  }, [router]);
 
-  const showBackButton = step === 'form' && !paymentLoading;
+  const fetchWalletOfferings = useCallback(async () => {
+    try {
+      const response = await api.get(`/offering-stock/available?userId=${user?._id}`);
+      const offeringsData = Array.isArray(response.data)
+        ? response.data
+        : response.data?.offerings || [];
+      if (response.status === 200 && offeringsData.length > 0) {
+        const offerings: WalletOffering[] = offeringsData.map((o: any) => ({
+          offeringId: o.offeringId || o._id,
+          quantity: o.quantity || o.availableQuantity || 0,
+          name: o.name || 'Offrande inconnue',
+          icon: o.icon || '📦',
+          category: o.category || 'animal',
+          price: o.price || 0,
+        }));
+        setWalletOfferings(offerings);
+      } else {
+        setWalletOfferings([]);
+      }
+    } catch (err: any) {
+      console.error('[Wallet] ❌', err);
+      setWalletOfferings([]);
+    }
+  }, [user?._id]);
+
+  useEffect(() => {
+    fetchWalletOfferings();
+  }, [fetchWalletOfferings]);
+
+  const showErrorToast = useMemo(() =>
+    !!apiError && step === 'selection',
+    [apiError, step]
+  );
+
+  const handleSelectConsultation = useCallback(async (choice: ConsultationChoice) => {
+    setApiError(null);
+    setPaymentLoading(true);
+    if (!userData) {
+      setApiError("Chargement des données utilisateur en cours, veuillez patienter.");
+      setPaymentLoading(false);
+      return;
+    }
+    try {
+      console.log('userData envoyé à mapFormDataToBackend:', userData);
+      const mappedFormData = mapFormDataToBackend(userData);
+      console.log('formData généré pour payload:', mappedFormData);
+      const payload = {
+        serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
+        type: 'VIE_PERSONNELLE',
+        title: choice.title,
+        formData: mappedFormData,
+        description: choice.description,
+        status: 'pending_payment',
+        alternatives: choice.offering.alternatives,
+      };
+      console.log('Creating consultation with payload:', payload);
+
+      const consultationRes = await api.post('/consultations', payload);
+      console.log('Consultation created:', consultationRes.data);
+      if (consultationRes.status !== 200 && consultationRes.status !== 201) {
+        throw new Error(consultationRes.data?.message || 'Erreur lors de la création');
+      }
+      const id = consultationRes.data?.id || consultationRes.data?.consultationId;
+      if (!id) {
+        throw new Error('ID de consultation manquant dans la réponse');
+      }
+      setConsultationId(id);
+
+      const response = await api.get(`/consultations/${id}`);
+      if (response.status !== 200) {
+        throw new Error('Consultation introuvable');
+      }
+      const raw = response.data?.consultation || response.data;
+      const alternatives: OfferingAlternative[] = (raw.alternatives || []).map((alt: any, idx: number) => ({
+        offeringId: alt.offeringId,
+        quantity: alt.quantity,
+        category: ['animal', 'vegetal', 'beverage'][idx] || 'animal',
+        name: alt.name || '',
+        price: alt.price || 0,
+        icon: alt.icon || '',
+      }));
+      const consultationData: ConsultationData = {
+        _id: raw._id || raw.id || raw.consultationId,
+        title: raw.title || raw.titre || '',
+        description: raw.description || '',
+        alternatives,
+        status: raw.status || raw.statut || '',
+      };
+      setConsultation(consultationData);
+      setStep('consulter');
+      setPaymentLoading(false);
+    } catch (err: any) {
+      console.error('[Slide4] ❌ Erreur:', err);
+      const errorMessage = err.response?.data?.message ||
+        err.response?.data?.error ||
+        err.message ||
+        'Erreur lors de la création de la consultation';
+      setApiError(errorMessage);
+      setPaymentLoading(false);
+    }
+  }, [userData]);
+
+  const handleCloseError = useCallback(() => {
+    setApiError(null);
+  }, []);
 
   return (
-    <div className="bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
-                    dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
-      {showBackButton && (
-        <div className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl 
-                      border-b border-gray-200 dark:border-gray-800 px-4 py-3">
-          <div className="max-w-6xl mx-auto">
-            <BackButton onClick={resetSelection} />
-          </div>
-        </div>
-      )}
+    <div className="min-h-screen bg-gradient-to-br 
+                    from-purple-50/80 via-pink-50/50 to-orange-50/80
+                    dark:from-gray-950 dark:via-purple-950/10 dark:to-gray-900
+                    relative overflow-hidden">
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.03, 0.06, 0.03]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute -top-32 -right-32 w-80 h-80 
+                   bg-purple-400/30 dark:bg-purple-500/20 
+                   rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.03, 0.05, 0.03]
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1
+          }}
+          className="absolute -bottom-32 -left-32 w-96 h-96 
+                   bg-pink-400/30 dark:bg-pink-500/20 
+                   rounded-full blur-3xl"
+        />
+      </div>
 
-      <div className="max-w-6xl mx-auto p-4 sm:p-6">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
         <AnimatePresence mode="wait">
-
-          {/* Étape sélection */}
-          {step === 'selection' && (
+          {step === 'selection' && !paymentLoading && (
             <motion.div
               key="selection"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
             >
-              <ConsultationSelection onSelect={handleSelectConsultation} />
+              <ConsultationSelection onSelect={handleSelectConsultation} choices={choices} />
             </motion.div>
           )}
-
-          {/* Étape formulaire */}
-          {step === 'form' && selected && !paymentLoading && (
+          {paymentLoading && (
             <motion.div
-              key="form"
+              key="processing"
+              variants={processingVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="flex items-center justify-center min-h-[60vh]"
+            >
+              <div className="w-full max-w-md px-4">
+                <PaymentProcessing />
+              </div>
+            </motion.div>
+          )}
+          {step === 'consulter' && consultationId && consultation && (
+            <motion.div
+              key="consulter"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <ConsultationForm
-                form={form}
-                errors={errors}
-                handleChange={handleChange}
-                apiError={apiError}
-                handleSubmit={handleSubmit}
-                resetSelection={resetSelection}
-                selectedTitle={selected.title}
-              />
+              <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
+                    dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
+                <div className="max-w-6xl mx-auto p-4 sm:p-6">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key="offering"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <OfferingStep
+                        requiredOfferings={consultation.alternatives as any}
+                        walletOfferings={walletOfferings}
+                        onNext={handleOfferingValidation}
+                        onBack={handleBack}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
             </motion.div>
           )}
 
-          {/* Étape traitement */}
-          {paymentLoading && (
+          {step === 'genereanalyse' && consultationId && (
             <motion.div
-              key="processing"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              key="genereanalyse"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <PaymentProcessing />
+              <AnalyseGenere />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
+
+      <AnimatePresence>
+        {showErrorToast && (
+          <ErrorToast
+            message={apiError!}
+            onClose={handleCloseError}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {paymentLoading && step === 'selection' && <LoadingOverlay />}
+      </AnimatePresence>
     </div>
   );
 }
 
-export default memo(Slide4Section);
+export default memo(Slide4SectionComponent, () => {
+  return true;
+});

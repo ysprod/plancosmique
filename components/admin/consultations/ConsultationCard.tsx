@@ -362,10 +362,7 @@ const ConsultationCard = memo(({
                     <Sparkles className={`w-3 h-3 ${isGenerating ? 'animate-spin' : ''}`} />
                     {isGenerating ? 'Génération' : hasAnalysis ? 'Déjà généré' : 'Générer'}
                 </button>
-            </div>
-            {hasAnalysis && (
-                <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 mb-1">Analyse déjà générée.</div>
-            )}
+            </div> 
         </motion.div>
     );
 }, (prevProps, nextProps) => {

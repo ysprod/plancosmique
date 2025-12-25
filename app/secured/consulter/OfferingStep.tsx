@@ -134,7 +134,6 @@ const OfferingCard = memo(({
         {offering.icon || config.icon}
       </div>
 
-      {/* Info */}
       <div className="flex-1 min-w-0">
         <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 truncate">
           {offering.name || `${config.label} ${index + 1}`}
@@ -425,7 +424,6 @@ export default function OfferingStep({
             </button>
           </div>
 
-          {/* Bouton marché */}
           <button
             onClick={handleGoToMarket}
             className="w-full h-10 rounded-xl border-2 border-purple-300 dark:border-purple-700

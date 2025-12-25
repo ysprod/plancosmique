@@ -1,8 +1,8 @@
 "use client";
-import { AnimatePresence, motion } from 'framer-motion';
-import { Calendar, Globe, Heart, Mountain, Palmtree, Pyramid, Sparkles, Star, Users } from 'lucide-react';
-import { useState } from "react";
 import { MoonPhaseWidget } from '@/components/MoonPhaseWidget';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Calendar, Globe, Heart, Mountain, Pyramid, Sparkles, Star, Users } from 'lucide-react';
+import { useState } from "react";
 
 type TabId = 'signe' | 'compatibilite' | 'guidance' | 'divinite';
 
@@ -489,15 +489,6 @@ export default function AstrologieAfricainePage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 lg:mb-16"
         >
-          <motion.div
-            whileHover={{ rotate: 360, scale: 1.1 }}
-            transition={{ duration: 0.6 }}
-            className="inline-block mb-6"
-          >
-            <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-2xl">
-              <Palmtree className="w-10 h-10 lg:w-12 lg:h-12 text-white" />
-            </div>
-          </motion.div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-4 tracking-tight">
             Incantions et Rituels Magiques
           </h1>
@@ -505,8 +496,7 @@ export default function AstrologieAfricainePage() {
             Découvrez la sagesse ancestrale et les traditions astrologiques africaines millénaires
           </p>
         </motion.div>
-
-        {/* Navigation par onglets */}
+ 
         <div className="mb-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {tabs.map((tab) => (
@@ -542,9 +532,8 @@ export default function AstrologieAfricainePage() {
               </motion.button>
             ))}
           </div>
-        </div>
-
-        {/* Contenu dynamique */}
+        </div> 
+        
         <AnimatePresence mode="wait">
           {renderContent()}
         </AnimatePresence>

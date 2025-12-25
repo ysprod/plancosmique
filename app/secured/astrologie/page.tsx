@@ -73,14 +73,12 @@ export default function AstrologiePage() {
       </div>
 
       <div className="relative z-10 px-4 sm:px-6 py-8 sm:py-12 max-w-6xl mx-auto">
-        {/* En-tête de la page */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          {/* Titre */}
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -92,7 +90,6 @@ export default function AstrologiePage() {
             </span>
           </motion.h1>
 
-          {/* Sous-titre */}
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -128,8 +125,6 @@ export default function AstrologiePage() {
                   whileTap={{ scale: 0.98 }}
                   className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 border-2 border-gray-200 shadow-lg hover:shadow-2xl hover:border-purple-300 transition-all h-full overflow-hidden"
                 >
-
-                  {/* Effet de brillance au survol */}
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent"
                     initial={{ x: '-100%' }}

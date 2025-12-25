@@ -11,4 +11,4 @@ export interface FormData {
   email?: string; // Email pour notifications
 }
 
-export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';
+export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm'| 'consulter'| 'genereanalyse';

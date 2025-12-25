@@ -56,7 +56,6 @@ const ConsultationForm: React.FC<Props> = ({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Nom et Prénoms */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <InputField
             label="Nom"
@@ -86,7 +85,6 @@ const ConsultationForm: React.FC<Props> = ({
           options={GENRE_OPTIONS}
         />
 
-        {/* Date de naissance */}
         <InputField
           label="Date de naissance"
           name="dateNaissance"
@@ -96,7 +94,6 @@ const ConsultationForm: React.FC<Props> = ({
           error={errors.dateNaissance}
         />
 
-        {/* Pays et Ville */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <SelectField
             label="Pays de naissance"
@@ -116,7 +113,6 @@ const ConsultationForm: React.FC<Props> = ({
           />
         </div>
 
-        {/* Heure de naissance */}
         <InputField
           label="Heure de naissance (exacte si possible)"
           name="heureNaissance"

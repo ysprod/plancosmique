@@ -1,10 +1,7 @@
-// =====================================================
-// PROFILE HEADER COMPONENT
-
 import { motion } from "framer-motion";
+import { Award, Calendar, Clock, MapPin, Phone, User } from "lucide-react";
 import { memo } from "react";
 import { ProcessedUserData } from "./page";
-import { Award, Calendar, Clock, Phone, User, MapPin } from "lucide-react";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20, scale: 0.95 },
@@ -21,9 +18,6 @@ const cardVariants = {
   })
 };
 
-// =====================================================
-// INFO ITEM COMPONENT
-// =====================================================
 const InfoItem = memo(({
   icon: Icon,
   value,
@@ -50,7 +44,6 @@ const InfoItem = memo(({
 ));
 InfoItem.displayName = 'InfoItem';
 
-// =====================================================
 const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
   <motion.section
     custom={0}
@@ -111,8 +104,6 @@ const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
           transition={{ delay: 0.2 }}
           className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 mt-2"
         >
-
-
           {userData.phone && (
             <div className="flex items-center gap-1.5 text-xs text-purple-200">
               <Phone className="w-3.5 h-3.5" />
@@ -120,12 +111,8 @@ const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
             </div>
           )}
         </motion.div>
-
-
       </div>
     </div>
-
-
 
     <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-2">
       <InfoItem icon={Calendar} value={userData.dateNaissance} iconColor="text-amber-400" index={0} />
@@ -134,6 +121,7 @@ const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
     </div>
   </motion.section>
 ));
+
 ProfileHeader.displayName = 'ProfileHeader';
 
 export default ProfileHeader;

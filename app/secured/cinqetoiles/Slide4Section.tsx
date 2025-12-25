@@ -130,7 +130,6 @@ const PorteItem = memo(({ label, index }: { label: string; index: number }) => (
 ));
 PorteItem.displayName = 'PorteItem';
 
-
 const SelectionHeader = memo(() => (
   <motion.div
     initial={{ opacity: 0, y: -20 }}
@@ -173,7 +172,6 @@ SelectionHeader.displayName = 'SelectionHeader';
 
 function Slide4Section() {
   const { user } = useAuth();
-
   const [selected, setSelected] = useState<ConsultationChoice | null>(null);
   const [form, setForm] = useState<FormData>({
     nom: '',

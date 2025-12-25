@@ -7,9 +7,10 @@ import { ConsultationChoice } from '@/lib/interfaces';
 interface Props {
   onSelect: (choice: ConsultationChoice) => void;
   title?: string;
+  choices: ConsultationChoice[];
 }
 
-const ConsultationSelection: React.FC<Props> = ({ onSelect, title }) => (
+const ConsultationSelection: React.FC<Props> = ({ onSelect, title, choices }) => (
   <>
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -26,7 +27,7 @@ const ConsultationSelection: React.FC<Props> = ({ onSelect, title }) => (
       transition={{ delay: 0.2 }}
       className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2"
     >
-      {CONSULTATION_CHOICES.map((choice) => (
+      {choices.map((choice) => (
         <ConsultationCard
           key={choice.id}
           choice={choice}

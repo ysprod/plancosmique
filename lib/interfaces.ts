@@ -202,4 +202,14 @@ export interface AnalyseData {
   dateGeneration: string;
 }
 
+
+
+export interface ConsultationData {
+  _id: string;
+  title: string;
+  description: string;
+  alternatives: { offeringId: string; quantity: number }[];
+  status: string;
+}
+
 export type GenerationStep = 'loading' | 'fetching' | 'generating' | 'success' | 'error';
