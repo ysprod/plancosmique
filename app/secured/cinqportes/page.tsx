@@ -2,19 +2,12 @@
 import { api } from "@/lib/api/client";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { formatDate } from "@/lib/functions";
-import { MissionDeVie } from "@/lib/interfaces";
+import { MissionDeVie, Position } from "@/lib/interfaces";
 import { useEffect, useMemo, useState } from "react";
 import ErrorState from "../carteduciel/ErrorState";
 import LoadingState from "../carteduciel/LoadingState";
 import ProfileHeader from "../carteduciel/ProfileHeader";
 import CinqPortesSection from "../monprofil/CinqPortesSection";
-
-interface Position {
-  planete: string;
-  signe: string;
-  maison: number;
-  retrograde: boolean;
-}
 
 interface CarteDuCielData {
   sujet: {

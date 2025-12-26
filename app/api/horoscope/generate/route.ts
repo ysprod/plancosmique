@@ -106,7 +106,6 @@ export async function POST(request: NextRequest) {
     // Parse la réponse JSON
     let horoscopeData;
     try {
-      // Extraire le JSON si DeepSeek ajoute du texte autour
       const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         horoscopeData = JSON.parse(jsonMatch[0]);

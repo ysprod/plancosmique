@@ -51,7 +51,7 @@ export default function UserCard({ user, cardVariants, setDeleteModal }: UserCar
         {user.gender && (
           <div className="flex items-center gap-1.5 text-xs text-gray-600">
             <User className="w-3 h-3 flex-shrink-0" />
-            {user.gender === 'M' ? 'Homme' : user.gender === 'F' ? 'Femme' : 'Autre'}
+            {user.gender === 'M' ? 'Homme' : 'Femme'}
           </div>
         )}
         <div className="flex items-center gap-1.5 text-xs text-gray-600">
@@ -92,12 +92,12 @@ export default function UserCard({ user, cardVariants, setDeleteModal }: UserCar
             ⭐ Premium
           </span>
         )}
-         {!user.premium && (
+        {!user.premium && (
           <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-300">
             ⭐ Debutant
           </span>
         )}
-        
+
         {user.emailVerified && (
           <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
             <CheckCircle className="w-2.5 h-2.5" />

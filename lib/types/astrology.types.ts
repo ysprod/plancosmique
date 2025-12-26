@@ -3,12 +3,14 @@
  * Basé sur les analyses générées par DeepSeek
  */
 
+import { Position } from "../interfaces";
+
 // ==================== DONNÉES DE NAISSANCE ====================
 
 export interface BirthData {
   nom: string;
   prenoms: string;
-  genre: 'homme' | 'femme' | 'autre';
+  genre: 'homme' | 'femme';
   dateNaissance: string; // Format: YYYY-MM-DD
   heureNaissance: string; // Format: HH:MM
   paysNaissance: string;
@@ -295,7 +297,7 @@ export interface CarteDuCielData {
     lieuNaissance: string;
     heureNaissance: string;
   };
-  positions: CarteDuCielPosition[];
+  positions:  Position[];
 }
 
 // Type pour les 5 Portes

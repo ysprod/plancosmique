@@ -85,7 +85,6 @@ export const CartModal: React.FC<CartModalProps> = ({
                                 </div>
                             ) : (
                                 <>
-                                    {/* Articles */}
                                     <div className="space-y-3 mb-6">
                                         {cart.map((item) => {
                                             const itemId = item._id || item.id;

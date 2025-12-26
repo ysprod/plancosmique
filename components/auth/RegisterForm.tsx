@@ -43,7 +43,6 @@ const GENDER_OPTIONS = [
   { value: '', label: 'Sélectionner' },
   { value: 'Homme', label: 'Homme' },
   { value: 'Femme', label: 'Femme' },
-  { value: 'Autre', label: 'Autre' },
 ] as const;
 
 const PASSWORD_STRENGTH_CONFIG = {

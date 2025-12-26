@@ -22,6 +22,7 @@ const ProfessionnelPage = () => {
           </div>
         </div>
       </motion.div>
+
       <div className="max-w-7xl mx-auto">
         <AnimatePresence mode="wait">
           <motion.div
@@ -33,7 +34,6 @@ const ProfessionnelPage = () => {
             className="bg-white"
           >
             <Slide4Section rubriqueId="694d32075b9d9dfa00bed231" typeconsultation="PROFESSIONNEL" />
-
           </motion.div>
         </AnimatePresence>
       </div>

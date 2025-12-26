@@ -1,23 +1,14 @@
 'use client';
 import { api } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthContext';
+import { Offering } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  type CartItem,
-  CartModal,
-  type Category,
-  CategoryFilters,
-  CheckoutModal,
-  FloatingCart,
-  Header,
-  Hero,
-  InfoBox,
- 
-  OfferingCard,
-  staggerContainer
+  type CartItem, CartModal,
+  type Category, CategoryFilters, CheckoutModal,
+  FloatingCart, Header, Hero, InfoBox, OfferingCard, staggerContainer
 } from './components';
-import { Offering } from '@/lib/interfaces';
 
 function useCart() {
   const [cart, setCart] = useState<CartItem[]>([]);

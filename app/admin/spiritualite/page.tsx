@@ -817,7 +817,6 @@ export default function SpiritualiteAdmin() {
   );
 }
 
-// Composant pour les sections de tableau
 interface ArraySectionProps {
   title: string;
   icon: React.ReactNode;

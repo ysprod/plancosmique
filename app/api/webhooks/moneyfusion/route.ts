@@ -77,7 +77,6 @@ export async function POST(request: NextRequest) {
                 message: 'Paiement en attente',
             });
         } else {
-            // Paiement échoué ou autre statut
             return NextResponse.json({
                 success: true,
                 message: 'Notification reçue',

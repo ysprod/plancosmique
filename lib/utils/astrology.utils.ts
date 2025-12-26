@@ -30,7 +30,7 @@ export function extractCinqPortes(carteDuCiel: CarteDuCielData | null): CinqPort
   const { positions } = carteDuCiel;
 
   // 1. Signe Solaire - Position du Soleil
-  const soleil = positions.find(p => p.planete.toLowerCase() === 'soleil');
+  const soleil = positions.find(p => typeof p.planete === 'string' && p.planete.toLowerCase() === 'soleil');
   const signeSolaire = soleil?.signe || 'Non défini';
 
   // 2. Ascendant - Signe à la Maison 1
@@ -38,7 +38,7 @@ export function extractCinqPortes(carteDuCiel: CarteDuCielData | null): CinqPort
   const ascendant = maison1?.signe || 'Non défini';
 
   // 3. Signe Lunaire - Position de la Lune
-  const lune = positions.find(p => p.planete.toLowerCase() === 'lune');
+  const lune = positions.find(p => typeof p.planete === 'string' && p.planete.toLowerCase() === 'lune');
   const signeLunaire = lune?.signe || 'Non défini';
 
   // 4. Milieu du Ciel - Signe à la Maison 10

@@ -66,7 +66,6 @@ export default function VoyancePage() {
 
     setIsRevealing(true);
 
-    // Simulate cosmic revelation delay
     setTimeout(() => {
       const categoryPredictions = predictions[selectedCategory];
       const randomPrediction = categoryPredictions[Math.floor(Math.random() * categoryPredictions.length)];

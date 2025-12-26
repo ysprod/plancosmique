@@ -713,14 +713,14 @@ export default function AdminBooksPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-1 overflow-y-auto"
             onClick={closeAddModal}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full my-8"
+              className="bg-white rounded-2xl shadow-2xl p-4 max-w-2xl w-full my-8"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header avec indicateur d'étapes */}
@@ -862,7 +862,7 @@ export default function AdminBooksPage() {
                         <textarea
                           value={formData.description}
                           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                          rows={6}
+                          rows={1}
                           className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-medium transition-all resize-none ${formErrors.description
                             ? 'border-red-300 focus:border-red-500'
                             : 'border-gray-200 focus:border-indigo-500'

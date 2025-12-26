@@ -1,58 +1,6 @@
 import { ConsultationChoice } from "@/lib/interfaces";
 
-export const CONSULTATION_CHOICES: ConsultationChoice[] = [
-  {
-    id: 'carriere',
-    title: 'ORIENTATION DE CARRIÈRE',
-    description:
-      "Découvrez votre voie professionnelle idéale. Je veux connaître mes talents naturels, les domaines où je peux exceller et la carrière qui correspond à ma mission d'âme.",
-    offering: {
-      alternatives: [
-        { category: 'animal', offeringId: '6945ae01b8af14d5f56cec16', quantity: 1 },
-        { category: 'vegetal', offeringId: '6945ae01b8af14d5f56cec14', quantity: 1 },
-        { category: 'beverage', offeringId: '6945ae01b8af14d5f56cec15', quantity: 1 },
-      ]
-    }
-  },
-  {
-    id: 'reconversion',
-    title: 'RECONVERSION PROFESSIONNELLE',
-    description:
-      "Est-ce le bon moment pour changer de métier ? Je veux comprendre quand et comment opérer ma transition professionnelle en toute sérénité et réussite.",
-    offering: {
-      alternatives: [
-        { category: 'animal', offeringId: '6945ae01b8af14d5f56cec16', quantity: 1 },
-        { category: 'vegetal', offeringId: '6945ae01b8af14d5f56cec14', quantity: 1 },
-        { category: 'beverage', offeringId: '6945ae01b8af14d5f56cec15', quantity: 1 },
-      ]
-    }
-  },
-  {
-    id: 'entreprise',
-    title: 'CRÉATION D\'ENTREPRISE',
-    description:
-      "Timing et stratégie pour lancer mon business. Je veux savoir quand créer mon entreprise, quel type d'activité privilégier et comment maximiser mes chances de succès.",
-    offering: {
-      alternatives: [
-        { category: 'animal', offeringId: '6945ae01b8af14d5f56cec16', quantity: 1 },
-        { category: 'vegetal', offeringId: '6945ae01b8af14d5f56cec14', quantity: 1 },
-        { category: 'beverage', offeringId: '6945ae01b8af14d5f56cec15', quantity: 1 },
-      ]
-    }
-  },
-  {
-    id: 'partenariat',
-    title: 'PARTENARIATS PROFESSIONNELS',
-    description:
-      "Analyser la compatibilité avec mes associés ou partenaires. Je veux comprendre les dynamiques énergétiques et comment créer des collaborations harmonieuses et prospères.",
-    offering: {
-      alternatives: [
-        { category: 'animal', offeringId: '6945ae01b8af14d5f56cec16', quantity: 1 },
-        { category: 'vegetal', offeringId: '6945ae01b8af14d5f56cec14', quantity: 1 },
-        { category: 'beverage', offeringId: '6945ae01b8af14d5f56cec15', quantity: 1 },
-      ]
-    }
-  },
+export const CONSULTATION_CHOICES: ConsultationChoice[] = [   
   {
     id: 'finances',
     title: 'FINANCES ET PROSPÉRITÉ',

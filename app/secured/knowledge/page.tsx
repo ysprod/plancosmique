@@ -197,8 +197,6 @@ export default function KnowledgePage() {
           ))}
         </div>
       </div>
-
-      {/* Liste des connaissances */}
       <div className="container mx-auto px-4 py-8">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20">

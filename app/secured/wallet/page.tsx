@@ -36,7 +36,6 @@ interface TransactionItem {
   _id?: string;
   createdAt?: string;
   updatedAt?: string;
-  // Fallback pour anciennes transactions sans populate
   name?: string;
   price?: number;
   category?: string;

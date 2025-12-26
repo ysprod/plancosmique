@@ -70,7 +70,6 @@ export default function KnowledgeDetailPage() {
         url: window.location.href,
       }).catch(console.error);
     } else {
-      // Fallback: copier dans le presse-papier
       navigator.clipboard.writeText(window.location.href);
       alert('Lien copié dans le presse-papier !');
     }

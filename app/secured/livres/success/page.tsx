@@ -136,7 +136,6 @@ function BookSuccessContent() {
             Votre livre PDF est maintenant disponible.
           </motion.p>
 
-          {/* Bouton de téléchargement */}
           <motion.button
             onClick={handleDownload}
             initial={{ opacity: 0, y: 20 }}

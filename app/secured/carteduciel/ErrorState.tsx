@@ -15,6 +15,7 @@ const ErrorState = memo(() => (
             >
                 <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
             </motion.div>
+            
             <h3 className="text-xl font-bold text-white mb-2">Accès refusé</h3>
             <p className="text-red-200">Aucun utilisateur connecté. Veuillez vous connecter.</p>
         </div>

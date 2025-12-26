@@ -31,6 +31,7 @@ const PageHeader = memo(({ onBack }: { onBack: () => void }) => (
     </div>
   </motion.div>
 ));
+
 PageHeader.displayName = 'PageHeader';
 
 export default PageHeader;

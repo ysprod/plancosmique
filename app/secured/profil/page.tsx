@@ -1,22 +1,22 @@
 "use client";
 import StatsCounter from "@/components/commons/StatsCounter";
+import { api } from "@/lib/api/client";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   BookOpen,
+  Compass,
   Flame,
   Hash,
   ShoppingCart,
   Sparkles,
   Star,
-  Zap,
-  Compass,
-  Stars
+  Stars,
+  Zap
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState, memo, useMemo, useCallback } from "react";
-import { api } from "@/lib/api/client";
+import { memo, useEffect, useMemo, useState } from "react";
 import Slide4Section from "../cinqetoiles/Slide4Section";
 
 interface Category {

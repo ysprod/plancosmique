@@ -143,6 +143,7 @@ export default function AstrologiePage() {
                     <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4">
                       {section.description}
                     </p>
+                    
                     <motion.div
                       className="flex items-center gap-2 text-sm sm:text-base font-bold text-purple-700 group-hover:text-purple-900 transition-colors"
                       whileHover={{ x: 4 }}

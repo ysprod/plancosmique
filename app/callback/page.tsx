@@ -103,7 +103,6 @@ const AnalysisPreview = ({ consultationId, downloadUrl, itemVariants }: Analysis
     </motion.div>
   );
 };
-
  
 const PaymentCallbackContent = () => {
   const searchParams = useSearchParams();

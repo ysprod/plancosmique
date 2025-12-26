@@ -373,7 +373,6 @@ export default function SpiritualiteBlogPage() {
                     )}
                   </div>
 
-                  {/* Gradient Overlay */}
                   <div className="h-48 sm:h-64 lg:h-80 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 relative overflow-hidden">
                     <motion.div
                       animate={{

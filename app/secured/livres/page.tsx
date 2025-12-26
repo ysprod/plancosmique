@@ -14,7 +14,6 @@ export default function LivresPage() {
   const [purchasingBookId, setPurchasingBookId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Charger les livres depuis le backend
   useEffect(() => {
     const fetchBooks = async () => {
       try {

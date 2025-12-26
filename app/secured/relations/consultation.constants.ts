@@ -1,20 +1,6 @@
 import { ConsultationChoice } from "@/lib/interfaces";
 
 export const CONSULTATION_CHOICES: ConsultationChoice[] = [  
-  
-  {
-    id: 'harmonie',
-    title: 'HARMONIE ET COMPATIBILITÉ ASTROLOGIQUE',
-    description:
-      "Analyser la synastrie avec mon partenaire. Je veux connaître nos points de force, nos défis relationnels et comment utiliser l'astrologie pour renforcer notre connexion.",
-    offering: {
-      alternatives: [
-        { category: 'animal', offeringId: '6945ae01b8af14d5f56cec09', quantity: 1 },
-        { category: 'vegetal', offeringId: '6945ae01b8af14d5f56cec16', quantity: 1 },
-        { category: 'beverage', offeringId: '6945ae01b8af14d5f56cec13', quantity: 1 },
-      ]
-    }
-  },
   {
     id: 'communication',
     title: 'AMÉLIORER LA COMMUNICATION AVEC MON PARTENAIRE',

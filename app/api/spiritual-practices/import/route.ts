@@ -39,36 +39,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // TODO: Insérer dans votre base de données
-    // Exemple avec Prisma:
-    /*
-    const results = await Promise.all(
-      practices.map(practice =>
-        db.spiritualPractice.upsert({
-          where: { id: practice.id },
-          update: {
-            ...practice,
-            updatedAt: new Date()
-          },
-          create: {
-            ...practice,
-            createdAt: new Date(),
-            updatedAt: new Date()
-          }
-        })
-      )
-    );
-    */
-
-    // Exemple avec Supabase:
-    /*
-    const { data, error } = await supabase
-      .from('spiritual_practices')
-      .upsert(practices, { onConflict: 'id' });
     
-    if (error) throw error;
-    */
-
     // Pour l'instant, retourner succès simulé
     return NextResponse.json({
       success: true,

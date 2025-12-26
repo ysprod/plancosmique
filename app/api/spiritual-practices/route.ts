@@ -67,7 +67,6 @@ export async function GET(request: NextRequest) {
         order: 1,
         description: 'Fondements essentiels de la spiritualité africaine ancestrale'
       },
-      // ... autres pratiques
     ];
 
     return NextResponse.json({

@@ -65,7 +65,6 @@ export async function GET(
         'Force vitale (Ashé/Nyama)',
         // ...
       ],
-      // ... tous les autres champs
     };
 
     if (mockPractice.slug !== slug) {

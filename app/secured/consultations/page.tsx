@@ -186,8 +186,6 @@ export default function ConsultationsListPage() {
   const [filteredConsultations, setFilteredConsultations] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Filtres
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<ConsultationType | 'ALL'>('ALL');
   const [statusFilter, setStatusFilter] = useState<ConsultationStatus | 'ALL'>('ALL');

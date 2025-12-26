@@ -42,7 +42,6 @@ const StatBadge = memo(({
       animate={{ x: ['-100%', '200%'] }}
       transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
     />
-
     <div className="relative z-10 flex items-center gap-2">
       <Icon className="w-4 h-4 text-white flex-shrink-0" />
       <div className="flex-1 min-w-0">

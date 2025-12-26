@@ -1,16 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { api } from '@/lib/api/client';
+import { AnalyseData, GenerationStep } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertCircle, ArrowLeft, Download, Share2 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from "react";
 import LoadingSpinner from './LoadingSpinner';
-import SubjectCard from './SubjectCard';
-import SkyChartSection from './SkyChartSection';
 import MissionSection from './MissionSection';
-import MetadataFooter from './MetadataFooter';
-import { AnalyseData, GenerationStep } from '@/lib/interfaces'; 
+import SkyChartSection from './SkyChartSection';
+import SubjectCard from './SubjectCard';
 
 export default function GenereAnalysePage() {
   const router = useRouter();
@@ -106,7 +105,7 @@ export default function GenereAnalysePage() {
 
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-4">
         <AnimatePresence mode="wait">
-          {(step === 'loading'  || step === 'fetching' || step === 'generating') && (
+          {(step === 'loading' || step === 'fetching' || step === 'generating') && (
             <motion.div key="loading">
               <LoadingSpinner step={step} />
             </motion.div>
@@ -118,7 +117,6 @@ export default function GenereAnalysePage() {
               <SubjectCard sujet={analyseData.carteDuCiel.sujet} />
               <SkyChartSection carteDuCiel={analyseData.carteDuCiel} />
               <MissionSection missionDeVie={analyseData.missionDeVie} />
-              <MetadataFooter metadata={analyseData.metadata} />
             </motion.div>
           )}
 

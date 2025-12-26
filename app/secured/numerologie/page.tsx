@@ -54,7 +54,6 @@ export default function NumerologiePage() {
       .catch(() => { });
   }, []);
 
-  // Données des 5 nombres sacrés
   const sacredNumbers: SacredNumber[] = [
     {
       id: 'birth',

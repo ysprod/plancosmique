@@ -38,7 +38,6 @@ const ROLE_OPTIONS: { value: Role; label: string; description: string }[] = [
 const GENDER_OPTIONS: { value: Gender; label: string; icon: string }[] = [
   { value: 'M', label: 'Masculin', icon: '👨' },
   { value: 'F', label: 'Féminin', icon: '👩' },
-  { value: 'Other', label: 'Autre', icon: '🧑' }
 ];
  
 const validateEmail = (email: string): boolean => {

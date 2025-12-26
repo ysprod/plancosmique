@@ -14,15 +14,15 @@ import {
 } from 'lucide-react';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  BarChart,
   Bar,
-  XAxis,
-  YAxis,
+  BarChart,
   CartesianGrid,
-  Tooltip,
+  Cell,
   Legend,
   ResponsiveContainer,
-  Cell
+  Tooltip,
+  XAxis,
+  YAxis
 } from 'recharts';
 
 interface BackendStats {
@@ -71,9 +71,6 @@ interface ChartDataPoint {
 type ReportType = 'overview' | 'consultations' | 'revenue' | 'users';
 type DateRangeType = '7' | '30' | '90' | '365';
 
-// =====================================================
-// CONSTANTS
-// =====================================================
 const DATE_RANGES: { value: DateRangeType; label: string }[] = [
   { value: '7', label: '7 jours' },
   { value: '30', label: '30 jours' },

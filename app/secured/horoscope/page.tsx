@@ -3,27 +3,10 @@
 import { api } from '@/lib/api/client';
 import type { UserData } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  Calendar,
-  Loader2,
-  Sparkles,
-  TrendingUp
-} from 'lucide-react';
+import { Calendar, Loader2, Sparkles, TrendingUp } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ResultDisplay from './ResultDisplay';
-
-const ZODIAC_SYMBOLS: Record<string, string> = {
-  "Bélier": "♈", "Taureau": "♉", "Gémeaux": "♊", "Cancer": "♋",
-  "Lion": "♌", "Vierge": "♍", "Balance": "♎", "Scorpion": "♏",
-  "Sagittaire": "♐", "Capricorne": "♑", "Verseau": "♒", "Poissons": "♓"
-};
-
-const ZODIAC_ELEMENTS: Record<string, string> = {
-  "Bélier": "Feu", "Lion": "Feu", "Sagittaire": "Feu",
-  "Taureau": "Terre", "Vierge": "Terre", "Capricorne": "Terre",
-  "Gémeaux": "Air", "Balance": "Air", "Verseau": "Air",
-  "Cancer": "Eau", "Scorpion": "Eau", "Poissons": "Eau"
-};
 
 type HoroscopeTypeId = 'mensuel' | 'annuel';
 
@@ -63,84 +46,6 @@ const headerVariants = {
   }
 };
 
-const formVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 280,
-      damping: 25,
-      duration: 0.3
-    }
-  }
-};
-
-const getZodiacSign = (date: Date): string => {
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-
-  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "Bélier";
-  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "Taureau";
-  if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return "Gémeaux";
-  if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return "Cancer";
-  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return "Lion";
-  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return "Vierge";
-  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return "Balance";
-  if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return "Scorpion";
-  if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return "Sagittaire";
-  if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return "Capricorne";
-  if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return "Verseau";
-  return "Poissons";
-};
-
-const getZodiacSymbol = (sign: string): string => ZODIAC_SYMBOLS[sign] || "✨";
-
-const getZodiacElement = (sign: string): string => ZODIAC_ELEMENTS[sign] || "Inconnu";
-
-const formatDateForInput = (date: Date | string | undefined): string => {
-  if (!date) return '';
-  const d = new Date(date);
-  if (isNaN(d.getTime())) return '';
-  return d.toISOString().split('T')[0];
-};
-
-const generateHoroscope = async (
-  zodiacSign: string,
-  horoscopeType: string,
-  birthDate: Date
-): Promise<HoroscopeResult> => {
-  const element = getZodiacElement(zodiacSign);
-  const symbol = getZodiacSymbol(zodiacSign);
-
-  try {
-    console.log('[Horoscope] 📡 Génération...', { zodiacSign, horoscopeType });
-    const response = await fetch('/api/horoscope/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        zodiacSign,
-        horoscopeType,
-        birthDate: birthDate.toISOString(),
-        element,
-        symbol
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`Erreur API: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data.horoscope;
-
-  } catch (error) {
-    console.error('[Horoscope] ❌ Erreur:', error);
-    throw error;
-  }
-};
-
 const useUserData = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
@@ -150,8 +55,6 @@ const useUserData = () => {
   useEffect(() => {
     if (hasFetchedRef.current) return;
     hasFetchedRef.current = true;
-
-    console.log('[User] 📡 Fetch user data...');
 
     api.get<UserData>('/users/me')
       .then(res => {
@@ -173,10 +76,9 @@ const useUserData = () => {
 
 
 function HoroscopePageComponent() {
+  const router = useRouter();
   const { userData, loadingUser } = useUserData();
-
   const [activeTab, setActiveTab] = useState<HoroscopeTypeId>('mensuel');
-  const [birthDate, setBirthDate] = useState<string>('');
   const [result, setResult] = useState<HoroscopeResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
@@ -186,61 +88,18 @@ function HoroscopePageComponent() {
     { id: 'annuel', icon: TrendingUp, title: "Annuel", subtitle: "Cette année" },
   ], []);
 
-  useEffect(() => {
-    if (userData?.dateNaissance) {
-      const formattedDate = formatDateForInput(userData.dateNaissance);
-      if (formattedDate) {
-        setBirthDate(formattedDate);
-        console.log('[Horoscope] ✅ Date auto-remplie:', formattedDate);
-      }
-    }
-  }, [userData]);
-
-  const currentTabTitle = useMemo(() =>
-    tabs.find(t => t.id === activeTab)?.title || 'Mensuel',
-    [activeTab, tabs]
-  );
-
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+  const handleRedirect = useCallback((e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setResult(null);
-
-    if (!birthDate) {
-      setError('Veuillez entrer votre date de naissance');
-      return;
-    }
-
-    const date = new Date(birthDate);
-    if (isNaN(date.getTime())) {
-      setError('Date de naissance invalide');
-      return;
-    }
-
-    const zodiacSign = getZodiacSign(date);
-    setLoading(true);
-
-    console.log('[Horoscope] 🎯 Génération pour:', zodiacSign, currentTabTitle);
-
-    try {
-      const horoscope = await generateHoroscope(zodiacSign, currentTabTitle, date);
-      setResult(horoscope);
-    } catch (err) {
-      setError('Erreur lors de la génération de l\'horoscope. Veuillez réessayer.');
-      console.error('[Horoscope] ❌', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [birthDate, currentTabTitle]);
+    router.push(`/secured/analysehoroscope?tab=${activeTab}`);
+  }, [router, activeTab]);
 
   const handleTabChange = useCallback((tabId: HoroscopeTypeId) => {
     setActiveTab(tabId);
-    setResult(null); // Reset result when changing tab
+    setResult(null); 
   }, []);
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Progress bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-amber-500 z-50 origin-left"
         initial={{ scaleX: 0 }}
@@ -248,13 +107,11 @@ function HoroscopePageComponent() {
         transition={{ duration: 0.5 }}
       />
 
-      {/* Background subtil */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:40px_40px]" />
       </div>
 
       <div className="relative z-10 container mx-auto px-3 sm:px-4 py-5 sm:py-6 max-w-3xl">
-        {/* Header */}
         <motion.div
           variants={headerVariants}
           initial="hidden"
@@ -306,44 +163,18 @@ function HoroscopePageComponent() {
           </div>
         </div>
 
-        {/* Formulaire */}
-        <motion.div
-          variants={formVariants}
-          initial="hidden"
-          animate="visible"
-          className="bg-white rounded-xl p-5 sm:p-6 border-2 border-gray-200 shadow-sm mb-6"
-        >
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-bold text-gray-900 mb-2">
-                Date de naissance
-              </label>
-              <input
-                type="date"
-                value={birthDate}
-                onChange={(e) => setBirthDate(e.target.value)}
-                disabled={loadingUser}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl 
-                         focus:ring-2 focus:ring-purple-500 focus:border-purple-500 
-                         transition-all outline-none text-gray-900
-                         disabled:bg-gray-50 disabled:cursor-not-allowed"
-                required
-              />
-              <p className="mt-2 text-xs text-gray-500">
-                {loadingUser ? 'Chargement des données...' : ''}
-              </p>
+        <form onSubmit={handleRedirect} className="space-y-4">
+          
+            <div className="w-16 h-16 mx-auto mb-3 bg-white rounded-full 
+                            flex items-center justify-center shadow-md">
+              <Sparkles className="w-8 h-8 text-purple-600" />
             </div>
-
-            {error && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="p-3 bg-red-50 border-2 border-red-200 rounded-xl text-red-700 text-sm font-medium"
-              >
-                {error}
-              </motion.div>
-            )}
-
+            <h3 className="text-lg font-bold text-gray-900 mb-2">
+              Prêt à découvrir votre destinée ?
+            </h3>
+            <p className="text-gray-600 text-sm">
+              Cliquez sur le bouton ci-dessous pour voir votre horoscope personnalisé
+            </p> 
             <button
               type="submit"
               disabled={loading || loadingUser}
@@ -364,10 +195,18 @@ function HoroscopePageComponent() {
                   Voir mon horoscope
                 </>
               )}
-            </button>
-          </form>
-        </motion.div>
+            </button>        
 
+          {error && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="p-3 bg-red-50 border-2 border-red-200 rounded-xl text-red-700 text-sm font-medium"
+            >
+              {error}
+            </motion.div>
+          )}
+        </form>
         {/* Résultats */}
         <AnimatePresence mode="wait">
           {loading && (
@@ -409,31 +248,8 @@ function HoroscopePageComponent() {
               </div>
             </motion.div>
           )}
-
           {result && !loading && (
             <ResultDisplay key="result" result={result} />
-          )}
-
-          {!loading && !result && (
-            <motion.div
-              key="empty"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl 
-                       p-8 sm:p-10 border-2 border-purple-200 text-center"
-            >
-              <div className="w-16 h-16 mx-auto mb-3 bg-white rounded-full 
-                            flex items-center justify-center shadow-md">
-                <Sparkles className="w-8 h-8 text-purple-600" />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">
-                Prêt à découvrir votre destinée ?
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Remplissez le formulaire pour voir votre horoscope personnalisé
-              </p>
-            </motion.div>
           )}
         </AnimatePresence>
       </div>

@@ -22,7 +22,6 @@ const SigneAfricainContent = () => (
     className="space-y-4"
   >
     <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-3xl p-4 border border-orange-200">
-      {/* Message d'introduction et bienvenue - RITUEL ET INVOCATION */}
       <div className="flex items-center gap-4 mb-6">
         <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg">
           <Globe className="w-8 h-8 text-white" />

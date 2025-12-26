@@ -120,7 +120,6 @@ export default function EditUserPage() {
           </p>
         </motion.div>
 
-        {/* Success Message */}
         {success && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}

@@ -55,7 +55,6 @@ export default async function handler(
       lng: coordinates.lng
     };
 
-    // Récupération de la carte du ciel
     const carteDuCiel = await getCarteDuCiel(birthData);
 
     return res.status(200).json(carteDuCiel);

@@ -48,14 +48,12 @@ export async function POST(request: NextRequest) {
                 message: data.message || 'Ce paiement a déjà été traité',
             });
         } else if (data.code_statut === 3) {
-            // Paiement en attente
             return NextResponse.json({
                 success: false,
                 status: 'pending',
                 message: data.message || 'Paiement en attente de confirmation',
             });
         } else {
-            // Autres erreurs
             return NextResponse.json({
                 success: false,
                 status: 'failed',

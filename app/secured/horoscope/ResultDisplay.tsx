@@ -19,7 +19,7 @@ const resultVariants = {
         transition: { duration: 0.3 }
     }
 };
- 
+
 interface ResultDisplayProps {
     result: HoroscopeResult;
 }
@@ -122,7 +122,6 @@ const ResultDisplay = memo<ResultDisplayProps>(({ result }) => (
             </p>
         </div>
 
-        {/* Informations astrologiques */}
         <div className="grid grid-cols-2 gap-3">
             <div className="bg-white rounded-xl p-3 border-2 border-gray-100 text-center">
                 <Moon className="w-5 h-5 mx-auto mb-2 text-purple-600" />

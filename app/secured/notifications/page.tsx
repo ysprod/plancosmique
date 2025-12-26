@@ -9,7 +9,6 @@ import type { Notification } from '@/lib/types/notification.types';
 
 const notificationIcons = {
   CONSULTATION_RESULT: '✨',
-  NEW_KNOWLEDGE: '📚',
   CONSULTATION_ASSIGNED: '📋',
   PAYMENT_CONFIRMED: '💳',
   SYSTEM_ANNOUNCEMENT: '🔔',
@@ -17,7 +16,6 @@ const notificationIcons = {
 
 const notificationColors = {
   CONSULTATION_RESULT: 'from-purple-500/20 to-pink-500/20 border-purple-500/30',
-  NEW_KNOWLEDGE: 'from-blue-500/20 to-cyan-500/20 border-blue-500/30',
   CONSULTATION_ASSIGNED: 'from-green-500/20 to-emerald-500/20 border-green-500/30',
   PAYMENT_CONFIRMED: 'from-amber-500/20 to-orange-500/20 border-amber-500/30',
   SYSTEM_ANNOUNCEMENT: 'from-gray-500/20 to-slate-500/20 border-gray-500/30',
@@ -27,12 +25,10 @@ const filterOptions: { value: string; label: string }[] = [
   { value: 'all', label: 'Toutes' },
   { value: 'unread', label: 'Non lues' },
   { value: 'CONSULTATION_RESULT', label: 'Résultats' },
-  { value: 'NEW_KNOWLEDGE', label: 'Nouvelles connaissances' },
   { value: 'CONSULTATION_ASSIGNED', label: 'Consultations assignées' },
   { value: 'PAYMENT_CONFIRMED', label: 'Paiements' },
   { value: 'SYSTEM_ANNOUNCEMENT', label: 'Annonces système' },
 ];
-
 
 export default function NotificationsPage() {
   const [filter, setFilter] = useState<string>('all');
@@ -40,16 +36,10 @@ export default function NotificationsPage() {
   const router = useRouter();
 
   const {
-    notifications,
-    unreadCount,
-    isLoading,
-    markAsRead,
-    markAllAsRead,
-    deleteNotification,
-    fetchNotifications
-  } = useNotifications(0); // Pas de polling automatique sur cette page
+    notifications, unreadCount, isLoading,
+    markAsRead, markAllAsRead, deleteNotification, fetchNotifications
+  } = useNotifications(0);
 
-  // Recharger à l'ouverture
   useEffect(() => {
     fetchNotifications();
   }, [fetchNotifications]);
@@ -59,12 +49,11 @@ export default function NotificationsPage() {
       await markAsRead(notification._id);
     }
 
-    // Redirection intelligente selon le type de notification
     if (notification.metadata?.url) {
       window.location.href = notification.metadata.url;
       return;
     }
-    // Si notification liée à une consultation
+
     if (
       (notification.type === 'CONSULTATION_RESULT' || notification.type === 'CONSULTATION_ASSIGNED') &&
       notification.metadata?.consultationId
@@ -86,9 +75,8 @@ export default function NotificationsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Header */}
       <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-6">
+        <div className="mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/secured/profil">
@@ -100,14 +88,14 @@ export default function NotificationsPage() {
                   <ArrowLeft className="w-5 h-5 text-white" />
                 </motion.button>
               </Link>
-              
+
               <div>
                 <h1 className="text-2xl font-bold text-white flex items-center gap-3">
                   <Bell className="w-7 h-7" />
                   Notifications
                 </h1>
                 <p className="text-sm text-gray-400 mt-1">
-                  {unreadCount > 0 
+                  {unreadCount > 0
                     ? `${unreadCount} notification${unreadCount > 1 ? 's' : ''} non lue${unreadCount > 1 ? 's' : ''}`
                     : 'Toutes vos notifications sont lues'
                   }
@@ -127,7 +115,7 @@ export default function NotificationsPage() {
                   <span className="hidden sm:inline">Tout marquer comme lu</span>
                 </motion.button>
               )}
-              
+
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -145,11 +133,10 @@ export default function NotificationsPage() {
               <button
                 key={option.value}
                 onClick={() => setFilter(option.value)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
-                  filter === option.value
-                    ? 'bg-purple-500 text-white'
-                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
-                }`}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${filter === option.value
+                  ? 'bg-purple-500 text-white'
+                  : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                  }`}
               >
                 {option.label}
               </button>
@@ -172,7 +159,7 @@ export default function NotificationsPage() {
               {filter === 'all' ? 'Aucune notification' : 'Aucune notification pour ce filtre'}
             </h2>
             <p className="text-gray-400 text-center max-w-md">
-              {filter === 'all' 
+              {filter === 'all'
                 ? "Vous n'avez aucune notification pour le moment. Nous vous tiendrons informé des nouveautés !"
                 : 'Essayez de modifier le filtre pour voir plus de notifications.'
               }
@@ -187,11 +174,10 @@ export default function NotificationsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 onClick={() => handleNotificationClick(notification)}
-                className={`relative p-6 rounded-2xl border backdrop-blur-xl cursor-pointer transition-all duration-200 hover:scale-[1.02] ${
-                  notification.isRead 
-                    ? 'bg-white/5 border-white/10' 
-                    : 'bg-white/10 border-white/20'
-                }`}
+                className={`relative p-6 rounded-2xl border backdrop-blur-xl cursor-pointer transition-all duration-200 hover:scale-[1.02] ${notification.isRead
+                  ? 'bg-white/5 border-white/10'
+                  : 'bg-white/10 border-white/20'
+                  }`}
               >
                 <div className="flex items-start gap-4">
                   {/* Icône */}
@@ -203,9 +189,8 @@ export default function NotificationsPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <h3 className={`text-lg font-semibold mb-1 ${
-                          notification.isRead ? 'text-gray-300' : 'text-white'
-                        }`}>
+                        <h3 className={`text-lg font-semibold mb-1 ${notification.isRead ? 'text-gray-300' : 'text-white'
+                          }`}>
                           {notification.title}
                         </h3>
                         <p className="text-gray-400 text-sm leading-relaxed">
@@ -252,7 +237,7 @@ export default function NotificationsPage() {
         )}
       </div>
 
-       {showSettings && (
+      {showSettings && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

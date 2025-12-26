@@ -66,7 +66,6 @@ const CATEGORY_CONFIG: Record<OfferingCategory, { icon: string; label: string; c
   }
 };
 
-
 const Toast = memo(({
   type,
   message,
@@ -649,8 +648,8 @@ export default function RubriquesAdminPage() {
                   setEditingRubrique(rub);
                 }}
                 className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${selectedRubrique?._id === rub._id
-                    ? "border-violet-500 bg-violet-50 shadow-lg"
-                    : "border-slate-200 bg-white hover:border-slate-300"
+                  ? "border-violet-500 bg-violet-50 shadow-lg"
+                  : "border-slate-200 bg-white hover:border-slate-300"
                   }`}
               >
                 <div className="flex items-start justify-between">
@@ -659,8 +658,8 @@ export default function RubriquesAdminPage() {
                     <p className="text-xs text-slate-600 mt-1 line-clamp-2">
                       {rub.description}
                     </p>
-                     <p className="text-xs text-slate-600 mt-1 line-clamp-2">
-                     # {rub._id}
+                    <p className="text-xs text-slate-600 mt-1 line-clamp-2">
+                      # {rub._id}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <span className="text-xs font-semibold text-violet-600">

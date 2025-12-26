@@ -75,8 +75,6 @@ export default function UsersPage() {
     };
   }, [users]);
 
-
-
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
     await refetch();
@@ -90,7 +88,6 @@ export default function UsersPage() {
     setCurrentPage(1);
   }, []);
 
-  // 🗑️ Fonction de suppression d'utilisateur
   const handleDeleteUser = useCallback(async (userId: string) => {
     setIsDeleting(true);
     try {

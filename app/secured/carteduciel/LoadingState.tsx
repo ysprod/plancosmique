@@ -17,6 +17,7 @@ const LoadingState = memo(() => (
                 <Loader2 className="w-full h-full text-purple-400" />
             </motion.div>
             <p className="text-white font-semibold">Chargement du profil...</p>
+           
             <p className="text-purple-300 text-sm mt-1">Préparation de votre thème céleste</p>
         </div>
     </motion.div>

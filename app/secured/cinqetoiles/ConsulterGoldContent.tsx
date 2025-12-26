@@ -98,7 +98,7 @@ export default function ConsulterGoldContentComponent({
         setApiError(null);
         setStep('processing');
 
-        try {        
+        try {
             const consumeRes = await api.post('/wallet/consume-offerings', {
                 userId: user._id,
                 consultationId,
@@ -130,7 +130,7 @@ export default function ConsulterGoldContentComponent({
                 birthCountry: userData.birthCountry || userData.paysNaissance || userData.country,
                 birthCoordinates: userData.birthCoordinates
             };
-   
+
             if (!birthPayload.birthDate || !birthPayload.birthTime || !birthPayload.birthPlace) {
                 throw new Error('Profil incomplet : date, heure ou lieu de naissance manquant.');
             }
@@ -212,7 +212,7 @@ export default function ConsulterGoldContentComponent({
             setIsProcessing(false);
 
         }
-    }, [consultationId, user?._id]);  
+    }, [consultationId, user?._id]);
 
     const handleBack = useCallback(() => {
         if (typeof window !== 'undefined') {
@@ -227,14 +227,14 @@ export default function ConsulterGoldContentComponent({
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50/50 via-white to-purple-50/20 \
                       dark:from-gray-950 dark:via-gray-900 dark:to-purple-950/5">
-      
+
             <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
                 <div className="absolute -top-20 -right-20 w-64 h-64 bg-purple-200/5 \
                               dark:bg-purple-500/3 rounded-full blur-3xl" />
                 <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-blue-200/5 \
                               dark:bg-blue-500/3 rounded-full blur-3xl" />
             </div>
- 
+
             <div className="relative">
                 <AnimatePresence mode="wait">
                     {/* OFFERING STEP */}
@@ -269,7 +269,7 @@ export default function ConsulterGoldContentComponent({
                                 <PaymentProcessing />
                             </div>
                         </motion.div>
-                    )} 
+                    )}
 
                     {step === 'analyse' && (
                         <motion.div
@@ -284,7 +284,7 @@ export default function ConsulterGoldContentComponent({
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </div> 
+            </div>
 
             <AnimatePresence>
                 {showErrorToast && (

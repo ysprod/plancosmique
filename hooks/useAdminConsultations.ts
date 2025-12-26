@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api/client';
 
 interface Consultation {
@@ -25,6 +25,7 @@ interface Consultation {
     paysNaissance?: string;
     villeNaissance?: string;
   };
+  [key: string]: any;
 }
 
 interface UseAdminConsultationsOptions {
@@ -41,16 +42,8 @@ export function useAdminConsultations(options: UseAdminConsultationsOptions = {}
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const abortControllerRef = useRef<AbortController | null>(null);
-
   const fetchConsultations = useCallback(async () => {
     try {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-
-      abortControllerRef.current = new AbortController();
-
       setLoading(true);
       setError(null);
 
@@ -63,24 +56,19 @@ export function useAdminConsultations(options: UseAdminConsultationsOptions = {}
       });
 
       const response = await api.get(`/admin/consultations?${params}`, {
-        signal: abortControllerRef.current.signal,
         timeout: 10000,
       });
 
       setConsultations(response.data.consultations || []);
       setTotal(response.data.total || 0);
     } catch (err: any) {
-      if (err.name === 'AbortError' || err.name === 'CanceledError') {
-        return;
-      }
-
       console.error('Erreur lors du chargement des consultations:', err);
 
       let errorMessage = 'Erreur inconnue';
 
       if (err.response) {
-        errorMessage = err.response.data?.message || 
-                      `Erreur ${err.response.status}`;
+        errorMessage = err.response.data?.message ||
+          `Erreur ${err.response.status}`;
       } else if (err.request) {
         errorMessage = 'Erreur de connexion au serveur';
       } else {
@@ -95,12 +83,8 @@ export function useAdminConsultations(options: UseAdminConsultationsOptions = {}
 
   useEffect(() => {
     fetchConsultations();
-
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-    };
+    // Pas d'annulation nécessaire sans AbortController
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchConsultations]);
 
   return { consultations, total, loading, error, refetch: fetchConsultations };

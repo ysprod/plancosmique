@@ -61,21 +61,6 @@ export async function GET(
 
   try {
     const consultationId = params.id;
-
-    // Validation ID (MongoDB ObjectId = 24 chars hex)
-    if (!consultationId || consultationId.length !== 24 || !/^[a-f0-9]{24}$/i.test(consultationId)) {
-      console.warn('[PDF] ⚠️ ID de consultation invalide:', consultationId);
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'ID de consultation invalide',
-          code: 'INVALID_ID'
-        },
-        { status: 400 }
-      );
-    }
-
-    // Récupération analyse depuis le backend
     let backendData: BackendResponse;
     try {
       const response = await api.get<BackendResponse>(

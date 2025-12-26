@@ -5,10 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Check, Loader2, LogOut, Shield, Sparkles, Star, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-
-// =====================================================
-// TYPES & CONSTANTS
-// =====================================================
+ 
 type LogoutStatus = "loading" | "success" | "error";
 
 const PROGRESS_INTERVAL = 80; // ms (↓ de 100 à 80 pour plus fluide)
