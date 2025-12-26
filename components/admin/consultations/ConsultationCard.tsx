@@ -350,7 +350,7 @@ const ConsultationCard = memo(({
                         Voir l'analyse
                     </a>)}
 
-                {consultation.analysisNotified === true && (
+                {(consultation.analysisNotified === true||consultation.resultData ) && (
                     <span
                         className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-gradient-to-r from-emerald-400 via-green-500 to-lime-400 text-white shadow-lg border-0 animate-pulse ring-2 ring-green-300/40 dark:from-emerald-600 dark:via-green-700 dark:to-lime-600 dark:text-white dark:ring-green-700/40"
                         title="Le client a déjà été notifié"
@@ -363,7 +363,7 @@ const ConsultationCard = memo(({
 
                 <button
                     onClick={() => onGenerateAnalysis(consultation.id)}
-                    disabled={isGenerating || hasAnalysis}
+                    disabled={isGenerating || hasAnalysis || !!consultation.resultData}
                     className="flex items-center justify-center gap-1 px-2.5 py-1.5 
                    bg-gradient-to-r from-blue-600 to-blue-700 text-white 
                    text-[10px] rounded-lg font-semibold
@@ -372,7 +372,11 @@ const ConsultationCard = memo(({
                    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-sm"
                 >
                     <Sparkles className={`w-3 h-3 ${isGenerating ? 'animate-spin' : ''}`} />
-                    {isGenerating ? 'Génération' : hasAnalysis ? 'Déjà généré' : 'Générer'}
+                    {isGenerating
+                        ? 'Génération'
+                        : (hasAnalysis || consultation.resultData)
+                            ? 'Déjà généré'
+                            : 'Générer'}
                 </button>
             </div>
         </motion.div>
