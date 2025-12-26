@@ -217,7 +217,8 @@ export default function ConsultationsListPage() {
 
       const data = response.data;
 
-      setConsultations(data.consultations || []);
+      const filtered = (data.consultations || []).filter((c: any) => c.type !== 'HOROSCOPE');
+      setConsultations(filtered);
       setLoading(false);
     } catch (err: any) {
       console.error('❌ Erreur chargement consultations:', err);
