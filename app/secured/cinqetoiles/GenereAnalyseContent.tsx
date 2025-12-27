@@ -82,28 +82,7 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50/30 \
                   dark:from-gray-950 dark:via-gray-900 dark:to-purple-950/10">
-      {/* Header ultra-compact optimisé pour mobile */}
-      <motion.header
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.3 }}
-        className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl \
-                  border-b border-gray-200/60 dark:border-gray-800/60 supports-[backdrop-filter]:bg-white/60 \
-                  shadow-sm shadow-gray-200/20"
-      >
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-2.5">
-          <button
-            onClick={handleBack}
-            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 \
-                     hover:text-gray-900 dark:hover:text-gray-200 transition-all duration-200 \
-                     active:scale-95 touch-manipulation"
-            aria-label="Retour"
-          >
-            <ArrowLeft className="w-4 h-4 flex-shrink-0" />
-            <span className="font-medium text-sm truncate">Retour</span>
-          </button>
-        </div>
-      </motion.header>
+      
 
       {/* Contenu principal avec animations optimisées */}
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
