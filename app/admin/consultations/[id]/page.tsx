@@ -120,7 +120,6 @@ export default function ConsultationResultPage() {
           notifiedback={notified}
         />
       </motion.div>
-
       <AnimatePresence>
         {toast && (
           <Toast

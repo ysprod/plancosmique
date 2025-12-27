@@ -110,8 +110,7 @@ export default function GenereAnalysePage() {
               <LoadingSpinner step={step} />
             </motion.div>
           )}
-
-          {/* Success */}
+          
           {step === 'success' && analyseData && (
             <motion.div key="success" className="space-y-4 pb-8">
               <SubjectCard sujet={analyseData.carteDuCiel.sujet} />

@@ -480,6 +480,7 @@ export default function PaymentsPage() {
             <h3 className="text-base font-bold text-gray-900 mb-1">
               Aucun paiement
             </h3>
+            
             <p className="text-sm text-gray-500 mb-4">
               {searchQuery || statusFilter !== 'all' || methodFilter !== 'all'
                 ? 'Aucun résultat trouvé'

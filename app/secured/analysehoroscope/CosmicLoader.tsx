@@ -127,5 +127,5 @@ const CosmicLoader = memo(() => (
     </motion.div>
 ), () => true);
 
-CosmicLoader.displayName = 'CosmicLoader'; 
+CosmicLoader.displayName = 'CosmicLoader';
 export default CosmicLoader;
