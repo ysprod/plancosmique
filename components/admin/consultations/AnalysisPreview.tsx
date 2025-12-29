@@ -128,20 +128,6 @@ const AnalysisPreview = memo(({ analysis }: { analysis: any }) => {
                                 index={2}
                             />
                         )}
-
-                        {/* Sujet info */}
-                        {analysisData.sujet && (
-                            <AnalysisSection
-                                title="👤 Informations du Sujet"
-                                content={`${analysisData.sujet.prenoms || ''} ${analysisData.sujet.nom || ''}
-Né(e) le: ${analysisData.sujet.dateNaissance || 'N/A'}
-Lieu: ${analysisData.sujet.lieuNaissance || 'N/A'}
-Heure: ${analysisData.sujet.heureNaissance || 'N/A'}`}
-                                icon={User}
-                                iconColor="text-indigo-600"
-                                index={3}
-                            />
-                        )}
                     </motion.div>
                 )}
             </AnimatePresence>

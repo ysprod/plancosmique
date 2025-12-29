@@ -116,7 +116,6 @@ export default function SettingsPage() {
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
         <div className="flex flex-col lg:flex-row gap-4">
-          {/* Onglets - Version mobile/desktop */}
           <div className="lg:w-64 flex-shrink-0">
             {/* Version mobile - Select */}
             <div className="lg:hidden">

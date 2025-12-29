@@ -13,7 +13,6 @@ export default function AdminBooksPage() {
   const {
     books,
     loading,
-    seeding,
     error,
     setError,
     searchQuery,
@@ -37,7 +36,6 @@ export default function AdminBooksPage() {
     formErrors,
     submitting,
     fetchBooks,
-    handleSeedBooks,
     handleToggleActive,
     handleDeleteBook,
     handleNextStep,
@@ -96,27 +94,6 @@ export default function AdminBooksPage() {
               >
                 <Plus className="w-5 h-5" />
                 Ajouter un livre
-              </motion.button>
-            )}
-            {books.length === 0 && (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleSeedBooks}
-                disabled={seeding}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
-              >
-                {seeding ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Initialisation...
-                  </>
-                ) : (
-                  <>
-                    <Plus className="w-5 h-5" />
-                    Initialiser les livres
-                  </>
-                )}
               </motion.button>
             )}
           </div>

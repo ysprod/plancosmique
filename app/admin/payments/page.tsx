@@ -1,22 +1,10 @@
 'use client';
+import PaymentsFilters from '@/components/admin/payments/PaymentsFilters';
+import PaymentsList from '@/components/admin/payments/PaymentsList';
+import PaymentsStats from '@/components/admin/payments/PaymentsStats';
 import { useAdminPayments } from '@/hooks/useAdminPayments';
-import { AnimatePresence, motion } from 'framer-motion';
-import {
-  AlertCircle,
-  Calendar,
-  CheckCircle, Clock,
-  CreditCard,
-  Eye,
-  Filter,
-  Hash,
-  RefreshCw,
-  Search,
-  Smartphone,
-  User,
-  X,
-  XCircle
-} from 'lucide-react';
-import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { AlertCircle, CreditCard, RefreshCw } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 
 type PaymentStatus = 'all' | 'pending' | 'completed' | 'failed' | 'cancelled';
@@ -71,56 +59,6 @@ export default function PaymentsPage() {
   };
 
   const totalPages = Math.ceil(total / 18);
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed': return 'bg-green-100 text-green-700';
-      case 'pending': return 'bg-orange-100 text-orange-700';
-      case 'failed': return 'bg-red-100 text-red-700';
-      case 'cancelled': return 'bg-gray-100 text-gray-700';
-      default: return 'bg-gray-100 text-gray-700';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'completed': return <CheckCircle className="w-2.5 h-2.5" />;
-      case 'pending': return <Clock className="w-2.5 h-2.5" />;
-      case 'failed': return <XCircle className="w-2.5 h-2.5" />;
-      case 'cancelled': return <AlertCircle className="w-2.5 h-2.5" />;
-      default: return <AlertCircle className="w-2.5 h-2.5" />;
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'completed': return 'Réussi';
-      case 'pending': return 'En attente';
-      case 'failed': return 'Échoué';
-      case 'cancelled': return 'Annulé';
-      default: return status;
-    }
-  };
-
-  const getMethodText = (method: string) => {
-    switch (method) {
-      case 'orange_money': return 'Orange Money';
-      case 'mtn_money': return 'MTN Money';
-      case 'moov_money': return 'Moov Money';
-      case 'wave': return 'Wave';
-      default: return method;
-    }
-  };
-
-  const getMethodColor = (method: string) => {
-    switch (method) {
-      case 'orange_money': return 'bg-orange-50 text-orange-700';
-      case 'mtn_money': return 'bg-yellow-50 text-yellow-700';
-      case 'moov_money': return 'bg-blue-50 text-blue-700';
-      case 'wave': return 'bg-pink-50 text-pink-700';
-      default: return 'bg-gray-50 text-gray-700';
-    }
-  };
 
   if (loading && !payments) {
     return (
@@ -183,8 +121,8 @@ export default function PaymentsPage() {
                 onClick={handleRefresh}
                 disabled={isRefreshing}
                 className={`p-2 rounded-lg transition-all ${isRefreshing
-                    ? 'bg-gray-100 text-gray-400'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-gray-100 text-gray-400'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
               >
                 <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
@@ -195,256 +133,26 @@ export default function PaymentsPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
-        {/* Stats compactes avec montants */}
-        {stats && (
-          <div className="space-y-3 mb-4">
-            {/* Montants totaux */}
-            <div className="grid grid-cols-2 gap-2">
-              <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg p-3 text-white">
-                <p className="text-xs opacity-90 mb-1">Montant total</p>
-                <p className="text-xl font-bold">{stats.totalAmount.toLocaleString()} F</p>
-              </div>
-              <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg p-3 text-white">
-                <p className="text-xs opacity-90 mb-1">Montant encaissé</p>
-                <p className="text-xl font-bold">{stats.completedAmount.toLocaleString()} F</p>
-              </div>
-            </div>
 
-            {/* Stats par statut */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              <div className="bg-white rounded-lg p-2.5 border border-gray-200">
-                <div className="flex items-center gap-2">
-                  <div className="p-1 bg-green-50 rounded">
-                    <CheckCircle className="w-3.5 h-3.5 text-green-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500">Réussis</p>
-                    <p className="text-lg font-bold text-gray-900">{stats.completed}</p>
-                  </div>
-                </div>
-              </div>
+        <PaymentsStats stats={stats} />
 
-              <div className="bg-white rounded-lg p-2.5 border border-gray-200">
-                <div className="flex items-center gap-2">
-                  <div className="p-1 bg-orange-50 rounded">
-                    <Clock className="w-3.5 h-3.5 text-orange-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500">En attente</p>
-                    <p className="text-lg font-bold text-gray-900">{stats.pending}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg p-2.5 border border-gray-200">
-                <div className="flex items-center gap-2">
-                  <div className="p-1 bg-red-50 rounded">
-                    <XCircle className="w-3.5 h-3.5 text-red-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500">Échoués</p>
-                    <p className="text-lg font-bold text-gray-900">{stats.failed}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg p-2.5 border border-gray-200">
-                <div className="flex items-center gap-2">
-                  <div className="p-1 bg-gray-50 rounded">
-                    <AlertCircle className="w-3.5 h-3.5 text-gray-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500">Annulés</p>
-                    <p className="text-lg font-bold text-gray-900">{stats.cancelled}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="mb-4">
-          <div className="flex gap-2">
-            <div className="flex-1 relative">
-              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setCurrentPage(1);
-                }}
-                placeholder="Rechercher (ref, nom, tel)..."
-                className="w-full bg-white border border-gray-300 text-sm text-gray-900 
-                           pl-8 pr-8 py-2 rounded-lg focus:outline-none 
-                           focus:ring-2 focus:ring-green-400 focus:border-transparent"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className={`flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg 
-                         font-medium transition-all ${showFilters || statusFilter !== 'all' || methodFilter !== 'all'
-                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
-                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-                }`}
-            >
-              <Filter className="w-4 h-4" />
-              <span className="hidden sm:inline">Filtres</span>
-            </button>
-          </div>
-
-          <AnimatePresence>
-            {showFilters && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="bg-white border border-gray-200 rounded-lg p-3 mt-2"
-              >
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="text-xs font-medium text-gray-700 mb-1 block">
-                      Statut
-                    </label>
-                    <select
-                      value={statusFilter}
-                      onChange={(e) => {
-                        setStatusFilter(e.target.value as PaymentStatus);
-                        setCurrentPage(1);
-                      }}
-                      className="w-full bg-white border border-gray-300 text-sm text-gray-900 
-                                 px-2 py-1.5 rounded focus:ring-2 focus:ring-green-400"
-                    >
-                      <option value="all">Tous</option>
-                      <option value="completed">Réussis</option>
-                      <option value="pending">En attente</option>
-                      <option value="failed">Échoués</option>
-                      <option value="cancelled">Annulés</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-medium text-gray-700 mb-1 block">
-                      Méthode
-                    </label>
-                    <select
-                      value={methodFilter}
-                      onChange={(e) => {
-                        setMethodFilter(e.target.value as PaymentMethod);
-                        setCurrentPage(1);
-                      }}
-                      className="w-full bg-white border border-gray-300 text-sm text-gray-900 
-                                 px-2 py-1.5 rounded focus:ring-2 focus:ring-green-400"
-                    >
-                      <option value="all">Tous</option>
-                      <option value="orange_money">Orange Money</option>
-                      <option value="mtn_money">MTN Money</option>
-                      <option value="moov_money">Moov Money</option>
-                      <option value="wave">Wave</option>
-                    </select>
-                  </div>
-                </div>
-
-                {(statusFilter !== 'all' || methodFilter !== 'all') && (
-                  <button
-                    onClick={handleResetFilters}
-                    className="text-xs text-green-600 hover:text-green-700 
-                               font-medium flex items-center gap-1 mt-2"
-                  >
-                    <X className="w-3 h-3" />
-                    Réinitialiser
-                  </button>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        <PaymentsFilters
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          methodFilter={methodFilter}
+          setMethodFilter={setMethodFilter}
+          showFilters={showFilters}
+          setShowFilters={setShowFilters}
+          handleResetFilters={handleResetFilters}
+        />
 
         {payments && payments.length > 0 ? (
           <div className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-              {payments.map((payment, index) => (
-                <motion.div
-                  key={payment.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.02 }}
-                  whileHover={{ y: -2 }}
-                  className="bg-white rounded-lg border border-gray-200 p-3 
-                             hover:shadow-lg transition-all"
-                >
-                  {/* En-tête */}
-                  <div className="flex items-start justify-between mb-2.5">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1.5 mb-1">
-                        <Hash className="w-3 h-3 text-gray-400" />
-                        <p className="text-xs font-mono text-gray-500 truncate">
-                          {payment.reference}
-                        </p>
-                      </div>
-                      <p className="text-lg font-bold text-gray-900">
-                        {payment.amount.toLocaleString()} F
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Infos client */}
-                  <div className="space-y-1 mb-2.5 pb-2.5 border-b border-gray-100">
-                    <div className="flex items-center gap-1.5 text-xs text-gray-600 truncate">
-                      <User className="w-3 h-3 flex-shrink-0" />
-                      <span className="truncate">{payment.customerName}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                      <Smartphone className="w-3 h-3 flex-shrink-0" />
-                      {payment.customerPhone}
-                    </div>
-                    <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                      <Calendar className="w-3 h-3 flex-shrink-0" />
-                      {new Date(payment.createdAt).toLocaleDateString('fr-FR')}
-                    </div>
-                  </div>
-
-                  {/* Badges */}
-                  <div className="flex flex-wrap gap-1.5 mb-3">
-                    <span className={`inline-flex items-center gap-0.5 px-2 py-0.5 
-                                    rounded-full text-xs font-medium ${getStatusColor(payment.status)
-                      }`}>
-                      {getStatusIcon(payment.status)}
-                      {getStatusText(payment.status)}
-                    </span>
-
-                    {payment.method && (
-                      <span className={`inline-flex items-center px-2 py-0.5 
-                                      rounded-full text-xs font-medium ${getMethodColor(payment.method)
-                        }`}>
-                        <CreditCard className="w-2.5 h-2.5 mr-0.5" />
-                        {getMethodText(payment.method)}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Bouton */}
-                  <Link
-                    href={`/admin/payments/${payment.id}`}
-                    className="w-full flex items-center justify-center gap-1 
-                               px-2 py-1.5 bg-green-600 text-white text-xs 
-                               rounded font-medium hover:bg-green-700 transition-colors"
-                  >
-                    <Eye className="w-3 h-3" />
-                    Détails
-                  </Link>
-                </motion.div>
-              ))}
-            </div>  
+            <PaymentsList
+              payments={payments}
+            />
             {totalPages > 1 && (
               <div className="flex items-center justify-between bg-white 
                               rounded-lg border border-gray-200 px-3 py-2">
@@ -480,7 +188,7 @@ export default function PaymentsPage() {
             <h3 className="text-base font-bold text-gray-900 mb-1">
               Aucun paiement
             </h3>
-            
+
             <p className="text-sm text-gray-500 mb-4">
               {searchQuery || statusFilter !== 'all' || methodFilter !== 'all'
                 ? 'Aucun résultat trouvé'

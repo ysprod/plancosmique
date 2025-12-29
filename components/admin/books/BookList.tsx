@@ -16,7 +16,7 @@ export const BookList: React.FC<BookListProps> = ({ books, onToggleActive, onDel
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {books.map((book, index) => (
         <motion.div
-          key={book._id}
+          key={book._id || book.bookId || index}
           layout
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -36,7 +36,7 @@ export const BookList: React.FC<BookListProps> = ({ books, onToggleActive, onDel
                   <div className="flex items-center gap-2 text-xs text-gray-600 flex-wrap">
                     <span className="flex items-center gap-1">👤 {book.author}</span>
                     <span>•</span>
-                    <span>{book.pageCount} pages</span>
+                    <span>{book.pageCount || 100} pages</span>
                     <span>•</span>
                     <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full font-bold">{book.category}</span>
                   </div>

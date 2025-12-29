@@ -282,7 +282,6 @@ export default function EditUserPage() {
             </div>
           </div>         
 
-          {/* Actions */}
           <div className="flex gap-3 pt-4 border-t border-slate-200">
             <Link
               href="/admin/users"

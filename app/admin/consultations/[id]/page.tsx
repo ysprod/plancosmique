@@ -6,10 +6,10 @@ import { AnalyseAstrologique } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import ErrorState from './components/ErrorState';
-import LoadingSkeleton from './components/LoadingSkeleton';
-import PageHeader from './components/PageHeader';
-import Toast from './components/Toast';
+import ErrorState from '@/components/consultations/ErrorState';
+import LoadingSkeleton from '@/components/consultations/LoadingSkeleton';
+import PageHeader from '@/components/consultations/PageHeader';
+import Toast from '@/components/consultations/Toast';
 
 export default function ConsultationResultPage() {
   const params = useParams();

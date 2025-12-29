@@ -1,5 +1,5 @@
 import { api } from '@/lib/api/client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface User {
   id: string;
@@ -40,16 +40,9 @@ export function useAdminUsers(options: UseAdminUsersOptions = {}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const abortControllerRef = useRef<AbortController | null>(null);
 
   const fetchUsers = useCallback(async () => {
     try {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-
-      abortControllerRef.current = new AbortController();
-
       setLoading(true);
       setError(null);
 
@@ -62,17 +55,12 @@ export function useAdminUsers(options: UseAdminUsersOptions = {}) {
       });
 
       const response = await api.get(`/admin/users?${params}`, {
-        signal: abortControllerRef.current.signal,
         timeout: 10000,
       });
 
       setUsers(response.data.users || []);
       setTotal(response.data.total || 0);
     } catch (err: any) {
-      if (err.name === 'AbortError' || err.name === 'CanceledError') {
-        return;
-      }
-
       console.error('Erreur lors du chargement des utilisateurs:', err);
 
       let errorMessage = 'Erreur inconnue';
@@ -94,12 +82,7 @@ export function useAdminUsers(options: UseAdminUsersOptions = {}) {
 
   useEffect(() => {
     fetchUsers();
-
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-    };
+    // No abort logic
   }, [fetchUsers]);
 
   return { users, total, loading, error, refetch: fetchUsers };

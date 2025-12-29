@@ -1,10 +1,9 @@
 'use client';
-import { CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { memo } from 'react';
 import { GenerationStep } from '@/lib/interfaces';
+import { motion } from 'framer-motion';
+import { AlertCircle, CheckCircle2, Sparkles } from 'lucide-react';
+import { memo } from 'react';
  
-
 interface LoadingSpinnerProps {
   step: GenerationStep;
 }

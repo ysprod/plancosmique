@@ -71,6 +71,7 @@ export default function ConsultationsPage() {
           <ConsultationsEmptyState />
         )}
       </div>
+      
       <AnimatePresence>
         {toastMessage && (
           <Toast message={toastMessage} onClose={handleToastClose} />

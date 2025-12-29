@@ -88,14 +88,12 @@ export default function SpiritualiteAdmin() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  // États pour le formulaire
   const [showForm, setShowForm] = useState(false);
   const [editingPractice, setEditingPractice] = useState<SpiritualPractice | null>(null);
   const [formData, setFormData] = useState<SpiritualPractice>(emptyPractice);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['basic']));
   const [saving, setSaving] = useState(false);
 
-  // États pour la visualisation
   const [expandedPractices, setExpandedPractices] = useState<Set<string>>(new Set());
   const [deletingId, setDeletingId] = useState<string | null>(null);
 

@@ -186,11 +186,12 @@ export function useAdminBooks() {
 
   const filteredAndSortedBooks = useMemo(() => {
     let filtered = books.filter(book => {
+      const safe = (val: any) => typeof val === 'string' ? val : '';
       const matchesSearch = searchQuery === '' ||
-        book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        book.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        book.description.toLowerCase().includes(searchQuery.toLowerCase());
+        safe(book.title).toLowerCase().includes(searchQuery.toLowerCase()) ||
+        safe(book.subtitle).toLowerCase().includes(searchQuery.toLowerCase()) ||
+        safe(book.author).toLowerCase().includes(searchQuery.toLowerCase()) ||
+        safe(book.description).toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = selectedCategory === 'all' || book.category === selectedCategory;
       const matchesStatus = statusFilter === 'all' ||
         (statusFilter === 'active' && book.isActive) ||

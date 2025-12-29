@@ -211,6 +211,7 @@ export default function NewUserPage() {
     isActive: true,
     emailVerified: false,
     credits: 0,
+    password: '12345678',
     preferences: {
       notifications: true,
       newsletter: false,

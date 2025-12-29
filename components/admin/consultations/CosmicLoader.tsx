@@ -1,9 +1,7 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { AlertCircle } from 'lucide-react';
-import React from 'react';
+import { motion } from 'framer-motion';
 
 export const CosmicLoader = () => (
-  <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-purple-950 to-indigo-950 relative overflow-hidden">
+  <div className="flex items-center justify-center bg-gradient-to-br from-gray-900 via-purple-950 to-indigo-950 relative overflow-hidden">
     {/* Animated Background */}
     <div className="absolute inset-0 -z-10">
       <motion.div

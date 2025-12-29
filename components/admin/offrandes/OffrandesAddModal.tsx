@@ -62,20 +62,7 @@ const OffrandesAddModal: React.FC<OffrandesAddModalProps> = ({
         </div>
         {/* Formulaire */}
         <div className="p-6 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* ID */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">ID unique *</label>
-              <input
-                type="text"
-                value={formData.id}
-                onChange={e => setFormData({ ...formData, id: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
-                placeholder="ex: poulet-blanc"
-                disabled={!!editingId}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-violet-500 dark:focus:border-violet-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-mono text-sm"
-              />
-            </div>
-            {/* Nom */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">            
             <div>
               <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Nom *</label>
               <input
