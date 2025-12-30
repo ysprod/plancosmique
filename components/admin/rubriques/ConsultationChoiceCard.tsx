@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { ConsultationChoice, ConsultationOffering } from "../page";
+ 
 import { ChevronDown, ChevronUp, DollarSign, Package, Search, Trash2 } from "lucide-react";
 import { memo, useCallback, useMemo, useState } from "react";
 import { Offering } from "@/lib/api/services/offerings.service";
+import { ConsultationChoice, ConsultationOffering } from "@/lib/interfaces";
 
 type OfferingCategory = "animal" | "vegetal" | "beverage";
 
@@ -28,18 +29,20 @@ const CATEGORY_CONFIG: Record<OfferingCategory, { icon: string; label: string; c
 };
 
 
+import type { OfferingAlternative } from "@/lib/interfaces";
+
 export const OfferingSelector = memo(({
     alternative,
     offerings,
     onChange
 }: {
-    alternative: ConsultationOffering;
+    alternative: OfferingAlternative;
     offerings: Offering[];
-    onChange: (updated: ConsultationOffering) => void;
+    onChange: (updated: OfferingAlternative) => void;
 }) => {
     const [search, setSearch] = useState("");
 
-    const config = CATEGORY_CONFIG[alternative.category];
+    const config = CATEGORY_CONFIG[alternative.category as OfferingCategory];
 
     // Filtrer par catégorie et recherche
     const filteredOfferings = useMemo(() =>
@@ -166,7 +169,7 @@ const ConsultationChoiceCard = memo(({
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const handleAlternativeChange = useCallback((idx: number, updated: ConsultationOffering) => {
+    const handleAlternativeChange = useCallback((idx: number, updated: OfferingAlternative) => {
         const newAlternatives = [...choice.offering.alternatives];
         newAlternatives[idx] = updated;
         onUpdate({ ...choice, offering: { alternatives: newAlternatives } });

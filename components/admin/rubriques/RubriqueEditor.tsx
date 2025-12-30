@@ -1,9 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Package, Plus, Save, X } from "lucide-react";
-import { memo, useCallback } from "react";
+import { Key, memo, useCallback } from "react";
 import ConsultationChoiceCard from "./ConsultationChoiceCard";
-import { ConsultationChoice, Rubrique } from "../page";
+ 
 import { Offering } from "@/lib/api/services/offerings.service";
+import { ConsultationChoice } from "@/lib/interfaces";
 
 const RubriqueEditor = memo(({
   rubrique,
@@ -13,15 +14,15 @@ const RubriqueEditor = memo(({
   isSaving,
   offerings
 }: {
-  rubrique: Rubrique;
-  onUpdate: (updated: Rubrique) => void;
+  rubrique: any;
+  onUpdate: (updated: any) => void;
   onSave: () => void;
   onCancel: () => void;
   isSaving: boolean;
   offerings: Offering[];
 }) => {
   const handleAddChoice = useCallback(() => {
-    const newChoice: ConsultationChoice = {
+    const newChoice: any = {
       title: "Nouveau choix",
       description: "",
       offering: {
@@ -48,7 +49,7 @@ const RubriqueEditor = memo(({
     if (!confirm("Supprimer ce choix ?")) return;
     onUpdate({
       ...rubrique,
-      consultationChoices: rubrique.consultationChoices.filter((_, i) => i !== index)
+      consultationChoices: rubrique.consultationChoices.filter((_: unknown, i: number) => i !== index)
     });
   }, [rubrique, onUpdate]);
 
@@ -99,13 +100,13 @@ const RubriqueEditor = memo(({
 
         <div className="space-y-4">
           <AnimatePresence>
-            {rubrique.consultationChoices.map((choice, index) => (
+            {rubrique.consultationChoices.map((choice: any, index:any) => (
               <ConsultationChoiceCard
                 key={index}
                 choice={choice}
-                index={index}
-                onUpdate={(updated) => handleUpdateChoice(index, updated)}
-                onDelete={() => handleDeleteChoice(index)}
+                index={index!}
+                onUpdate={(updated) => handleUpdateChoice(index!, updated)}
+                onDelete={() => handleDeleteChoice(index!)}
                 offerings={offerings}
               />
             ))}

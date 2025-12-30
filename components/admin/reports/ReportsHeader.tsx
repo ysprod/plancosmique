@@ -7,9 +7,10 @@ interface DateRange {
   label: string;
 }
 
+import { DateRangeType } from '@/hooks/useAdminReportsPage';
 interface ReportsHeaderProps {
-  dateRange: string;
-  setDateRange: (v: string) => void;
+  dateRange: DateRangeType;
+  setDateRange: (v: DateRangeType) => void;
   DATE_RANGES: DateRange[];
 }
 
@@ -56,7 +57,7 @@ const ReportsHeader: React.FC<ReportsHeaderProps> = ({ dateRange, setDateRange, 
           key={range.value}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => setDateRange(range.value)}
+          onClick={() => setDateRange(range.value as DateRangeType)}
           className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex-shrink-0 ${dateRange === range.value
             ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
             : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'

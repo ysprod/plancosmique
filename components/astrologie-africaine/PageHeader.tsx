@@ -1,0 +1,25 @@
+import { motion } from 'framer-motion';
+import { Moon } from 'lucide-react';
+import React, { memo } from 'react';
+
+const PageHeader = memo(() => (
+  <motion.div
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="text-center mb-8 sm:mb-12"
+  >
+    <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full border border-purple-200">
+      <Moon className="w-4 h-4 text-purple-600" />
+      <span className="text-sm font-semibold text-purple-700">Magie Lunaire</span>
+    </div>
+    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-3 tracking-tight">
+      Incantations & Rituels Magiques
+    </h1>
+    <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+      Connectez-vous aux forces cosmiques ancestrales à travers les cycles lunaires
+    </p>
+  </motion.div>
+));
+PageHeader.displayName = 'PageHeader';
+export { PageHeader };

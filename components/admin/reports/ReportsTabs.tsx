@@ -1,10 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+import { ReportType } from '@/hooks/useAdminReportsPage';
 interface ReportsTabsProps {
-  selectedReport: string;
-  setSelectedReport: (v: string) => void;
-  REPORT_TABS: { value: string; label: string }[];
+  selectedReport: ReportType;
+  setSelectedReport: (v: ReportType) => void;
+  REPORT_TABS: { value: ReportType; label: string }[];
 }
 
 const ReportsTabs: React.FC<ReportsTabsProps> = ({ selectedReport, setSelectedReport, REPORT_TABS }) => (

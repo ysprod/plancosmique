@@ -186,7 +186,7 @@ export interface FormData {
 }
 
 export interface Rubrique {
-  _id?: string;
+  _id: string;
   id?: string;
   titre: string;
   description: string;

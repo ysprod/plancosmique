@@ -1,12 +1,14 @@
 "use client";
+import { AdminBooksErrorAlert } from "@/components/admin/books/AdminBooksErrorAlert";
+import { AdminBooksHeader } from "@/components/admin/books/AdminBooksHeader";
 import { BookAddModal } from "@/components/admin/books/BookAddModal";
 import { BookDeleteModal } from "@/components/admin/books/BookDeleteModal";
 import { BookFilters } from "@/components/admin/books/BookFilters";
 import { BookList } from "@/components/admin/books/BookList";
 import { BookStats } from "@/components/admin/books/BookStats";
 import { useAdminBooks } from "@/hooks/useAdminBooks";
-import { AnimatePresence, motion } from "framer-motion";
-import { Loader2, Plus, RefreshCw } from "lucide-react";
+import { motion } from "framer-motion";
+import { Loader2, Plus } from "lucide-react";
 
 export default function AdminBooksPage() {
   const booksState = useAdminBooks();
@@ -61,62 +63,14 @@ export default function AdminBooksPage() {
 
   return (
     <div className="p-4 lg:p-6 max-w-7xl mx-auto">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
-          <div>
-            <h1 className="text-3xl lg:text-4xl font-black text-gray-900 flex items-center gap-3">
-              <span className="inline-block bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-2">
-                <Plus className="w-8 h-8 text-white" />
-              </span>
-              Gestion des Livres
-            </h1>
-            <p className="text-gray-600 mt-2">
-              Gérez votre catalogue de {books.length} livre{books.length > 1 ? "s" : ""} PDF
-            </p>
-          </div>
-          <div className="flex gap-3 flex-wrap">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={fetchBooks}
-              disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-all disabled:opacity-50"
-            >
-              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-              Actualiser
-            </motion.button>
-            {books.length > 0 && (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={openAddModal}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all"
-              >
-                <Plus className="w-5 h-5" />
-                Ajouter un livre
-              </motion.button>
-            )}
-          </div>
-        </div>
-      </motion.div>
+      <AdminBooksHeader
+        booksCount={books.length}
+        loading={loading}
+        fetchBooks={fetchBooks}
+        openAddModal={openAddModal}
+      />
 
-      <AnimatePresence>
-        {error && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="mb-6 bg-red-50 border-2 border-red-200 rounded-xl p-4"
-          >
-            <div className="flex items-center justify-between">
-              <p className="text-red-700 font-semibold">{error}</p>
-              <button onClick={() => setError(null)} className="text-red-500 hover:text-red-700">
-                ×
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <AdminBooksErrorAlert error={error} onClose={() => setError(null)} />
 
       <BookStats stats={stats} />
 

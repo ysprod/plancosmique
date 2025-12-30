@@ -17,7 +17,7 @@ interface OfferingStepProps {
   onBack: () => void;
 }
 
-const CATEGORY_CONFIG: Record<Category, {
+export const CATEGORY_CONFIG: Record<Category, {
   label: string;
   icon: string;
   gradient: string;

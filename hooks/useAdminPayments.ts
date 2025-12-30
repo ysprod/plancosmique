@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api/client';
 
 interface Payment {
@@ -27,16 +27,8 @@ export function useAdminPayments(options: UseAdminPaymentsOptions = {}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const abortControllerRef = useRef<AbortController | null>(null);
-
   const fetchPayments = useCallback(async () => {
     try {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-
-      abortControllerRef.current = new AbortController();
-
       setLoading(true);
       setError(null);
 
@@ -49,17 +41,12 @@ export function useAdminPayments(options: UseAdminPaymentsOptions = {}) {
       });
 
       const response = await api.get(`/admin/payments?${params}`, {
-        signal: abortControllerRef.current.signal,
         timeout: 10000,
       });
 
       setPayments(response.data.payments || []);
       setTotal(response.data.total || 0);
     } catch (err: any) {
-      if (err.name === 'AbortError' || err.name === 'CanceledError') {
-        return;
-      }
-
       console.error('Erreur lors du chargement des paiements:', err);
 
       let errorMessage = 'Erreur inconnue';
@@ -81,12 +68,7 @@ export function useAdminPayments(options: UseAdminPaymentsOptions = {}) {
 
   useEffect(() => {
     fetchPayments();
-
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-    };
+    // Pas d'annulation nécessaire
   }, [fetchPayments]);
 
   return { payments, total, loading, error, refetch: fetchPayments };
