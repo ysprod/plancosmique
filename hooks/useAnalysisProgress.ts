@@ -1,4 +1,4 @@
-import { AnalysisProgressData } from '@/app/callback/components/types';
+import { AnalysisProgressData } from '../components/callback/types';
 import { useEffect, useState, useRef } from 'react';
  
 

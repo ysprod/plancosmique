@@ -50,7 +50,7 @@ export default function WelcomePage() {
           Bienvenue dans ce temple virtuel, où chacun vient chercher une réponse aux trois grandes
           questions de l'existence :
         </motion.p>
-  
+
         <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 mb-6">
           {QUESTIONS.map((item, i) => (
             <Link key={item.q} href="/secured/profil" className="w-full sm:w-auto">
@@ -71,7 +71,7 @@ export default function WelcomePage() {
             </Link>
           ))}
         </div>
- 
+
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -113,6 +113,7 @@ export default function WelcomePage() {
               une boussole sacrée, une mémoire profonde et une lumière qui vous éclaire, inspire vos choix
               et guide vos décisions.
             </p>
+            
             <p className="text-base sm:text-lg font-black text-black leading-tight">
               Votre naissance a un but.
               <br />

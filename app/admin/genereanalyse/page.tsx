@@ -14,7 +14,7 @@ export default function GenereAnalysePage() {
       <GenereAnalyseHeader
         onBack={handleBack}
         onPrint={() => window.print()}
-        onShare={() => navigator.share?.({ title: 'Analyse Astrologique', text: 'Découvrez mon analyse astrologique' })}
+        onShare={() => navigator.share?.({ title: 'Analyse', text: 'Découvrez mon analyse astrologique' })}
         showActions={step === 'success'}
       />
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-4">

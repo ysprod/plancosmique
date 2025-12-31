@@ -15,25 +15,11 @@ const CATEGORIES = [
 
 export default function AdminOffrandes() {
     const {
-        offerings,
-        statsData,
-        loading,
-        saving,
-        showAddModal,
-        setShowAddModal,
-        editingId,
-        formData,
-        setFormData,
-        successMessage,
-        errorMessage,
-        setErrorMessage,
-        fetchOfferings,
-        handleAdd,
-        handleEdit,
-        handleConfirm,
-        handleDelete,
-        handleSaveAll,
-    } = useAdminOffrandes();
+        offerings, statsData, loading, saving, showAddModal, editingId,
+        formData, setShowAddModal, setFormData, successMessage,
+        errorMessage, setErrorMessage, fetchOfferings,
+        handleAdd, handleEdit, handleConfirm, handleDelete,
+        handleSaveAll, } = useAdminOffrandes();
 
     const { activeTab, setActiveTab } = useAdminOffrandesTabs();
 

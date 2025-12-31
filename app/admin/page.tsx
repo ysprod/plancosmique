@@ -1,4 +1,3 @@
-
 'use client';
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -10,7 +9,6 @@ import RefreshBanner from '@/components/admin/dashboard/RefreshBanner';
 import ActivitySection from '@/components/admin/dashboard/ActivitySection';
 import StatsGrid from '@/components/admin/dashboard/StatsGrid';
 import { DetailsGrid } from '@/components/admin/dashboard/DetailsGrid';
-
 
 export default function AdminDashboard() {
   const {
@@ -24,9 +22,10 @@ export default function AdminDashboard() {
     showRefreshBanner,
   } = useAdminDashboardPage();
 
-  if (loading && !stats) {
+  if (loading) {
     return <LoadingState />;
   }
+
   if (error || !stats) {
     return (
       <ErrorState

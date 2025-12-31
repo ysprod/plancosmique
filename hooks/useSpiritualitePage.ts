@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import axios from "axios";
+import { api } from "@/lib/api/client";
 
 export interface Practice {
   _id?: string;
@@ -89,8 +89,10 @@ export function useSpiritualitePage(): UseSpiritualitePage {
     setLoading(true);
     setError(undefined);
     try {
-      const res = await axios.get("/api/spiritual-practices");
-      setPractices(res.data || []);
+      const reponse = await api.get("/spiritualite");
+      console.log(reponse);
+      const data = reponse.data.data;
+      setPractices(Array.isArray(data) ? data : []);
     } catch (err: any) {
       setError(err?.response?.data?.message || "Erreur lors du chargement");
     } finally {
@@ -121,7 +123,7 @@ export function useSpiritualitePage(): UseSpiritualitePage {
     setError(undefined);
     setSuccess(undefined);
     try {
-      await axios.delete(`/api/spiritual-practices/${id}`);
+      await api.delete(`/spiritualite/${id}`);
       setSuccess("Pratique supprimée");
       setPractices((prev) => prev.filter((p) => p._id !== id));
     } catch (err: any) {
@@ -138,13 +140,13 @@ export function useSpiritualitePage(): UseSpiritualitePage {
     setSuccess(undefined);
     try {
       if (editingPractice?._id) {
-        await axios.put(`/api/spiritual-practices/${editingPractice._id}`, formData);
+        await api.put(`/spiritualite/${editingPractice._id}`, formData);
         setSuccess("Pratique mise à jour");
         setPractices((prev) => prev.map((p) => (p._id === editingPractice._id ? { ...formData, _id: editingPractice._id } : p)));
       } else {
-        const res = await axios.post("/api/spiritual-practices", formData);
+        const { data } = await api.post("/spiritualite", formData);
         setSuccess("Pratique créée");
-        setPractices((prev) => [{ ...res.data }, ...prev]);
+        setPractices((prev) => [{ ...data }, ...prev]);
       }
       setShowForm(false);
     } catch (err: any) {

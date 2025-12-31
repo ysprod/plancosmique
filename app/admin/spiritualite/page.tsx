@@ -1,13 +1,13 @@
 'use client';
-import { motion } from 'framer-motion';
-import { useSpiritualitePage } from '@/hooks/useSpiritualitePage';
+import { SpiritualiteFormModal } from '@/components/admin/spiritualite/SpiritualiteFormModal';
 import { SpiritualiteHeader } from '@/components/admin/spiritualite/SpiritualiteHeader';
 import { SpiritualiteMessages } from '@/components/admin/spiritualite/SpiritualiteMessages';
-import { SpiritualiteFormModal } from '@/components/admin/spiritualite/SpiritualiteFormModal';
 import { SpiritualitePracticesList } from '@/components/admin/spiritualite/SpiritualitePracticesList';
+import { useSpiritualitePage } from '@/hooks/useSpiritualitePage';
 
 export default function SpiritualiteAdmin() {
   const spiritualite = useSpiritualitePage();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50 p-4 sm:p-6">
       <div className="max-w-7xl mx-auto">

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        
+
         // Structure attendue de MoneyFusion
         const {
             token,
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
                 // Envoyer notification au client
                 // Enregistrer la transaction
             } else if (metadata?.type === 'CONSULTATION') {
-                
+
                 // Marquer la consultation comme payée
                 // TODO: Mettre à jour le statut dans la DB
                 // await db.consultations.updateOne(
@@ -53,10 +53,10 @@ export async function POST(request: NextRequest) {
 
                 // L'analyse a déjà été générée AVANT le paiement
                 // On ne déclenche plus la génération ici
-            
+
                 // Optionnel: Envoyer un email de confirmation de paiement
                 // (différent de l'email d'analyse déjà envoyé)
-                
+
                 // Enregistrer la transaction
             }
 
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
         }
     } catch (error) {
         console.error('[MoneyFusion Webhook] Erreur lors du traitement:', error);
-        
+
         // Toujours retourner 200 pour éviter que MoneyFusion réessaie indéfiniment
         return NextResponse.json({
             success: false,

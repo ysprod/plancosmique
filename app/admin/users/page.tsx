@@ -1,7 +1,4 @@
 'use client';
-import { AnimatePresence, motion } from 'framer-motion';
-import { RefreshCw } from 'lucide-react';
-import { useCallback, useMemo } from 'react';
 import EmptyState from '@/components/admin/users/EmptyState';
 import FilterButton from '@/components/admin/users/FilterButton';
 import FilterPanel from '@/components/admin/users/FilterPanel';
@@ -15,6 +12,9 @@ import DeleteUserModal from '@/components/users/DeleteUserModal';
 import UserCard from '@/components/users/UserCard';
 import UsersStats from '@/components/users/UsersStats';
 import { useAdminUsersPage } from '@/hooks/useAdminUsersPage';
+import { AnimatePresence, motion } from 'framer-motion';
+import { RefreshCw } from 'lucide-react';
+import { useCallback, useMemo } from 'react';
 
 type UserStatus = 'all' | 'active' | 'inactive';
 type UserRole = 'all' | 'USER' | 'ADMIN' | 'SUPER_ADMIN';
@@ -133,7 +133,6 @@ export default function UsersPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Modal de suppression */}
       <DeleteUserModal
         show={deleteModal.show}
         user={deleteModal.user}
@@ -144,7 +143,6 @@ export default function UsersPage() {
         modalVariants={modalVariants}
       />
 
-      {/* Header */}
       <PageHeader
         total={total}
         isRefreshing={isRefreshing}
@@ -152,9 +150,7 @@ export default function UsersPage() {
         onRefresh={handleRefresh}
       />
 
-      {/* Contenu principal */}
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 space-y-4">
-        {/* Bannière de rafraîchissement */}
         <AnimatePresence>
           <RefreshBanner
             loading={loading}
@@ -163,10 +159,8 @@ export default function UsersPage() {
           />
         </AnimatePresence>
 
-        {/* Statistiques */}
         {stats && <UsersStats stats={stats} />}
 
-        {/* Barre de recherche et filtres */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -202,7 +196,6 @@ export default function UsersPage() {
           </AnimatePresence>
         </motion.div>
 
-        {/* Liste des utilisateurs */}
         <div className="relative">
           <AnimatePresence>
             {loading && users && (

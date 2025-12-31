@@ -9,7 +9,6 @@ import SettingsPaymentTab from '@/components/admin/settings/SettingsPaymentTab';
 import SettingsSystemTab from '@/components/admin/settings/SettingsSystemTab';
 import useSettingsPage from '@/hooks/useSettingsPage';
 
-
 export default function SettingsPage() {
   const {
     activeTab, setActiveTab,
