@@ -1,9 +1,9 @@
 'use client';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
-import TarotHeader from '@/components/tarot/TarotHeader';
 import TarotComingSoon from '@/components/tarot/TarotComingSoon';
+import TarotHeader from '@/components/tarot/TarotHeader';
+import { motion } from 'framer-motion';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function TarotPage() {
   return (

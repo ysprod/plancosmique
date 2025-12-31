@@ -29,6 +29,7 @@ export interface OfferingDetails {
 export interface TransactionItem {
   offeringId: OfferingDetails | string; // Peut être peuplé ou juste l'ID
 }
+
 export interface Stats {
   totalTransactions: number;
   simulatedTransactions: number;
@@ -120,7 +121,6 @@ function WalletPageContent() {
   );
 }
 
-// Wrapper avec Suspense
 export default function SecuredWalletPage() {
   return (
     <Suspense fallback={<LoadingScreen />}>

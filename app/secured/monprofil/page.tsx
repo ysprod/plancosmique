@@ -84,6 +84,7 @@ export default function MonProfilPage() {
           isPremium={user.premium}
         />
         <SkyChart carteDuCiel={processedData.carteDuCiel} />
+        
         <CinqPortesSection
           carteDuCiel={processedData?.carteDuCiel?.carteDuCiel ?? null}
           isPremium={user.premium}

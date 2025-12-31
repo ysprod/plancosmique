@@ -1,39 +1,13 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Bell, CheckCheck, Trash2, Settings, Filter, ArrowLeft } from 'lucide-react';
-import { useNotifications } from '@/lib/hooks';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import type { Notification } from '@/lib/types/notification.types';
-import useNotificationFilter from '@/hooks/notifications/useNotificationFilter';
-import NotificationHeader from '@/components/notifications/NotificationHeader';
 import NotificationFilterBar from '@/components/notifications/NotificationFilterBar';
+import NotificationHeader from '@/components/notifications/NotificationHeader';
 import NotificationList from '@/components/notifications/NotificationList';
 import NotificationSettingsModal from '@/components/notifications/NotificationSettingsModal';
-
-const notificationIcons = {
-  CONSULTATION_RESULT: '✨',
-  CONSULTATION_ASSIGNED: '📋',
-  PAYMENT_CONFIRMED: '💳',
-  SYSTEM_ANNOUNCEMENT: '🔔',
-};
-
-const notificationColors = {
-  CONSULTATION_RESULT: 'from-purple-500/20 to-pink-500/20 border-purple-500/30',
-  CONSULTATION_ASSIGNED: 'from-green-500/20 to-emerald-500/20 border-green-500/30',
-  PAYMENT_CONFIRMED: 'from-amber-500/20 to-orange-500/20 border-amber-500/30',
-  SYSTEM_ANNOUNCEMENT: 'from-gray-500/20 to-slate-500/20 border-gray-500/30',
-};
-
-const filterOptions: { value: string; label: string }[] = [
-  { value: 'all', label: 'Toutes' },
-  { value: 'unread', label: 'Non lues' },
-  { value: 'CONSULTATION_RESULT', label: 'Résultats' },
-  { value: 'CONSULTATION_ASSIGNED', label: 'Consultations assignées' },
-  { value: 'PAYMENT_CONFIRMED', label: 'Paiements' },
-  { value: 'SYSTEM_ANNOUNCEMENT', label: 'Annonces système' },
-];
+import useNotificationFilter from '@/hooks/notifications/useNotificationFilter';
+import { useNotifications } from '@/lib/hooks';
+import type { Notification } from '@/lib/types/notification.types';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function NotificationsPage() {
   const router = useRouter();

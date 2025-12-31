@@ -1,34 +1,23 @@
 'use client';
-import { api } from '@/lib/api/client';
-import { useAuth } from '@/lib/auth/AuthContext';
-import { Offering } from '@/lib/interfaces';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useState, useMemo, useCallback } from 'react';
-import { useCart } from '@/hooks/marcheoffrandes/useCart';
+import { CartModal, CategoryFilters, CheckoutModal, FloatingCart, Header, Hero, InfoBox } from '@/components/marcheoffrandes';
+import EmptyState from '@/components/marcheoffrandes/EmptyState';
+import ErrorState from '@/components/marcheoffrandes/ErrorState';
+import LoadingState from '@/components/marcheoffrandes/LoadingState';
+import OfferingsGrid from '@/components/marcheoffrandes/OfferingsGrid';
 import type { Category } from '@/components/marcheoffrandes/types';
+import { useCart } from '@/hooks/marcheoffrandes/useCart';
 import { useModals } from '@/hooks/marcheoffrandes/useModals';
 import { useOfferings } from '@/hooks/marcheoffrandes/useOfferings';
-import LoadingState from '@/components/marcheoffrandes/LoadingState';
-import ErrorState from '@/components/marcheoffrandes/ErrorState';
-import EmptyState from '@/components/marcheoffrandes/EmptyState';
-import OfferingsGrid from '@/components/marcheoffrandes/OfferingsGrid';
-import { CartModal, CategoryFilters, CheckoutModal, FloatingCart, Header, Hero, InfoBox } from '@/components/marcheoffrandes';
-
-
-// =====================================================
-// COMPOSANT PRINCIPAL
-// =====================================================
+import { AnimatePresence, motion } from 'framer-motion';
+import { useCallback, useMemo, useState } from 'react'; 
 
 export default function MarcheOffrandes() {
-  const { user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<Category>('all');
-
-  // Hooks personnalisés
+ 
   const { cart, cartTotal, cartCount, addToCart, removeFromCart, updateQuantity, clearCart } = useCart();
   const { showCart, showCheckout, openCart, closeCart, openCheckout, closeCheckout, backToCart } = useModals();
   const { offerings, loading, error } = useOfferings();
 
-  // Offrandes filtrées avec mémorisation
   const filteredOfferings = useMemo(
     () => selectedCategory === 'all'
       ? offerings

@@ -2,15 +2,13 @@
 "use client";
 import StatsCounter from "@/components/commons/StatsCounter";
 import AnimatedBackground from "@/components/profil/AnimatedBackground";
-import TopProgressBar from "@/components/profil/TopProgressBar";
-import { useProfilUser } from "@/hooks/useProfilUser";
-import ProfilHighlightCards from "@/components/profil/ProfilHighlightCards";
 import ProfilCategories from "@/components/profil/ProfilCategories";
+import ProfilHighlightCards from "@/components/profil/ProfilHighlightCards";
 import ProfilNonPremiumSection from "@/components/profil/ProfilNonPremiumSection";
-import { useProfilHighlightCards } from "@/hooks/profil/useProfilHighlightCards";
+import TopProgressBar from "@/components/profil/TopProgressBar";
 import { useProfilCategories } from "@/hooks/profil/useProfilCategories";
-
-
+import { useProfilHighlightCards } from "@/hooks/profil/useProfilHighlightCards";
+import { useProfilUser } from "@/hooks/useProfilUser";
 
 export default function ProfilPage() {
   const { userdata, loading } = useProfilUser();

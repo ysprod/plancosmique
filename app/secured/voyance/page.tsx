@@ -1,12 +1,12 @@
 'use client';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, Loader2, CheckCircle2 } from 'lucide-react';
-import { useVoyanceForm } from '@/hooks/voyance/useVoyanceForm';
-import { useVoyancePrediction } from '@/hooks/voyance/useVoyancePrediction';
 import VoyanceCategorySelector from '@/components/voyance/VoyanceCategorySelector';
 import VoyanceFormFields from '@/components/voyance/VoyanceFormFields';
 import VoyancePredictionCard from '@/components/voyance/VoyancePredictionCard';
-import { categories, predictions } from '@/components/voyance/voyanceData';
+import { predictions } from '@/components/voyance/voyanceData';
+import { useVoyanceForm } from '@/hooks/voyance/useVoyanceForm';
+import { useVoyancePrediction } from '@/hooks/voyance/useVoyancePrediction';
+import { AnimatePresence, motion } from 'framer-motion';
+import { CheckCircle2, Eye, Loader2 } from 'lucide-react';
 
 export default function VoyancePage() {
   const {

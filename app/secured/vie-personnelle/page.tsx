@@ -1,4 +1,3 @@
-
 'use client';
 import { HeaderSection } from '@/components/vie-personnelle/HeaderSection';
 import { ConsultationSection } from '@/components/vie-personnelle/ConsultationSection';
