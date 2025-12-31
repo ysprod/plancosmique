@@ -32,6 +32,7 @@ export default function AstrologiePage() {
 
       <div className="relative z-10 px-4 sm:px-6 py-8 sm:py-12 max-w-6xl mx-auto">
         <AstrologieHeader />
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
           {astrologySections.map((section, index) => (
             <AstrologySectionCard key={section.id} section={section} index={index} />

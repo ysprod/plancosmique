@@ -8,7 +8,6 @@ import { AlertCircle, FileText, Filter, Loader2, Search, Sparkles } from 'lucide
 import ConsultationCard from '@/components/consultations/ConsultationCard';
 import { useConsultationsListPage } from '@/components/consultations/useConsultationsListPage';
 
-
 export default function ConsultationsListPage() {
   const {
     consultations,
@@ -39,7 +38,6 @@ export default function ConsultationsListPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">

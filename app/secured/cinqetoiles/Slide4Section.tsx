@@ -474,7 +474,6 @@ function Slide4Section() {
             </motion.div>
           )}
 
-          {/* FORM STEP */}
           {step === 'form' && selected && !paymentLoading && (
             <motion.div
               key="form"

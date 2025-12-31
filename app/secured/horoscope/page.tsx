@@ -5,8 +5,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, Clock, Loader2, Sparkles, TrendingUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import HoroscopeCard from '../../../components/horoscope/HoroscopeCard';
-import ResultDisplay from '../../../components/horoscope/ResultDisplay';
+import HoroscopeCard from '@/components/horoscope/HoroscopeCard';
+import ResultDisplay from '@/components/horoscope/ResultDisplay';
 
 type HoroscopeTypeId = 'mensuel' | 'annuel';
 
@@ -144,7 +144,7 @@ const useUserData = () => {
 
 function HoroscopePageComponent() {
   const router = useRouter();
-  const { userData, loadingUser } = useUserData();
+  const { loadingUser } = useUserData();
 
   const [activeTab, setActiveTab] = useState<HoroscopeTypeId>('mensuel');
   const [result, setResult] = useState<HoroscopeResult | null>(null);

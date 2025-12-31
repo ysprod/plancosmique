@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { motion } from 'framer-motion';
-import { ArrowLeft, CheckCircle2, Sparkles } from 'lucide-react';
+import { CheckCircle2, Sparkles } from 'lucide-react';
 import { memo, useCallback, useEffect, useState } from 'react';
 
 const SuccessIcon = memo(() => (

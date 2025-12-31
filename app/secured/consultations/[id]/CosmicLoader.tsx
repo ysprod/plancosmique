@@ -20,4 +20,5 @@ const CosmicLoader = memo(() => (
     </motion.div>
   </div>
 ));
+
 export default CosmicLoader;

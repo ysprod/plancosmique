@@ -1,8 +1,8 @@
 "use client";
-import { useSearchParams } from 'next/navigation';
-import { useAuth } from '@/lib/auth/AuthContext';
-import { useAnalyseHoroscopePage } from '@/components/analysehoroscope/useAnalyseHoroscopePage';
 import AnalyseHoroscopePageUI from '@/components/analysehoroscope/AnalyseHoroscopePageUI';
+import { useAnalyseHoroscopePage } from '@/components/analysehoroscope/useAnalyseHoroscopePage';
+import { useAuth } from '@/lib/auth/AuthContext';
+import { useSearchParams } from 'next/navigation';
 
 const AnalyseHoroscopePageComponent = () => {
     const params = useSearchParams();
