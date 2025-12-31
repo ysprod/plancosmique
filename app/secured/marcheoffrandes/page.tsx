@@ -5,13 +5,14 @@ import { Offering } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState, useMemo, useCallback } from 'react';
 import { useCart } from '@/hooks/marcheoffrandes/useCart';
+import type { Category } from '@/components/marcheoffrandes/types';
 import { useModals } from '@/hooks/marcheoffrandes/useModals';
 import { useOfferings } from '@/hooks/marcheoffrandes/useOfferings';
 import LoadingState from '@/components/marcheoffrandes/LoadingState';
 import ErrorState from '@/components/marcheoffrandes/ErrorState';
 import EmptyState from '@/components/marcheoffrandes/EmptyState';
 import OfferingsGrid from '@/components/marcheoffrandes/OfferingsGrid';
-import { Category, CartModal, CategoryFilters, CheckoutModal, FloatingCart, Header, Hero, InfoBox } from './components';
+import { CartModal, CategoryFilters, CheckoutModal, FloatingCart, Header, Hero, InfoBox } from '@/components/marcheoffrandes';
 
 
 // =====================================================

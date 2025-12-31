@@ -1,8 +1,6 @@
 'use client';
-
 import BookSuccessLoading from '@/components/livres/BookSuccessLoading';
 import BookSuccessError from '@/components/livres/BookSuccessError';
-
 import { Suspense } from 'react';
 import BookSuccessMain from '@/components/livres/BookSuccessMain';
 import { useBookSuccess } from '@/hooks/livres/useBookSuccess';
