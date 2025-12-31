@@ -5,8 +5,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, Clock, Loader2, Sparkles, TrendingUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import HoroscopeCard from './HoroscopeCard';
-import ResultDisplay from './ResultDisplay';
+import HoroscopeCard from '../../../components/horoscope/HoroscopeCard';
+import ResultDisplay from '../../../components/horoscope/ResultDisplay';
 
 type HoroscopeTypeId = 'mensuel' | 'annuel';
 

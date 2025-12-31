@@ -1,6 +1,6 @@
 'use client';
 import { AnimatePresence, motion } from 'framer-motion';
-import Slide4Section from '../vie-personnelle/Slide4Section';
+import Slide4Section from '../../../components/vie-personnelle/Slide4Section';
 
 const ProfessionnelPage = () => {
   return (

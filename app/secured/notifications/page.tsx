@@ -6,6 +6,11 @@ import { useNotifications } from '@/lib/hooks';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { Notification } from '@/lib/types/notification.types';
+import useNotificationFilter from '@/hooks/notifications/useNotificationFilter';
+import NotificationHeader from '@/components/notifications/NotificationHeader';
+import NotificationFilterBar from '@/components/notifications/NotificationFilterBar';
+import NotificationList from '@/components/notifications/NotificationList';
+import NotificationSettingsModal from '@/components/notifications/NotificationSettingsModal';
 
 const notificationIcons = {
   CONSULTATION_RESULT: '✨',
@@ -31,10 +36,9 @@ const filterOptions: { value: string; label: string }[] = [
 ];
 
 export default function NotificationsPage() {
-  const [filter, setFilter] = useState<string>('all');
-  const [showSettings, setShowSettings] = useState(false);
   const router = useRouter();
-
+  const { filter, setFilter } = useNotificationFilter();
+  const [showSettings, setShowSettings] = useState(false);
   const {
     notifications, unreadCount, isLoading,
     markAsRead, markAllAsRead, deleteNotification, fetchNotifications
@@ -48,12 +52,10 @@ export default function NotificationsPage() {
     if (!notification.isRead) {
       await markAsRead(notification._id);
     }
-
     if (notification.metadata?.url) {
       window.location.href = notification.metadata.url;
       return;
     }
-
     if (
       (notification.type === 'CONSULTATION_RESULT' || notification.type === 'CONSULTATION_ASSIGNED') &&
       notification.metadata?.consultationId
@@ -75,197 +77,23 @@ export default function NotificationsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 sticky top-0 z-10">
-        <div className="mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link href="/secured/profil">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors"
-                >
-                  <ArrowLeft className="w-5 h-5 text-white" />
-                </motion.button>
-              </Link>
-
-              <div>
-                <h1 className="text-2xl font-bold text-white flex items-center gap-3">
-                  <Bell className="w-7 h-7" />
-                  Notifications
-                </h1>
-                <p className="text-sm text-gray-400 mt-1">
-                  {unreadCount > 0
-                    ? `${unreadCount} notification${unreadCount > 1 ? 's' : ''} non lue${unreadCount > 1 ? 's' : ''}`
-                    : 'Toutes vos notifications sont lues'
-                  }
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              {unreadCount > 0 && (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={markAllAsRead}
-                  className="px-4 py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 transition-colors flex items-center gap-2"
-                >
-                  <CheckCheck className="w-4 h-4" />
-                  <span className="hidden sm:inline">Tout marquer comme lu</span>
-                </motion.button>
-              )}
-
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowSettings(!showSettings)}
-                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors"
-              >
-                <Settings className="w-5 h-5 text-white" />
-              </motion.button>
-            </div>
-          </div>
-
-          <div className="mt-6 flex items-center gap-2 overflow-x-auto pb-2">
-            <Filter className="w-5 h-5 text-gray-400 flex-shrink-0" />
-            {filterOptions.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => setFilter(option.value)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${filter === option.value
-                  ? 'bg-purple-500 text-white'
-                  : 'bg-white/10 text-gray-300 hover:bg-white/20'
-                  }`}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Contenu */}
+      <NotificationHeader
+        unreadCount={unreadCount}
+        markAllAsRead={markAllAsRead}
+        showSettings={showSettings}
+        setShowSettings={setShowSettings}
+      />
+      <NotificationFilterBar filter={filter} setFilter={setFilter} />
       <div className="container mx-auto px-4 py-8">
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mb-4"></div>
-            <p className="text-gray-400">Chargement des notifications...</p>
-          </div>
-        ) : filteredNotifications.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Bell className="w-20 h-20 text-gray-600 mb-4" />
-            <h2 className="text-xl font-semibold text-white mb-2">
-              {filter === 'all' ? 'Aucune notification' : 'Aucune notification pour ce filtre'}
-            </h2>
-            <p className="text-gray-400 text-center max-w-md">
-              {filter === 'all'
-                ? "Vous n'avez aucune notification pour le moment. Nous vous tiendrons informé des nouveautés !"
-                : 'Essayez de modifier le filtre pour voir plus de notifications.'
-              }
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-4 max-w-4xl mx-auto">
-            {filteredNotifications.map((notification, index) => (
-              <motion.div
-                key={notification._id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                onClick={() => handleNotificationClick(notification)}
-                className={`relative p-6 rounded-2xl border backdrop-blur-xl cursor-pointer transition-all duration-200 hover:scale-[1.02] ${notification.isRead
-                  ? 'bg-white/5 border-white/10'
-                  : 'bg-white/10 border-white/20'
-                  }`}
-              >
-                <div className="flex items-start gap-4">
-                  {/* Icône */}
-                  <div className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${notificationColors[notification.type]} border flex items-center justify-center text-2xl`}>
-                    {notificationIcons[notification.type]}
-                  </div>
-
-                  {/* Contenu */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <h3 className={`text-lg font-semibold mb-1 ${notification.isRead ? 'text-gray-300' : 'text-white'
-                          }`}>
-                          {notification.title}
-                        </h3>
-                        <p className="text-gray-400 text-sm leading-relaxed">
-                          {notification.message}
-                        </p>
-                      </div>
-
-                      <div className="flex items-center gap-2 flex-shrink-0">
-                        {!notification.isRead && (
-                          <div className="w-3 h-3 rounded-full bg-purple-500 animate-pulse"></div>
-                        )}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete(notification._id);
-                          }}
-                          className="p-2 hover:bg-red-500/20 rounded-xl transition-colors text-gray-400 hover:text-red-400"
-                          aria-label="Supprimer"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
-                      <span>
-                        {new Date(notification.createdAt).toLocaleDateString('fr-FR', {
-                          day: 'numeric',
-                          month: 'long',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </span>
-                      {notification.metadata?.url && (
-                        <span className="text-purple-400">→ Cliquez pour voir</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
+        <NotificationList
+          notifications={filteredNotifications}
+          isLoading={isLoading}
+          filter={filter}
+          onNotificationClick={handleNotificationClick}
+          onDelete={handleDelete}
+        />
       </div>
-
-      {showSettings && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={() => setShowSettings(false)}
-        >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-gradient-to-br from-gray-900 to-black rounded-2xl border border-white/10 p-6 max-w-md w-full"
-          >
-            <h2 className="text-xl font-bold text-white mb-4">Paramètres de notifications</h2>
-            <p className="text-gray-400 text-sm">
-              Les paramètres de notifications seront disponibles prochainement.
-              Vous pourrez choisir les types de notifications à recevoir et configurer les alertes.
-            </p>
-            <button
-              onClick={() => setShowSettings(false)}
-              className="mt-4 w-full px-4 py-2 rounded-xl bg-purple-500 text-white font-medium hover:bg-purple-600 transition-colors"
-            >
-              Fermer
-            </button>
-          </motion.div>
-        </motion.div>
-      )}
+      <NotificationSettingsModal show={showSettings} onClose={() => setShowSettings(false)} />
     </div>
   );
 }

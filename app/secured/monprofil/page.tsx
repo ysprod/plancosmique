@@ -2,11 +2,11 @@
 import { api } from "@/lib/api/client";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { useEffect, useMemo, useState } from "react";
-import ErrorState from "../carteduciel/ErrorState";
-import LoadingState from "../carteduciel/LoadingState";
-import {  ProcessedUserData, UserData } from "../carteduciel/page";
-import ProfileHeader from "../carteduciel/ProfileHeader";
-import SkyChart from "../carteduciel/SkyChart";
+import ErrorState from "../../../components/carteduciel/ErrorState";
+import LoadingState from "../../../components/carteduciel/LoadingState";
+import { ProcessedUserData, UserData } from "@/lib/types/carteduciel";
+import ProfileHeader from "../../../components/carteduciel/ProfileHeader";
+import SkyChart from "../../../components/carteduciel/SkyChart";
 import CinqPortesSection from "./CinqPortesSection"; 
 import { formatDate } from "@/lib/functions";
 

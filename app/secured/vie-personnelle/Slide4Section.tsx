@@ -7,12 +7,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { containerVariants, processingVariants } from '../../../lib/animation.constants';
-import OfferingStep from './OfferingStep';
-import AnalyseGenere from './AnalyseGenere'; 
-import ConsultationSelection from './ConsultationSelection';
-import ErrorToast from './ErrorToast';
-import LoadingOverlay from './LoadingOverlay';
-import PaymentProcessing from './PaymentProcessing';
+import OfferingStep from '../../../components/vie-personnelle/OfferingStep';
+import AnalyseGenere from '../../../components/vie-personnelle/AnalyseGenere';
+import ConsultationSelection from '../../../components/vie-personnelle/ConsultationSelection';
+import ErrorToast from '../../../components/vie-personnelle/ErrorToast';
+import LoadingOverlay from '../../../components/vie-personnelle/LoadingOverlay';
+import PaymentProcessing from '../../../components/vie-personnelle/PaymentProcessing';
 import { getRubriqueById } from '@/lib/api/services/rubriques.service';
 
 interface Slide4SectionProps {

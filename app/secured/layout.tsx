@@ -15,7 +15,7 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
       <ErrorBoundary>
         <Suspense fallback={<LoadingFallback />}>
           <ProtectedRoute>
-            <div className="min-h-screen flex flex-col">
+            <div className="flex flex-col">
               <HeaderContent />
               <main className="flex-1">
                 {children}

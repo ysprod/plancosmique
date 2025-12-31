@@ -1,6 +1,7 @@
 'use client';
-import { api } from '@/lib/api/client';
 import { AnimatePresence, motion } from 'framer-motion';
+import Link from 'next/link';
+import { useState } from 'react';
 import {
   AlertCircle,
   ArrowRight,
@@ -11,122 +12,31 @@ import {
   Filter,
   Flame,
   Heart,
-  Loader2,
   MessageCircle,
   Search,
-  Sparkles,
   Star,
   TrendingUp,
-  User,
-  Zap
+  User
 } from 'lucide-react';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useSpiritualiteData } from '@/hooks/spiritualite/useSpiritualiteData';
+import { useSpiritualiteFilter } from '@/hooks/spiritualite/useSpiritualiteFilter';
+import SpiritualiteLoading from '@/components/spiritualite/SpiritualiteLoading';
+import SpiritualiteError from '@/components/spiritualite/SpiritualiteError';
 
-interface SpiritualPractice {
-  _id: string;
-  slug: string;
-  title: string;
-  description: string;
-  detailedGuide?: string;
-  benefits?: string[];
-  practicalSteps?: string[];
-  category?: string;
-  readTime?: number;
-  publishedAt?: string;
-  author?: string;
-  views?: number;
-  likes?: number;
-  comments?: number;
-  featured?: boolean;
-  trending?: boolean;
-}
 
 export default function SpiritualiteBlogPage() {
-  const [practices, setPractices] = useState<SpiritualPractice[]>([]);
-  const [filteredPractices, setFilteredPractices] = useState<SpiritualPractice[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
+  const categories = [
+    { id: 'all', label: 'Tous les articles', icon: null },
+    { id: 'meditation', label: 'Méditation', icon: null },
+    { id: 'rituel', label: 'Rituels', icon: null },
+    { id: 'energie', label: 'Énergie', icon: null },
+    { id: 'sagesse', label: 'Sagesse', icon: null }
+  ];
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'recent' | 'popular' | 'trending'>('recent');
-
-  const categories = [
-    { id: 'all', label: 'Tous les articles', icon: BookOpen },
-    { id: 'meditation', label: 'Méditation', icon: Sparkles },
-    { id: 'rituel', label: 'Rituels', icon: Flame },
-    { id: 'energie', label: 'Énergie', icon: Zap },
-    { id: 'sagesse', label: 'Sagesse', icon: Star }
-  ];
-
-  useEffect(() => {
-    fetchPractices();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    filterAndSortPractices();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [practices, searchQuery, selectedCategory, sortBy]);
-
-  const fetchPractices = async () => {
-    try {
-      setIsLoading(true);
-      const { data } = await api.get<{ success: boolean; data: SpiritualPractice[]; count: number }>('/spiritualite');
-      
-      // Enrichir les données avec des métadonnées de blog
-      const enrichedData = data.data.map((practice: SpiritualPractice, index: number) => ({
-        ...practice,
-        readTime: practice.readTime || Math.floor(Math.random() * 5) + 3,
-        publishedAt: practice.publishedAt || new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
-        author: practice.author || 'Équipe Mon Étoile',
-        views: practice.views || Math.floor(Math.random() * 1000) + 100,
-        likes: practice.likes || Math.floor(Math.random() * 100) + 10,
-        comments: practice.comments || Math.floor(Math.random() * 50),
-        featured: practice.featured || index === 0,
-        trending: practice.trending || Math.random() > 0.7,
-        category: practice.category || categories[Math.floor(Math.random() * (categories.length - 1)) + 1].id
-      }));
-      
-      setPractices(enrichedData);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur inconnue');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const filterAndSortPractices = () => {
-    let filtered = [...practices];
-
-    // Filtre par recherche
-    if (searchQuery) {
-      filtered = filtered.filter(practice =>
-        practice.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        practice.description.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    // Filtre par catégorie
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(practice => practice.category === selectedCategory);
-    }
-
-    // Tri
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'popular':
-          return (b.views || 0) - (a.views || 0);
-        case 'trending':
-          return (b.likes || 0) - (a.likes || 0);
-        case 'recent':
-        default:
-          return new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime();
-      }
-    });
-
-    setFilteredPractices(filtered);
-  };
+  const { practices, loading, error, setError } = useSpiritualiteData(categories);
+  const filteredPractices = useSpiritualiteFilter(practices, searchQuery, selectedCategory, sortBy);
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'Récemment';
@@ -142,51 +52,11 @@ export default function SpiritualiteBlogPage() {
     return `Il y a ${Math.floor(diffDays / 30)} mois`;
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 flex items-center justify-center p-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center"
-        >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-            className="inline-block mb-4"
-          >
-            <Loader2 className="w-12 h-12 sm:w-16 sm:h-16 text-purple-600" />
-          </motion.div>
-          <p className="text-base sm:text-lg text-purple-800 font-medium">
-            Chargement des articles...
-          </p>
-        </motion.div>
-      </div>
-    );
+  if (loading) {
+    return <SpiritualiteLoading />;
   }
-
   if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 flex items-center justify-center p-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl max-w-md w-full text-center"
-        >
-          <AlertCircle className="w-12 h-12 sm:w-16 sm:h-16 text-red-500 mx-auto mb-4" />
-          <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
-            Erreur de chargement
-          </h3>
-          <p className="text-sm sm:text-base text-gray-600 mb-6">{error}</p>
-          <button
-            onClick={fetchPractices}
-            className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300"
-          >
-            Réessayer
-          </button>
-        </motion.div>
-      </div>
-    );
+    return <SpiritualiteError error={error} onRetry={() => setError('')} />;
   }
 
   const featuredArticle = filteredPractices.find(p => p.featured) || filteredPractices[0];
@@ -290,7 +160,7 @@ export default function SpiritualiteBlogPage() {
           {/* Categories */}
           <div className="flex flex-wrap gap-2 sm:gap-3 mb-4">
             {categories.map((category) => {
-              const Icon = category.icon;
+              const Icon = category.icon || BookOpen;
               return (
                 <motion.button
                   key={category.id}

@@ -5,7 +5,7 @@ import { useAuth } from '@/lib/auth/AuthContext';
 import { OfferingAlternative, WalletOffering } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useMemo, useState } from 'react';
-import PaymentProcessing from '../vie-personnelle/PaymentProcessing';
+import PaymentProcessing from '../../../components/vie-personnelle/PaymentProcessing';
 import ErrorToast from './ErrorToast';
 import GenereAnalyseContent from './GenereAnalyseContent';
 import OfferingStep from './OfferingStep';

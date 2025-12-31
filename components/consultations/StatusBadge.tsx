@@ -1,0 +1,27 @@
+import { CheckCircle, Clock, Loader2, AlertCircle } from 'lucide-react';
+import React from 'react';
+import { ConsultationStatus } from '@/lib/interfaces';
+
+const STATUS_CONFIG: Record<ConsultationStatus, { label: string; color: string; icon: typeof CheckCircle }> = {
+  COMPLETED: { label: 'Complète', color: 'bg-green-100 text-green-800', icon: CheckCircle },
+  PROCESSING: { label: 'En cours', color: 'bg-blue-100 text-blue-800', icon: Loader2 },
+  PENDING: { label: 'En attente', color: 'bg-gray-100 text-gray-800', icon: Clock },
+  FAILED: { label: 'Erreur', color: 'bg-red-100 text-red-800', icon: AlertCircle }
+};
+const DEFAULT_STATUS_CONFIG = { label: 'Inconnu', color: 'bg-gray-100 text-gray-800', icon: Clock };
+
+export interface StatusBadgeProps {
+  status: ConsultationStatus | string;
+}
+
+const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
+  const config = STATUS_CONFIG[status as ConsultationStatus] || DEFAULT_STATUS_CONFIG;
+  const Icon = config.icon;
+  return (
+    <span className={`inline-flex items-center gap-1.5 px-3 py-1 ${config.color} rounded-full text-xs font-semibold`}>
+      <Icon className={`w-3.5 h-3.5 ${status === 'PROCESSING' ? 'animate-spin' : ''}`} />
+      {config.label}
+    </span>
+  );
+};
+export default StatusBadge;

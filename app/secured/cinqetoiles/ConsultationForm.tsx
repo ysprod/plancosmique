@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import { AlertCircle, Info, Sparkles } from 'lucide-react';
 import React from 'react';
 import { birthCountries } from '@/lib/birthCountries';
-import InputField from '../vie-personnelle/InputField';
-import SelectField from '../vie-personnelle/SelectField';
-import { GENRE_OPTIONS } from '../vie-personnelle/genreOptions';
+import InputField from '../../../components/vie-personnelle/InputField';
+import SelectField from '../../../components/vie-personnelle/SelectField';
+import { GENRE_OPTIONS } from '../../../components/vie-personnelle/genreOptions';
 
 interface Props {
   form: any;
