@@ -6,7 +6,6 @@ import KnowledgeLoadingList from '@/components/knowledge/KnowledgeLoadingList';
 import KnowledgeTabs from '@/components/knowledge/KnowledgeTabs';
 import { useKnowledgePage } from '@/hooks/knowledge/useKnowledgePage';
 import { motion } from 'framer-motion';
-
 import { Search } from 'lucide-react';
 import KnowledgeHeader from '@/components/knowledge/KnowledgeHeader';
 

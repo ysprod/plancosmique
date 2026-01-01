@@ -64,7 +64,7 @@ const FeaturedArticle = ({ article, formatDate }: FeaturedArticleProps) => {
               </div>
               <div className="flex items-center gap-1.5">
                 <User className="w-4 h-4" />
-                <span>{article.author}</span>
+                <span>{typeof article.author === 'object' && article.author !== null ? article.author.name : article.author}</span>
               </div>
             </div>
             {/* Title */}
