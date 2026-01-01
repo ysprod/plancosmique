@@ -173,7 +173,7 @@ LoadingRing.displayName = 'LoadingRing';
 // ============================================================
 
 const CosmicLoader = memo(() => (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br 
+  <div className=" flex items-center justify-center bg-gradient-to-br 
                 from-slate-900 via-violet-950 to-indigo-950 
                 relative overflow-hidden">
     

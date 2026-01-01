@@ -122,6 +122,7 @@ export default function AdminBooksPage() {
           if (deleteConfirm) handleDeleteBook(deleteConfirm);
         }}
       />
+
     </div>
   );
 }

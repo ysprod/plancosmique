@@ -5,7 +5,7 @@ interface ConsultationsErrorProps {
 
 export function ConsultationsError({ error, onRetry }: ConsultationsErrorProps) {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-950 p-4">
+    <div className="flex items-center justify-center  bg-gray-50 dark:bg-gray-950 p-4">
       <div className="text-center max-w-sm bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 p-6">
         <div className="w-12 h-12 text-rose-500 mx-auto mb-3">⚠️</div>
         <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">Erreur</h3>

@@ -4,7 +4,7 @@ import Slide4Section from '../../../components/vie-personnelle/Slide4Section';
 
 const ProfessionnelPage = () => {
   return (
-    <div className="min-h-screen text-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className=" text-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

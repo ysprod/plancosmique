@@ -46,7 +46,7 @@ export default function KnowledgeDetailPage() {
 
   if (!knowledge) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div className=" bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <BookOpen className="w-20 h-20 text-gray-600 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-white mb-2">Connaissance introuvable</h2>
@@ -65,7 +65,7 @@ export default function KnowledgeDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className=" bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <KnowledgeHeader onShare={handleShare} />
       <div className="container mx-auto px-4 py-8">
         <motion.article

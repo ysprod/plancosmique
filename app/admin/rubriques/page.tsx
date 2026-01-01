@@ -30,13 +30,14 @@ export default function RubriquesAdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-violet-50 to-purple-50 p-4">
+    <div className=" bg-gradient-to-br from-slate-50 via-violet-50 to-purple-50 p-4">
       <div className="max-w-7xl mx-auto">
         <RubriquesHeader
           rubriquesCount={rubriques.length}
           offeringsCount={offerings.length}
           onCreate={handleCreate}
         />
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">
             {rubriques.length > 0 ? (
@@ -53,6 +54,7 @@ export default function RubriquesAdminPage() {
               <RubriquesEmptyState />
             )}
           </div>
+          
           <div className="lg:col-span-2">
             <RubriquesEditorPanel
               editingRubrique={editingRubrique}

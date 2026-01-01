@@ -68,7 +68,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   return (
     <ProtectedRoute>
       <RoleGuard allowedRoles={[Role.SUPER_ADMIN, Role.ADMIN]}>
-        <div className="min-h-screen flex bg-gray-50 dark:bg-slate-950">
+        <div className=" flex bg-gray-50 dark:bg-slate-950">
           
           {/* Sidebar Desktop */}
           <motion.nav

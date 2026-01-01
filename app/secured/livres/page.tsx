@@ -51,7 +51,7 @@ export default function LivresPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 flex items-center justify-center">
+      <div className=" bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-12 h-12 text-amber-600 animate-spin mx-auto mb-4" />
           <p className="text-gray-700 font-semibold">Chargement des livres...</p>
@@ -61,7 +61,7 @@ export default function LivresPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50">
+    <div className=" bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
           <BooksHeader />

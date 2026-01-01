@@ -292,7 +292,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${inter.className} antialiased min-h-screen
+        className={`${inter.className} antialiased 
                     bg-white dark:bg-gray-950 
                     text-gray-900 dark:text-gray-50
                     transition-colors duration-200 ease-in-out

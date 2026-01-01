@@ -3,7 +3,7 @@ import { Star } from 'lucide-react';
 import { memo } from 'react';
 
 const CosmicLoader = memo(() => (
-  <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-950 to-blue-950 flex items-center justify-center p-4 relative overflow-hidden">
+  <div className=" bg-gradient-to-br from-purple-900 via-indigo-950 to-blue-950 flex items-center justify-center p-4 relative overflow-hidden">
     {/* ...existing code from loader... */}
     <div className="absolute inset-0 -z-10">
       {/* Orbs and particles omitted for brevity, copy from page.tsx if needed */}

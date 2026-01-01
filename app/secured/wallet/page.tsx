@@ -81,7 +81,7 @@ function WalletPageContent() {
   }
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 bg-gradient-to-br from-purple-50 via-pink-50 to-white dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-950">
+    <div className=" p-4 sm:p-6 bg-gradient-to-br from-purple-50 via-pink-50 to-white dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-950">
       <div className="max-w-4xl mx-auto space-y-6">
         <AnimatePresence>
           {showSuccessBanner && (

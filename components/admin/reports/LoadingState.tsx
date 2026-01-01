@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import { memo } from "react";
 
 const LoadingState = memo(() => (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+    <div className="flex flex-col items-center justify-center  gap-4">
         <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}

@@ -9,7 +9,6 @@ import { useAdminConsultationsPage } from "@/hooks/useAdminConsultationsPage";
 import { AnimatePresence } from "framer-motion";
 
 export default function ConsultationsPage() {
-  const page = useAdminConsultationsPage();
   const {
     consultations,
     total,
@@ -25,7 +24,7 @@ export default function ConsultationsPage() {
     currentPage,
     totalPages,
     handlePageChange,
-  } = page;
+  } = useAdminConsultationsPage();
 
   if (loading) return <CosmicLoader />;
 

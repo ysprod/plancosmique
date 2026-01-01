@@ -240,7 +240,7 @@ function HoroscopePageComponent() {
   }, [latestHoroscope, loadingHoroscopes, activeTab]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className=" bg-white">
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-amber-500 z-50"
         initial={{ scaleX: 0 }}

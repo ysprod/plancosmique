@@ -227,7 +227,7 @@ function NotFoundComponent() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center 
+    <div className=" flex flex-col items-center justify-center 
                   bg-gradient-to-br from-purple-900 via-indigo-900 to-black 
                   relative overflow-hidden px-4">
       

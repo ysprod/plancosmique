@@ -9,7 +9,7 @@ export default function SpiritualiteAdmin() {
   const spiritualite = useSpiritualitePage();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50 p-4 sm:p-6">
+    <div className=" bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50 p-4 sm:p-6">
       <div className="max-w-7xl mx-auto">
         <SpiritualiteHeader
           onCreate={spiritualite.handleCreate}
@@ -18,7 +18,9 @@ export default function SpiritualiteAdmin() {
           publishedCount={spiritualite.practices.filter(p => p.published).length}
           draftCount={spiritualite.practices.filter(p => !p.published).length}
         />
+        
         <SpiritualiteMessages error={spiritualite.error} success={spiritualite.success} />
+       
         <SpiritualiteFormModal
           show={spiritualite.showForm}
           onClose={() => spiritualite.setShowForm(false)}
@@ -34,6 +36,7 @@ export default function SpiritualiteAdmin() {
           updateArrayItem={spiritualite.updateArrayItem}
           availableIcons={spiritualite.availableIcons}
         />
+
         <SpiritualitePracticesList
           practices={spiritualite.practices}
           expandedPractices={spiritualite.expandedPractices}

@@ -41,7 +41,7 @@ export default function PaymentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className=" bg-gray-50">
       <AdminPaymentsHeader total={total} isRefreshing={isRefreshing} onRefresh={handleRefresh} />
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
         <PaymentsStats stats={stats} />
@@ -57,6 +57,7 @@ export default function PaymentsPage() {
           setShowFilters={setShowFilters}
           handleResetFilters={handleResetFilters}
         />
+
         {payments && payments.length > 0 ? (
           <div className="space-y-4">
             <PaymentsList payments={payments} />

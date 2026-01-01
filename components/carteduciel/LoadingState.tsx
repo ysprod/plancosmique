@@ -6,7 +6,7 @@ const LoadingState = memo(() => (
     <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950"
+        className="flex items-center justify-center  bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950"
     >
         <div className="text-center">
             <motion.div

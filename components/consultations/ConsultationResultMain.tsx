@@ -22,7 +22,7 @@ const ConsultationResultMain = ({ loading, error, analyse, handleBack, handleDow
   }
   if (error || !analyse) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-900 via-orange-900 to-pink-900 flex items-center justify-center p-4">
+      <div className=" bg-gradient-to-br from-red-900 via-orange-900 to-pink-900 flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -42,7 +42,7 @@ const ConsultationResultMain = ({ loading, error, analyse, handleBack, handleDow
     );
   }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
+    <div className=" bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
       {/* Header */}
       <div className="bg-white/10 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50 shadow-2xl">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4">

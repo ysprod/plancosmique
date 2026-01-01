@@ -38,7 +38,7 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-pink-50 p-4">
+        <div className=" flex items-center justify-center bg-gradient-to-br from-purple-50 to-pink-50 p-4">
           <div className="bg-white border border-red-200 rounded-2xl p-8 max-w-md w-full shadow-lg">
             <div className="flex items-center gap-3 mb-4">
               <svg 
@@ -204,7 +204,7 @@ FloatingParticle.displayName = 'FloatingParticle';
 
 function LoadingFallbackComponent() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br 
+    <div className=" flex items-center justify-center bg-gradient-to-br 
                   from-purple-900 via-indigo-900 to-purple-950 
                   relative overflow-hidden">
       

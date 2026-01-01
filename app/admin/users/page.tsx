@@ -132,7 +132,7 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className=" bg-gradient-to-br from-gray-50 to-gray-100">
       <DeleteUserModal
         show={deleteModal.show}
         user={deleteModal.user}

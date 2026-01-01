@@ -9,7 +9,7 @@ export default function AstrologieAfricainePage() {
   const { activeTab, handleTabChange, tabs } = useAstrologieAfricainePage();
 
   return (
-    <div className="relative min-h-screen bg-white overflow-hidden">
+    <div className="relative  bg-white overflow-hidden">
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 z-50 origin-left"
         initial={{ scaleX: 0 }}

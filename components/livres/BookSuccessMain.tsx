@@ -11,7 +11,7 @@ interface PurchaseInfo {
 
 export default function BookSuccessMain({ purchaseInfo, onDownload }: { purchaseInfo: PurchaseInfo; onDownload: () => void }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 flex items-center justify-center p-4">
+    <div className=" bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}

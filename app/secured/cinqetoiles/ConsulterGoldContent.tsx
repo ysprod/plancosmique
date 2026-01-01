@@ -225,7 +225,7 @@ export default function ConsulterGoldContentComponent({
     }, []);
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50/50 via-white to-purple-50/20 \
+        <div className=" bg-gradient-to-b from-gray-50/50 via-white to-purple-50/20 \
                       dark:from-gray-950 dark:via-gray-900 dark:to-purple-950/5">
 
             <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">

@@ -44,7 +44,7 @@ export default function NumerologiePage() {
   const activeSacredNumber = sacredNumbers.find((num) => num.id === activeTab);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 overflow-hidden">
+    <div className="relative  bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 overflow-hidden">
       {/* Progress bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 z-50 origin-left"

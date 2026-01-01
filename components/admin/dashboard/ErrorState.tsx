@@ -9,7 +9,7 @@ interface ErrorStateProps {
 
 export default function ErrorState({ error, isRefreshing, onRetry }: ErrorStateProps) {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
+    <div className="flex items-center justify-center  bg-gray-50 px-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}

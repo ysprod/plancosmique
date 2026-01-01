@@ -17,10 +17,12 @@ export default function NewUserPage() {
   } = useNewUserPage();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-violet-50 to-purple-50 dark:from-slate-900 dark:via-violet-900/20 dark:to-purple-900/20 p-3 sm:p-4 md:p-6">
+    <div className=" bg-gradient-to-br from-slate-50 via-violet-50 to-purple-50 dark:from-slate-900 dark:via-violet-900/20 dark:to-purple-900/20 p-3 sm:p-4 md:p-6">
       <div className="max-w-4xl mx-auto">
         <NewUserHeader />
+
         <NewUserToast toast={toast} onClose={() => setToast(null)} />
+
         <NewUserForm
           formData={formData}
           errors={errors}

@@ -28,7 +28,7 @@ export default function VoyancePage() {
   const handleReset = resetForm;
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 overflow-hidden">
+    <div className="relative  bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(30)].map((_, i) => (

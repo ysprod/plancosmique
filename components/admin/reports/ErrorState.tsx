@@ -5,7 +5,7 @@ const ErrorState = ({ error }: { error: string }) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.9 }}
     animate={{ opacity: 1, scale: 1 }}
-    className="flex flex-col items-center justify-center min-h-screen gap-4 p-6"
+    className="flex flex-col items-center justify-center  gap-4 p-6"
   >
     <div className="bg-red-50 dark:bg-red-900/20 rounded-2xl p-8 max-w-md text-center border border-red-200 dark:border-red-800">
       <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />

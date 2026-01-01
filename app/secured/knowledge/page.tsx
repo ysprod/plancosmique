@@ -23,7 +23,7 @@ export default function KnowledgePage() {
   } = useKnowledgePage();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className=" bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Header */}
       <div className="bg-white/5 backdrop-blur-xl border-b border-white/10">
         <div className="container mx-auto px-4 py-8">

@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 export default function LoadingState() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="flex items-center justify-center  bg-gray-50">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}

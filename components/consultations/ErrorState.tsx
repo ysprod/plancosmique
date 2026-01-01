@@ -9,7 +9,7 @@ const ErrorState = memo(({
   error: string;
   onRetry: () => void;
 }) => (
-  <div className="min-h-screen bg-gradient-to-br from-red-900 via-rose-900 to-pink-900 flex items-center justify-center p-3">
+  <div className=" bg-gradient-to-br from-red-900 via-rose-900 to-pink-900 flex items-center justify-center p-3">
     <motion.div
       initial={{ opacity: 0, scale: 0.9, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}

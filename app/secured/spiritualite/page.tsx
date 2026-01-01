@@ -63,7 +63,7 @@ export default function SpiritualiteBlogPage() {
   const regularArticles = filteredPractices.filter(p => p._id !== featuredArticle?._id);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+    <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div

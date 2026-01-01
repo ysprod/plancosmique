@@ -8,7 +8,7 @@ interface AdminPaymentsErrorAlertProps {
 }
 
 export const AdminPaymentsErrorAlert: React.FC<AdminPaymentsErrorAlertProps> = ({ error, onRetry }) => (
-  <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
+  <div className="flex items-center justify-center  bg-gray-50 px-4">
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}

@@ -23,7 +23,7 @@ export default function ReportsPage() {
   } = useAdminReportsPage();
 
   if (loading) return <ReportsLoadingState />;
-  
+
   if (error) return <ReportsErrorState error={error} />;
 
   return (

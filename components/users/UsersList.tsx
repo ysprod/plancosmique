@@ -167,7 +167,7 @@ export const UsersList: React.FC<UsersListProps> = ({
   }, [search]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-violet-50/30 to-purple-50/30">
+    <div className=" bg-gradient-to-br from-slate-50 via-violet-50/30 to-purple-50/30">
       <div className="max-w-7xl mx-auto p-6 space-y-6">
         {/* Notification d'erreur */}
         <AnimatePresence>

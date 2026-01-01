@@ -71,7 +71,7 @@ export const RubriquesLoader = memo<RubriquesLoaderProps>(({ loading, offeringsL
   const icon = loading ? Loader2 : Sparkles;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-pink-50/30">
+    <div className="flex items-center justify-center  bg-gradient-to-br from-gray-50 via-purple-50/30 to-pink-50/30">
       {/* Grille de fond subtile */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]" />
 

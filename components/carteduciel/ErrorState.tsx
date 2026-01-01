@@ -6,7 +6,7 @@ const ErrorState = memo(() => (
     <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="flex items-center justify-center min-h-screen p-4 bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950"
+        className="flex items-center justify-center  p-4 bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950"
     >
         <div className="bg-red-500/10 backdrop-blur-xl rounded-2xl border border-red-500/30 p-8 text-center max-w-md">
             <motion.div
