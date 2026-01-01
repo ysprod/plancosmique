@@ -113,7 +113,7 @@ export default function WelcomePage() {
               une boussole sacrée, une mémoire profonde et une lumière qui vous éclaire, inspire vos choix
               et guide vos décisions.
             </p>
-            
+
             <p className="text-base sm:text-lg font-black text-black leading-tight">
               Votre naissance a un but.
               <br />

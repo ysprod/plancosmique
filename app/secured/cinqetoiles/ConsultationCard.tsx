@@ -10,6 +10,7 @@ const ConsultationCard: React.FC<{
     className="p-6 bg-white shadow-lg rounded-2xl cursor-pointer border-2 border-purple-200 hover:border-purple-400 transition-all"
   >
     <h2 className="font-bold text-purple-700 text-lg mb-3">{choice.title}</h2>
+   
     <p className="text-gray-600 text-sm leading-relaxed mb-4">{choice.description}</p>
   </motion.div>
 );

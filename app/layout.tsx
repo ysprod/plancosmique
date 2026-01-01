@@ -333,7 +333,6 @@ export default function RootLayout({
               aria-hidden="true"
             />
 
-            {/* Effet de grain subtil pour texture */}
             <div
               className="fixed inset-0 -z-10 pointer-events-none opacity-[0.015] dark:opacity-[0.025]
                          bg-[url('/noise.png')] bg-repeat"

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, Moon, Sparkles } from 'lucide-react';
-import { MoonPhaseWidget } from '@/components/MoonPhaseWidget';
+import { MoonPhaseWidget } from '@/components/astrologie-africaine/MoonPhaseWidget';
 import React, { memo } from 'react';
 import { RitualCard } from './RitualCard';
 import { IncantationCard } from './IncantationCard';

@@ -9,10 +9,6 @@ const PageHeader = memo(() => (
     transition={{ duration: 0.5 }}
     className="text-center mb-8 sm:mb-12"
   >
-    <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full border border-purple-200">
-      <Moon className="w-4 h-4 text-purple-600" />
-      <span className="text-sm font-semibold text-purple-700">Magie Lunaire</span>
-    </div>
     <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-3 tracking-tight">
       Incantations & Rituels Magiques
     </h1>

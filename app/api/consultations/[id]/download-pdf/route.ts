@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from '@/lib/api/client';
-import { AnalyseData, BackendResponse, CarteDuCiel, MissionDeVie, Sujet } from '@/lib/interfaces';
+import { BackendResponse, Sujet } from '@/lib/interfaces';
 import { AnalysisDocument } from '@/lib/pdf/analysis-pdf';
 import { renderToStream } from '@react-pdf/renderer';
 import { NextResponse } from 'next/server';
 import { createElement } from 'react';
-
 
 function generateFilename(sujet: Sujet): string {
   const sanitize = (str: string) =>
@@ -20,21 +19,6 @@ function generateFilename(sujet: Sujet): string {
   const date = new Date().toISOString().split('T')[0];
 
   return `analyse-${nom}-${prenoms}-${date}.pdf`;
-}
-
-function formatAnalyseForLog(analyse: AnalyseData): object {
-  return {
-    _id: analyse._id,
-    consultationId: analyse.consultationId,
-    sujet: {
-      nom: analyse.carteDuCiel.sujet.nom,
-      prenoms: analyse.carteDuCiel.sujet.prenoms.substring(0, 20),
-      dateNaissance: analyse.carteDuCiel.sujet.dateNaissance
-    },
-    positionsCount: analyse.carteDuCiel.positions.length,
-    missionLength: analyse.missionDeVie.contenu.length,
-    dateGeneration: analyse.dateGeneration
-  };
 }
 
 export async function GET(
@@ -128,8 +112,9 @@ export async function GET(
     }
 
     const analyse = backendData.analyse;
-    // Génération du document PDF
+
     let pdfDocument;
+
     try {
       pdfDocument = createElement(AnalysisDocument, { analyse });
     } catch (err: any) {

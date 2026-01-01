@@ -19,6 +19,7 @@ export default function AstrologiePage() {
           transition={{ duration: 20, repeat: Infinity }}
           className="absolute -top-1/4 -right-1/4 w-1/2 h-1/2 bg-purple-500 rounded-full blur-3xl"
         />
+        
         <motion.div
           animate={{
             scale: [1, 1.3, 1],

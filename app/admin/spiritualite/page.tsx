@@ -9,7 +9,7 @@ export default function SpiritualiteAdmin() {
   const spiritualite = useSpiritualitePage();
 
   return (
-    <div className=" bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50 p-4 sm:p-6">
+    <div className="bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50">
       <div className="max-w-7xl mx-auto">
         <SpiritualiteHeader
           onCreate={spiritualite.handleCreate}

@@ -14,6 +14,7 @@ export default function TermsPage() {
         <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
                     dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
             <Header />
+
             <div className="max-w-4xl mx-auto px-4 py-6 pb-20">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -23,6 +24,7 @@ export default function TermsPage() {
                    shadow-2xl p-6 sm:p-8 border border-gray-200 dark:border-gray-800"
                 >
                     <IntroAlert />
+
                     <Section
                         number="1"
                         title="Acceptation des conditions"
@@ -34,6 +36,7 @@ export default function TermsPage() {
                             conditions. Nous pouvons les modifier à tout moment ; consultez-les régulièrement.
                         </p>
                     </Section>
+
                     <Section
                         number="2"
                         title="Description du service"
@@ -49,6 +52,7 @@ export default function TermsPage() {
                             'Boutique de livres et ressources spirituelles'
                         ]} />
                     </Section>
+
                     <Section
                         number="3"
                         title="Compte utilisateur"
@@ -63,6 +67,7 @@ export default function TermsPage() {
                             'Nous informer de toute utilisation non autorisée'
                         ]} />
                     </Section>
+
                     <Section
                         number="4"
                         title="Utilisation acceptable"
@@ -79,6 +84,7 @@ export default function TermsPage() {
                             'Reproduire le contenu sans autorisation'
                         ]} />
                     </Section>
+
                     <Section
                         number="5"
                         title="Paiements et remboursements"
@@ -94,6 +100,7 @@ export default function TermsPage() {
                             'Insatisfaction : évaluation au cas par cas'
                         ]} />
                     </Section>
+
                     <Section
                         number="6"
                         title="Propriété intellectuelle"
@@ -105,6 +112,7 @@ export default function TermsPage() {
                             de propriété intellectuelle. Reproduction interdite sans autorisation écrite.
                         </p>
                     </Section>
+
                     <Section
                         number="7"
                         title="Limitation de responsabilité"
@@ -121,6 +129,7 @@ export default function TermsPage() {
                             ⚠️ Nos services ne remplacent pas un avis médical, juridique ou financier professionnel.
                         </p>
                     </Section>
+
                     <Section
                         number="8"
                         title="Protection des données"
@@ -134,6 +143,7 @@ export default function TermsPage() {
                             </Link>.
                         </p>
                     </Section>
+
                     <Section
                         number="9"
                         title="Modification des conditions"
@@ -145,6 +155,7 @@ export default function TermsPage() {
                             effectives dès publication. Votre utilisation continue constitue votre acceptation.
                         </p>
                     </Section>
+
                     <Section
                         number="10"
                         title="Résiliation"
@@ -156,6 +167,7 @@ export default function TermsPage() {
                             sans préavis et sans remboursement.
                         </p>
                     </Section>
+
                     <Section
                         number="11"
                         title="Loi applicable"
@@ -167,8 +179,11 @@ export default function TermsPage() {
                             soumis aux tribunaux compétents.
                         </p>
                     </Section>
+
                     <ContactInfo />
+
                     <ActionButtons />
+
                 </motion.div>
             </div>
         </div>

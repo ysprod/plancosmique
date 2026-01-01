@@ -36,15 +36,12 @@ const PaymentCallbackContent = () => {
 
   const { containerVariants, itemVariants, pulseVariants } = useAnimationVariants();
 
-  // ==================== LOADING STATE ====================
   if (isLoading) {
     return <LoadingState />;
   }
 
-  // ==================== MAIN CONTENT ====================
   return (
     <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 flex items-center justify-center p-3 sm:p-4 relative overflow-hidden">
-      {/* Background animé */}
       <BackgroundBlobs />
 
       <AnimatePresence mode="wait">
@@ -62,7 +59,7 @@ const PaymentCallbackContent = () => {
             currentStageMessage={currentStageMessage}
             analysisStages={analysisStages}
           />
-          {/* 🔮 Barre de progression d'analyse */}
+
           {isGeneratingAnalysis && (
             <AnalysisProgressBar
               analysisProgress={analysisProgress}
@@ -72,12 +69,10 @@ const PaymentCallbackContent = () => {
             />
           )}
 
-          {/* 🎉 Bannière de succès */}
           {analysisCompleted && !isGeneratingAnalysis && (
             <CompletionBanner />
           )}
 
-          {/* 📖 Aperçu de l'analyse */}
           {analysisCompleted &&
             !isGeneratingAnalysis &&
             status === 'paid' &&
@@ -89,7 +84,6 @@ const PaymentCallbackContent = () => {
               />
             )}
 
-          {/* 📋 Carte de statut principale */}
           <StatusCard
             status={status}
             statusConfig={statusConfig}
@@ -102,7 +96,6 @@ const PaymentCallbackContent = () => {
             pulseVariants={pulseVariants}
           />
 
-          {/* 🎬 Boutons d'action */}
           <ActionButtons
             status={status}
             downloadUrl={downloadUrl}

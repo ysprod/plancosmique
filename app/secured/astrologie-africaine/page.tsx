@@ -9,7 +9,7 @@ export default function AstrologieAfricainePage() {
   const { activeTab, handleTabChange, tabs } = useAstrologieAfricainePage();
 
   return (
-    <div className="relative  bg-white overflow-hidden">
+    <div className="relative   overflow-hidden">
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 z-50 origin-left"
         initial={{ scaleX: 0 }}
@@ -23,7 +23,7 @@ export default function AstrologieAfricainePage() {
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-pink-100/20 to-purple-100/20 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16 max-w-6xl">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:py-12 max-w-6xl">
         <PageHeader />
 
         <AstrologieAfricaineTabs tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
