@@ -1,4 +1,3 @@
-
 'use client';
 import { Loader2, Flame, BookOpen, Shield, CircleDollarSign, Feather, Sparkle } from 'lucide-react';
 import { useParams } from 'next/navigation';
@@ -24,7 +23,7 @@ const colorMap: Record<string, string> = {
 
 export default function SpiritualPracticeDetailPage() {
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = params.id as string;
   const { practice, loading, error, expandedSections, toggleSection } = useSpiritualPracticeDetail(slug);
 
   if (loading) {

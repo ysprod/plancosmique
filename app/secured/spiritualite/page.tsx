@@ -1,29 +1,26 @@
 'use client';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
-import { useState } from 'react';
+//
 import {
   AlertCircle,
   ArrowRight,
   BookOpen,
   Calendar,
-  Clock,
-  Eye,
-  Filter,
-  Flame,
-  Heart,
-  MessageCircle,
   Search,
+  Filter,
   Star,
   TrendingUp,
-  User
+  Clock,
+  User,
+  Eye,
+  Heart,
+  MessageCircle,
+  Flame
 } from 'lucide-react';
-import { useSpiritualiteData } from '@/hooks/spiritualite/useSpiritualiteData';
-import { useSpiritualiteFilter } from '@/hooks/spiritualite/useSpiritualiteFilter';
+import { useSpiritualiteBlogPage } from '@/hooks/spiritualite/useSpiritualiteBlogPage';
 import SpiritualiteLoading from '@/components/spiritualite/SpiritualiteLoading';
 import SpiritualiteError from '@/components/spiritualite/SpiritualiteError';
-
-
 export default function SpiritualiteBlogPage() {
   const categories = [
     { id: 'all', label: 'Tous les articles', icon: null },
@@ -32,11 +29,19 @@ export default function SpiritualiteBlogPage() {
     { id: 'energie', label: 'Énergie', icon: null },
     { id: 'sagesse', label: 'Sagesse', icon: null }
   ];
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<'recent' | 'popular' | 'trending'>('recent');
-  const { practices, loading, error, setError } = useSpiritualiteData(categories);
-  const filteredPractices = useSpiritualiteFilter(practices, searchQuery, selectedCategory, sortBy);
+  const {
+    searchQuery,
+    setSearchQuery,
+    selectedCategory,
+    setSelectedCategory,
+    sortBy,
+    setSortBy,
+    practices,
+    loading,
+    error,
+    setError,
+    filteredPractices
+  } = useSpiritualiteBlogPage(categories);
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'Récemment';
@@ -44,7 +49,6 @@ export default function SpiritualiteBlogPage() {
     const now = new Date();
     const diffTime = Math.abs(now.getTime() - date.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
     if (diffDays === 0) return 'Aujourd\'hui';
     if (diffDays === 1) return 'Hier';
     if (diffDays < 7) return `Il y a ${diffDays} jours`;
@@ -58,10 +62,8 @@ export default function SpiritualiteBlogPage() {
   if (error) {
     return <SpiritualiteError error={error} onRetry={() => setError('')} />;
   }
-
-  const featuredArticle = filteredPractices.find(p => p.featured) || filteredPractices[0];
-  const regularArticles = filteredPractices.filter(p => p._id !== featuredArticle?._id);
-
+  const featuredArticle = filteredPractices.find((p: any) => p.featured) || filteredPractices[0];
+  const regularArticles = filteredPractices.filter((p: any) => p._id !== featuredArticle?._id);
   return (
     <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
       {/* Animated Background */}
@@ -84,128 +86,6 @@ export default function SpiritualiteBlogPage() {
           transition={{ duration: 20, repeat: Infinity }}
           className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-blue-300/30 to-purple-300/30 rounded-full blur-3xl"
         />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8 sm:mb-12"
-        >
-          <motion.div
-            animate={{ rotate: [0, 10, -10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-            className="inline-block mb-4"
-          >
-            <BookOpen className="w-12 h-12 sm:w-16 sm:h-16 text-purple-600" />
-          </motion.div>
-          
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
-            <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-transparent bg-clip-text">
-             SPIRITUALITE AFRICAINE
-            </span>
-          </h1>
-          
-          <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
-            Découvrez nos articles sur la spiritualité, la méditation et le développement personnel
-          </p>
-
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-wrap justify-center gap-4 sm:gap-8 mt-6 sm:mt-8"
-          >
-            {[
-              { icon: BookOpen, label: 'Articles', value: practices.length },
-              { icon: Eye, label: 'Lectures', value: practices.reduce((sum, p) => sum + (p.views || 0), 0) },
-              { icon: Heart, label: 'J\'aime', value: practices.reduce((sum, p) => sum + (p.likes || 0), 0) }
-            ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 + index * 0.1 }}
-                className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-md"
-              >
-                <stat.icon className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
-                <span className="text-lg sm:text-xl font-bold text-gray-900">{stat.value}</span>
-                <span className="text-xs sm:text-sm text-gray-600">{stat.label}</span>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-
-        {/* Search and Filters */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mb-6 sm:mb-8"
-        >
-          {/* Search Bar */}
-          <div className="relative mb-4 sm:mb-6">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Rechercher un article..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 sm:py-4 bg-white rounded-2xl border-2 border-purple-100 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 outline-none transition-all text-sm sm:text-base"
-            />
-          </div>
-
-          {/* Categories */}
-          <div className="flex flex-wrap gap-2 sm:gap-3 mb-4">
-            {categories.map((category) => {
-              const Icon = category.icon || BookOpen;
-              return (
-                <motion.button
-                  key={category.id}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl font-medium transition-all text-xs sm:text-sm ${
-                    selectedCategory === category.id
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-                      : 'bg-white text-gray-700 hover:bg-purple-50'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span className="hidden sm:inline">{category.label}</span>
-                  <span className="sm:hidden">{category.label.split(' ')[0]}</span>
-                </motion.button>
-              );
-            })}
-          </div>
-
-          {/* Sort Options */}
-          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-            <Filter className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
-            <span className="text-xs sm:text-sm text-gray-600 font-medium">Trier par:</span>
-            {[
-              { id: 'recent', label: 'Plus récents' },
-              { id: 'popular', label: 'Populaires' },
-              { id: 'trending', label: 'Tendances' }
-            ].map((option) => (
-              <motion.button
-                key={option.id}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setSortBy(option.id as 'recent' | 'popular' | 'trending')}
-                className={`px-3 py-1.5 rounded-lg font-medium transition-all text-xs sm:text-sm ${
-                  sortBy === option.id
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-white text-gray-700 hover:bg-purple-50'
-                }`}
-              >
-                {option.label}
-              </motion.button>
-            ))}
-          </div>
-        </motion.div>
 
         {/* Featured Article */}
         {featuredArticle && (
