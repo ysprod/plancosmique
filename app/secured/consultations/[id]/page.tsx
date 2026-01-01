@@ -7,8 +7,6 @@ import ConsultationContent from '@/components/consultations/ConsultationContent'
 import { AnimatePresence } from 'framer-motion';
 import useConsultationResultPage from '@/hooks/consultations/useConsultationResultPage';
 
-
-
 export default function ConsultationResultPage() {
   const { loading, error, analyse, handleBack, handleDownloadPDF } = useConsultationResultPage();
 
