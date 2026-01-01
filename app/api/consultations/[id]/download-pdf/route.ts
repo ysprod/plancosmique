@@ -1,27 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from '@/lib/api/client';
-import { CarteDuCiel, MissionDeVie, Sujet } from '@/lib/interfaces';
+import { AnalyseData, BackendResponse, CarteDuCiel, MissionDeVie, Sujet } from '@/lib/interfaces';
 import { AnalysisDocument } from '@/lib/pdf/analysis-pdf';
 import { renderToStream } from '@react-pdf/renderer';
 import { NextResponse } from 'next/server';
 import { createElement } from 'react';
 
-interface AnalyseData {
-  _id: string;
-  userId: string;
-  consultationId: string;
-  carteDuCiel: CarteDuCiel;
-  missionDeVie: MissionDeVie;
-  dateGeneration: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
-interface BackendResponse {
-  success?: boolean;
-  analyse: AnalyseData;
-}
 
 function generateFilename(sujet: Sujet): string {
   const sanitize = (str: string) =>

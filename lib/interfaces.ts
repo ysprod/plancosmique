@@ -221,6 +221,13 @@ export interface AnalyseData {
   missionDeVie: MissionDeVie;
   metadata: Metadata;
   dateGeneration: string;
+
+  _id: string;
+  userId?: string;
+   
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
 }
 
 
@@ -339,4 +346,23 @@ export interface OfferingDetails {
   category: OfferingCategory;
   icon: string;
   description?: string;
+}
+
+
+
+// interface AnalyseData {
+//   _id: string;
+//   userId: string;
+//   consultationId: string;
+//   carteDuCiel: CarteDuCiel;
+//   missionDeVie: MissionDeVie;
+//   dateGeneration: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+// }
+
+export interface BackendResponse {
+  success?: boolean;
+  analyse?: AnalyseData;
 }
