@@ -16,9 +16,7 @@ export default function ConsultationsListPage() {
     error,
     searchQuery,
     setSearchQuery,
-    typeFilter,
     setTypeFilter,
-    statusFilter,
     setStatusFilter,
     handleView,
     handleDownload

@@ -48,7 +48,6 @@ export default function MarcheOffrandes() {
         <Header cartCount={cartCount} cartTotal={cartTotal} />
       </div>
 
-      {/* Container principal */}
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-3 sm:py-4 max-w-7xl">
 
         {/* Hero section */}

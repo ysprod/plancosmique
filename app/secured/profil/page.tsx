@@ -1,4 +1,3 @@
-
 "use client";
 import StatsCounter from "@/components/commons/StatsCounter";
 import AnimatedBackground from "@/components/profil/AnimatedBackground";
@@ -19,7 +18,6 @@ export default function ProfilPage() {
     <div>
       <AnimatedBackground />
       <TopProgressBar />
-
       <div className="relative z-10 px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 max-w-7xl mx-auto">
         {userdata?.premium && (
           <ProfilHighlightCards cards={highlightCards} />

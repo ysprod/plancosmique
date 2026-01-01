@@ -7,7 +7,7 @@ import LoadingState from "../../../components/carteduciel/LoadingState";
 import { ProcessedUserData, UserData } from "@/lib/types/carteduciel";
 import ProfileHeader from "../../../components/carteduciel/ProfileHeader";
 import SkyChart from "../../../components/carteduciel/SkyChart";
-import CinqPortesSection from "./CinqPortesSection"; 
+import CinqPortesSection from "./CinqPortesSection";
 import { formatDate } from "@/lib/functions";
 
 const processUserData = (userData: UserData | null): ProcessedUserData | null => {
@@ -84,7 +84,7 @@ export default function MonProfilPage() {
           isPremium={user.premium}
         />
         <SkyChart carteDuCiel={processedData.carteDuCiel} />
-        
+
         <CinqPortesSection
           carteDuCiel={processedData?.carteDuCiel?.carteDuCiel ?? null}
           isPremium={user.premium}
