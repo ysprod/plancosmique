@@ -5,6 +5,7 @@ import ResultDisplay from '@/components/horoscope/ResultDisplay';
 import HoroscopeTabs from '@/components/horoscope/page/HoroscopeTabs';
 import HoroscopeList from '@/components/horoscope/page/HoroscopeList';
 import HoroscopeForm from '@/components/horoscope/page/HoroscopeForm';
+import HoroscopeHeader from '@/components/horoscope/page/HoroscopeHeader';
 import useHoroscopePage from '@/hooks/horoscope/useHoroscopePage';
 
 export type HoroscopeTypeId = 'mensuel' | 'annuel';
@@ -61,73 +62,12 @@ export interface BackendHoroscope {
   createdAt: string;
 }
 
-const headerVariants = {
-  hidden: { opacity: 0, y: -20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 300,
-      damping: 30
-    }
-  }
-};
-
-function getZodiacSymbol(sign: string): string {
-  const symbols: Record<string, string> = {
-    'bélier': '♈', 'taureau': '♉', 'gémeaux': '♊',
-    'cancer': '♋', 'lion': '♌', 'vierge': '♍',
-    'balance': '♎', 'scorpion': '♏', 'sagittaire': '♐',
-    'capricorne': '♑', 'verseau': '♒', 'poissons': '♓'
-  };
-  return symbols[sign.toLowerCase()] || '⭐';
-}
-
-function getZodiacElement(sign: string): string {
-  const elements: Record<string, string> = {
-    'bélier': 'Feu', 'lion': 'Feu', 'sagittaire': 'Feu',
-    'taureau': 'Terre', 'vierge': 'Terre', 'capricorne': 'Terre',
-    'gémeaux': 'Air', 'balance': 'Air', 'verseau': 'Air',
-    'cancer': 'Eau', 'scorpion': 'Eau', 'poissons': 'Eau'
-  };
-  return elements[sign.toLowerCase()] || 'Éther';
-}
-
-function transformBackendToResult(backend: BackendHoroscope): HoroscopeResult | null {
-  if (!backend.resultData?.horoscope) return null;
-
-  const horoscope = backend.resultData.horoscope;
-
-  const positions = backend.formData?.carteDuCiel?.carteDuCiel?.positions || [];
-  const sunPosition = positions.find(p => p.planete.toLowerCase().includes('soleil'));
-  const zodiacSign = sunPosition?.signe || 'Inconnu';
-
-  return {
-    zodiacSign,
-    symbol: getZodiacSymbol(zodiacSign),
-    element: getZodiacElement(zodiacSign),
-    period: backend.title.toLowerCase().includes('annuel') ? 'Cette année' : 'Ce mois',
-    horoscopeType: backend.title,
-    generalForecast: horoscope.generalForecast,
-    love: horoscope.love,
-    work: horoscope.work,
-    health: horoscope.health,
-    spiritualAdvice: horoscope.spiritualAdvice,
-    luckyColor: horoscope.luckyColor,
-    dominantPlanet: horoscope.dominantPlanet
-  };
-}
-
-
 function HoroscopePageComponent() {
   const {
     loadingUser,
     activeTab,
-    setActiveTab,
     result,
     error,
-    horoscopes,
     loadingHoroscopes,
     tabs,
     filteredHoroscopes,
@@ -149,8 +89,8 @@ function HoroscopePageComponent() {
     }
   };
 
-  // Cast tabs pour garantir le typage strict
   const typedTabs = tabs as Tab[];
+
   return (
     <div className="bg-white">
       <motion.div
@@ -165,19 +105,7 @@ function HoroscopePageComponent() {
       </div>
 
       <div className="relative z-10 container mx-auto px-3 sm:px-4 py-5 sm:py-6 max-w-3xl">
-        <motion.div
-          variants={headerVariants}
-          initial="hidden"
-          animate="visible"
-          className="text-center mb-6"
-        >
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-2">
-            HOROSCOPE
-          </h1>
-          <p className="text-gray-600 text-xs sm:text-sm max-w-xl mx-auto">
-            Découvrez votre horoscope personnalisé inspiré des sagesses astrologiques africaines
-          </p>
-        </motion.div>
+        <HoroscopeHeader />
 
         <HoroscopeTabs tabs={typedTabs} activeTab={activeTab} onTabChange={handleTabChange} />
         <HoroscopeList horoscopes={filteredHoroscopes} activeTab={activeTab} onHoroscopeClick={handleHoroscopeClick} />
