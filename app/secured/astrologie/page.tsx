@@ -19,7 +19,7 @@ export default function AstrologiePage() {
           transition={{ duration: 20, repeat: Infinity }}
           className="absolute -top-1/4 -right-1/4 w-1/2 h-1/2 bg-purple-500 rounded-full blur-3xl"
         />
-        
+
         <motion.div
           animate={{
             scale: [1, 1.3, 1],
@@ -33,7 +33,6 @@ export default function AstrologiePage() {
 
       <div className="relative z-10 px-4 sm:px-6 py-8 sm:py-12 max-w-6xl mx-auto">
         <AstrologieHeader />
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
           {astrologySections.map((section, index) => (
             <AstrologySectionCard key={section.id} section={section} index={index} />

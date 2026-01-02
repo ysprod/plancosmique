@@ -9,6 +9,8 @@ import { NumerologyForm } from "@/components/numerologie/NumerologyForm";
 import { NumerologyResultCard } from "@/components/numerologie/NumerologyResult";
 import { SacredNumberDetails } from "@/components/numerologie/SacredNumberDetails";
 import { NumerologyEmptyCard } from "@/components/numerologie/NumerologyEmptyCard";
+import { useAstrologiePage } from "@/components/astrologie/useAstrologiePage";
+import AstrologySectionCard from "@/components/astrologie/AstrologySectionCard";
 
 export default function NumerologiePage() {
   const [activeTab, setActiveTab] = useState<string>("calculator");
@@ -16,7 +18,7 @@ export default function NumerologiePage() {
   const { calculateNumerology } = useNumerologyCalculator();
   const { sacredNumbers } = useSacredNumbers();
   const [result, setResult] = useState<any>(null);
-
+  const { astrologySections } = useAstrologiePage();
   // Pré-remplir le formulaire avec les données utilisateur
   useState(() => {
     fetchUserData();
@@ -81,6 +83,11 @@ export default function NumerologiePage() {
               Découvrez les secrets cachés dans vos nombres personnels et votre destinée chiffrée
             </p>
           </motion.div>
+           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+          {astrologySections.map((section, index) => (
+            <AstrologySectionCard key={section.id} section={section} index={index} />
+          ))}
+        </div>
           {/* Navigation par onglets */}
           <NumerologyTabs activeTab={activeTab} setActiveTab={setActiveTab} sacredNumbers={sacredNumbers} />
           {/* Contenu de l'onglet actif */}

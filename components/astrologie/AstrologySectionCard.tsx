@@ -27,14 +27,7 @@ const AstrologySectionCard = ({ section, index }: AstrologySectionCardProps) => 
           transition={{ duration: 0.6 }}
         />
         <div className="relative z-10">
-          <motion.div
-            whileHover={{ rotate: [0, -10, 10, -10, 0] }}
-            transition={{ duration: 0.5 }}
-            className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br ${section.gradient} flex items-center justify-center shadow-xl mb-4 sm:mb-6`}
-          >
-            <Icon className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
-          </motion.div>
-          <h2 className={`text-xl sm:text-2xl font-bold bg-gradient-to-r ${section.color} bg-clip-text text-transparent mb-3`}>
+          <h2 className={`text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent mb-3`}>
             {section.title}
           </h2>
           <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4">
@@ -48,7 +41,7 @@ const AstrologySectionCard = ({ section, index }: AstrologySectionCardProps) => 
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
           </motion.div>
         </div>
-        <div className={`absolute inset-0 bg-gradient-to-br ${section.gradient} opacity-0 group-hover:opacity-5 transition-opacity rounded-2xl sm:rounded-3xl`} />
+        <div className={`absolute inset-0 bg-gradient-to-br from-rose-500 to-pink-600 opacity-0 group-hover:opacity-5 transition-opacity rounded-2xl sm:rounded-3xl`} />
       </motion.div>
     </Link>
   );

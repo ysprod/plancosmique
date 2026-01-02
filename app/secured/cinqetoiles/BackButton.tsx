@@ -17,5 +17,4 @@ const BackButton = memo(({ onClick }: { onClick: () => void }) => (
 ));
 
 BackButton.displayName = 'BackButton';
-
 export default BackButton;
