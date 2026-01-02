@@ -7,7 +7,7 @@ import Pagination from '@/components/admin/users/Pagination';
 import RefreshBanner from '@/components/admin/users/RefreshBanner';
 import SearchBar from '@/components/admin/users/SearchBar';
 import UsersErrorState from "@/components/admin/users/UsersErrorState";
-import UsersLoadingState from "@/components/admin/users/UsersLoadingState";
+import UsersLoading from "@/components/admin/users/UsersLoading";
 import DeleteUserModal from '@/components/users/DeleteUserModal';
 import UserCard from '@/components/users/UserCard';
 import UsersStats from '@/components/users/UsersStats';
@@ -128,7 +128,7 @@ export default function UsersPage() {
   }
 
   if (loading && !users) {
-    return <UsersLoadingState />;
+    return <UsersLoading />;
   }
 
   return (

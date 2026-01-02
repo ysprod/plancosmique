@@ -11,7 +11,6 @@ import { useAdminBooks } from "@/hooks/useAdminBooks";
 import { motion } from "framer-motion";
 
 export default function AdminBooksPage() {
-  const booksState = useAdminBooks();
   const {
     books,
     loading,
@@ -48,7 +47,7 @@ export default function AdminBooksPage() {
     categories,
     filteredAndSortedBooks,
     stats,
-  } = booksState;
+  } = useAdminBooks();
 
   if (loading) {
     return <BooksLoading />;
@@ -122,7 +121,6 @@ export default function AdminBooksPage() {
           if (deleteConfirm) handleDeleteBook(deleteConfirm);
         }}
       />
-
     </div>
   );
 }

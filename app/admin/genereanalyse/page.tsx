@@ -4,7 +4,6 @@ import { GenereAnalyseHeader } from '@/components/admin/genereanalyse/GenereAnal
 import { GenereAnalyseLoading } from '@/components/admin/genereanalyse/GenereAnalyseLoading';
 import { GenereAnalyseSuccess } from '@/components/admin/genereanalyse/GenereAnalyseSuccess';
 import { useGenereAnalysePage } from '@/hooks/useGenereAnalysePage';
-import { AnimatePresence } from 'framer-motion';
 
 export default function GenereAnalysePage() {
   const { step, analyseData, error, handleRetry, handleBack, } = useGenereAnalysePage();
@@ -19,17 +18,15 @@ export default function GenereAnalysePage() {
       />
 
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-4">
-        <AnimatePresence mode="wait">
-          {(step === 'loading' || step === 'fetching' || step === 'generating') && (
-            <GenereAnalyseLoading step={step} />
-          )}
-          {step === 'success' && analyseData && (
-            <GenereAnalyseSuccess analyseData={analyseData} />
-          )}
-          {step === 'error' && (
-            <GenereAnalyseError error={error} onRetry={handleRetry} />
-          )}
-        </AnimatePresence>
+        {(step === 'loading' || step === 'fetching' || step === 'generating') && (
+          <GenereAnalyseLoading step={step} />
+        )}
+        {step === 'success' && analyseData && (
+          <GenereAnalyseSuccess analyseData={analyseData} />
+        )}
+        {step === 'error' && (
+          <GenereAnalyseError error={error} onRetry={handleRetry} />
+        )}
       </div>
     </div>
   );

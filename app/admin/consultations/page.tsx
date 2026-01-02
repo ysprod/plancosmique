@@ -40,6 +40,7 @@ export default function ConsultationsPage() {
         isRefreshing={isRefreshing}
         loading={loading}
       />
+
       <div className="max-w-5xl mx-auto px-3 py-3 space-y-2.5">
         {consultations && consultations.length > 0 ? (
           <ConsultationsList

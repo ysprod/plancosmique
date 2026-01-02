@@ -1,9 +1,9 @@
 'use client';
-import { EditUserLoading } from '@/components/admin/users/EditUserLoading';
-import { EditUserHeader } from '@/components/admin/users/EditUserHeader';
-import { EditUserSuccessAlert } from '@/components/admin/users/EditUserSuccessAlert';
 import { EditUserErrorAlert } from '@/components/admin/users/EditUserErrorAlert';
 import { EditUserForm } from '@/components/admin/users/EditUserForm';
+import { EditUserHeader } from '@/components/admin/users/EditUserHeader';
+import { EditUserLoading } from '@/components/admin/users/EditUserLoading';
+import { EditUserSuccessAlert } from '@/components/admin/users/EditUserSuccessAlert';
 import { useEditUserPage } from '@/hooks/useEditUserPage';
 
 export default function EditUserPage() {
@@ -19,6 +19,7 @@ export default function EditUserPage() {
         <EditUserHeader />
 
         {success && <EditUserSuccessAlert />}
+
         {error && <EditUserErrorAlert error={error} onClose={() => setError(null)} />}
 
         <EditUserForm

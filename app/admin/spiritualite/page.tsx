@@ -18,9 +18,9 @@ export default function SpiritualiteAdmin() {
           publishedCount={spiritualite.practices.filter(p => p.published).length}
           draftCount={spiritualite.practices.filter(p => !p.published).length}
         />
-        
+
         <SpiritualiteMessages error={spiritualite.error} success={spiritualite.success} />
-       
+
         <SpiritualiteFormModal
           show={spiritualite.showForm}
           onClose={() => spiritualite.setShowForm(false)}
@@ -36,7 +36,6 @@ export default function SpiritualiteAdmin() {
           updateArrayItem={spiritualite.updateArrayItem}
           availableIcons={spiritualite.availableIcons}
         />
-
         <SpiritualitePracticesList
           practices={spiritualite.practices}
           expandedPractices={spiritualite.expandedPractices}

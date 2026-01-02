@@ -10,19 +10,9 @@ import { RubriquesToast } from '@/components/admin/rubriques/RubriquesToast';
 export default function RubriquesAdminPage() {
   const {
     rubriques,
-    selectedRubrique,
-    setSelectedRubrique,
-    editingRubrique,
-    setEditingRubrique,
-    loading,
-    saving,
-    toast,
-    setToast,
-    offerings,
-    offeringsLoading,
-    handleCreate,
-    handleSave,
-    handleDelete,
+    selectedRubrique, editingRubrique, loading, saving, toast,
+    offerings, offeringsLoading, setToast, setEditingRubrique, handleSave,
+    handleCreate, setSelectedRubrique, handleDelete,
   } = useAdminRubriquesPage();
 
   if (loading || offeringsLoading) {
@@ -54,7 +44,7 @@ export default function RubriquesAdminPage() {
               <RubriquesEmptyState />
             )}
           </div>
-          
+
           <div className="lg:col-span-2">
             <RubriquesEditorPanel
               editingRubrique={editingRubrique}
