@@ -11,6 +11,18 @@ import {
   Zap,
   X
 } from "lucide-react";
+import { DayCard } from "./DayCard";
+import { getPhaseConfig, getAdvice, normalizeIllumination, useThrottle } from "./moonPhaseUtils";
+import { dayVariants, containerVariants, modalVariants } from "./moonPhaseVariants";
+
+// Légende des phases lunaires pour l'affichage
+const LEGEND_ITEMS = [
+  { emoji: "🌑", label: "Nouvelle Lune" },
+  { emoji: "🌓", label: "Premier Quartier" },
+  { emoji: "🌕", label: "Pleine Lune" },
+  { emoji: "🌗", label: "Dernier Quartier" },
+];
+import { Header } from "./Header";
 
 // ============================================================================
 // TYPES
@@ -33,279 +45,6 @@ interface MonthData {
 }
 
 // ============================================================================
-// CONFIGURATION OPTIMISÉE
-// ============================================================================
-
-const PHASE_CONFIG = {
-  nouvelle: { 
-    badge: "from-indigo-500 to-purple-600",
-    ring: "ring-indigo-500/30",
-    emoji: "🌑"
-  },
-  pleine: { 
-    badge: "from-amber-400 to-yellow-500",
-    ring: "ring-amber-500/30",
-    emoji: "🌕"
-  },
-  croissant: { 
-    badge: "from-blue-400 to-cyan-500",
-    ring: "ring-blue-500/30",
-    emoji: "🌒"
-  },
-  décroissant: { 
-    badge: "from-purple-400 to-pink-500",
-    ring: "ring-purple-500/30",
-    emoji: "🌘"
-  },
-  default: { 
-    badge: "from-gray-400 to-gray-600",
-    ring: "ring-gray-500/30",
-    emoji: "🌓"
-  }
-} as const;
-
-const MONTH_NAMES = [
-  "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
-] as const;
-
-const LEGEND_ITEMS = [
-  { label: "Nouvelle", emoji: "🌑" },
-  { label: "Pleine", emoji: "🌕" },
-  { label: "Aujourd'hui", emoji: "⭐" }
-] as const;
-
-// ============================================================================
-// UTILITAIRES
-// ============================================================================
-
-const getPhaseConfig = (phaseName: string) => {
-  const phase = phaseName.toLowerCase();
-  for (const [key, config] of Object.entries(PHASE_CONFIG)) {
-    if (phase.includes(key)) return config;
-  }
-  return PHASE_CONFIG.default;
-};
-
-const getAdvice = (illumination: number) => {
-  if (illumination < 25) return "Période d'introspection. Temps idéal pour planifier et méditer.";
-  if (illumination < 75) return "Énergie croissante. Poussez vos projets vers l'avant.";
-  return "Culmination énergétique. Récoltez les fruits de vos efforts.";
-};
-
-const normalizeIllumination = (value: any): number => {
-  const num = typeof value === 'string' ? parseFloat(value) : Number(value);
-  if (isNaN(num) || !isFinite(num)) return 0;
-  return Math.max(0, Math.min(100, Math.round(num)));
-};
-
-// ============================================================================
-// VARIANTS D'ANIMATION
-// ============================================================================
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.01 }
-  }
-};
-
-const dayVariants = {
-  hidden: { opacity: 0, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }
-  }
-};
-
-const modalVariants = {
-  hidden: { opacity: 0, scale: 0.96, y: 12 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 500, damping: 35 }
-  },
-  exit: {
-    opacity: 0,
-    scale: 0.96,
-    y: 12,
-    transition: { duration: 0.12 }
-  }
-};
-
-// ============================================================================
-// HOOK THROTTLE
-// ============================================================================
-
-const useThrottle = <T extends any[]>(callback: (...args: T) => void, delay: number) => {
-  const lastCall = useRef(0);
-  
-  return useCallback((...args: T) => {
-    const now = Date.now();
-    if (now - lastCall.current >= delay) {
-      lastCall.current = now;
-      callback(...args);
-    }
-  }, [callback, delay]);
-};
-
-// ============================================================================
-// COMPOSANTS MÉMOÏSÉS
-// ============================================================================
-
-interface HeaderProps {
-  year: number;
-  month: number;
-  onPrevMonth: () => void;
-  onNextMonth: () => void;
-  loading: boolean;
-}
-
-const Header = memo<HeaderProps>(({ year, month, onPrevMonth, onNextMonth, loading }) => {
-  const prefersReducedMotion = useReducedMotion();
-
-  return (
-    <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-purple-900/70 to-slate-950 p-3 sm:p-4 shadow-xl border border-white/5">
-      {/* Fond subtil */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-500/5 via-transparent to-transparent" />
-      
-      <div className="relative z-10">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2.5">
-            <motion.div
-              animate={prefersReducedMotion ? {} : { rotate: 360 }}
-              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-              className="p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10"
-            >
-              <Moon className="w-4 h-4 text-purple-300" />
-            </motion.div>
-            <div>
-              <h2 className="text-base sm:text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-pink-200">
-                Calendrier Lunaire
-              </h2>
-              <p className="text-[10px] text-purple-300/60 flex items-center gap-1">
-                <Zap className="w-2.5 h-2.5" />
-                <span>Phases cosmiques</span>
-              </p>
-            </div>
-          </div>
-
-          <div className="hidden sm:flex items-center gap-1.5 bg-white/5 rounded-full px-2.5 py-1 border border-white/10">
-            <Sparkles className="w-3 h-3 text-purple-300" />
-            <span className="text-[10px] font-medium text-purple-200">Mystique</span>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between bg-black/20 backdrop-blur-sm rounded-lg p-1.5 border border-white/5">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onPrevMonth}
-            disabled={loading}
-            className="p-2 rounded bg-white/5 hover:bg-white/10 transition-colors disabled:opacity-30"
-            aria-label="Mois précédent"
-          >
-            <ChevronLeft className="w-3.5 h-3.5 text-white" />
-          </motion.button>
-
-          <motion.div
-            key={`${year}-${month}`}
-            initial={{ opacity: 0, y: -3 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center px-3"
-          >
-            <div className="text-lg sm:text-xl font-black text-white tracking-tight">
-              {MONTH_NAMES[month - 1]}
-            </div>
-            <div className="text-[10px] text-purple-300/60 font-medium">
-              {year}
-            </div>
-          </motion.div>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onNextMonth}
-            disabled={loading}
-            className="p-2 rounded bg-white/5 hover:bg-white/10 transition-colors disabled:opacity-30"
-            aria-label="Mois suivant"
-          >
-            <ChevronRight className="w-3.5 h-3.5 text-white" />
-          </motion.button>
-        </div>
-      </div>
-    </div>
-  );
-});
-Header.displayName = "Header";
-
-interface DayCardProps {
-  day: MoonPhaseDay;
-  onClick: () => void;
-}
-
-const DayCard = memo<DayCardProps>(({ day, onClick }) => {
-  const phaseConfig = useMemo(() => getPhaseConfig(day.phaseName), [day.phaseName]);
-  const prefersReducedMotion = useReducedMotion();
-
-  return (
-    <motion.button
-      variants={dayVariants}
-      whileHover={prefersReducedMotion ? {} : { scale: 1.03, y: -2 }}
-      whileTap={{ scale: 0.97 }}
-      onClick={onClick}
-      className={`
-        relative p-2 rounded-lg
-        ${day.isToday 
-          ? 'bg-gradient-to-br from-yellow-400/10 to-amber-500/10 border-2 border-yellow-400/50 shadow-md' 
-          : 'bg-white hover:bg-gradient-to-br hover:from-purple-50 hover:to-pink-50'
-        }
-        ${!day.isToday && 'border border-gray-200 hover:border-purple-300'}
-        transition-all shadow-sm hover:shadow
-         
-        aspect-square mb-16
-      `}
-    >
-      {/* Numéro */}
-      <div className={`text-[11px] font-bold ${day.isToday ? 'text-yellow-600' : 'text-gray-900'}`}>
-        {day.day}
-      </div>
-
-      {/* SVG Lune */}
-      <div 
-        dangerouslySetInnerHTML={{ __html: day.svg }}
-        className="w-7 h-7 sm:w-8 sm:h-8"
-      />
-
-      {/* Badge phase spéciale */}
-      {(day.isNew || day.isFull) && (
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.1 }}
-          className={`absolute -top-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${phaseConfig.badge} flex items-center justify-center shadow-md border border-white/40`}
-        >
-          <span className="text-[10px]">{phaseConfig.emoji}</span>
-        </motion.div>
-      )}
-
-      {/* Badge aujourd'hui */}
-      {day.isToday && (
-        <motion.div
-          animate={prefersReducedMotion ? {} : { scale: [1, 1.06, 1] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="absolute -top-1 -left-1 bg-gradient-to-r from-yellow-400 to-amber-500 text-black text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow-md"
-        >
-          Auj
-        </motion.div>
-      )}
-    </motion.button>
-  );
-});
-DayCard.displayName = "DayCard";
 
 interface DetailModalProps {
   day: MoonPhaseDay | null;
@@ -507,7 +246,6 @@ export function MoonPhaseWidget() {
   // ─────────────────────────────────────────────────────────────────────────
   const moonDays = useMemo(() => {
     if (!monthData?.phases) return [];
-
     const today = new Date();
     const isCurrentMonth = 
       monthData.year === today.getFullYear() && 
@@ -535,38 +273,6 @@ export function MoonPhaseWidget() {
       .filter((day): day is MoonPhaseDay => day !== null);
   }, [monthData]);
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // RENDER
-  // ─────────────────────────────────────────────────────────────────────────
-  if (loading && !monthData) {
-    return (
-      <div className="flex items-center justify-center p-10">
-        <div className="relative">
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
-            className="w-12 h-12 border-3 border-transparent border-t-purple-500 border-r-purple-400 rounded-full"
-          />
-          <Moon className="absolute inset-0 m-auto w-5 h-5 text-purple-400" />
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-center">
-        <p className="text-sm text-red-600 font-semibold mb-2">{error}</p>
-        <button 
-          onClick={() => fetchMonthData(currentDate)}
-          className="px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs font-medium hover:bg-red-700 transition-colors"
-        >
-          Réessayer
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-3">
       <Header
@@ -582,7 +288,7 @@ export function MoonPhaseWidget() {
         initial="hidden"
         animate="visible"
         key={`${currentDate.getMonth()}-${currentDate.getFullYear()}`}
-        className="grid grid-cols-7 gap-1.5"
+        className="grid grid-cols-1 sm:grid-cols-7 px-4 py-4 gap-1.5"
       >
         {moonDays.map((day) => (
           <DayCard
@@ -593,17 +299,47 @@ export function MoonPhaseWidget() {
         ))}
       </motion.div>
 
-      <div className="flex flex-wrap gap-1.5 justify-center pt-1">
-        {LEGEND_ITEMS.map((item) => (
-          <motion.div
-            key={item.label}
-            whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
-            className="flex items-center gap-1.5 bg-white rounded-lg px-2.5 py-1 shadow-sm border border-gray-200"
-          >
-            <span className="text-xs">{item.emoji}</span>
-            <span className="text-[10px] font-medium text-gray-700">{item.label}</span>
-          </motion.div>
-        ))}
+      {/* Légende et explication des phases lunaires */}
+      <div>
+        <div className="flex flex-wrap gap-1.5 justify-center pt-1">
+          {LEGEND_ITEMS.map((item) => (
+            <motion.div
+              key={item.label}
+              whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+              className="flex items-center gap-1.5 bg-white rounded-lg px-2.5 py-1 shadow-sm border border-gray-200"
+            >
+              <span className="text-xs">{item.emoji}</span>
+              <span className="text-[10px] font-medium text-gray-700">{item.label}</span>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Explication des phases lunaires */}
+        <div className="mt-4 text-xs text-center text-gray-700 bg-white/70 rounded-lg p-3 max-w-xl mx-auto">
+          <strong>Voici les phases lunaires :</strong><br />
+          <ul className="list-disc list-inside text-left mt-1 mb-2">
+            <li><b>Nouvelle Lune</b> 🌑 : début du cycle, la Lune est invisible</li>
+            <li><b>Premier quartier</b> 🌓 : la Lune est à moitié éclairée</li>
+            <li><b>Pleine Lune</b> 🌕 : la Lune est entièrement éclairée</li>
+            <li><b>Dernier quartier</b> 🌗 : la Lune est à moitié éclairée (côté opposé)</li>
+          </ul>
+          <span className="block mt-1">Cycle complet : environ 29,5 jours 😊</span>
+
+          <div className="mt-3 text-left">
+            <strong>Durée approximative de chaque phase :</strong>
+            <ul className="list-disc list-inside mt-1 mb-2">
+              <li><b>Nouvelle Lune</b> 🌑 : 1-2 jours</li>
+              <li><b>Lune croissante</b> : 7,4 jours (jusqu'au Premier quartier)</li>
+              <li><b>Premier quartier</b> 🌓 : 1 jour</li>
+              <li><b>Lune gibbeuse croissante</b> : 7,4 jours (jusqu'à la Pleine Lune)</li>
+              <li><b>Pleine Lune</b> 🌕 : 1 jour</li>
+              <li><b>Lune gibbeuse décroissante</b> : 7,4 jours (jusqu'au Dernier quartier)</li>
+              <li><b>Dernier quartier</b> 🌗 : 1 jour</li>
+              <li><b>Lune décroissante</b> : 7,4 jours (jusqu'à la Nouvelle Lune suivante)</li>
+            </ul>
+            <span className="block text-xs text-gray-500 mt-1">Note : les durées sont approximatives et peuvent varier légèrement. 😊</span>
+          </div>
+        </div>
       </div>
 
       <AnimatePresence>

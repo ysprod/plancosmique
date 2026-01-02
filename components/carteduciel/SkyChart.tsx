@@ -121,6 +121,14 @@ const SkyChart = memo(({ carteDuCiel }: { carteDuCiel?: CarteDuCiel }) => {
           </>
         )}
       </motion.section>
+
+      {/* Source d'éphémérides */}
+      <div className="mt-4 text-center text-xs text-white/60">
+        {/* Info source éphémérides */}
+        <span>
+          Votre carte du ciel a été réalisée en utilisant les Éphémérides de la NASA (Swiss Ephemeris)
+        </span>
+      </div>
     </>
   );
 });
