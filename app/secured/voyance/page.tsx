@@ -24,7 +24,7 @@ export default function VoyancePage() {
     setPrediction,
     resetForm
   } = useVoyanceForm();
-  
+
   const handleReveal = useVoyancePrediction(predictions, setPrediction, setIsRevealing);
   const handleReset = resetForm;
 

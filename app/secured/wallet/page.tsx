@@ -57,7 +57,6 @@ function WalletPageContent() {
   const {
     isLoading,
     isRefreshing,
-    transactions,
     searchQuery,
     setSearchQuery,
     filter,
