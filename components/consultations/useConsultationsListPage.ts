@@ -73,7 +73,12 @@ export function useConsultationsListPage() {
   };
 
   const handleView = (id: string) => {
-    router.push(`/secured/consultations/${id}`);
+    const consultation = consultations.find(c => c._id === id);
+    if (consultation && (consultation.type === 'NOMBRES_PERSONNELS' || consultation.type === 'CYCLES_PERSONNELS')) {
+      router.push(`/secured/numerologie/${id}`);
+    } else {
+      router.push(`/secured/consultations/${id}`);
+    }
   };
 
   const handleDownload = (id: string) => {

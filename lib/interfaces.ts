@@ -261,7 +261,9 @@ export type ConsultationType =
   | 'PROFESSIONNEL'
   | 'OFFRANDES'
   | 'ASTROLOGIE_AFRICAINE'
-  | 'HOROSCOPE';
+  | 'HOROSCOPE'
+  | 'NOMBRES_PERSONNELS'
+  | 'CYCLES_PERSONNELS';
 export type ConsultationStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
 
 export interface ConsultationFormData {
@@ -288,6 +290,9 @@ export interface ResultData {
     model: string;
   };
   dateGeneration: string;
+  // Numerology fields (optional)
+  numbers?: Array<{ label: string; value: string | number }>;
+  cycles?: Array<{ label: string; value: string | number }>;
 }
 
 export interface Consultation {

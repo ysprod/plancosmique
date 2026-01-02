@@ -25,9 +25,9 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ consultation, index
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-start gap-3 flex-1">
-          <div className={`w-12 h-12 bg-gradient-to-br ${consultation.type ? TYPE_LABELS[consultation.type].color : ''} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
+          {/* <div className={`w-12 h-12 bg-gradient-to-br  rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
             {consultation.type && React.createElement(TYPE_LABELS[consultation.type].icon, { className: 'w-6 h-6 text-white' })}
-          </div>
+          </div> */}
           <div className="flex-1 min-w-0">
             <h3 className="text-xl font-bold text-white mb-1 line-clamp-1">{consultation.title}</h3>
             <p className="text-purple-200 text-sm line-clamp-2">{consultation.description}</p>

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import ConsultationCard from '@/components/consultations/ConsultationCard';
+import NumerologyConsultationCard from '@/components/consultations/NumerologyConsultationCard';
 import ConsultationsEmpty from '@/components/consultations/list/ConsultationsEmpty';
 import ConsultationsError from '@/components/consultations/list/ConsultationsError';
 import ConsultationsFilters from '@/components/consultations/list/ConsultationsFilters';
@@ -45,13 +46,23 @@ export default function ConsultationsListPage() {
         ) : (
           <div className="grid gap-6">
             {filteredConsultations.map((consultation, index) => (
-              <ConsultationCard
-                key={consultation._id}
-                consultation={consultation}
-                index={index}
-                onView={handleView}
-                onDownload={handleDownload}
-              />
+              (consultation.type === 'NOMBRES_PERSONNELS' || consultation.type === 'CYCLES_PERSONNELS') ? (
+                <NumerologyConsultationCard
+                  key={consultation._id}
+                  consultation={consultation}
+                  index={index}
+                  onView={handleView}
+                  onDownload={handleDownload}
+                />
+              ) : (
+                <ConsultationCard
+                  key={consultation._id}
+                  consultation={consultation}
+                  index={index}
+                  onView={handleView}
+                  onDownload={handleDownload}
+                />
+              )
             ))}
           </div>
         )}

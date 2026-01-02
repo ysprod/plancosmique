@@ -18,6 +18,7 @@ export function useConsultationResult() {
       try {
         const response = await api.get(`/consultations/analysis/${consultationId}`);
         if (response.status !== 200) throw new Error('Analyse non trouvée');
+        console.log('Analysis response:', response);
         const data = response.data;
         if (data.analyse) {
           setAnalyse(data.analyse);
