@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Offering } from '@/lib/interfaces';
 // import { Category } from './types';
 // import { staggerContainer } from './animations';
-// import { OfferingCard } from './OfferingCard';
+import { OfferingCard } from './OfferingCard';
 
 interface OfferingsGridProps {
   offerings: Offering[];
@@ -34,8 +34,7 @@ const OfferingsGrid = ({ offerings, selectedCategory, onAddToCart }: OfferingsGr
           whileHover={{ y: -4, scale: 1.02 }}
           className="h-full"
         >
-          {/* OfferingCard component missing. Replace or restore OfferingCard.tsx to enable this feature. */}
-          <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 text-center text-gray-500">Carte d'offrande manquante</div>
+          <OfferingCard offering={offering} onAddToCart={onAddToCart} />
         </motion.div>
       ))}
     </motion.div>
