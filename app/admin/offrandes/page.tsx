@@ -17,9 +17,8 @@ export default function AdminOffrandes() {
     const {
         offerings, statsData, loading, saving, showAddModal, editingId,
         formData, setShowAddModal, setFormData, successMessage,
-        errorMessage, setErrorMessage, fetchOfferings,
-        handleAdd, handleEdit, handleConfirm, handleDelete,
-        handleSaveAll, } = useAdminOffrandes();
+        errorMessage, setErrorMessage, fetchOfferings, handleSaveAll,
+        handleAdd, handleEdit, handleConfirm, handleDelete, } = useAdminOffrandes();
 
     const { activeTab, setActiveTab } = useAdminOffrandesTabs();
 

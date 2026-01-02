@@ -35,6 +35,7 @@ export default function AdminDashboard() {
       />
     );
   }
+
   return (
     <div className=" bg-gradient-to-br from-gray-50 to-gray-100">
       <AdminHeader

@@ -41,15 +41,8 @@ export interface OfferingFormData {
 }
 
 export function useAdminOffrandes() {
- 
-    const [statsLoading, setStatsLoading] = useState(true);
-    const [statsError, setStatsError] = useState<string | null>(null);
- 
-
-
-
-
-
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [statsError, setStatsError] = useState<string | null>(null);
   const [offerings, setOfferings] = useState<Offering[]>([]);
   const [statsData, setStatsData] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -68,20 +61,19 @@ export function useAdminOffrandes() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Fetch offerings
   const fetchOfferings = useCallback(async () => {
     setLoading(true);
     try {
       const res = await api.get('/offerings');
       console.log(res);
       setOfferings(res.data.offerings || []);
-     // setStatsData(res.data.stats || null);
+      // setStatsData(res.data.stats || null);
       const response = await api.get('/admin/offerings/stats');
-            if (response.status === 200 && response.data) {
-                setStatsData(response.data);
-            } else {
-                setStatsError('Erreur lors du chargement des statistiques');
-            }
+      if (response.status === 200 && response.data) {
+        setStatsData(response.data);
+      } else {
+        setStatsError('Erreur lors du chargement des statistiques');
+      }
     } catch (e: any) {
       setErrorMessage('Erreur lors du chargement des offrandes');
     } finally {
@@ -89,22 +81,22 @@ export function useAdminOffrandes() {
     }
   }, []);
 
-   const fetchStats = async () => {
-        setStatsLoading(true);
-        setStatsError(null);
-        try {
-            const response = await api.get('/admin/offerings/stats');
-            if (response.status === 200 && response.data) {
-                setStatsData(response.data);
-            } else {
-                setStatsError('Erreur lors du chargement des statistiques');
-            }
-        } catch (err: any) {
-            setStatsError('Erreur lors du chargement des statistiques');
-        } finally {
-            setStatsLoading(false);
-        }
-    };
+  const fetchStats = async () => {
+    setStatsLoading(true);
+    setStatsError(null);
+    try {
+      const response = await api.get('/admin/offerings/stats');
+      if (response.status === 200 && response.data) {
+        setStatsData(response.data);
+      } else {
+        setStatsError('Erreur lors du chargement des statistiques');
+      }
+    } catch (err: any) {
+      setStatsError('Erreur lors du chargement des statistiques');
+    } finally {
+      setStatsLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchOfferings();
@@ -133,7 +125,7 @@ export function useAdminOffrandes() {
 
   // Confirm add/edit
   const handleConfirm = async () => {
-    if (!formData.id || !formData.name || !formData.category || !formData.price || !formData.icon || !formData.description) {
+    if (!formData.name || !formData.category || !formData.price || !formData.icon || !formData.description) {
       setErrorMessage('Veuillez remplir tous les champs obligatoires');
       return;
     }
@@ -141,9 +133,9 @@ export function useAdminOffrandes() {
     try {
       let res;
       if (editingId) {
-        res = await api.put(`/offrandes/${editingId}`, formData);
+        res = await api.put(`/offerings/${editingId}`, formData);
       } else {
-        res = await api.post('/offrandes', formData);
+        res = await api.post('/offerings', formData);
       }
       if (!res || (res.status < 200 || res.status >= 300)) throw new Error('Erreur API');
       setSuccessMessage(editingId ? 'Offrande modifiée' : 'Offrande ajoutée');
@@ -160,7 +152,7 @@ export function useAdminOffrandes() {
   const handleDelete = async (id: string) => {
     setSaving(true);
     try {
-      const res = await api.delete(`/offrandes/${id}`);
+      const res = await api.delete(`/offerings/${id}`);
       if (!res || (res.status < 200 || res.status >= 300)) throw new Error('Erreur API');
       setSuccessMessage('Offrande supprimée');
       fetchOfferings();
@@ -175,7 +167,7 @@ export function useAdminOffrandes() {
   const handleSaveAll = async () => {
     setSaving(true);
     try {
-      const res = await api.post('/offrandes/batch', { offerings });
+      const res = await api.post('/offerings/batch', { offerings });
       if (!res || (res.status < 200 || res.status >= 300)) throw new Error('Erreur API');
       setSuccessMessage('Toutes les offrandes ont été sauvegardées');
       fetchOfferings();

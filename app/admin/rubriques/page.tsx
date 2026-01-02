@@ -9,10 +9,9 @@ import { RubriquesToast } from '@/components/admin/rubriques/RubriquesToast';
 
 export default function RubriquesAdminPage() {
   const {
-    rubriques,
+    rubriques, handleCreate, setSelectedRubrique, handleDelete,
     selectedRubrique, editingRubrique, loading, saving, toast,
     offerings, offeringsLoading, setToast, setEditingRubrique, handleSave,
-    handleCreate, setSelectedRubrique, handleDelete,
   } = useAdminRubriquesPage();
 
   if (loading || offeringsLoading) {

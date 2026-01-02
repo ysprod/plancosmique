@@ -7,7 +7,7 @@ import { EditUserSuccessAlert } from '@/components/admin/users/EditUserSuccessAl
 import { useEditUserPage } from '@/hooks/useEditUserPage';
 
 export default function EditUserPage() {
-  const { loading, saving, error, setError, success, formData, setFormData, handleSubmit } = useEditUserPage();
+  const { loading, saving, error, success, formData, setError, setFormData, handleSubmit } = useEditUserPage();
 
   if (loading) {
     return <EditUserLoading />;

@@ -18,7 +18,6 @@ export default function SpiritualiteAdmin() {
           publishedCount={spiritualite.practices.filter(p => p.published).length}
           draftCount={spiritualite.practices.filter(p => !p.published).length}
         />
-
         <SpiritualiteMessages error={spiritualite.error} success={spiritualite.success} />
 
         <SpiritualiteFormModal
