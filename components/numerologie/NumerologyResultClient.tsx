@@ -194,10 +194,7 @@ export default function NumerologyResultClient({ consultation }: Props) {
             <WisdomSection data={analyse.sagessAfricaine} />
           )}
 
-          {/* Offrandes Alternatives */}
-          {hasOfferings && (
-            <OfferingsSection alternatives={consultation.alternatives} />
-          )}
+         
         </div>
       </motion.div>
     </div>
