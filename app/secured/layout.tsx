@@ -3,7 +3,7 @@ import { ProtectedRoute } from '@/components/auth';
 import { ErrorBoundary, LoadingFallback } from '@/components/commons/ErrorBoundary';
 import { AuthProvider } from '@/lib/auth/AuthContext';
 import { Suspense } from 'react';
-import HeaderContent from '../../components/commons/HeaderContent';
+import HeaderContent from '@/components/commons/HeaderContent';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;

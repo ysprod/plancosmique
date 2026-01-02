@@ -50,7 +50,7 @@ export default function KnowledgeDetailPage() {
         <div className="text-center">
           <BookOpen className="w-20 h-20 text-gray-600 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-white mb-2">Connaissance introuvable</h2>
-          
+
           <a href="/secured/knowledge">
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -80,7 +80,9 @@ export default function KnowledgeDetailPage() {
               {categoryLabels[knowledge.category as keyof typeof categoryLabels]}
             </span>
           </div>
+          
           <h1 className="text-4xl font-bold text-white mb-6">{knowledge.title}</h1>
+          
           <KnowledgeMeta knowledge={knowledge} isLiked={isLiked} onLike={handleLike} />
           {knowledge.tags && knowledge.tags.length > 0 && <KnowledgeTags tags={knowledge.tags} />}
           <KnowledgeContent content={knowledge.content} />

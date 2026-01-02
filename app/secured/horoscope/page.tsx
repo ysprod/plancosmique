@@ -1,12 +1,12 @@
 'use client';
-import { AnimatePresence, motion } from 'framer-motion';
-import React, { memo } from 'react';
 import ResultDisplay from '@/components/horoscope/ResultDisplay';
-import HoroscopeTabs from '@/components/horoscope/page/HoroscopeTabs';
-import HoroscopeList from '@/components/horoscope/page/HoroscopeList';
 import HoroscopeForm from '@/components/horoscope/page/HoroscopeForm';
 import HoroscopeHeader from '@/components/horoscope/page/HoroscopeHeader';
+import HoroscopeList from '@/components/horoscope/page/HoroscopeList';
+import HoroscopeTabs from '@/components/horoscope/page/HoroscopeTabs';
 import useHoroscopePage from '@/hooks/horoscope/useHoroscopePage';
+import { motion } from 'framer-motion';
+import React, { memo } from 'react';
 
 export type HoroscopeTypeId = 'mensuel' | 'annuel';
 
@@ -76,19 +76,6 @@ function HoroscopePageComponent() {
     handleHoroscopeClick
   } = useHoroscopePage();
 
-  const headerVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: 'spring',
-        stiffness: 300,
-        damping: 30
-      }
-    }
-  };
-
   const typedTabs = tabs as Tab[];
 
   return (
@@ -106,40 +93,35 @@ function HoroscopePageComponent() {
 
       <div className="relative z-10 container mx-auto px-3 sm:px-4 py-5 sm:py-6 max-w-3xl">
         <HoroscopeHeader />
-
         <HoroscopeTabs tabs={typedTabs} activeTab={activeTab} onTabChange={handleTabChange} />
         <HoroscopeList horoscopes={filteredHoroscopes} activeTab={activeTab} onHoroscopeClick={handleHoroscopeClick} />
         <HoroscopeForm loadingUser={loadingUser} activeTab={activeTab} filteredHoroscopesLength={filteredHoroscopes.length} error={error} onSubmit={handleRedirect} />
+        {loadingHoroscopes && (
+          <motion.div
+            key="loading"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="bg-white rounded-xl p-6 border-2 border-purple-200 shadow-sm mt-6"
+          >
+            <div className="text-center">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                className="w-14 h-14 mx-auto mb-3 text-purple-600"
+              >
+                <span className="block w-full h-full bg-gradient-to-r from-purple-400 to-pink-400 rounded-full" />
+              </motion.div>
+              <p className="text-gray-600 text-sm">
+                Chargement de vos horoscopes...
+              </p>
+            </div>
+          </motion.div>
+        )}
 
-        <AnimatePresence mode="wait">
-          {loadingHoroscopes && (
-            <motion.div
-              key="loading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="bg-white rounded-xl p-6 border-2 border-purple-200 shadow-sm mt-6"
-            >
-              <div className="text-center">
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                  className="w-14 h-14 mx-auto mb-3 text-purple-600"
-                >
-                  {/* Loader icon */}
-                  <span className="block w-full h-full bg-gradient-to-r from-purple-400 to-pink-400 rounded-full" />
-                </motion.div>
-                <p className="text-gray-600 text-sm">
-                  Chargement de vos horoscopes...
-                </p>
-              </div>
-            </motion.div>
-          )}
-
-          {result && !loadingHoroscopes && (
-            <ResultDisplay key="result" result={result} />
-          )}
-        </AnimatePresence>
+        {result && !loadingHoroscopes && (
+          <ResultDisplay key="result" result={result} />
+        )}
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 import { AnimatePresence, motion } from 'framer-motion';
-import Slide4Section from '@/components/vie-personnelle/Slide4Section';
+import Slide4Section from '@/components/numerologie/Slide4Section';
 
-const RelationsPage = () => {
+const CyclesPersonnelsPage = () => {
   return (
-    <div className=" text-center bg-gradient-to-br from-slate-50 via-pink-50 to-rose-50">
+    <div className="text-center bg-gradient-to-br from-slate-50 via-yellow-50 to-amber-50">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -13,16 +13,15 @@ const RelationsPage = () => {
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-rose-700 via-pink-600 to-red-600 bg-clip-text text-transparent mb-4">
-              Mes Relations
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-yellow-700 via-amber-600 to-orange-600 bg-clip-text text-transparent mb-4">
+              Mes Cycles Personnels
             </h1>
             <p className="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
-              Découvrez la dynamique de vos relations amoureuses, familiales et amicales à travers l'astrologie.
+              Comprenez les cycles du temps qui vous influencent actuellement et découvrez comment avancer au bon rythme grâce à la numérologie.
             </p>
           </div>
         </div>
       </motion.div>
-
       <div className="max-w-7xl mx-auto">
         <AnimatePresence mode="wait">
           <motion.div
@@ -33,7 +32,7 @@ const RelationsPage = () => {
             transition={{ duration: 0.5 }}
             className="bg-white"
           >
-            <Slide4Section rubriqueId="694d30245b9d9dfa00becfc2" typeconsultation="RELATIONS" />
+            <Slide4Section rubriqueId="NUMEROLOGIE_CYCLES_PERSONNELS" typeconsultation="CYCLES_PERSONNELS" />
           </motion.div>
         </AnimatePresence>
       </div>
@@ -41,4 +40,4 @@ const RelationsPage = () => {
   );
 };
 
-export default RelationsPage;
+export default CyclesPersonnelsPage;

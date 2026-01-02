@@ -21,6 +21,7 @@ export default function TarotPage() {
         </Link>
 
         <TarotHeader />
+
         <TarotComingSoon />
       </div>
     </div>

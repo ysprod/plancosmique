@@ -16,6 +16,7 @@ const ProfessionnelPage = () => {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
               Ma Vie Professionnelle
             </h1>
+            
             <p className="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
               Découvrez votre potentiel de carrière, vos talents cachés et votre mission professionnelle à travers l'astrologie.
             </p>

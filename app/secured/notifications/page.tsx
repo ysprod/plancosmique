@@ -30,6 +30,7 @@ export default function NotificationsPage() {
       window.location.href = notification.metadata.url;
       return;
     }
+    
     if (
       (notification.type === 'CONSULTATION_RESULT' || notification.type === 'CONSULTATION_ASSIGNED') &&
       notification.metadata?.consultationId

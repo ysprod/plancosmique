@@ -41,7 +41,6 @@ export default function MarcheOffrandes() {
 
   return (
     <div className="relative  bg-white dark:bg-gray-950">
-      {/* Header sticky avec backdrop blur */}
       <div className="sticky top-0 z-40 bg-white/95 dark:bg-gray-950/95 
                     backdrop-blur-md border-b border-gray-100 dark:border-gray-800 
                     shadow-sm">

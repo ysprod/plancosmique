@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useCallback, useMemo } from 'react';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import SpiritualiteError from '@/components/spiritualite/SpiritualiteError';
@@ -8,10 +7,8 @@ import { useSpiritualiteBlogPage } from '@/hooks/spiritualite/useSpiritualiteBlo
 import FeaturedArticle from '@/components/spiritualite/FeaturedArticle';
 import ArticlesGrid from '@/components/spiritualite/ArticlesGrid';
 import NoResults from '@/components/spiritualite/NoResults';
-
-// ============================================================================
-// TYPES
-// ============================================================================
+import AnimatedBackground from '@/components/spiritualite/AnimatedBackground';
+import ContentWrapper from '@/components/spiritualite/ContentWrapper';
 
 interface SpiritualitePractice {
   id: string;
@@ -28,10 +25,6 @@ interface SpiritualitePractice {
   };
 }
 
-// ============================================================================
-// ANIMATION VARIANTS (isolées pour performance)
-// ============================================================================
-
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -47,69 +40,6 @@ const containerVariants: Variants = {
   },
 };
 
-const blobVariants: Variants = {
-  animate: {
-    scale: [1, 1.15, 1],
-    rotate: [0, 90, 0],
-    transition: {
-      duration: 25,
-      repeat: Infinity,
-      ease: 'linear',
-    },
-  },
-};
-
-const contentVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.4,
-      ease: 'easeOut',
-    },
-  },
-};
-
-// ============================================================================
-// COMPOSANTS MÉMORISÉS
-// ============================================================================
-
-const AnimatedBackground = React.memo(() => (
-  <div className="fixed inset-0 -z-10 overflow-hidden bg-gradient-to-br from-slate-50 via-purple-50/30 to-pink-50/20" aria-hidden="true">
-    {/* Blob 1 - Violet */}
-    <motion.div
-      className="absolute -top-[40%] -left-[20%] h-[60rem] w-[60rem] rounded-full bg-gradient-to-br from-violet-400/20 to-purple-500/10 blur-3xl"
-      variants={blobVariants}
-      animate="animate"
-    />
-    {/* Blob 2 - Rose */}
-    <motion.div
-      className="absolute -bottom-[40%] -right-[20%] h-[60rem] w-[60rem] rounded-full bg-gradient-to-tl from-pink-400/20 to-rose-500/10 blur-3xl"
-      variants={blobVariants}
-      animate="animate"
-      style={{ animationDelay: '-12s' }}
-    />
-  </div>
-));
-AnimatedBackground.displayName = 'AnimatedBackground';
-
-const ContentWrapper = React.memo<{ children: React.ReactNode }>(({ children }) => (
-  <motion.div
-    variants={contentVariants}
-    initial="hidden"
-    animate="visible"
-    className="relative z-10"
-  >
-    {children}
-  </motion.div>
-));
-ContentWrapper.displayName = 'ContentWrapper';
-
-// ============================================================================
-// HELPER - Format date en français
-// ============================================================================
-
 const formatDate = (dateString?: string): string => {
   if (!dateString) return '';
   try {
@@ -124,12 +54,7 @@ const formatDate = (dateString?: string): string => {
   }
 };
 
-// ============================================================================
-// COMPOSANT PRINCIPAL
-// ============================================================================
-
 export default function SpiritualiteBlogPage() {
-  // Hook personnalisé
   const {
     setSearchQuery,
     setSelectedCategory,
@@ -139,31 +64,9 @@ export default function SpiritualiteBlogPage() {
     filteredPractices,
   } = useSpiritualiteBlogPage();
 
-  // ============================================================================
-  // CALLBACKS MÉMORISÉS
-  // ============================================================================
-
   const handleRetry = useCallback(() => {
     setError('');
   }, [setError]);
-
-  const handleSearchChange = useCallback(
-    (query: string) => {
-      setSearchQuery(query);
-    },
-    [setSearchQuery]
-  );
-
-  const handleCategoryChange = useCallback(
-    (category: string) => {
-      setSelectedCategory(category);
-    },
-    [setSelectedCategory]
-  );
-
-  // ============================================================================
-  // VALEURS MÉMORISÉES
-  // ============================================================================
 
   const featuredArticle = useMemo<SpiritualitePractice | null>(() => {
     if (!filteredPractices?.length) return null;
@@ -206,10 +109,6 @@ export default function SpiritualiteBlogPage() {
     [featuredArticle, regularArticles.length]
   );
 
-  // ============================================================================
-  // RENDU CONDITIONNEL
-  // ============================================================================
-
   // if (loading) {
   //   return <SpiritualiteLoading />;
   // }
@@ -222,10 +121,6 @@ export default function SpiritualiteBlogPage() {
       />
     );
   }
-
-  // ============================================================================
-  // RENDU PRINCIPAL
-  // ============================================================================
 
   return (
     <>

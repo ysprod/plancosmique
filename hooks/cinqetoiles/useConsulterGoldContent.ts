@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { api } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { OfferingAlternative, WalletOffering } from '@/lib/interfaces';
-import { ConsultationData } from '@/app/secured/cinqetoiles/Slide4Section';
+import { ConsultationData } from '@/lib/interfaces';
 
 type StepType = 'offering' | 'processing' | 'analyse';
 

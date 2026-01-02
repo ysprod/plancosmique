@@ -1,20 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import ConsultationCard from '@/components/consultations/ConsultationCard';
-import ConsultationsHeader from '@/components/consultations/list/ConsultationsHeader';
-import ConsultationsFilters from '@/components/consultations/list/ConsultationsFilters';
-import ConsultationsError from '@/components/consultations/list/ConsultationsError';
 import ConsultationsEmpty from '@/components/consultations/list/ConsultationsEmpty';
+import ConsultationsError from '@/components/consultations/list/ConsultationsError';
+import ConsultationsFilters from '@/components/consultations/list/ConsultationsFilters';
+import ConsultationsHeader from '@/components/consultations/list/ConsultationsHeader';
 import useConsultationsListPage from '@/hooks/consultations/useConsultationsListPage';
 import { Loader2 } from 'lucide-react';
 
 export default function ConsultationsListPage() {
   const {
-    consultations,
-    filteredConsultations,
-    loading,
-    error,
-    searchQuery,
+    consultations, filteredConsultations,
+    loading, searchQuery, error,
     setSearchQuery,
     setTypeFilter,
     setStatusFilter,

@@ -1,3 +1,12 @@
+// ConsultationData utilisé pour les consultations personnalisées (Cinq Étoiles)
+export interface ConsultationData {
+  _id: string;
+  title: string;
+  description: string;
+  alternatives: { offeringId: string; quantity: number }[];
+  formData?: any;
+  status: string;
+}
 export interface Book {
   _id: string;
   bookId: string;

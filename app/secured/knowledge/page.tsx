@@ -13,9 +13,8 @@ export default function KnowledgePage() {
   const {
     isLoading,
     selectedCategory,
-    searchQuery,
+    searchQuery, activeTab,
     setSearchQuery,
-    activeTab,
     setActiveTab,
     handleSearch,
     handleCategoryChange,

@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-import CosmicLoader from '@/components/consultations/CosmicLoader';
+import ConsultationContent from '@/components/consultations/ConsultationContent';
 import ConsultationError from '@/components/consultations/ConsultationError';
 import ConsultationHeader from '@/components/consultations/ConsultationHeader';
-import ConsultationContent from '@/components/consultations/ConsultationContent';
-import { AnimatePresence } from 'framer-motion';
+import CosmicLoader from '@/components/consultations/CosmicLoader';
 import useConsultationResultPage from '@/hooks/consultations/useConsultationResultPage';
 
 export default function ConsultationResultPage() {
@@ -12,9 +11,7 @@ export default function ConsultationResultPage() {
 
   if (loading) {
     return (
-      <AnimatePresence mode="wait">
-        <CosmicLoader />
-      </AnimatePresence>
+      <CosmicLoader />
     );
   }
 

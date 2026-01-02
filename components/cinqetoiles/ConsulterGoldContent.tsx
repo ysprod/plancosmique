@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { AnimatePresence, motion } from 'framer-motion';
-import PaymentProcessing from '../../../components/vie-personnelle/PaymentProcessing';
+import PaymentProcessing from '../vie-personnelle/PaymentProcessing';
 import GenereAnalyseContent from './GenereAnalyseContent';
 import OfferingStep from './OfferingStep';
-import { ConsultationData } from './Slide4Section';
+import { ConsultationData } from '@/lib/interfaces';
 import { useConsulterGoldContent } from '@/hooks/cinqetoiles/useConsulterGoldContent';
 import ConsulterGoldErrorToast from '@/components/cinqetoiles/ConsulterGoldErrorToast';
 import { WalletOffering } from '@/lib/interfaces';
