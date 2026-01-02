@@ -1,6 +1,8 @@
 "use client";
 import { AnimatePresence, motion } from 'framer-motion';
-import Slide4Section from '@/components/numerologie/Slide4Section';
+import Slide4Section from '@/components/vie-personnelle/Slide4Section';
+import { ConsultationSection } from '@/components/vie-personnelle/ConsultationSection';
+import { NumerologieConsultationSection } from '@/components/numerologie/NumerologieConsultationSection';
 
 const NombresPersonnelsPage = () => {
   return (
@@ -13,8 +15,9 @@ const NombresPersonnelsPage = () => {
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
+            <br />     <br />
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-700 via-pink-600 to-indigo-600 bg-clip-text text-transparent mb-4">
-              Mes Nombres Personnels
+              Vos Nombres Personnels
             </h1>
             <p className="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
               Découvrez les nombres essentiels qui définissent votre identité profonde et votre direction de vie grâce à la numérologie.
@@ -32,8 +35,9 @@ const NombresPersonnelsPage = () => {
             transition={{ duration: 0.5 }}
             className="bg-white"
           >
-            <Slide4Section rubriqueId="NUMEROLOGIE_NOMBRES_PERSONNELS" typeconsultation="NOMBRES_PERSONNELS" />
-          </motion.div>
+                  <NumerologieConsultationSection rubriqueId="69578c355ca5de1d4df13844" typeconsultation="NOMBRES_PERSONNELS" />
+            
+           </motion.div>
         </AnimatePresence>
       </div>
     </div>

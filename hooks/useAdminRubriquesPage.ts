@@ -47,7 +47,6 @@ export function useAdminRubriquesPage() {
 
   const handleCreate = useCallback(() => {
     const newRubrique = {
-      _id: `new-${Date.now()}`,
       titre: "Nouvelle rubrique",
       description: "",
       categorie: "GENERAL",
@@ -59,6 +58,7 @@ export function useAdminRubriquesPage() {
 
   const handleSave = useCallback(async () => {
     if (!editingRubrique) return;
+    console.log("Saving rubrique:", editingRubrique);
     setSaving(true);
     try {
       if (editingRubrique._id) {

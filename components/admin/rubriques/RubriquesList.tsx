@@ -4,7 +4,7 @@ import { Trash2 } from "lucide-react";
 import React from "react";
 
 interface Rubrique {
-  _id: string;
+  _id?: string;
   titre: string;
   description: string;
   consultationChoices: any[];
@@ -46,7 +46,7 @@ export function RubriquesList({ rubriques, selectedRubrique, onSelect, onDelete 
             <button
               onClick={e => {
                 e.stopPropagation();
-                onDelete(rub._id);
+                onDelete(rub._id!);
               }}
               className="p-2 rounded-lg hover:bg-red-100 text-red-600 transition-colors"
             >
