@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   },
   description: '✨ Découvrez votre destinée avec Mon Étoile : consultations de voyance authentiques, analyses astrologiques personnalisées, numérologie avancée et guidance spirituelle par des experts certifiés. Révélez votre potentiel cosmique dès maintenant.',
   keywords: [
-    // Voyance & Divination
     'voyance en ligne',
     'voyance gratuite',
     'voyance sérieuse',
@@ -32,8 +31,6 @@ export const metadata: Metadata = {
     'oracle divinatoire',
     'cartomancie',
     'prédictions futures',
-
-    // Astrologie
     'astrologie personnalisée',
     'thème astral complet',
     'carte du ciel',
@@ -44,15 +41,11 @@ export const metadata: Metadata = {
     'ascendant astrologique',
     'maisons astrologiques',
     'révolution solaire',
-
-    // Numérologie
     'numérologie',
     'chemin de vie',
     'nombre de destinée',
     'année personnelle',
     'numérologie kabbalistique',
-
-    // Spiritualité
     'développement spirituel',
     'éveil de conscience',
     'guidance spirituelle',
