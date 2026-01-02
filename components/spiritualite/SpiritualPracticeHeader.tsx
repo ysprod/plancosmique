@@ -1,4 +1,4 @@
-import { Flame, Sparkle, ArrowLeft } from 'lucide-react';
+import { Flame, Sparkle, ArrowLeft, BookOpen, CircleDollarSign, Feather, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 

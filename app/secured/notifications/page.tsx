@@ -12,11 +12,12 @@ import { useEffect, useState } from 'react';
 export default function NotificationsPage() {
   const router = useRouter();
   const { filter, setFilter } = useNotificationFilter();
-  const [showSettings, setShowSettings] = useState(false);
   const {
     notifications, unreadCount, isLoading,
     markAsRead, markAllAsRead, deleteNotification, fetchNotifications
   } = useNotifications(0);
+
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     fetchNotifications();
@@ -30,7 +31,7 @@ export default function NotificationsPage() {
       window.location.href = notification.metadata.url;
       return;
     }
-    
+
     if (
       (notification.type === 'CONSULTATION_RESULT' || notification.type === 'CONSULTATION_ASSIGNED') &&
       notification.metadata?.consultationId
@@ -59,7 +60,7 @@ export default function NotificationsPage() {
         setShowSettings={setShowSettings}
       />
       <NotificationFilterBar filter={filter} setFilter={setFilter} />
-     
+
       <div className="container mx-auto px-4 py-8">
         <NotificationList
           notifications={filteredNotifications}
@@ -69,7 +70,7 @@ export default function NotificationsPage() {
           onDelete={handleDelete}
         />
       </div>
-      
+
       <NotificationSettingsModal show={showSettings} onClose={() => setShowSettings(false)} />
     </div>
   );

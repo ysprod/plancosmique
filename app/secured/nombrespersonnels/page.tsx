@@ -1,8 +1,6 @@
 "use client";
-import { AnimatePresence, motion } from 'framer-motion';
-import Slide4Section from '@/components/vie-personnelle/Slide4Section';
-import { ConsultationSection } from '@/components/vie-personnelle/ConsultationSection';
 import { NumerologieConsultationSection } from '@/components/numerologie/NumerologieConsultationSection';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const NombresPersonnelsPage = () => {
   return (
@@ -35,9 +33,8 @@ const NombresPersonnelsPage = () => {
             transition={{ duration: 0.5 }}
             className="bg-white"
           >
-                  <NumerologieConsultationSection rubriqueId="69578c355ca5de1d4df13844" typeconsultation="NOMBRES_PERSONNELS" />
-            
-           </motion.div>
+            <NumerologieConsultationSection rubriqueId="69578c355ca5de1d4df13844" typeconsultation="NOMBRES_PERSONNELS" />
+          </motion.div>
         </AnimatePresence>
       </div>
     </div>

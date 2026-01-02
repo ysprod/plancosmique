@@ -9,14 +9,14 @@ import { useCart } from '@/hooks/marcheoffrandes/useCart';
 import { useModals } from '@/hooks/marcheoffrandes/useModals';
 import { useOfferings } from '@/hooks/marcheoffrandes/useOfferings';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback, useMemo, useState } from 'react'; 
+import { useCallback, useMemo, useState } from 'react';
 
 export default function MarcheOffrandes() {
-  const [selectedCategory, setSelectedCategory] = useState<Category>('all');
- 
   const { cart, cartTotal, cartCount, addToCart, removeFromCart, updateQuantity, clearCart } = useCart();
   const { showCart, showCheckout, openCart, closeCart, openCheckout, closeCheckout, backToCart } = useModals();
   const { offerings, loading, error } = useOfferings();
+
+  const [selectedCategory, setSelectedCategory] = useState<Category>('all');
 
   const filteredOfferings = useMemo(
     () => selectedCategory === 'all'

@@ -10,7 +10,6 @@ import { Slide4SectionProcessing } from '@/components/cinqetoiles/Slide4SectionP
 import { Slide4SectionGold } from '@/components/cinqetoiles/Slide4SectionGold';
 import { containerVariants, itemVariants, fadeVariants } from '@/components/cinqetoiles/slide4SectionVariants';
 
-
 function Slide4Section() {
   const {
     selected,

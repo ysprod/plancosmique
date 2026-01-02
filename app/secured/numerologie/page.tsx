@@ -1,12 +1,10 @@
 "use client";
 import AstrologySectionCard from "@/components/astrologie/AstrologySectionCard";
-import { useAstrologiePage } from "@/components/astrologie/useAstrologiePage";
 import { useNumerologiePage } from "@/components/numerologie/useNumerologiePage";
 import { motion } from "framer-motion";
 
 export default function NumerologiePage() {
   const { numerologieSections } = useNumerologiePage();
-
 
   return (
     <div className="relative  bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 overflow-hidden">
@@ -29,16 +27,6 @@ export default function NumerologiePage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <motion.div
-            whileHover={{ rotate: 360 }}
-            transition={{ duration: 0.6 }}
-            className="inline-block mb-6"
-          >
-            <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-2xl bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center shadow-lg">
-              {/* Hash icon */}
-              <span className="w-10 h-10 lg:w-12 lg:h-12 text-white text-5xl font-black">#</span>
-            </div>
-          </motion.div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black bg-gradient-to-r from-amber-700 to-orange-600 bg-clip-text text-transparent mb-4 tracking-tight">
             NUMÉROLOGIE
           </h1>

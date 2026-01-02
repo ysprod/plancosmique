@@ -15,6 +15,7 @@ const iconMap: Record<string, React.ReactNode> = {
   'Sparkle': <Sparkle className="w-6 h-6" />,
   'Flame': <Flame className="w-6 h-6" />,
 };
+
 const colorMap: Record<string, string> = {
   'bases': 'from-purple-600 to-indigo-600',
   'protection': 'from-blue-600 to-cyan-600',
@@ -37,7 +38,7 @@ export default function SpiritualPracticeDetailPage() {
   }
 
   if (!practice) return null;
-  
+
   return (
     <div className=" bg-gradient-to-br from-slate-50 via-purple-50 to-orange-50">
       <SpiritualPracticeHeader

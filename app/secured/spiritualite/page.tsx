@@ -3,7 +3,8 @@ import React, { useCallback, useMemo } from 'react';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import SpiritualiteError from '@/components/spiritualite/SpiritualiteError';
 import SpiritualiteLoading from '@/components/spiritualite/SpiritualiteLoading';
-import { useSpiritualiteBlogPage } from '@/hooks/spiritualite/useSpiritualiteBlogPage';
+import { useSpiritualiteBlogController } from '@/components/spiritualite/useSpiritualiteBlogController';
+import { SpiritualiteLoadingState, SpiritualiteErrorState } from '@/components/spiritualite/SpiritualitePageStates';
 import FeaturedArticle from '@/components/spiritualite/FeaturedArticle';
 import ArticlesGrid from '@/components/spiritualite/ArticlesGrid';
 import NoResults from '@/components/spiritualite/NoResults';
@@ -54,72 +55,25 @@ const formatDate = (dateString?: string): string => {
   }
 };
 
+
 export default function SpiritualiteBlogPage() {
   const {
     setSearchQuery,
     setSelectedCategory,
     loading,
     error,
-    setError,
-    filteredPractices,
-  } = useSpiritualiteBlogPage();
+    handleRetry,
+    featuredArticle,
+    regularArticles,
+    hasArticles,
+  } = useSpiritualiteBlogController();
 
-  const handleRetry = useCallback(() => {
-    setError('');
-  }, [setError]);
-
-  const featuredArticle = useMemo<SpiritualitePractice | null>(() => {
-    if (!filteredPractices?.length) return null;
-    // Map SpiritualPractice (API) to SpiritualitePractice (local)
-    const mapPractice = (p: any): SpiritualitePractice => ({
-      id: p._id,
-      title: p.title,
-      description: p.description,
-      imageUrl: p.imageUrl || '',
-      category: p.category || '',
-      createdAt: p.publishedAt || '',
-      featured: p.featured,
-      readTime: p.readTime,
-      author: typeof p.author === 'string' ? { name: p.author } : p.author,
-    });
-    const found = filteredPractices.find((p: any) => p.featured === true) || filteredPractices[0] || null;
-    return found ? mapPractice(found) : null;
-  }, [filteredPractices]);
-
-  const regularArticles = useMemo<SpiritualitePractice[]>(() => {
-    if (!filteredPractices?.length) return [];
-    const mapPractice = (p: any): SpiritualitePractice => ({
-      id: p._id,
-      title: p.title,
-      description: p.description,
-      imageUrl: p.imageUrl || '',
-      category: p.category || '',
-      createdAt: p.publishedAt || '',
-      featured: p.featured,
-      readTime: p.readTime,
-      author: typeof p.author === 'string' ? { name: p.author } : p.author,
-    });
-    return featuredArticle
-      ? filteredPractices.filter((p: any) => p._id !== featuredArticle.id).map(mapPractice)
-      : filteredPractices.slice(1).map(mapPractice);
-  }, [filteredPractices, featuredArticle]);
-
-  const hasArticles = useMemo(
-    () => Boolean(featuredArticle || regularArticles.length > 0),
-    [featuredArticle, regularArticles.length]
-  );
-
-  // if (loading) {
-  //   return <SpiritualiteLoading />;
-  // }
+  if (loading) {
+    return <SpiritualiteLoadingState />;
+  }
 
   if (error) {
-    return (
-      <SpiritualiteError
-        error={error}
-        onRetry={handleRetry}
-      />
-    );
+    return <SpiritualiteErrorState error={error} onRetry={handleRetry} />;
   }
 
   return (
