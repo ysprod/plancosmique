@@ -3,7 +3,6 @@ import { useUsersPageController } from '@/components/admin/users/useUsersPageCon
 import { UsersPageError, UsersPageLoading } from '@/components/admin/users/UsersPageStates';
 import { UsersPageContent } from '@/components/admin/users/UsersPageContent';
 
-
 export default function UsersPage() {
   const controller = useUsersPageController();
   if (controller.error) {
