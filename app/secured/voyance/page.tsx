@@ -55,7 +55,6 @@ export default function VoyancePage() {
 
       <div className="relative z-10 container mx-auto px-6 py-12 max-w-4xl">
 
-
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}

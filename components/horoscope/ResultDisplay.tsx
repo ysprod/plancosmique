@@ -3,8 +3,7 @@
 import React, { memo, useMemo } from 'react';
 import { motion, useReducedMotion, Variants } from 'framer-motion';
 import { Sparkles, Heart, Briefcase, Activity, Star, Moon, Zap, Sun } from 'lucide-react';
-import type { HoroscopeResult } from '../../app/secured/horoscope/page';
-
+import { HoroscopeResult } from '@/lib/interfaces';
 // ========================================
 // 🎨 ANIMATION VARIANTS (Optimisés)
 // ========================================

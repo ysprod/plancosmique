@@ -380,3 +380,75 @@ export interface BackendResponse {
   success?: boolean;
   analyse?: AnalyseData;
 }
+
+
+
+
+export type HoroscopeTypeId = 'mensuel' | 'annuel';
+
+export interface Tab {
+  id: HoroscopeTypeId;
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  subtitle: string;
+}
+
+export interface HoroscopeResult {
+  zodiacSign: string;
+  symbol: string;
+  element: string;
+  period: string;
+  horoscopeType: string;
+  generalForecast: string;
+  love: string;
+  work: string;
+  health: string;
+  spiritualAdvice: string;
+  luckyColor: string;
+  dominantPlanet: string;
+}
+
+export interface BackendHoroscope {
+  _id: string;
+  title: string;
+  description: string;
+  status: string;
+  resultData?: {
+    horoscope?: {
+      generalForecast: string;
+      love: string;
+      work: string;
+      health: string;
+      spiritualAdvice: string;
+      luckyColor: string;
+      dominantPlanet: string;
+    };
+  };
+  formData?: {
+    carteDuCiel?: {
+      carteDuCiel?: {
+        positions?: Array<{
+          planete: string;
+          signe: string;
+        }>;
+      };
+    };
+  };
+  completedDate?: string;
+  createdAt: string;
+}
+
+export interface SpiritualitePractice {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  category: string;
+  createdAt: string;
+  featured?: boolean;
+  readTime?: string;
+  author?: {
+    name: string;
+    avatar?: string;
+  };
+}

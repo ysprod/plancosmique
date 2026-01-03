@@ -2,12 +2,11 @@
 import KnowledgeCategories from '@/components/knowledge/KnowledgeCategories';
 import KnowledgeEmpty from '@/components/knowledge/KnowledgeEmpty';
 import KnowledgeGrid from '@/components/knowledge/KnowledgeGrid';
+import KnowledgeHeader from '@/components/knowledge/KnowledgeHeader';
 import KnowledgeLoadingList from '@/components/knowledge/KnowledgeLoadingList';
+import KnowledgeSearchBar from '@/components/knowledge/KnowledgeSearchBar';
 import KnowledgeTabs from '@/components/knowledge/KnowledgeTabs';
 import { useKnowledgePage } from '@/hooks/knowledge/useKnowledgePage';
-import { motion } from 'framer-motion';
-import { Search } from 'lucide-react';
-import KnowledgeHeader from '@/components/knowledge/KnowledgeHeader';
 
 export default function KnowledgePage() {
   const {
@@ -28,29 +27,12 @@ export default function KnowledgePage() {
         <div className="container mx-auto px-4 py-8">
           <KnowledgeHeader onShare={() => { }} />
 
-          <div className="flex gap-4 items-center">
-            <div className="flex-1 relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                placeholder="Rechercher une connaissance..."
-                className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-            </div>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleSearch}
-              className="px-6 py-3 rounded-xl bg-purple-500 hover:bg-purple-600 text-white font-medium transition-colors"
-            >
-              Rechercher
-            </motion.button>
-          </div>
+          <KnowledgeSearchBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            handleSearch={handleSearch}
+          />
 
-          {/* Onglets */}
           <KnowledgeTabs activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
       </div>
@@ -58,6 +40,7 @@ export default function KnowledgePage() {
       <div className="container mx-auto px-4 py-6">
         <KnowledgeCategories selectedCategory={selectedCategory} onChange={handleCategoryChange} />
       </div>
+      
       <div className="container mx-auto px-4 py-8">
         {isLoading ? (
           <KnowledgeLoadingList />

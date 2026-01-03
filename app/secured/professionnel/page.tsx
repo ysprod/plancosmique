@@ -38,6 +38,7 @@ const ProfessionnelPage = () => {
           </motion.div>
         </AnimatePresence>
       </div>
+
     </div>
   );
 };

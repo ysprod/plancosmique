@@ -36,8 +36,8 @@ export default function SettingsPage() {
   const tabs = [
     { id: 'general', label: 'Général', icon: Settings },
     { id: 'notifications', label: 'Notifications', icon: Bell },
-    { id: 'security', label: 'Sécurité', icon: Lock },
     { id: 'payment', label: 'Paiement', icon: CreditCard },
+    { id: 'security', label: 'Sécurité', icon: Lock },
     { id: 'system', label: 'Système', icon: Database },
   ] as const;
 

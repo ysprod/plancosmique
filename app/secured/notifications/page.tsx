@@ -27,6 +27,7 @@ export default function NotificationsPage() {
     if (!notification.isRead) {
       await markAsRead(notification._id);
     }
+
     if (notification.metadata?.url) {
       window.location.href = notification.metadata.url;
       return;

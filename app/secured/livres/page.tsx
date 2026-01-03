@@ -1,12 +1,12 @@
 'use client';
+import BooksDownloadInfo from '@/components/livres/BooksDownloadInfo';
+import BooksGrid from '@/components/livres/BooksGrid';
+import BooksHeader from '@/components/livres/BooksHeader';
+import { useBooks } from '@/hooks/livres/useBooks';
 import { useAuth } from '@/lib/auth/AuthContext';
 import axios from 'axios';
+import BooksListLoading from '@/components/livres/BooksListLoading';
 import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
-import { useBooks } from '@/hooks/livres/useBooks';
-import BooksHeader from '@/components/livres/BooksHeader';
-import BooksGrid from '@/components/livres/BooksGrid';
-import BooksDownloadInfo from '@/components/livres/BooksDownloadInfo';
 
 export default function LivresPage() {
   const { user } = useAuth();
@@ -50,14 +50,7 @@ export default function LivresPage() {
   };
 
   if (loading) {
-    return (
-      <div className=" bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-amber-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-700 font-semibold">Chargement des livres...</p>
-        </div>
-      </div>
-    );
+    return <BooksListLoading />;
   }
 
   return (

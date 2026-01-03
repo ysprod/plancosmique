@@ -2,7 +2,7 @@ import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import HoroscopeCard from '@/components/horoscope/HoroscopeCard';
-import type { BackendHoroscope } from '@/app/secured/horoscope/page';
+import { BackendHoroscope } from '@/lib/interfaces';
 
 interface HoroscopeListProps {
   horoscopes: BackendHoroscope[];

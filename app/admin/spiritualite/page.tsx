@@ -35,6 +35,7 @@ export default function SpiritualiteAdmin() {
           updateArrayItem={spiritualite.updateArrayItem}
           availableIcons={spiritualite.availableIcons}
         />
+        
         <SpiritualitePracticesList
           practices={spiritualite.practices}
           expandedPractices={spiritualite.expandedPractices}

@@ -1,15 +1,15 @@
 'use client';
+import KnowledgeContent from '@/components/knowledge/KnowledgeContent';
+import KnowledgeFooter from '@/components/knowledge/KnowledgeFooter';
+import KnowledgeHeader from '@/components/knowledge/KnowledgeHeader';
+import KnowledgeImage from '@/components/knowledge/KnowledgeImage';
+import KnowledgeLoading from '@/components/knowledge/KnowledgeLoading';
+import KnowledgeMeta from '@/components/knowledge/KnowledgeMeta';
+import KnowledgeTags from '@/components/knowledge/KnowledgeTags';
+import { useKnowledgeDetail } from '@/hooks/knowledge/useKnowledgeDetail';
 import { motion } from 'framer-motion';
 import { BookOpen } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { useKnowledgeDetail } from '@/hooks/knowledge/useKnowledgeDetail';
-import KnowledgeHeader from '@/components/knowledge/KnowledgeHeader';
-import KnowledgeMeta from '@/components/knowledge/KnowledgeMeta';
-import KnowledgeTags from '@/components/knowledge/KnowledgeTags';
-import KnowledgeContent from '@/components/knowledge/KnowledgeContent';
-import KnowledgeFooter from '@/components/knowledge/KnowledgeFooter';
-import KnowledgeImage from '@/components/knowledge/KnowledgeImage';
-import KnowledgeLoading from '@/components/knowledge/KnowledgeLoading';
 
 const categoryLabels = {
   ASTROLOGIE: 'Astrologie',
@@ -80,9 +80,9 @@ export default function KnowledgeDetailPage() {
               {categoryLabels[knowledge.category as keyof typeof categoryLabels]}
             </span>
           </div>
-          
+
           <h1 className="text-4xl font-bold text-white mb-6">{knowledge.title}</h1>
-          
+
           <KnowledgeMeta knowledge={knowledge} isLiked={isLiked} onLike={handleLike} />
           {knowledge.tags && knowledge.tags.length > 0 && <KnowledgeTags tags={knowledge.tags} />}
           <KnowledgeContent content={knowledge.content} />

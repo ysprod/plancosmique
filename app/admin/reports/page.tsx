@@ -10,8 +10,8 @@ import ReportsErrorState from '@/components/admin/reports/ReportsErrorState';
 
 export default function ReportsPage() {
   const {
-    setSelectedReport, setDateRange, selectedReport, dateRange, stats, loading,
-    error, metrics, chartData, chartConfig
+    setSelectedReport, setDateRange, selectedReport, dateRange, stats,
+    error, metrics, chartData, loading, chartConfig
   } = useAdminReportsPage();
 
   if (loading) return <ReportsLoadingState />;

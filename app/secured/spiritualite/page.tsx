@@ -1,30 +1,13 @@
 'use client';
-import React, { useCallback, useMemo } from 'react';
-import { AnimatePresence, motion, Variants } from 'framer-motion';
-import SpiritualiteError from '@/components/spiritualite/SpiritualiteError';
-import SpiritualiteLoading from '@/components/spiritualite/SpiritualiteLoading';
-import { useSpiritualiteBlogController } from '@/components/spiritualite/useSpiritualiteBlogController';
-import { SpiritualiteLoadingState, SpiritualiteErrorState } from '@/components/spiritualite/SpiritualitePageStates';
-import FeaturedArticle from '@/components/spiritualite/FeaturedArticle';
-import ArticlesGrid from '@/components/spiritualite/ArticlesGrid';
-import NoResults from '@/components/spiritualite/NoResults';
 import AnimatedBackground from '@/components/spiritualite/AnimatedBackground';
+import ArticlesGrid from '@/components/spiritualite/ArticlesGrid';
 import ContentWrapper from '@/components/spiritualite/ContentWrapper';
-
-interface SpiritualitePractice {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-  category: string;
-  createdAt: string;
-  featured?: boolean;
-  readTime?: string;
-  author?: {
-    name: string;
-    avatar?: string;
-  };
-}
+import FeaturedArticle from '@/components/spiritualite/FeaturedArticle';
+import NoResults from '@/components/spiritualite/NoResults';
+import { SpiritualiteErrorState, SpiritualiteLoadingState } from '@/components/spiritualite/SpiritualitePageStates';
+import { useSpiritualiteBlogController } from '@/components/spiritualite/useSpiritualiteBlogController';
+import { formatDate } from '@/lib/functions';
+import { AnimatePresence, motion, Variants } from 'framer-motion';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -40,21 +23,6 @@ const containerVariants: Variants = {
     transition: { duration: 0.2 },
   },
 };
-
-const formatDate = (dateString?: string): string => {
-  if (!dateString) return '';
-  try {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('fr-FR', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    }).format(date);
-  } catch {
-    return dateString || '';
-  }
-};
-
 
 export default function SpiritualiteBlogPage() {
   const {
@@ -91,7 +59,6 @@ export default function SpiritualiteBlogPage() {
           initial="hidden"
           animate="visible"
         >
-          {/* En-tête */}
           <ContentWrapper>
             <header className="mb-8 text-center sm:mb-12">
               <h1 className="mb-3 bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 bg-clip-text text-3xl font-bold text-transparent sm:text-4xl lg:text-5xl">

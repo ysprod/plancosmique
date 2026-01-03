@@ -26,30 +26,32 @@ export const ConsultationsList: React.FC<ConsultationsListProps> = ({
   total,
   onPageChange,
   loading,
-}) => (
-  <>
-    <AnimatePresence mode="popLayout">
-      {consultations.map((consultation: any) => (
-        <div key={consultation.id} className="relative">
-          <div className="absolute top-2 right-2 z-10">
-            <StatusBadge status={consultation.status} />
+}) => {
+  return (
+    <>
+      <AnimatePresence mode="popLayout">
+        {consultations.map((consultation: any) => (
+          <div key={consultation.id} className="relative">
+            <div className="absolute top-2 right-2 z-10">
+              <StatusBadge status={consultation.status} />
+            </div>
+            <ConsultationCard
+              consultation={consultation}
+              onGenerateAnalysis={onGenerateAnalysis}
+              isGenerating={generatingIds.has(consultation.id)}
+              isNotifying={notifyingIds.has(consultation.id)}
+            />
           </div>
-          <ConsultationCard
-            consultation={consultation}
-            onGenerateAnalysis={onGenerateAnalysis}
-            isGenerating={generatingIds.has(consultation.id)}
-            isNotifying={notifyingIds.has(consultation.id)}
-          />
-        </div>
-      ))}
-    </AnimatePresence>
-    <PaginationControls
-      currentPage={currentPage}
-      totalPages={totalPages}
-      total={total}
-      itemsPerPage={5}
-      onPageChange={onPageChange}
-      loading={loading}
-    />
-  </>
-);
+        ))}
+      </AnimatePresence>
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        total={total}
+        itemsPerPage={5}
+        onPageChange={onPageChange}
+        loading={loading}
+      />
+    </>
+  );
+};

@@ -4,7 +4,7 @@ import { Calendar, Clock, Eye, Heart, ArrowRight, Flame } from 'lucide-react';
 
 interface ArticlesGridProps {
   articles: any[];
-  formatDate: (dateString?: string) => string;
+  formatDate: (dateString: string) => string;
   setSearchQuery: (q: string) => void;
   setSelectedCategory: (id: string) => void;
 }

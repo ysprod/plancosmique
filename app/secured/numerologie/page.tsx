@@ -8,14 +8,12 @@ export default function NumerologiePage() {
 
   return (
     <div className="relative  bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 overflow-hidden">
-      {/* Progress bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 z-50 origin-left"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 0.5 }}
       />
-      {/* Background subtil */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f5f5f5_1px,transparent_1px),linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-[size:60px_60px]" />
       </div>
@@ -34,6 +32,7 @@ export default function NumerologiePage() {
             Découvrez les secrets cachés dans vos nombres personnels et votre destinée chiffrée
           </p>
         </motion.div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
           {numerologieSections.map((section, index) => (
             <AstrologySectionCard key={section.id} section={section} index={index} />

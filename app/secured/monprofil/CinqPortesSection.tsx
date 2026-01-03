@@ -27,7 +27,6 @@ const CinqPortesSection = memo<CinqPortesSectionProps>(({ carteDuCiel, isPremium
 
   return (
     <section className="mb-6 px-3">
-      {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -51,7 +50,7 @@ const CinqPortesSection = memo<CinqPortesSectionProps>(({ carteDuCiel, isPremium
           </motion.div>
         )}
       </motion.div>
-      {/* Grid des 5 Portes */}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {portesArray.map((porte, index) => (
           <PorteCard
@@ -66,7 +65,6 @@ const CinqPortesSection = memo<CinqPortesSectionProps>(({ carteDuCiel, isPremium
           />
         ))}
       </div>
-      {/* Footer Info */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

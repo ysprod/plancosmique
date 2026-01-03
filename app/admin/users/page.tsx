@@ -8,7 +8,7 @@ export default function UsersPage() {
   if (controller.error) {
     return <UsersPageError error={controller.error} handleRefresh={controller.handleRefresh} isRefreshing={controller.isRefreshing} />;
   }
-  if (controller.loading && !controller.users) {
+  if (controller.loading) {
     return <UsersPageLoading />;
   }
   return <UsersPageContent controller={controller} />;

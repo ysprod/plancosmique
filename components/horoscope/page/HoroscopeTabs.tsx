@@ -1,7 +1,7 @@
 
 import { motion } from 'framer-motion';
 import React from 'react';
-import type { HoroscopeTypeId, Tab } from '@/app/secured/horoscope/page';
+import { Tab, HoroscopeTypeId } from '@/lib/interfaces';
 
 interface HoroscopeTabsProps {
   tabs: Tab[];

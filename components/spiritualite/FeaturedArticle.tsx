@@ -4,7 +4,7 @@ import { Star, TrendingUp, Calendar, Clock, User, Eye, Heart, MessageCircle, Arr
 
 interface FeaturedArticleProps {
   article: any;
-  formatDate: (dateString?: string) => string;
+  formatDate: (dateString: string) => string;
 }
 
 const FeaturedArticle = ({ article, formatDate }: FeaturedArticleProps) => {

@@ -16,13 +16,11 @@ export default function ConsultationsPage() {
     error,
     isRefreshing,
     toastMessage,
-    handleToastClose, handleRefresh,
     generatingIds,
     notifyingIds,
-    handleGenerateAnalysis,
     currentPage,
     totalPages,
-    handlePageChange,
+    handlePageChange, handleToastClose, handleRefresh, handleGenerateAnalysis,
   } = useAdminConsultationsPage();
 
   if (loading) return <CosmicLoader />;

@@ -10,9 +10,7 @@ export default function ConsultationResultPage() {
   const { loading, error, analyse, handleBack, handleDownloadPDF } = useConsultationResultPage();
 
   if (loading) {
-    return (
-      <CosmicLoader />
-    );
+    return (<CosmicLoader />);
   }
 
   if (error || !analyse) {

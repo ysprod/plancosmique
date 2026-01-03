@@ -22,6 +22,7 @@ const CyclesPersonnelsPage = () => {
                     </div>
                 </div>
             </motion.div>
+            
             <div className="max-w-7xl mx-auto">
                 <AnimatePresence mode="wait">
                     <motion.div

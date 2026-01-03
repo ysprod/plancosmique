@@ -11,7 +11,7 @@ import WalletTabs from '@/components/wallet/WalletTabs';
 import { useWalletPage } from '@/components/wallet/useWalletPage';
 import { AnimatePresence, motion } from "framer-motion";
 import { Suspense } from "react";
-import SuccessBanner from "../../../components/wallet/SuccessBanner";
+import SuccessBanner from "@/components/wallet/SuccessBanner";
 
 export type TransactionFilter = "all" | "simulation" | "real";
 export type SortOrder = "newest" | "oldest" | "amount_high" | "amount_low";
@@ -49,10 +49,7 @@ export interface Transaction {
   createdAt: string;
   updatedAt: string;
 }
-
-// =====================================================
-// MAIN COMPONENT
-// =====================================================
+ 
 function WalletPageContent() {
   const {
     isLoading,

@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api } from '@/lib/api/client';
 import type { UserData } from '@/lib/interfaces';
-import type { BackendHoroscope, HoroscopeResult, HoroscopeTypeId } from '@/app/secured/horoscope/page';
+import type { BackendHoroscope, HoroscopeResult, HoroscopeTypeId } from '@/lib/interfaces';
 
 function getZodiacSymbol(sign: string): string {
   const symbols: Record<string, string> = {

@@ -19,8 +19,16 @@ export default function RubriquesAdminPage() {
   }
 
   return (
-    <div className=" bg-gradient-to-br from-slate-50 via-violet-50 to-purple-50 p-4">
+    <div className="bg-gradient-to-br from-slate-50 via-violet-50 to-purple-50 p-4">
       <div className="max-w-7xl mx-auto">
+        <div className="mb-4">
+          <a
+            href="/admin/rubriques/overview"
+            className="inline-block px-4 py-2 rounded-lg bg-violet-100 text-violet-800 font-semibold hover:bg-violet-200 transition"
+          >
+            Voir l'aperçu des rubriques
+          </a>
+        </div>
         <RubriquesHeader
           rubriquesCount={rubriques.length}
           offeringsCount={offerings.length}

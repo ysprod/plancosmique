@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { CheckCircle2, Clock, Calendar, Sparkles } from "lucide-react";
 import { memo } from "react";
-import { BackendHoroscope } from "../../app/secured/horoscope/page";
+import { BackendHoroscope } from "@/lib/interfaces";
 
 const cardVariants = {
     hidden: { opacity: 0, scale: 0.95 },

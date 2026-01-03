@@ -1,3 +1,4 @@
+import { BackendHoroscope, HoroscopeResult } from '@/lib/interfaces';
 export function getZodiacSymbol(sign: string): string {
   const symbols: Record<string, string> = {
     'bélier': '♈', 'taureau': '♉', 'gémeaux': '♊',
@@ -18,7 +19,6 @@ export function getZodiacElement(sign: string): string {
   return elements[sign.toLowerCase()] || 'Éther';
 }
 
-import type { BackendHoroscope, HoroscopeResult } from '@/app/secured/horoscope/page';
 
 export function transformBackendToResult(backend: BackendHoroscope): HoroscopeResult | null {
   if (!backend.resultData?.horoscope) return null;

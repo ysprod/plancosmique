@@ -17,9 +17,8 @@ export default function AdminDashboard() {
     error,
     lastUpdated,
     isRefreshing,
-    handleRefresh,
     derivedStats,
-    showRefreshBanner,
+    showRefreshBanner, handleRefresh,
   } = useAdminDashboardPage();
 
   if (loading) {
