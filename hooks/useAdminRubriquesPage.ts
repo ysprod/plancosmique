@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { api } from "@/lib/api/client";
 import { offeringsService, type Offering } from '@/lib/api/services/offerings.service';
-import type { Rubrique } from '@/lib/interfaces';
+import type { Rubrique, ConsultationType } from '@/lib/interfaces';
 
 export function useAdminRubriquesPage() {
   const [rubriques, setRubriques] = useState<Rubrique[]>([]);
@@ -46,11 +46,15 @@ export function useAdminRubriquesPage() {
   }, [fetchRubriques]);
 
   const handleCreate = useCallback(() => {
-    const newRubrique = {
+    const newRubrique: Rubrique = {
       titre: "Nouvelle rubrique",
       description: "",
       categorie: "GENERAL",
-      consultationChoices: []
+      consultationChoices: [],
+      type: 'AUTRE',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      typeconsultation: 'AUTRE',
     };
     setEditingRubrique(newRubrique);
     setSelectedRubrique(null);

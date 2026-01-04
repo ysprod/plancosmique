@@ -162,23 +162,7 @@ export function useAdminOffrandes() {
       setSaving(false);
     }
   };
-
-  // Save all (batch)
-  const handleSaveAll = async () => {
-    setSaving(true);
-    try {
-      const res = await api.post('/offerings/batch', { offerings });
-      if (!res || (res.status < 200 || res.status >= 300)) throw new Error('Erreur API');
-      setSuccessMessage('Toutes les offrandes ont été sauvegardées');
-      fetchOfferings();
-    } catch (e: any) {
-      setErrorMessage('Erreur lors de la sauvegarde groupée');
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  // Reset messages on modal close
+ 
   useEffect(() => {
     if (!showAddModal) {
       setErrorMessage(null);
@@ -212,7 +196,6 @@ export function useAdminOffrandes() {
     handleAdd,
     handleEdit,
     handleConfirm,
-    handleDelete,
-    handleSaveAll,
+    handleDelete, 
   };
 }

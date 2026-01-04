@@ -13,7 +13,7 @@ interface BookStatsProps {
 }
 
 export const BookStats: React.FC<BookStatsProps> = ({ stats }) => (
-  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mb-8">
+  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-8">
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -41,22 +41,6 @@ export const BookStats: React.FC<BookStatsProps> = ({ stats }) => (
         </div>
         <Eye className="w-10 h-10 text-green-600 opacity-20" />
       </div>
-    </motion.div>
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3 }}
-      className="bg-white rounded-2xl shadow-lg p-6 border-2 border-purple-100"
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-xs text-gray-600 font-semibold mb-1">Revenu Total</p>
-          <p className="text-xl font-black text-gray-900">
-            {stats.totalRevenue.toLocaleString('fr-FR')} F
-          </p>
-        </div>
-        <div className="text-3xl">💰</div>
-      </div>
-    </motion.div>
+    </motion.div> 
   </div>
 );

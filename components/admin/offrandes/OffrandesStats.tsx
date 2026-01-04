@@ -1,3 +1,4 @@
+import { CATEGORIES_OFFRANDES } from '@/lib/constants';
 import React from 'react';
 
 interface Category {
@@ -27,10 +28,9 @@ interface StatsData {
 
 interface OffrandesStatsProps {
   statsData: StatsData;
-  CATEGORIES: Category[];
 }
 
-const OffrandesStats: React.FC<OffrandesStatsProps> = ({ statsData, CATEGORIES }) => {
+const OffrandesStats: React.FC<OffrandesStatsProps> = ({ statsData}) => {
   if (!statsData) return null;
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
@@ -41,7 +41,7 @@ const OffrandesStats: React.FC<OffrandesStatsProps> = ({ statsData, CATEGORIES }
           {statsData.byCategory.map((cat) => (
             <div key={cat.category || 'autre'} className="flex items-center justify-between">
               <span className="font-semibold text-gray-700 dark:text-gray-200">
-                {cat.category ? (CATEGORIES.find(c => c.value === cat.category)?.label || cat.category) : 'Autre'}
+                {cat.category ? (CATEGORIES_OFFRANDES.find(c => c.value === cat.category)?.label || cat.category) : 'Autre'}
               </span>
               <span className="font-black text-md text-emerald-700 dark:text-emerald-300">{cat.revenue.toLocaleString()} F</span>
               <span className="text-xs text-gray-500 ml-2">({cat.quantitySold})</span>
@@ -89,7 +89,7 @@ const OffrandesStats: React.FC<OffrandesStatsProps> = ({ statsData, CATEGORIES }
                   <span className="text-lg">{o.icon}</span>
                   {o.name || <span className="italic text-gray-400">(inconnu)</span>}
                 </td>
-                <td className="px-3 py-2">{o.category ? (CATEGORIES.find(c => c.value === o.category)?.label || o.category) : '-'}</td>
+                <td className="px-3 py-2">{o.category ? (CATEGORIES_OFFRANDES.find(c => c.value === o.category)?.label || o.category) : '-'}</td>
                 <td className="px-3 py-2">{o.quantitySold}</td>
                 <td className="px-3 py-2">{o.revenue.toLocaleString()}</td>
                 <td className="px-3 py-2">{o.avgUnitPrice ? o.avgUnitPrice.toLocaleString() : '-'}</td>

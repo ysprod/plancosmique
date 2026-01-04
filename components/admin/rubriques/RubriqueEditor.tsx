@@ -4,7 +4,7 @@ import { Key, memo, useCallback } from "react";
 import ConsultationChoiceCard from "./ConsultationChoiceCard";
  
 import { Offering } from "@/lib/api/services/offerings.service";
-import { ConsultationChoice } from "@/lib/interfaces";
+import { ConsultationChoice, ConsultationType } from "@/lib/interfaces";
 
 const RubriqueEditor = memo(({
   rubrique,
@@ -70,6 +70,26 @@ const RubriqueEditor = memo(({
           className="w-full px-4 py-3 text-lg font-black rounded-xl border-2 border-violet-300 
                    focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
         />
+        {/* Champ type ConsultationType */}
+        <select
+          value={rubrique.typeconsultation || ''}
+          onChange={e => onUpdate({ ...rubrique, typeconsultation: e.target.value as ConsultationType })}
+          className="w-full px-4 py-3 rounded-xl border-2 border-violet-200 focus:ring-2 focus:ring-violet-500 focus:border-violet-500 bg-white text-base font-semibold"
+        >
+          <option value="" disabled>Type de consultation</option>
+          <option value="SPIRITUALITE">Spiritualité</option>
+          <option value="VIE_PERSONNELLE">Vie personnelle</option>
+          <option value="RELATIONS">Relations</option>
+          <option value="PROFESSIONNEL">Professionnel</option>
+          <option value="OFFRANDES">Offrandes</option>
+          <option value="ASTROLOGIE_AFRICAINE">Astrologie africaine</option>
+          <option value="HOROSCOPE">Horoscope</option>
+          <option value="NOMBRES_PERSONNELS">Nombres personnels</option>
+          <option value="CYCLES_PERSONNELS">Cycles personnels</option>
+          <option value="CINQ_ETOILES">Cinq étoiles</option>
+          <option value="NUMEROLOGIE">Numérologie</option>
+          <option value="AUTRE">Autre</option>
+        </select>
         <textarea
           value={rubrique.description}
           onChange={(e) => onUpdate({ ...rubrique, description: e.target.value })}

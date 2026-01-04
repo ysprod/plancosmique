@@ -20,12 +20,11 @@ export const ConsultationsList: React.FC<ConsultationsListProps> = ({
   consultations,
   generatingIds,
   notifyingIds,
-  onGenerateAnalysis,
+  loading,
   currentPage,
   totalPages,
   total,
-  onPageChange,
-  loading,
+  onPageChange, onGenerateAnalysis, 
 }) => {
   return (
     <>

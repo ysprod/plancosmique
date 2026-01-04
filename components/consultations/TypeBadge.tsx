@@ -11,7 +11,10 @@ export const TYPE_LABELS: Record<ConsultationType, { label: string; color: strin
   ASTROLOGIE_AFRICAINE: { label: 'Astrologie Africaine', color: 'from-yellow-500 to-orange-600', icon: Sparkles },
   HOROSCOPE: { label: 'Horoscope', color: 'from-indigo-500 to-blue-500', icon: Calendar },
   NOMBRES_PERSONNELS: { label: 'Nombres Personnels', color: 'from-amber-500 to-yellow-500', icon: Star },
-  CYCLES_PERSONNELS: { label: 'Cycles Personnels', color: 'from-pink-500 to-purple-500', icon: Star }
+  CYCLES_PERSONNELS: { label: 'Cycles Personnels', color: 'from-pink-500 to-purple-500', icon: Star },
+  CINQ_ETOILES: { label: 'Cinq Étoiles', color: 'from-yellow-500 to-fuchsia-500', icon: Star },
+  NUMEROLOGIE: { label: 'Numérologie', color: 'from-blue-500 to-emerald-500', icon: Star },
+  AUTRE: { label: 'Autre', color: 'from-gray-400 to-gray-600', icon: Star },
 };
 
 export interface TypeBadgeProps {

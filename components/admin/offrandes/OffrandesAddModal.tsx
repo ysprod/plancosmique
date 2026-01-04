@@ -1,3 +1,4 @@
+import { CATEGORIES_OFFRANDES } from '@/lib/constants';
 import React from 'react';
 
 interface Category {
@@ -24,7 +25,7 @@ interface OffrandesAddModalProps {
   formData: OfferingFormData;
   setFormData: (data: OfferingFormData) => void;
   editingId: string | null;
-  CATEGORIES: Category[];
+ 
   saving?: boolean;
   errorMessage?: string | null;
 }
@@ -36,7 +37,7 @@ const OffrandesAddModal: React.FC<OffrandesAddModalProps> = ({
   formData,
   setFormData,
   editingId,
-  CATEGORIES,
+ 
   saving,
   errorMessage,
 }) => {
@@ -77,7 +78,7 @@ const OffrandesAddModal: React.FC<OffrandesAddModalProps> = ({
           <div>
             <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Catégorie *</label>
             <div className="grid grid-cols-3 gap-2">
-              {CATEGORIES.map(cat => (
+              {CATEGORIES_OFFRANDES.map(cat => (
                 <button
                   key={cat.value}
                   type="button"

@@ -71,7 +71,6 @@ export default function NotificationsPage() {
           onDelete={handleDelete}
         />
       </div>
-
       <NotificationSettingsModal show={showSettings} onClose={() => setShowSettings(false)} />
     </div>
   );

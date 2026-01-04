@@ -5,7 +5,7 @@ export const useProfilHighlightCards = () => [
   {
     id: "carte-du-ciel",
     title: "MA CARTE DU CIEL",
-    subtitle: "Thème Astral Complet",
+    subtitle: "Positions Planétaires",
     icon: Compass,
     color: "from-blue-600 to-cyan-600",
     gradient: "from-blue-500/10 to-cyan-500/10",

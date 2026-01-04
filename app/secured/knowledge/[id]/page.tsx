@@ -50,7 +50,6 @@ export default function KnowledgeDetailPage() {
         <div className="text-center">
           <BookOpen className="w-20 h-20 text-gray-600 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-white mb-2">Connaissance introuvable</h2>
-
           <a href="/secured/knowledge">
             <motion.button
               whileHover={{ scale: 1.05 }}

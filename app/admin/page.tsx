@@ -12,13 +12,8 @@ import { DetailsGrid } from '@/components/admin/dashboard/DetailsGrid';
 
 export default function AdminDashboard() {
   const {
-    stats,
-    loading,
-    error,
-    lastUpdated,
-    isRefreshing,
-    derivedStats,
-    showRefreshBanner, handleRefresh,
+    stats, loading, error, lastUpdated,
+    isRefreshing, derivedStats, showRefreshBanner, handleRefresh,
   } = useAdminDashboardPage();
 
   if (loading) {

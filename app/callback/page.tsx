@@ -11,6 +11,7 @@ import { BackgroundBlobs, CompletionBanner, StatusCard, ActionButtons, SecurityN
 
 const PaymentCallbackContent = () => {
   const searchParams = useSearchParams();
+  
   const token = searchParams.get('token');
 
   const {

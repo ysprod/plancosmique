@@ -3,13 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 
 const PageHeader = memo(({ onBack }: { onBack: () => void }) => (
-  <motion.div
-    initial={{ y: -20, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
-    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-    className="bg-white/10 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50 shadow-2xl"
-  >
-    <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5">
+   <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5">
       <div className="flex items-center justify-between">
         <motion.button
           whileHover={{ x: -4, scale: 1.02 }}
@@ -29,7 +23,7 @@ const PageHeader = memo(({ onBack }: { onBack: () => void }) => (
         </motion.div>
       </div>
     </div>
-  </motion.div>
+ 
 ));
 
 PageHeader.displayName = 'PageHeader';

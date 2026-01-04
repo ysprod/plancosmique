@@ -30,3 +30,8 @@ export function mapFormDataToBackend(form: any) {
   };
   return result;
 }
+
+
+export function cx(...v: Array<string | false | null | undefined>) {
+  return v.filter(Boolean).join(" ");
+}

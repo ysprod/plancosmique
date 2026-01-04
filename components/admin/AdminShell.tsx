@@ -30,6 +30,7 @@ export const navItems = [
   { href: '/admin/payments', label: 'Paiements', icon: CreditCard, color: 'purple' },
   { href: '/admin/books', label: 'Livres', icon: BookOpen, color: 'indigo' },
   { href: '/admin/offrandes', label: 'Offrandes', icon: Shield, color: 'violet' },
+  { href: '/admin/categories', label: 'Catégories', icon: FileText, color: 'teal' },
   { href: '/admin/rubriques', label: 'Rubriques', icon: FileText, color: 'pink' },
   { href: '/admin/spiritualite', label: 'Spiritualité', icon: Flame, color: 'orange' },
   { href: '/admin/settings', label: 'Paramètres', icon: Settings, color: 'gray' },
@@ -44,6 +45,7 @@ const colorClasses = {
   violet: 'bg-violet-50 text-violet-700 hover:bg-violet-100 dark:bg-violet-950/30 dark:text-violet-400',
   orange: 'bg-orange-50 text-orange-700 hover:bg-orange-100 dark:bg-orange-950/30 dark:text-orange-400',
   gray: 'bg-gray-50 text-gray-700 hover:bg-gray-100 dark:bg-gray-950/30 dark:text-gray-400',
+  teal: 'bg-teal-50 text-teal-700 hover:bg-teal-100 dark:bg-teal-950/30 dark:text-teal-400',
 };
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {

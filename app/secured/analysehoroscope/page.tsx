@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 
 const AnalyseHoroscopePageComponent = () => {
     const params = useSearchParams();
+
     const { user } = useAuth();
 
     const hook = useAnalyseHoroscopePage(user, params);

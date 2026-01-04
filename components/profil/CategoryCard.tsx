@@ -56,15 +56,11 @@ const CategoryCard = memo(({ category, index }: CategoryCardProps) => {
             {category.description}
           </p>
           <div className="flex items-center justify-between mt-auto">
-            <div className="flex items-center gap-1 text-[10px] sm:text-xs text-gray-500 dark:text-gray-500">
-              <Zap className="w-3 h-3 text-amber-500" />
-              <span className="font-semibold">{category.stats}</span>
-            </div>
             <motion.div
               className="flex items-center gap-1 text-[10px] sm:text-xs font-bold text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300"
               whileHover={{ x: 2 }}
             >
-              <span className="hidden sm:inline">Voir</span>
+              <span className="hidden sm:inline">Decouvrir</span>
               <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </motion.div>
           </div>

@@ -1,3 +1,16 @@
+// Fonction compatible avec l'usage Next.js server (page.tsx)
+export async function getRubrique(id: string): Promise<Rubrique & { consultations?: any[] } | null> {
+  try {
+    const rubrique = await getRubriqueById(id);
+    if (!rubrique) return null;
+    return {
+      ...rubrique,
+      consultations: rubrique.consultationChoices || []
+    };
+  } catch {
+    return null;
+  }
+}
 import { Rubrique } from '@/lib/interfaces';
 import { api } from '@/lib/api/client';
 

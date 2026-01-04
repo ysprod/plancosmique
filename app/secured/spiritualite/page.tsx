@@ -69,8 +69,7 @@ export default function SpiritualiteBlogPage() {
               </p>
             </header>
           </ContentWrapper>
-
-          {/* Contenu dynamique */}
+          
           <AnimatePresence mode="wait">
             {hasArticles ? (
               <motion.div

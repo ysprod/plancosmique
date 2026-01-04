@@ -2,6 +2,7 @@ import React from 'react';
 import OffrandesList from './OffrandesList';
 import OffrandesCategoriesSummary from './OffrandesCategoriesSummary';
 import OffrandesMessages from './OffrandesMessages';
+import { CATEGORIES_OFFRANDES } from '@/lib/constants';
 
 interface Category {
   value: string;
@@ -12,7 +13,6 @@ interface Category {
 
 interface OffrandesGestionPanelProps {
   offerings: any[];
-  CATEGORIES: Category[];
   loading: boolean;
   saving: boolean;
   successMessage: string | null;
@@ -22,12 +22,10 @@ interface OffrandesGestionPanelProps {
   handleAdd: () => void;
   handleEdit: (offering: any) => void;
   handleDelete: (id: string) => void;
-  handleSaveAll: () => void;
 }
 
 export default function OffrandesGestionPanel({
-  offerings,
-  CATEGORIES,
+  offerings, 
   loading,
   saving,
   successMessage,
@@ -37,7 +35,6 @@ export default function OffrandesGestionPanel({
   handleAdd,
   handleEdit,
   handleDelete,
-  handleSaveAll,
 }: OffrandesGestionPanelProps) {
   return (
     <>
@@ -63,20 +60,12 @@ export default function OffrandesGestionPanel({
             >
               <span className="w-4 h-4">➕</span>
               <span className="hidden sm:inline">Ajouter</span>
-            </button>
-            <button
-              onClick={handleSaveAll}
-              disabled={saving || offerings.length === 0}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-black text-sm shadow-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {saving ? <span className="w-4 h-4 animate-spin">💾</span> : <span className="w-4 h-4">💾</span>}
-              <span>Sauvegarder</span>
-            </button>
+            </button>           
           </div>
         </div>
         <OffrandesMessages successMessage={successMessage} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
       </div>
-      <OffrandesCategoriesSummary CATEGORIES={CATEGORIES} offerings={offerings} />
+      <OffrandesCategoriesSummary CATEGORIES={CATEGORIES_OFFRANDES} offerings={offerings} />
       {loading ? (
         <div className="text-center py-16 bg-gray-50 dark:bg-gray-900 rounded-2xl">
           <span className="w-12 h-12 text-violet-500 mx-auto mb-4 animate-spin">⏳</span>
@@ -92,7 +81,7 @@ export default function OffrandesGestionPanel({
           </button>
         </div>
       ) : (
-        <OffrandesList offerings={offerings} CATEGORIES={CATEGORIES} onEdit={handleEdit} onDelete={handleDelete} />
+        <OffrandesList offerings={offerings} CATEGORIES={CATEGORIES_OFFRANDES} onEdit={handleEdit} onDelete={handleDelete} />
       )}
     </>
   );

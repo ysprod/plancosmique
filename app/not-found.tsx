@@ -1,7 +1,3 @@
-/*
-  Page 404 personnalisée et animée pour Mon Etoile
-  Ultra-compact, mobile-first, performances optimales
-*/
 'use client';
 
 import { motion } from 'framer-motion';
@@ -9,16 +5,8 @@ import { Sparkles, Star, Moon, Sun, Home } from 'lucide-react';
 import Link from 'next/link';
 import { memo, useMemo } from 'react';
 
-// ============================================================
-// CONSTANTS
-// ============================================================
-
 const STARS_COUNT = 15; // Réduit de 18 à 15 (17% plus performant)
 const ANIMATION_DURATION = 0.6; // Réduit de 0.8s à 0.6s (25% plus rapide)
-
-// ============================================================
-// ANIMATION VARIANTS (Mémoïsées)
-// ============================================================
 
 const containerVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -65,9 +53,6 @@ const iconVariants = {
   }
 };
 
-// ============================================================
-// COMPOSANT: AnimatedStar (Mémoïsé)
-// ============================================================
 
 interface AnimatedStarProps {
   index: number;
@@ -215,7 +200,7 @@ IconGroup.displayName = 'IconGroup';
 
 function NotFoundComponent() {
   // Génération des positions d'étoiles mémoïsées
-  const stars = useMemo(() => 
+  const stars = useMemo(() =>
     Array.from({ length: STARS_COUNT }, (_, i) => ({
       index: i,
       top: Math.random() * 85 + 5, // 5-90% pour éviter les bords
@@ -230,7 +215,7 @@ function NotFoundComponent() {
     <div className=" flex flex-col items-center justify-center 
                   bg-gradient-to-br from-purple-900 via-indigo-900 to-black 
                   relative overflow-hidden px-4">
-      
+
       {/* Animations de fond */}
       <motion.div
         variants={backgroundVariants}

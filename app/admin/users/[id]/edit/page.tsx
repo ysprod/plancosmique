@@ -19,6 +19,7 @@ export default function EditUserPage() {
         <EditUserHeader />
 
         {success && <EditUserSuccessAlert />}
+        
         {error && <EditUserErrorAlert error={error} onClose={() => setError(null)} />}
 
         <EditUserForm

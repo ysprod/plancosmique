@@ -10,16 +10,8 @@ import { AnimatePresence } from "framer-motion";
 
 export default function ConsultationsPage() {
   const {
-    consultations,
-    total,
-    loading,
-    error,
-    isRefreshing,
-    toastMessage,
-    generatingIds,
-    notifyingIds,
-    currentPage,
-    totalPages,
+    consultations, total, loading, error, isRefreshing, toastMessage, generatingIds,
+    notifyingIds, currentPage, totalPages,
     handlePageChange, handleToastClose, handleRefresh, handleGenerateAnalysis,
   } = useAdminConsultationsPage();
 
@@ -61,6 +53,7 @@ export default function ConsultationsPage() {
           <Toast message={toastMessage} onClose={handleToastClose} />
         )}
       </AnimatePresence>
+
     </div>
   );
 }

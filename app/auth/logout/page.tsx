@@ -31,7 +31,6 @@ export default function LogoutPage() {
         <AnimatePresence mode="wait">
           {renderContent}
         </AnimatePresence>
-
         <SecurityBadge />
       </div>
     </div>

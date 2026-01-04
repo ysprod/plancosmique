@@ -182,7 +182,6 @@ export default function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
-        {/* Preconnect pour optimiser les performances */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
@@ -194,7 +193,6 @@ export default function RootLayout({
         <meta name="application-name" content="Mon Étoile" />
         <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
 
-        {/* Script anti-flash de thème - CRITIQUE pour UX */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -293,7 +291,6 @@ export default function RootLayout({
                     selection:text-violet-900 dark:selection:text-violet-100`}
         suppressHydrationWarning
       >
-        {/* Skip to main content - Accessibilité */}
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 
@@ -317,7 +314,6 @@ export default function RootLayout({
           storageKey="monetoile-theme"
         >
           <ClientProviders>
-            {/* Gradient de fond subtil et moderne */}
             <div
               className="fixed inset-0 -z-10 pointer-events-none
                          bg-gradient-to-br from-white via-violet-50/30 to-purple-50/40

@@ -1,12 +1,24 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import Slide4Section from '@/components/vie-personnelle/Slide4Section';
+import { NumerologieConsultationSection } from '@/components/numerologie/NumerologieConsultationSection';
+import { Rubrique } from '@/lib/interfaces';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface ConsultationSectionProps {
-  rubriqueId: string;
-  typeconsultation: string;
+  rubrique: Rubrique;
+ 
 }
 
-export function ConsultationSection({ rubriqueId, typeconsultation }: ConsultationSectionProps) {
+export function ConsultationSection({ rubrique }: ConsultationSectionProps) {
+  const router = useRouter();
+  console.log("ConsultationSection rubrique:", rubrique);
+  useEffect(() => {
+    if (rubrique.typeconsultation === 'HOROSCOPE') {
+      router.push('/secured/horoscope');
+    }
+  }, [rubrique.typeconsultation, router]);
+
   return (
     <div className="max-w-7xl mx-auto">
       <AnimatePresence mode="wait">
@@ -18,7 +30,11 @@ export function ConsultationSection({ rubriqueId, typeconsultation }: Consultati
           transition={{ duration: 0.5 }}
           className="bg-white"
         >
-          <Slide4Section rubriqueId={rubriqueId} typeconsultation={typeconsultation} />
+          {(rubrique.typeconsultation === 'CYCLES_PERSONNELS' || rubrique.typeconsultation === 'NOMBRES_PERSONNELS') ? (
+            <NumerologieConsultationSection rubriqueId={rubrique._id!} typeconsultation={rubrique.typeconsultation} />
+          ) : (
+            <Slide4Section rubriqueId={rubrique._id!} typeconsultation={rubrique.typeconsultation} />
+          )}
         </motion.div>
       </AnimatePresence>
     </div>

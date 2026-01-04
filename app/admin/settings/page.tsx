@@ -150,6 +150,7 @@ export default function SettingsPage() {
                     setPaymentMethods={setPaymentMethods}
                   />
                 )}
+                
                 {activeTab === 'system' && (
                   <SettingsSystemTab
                     maxUploadSize={maxUploadSize}

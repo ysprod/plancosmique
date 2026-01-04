@@ -9,7 +9,6 @@ import { BooksLoading } from "@/components/admin/books/BooksLoading";
 import { BookStats } from "@/components/admin/books/BookStats";
 import { NoBooksResult } from "@/components/admin/books/NoBooksResult";
 import { useAdminBooks } from "@/hooks/useAdminBooks";
-import { motion } from "framer-motion";
 
 export default function AdminBooksPage() {
   const {

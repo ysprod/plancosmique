@@ -21,14 +21,11 @@ export default function ProfilPage() {
       <TopProgressBar />
 
       <div className="relative z-10 px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 max-w-7xl mx-auto">
-        {userdata?.premium && (
+        {userdata?.premium && (<>
           <ProfilHighlightCards cards={highlightCards} />
-        )}
-
-        {userdata?.premium && (
           <ProfilCategories categories={categories} />
+        </>
         )}
-
         {!userdata?.premium && !loading && <ProfilNonPremiumSection />}
       </div>
 

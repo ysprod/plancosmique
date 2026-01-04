@@ -1,23 +1,17 @@
 "use client";
 import OffrandesAddModal from '@/components/admin/offrandes/OffrandesAddModal';
-import OffrandesStats from '@/components/admin/offrandes/OffrandesStats';
 import OffrandesGestionPanel from '@/components/admin/offrandes/OffrandesGestionPanel';
+import OffrandesStats from '@/components/admin/offrandes/OffrandesStats';
 import OffrandesTabs from '@/components/admin/offrandes/OffrandesTabs';
-import useAdminOffrandesTabs from '@/hooks/useAdminOffrandesTabs';
 import { useAdminOffrandes } from '@/hooks/useAdminOffrandes';
+import useAdminOffrandesTabs from '@/hooks/useAdminOffrandesTabs';
 import { AnimatePresence } from 'framer-motion';
-
-const CATEGORIES = [
-    { value: 'animal', label: 'Animaux', emoji: '🐓', color: 'from-red-500 to-orange-500' },
-    { value: 'vegetal', label: 'Végétaux', emoji: '🌾', color: 'from-green-500 to-emerald-500' },
-    { value: 'beverage', label: 'Boissons', emoji: '🍷', color: 'from-purple-500 to-pink-500' },
-];
 
 export default function AdminOffrandes() {
     const {
         offerings, statsData, loading, saving, showAddModal, editingId,
         formData, setShowAddModal, setFormData, successMessage,
-        errorMessage, setErrorMessage, fetchOfferings, handleSaveAll,
+        errorMessage, setErrorMessage, fetchOfferings,
         handleAdd, handleEdit, handleConfirm, handleDelete,
     } = useAdminOffrandes();
 
@@ -32,7 +26,6 @@ export default function AdminOffrandes() {
                 {activeTab === 'gestion' && (
                     <OffrandesGestionPanel
                         offerings={offerings}
-                        CATEGORIES={CATEGORIES}
                         loading={loading}
                         saving={saving}
                         successMessage={successMessage}
@@ -42,7 +35,6 @@ export default function AdminOffrandes() {
                         handleAdd={handleAdd}
                         handleEdit={handleEdit}
                         handleDelete={handleDelete}
-                        handleSaveAll={handleSaveAll}
                     />
                 )}
 
@@ -51,9 +43,7 @@ export default function AdminOffrandes() {
                         <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
                             <span className="w-5 h-5 text-violet-500">🛍️</span> Statistiques des ventes d'offrandes
                         </h2>
-                        {statsData && (
-                            <OffrandesStats statsData={statsData} CATEGORIES={CATEGORIES} />
-                        )}
+                        {statsData && (<OffrandesStats statsData={statsData} />)}
                     </div>
                 )}
 
@@ -66,7 +56,6 @@ export default function AdminOffrandes() {
                             formData={formData}
                             setFormData={setFormData}
                             editingId={editingId}
-                            CATEGORIES={CATEGORIES}
                             saving={saving}
                             errorMessage={errorMessage}
                         />

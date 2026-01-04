@@ -195,9 +195,11 @@ export interface FormData {
 }
 
 export interface Rubrique {
+  typeconsultation: any;
   _id?: string;
   id?: string;
   titre: string;
+  type: ConsultationType;
   description: string;
   categorie: string;
   consultationChoices: ConsultationChoice[];
@@ -254,16 +256,7 @@ export type GenerationStep = 'loading' | 'fetching' | 'generating' | 'success' |
 
 
 
-export type ConsultationType =
-  | 'SPIRITUALITE'
-  | 'VIE_PERSONNELLE'
-  | 'RELATIONS'
-  | 'PROFESSIONNEL'
-  | 'OFFRANDES'
-  | 'ASTROLOGIE_AFRICAINE'
-  | 'HOROSCOPE'
-  | 'NOMBRES_PERSONNELS'
-  | 'CYCLES_PERSONNELS';
+
 export type ConsultationStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
 
 export interface ConsultationFormData {
@@ -452,3 +445,17 @@ export interface SpiritualitePractice {
     avatar?: string;
   };
 }
+ 
+
+export type ConsultationType =
+  | 'SPIRITUALITE'
+  | 'VIE_PERSONNELLE'
+  | 'RELATIONS'
+  | 'PROFESSIONNEL'
+  | 'OFFRANDES'
+  | 'ASTROLOGIE_AFRICAINE'
+  | 'HOROSCOPE'
+  | 'NOMBRES_PERSONNELS'
+  | 'CYCLES_PERSONNELS'| 'CINQ_ETOILES'
+  | 'NUMEROLOGIE'
+  | 'AUTRE';

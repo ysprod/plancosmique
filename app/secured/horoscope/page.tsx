@@ -12,16 +12,9 @@ import { memo } from 'react';
 
 function HoroscopePageComponent() {
   const {
-    loadingUser,
-    activeTab,
-    result,
-    error,
-    loadingHoroscopes,
-    tabs,
-    filteredHoroscopes,
-    handleRedirect,
-    handleTabChange,
-    handleHoroscopeClick
+    loadingUser, activeTab, result, error,
+    loadingHoroscopes, tabs, filteredHoroscopes,
+    handleRedirect, handleTabChange, handleHoroscopeClick
   } = useHoroscopePage();
 
   const typedTabs = tabs as Tab[];

@@ -133,7 +133,9 @@ export default function VoyancePage() {
                   </div>
                 </div>
               </motion.div>
+
               <VoyancePredictionCard prediction={prediction} selectedCategory={selectedCategory} name={name} />
+             
               <div className="flex gap-4">
                 <motion.button
                   whileHover={{ scale: 1.02 }}

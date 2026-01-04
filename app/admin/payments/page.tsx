@@ -41,10 +41,9 @@ export default function PaymentsPage() {
   return (
     <div className=" bg-gray-50">
       <AdminPaymentsHeader total={total} isRefreshing={isRefreshing} onRefresh={handleRefresh} />
-   
+
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
         <PaymentsStats stats={stats} />
-
         <PaymentsFilters
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
