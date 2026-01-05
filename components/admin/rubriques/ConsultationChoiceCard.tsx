@@ -224,7 +224,6 @@ const ConsultationChoiceCard = memo(({
                         </select>
                     </div>
 
-                    {/* Participants */}
                     <div className="flex items-center gap-2 mt-1">
                         <label className="text-xs font-semibold">Participants:</label>
                         <select
