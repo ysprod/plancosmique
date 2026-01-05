@@ -54,6 +54,7 @@ export default function SettingsPage() {
           <div className="lg:w-64 flex-shrink-0">
             <SettingsTabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
           </div>
+          
           <div className="flex-1">
             <AnimatePresence mode="wait">
               <motion.div

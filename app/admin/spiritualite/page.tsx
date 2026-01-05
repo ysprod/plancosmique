@@ -34,8 +34,7 @@ export default function SpiritualiteAdmin() {
           removeArrayItem={spiritualite.removeArrayItem}
           updateArrayItem={spiritualite.updateArrayItem}
           availableIcons={spiritualite.availableIcons}
-        />      
-          
+        />    
         <SpiritualitePracticesList
           practices={spiritualite.practices}
           expandedPractices={spiritualite.expandedPractices}

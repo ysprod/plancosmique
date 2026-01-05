@@ -44,6 +44,7 @@ export default function AdminDashboard() {
             show={showRefreshBanner}
           />
         </AnimatePresence>
+
         <motion.div
           initial="hidden"
           animate="visible"

@@ -113,6 +113,7 @@ export const OfferingSelector = memo(({
                 ))}
             </select>
 
+
             {/* Quantité */}
             <div className="flex items-center gap-2">
                 <label className="text-xs font-semibold">Quantité:</label>
@@ -127,6 +128,7 @@ export const OfferingSelector = memo(({
                    bg-white font-bold text-center"
                 />
             </div>
+ 
 
             {/* Offrande sélectionnée (détails) */}
             {selectedOffering && (
@@ -204,6 +206,39 @@ const ConsultationChoiceCard = memo(({
                         className="w-full px-3 py-2 text-sm font-bold rounded-lg border-2 border-violet-300 
                      focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
                     />
+
+                    {/* Fréquence */}
+                    <div className="flex items-center gap-2 mt-1">
+                        <label className="text-xs font-semibold">Fréquence:</label>
+                        <select
+                            value={choice.frequence || ''}
+                            onChange={e => onUpdate({ ...choice, frequence: e.target.value as any })}
+                            className="px-2 py-1 text-xs rounded border border-slate-300 bg-white"
+                        >
+                            <option value="">--</option>
+                            <option value="UNE_FOIS_VIE">Une fois dans la vie</option>
+                            <option value="ANNUELLE">Chaque année</option>
+                            <option value="MENSUELLE">Chaque mois</option>
+                            <option value="QUOTIDIENNE">Chaque jour</option>
+                            <option value="LIBRE">À tout moment</option>
+                        </select>
+                    </div>
+
+                    {/* Participants */}
+                    <div className="flex items-center gap-2 mt-1">
+                        <label className="text-xs font-semibold">Participants:</label>
+                        <select
+                            value={choice.participants || ''}
+                            onChange={e => onUpdate({ ...choice, participants: e.target.value as any })}
+                            className="px-2 py-1 text-xs rounded border border-slate-300 bg-white"
+                        >
+                            <option value="">--</option>
+                            <option value="SOLO">Solo (utilisateur seul)</option>
+                            <option value="AVEC_TIERS">Avec une personne tierce</option>
+                            <option value="GROUPE">En groupe (équipe)</option>
+                        </select>
+                    </div>
+
                     <textarea
                         value={choice.description}
                         onChange={(e) => onUpdate({ ...choice, description: e.target.value })}

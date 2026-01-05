@@ -5,7 +5,7 @@ import Banner from "./components/Banner";
 import PreviewCard from "./components/PreviewCard";
 import RubriquesPickerSimple from "./components/RubriquesPickerSimple";
 import SuccessCard from "./components/SuccessCard";
-import { useEditCategoryPage } from "./useEditCategoryPage";
+import { useEditCategoryPage } from "@/hooks/useEditCategoryPage";
 
 export default function EditCategoryPage() {
   const {

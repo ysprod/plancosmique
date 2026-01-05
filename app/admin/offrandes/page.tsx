@@ -37,6 +37,7 @@ export default function AdminOffrandes() {
                         handleDelete={handleDelete}
                     />
                 )}
+
                 {activeTab === 'stats' && (
                     <div className="mb-8">
                         <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">

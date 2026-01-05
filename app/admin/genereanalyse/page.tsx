@@ -16,6 +16,7 @@ export default function GenereAnalysePage() {
         onShare={() => navigator.share?.({ title: 'Analyse', text: 'Découvrez mon analyse astrologique' })}
         showActions={step === 'success'}
       />
+      
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-4">
         {(step === 'loading' || step === 'fetching' || step === 'generating') && (
           <GenereAnalyseLoading step={step} />

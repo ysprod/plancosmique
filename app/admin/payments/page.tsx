@@ -11,8 +11,7 @@ import { useAdminPaymentsPage } from '@/hooks/useAdminPaymentsPage';
 
 export default function PaymentsPage() {
   const {
-    payments, total, showFilters,
-    loading, totalPages, error,
+    payments, total, showFilters, loading, totalPages, error,
     stats, methodFilter, currentPage, isRefreshing,
     searchQuery, statusFilter,
     setStatusFilter, setSearchQuery, setMethodFilter,
@@ -34,6 +33,7 @@ export default function PaymentsPage() {
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
         <PaymentsStats stats={stats} />
+
         <PaymentsFilters
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}

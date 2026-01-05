@@ -3,8 +3,8 @@ import { AnimatePresence, useReducedMotion } from "framer-motion";
 import TopBar from "./components/TopBar";
 import ReloadButtons from "./components/ReloadButtons";
 import CreateCategoryButton from "./components/CreateCategoryButton";
-import CategoriesList from "./CategoriesList";
-import CategoriesErrorAlert from "./CategoriesErrorAlert";
+import CategoriesList from "./components/CategoriesList";
+import CategoriesErrorAlert from "./components/CategoriesErrorAlert";
 import { Banner } from "@/components/admin/categories/Banner";
 import { useAdminCategoriesView } from "./useAdminCategoriesView";
 
