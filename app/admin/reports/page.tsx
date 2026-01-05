@@ -24,6 +24,7 @@ export default function ReportsPage() {
       <ReportsMetricsGrid metrics={metrics} />
 
       <ReportsTabs selectedReport={selectedReport} setSelectedReport={setSelectedReport} REPORT_TABS={require('@/hooks/useAdminReportsPage').REPORT_TABS} />
+    
       <ReportsChart chartData={chartData} chartConfig={chartConfig} selectedReport={selectedReport} />
       <ReportsActivity stats={stats} />
     </div>

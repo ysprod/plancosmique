@@ -14,10 +14,8 @@ const validateForm = (form: FormData): FormErrors => {
   const errors: FormErrors = {};
   if (!form.nom.trim()) errors.nom = 'Nom requis';
   if (!form.prenoms.trim()) errors.prenoms = 'Prénoms requis';
-  if (!form.genre) errors.genre = 'Genre requis';
-  if (!form.dateNaissance) errors.dateNaissance = 'Date de naissance requise';
-  if (!form.paysNaissance) errors.paysNaissance = 'Pays de naissance requis';
-  if (!form.villeNaissance.trim()) errors.villeNaissance = 'Ville de naissance requise';
+   if (!form.dateNaissance) errors.dateNaissance = 'Date de naissance requise';
+   if (!form.villeNaissance.trim()) errors.villeNaissance = 'Ville de naissance requise';
   if (!form.heureNaissance) errors.heureNaissance = 'Heure de naissance requise';
   return errors;
 };

@@ -6,8 +6,8 @@ import { useNewUserPage } from '@/hooks/useNewUserPage';
 
 export default function NewUserPage() {
   const {
-    saving, toast, setToast, errors, formData, handleChange, handleSubmit,
-    isFormValid
+    saving, toast, isFormValid, errors, formData,
+    setToast, handleChange, handleSubmit,
   } = useNewUserPage();
 
   return (

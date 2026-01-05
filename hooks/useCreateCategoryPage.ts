@@ -13,7 +13,7 @@ export function useCreateCategoryPage() {
   const [busy, setBusy] = useState(false);
   const [banner, setBanner] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
-  const selectedRubriques = (rubriques ?? []).filter((r) => rubriqueIds.includes(r.id!));
+  const selectedRubriques = (rubriques ?? []).filter((r) => rubriqueIds.includes(r._id!));
   const canCreate = nom.trim().length > 0 && !busy;
 
   async function handleCreate() {

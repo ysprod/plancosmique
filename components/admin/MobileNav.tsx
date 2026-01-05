@@ -16,9 +16,7 @@ import {
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import { navItems } from './AdminShell';
-
- 
+import { navItems } from './AdminShell'; 
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);

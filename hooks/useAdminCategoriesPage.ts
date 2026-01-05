@@ -40,7 +40,7 @@ export function useAdminCategoriesPage() {
   const rubriquesById = useMemo(() => {
     const m = new Map<string, Rubrique>();
     for (const r of rubriques ?? []) {
-      if (r?.id) m.set(r.id, r);
+      if (r?._id) m.set(r._id, r);
     }
     return m;
   }, [rubriques]);
@@ -135,7 +135,7 @@ export function useAdminCategoriesPage() {
         await updateCategory(id, {
           nom: patch.nom ?? "",
           description: patch.description ?? "",
-          rubriques: patch.rubriques?.map((r) => r.id!) ?? [],
+          rubriques: patch.rubriques?.map((r) => r._id!) ?? [],
         });
         setEditingId(null);
         showBanner({ type: "success", message: "Catégorie mise à jour." });

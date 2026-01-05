@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import InputField from '@/components/vie-personnelle/InputField';
+import { birthCountries } from '@/lib/birthCountries';
 import { motion } from 'framer-motion';
 import { AlertCircle, Info, Sparkles } from 'lucide-react';
 import React from 'react';
-import { birthCountries } from '@/lib/birthCountries';
-import InputField from '@/components/vie-personnelle/InputField';
-import SelectField from '@/components/vie-personnelle/SelectField';
-import { GENRE_OPTIONS } from '@/components/vie-personnelle/genreOptions';
 
 interface Props {
   form: any;
@@ -73,16 +71,7 @@ const ConsultationForm: React.FC<Props> = ({
             error={errors.prenoms}
             placeholder="Tous vos prénoms"
           />
-        </div>
-
-        <SelectField
-          label="Genre"
-          name="genre"
-          value={form.genre}
-          onChange={handleChange}
-          error={errors.genre}
-          options={GENRE_OPTIONS}
-        />
+        </div> 
 
         <InputField
           label="Date de naissance"
@@ -94,14 +83,7 @@ const ConsultationForm: React.FC<Props> = ({
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <SelectField
-            label="Pays de naissance"
-            name="paysNaissance"
-            value={form.paysNaissance}
-            onChange={handleChange}
-            error={errors.paysNaissance}
-            options={countryOptions}
-          />
+         
           <InputField
             label="Ville de naissance"
             name="villeNaissance"

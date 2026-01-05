@@ -31,7 +31,7 @@ export const RubriquesPickerPro = memo(function RubriquesPickerPro({
   }, [q, rubriques]);
 
   const toggleAllFiltered = useCallback(() => {
-    const ids = filtered.map((r) => r.id!).filter(Boolean);
+    const ids = filtered.map((r) => r._id!).filter(Boolean);
     const allSelected = ids.every((id) => selectedSet.has(id));
     ids.forEach((id) => {
       const shouldSelect = !allSelected;
@@ -82,7 +82,7 @@ export const RubriquesPickerPro = memo(function RubriquesPickerPro({
       ) : (
         <div className="flex flex-wrap gap-1.5">
           {filtered.map((r) => {
-            const id = r.id!;
+            const id = r._id!;
             const active = selectedSet.has(id);
             const label = rubriqueLabel(r);
 

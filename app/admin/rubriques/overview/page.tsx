@@ -91,11 +91,7 @@ export default function RubriquesOverviewPage() {
     </div>
   );
 }
-
-// =============================================================================
-// COMPONENTS
-// =============================================================================
-
+ 
 function StatCard({ icon, label, value, color }: { icon: React.ReactNode, label: string, value: number, color: string }) {
   const colorClasses = {
     purple: 'bg-purple-100 text-purple-600',

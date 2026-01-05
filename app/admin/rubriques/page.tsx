@@ -64,7 +64,6 @@ export default function RubriquesAdminPage() {
           </div>
         </div>
       </div>
-
       <RubriquesToast toast={toast} onClose={() => setToast(null)} />
     </div>
   );

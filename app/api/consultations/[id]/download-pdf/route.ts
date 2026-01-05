@@ -17,7 +17,6 @@ function generateFilename(sujet: Sujet): string {
   const prenoms = sanitize(sujet.prenoms);
   const nom = sanitize(sujet.nom);
   const date = new Date().toISOString().split('T')[0];
-
   return `analyse-${nom}-${prenoms}-${date}.pdf`;
 }
 

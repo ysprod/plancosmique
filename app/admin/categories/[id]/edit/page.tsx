@@ -1,5 +1,4 @@
 "use client";
-
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, Eye, Layers, Tags } from "lucide-react";
 import Banner from "./components/Banner";
@@ -10,31 +9,17 @@ import { useEditCategoryPage } from "./useEditCategoryPage";
 
 export default function EditCategoryPage() {
   const {
-    rubriques,
-    rubriquesLoading,
-    pageLoading,
-    view,
-    nom,
-    setNom,
-    description,
-    setDescription,
-    rubriqueIds,
-    selectedSet,
-    busy,
-    banner,
-    selectedRubriques,
-    toggleRubrique,
-    clearSelection,
-    goEdit,
-    goPreview,
-    handleEdit,
-    selectionSummary,
+    rubriques, rubriquesLoading, description, pageLoading, view,
+    nom, selectionSummary, rubriqueIds,
+    selectedSet, busy, banner, selectedRubriques,
+    setNom, setDescription, toggleRubrique,
+    clearSelection, goEdit, goPreview, handleEdit,
   } = useEditCategoryPage();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
       <div className="mx-auto max-w-2xl px-3 py-6 sm:px-4 sm:py-10">
-        {/* top bar */}
+
         <div className="mb-5 flex items-center justify-between gap-3">
           <button
             onClick={() => window.history.back()}
@@ -53,7 +38,6 @@ export default function EditCategoryPage() {
           </div>
         </div>
 
-        {/* title */}
         <div className="mb-4 flex items-center gap-2">
           <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white shadow-sm">
             <Tags className="h-6 w-6" />

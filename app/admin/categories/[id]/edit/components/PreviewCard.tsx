@@ -2,14 +2,7 @@
 import React, { useMemo } from "react";
 import { Eye, ArrowLeft, Sparkles, ArrowRight } from "lucide-react";
 import { Rubrique } from "@/lib/interfaces";
-
-function rubriqueLabel(r: any): string {
-  return String(r?.titre ?? r?.nom ?? "Rubrique");
-}
-
-function cx(...v: Array<string | false | null | undefined>) {
-  return v.filter(Boolean).join(" ");
-}
+import { cx, rubriqueLabel } from "@/lib/functions";
 
 const PreviewCard = React.memo(function PreviewCard({
   nom,
@@ -89,7 +82,7 @@ const PreviewCard = React.memo(function PreviewCard({
             className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-extrabold text-white shadow-sm bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Confirmer la modification"
           >
-            <Sparkles className={cx("h-4 w-4", busy && "animate-spin")}/>
+            <Sparkles className={cx("h-4 w-4", busy && "animate-spin")} />
             {busy ? "Modification..." : "Enregistrer"}
             <ArrowRight className="h-4 w-4" />
           </button>

@@ -19,12 +19,18 @@ export const EditCategoryCardPro = memo(function EditCategoryCardPro({
 }) {
   const [nom, setNom] = useState(cat.nom);
   const [description, setDescription] = useState(cat.description);
-  const [selectedIds, setSelectedIds] = useState<string[]>(() => cat.rubriques.map((r) => r.id!));
+  const [selectedIds, setSelectedIds] = useState<string[]>(
+    () => cat.rubriques
+      .map((r) => r._id)
+      .filter((id): id is string => !!id)
+  );
   const [busy, setBusy] = useState(false);
 
   const rubriquesById = useMemo(() => {
     const m = new Map<string, Rubrique>();
-    for (const r of rubriques) if (r?.id) m.set(r.id, r);
+    for (const r of rubriques) {
+      if (r._id) m.set(r._id, r);
+    }
     return m;
   }, [rubriques]);
 

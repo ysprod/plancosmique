@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Mon Étoile', url: 'https://www.monetoile.org' }],
   creator: 'Équipe Mon Étoile',
-  publisher: 'Mon Étoile SAS',
+  publisher: 'YAYA SIDIBE',
   formatDetection: {
     email: false,
     address: false,

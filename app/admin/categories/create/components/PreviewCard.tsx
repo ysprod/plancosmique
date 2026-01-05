@@ -2,14 +2,7 @@
 import React, { useMemo } from "react";
 import { Eye, ArrowLeft, Sparkles, ArrowRight } from "lucide-react";
 import { Rubrique } from "@/lib/interfaces";
-
-function rubriqueLabel(r: any): string {
-  return String(r?.titre ?? r?.nom ?? "Rubrique");
-}
-
-function cx(...v: Array<string | false | null | undefined>) {
-  return v.filter(Boolean).join(" ");
-}
+import { cx, rubriqueLabel } from "@/lib/functions"; 
 
 const PreviewCard = React.memo(function PreviewCard({
   nom,

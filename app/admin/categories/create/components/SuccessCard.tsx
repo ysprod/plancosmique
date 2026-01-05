@@ -1,10 +1,7 @@
 "use client";
 import React from "react";
 import { Check, Plus, ArrowRight } from "lucide-react";
-
-function cx(...v: Array<string | false | null | undefined>) {
-  return v.filter(Boolean).join(" ");
-}
+import { cx } from "@/lib/functions";
 
 const SuccessCard = React.memo(function SuccessCard({
   nom,

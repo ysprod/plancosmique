@@ -1,3 +1,5 @@
+import { Rubrique } from "./interfaces";
+
 export const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('fr-FR', {
     day: 'numeric',
@@ -34,4 +36,12 @@ export function mapFormDataToBackend(form: any) {
 
 export function cx(...v: Array<string | false | null | undefined>) {
   return v.filter(Boolean).join(" ");
+}
+
+export function rubriqueLabel(r: any): string {
+  return String(r?.titre ?? r?.nom ?? "Rubrique");
+}
+
+export function getRubriqueId(r: Rubrique): string | null {
+  return r?._id || null;
 }

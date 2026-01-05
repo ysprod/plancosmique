@@ -10,8 +10,7 @@ import { usePaymentCallback } from '@/hooks/usePaymentCallback';
 import { BackgroundBlobs, CompletionBanner, StatusCard, ActionButtons, SecurityNote } from '@/components/callback';
 
 const PaymentCallbackContent = () => {
-  const searchParams = useSearchParams();
-  
+  const searchParams = useSearchParams();  
   const token = searchParams.get('token');
 
   const {

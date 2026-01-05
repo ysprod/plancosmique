@@ -495,12 +495,13 @@ const NUMEROLOGIE_CYCLES_PERSONNELS: SousRubrique = {
 // ASSEMBLAGE DES RUBRIQUES
 // =============================================================================
 
+// Horoscope est inclus dans ASTROLOGIE_VIE_PERSONNELLE (consultation id: 'cycles', typeTechnique: 'HOROSCOPE')
 const RUBRIQUE_ASTROLOGIE: Rubrique = {
   id: 'astrologie',
   titre: 'ASTROLOGIE',
   description: 'Découvrez les secrets de votre carte céleste et comprenez votre chemin de vie à travers l\'astrologie.',
   sousRubriques: [
-    ASTROLOGIE_VIE_PERSONNELLE,
+    ASTROLOGIE_VIE_PERSONNELLE, // contient la consultation Horoscope
     ASTROLOGIE_FAMILLE_COUPLE,
     ASTROLOGIE_MONDE_PROFESSIONNEL,
   ]

@@ -2,22 +2,7 @@
 import React, { useMemo } from "react";
 import { Check, Trash2, X } from "lucide-react";
 import { Rubrique } from "@/lib/interfaces";
-
-function getRubriqueId(r: any): string | null {
-  const raw = r?._id ?? r?.id;
-  if (!raw) return null;
-  if (typeof raw === "string") return raw;
-  if (typeof raw === "object" && typeof raw.$oid === "string") return raw.$oid;
-  return null;
-}
-
-function rubriqueLabel(r: any): string {
-  return String(r?.titre ?? r?.nom ?? "Rubrique");
-}
-
-function cx(...v: Array<string | false | null | undefined>) {
-  return v.filter(Boolean).join(" ");
-}
+import { cx, getRubriqueId, rubriqueLabel } from "@/lib/functions";
 
 const RubriquesPickerSimple = React.memo(function RubriquesPickerSimple({
   rubriques,
@@ -79,10 +64,9 @@ const RubriquesPickerSimple = React.memo(function RubriquesPickerSimple({
         )}
       </div>
 
-      {/* Chips */}
       {chips.length > 0 ? (
         <div className="mb-3 flex flex-wrap gap-1.5">
-          {chips.map((r: any) => {
+          {chips.map((r: Rubrique) => {
             const id = getRubriqueId(r);
             if (!id) return null;
             return (
@@ -107,7 +91,6 @@ const RubriquesPickerSimple = React.memo(function RubriquesPickerSimple({
         </div>
       )}
 
-      {/* Grille */}
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {normalized.map(({ id, label }) => {
           const active = selectedSet.has(id);

@@ -3,25 +3,10 @@ import { useParams } from "next/navigation";
 import { getCategory, updateCategory } from "@/lib/api/services/categories.service";
 import { useAdminRubriquesPage } from "@/hooks/useAdminRubriquesPage";
 import { Rubrique } from "@/lib/interfaces";
+import { getRubriqueId, rubriqueLabel } from "@/lib/functions";
 
 export type Banner = { type: "success" | "error" | "info"; message: string } | null;
 export type ViewMode = "edit" | "preview" | "success";
-
-function getRubriqueId(r: any): string | null {
-  const raw = r?._id ?? r?.id;
-  if (!raw) return null;
-  if (typeof raw === "string") return raw;
-  if (typeof raw === "object" && typeof raw.$oid === "string") return raw.$oid;
-  if (typeof raw === "object" && typeof raw.toString === "function") {
-    const s = raw.toString();
-    return s && s !== "[object Object]" ? s : null;
-  }
-  return null;
-}
-
-function rubriqueLabel(r: any): string {
-  return String(r?.titre ?? r?.nom ?? "Rubrique");
-}
 
 export function useEditCategoryPage() {
   const params = useParams();
@@ -33,11 +18,9 @@ export function useEditCategoryPage() {
   const [nom, setNom] = useState("");
   const [description, setDescription] = useState("");
 
-  // ✅ sélection = ids string
   const [rubriqueIds, setRubriqueIds] = useState<string[]>([]);
   const selectedSet = useMemo(() => new Set(rubriqueIds), [rubriqueIds]);
 
-  // remote load state
   const [pageLoading, setPageLoading] = useState(true);
 
   // ui
@@ -55,13 +38,11 @@ export function useEditCategoryPage() {
     setNom(String(cat?.nom ?? ""));
     setDescription(String(cat?.description ?? ""));
 
-    // ✅ BACKEND RETURN: rubriques: [{_id, titre, ...}]
     const idsFromRubriques =
       Array.isArray(cat?.rubriques) && cat.rubriques.length > 0
         ? cat.rubriques.map(getRubriqueId).filter(Boolean)
         : [];
 
-    // fallback si un jour backend renvoie rubriqueIds
     const idsFromRubriqueIds =
       Array.isArray(cat?.rubriqueIds) && cat.rubriqueIds.length > 0
         ? cat.rubriqueIds.map(String)
@@ -108,8 +89,6 @@ export function useEditCategoryPage() {
   }, [rubriques]);
 
   const selectedRubriques = useMemo(() => {
-    // On reconstruit depuis la liste globale quand possible,
-    // sinon on retombe sur le label minimal
     const out: Rubrique[] = [];
     for (const id of rubriqueIds) {
       const r = rubriquesById.get(id);

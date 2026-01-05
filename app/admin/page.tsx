@@ -16,9 +16,7 @@ export default function AdminDashboard() {
     isRefreshing, derivedStats, showRefreshBanner, handleRefresh,
   } = useAdminDashboardPage();
 
-  if (loading) {
-    return <LoadingState />;
-  }
+  if (loading) { return <LoadingState />; }
 
   if (error || !stats) {
     return (

@@ -80,7 +80,6 @@ export default function WelcomePage() {
                      p-5 sm:p-6 border-2 border-amber-100 shadow-lg 
                      relative overflow-hidden"
         >
-          {/* Déco légère animée */}
           <motion.div
             animate={{
               rotate: [0, 10, -10, 0],
@@ -133,7 +132,7 @@ export default function WelcomePage() {
                 <span className="text-xs sm:text-sm">DEMANDER UNE CONSULTATION</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
-              
+
             </Link>
           </div>
         </motion.div>

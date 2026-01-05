@@ -288,7 +288,6 @@ function NotFoundComponent() {
           <span className="block sm:inline"> regorge de merveilles !</span>
         </motion.p>
 
-        {/* Bouton CTA - Ultra-compact mobile */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

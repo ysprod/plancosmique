@@ -1,13 +1,15 @@
 'use client';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Loader, CheckCircle, Save, Settings, Bell, Lock, CreditCard, Database } from 'lucide-react';
+import { Bell, Lock, CreditCard, Database, Settings, Loader } from 'lucide-react';
 import SettingsTabs from '@/components/admin/settings/SettingsTabs';
 import SettingsGeneralTab from '@/components/admin/settings/SettingsGeneralTab';
 import SettingsNotificationsTab from '@/components/admin/settings/SettingsNotificationsTab';
 import SettingsSecurityTab from '@/components/admin/settings/SettingsSecurityTab';
 import SettingsPaymentTab from '@/components/admin/settings/SettingsPaymentTab';
 import SettingsSystemTab from '@/components/admin/settings/SettingsSystemTab';
-import useSettingsPage from '@/hooks/useSettingsPage';
+import SettingsHeader from './SettingsHeader';
+import SettingsSaveButton from './SettingsSaveButton';
+import { useSettingsView } from './useSettingsView';
 
 export default function SettingsPage() {
   const {
@@ -22,7 +24,7 @@ export default function SettingsPage() {
     moneyFusionApiKey, setMoneyFusionApiKey, paymentMethods, setPaymentMethods,
     maxUploadSize, setMaxUploadSize, backupFrequency, setBackupFrequency,
     logLevel, setLogLevel,
-  } = useSettingsPage();
+  } = useSettingsView();
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -42,60 +44,16 @@ export default function SettingsPage() {
   ] as const;
 
   return (
-    <div className=" bg-gray-50">
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-gray-100 rounded-lg">
-                <Settings className="w-4 h-4 text-gray-700" />
-              </div>
-              <div>
-                <h1 className="text-lg sm:text-xl font-bold text-gray-900">
-                  Paramètres
-                </h1>
-                <p className="text-xs text-gray-500">Configuration système</p>
-              </div>
-            </div>
-
-            <button
-              onClick={handleSave}
-              disabled={isSaving}
-              className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 text-sm rounded-lg 
-                         font-semibold transition-all ${isSaving
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : saveSuccess
-                    ? 'bg-green-600 text-white'
-                    : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-lg'
-                }`}
-            >
-              {isSaving ? (
-                <>
-                  <Loader className="w-4 h-4 animate-spin" />
-                  <span className="hidden sm:inline">Enregistrement...</span>
-                </>
-              ) : saveSuccess ? (
-                <>
-                  <CheckCircle className="w-4 h-4" />
-                  <span className="hidden sm:inline">Enregistré !</span>
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4" />
-                  <span className="hidden sm:inline">Enregistrer</span>
-                </>
-              )}
-            </button>
-          </div>
-        </div>
+    <div className="bg-gray-50">
+      <SettingsHeader />
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3 flex justify-end">
+        <SettingsSaveButton isSaving={isSaving} saveSuccess={saveSuccess} onClick={handleSave} />
       </div>
-
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="lg:w-64 flex-shrink-0">
             <SettingsTabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
           </div>
-
           <div className="flex-1">
             <AnimatePresence mode="wait">
               <motion.div
@@ -150,7 +108,6 @@ export default function SettingsPage() {
                     setPaymentMethods={setPaymentMethods}
                   />
                 )}
-                
                 {activeTab === 'system' && (
                   <SettingsSystemTab
                     maxUploadSize={maxUploadSize}

@@ -2,18 +2,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { useAdminRubriquesPage } from "@/hooks/useAdminRubriquesPage";
 import { createCategory } from "@/lib/api/services/categories.service";
 import { Rubrique } from "@/lib/interfaces";
-
-function getRubriqueId(r: any): string | null {
-  const raw = r?._id ?? r?.id;
-  if (!raw) return null;
-  if (typeof raw === "string") return raw;
-  if (typeof raw === "object" && typeof raw.$oid === "string") return raw.$oid;
-  return null;
-}
-
-function rubriqueLabel(r: any): string {
-  return String(r?.titre ?? r?.nom ?? "Rubrique");
-}
+import { getRubriqueId, rubriqueLabel } from "@/lib/functions";
 
 export type ViewMode = "create" | "preview" | "success";
 export type Banner = { type: "success" | "error" | "info"; message: string } | null;
@@ -90,7 +79,7 @@ export function useCreateCategoryPage() {
   }, [selectedRubriques]);
 
   const handleCreate = useCallback(async () => {
-    console.log("Creating category...",rubriqueIds);
+    console.log("Creating category...", rubriqueIds);
     if (!canCreate) return;
     setBusy(true);
     setBanner(null);
@@ -98,7 +87,7 @@ export function useCreateCategoryPage() {
       await createCategory({
         nom: nom.trim(),
         description: description.trim(),
-        rubriques:rubriqueIds,
+        rubriques: rubriqueIds,
       });
       showBanner({ type: "success", message: "Catégorie créée avec succès." });
       goSuccess();

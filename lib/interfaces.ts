@@ -197,7 +197,6 @@ export interface FormData {
 export interface Rubrique {
   typeconsultation: any;
   _id?: string;
-  id?: string;
   titre: string;
   type: ConsultationType;
   description: string;

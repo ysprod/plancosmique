@@ -1,10 +1,7 @@
 "use client";
 import React from "react";
 import { Check, ArrowLeft, ArrowRight } from "lucide-react";
-
-function cx(...v: Array<string | false | null | undefined>) {
-  return v.filter(Boolean).join(" ");
-}
+import { cx } from "@/lib/functions";
 
 const SuccessCard = React.memo(function SuccessCard({
   nom,
@@ -21,7 +18,7 @@ const SuccessCard = React.memo(function SuccessCard({
     <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm dark:border-emerald-900/40 dark:bg-emerald-900/20">
       <div className="mb-3 flex items-center gap-2">
         <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-emerald-600 to-lime-600 text-white shadow-sm">
-          <Check className={cx("h-5 w-5", !reducedMotion && "animate-bounce")}/>
+          <Check className={cx("h-5 w-5", !reducedMotion && "animate-bounce")} />
         </div>
         <div>
           <h2 className="text-sm font-extrabold text-emerald-900 dark:text-emerald-100">Catégorie modifiée</h2>
