@@ -1,7 +1,7 @@
 'use client';
-import { Eye, Download, Hash, Repeat } from 'lucide-react';
 import { formatDate } from '@/lib/functions';
 import { Consultation, ResultData } from '@/lib/interfaces';
+import { Download, Hash, Repeat } from 'lucide-react';
 import React from 'react';
 
 interface NumerologyConsultationCardClientProps {

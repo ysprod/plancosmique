@@ -36,8 +36,7 @@ const OffrandesAddModal: React.FC<OffrandesAddModalProps> = ({
   onConfirm,
   formData,
   setFormData,
-  editingId,
- 
+  editingId, 
   saving,
   errorMessage,
 }) => {

@@ -217,5 +217,7 @@ const NumerologyData = memo(({ resultData }: { resultData: any }) => {
     </div>
   );
 });
+
 NumerologyData.displayName = 'NumerologyData';
+
 export default NumerologyData;

@@ -14,7 +14,6 @@ import {
   XCircle,
 } from 'lucide-react';
 
-// ==================== PAYMENTBUTTON ====================
 
 export interface PaymentButtonProps {
   /** Montant du paiement */

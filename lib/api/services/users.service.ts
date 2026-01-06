@@ -1,8 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/**
- * Service de gestion des utilisateurs
- */
-
 import { api } from '../client';
 import { endpoints } from '../endpoints';
 import type { User, Role, Permission } from '@/lib/types/auth.types';

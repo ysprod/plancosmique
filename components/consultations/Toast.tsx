@@ -56,6 +56,7 @@ const Toast = memo(({
     </motion.div>
   );
 });
+
 Toast.displayName = 'Toast';
 
 export default Toast;

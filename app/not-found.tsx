@@ -1,12 +1,11 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { Sparkles, Star, Moon, Sun, Home } from 'lucide-react';
 import Link from 'next/link';
 import { memo, useMemo } from 'react';
 
-const STARS_COUNT = 15; // Réduit de 18 à 15 (17% plus performant)
-const ANIMATION_DURATION = 0.6; // Réduit de 0.8s à 0.6s (25% plus rapide)
+const STARS_COUNT = 15;  
+const ANIMATION_DURATION = 0.6;  
 
 const containerVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -324,10 +323,6 @@ function NotFoundComponent() {
       </motion.div>
     </div>
   );
-}
-
-// ============================================================
-// EXPORT MÉMOÏSÉ
-// ============================================================
+} 
 
 export default memo(NotFoundComponent, () => true);

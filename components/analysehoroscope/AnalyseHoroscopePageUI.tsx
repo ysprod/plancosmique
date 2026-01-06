@@ -1,16 +1,16 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { containerVariants, processingVariants } from '@/lib/animation.constants';
+import CosmicLoader from '@/components/analysehoroscope/CosmicLoader';
+import PageHeader from '@/components/analysehoroscope/PageHeader';
 import AnalyseGenere from '@/components/vie-personnelle/AnalyseGenere';
 import ErrorToast from '@/components/vie-personnelle/ErrorToast';
 import LoadingOverlay from '@/components/vie-personnelle/LoadingOverlay';
 import OfferingStep from '@/components/vie-personnelle/OfferingStep';
 import PaymentProcessing from '@/components/vie-personnelle/PaymentProcessing';
-import CosmicLoader from '@/components/analysehoroscope/CosmicLoader';
-import PageHeader from '@/components/analysehoroscope/PageHeader';
-import { StepType, useAnalyseHoroscopePage } from './useAnalyseHoroscopePage';
-import { WalletOffering, OfferingAlternative } from '@/lib/interfaces';
+import { containerVariants, processingVariants } from '@/lib/animation.constants';
+import { OfferingAlternative, WalletOffering } from '@/lib/interfaces';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
+import { StepType } from './useAnalyseHoroscopePage';
 
 interface AnalyseHoroscopePageUIProps {
     step: StepType;

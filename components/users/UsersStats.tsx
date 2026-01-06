@@ -11,7 +11,6 @@ type UsersStatsProps = {
   };
 };
 
-
 const statsConfig: Array<{
   icon: any;
   label: string;

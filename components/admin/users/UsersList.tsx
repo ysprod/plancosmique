@@ -61,7 +61,7 @@ export function UsersList({
           />
         </div>
       ) : (
-        <EmptyState hasFilters={hasFilters} onReset={() => {}} />
+        <EmptyState hasFilters={hasFilters} onReset={() => { }} />
       )}
     </div>
   );

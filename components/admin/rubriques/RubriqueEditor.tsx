@@ -1,10 +1,9 @@
+ 
+import { ConsultationChoice, ConsultationType, Offering } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Package, Plus, Save, X } from "lucide-react";
-import { Key, memo, useCallback } from "react";
+import { memo, useCallback } from "react";
 import ConsultationChoiceCard from "./ConsultationChoiceCard";
- 
-import { Offering } from "@/lib/api/services/offerings.service";
-import { ConsultationChoice, ConsultationType } from "@/lib/interfaces";
 
 const RubriqueEditor = memo(({
   rubrique,

@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { Moon } from 'lucide-react';
-import React, { memo } from 'react';
+import { memo } from 'react';
 
 const PageHeader = memo(() => (
   <motion.div
@@ -18,4 +17,5 @@ const PageHeader = memo(() => (
   </motion.div>
 ));
 PageHeader.displayName = 'PageHeader';
+
 export { PageHeader };

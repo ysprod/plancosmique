@@ -3,9 +3,8 @@ import EmptyState from '@/components/marcheoffrandes/EmptyState';
 import ErrorState from '@/components/marcheoffrandes/ErrorState';
 import LoadingState from '@/components/marcheoffrandes/LoadingState';
 import OfferingsGrid from '@/components/marcheoffrandes/OfferingsGrid';
-import type { Category } from '@/components/marcheoffrandes/types';
+import { useMarcheOffrandesMain } from '@/hooks/commons/useMarcheOffrandesMain';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useMarcheOffrandesMain } from '@/hooks/useMarcheOffrandesMain';
 
 export default function MarcheOffrandesMain() {
   const {

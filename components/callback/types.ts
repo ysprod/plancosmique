@@ -1,8 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
 
-/**
- * Statuts possibles d'un paiement
- */
 export type PaymentStatus = 
   | 'pending'
   | 'paid'

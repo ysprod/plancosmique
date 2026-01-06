@@ -7,20 +7,16 @@ import {
   ChevronDown,
   Crown,
   FileText,
-  Heart,
-  Home,
   LayoutDashboard,
   LogOut,
   Menu,
   Moon,
   Settings,
-  ShoppingBag,
   Sparkles,
   Sun,
   User,
   Wallet,
-  X,
-  Zap
+  X
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';

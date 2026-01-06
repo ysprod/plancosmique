@@ -2,7 +2,7 @@
 import React, { useMemo } from "react";
 import { Eye, ArrowLeft, Sparkles, ArrowRight } from "lucide-react";
 import { Rubrique } from "@/lib/interfaces";
-import { cx, rubriqueLabel } from "@/lib/functions"; 
+import { cx, rubriqueLabel } from "@/lib/functions";
 
 const PreviewCard = React.memo(function PreviewCard({
   nom,

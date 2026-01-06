@@ -1,4 +1,4 @@
-import { useAdminCategoriesPage } from "@/hooks/useAdminCategoriesPage";
+import { useAdminCategoriesPage } from "@/hooks/categories/useAdminCategoriesPage";
 
 export function useAdminCategoriesView() {
     return useAdminCategoriesPage();

@@ -1,7 +1,3 @@
-/**
- * Export centralisé de tous les services API
- */
-
 export * from './auth.service';
 export * from './users.service';
 export * from './consultations.service';

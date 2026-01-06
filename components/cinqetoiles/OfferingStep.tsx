@@ -286,7 +286,7 @@ export default function OfferingStep({
                   dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900 
                   flex flex-col">
 
-        <motion.h1
+      <motion.h1
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: 'spring', stiffness: 120, damping: 12, delay: 0.2 }}
@@ -308,7 +308,7 @@ export default function OfferingStep({
           </motion.span>
         </span>
       </motion.h1>
- 
+
       <div className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl 
                     border-b border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="max-w-2xl mx-auto px-4 py-3">
@@ -337,7 +337,7 @@ export default function OfferingStep({
           </div>
         </div>
       </div>
- 
+
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-2xl mx-auto px-4 py-4 space-y-3 pb-32">
 
@@ -384,7 +384,7 @@ export default function OfferingStep({
           </AnimatePresence>
         </div>
       </div>
- 
+
       <div className="sticky bottom-0 z-40 bg-white dark:bg-gray-900 
                     border-t border-gray-200 dark:border-gray-800 
                     shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">

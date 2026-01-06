@@ -53,4 +53,5 @@ const CosmicOrbit = memo(({ size, duration, delay, reverse = false }: CosmicOrbi
 );
 
 CosmicOrbit.displayName = 'CosmicOrbit';
+
 export default CosmicOrbit;

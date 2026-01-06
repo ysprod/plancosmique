@@ -1,7 +1,5 @@
-import { Plus, ArrowLeft, Tags } from "lucide-react";
 import { RubriquesPickerPro } from "@/components/admin/categories/RubriquesPickerPro";
-import { MiniPill } from "@/components/admin/categories/MiniPill";
-import React from "react";
+import { ArrowLeft, Plus, Tags } from "lucide-react";
 
 interface CreateCategoryFormProps {
   nom: string;

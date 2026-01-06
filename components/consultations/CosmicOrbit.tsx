@@ -31,4 +31,5 @@ const CosmicOrbit = memo<CosmicOrbitProps>(({ radius, duration, Icon, delay = 0 
 ));
 
 CosmicOrbit.displayName = 'CosmicOrbit';
+
 export default CosmicOrbit;

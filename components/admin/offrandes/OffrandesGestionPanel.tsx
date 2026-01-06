@@ -4,13 +4,6 @@ import OffrandesCategoriesSummary from './OffrandesCategoriesSummary';
 import OffrandesMessages from './OffrandesMessages';
 import { CATEGORIES_OFFRANDES } from '@/lib/constants';
 
-interface Category {
-  value: string;
-  label: string;
-  emoji: string;
-  color: string;
-}
-
 interface OffrandesGestionPanelProps {
   offerings: any[];
   loading: boolean;
@@ -25,7 +18,7 @@ interface OffrandesGestionPanelProps {
 }
 
 export default function OffrandesGestionPanel({
-  offerings, 
+  offerings,
   loading,
   saving,
   successMessage,
@@ -60,7 +53,7 @@ export default function OffrandesGestionPanel({
             >
               <span className="w-4 h-4">➕</span>
               <span className="hidden sm:inline">Ajouter</span>
-            </button>           
+            </button>
           </div>
         </div>
         <OffrandesMessages successMessage={successMessage} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />

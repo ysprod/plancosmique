@@ -1,13 +1,6 @@
 import React from "react";
 import OffrandesStats from "./OffrandesStats";
 
-interface Category {
-  value: string;
-  label: string;
-  emoji: string;
-  color: string;
-}
-
 interface OffrandesStatsPanelProps {
   statsData: any;
 }

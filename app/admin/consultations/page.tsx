@@ -5,7 +5,7 @@ import { ConsultationsHeader } from "@/components/admin/consultations/Consultati
 import { ConsultationsList } from "@/components/admin/consultations/ConsultationsList";
 import { CosmicLoader } from "@/components/admin/consultations/CosmicLoader";
 import Toast from "@/components/admin/consultations/Toast";
-import { useAdminConsultationsPage } from "@/hooks/useAdminConsultationsPage";
+import { useAdminConsultationsPage } from "@/hooks/consultations/useAdminConsultationsPage";
 import { AnimatePresence } from "framer-motion";
 
 export default function ConsultationsPage() {
@@ -47,6 +47,7 @@ export default function ConsultationsPage() {
           <ConsultationsEmptyState />
         )}
       </div>
+
       <AnimatePresence>
         {toastMessage && (
           <Toast message={toastMessage} onClose={handleToastClose} />

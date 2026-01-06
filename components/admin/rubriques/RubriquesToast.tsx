@@ -1,8 +1,6 @@
-
 import Toast from "@/components/admin/rubriques/Toast";
 import { AnimatePresence } from "framer-motion";
- 
-import React from "react";
+ import React from "react";
 
 interface RubriquesToastProps {
   toast: any;

@@ -20,8 +20,7 @@ export default function ConsultationResultPage() {
   return (
     <div className="bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
       <ConsultationHeader onBack={handleBack} onDownloadPDF={handleDownloadPDF} />
-    
-      <ConsultationContent sujet={analyse.carteDuCiel.sujet} contenu={analyse.missionDeVie.contenu} />
+      <ConsultationContent analyse={analyse} />
     </div>
   );
 }

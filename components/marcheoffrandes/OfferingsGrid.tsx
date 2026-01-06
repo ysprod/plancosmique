@@ -1,7 +1,5 @@
-import { AnimatePresence, motion } from 'framer-motion';
 import { Offering } from '@/lib/interfaces';
-// import { Category } from './types';
-// import { staggerContainer } from './animations';
+import { AnimatePresence, motion } from 'framer-motion';
 import { OfferingCard } from './OfferingCard';
 
 interface OfferingsGridProps {
@@ -14,7 +12,6 @@ const OfferingsGrid = ({ offerings, selectedCategory, onAddToCart }: OfferingsGr
   <AnimatePresence mode="wait">
     <motion.div
       key={selectedCategory}
-      // variants={staggerContainer}
       initial="hidden"
       animate="visible"
       exit="exit"

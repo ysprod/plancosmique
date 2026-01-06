@@ -22,8 +22,8 @@ export interface TypeBadgeProps {
 }
 
 const TypeBadge: React.FC<TypeBadgeProps> = ({ type }) => {
- const config = TYPE_LABELS[type];
- const Icon = config.icon;
+  const config = TYPE_LABELS[type];
+  const Icon = config.icon;
   return (
     <div className={`inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r  text-white rounded-lg text-xs font-bold`}>
       <Icon className="w-4 h-4" />

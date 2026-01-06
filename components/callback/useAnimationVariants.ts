@@ -2,10 +2,6 @@
 'use client';
 import { useMemo } from 'react';
 
-/**
- * Hook custom pour obtenir les variantes d'animation Framer Motion
- * Utilisé pour les animations de la page callback
- */
 export function useAnimationVariants() {
   const containerVariants = useMemo(
     () => ({

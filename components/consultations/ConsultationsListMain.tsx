@@ -1,20 +1,17 @@
 import ConsultationCard from '@/components/consultations/ConsultationCard';
 import NumerologyConsultationCard from '@/components/consultations/NumerologyConsultationCard';
-import ConsultationsEmpty from '@/components/consultations/list/ConsultationsEmpty';
-import ConsultationsError from '@/components/consultations/list/ConsultationsError';
-import ConsultationsFilters from '@/components/consultations/list/ConsultationsFilters';
-import ConsultationsHeader from '@/components/consultations/list/ConsultationsHeader';
+import ConsultationsEmpty from '@/components/consultations/ConsultationsEmpty';
+import ConsultationsError from '@/components/consultations/ConsultationsError';
+import ConsultationsFilters from '@/components/consultations/ConsultationsFilters';
+import ConsultationsHeader from '@/components/consultations/ConsultationsHeader';
 import ConsultationsListLoading from './ConsultationsListLoading';
-import { useConsultationsListMain } from '@/hooks/useConsultationsListMain';
+import { useConsultationsListMain } from '@/hooks/consultations/useConsultationsListMain';
 
 export default function ConsultationsListMain() {
   const {
     consultations, filteredConsultations, loading, searchQuery, error,
-    setSearchQuery,
-    setTypeFilter,
-    setStatusFilter,
-    handleView,
-    handleDownload
+    setSearchQuery, setTypeFilter, setStatusFilter,
+    handleView, handleDownload
   } = useConsultationsListMain();
 
   if (loading) {

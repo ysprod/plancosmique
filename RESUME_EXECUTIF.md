@@ -237,7 +237,7 @@ import { DOMAINES, getConsultationById } from '@/lib/config/rubriques.config';
 import { OFFRANDES_CATALOGUE } from '@/lib/config/offrandes.config';
 
 const consultation = getConsultationById('mission');
-console.log(consultation.titre); 
+ 
 // ✅ Doit afficher "JE VEUX CONNAÎTRE MA MISSION DE VIE"
 ```
 

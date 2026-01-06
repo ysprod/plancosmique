@@ -1,9 +1,9 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { Calendar, Moon, Sparkles } from 'lucide-react';
 import { MoonPhaseWidget } from '@/components/astrologie-africaine/MoonPhaseWidget';
-import React, { memo } from 'react';
-import { RitualCard } from './RitualCard';
+import { motion } from 'framer-motion';
+import { Calendar, Sparkles } from 'lucide-react';
+import { memo } from 'react';
 import { IncantationCard } from './IncantationCard';
+import { RitualCard } from './RitualCard';
 
 export const RITUELS_DATA = [
   { name: "Rituel de Nouvelle Lune", phase: "Nouvelle Lune", goal: "Nouveaux départs, intentions" },
@@ -151,4 +151,4 @@ const IncantationsContent = memo(() => (
 ));
 IncantationsContent.displayName = 'IncantationsContent';
 
-export { CalendrierLunaireContent, RituelsContent, IncantationsContent };
+export { CalendrierLunaireContent, IncantationsContent, RituelsContent };

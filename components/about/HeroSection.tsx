@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Building2, Award, Users, TrendingUp } from 'lucide-react';

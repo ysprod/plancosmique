@@ -1,13 +1,11 @@
 'use client';
 import AnimatedBackground from '@/components/spiritualite/AnimatedBackground';
-import ArticlesGrid from '@/components/spiritualite/ArticlesGrid';
-import ContentWrapper from '@/components/spiritualite/ContentWrapper';
-import FeaturedArticle from '@/components/spiritualite/FeaturedArticle';
-import NoResults from '@/components/spiritualite/NoResults';
 import { SpiritualiteErrorState, SpiritualiteLoadingState } from '@/components/spiritualite/SpiritualitePageStates';
-import { useSpiritualiteBlogController } from '@/components/spiritualite/useSpiritualiteBlogController';
-import { formatDate } from '@/lib/functions';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
+import SpiritualiteHeader from './SpiritualiteHeader';
+import SpiritualiteArticlesSection from './SpiritualiteArticlesSection';
+import SpiritualiteNoResultsSection from './SpiritualiteNoResultsSection';
+import { useSpiritualiteBlogPage } from './useSpiritualiteBlogPage';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -34,7 +32,8 @@ export default function SpiritualiteBlogPage() {
     featuredArticle,
     regularArticles,
     hasArticles,
-  } = useSpiritualiteBlogController();
+    formatDate,
+  } = useSpiritualiteBlogPage();
 
   if (loading) {
     return <SpiritualiteLoadingState />;
@@ -47,7 +46,6 @@ export default function SpiritualiteBlogPage() {
   return (
     <>
       <AnimatedBackground />
-
       <main
         className="relative min-h-screen px-4 py-8 sm:px-6 lg:px-8"
         role="main"
@@ -59,17 +57,7 @@ export default function SpiritualiteBlogPage() {
           initial="hidden"
           animate="visible"
         >
-          <ContentWrapper>
-            <header className="mb-8 text-center sm:mb-12">
-              <h1 className="mb-3 bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 bg-clip-text text-3xl font-bold text-transparent sm:text-4xl lg:text-5xl">
-                Blog Spiritualité
-              </h1>
-              <p className="mx-auto max-w-2xl text-sm text-slate-600 sm:text-base">
-                Explorez nos articles, pratiques et enseignements spirituels
-              </p>
-            </header>
-          </ContentWrapper>
-          
+          <SpiritualiteHeader />
           <AnimatePresence mode="wait">
             {hasArticles ? (
               <motion.div
@@ -78,40 +66,13 @@ export default function SpiritualiteBlogPage() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-8 sm:space-y-12"
               >
-                {/* Article en vedette */}
-                {featuredArticle && (
-                  <ContentWrapper>
-                    <section aria-label="Article en vedette">
-                      <FeaturedArticle
-                        article={{
-                          ...featuredArticle,
-                          formattedDate: formatDate(featuredArticle.createdAt),
-                        }}
-                        formatDate={formatDate}
-                      />
-                    </section>
-                  </ContentWrapper>
-                )}
-
-                {/* Grille d'articles */}
-                {regularArticles.length > 0 && (
-                  <ContentWrapper>
-                    <section aria-label="Tous les articles">
-                      <h2 className="sr-only">Articles récents</h2>
-                      <ArticlesGrid
-                        articles={regularArticles.map((article) => ({
-                          ...article,
-                          formattedDate: formatDate(article.createdAt),
-                        }))}
-                        formatDate={formatDate}
-                        setSearchQuery={setSearchQuery}
-                        setSelectedCategory={setSelectedCategory}
-                      />
-                    </section>
-                  </ContentWrapper>
-                )}
+                <SpiritualiteArticlesSection
+                  featuredArticle={featuredArticle}
+                  regularArticles={regularArticles}
+                  setSearchQuery={setSearchQuery}
+                  setSelectedCategory={setSelectedCategory}
+                />
               </motion.div>
             ) : (
               <motion.div
@@ -121,7 +82,7 @@ export default function SpiritualiteBlogPage() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
               >
-                <NoResults onReset={() => { setSearchQuery(''); setSelectedCategory('all'); }} />
+                <SpiritualiteNoResultsSection onReset={() => { setSearchQuery(''); setSelectedCategory('all'); }} />
               </motion.div>
             )}
           </AnimatePresence>

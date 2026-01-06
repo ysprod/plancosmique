@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Send } from 'lucide-react';
@@ -38,18 +37,13 @@ export default function ContactSection() {
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    console.log('Form submitted:', formData);
+    await new Promise(resolve => setTimeout(resolve, 1500)); 
     setIsSubmitting(false);
     setFormData({ name: '', email: '', phone: '', message: '' });
   }, [formData]);
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-      {/* Decorative background */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 right-0 h-96 w-96 rounded-full bg-lime-400 blur-3xl" />
         <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-purple-400 blur-3xl" />

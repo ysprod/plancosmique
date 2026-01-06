@@ -64,6 +64,7 @@ const StatsGrid = memo<StatsGridProps>(({ stats, derivedStats }) => (
     />
   </motion.div>
 ));
+
 StatsGrid.displayName = 'StatsGrid';
 
 export default StatsGrid;

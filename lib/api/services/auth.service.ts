@@ -1,7 +1,3 @@
-/**
- * Service d'authentification
- */
-
 import { api } from '../client';
 import { endpoints } from '../endpoints';
 import type {

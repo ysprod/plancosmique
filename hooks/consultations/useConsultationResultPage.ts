@@ -1,4 +1,4 @@
-import { useConsultationResult } from '@/hooks/useConsultationResult';
+import { useConsultationResult } from '@/hooks/consultations/useConsultationResult';
 
 export default function useConsultationResultPage() {
   const { loading, error, analyse, handleBack, handleDownloadPDF } = useConsultationResult();

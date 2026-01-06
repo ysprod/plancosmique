@@ -2,7 +2,7 @@
 import NumerologieLoadingState from '@/components/numerologie/NumerologieLoadingState';
 import NumerologieErrorState from '@/components/numerologie/NumerologieErrorState';
 import NumerologyResultClient from '@/components/numerologie/NumerologyResultClient';
-import { useNumerologieConsultation } from '@/hooks/useNumerologieConsultation';
+import { useNumerologieConsultation } from '@/hooks/commons/useNumerologieConsultation';
 
 interface NumerologiePageProps {
   params: { id: string };
@@ -10,6 +10,7 @@ interface NumerologiePageProps {
 
 export default function NumerologiePage({ params }: NumerologiePageProps) {
   const { id } = params;
+  
   const { consultation, loading, error, fetchConsultation } = useNumerologieConsultation(id);
 
   if (loading) return <NumerologieLoadingState />;

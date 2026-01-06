@@ -17,7 +17,7 @@ export default function BookSuccessPage() {
   return (
     <Suspense fallback={
       <div className=" flex items-center justify-center">
-        <p>Chargement...</p>
+        <p>Chargement... </p>
       </div>
     }>
       <BookSuccessContent />

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Search, Filter, ChevronDown, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SortField, SortOrder } from '@/hooks/useAdminBooks';
+import { SortField, SortOrder } from '@/hooks/books/useAdminBooks';
 
 interface BookFiltersProps {
   searchQuery: string;
@@ -18,7 +18,6 @@ interface BookFiltersProps {
   setSortOrder: (v: SortOrder) => void;
   categories: string[];
   filteredCount: number;
-  totalCount: number;
 }
 
 export const BookFilters: React.FC<BookFiltersProps> = ({
@@ -36,7 +35,6 @@ export const BookFilters: React.FC<BookFiltersProps> = ({
   setSortOrder,
   categories,
   filteredCount,
-  totalCount,
 }) => (
   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
     <div className="bg-white rounded-2xl shadow-lg p-4 border-2 border-gray-100">

@@ -1,10 +1,10 @@
 'use client';
 import HoroscopeListLoading from '@/components/horoscope/HoroscopeListLoading';
 import ResultDisplay from '@/components/horoscope/ResultDisplay';
-import HoroscopeForm from '@/components/horoscope/page/HoroscopeForm';
-import HoroscopeHeader from '@/components/horoscope/page/HoroscopeHeader';
-import HoroscopeList from '@/components/horoscope/page/HoroscopeList';
-import HoroscopeTabs from '@/components/horoscope/page/HoroscopeTabs';
+import HoroscopeForm from '@/components/horoscope/HoroscopeForm';
+import HoroscopeHeader from '@/components/horoscope/HoroscopeHeader';
+import HoroscopeList from '@/components/horoscope/HoroscopeList';
+import HoroscopeTabs from '@/components/horoscope/HoroscopeTabs';
 import useHoroscopePage from '@/hooks/horoscope/useHoroscopePage';
 import { Tab } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
@@ -12,9 +12,8 @@ import { memo } from 'react';
 
 function HoroscopePageComponent() {
   const {
-    loadingUser, activeTab, result, error,
-    loadingHoroscopes, tabs, filteredHoroscopes,
-    handleRedirect, handleTabChange, handleHoroscopeClick
+    loadingUser, activeTab, result, error, loadingHoroscopes, filteredHoroscopes,
+    tabs, handleRedirect, handleTabChange, handleHoroscopeClick
   } = useHoroscopePage();
 
   const typedTabs = tabs as Tab[];

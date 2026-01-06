@@ -101,7 +101,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@MonEtoileApp',
     creator: '@MonEtoileApp',
-    title: 'Mon Étoile ✨ Voyance & Astrologie Authentique',
+    title: 'Mon Étoile ✨ Voyance & Astrologie Africaines',
     description: '🔮 Votre guide spirituel personnalisé. Consultations professionnelles, analyses astrologiques et guidance cosmique.',
     images: ['/twitter-image.jpg'],
   },

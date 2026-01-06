@@ -1,10 +1,10 @@
-import { motion } from 'framer-motion';
-import { Calendar, Clock, MapPin, User, CheckCircle, Eye, Download } from 'lucide-react';
 import { formatDate } from '@/lib/functions';
-import { Consultation, ConsultationType, ConsultationStatus } from '@/lib/interfaces';
-import StatusBadge from './StatusBadge';
-import TypeBadge, { TYPE_LABELS } from './TypeBadge';
+import { Consultation } from '@/lib/interfaces';
+import { motion } from 'framer-motion';
+import { Calendar, CheckCircle, Clock, Download, Eye, MapPin, User } from 'lucide-react';
 import React from 'react';
+import StatusBadge from './StatusBadge';
+import TypeBadge from './TypeBadge';
 
 export interface ConsultationCardProps {
   consultation: Consultation;

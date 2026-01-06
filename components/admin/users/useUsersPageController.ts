@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useAdminUsersPage } from '@/hooks/useAdminUsersPage';
+import { useAdminUsersPage } from '@/hooks/admin/useAdminUsersPage';
 
 export function useUsersPageController() {
   const {

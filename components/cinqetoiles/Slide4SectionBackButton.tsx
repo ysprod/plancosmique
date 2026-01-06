@@ -1,5 +1,5 @@
-import { AnimatePresence, motion } from 'framer-motion';
 import BackButton from '@/components/cinqetoiles/BackButton';
+import { motion } from 'framer-motion';
 
 export function Slide4SectionBackButton({ show, onClick }: { show: boolean; onClick: () => void }) {
   if (!show) return null;

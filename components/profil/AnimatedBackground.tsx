@@ -16,4 +16,5 @@ const AnimatedBackground = memo(() => (
   </div>
 ));
 AnimatedBackground.displayName = 'AnimatedBackground';
+
 export default AnimatedBackground;

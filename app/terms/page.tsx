@@ -166,7 +166,6 @@ export default function TermsPage() {
                             sans préavis et sans remboursement.
                         </p>
                     </Section>
-
                     <Section
                         number="11"
                         title="Loi applicable"

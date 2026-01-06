@@ -7,7 +7,7 @@ interface DateRange {
   label: string;
 }
 
-import { DateRangeType } from '@/hooks/useAdminReportsPage';
+import { DateRangeType } from '@/hooks/admin/useAdminReportsPage';
 interface ReportsHeaderProps {
   dateRange: DateRangeType;
   setDateRange: (v: DateRangeType) => void;

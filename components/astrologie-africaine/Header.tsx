@@ -84,4 +84,5 @@ export const Header = memo<HeaderProps>(({ year, month, onPrevMonth, onNextMonth
     </div>
   );
 });
+
 Header.displayName = "Header";

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
-import { useAdminRubriquesPage } from "@/hooks/useAdminRubriquesPage";
+import { useAdminRubriquesPage } from "@/hooks/admin/useAdminRubriquesPage";
 import { createCategory } from "@/lib/api/services/categories.service";
 import { Rubrique } from "@/lib/interfaces";
 import { getRubriqueId, rubriqueLabel } from "@/lib/functions";
@@ -78,8 +78,7 @@ export function useCreateCategoryPage() {
     return names.slice(0, 3).join(" • ") + (names.length > 3 ? " • …" : "");
   }, [selectedRubriques]);
 
-  const handleCreate = useCallback(async () => {
-    console.log("Creating category...", rubriqueIds);
+  const handleCreate = useCallback(async () => { 
     if (!canCreate) return;
     setBusy(true);
     setBanner(null);

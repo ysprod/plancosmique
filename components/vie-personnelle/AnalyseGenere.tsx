@@ -181,7 +181,6 @@ export default function AnalyseGenere() {
             />
           </div>
 
-
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -210,7 +209,6 @@ export default function AnalyseGenere() {
            
           </motion.div>
         </motion.div>
-
       </div>
     </div>
   );

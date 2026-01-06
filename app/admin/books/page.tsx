@@ -8,18 +8,17 @@ import { BookList } from "@/components/admin/books/BookList";
 import { BooksLoading } from "@/components/admin/books/BooksLoading";
 import { BookStats } from "@/components/admin/books/BookStats";
 import { NoBooksResult } from "@/components/admin/books/NoBooksResult";
-import { useAdminBooks } from "@/hooks/useAdminBooks";
+import { useAdminBooks } from "@/hooks/books/useAdminBooks";
 
 export default function AdminBooksPage() {
   const {
-    books, loading, error, searchQuery, selectedCategory,
-    formErrors, statusFilter, sortField, sortOrder, stats,
-    showFilters, deleteConfirm, showAddModal, currentStep,
-    formData, submitting, categories, filteredAndSortedBooks,
+    books, loading, error, searchQuery, selectedCategory, sortOrder, stats,
+    formErrors, statusFilter, sortField, showAddModal, currentStep, submitting,
+    showFilters, deleteConfirm, categories, filteredAndSortedBooks, formData,
     setFormData, setDeleteConfirm, setShowFilters, setSortOrder, setSortField,
-    setStatusFilter, setSelectedCategory, setError,
+    setStatusFilter, setSelectedCategory, setError, closeAddModal,
     setSearchQuery, fetchBooks, handleToggleActive, handleDeleteBook,
-    handleNextStep, handlePrevStep, handleAddBook, openAddModal, closeAddModal,
+    handleNextStep, handlePrevStep, handleAddBook, openAddModal,
   } = useAdminBooks();
 
   if (loading) {
@@ -55,7 +54,6 @@ export default function AdminBooksPage() {
           setSortOrder={setSortOrder}
           categories={categories}
           filteredCount={filteredAndSortedBooks.length}
-          totalCount={books.length}
         />
       )}
 
@@ -91,7 +89,6 @@ export default function AdminBooksPage() {
           if (deleteConfirm) handleDeleteBook(deleteConfirm);
         }}
       />
-
     </div>
   );
 }

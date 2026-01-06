@@ -1,5 +1,5 @@
 "use client";
-import { useAdminRubriquesPage } from '@/hooks/useAdminRubriquesPage';
+import { useAdminRubriquesPage } from '@/hooks/admin/useAdminRubriquesPage';
 import { RubriquesHeader } from '@/components/admin/rubriques/RubriquesHeader';
 import { RubriquesList } from '@/components/admin/rubriques/RubriquesList';
 import { RubriquesEditorPanel } from '@/components/admin/rubriques/RubriquesEditorPanel';
@@ -62,7 +62,6 @@ export default function RubriquesAdminPage() {
               offerings={offerings}
             />
           </div>
-
         </div>
       </div>
       

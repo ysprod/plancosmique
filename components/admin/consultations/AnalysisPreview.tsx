@@ -139,4 +139,5 @@ const AnalysisPreview = memo(({ analysis }: { analysis: any }) => {
 });
 
 AnalysisPreview.displayName = 'AnalysisPreview';
+
 export default AnalysisPreview;

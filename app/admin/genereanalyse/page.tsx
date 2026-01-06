@@ -3,7 +3,7 @@ import { GenereAnalyseError } from '@/components/admin/genereanalyse/GenereAnaly
 import { GenereAnalyseHeader } from '@/components/admin/genereanalyse/GenereAnalyseHeader';
 import { GenereAnalyseLoading } from '@/components/admin/genereanalyse/GenereAnalyseLoading';
 import { GenereAnalyseSuccess } from '@/components/admin/genereanalyse/GenereAnalyseSuccess';
-import { useGenereAnalysePage } from '@/hooks/useGenereAnalysePage';
+import { useGenereAnalysePage } from '@/hooks/admin/useGenereAnalysePage';
 
 export default function GenereAnalysePage() {
   const { step, error, analyseData, handleRetry, handleBack, } = useGenereAnalysePage();
@@ -16,7 +16,6 @@ export default function GenereAnalysePage() {
         onShare={() => navigator.share?.({ title: 'Analyse', text: 'Découvrez mon analyse astrologique' })}
         showActions={step === 'success'}
       />
-      
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-4">
         {(step === 'loading' || step === 'fetching' || step === 'generating') && (
           <GenereAnalyseLoading step={step} />

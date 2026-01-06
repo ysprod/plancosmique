@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import React, { memo } from 'react';
-import type { Tab } from '@/hooks/useAstrologieAfricainePage';
+import type { Tab } from '@/hooks/commons/useAstrologieAfricainePage';
 
 interface TabButtonProps {
   tab: Tab;
@@ -49,4 +49,5 @@ const TabButton = memo<TabButtonProps>(({ tab, isActive, onClick }) => (
   </motion.button>
 ));
 TabButton.displayName = 'TabButton';
+
 export { TabButton };

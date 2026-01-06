@@ -5,7 +5,7 @@ import { Slide4SectionForm } from '@/components/cinqetoiles/Slide4SectionForm';
 import { Slide4SectionProcessing } from '@/components/cinqetoiles/Slide4SectionProcessing';
 import { Slide4SectionGold } from '@/components/cinqetoiles/Slide4SectionGold';
 import { containerVariants, itemVariants, fadeVariants } from '@/components/cinqetoiles/slide4SectionVariants';
-import { useSlide4SectionMain } from '@/hooks/useSlide4SectionMain';
+import { useSlide4SectionMain } from '@/hooks/commons/useSlide4SectionMain';
 
 export default function Slide4SectionMain() {
   const {

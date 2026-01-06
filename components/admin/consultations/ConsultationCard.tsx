@@ -1,10 +1,9 @@
-import { useConsultationCard } from '@/hooks/useConsultationCard';
+import { useConsultationCard } from '@/hooks/consultations/useConsultationCard';
 import { motion } from 'framer-motion';
 import { Calendar, Eye, Mail, Sparkles, User } from 'lucide-react';
 import { memo } from 'react';
 import AstrologyData from './AstrologyData';
 import NumerologyData from './NumerologyData';
-import OfferingsData from './OfferingsData';
 import StatusBadge from './StatusBadge';
 
 interface ConsultationCardProps {

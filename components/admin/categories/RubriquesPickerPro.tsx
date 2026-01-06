@@ -1,12 +1,7 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
 import { Check, Search } from "lucide-react";
 import { Rubrique } from "@/lib/interfaces";
-
-function rubriqueLabel(r: Rubrique): string {
-  // robust pour ton code: parfois titre, parfois nom
-  // @ts-expect-error compat legacy
-  return (r?.titre ?? r?.nom ?? "").toString();
-}
+import { rubriqueLabel } from "@/lib/functions";
 
 export const RubriquesPickerPro = memo(function RubriquesPickerPro({
   title,

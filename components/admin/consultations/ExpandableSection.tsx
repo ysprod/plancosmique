@@ -55,5 +55,7 @@ const ExpandableSection = memo(({ title, content, icon: Icon, iconColor = "text-
     </motion.div>
   );
 });
+
 ExpandableSection.displayName = 'ExpandableSection';
+
 export default ExpandableSection;

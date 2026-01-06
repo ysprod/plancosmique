@@ -4,7 +4,7 @@ import ErrorState from '@/components/consultations/ErrorState';
 import LoadingSkeleton from '@/components/consultations/LoadingSkeleton';
 import PageHeader from '@/components/consultations/PageHeader';
 import Toast from '@/components/consultations/Toast';
-import { useAdminConsultationAnalysis } from '@/hooks/useAdminConsultationAnalysis';
+import { useAdminConsultationAnalysis } from '@/hooks/consultations/useAdminConsultationAnalysis';
 
 export default function AdminConsultationAnalysisView() {
     const {

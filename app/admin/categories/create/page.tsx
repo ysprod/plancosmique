@@ -1,47 +1,23 @@
 "use client";
-import { AnimatePresence, motion, useReducedMotion, Variants } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
 import { ArrowLeft, Tags } from "lucide-react";
 import ViewSwitcher from "./components/ViewSwitcher";
 import InvalidRubriquesAlert from "./components/InvalidRubriquesAlert";
 import { useRouter } from "next/navigation";
 import Banner from "./components/Banner";
-import PreviewCard from "./components/PreviewCard";
-import SuccessCard from "./components/SuccessCard";
-import CreateCategoryForm from "./components/CreateCategoryForm";
+import CreateCategoryViewSwitcher from "./components/CreateCategoryViewSwitcher";
 import { useCreateCategoryView } from "./useCreateCategoryView";
-
-const viewVariants: Variants = {
-  initial: { opacity: 0, y: 10, filter: "blur(2px)" },
-  animate: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.22 } },
-  exit: { opacity: 0, y: -8, filter: "blur(2px)", transition: { duration: 0.16 } },
-};
 
 export default function CreateCategoryPage() {
   const router = useRouter();
   const reducedMotion = useReducedMotion();
   const {
-    rubriques,
-    rubriquesLoading,
-    view,
-    setView,
-    nom,
-    setNom,
-    description,
-    setDescription,
-    rubriqueIds,
-    setRubriqueIds,
-    selectedSet,
-    busy,
-    banner,
-    showBanner,
-    selectedRubriques,
-    invalidRubriquesCount,
-    toggleRubrique,
-    clearSelection,
-    goPreview,
-    goCreate,
-    selectionSummary,
-    handleCreate,
+    rubriques, rubriquesLoading, view, setView, nom,
+    setNom, description, setDescription, rubriqueIds,
+    setRubriqueIds, selectedSet, busy, banner, showBanner,
+    selectedRubriques, invalidRubriquesCount,
+    toggleRubrique, clearSelection, goPreview, goCreate,
+    selectionSummary, handleCreate,
   } = useCreateCategoryView();
 
   return (
@@ -55,7 +31,6 @@ export default function CreateCategoryPage() {
           >
             <ArrowLeft className="h-4 w-4" /> Retour
           </button>
-
           <ViewSwitcher view={view} />
         </div>
 
@@ -74,56 +49,43 @@ export default function CreateCategoryPage() {
 
         <Banner banner={banner} />
 
-        <AnimatePresence mode="wait" initial={false}>
-          {view === "create" && (
-            <motion.div key="create" variants={viewVariants} initial="initial" animate="animate" exit="exit">
-              <CreateCategoryForm
-                nom={nom}
-                setNom={setNom}
-                description={description}
-                setDescription={setDescription}
-                rubriques={rubriques}
-                rubriqueIds={rubriqueIds}
-                selectedSet={selectedSet}
-                rubriquesLoading={rubriquesLoading}
-                toggleRubrique={toggleRubrique}
-                clearSelection={clearSelection}
-                selectionSummary={selectionSummary}
-                goPreview={goPreview}
-              />
-            </motion.div>
-          )}
-
-          {view === "preview" && (
-            <motion.div key="preview" variants={viewVariants} initial="initial" animate="animate" exit="exit">
-              <PreviewCard
-                nom={nom}
-                description={description}
-                selectedRubriques={selectedRubriques}
-                onBack={goCreate}
-                onConfirm={handleCreate}
-                busy={busy}
-              />
-            </motion.div>
-          )}
-
-          {view === "success" && (
-            <motion.div key="success" variants={viewVariants} initial="initial" animate="animate" exit="exit">
-              <SuccessCard
-                nom={nom.trim()}
-                onGoList={() => router.push("/admin/categories")}
-                onCreateAnother={() => {
-                  setNom("");
-                  setDescription("");
-                  setRubriqueIds([]);
-                  setView("create");
-                  showBanner({ type: "info", message: "Prêt pour une nouvelle catégorie." });
-                }}
-                reducedMotion={!!reducedMotion}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <CreateCategoryViewSwitcher
+          view={view}
+          formProps={{
+            nom,
+            setNom,
+            description,
+            setDescription,
+            rubriques,
+            rubriqueIds,
+            selectedSet,
+            rubriquesLoading,
+            toggleRubrique,
+            clearSelection,
+            selectionSummary,
+            goPreview,
+          }}
+          previewProps={{
+            nom,
+            description,
+            selectedRubriques,
+            onBack: goCreate,
+            onConfirm: handleCreate,
+            busy,
+          }}
+          successProps={{
+            nom: nom.trim(),
+            onGoList: () => router.push("/admin/categories"),
+            onCreateAnother: () => {
+              setNom("");
+              setDescription("");
+              setRubriqueIds([]);
+              setView("create");
+              showBanner({ type: "info", message: "Prêt pour une nouvelle catégorie." });
+            },
+            reducedMotion: !!reducedMotion,
+          }}
+        />
       </div>
     </div>
   );

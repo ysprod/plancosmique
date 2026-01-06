@@ -1,5 +1,5 @@
 'use client';
-import { useRubriquesOverviewState } from '@/hooks/useRubriquesOverviewState';
+import { useRubriquesOverviewState } from '@/hooks/commons/useRubriquesOverviewState';
 import { DOMAINES, getPlatformStats } from '@/lib/config/rubriques.config';
 import { motion } from 'framer-motion';
 import { Book, Calendar, Clock, Star, TrendingUp } from 'lucide-react';

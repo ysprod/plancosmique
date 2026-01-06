@@ -31,6 +31,7 @@ const InfoCard = memo(({ icon: Icon, label, value, iconColor, index = 0 }: InfoC
         </div>
     </motion.div>
 ));
+
 InfoCard.displayName = 'InfoCard';
 
 export default InfoCard;

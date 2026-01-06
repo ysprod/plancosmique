@@ -1,9 +1,8 @@
-import { AnimatePresence, motion } from "framer-motion";
  
+import { ConsultationChoice } from "@/lib/interfaces";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp, DollarSign, Package, Search, Trash2 } from "lucide-react";
 import { memo, useCallback, useMemo, useState } from "react";
-import { Offering } from "@/lib/api/services/offerings.service";
-import { ConsultationChoice, ConsultationOffering } from "@/lib/interfaces";
 
 type OfferingCategory = "animal" | "vegetal" | "beverage";
 
@@ -29,7 +28,7 @@ const CATEGORY_CONFIG: Record<OfferingCategory, { icon: string; label: string; c
 };
 
 
-import type { OfferingAlternative } from "@/lib/interfaces";
+import type { Offering, OfferingAlternative } from "@/lib/interfaces";
 
 export const OfferingSelector = memo(({
     alternative,
@@ -128,7 +127,7 @@ export const OfferingSelector = memo(({
                    bg-white font-bold text-center"
                 />
             </div>
- 
+
 
             {/* Offrande sélectionnée (détails) */}
             {selectedOffering && (
@@ -307,5 +306,7 @@ const ConsultationChoiceCard = memo(({
         </motion.div>
     );
 });
+
 ConsultationChoiceCard.displayName = "ConsultationChoiceCard";
+
 export default ConsultationChoiceCard;

@@ -3,7 +3,7 @@ import { SpiritualiteFormModal } from '@/components/admin/spiritualite/Spiritual
 import { SpiritualiteHeader } from '@/components/admin/spiritualite/SpiritualiteHeader';
 import { SpiritualiteMessages } from '@/components/admin/spiritualite/SpiritualiteMessages';
 import { SpiritualitePracticesList } from '@/components/admin/spiritualite/SpiritualitePracticesList';
-import { useSpiritualitePage } from '@/hooks/useSpiritualitePage';
+import { useSpiritualitePage } from '@/hooks/commons/useSpiritualitePage';
 
 export default function SpiritualiteAdmin() {
   const spiritualite = useSpiritualitePage();
@@ -35,6 +35,7 @@ export default function SpiritualiteAdmin() {
           updateArrayItem={spiritualite.updateArrayItem}
           availableIcons={spiritualite.availableIcons}
         />    
+        
         <SpiritualitePracticesList
           practices={spiritualite.practices}
           expandedPractices={spiritualite.expandedPractices}

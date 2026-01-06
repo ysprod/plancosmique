@@ -11,7 +11,9 @@ const viewVariants: Variants = {
 };
 
 export default function Banner({ banner }: { banner: BannerType }) {
+
   if (!banner) return null;
+
   return (
     <AnimatePresence>
       <motion.div

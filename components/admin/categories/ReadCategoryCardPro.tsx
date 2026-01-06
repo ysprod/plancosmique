@@ -1,19 +1,13 @@
 "use client";
-
-import React, { memo, useCallback, useMemo, useState } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { FolderTree, Pencil, Trash2, Copy, Check } from "lucide-react";
+import { Categorie } from "@/hooks/categories/useAdminCategoriesPage";
+import { rubriqueLabel } from "@/lib/functions";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Check, Copy, FolderTree, Pencil, Trash2 } from "lucide-react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { MiniPill } from "./MiniPill";
-import { Rubrique } from "@/lib/interfaces";
-import { Categorie } from "@/hooks/useAdminCategoriesPage";
 
 function getCategoryId(cat: any): string {
-  // Backend: souvent _id
   return String(cat?._id ?? cat?.id ?? "");
-}
-
-function rubriqueLabel(r: any): string {
-  return String(r?.titre ?? r?.nom ?? "");
 }
 
 const cardVariants = {

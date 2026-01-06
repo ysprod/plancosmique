@@ -377,8 +377,7 @@ import { OFFRANDES_CATALOGUE, getOfferingById } from '@/lib/config/offrandes.con
 
 // Exemple d'utilisation
 const consultation = getConsultationById('mission');
-console.log(consultation.titre); // "JE VEUX CONNAÎTRE MA MISSION DE VIE"
-console.log(consultation.frequence); // "UNE_FOIS_VIE"
+ // "UNE_FOIS_VIE"
 ```
 
 ---

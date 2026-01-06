@@ -10,14 +10,9 @@ import { useKnowledgePage } from '@/hooks/knowledge/useKnowledgePage';
 
 export default function KnowledgePage() {
   const {
-    isLoading, displayedKnowledges,
-    selectedCategory,
-    searchQuery, activeTab,
-    setSearchQuery,
-    setActiveTab,
-    handleSearch,
-    handleCategoryChange,
-    handleLike,   
+    isLoading, displayedKnowledges, selectedCategory, searchQuery, activeTab,
+    setSearchQuery, setActiveTab, handleSearch,
+    handleCategoryChange, handleLike,
   } = useKnowledgePage();
 
   return (
@@ -39,7 +34,7 @@ export default function KnowledgePage() {
       <div className="container mx-auto px-4 py-6">
         <KnowledgeCategories selectedCategory={selectedCategory} onChange={handleCategoryChange} />
       </div>
-      
+
       <div className="container mx-auto px-4 py-8">
         {isLoading ? (
           <KnowledgeLoadingList />

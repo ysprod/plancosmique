@@ -7,7 +7,7 @@ import React, { memo, useEffect } from 'react';
 import LoginLogoHeader from './LoginLogoHeader';
 import LoginErrorAlert from './LoginErrorAlert';
 import LoginInputField from './LoginInputField';
-import { useLoginForm } from '@/hooks/useLoginForm';
+import { useLoginForm } from '@/hooks/commons/useLoginForm';
 
 const LoginForm = () => {
   const {

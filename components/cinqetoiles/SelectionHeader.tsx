@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Sparkles, Star } from "lucide-react";
-import React, { memo } from "react";
+import { memo } from "react";
 
 const SelectionHeader = memo(() => (
   <motion.div

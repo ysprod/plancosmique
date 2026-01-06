@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { containerVariants, processingVariants } from '../../lib/animation.constants';
 import OfferingStep from './OfferingStep';
-import AnalyseGenere from './AnalyseGenere'; 
+import AnalyseGenere from './AnalyseGenere';
 import ConsultationSelection from './ConsultationSelection';
 import ErrorToast from './ErrorToast';
 import LoadingOverlay from './LoadingOverlay';
@@ -20,9 +20,9 @@ interface Slide4SectionProps {
   typeconsultation: string;
 }
 
-export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm'| 'consulter'| 'genereanalyse';
+export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm' | 'consulter' | 'genereanalyse';
 
-function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionProps) {
+function Slide4SectionComponent({ rubriqueId, typeconsultation }: Slide4SectionProps) {
   const router = useRouter();
   const { user } = useAuth();
   const [step, setStep] = useState<StepType>('selection');
@@ -33,8 +33,8 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
   const [consultation, setConsultation] = useState<any>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   const choicesFetchedRef = useRef(false);
-    const [choices, setChoices] = useState<ConsultationChoice[]>([]);
-    const [loading, setLoading] = useState(true);
+  const [choices, setChoices] = useState<ConsultationChoice[]>([]);
+  const [loading, setLoading] = useState(true);
   // Mapping formData frontend -> backend (strict)
   function mapFormDataToBackend(form: any) {
     if (!form) {
@@ -59,8 +59,7 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
       // Ajoute d'autres champs backend utiles ici
       ...form
     };
-    console.log('mapFormDataToBackend input:', form);
-    console.log('mapFormDataToBackend output:', result);
+
     return result;
   }
 
@@ -69,36 +68,33 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
       api.get(`/users/me`)
         .then(res => {
           setUserData(res.data);
-          console.log('User data fetched successfully.', res.data);
         })
         .catch(err => {
           console.error('Erreur chargement utilisateur:', err);
           setUserData(null);
         })
         .finally(() => {
-          console.log('User data fetch attempt finished.');
+          console.warn('User data fetch attempt finished.');
         });
     } else {
-      console.log('Utilisateur non connecté, pas de chargement des données utilisateur.');
       setUserData(null);
     }
   }, [user?._id]);
 
 
-    useEffect(() => {
-      if (choicesFetchedRef.current) return;
-      choicesFetchedRef.current = true;
-  
-      getRubriqueById(rubriqueId)
-        .then(rubrique => {
-          const arr = rubrique.consultationChoices || [];
-          setChoices(arr);
-        })
-        .catch(err => console.error('[Choices] ❌', err))
-        .finally(() => setLoading(false));
-    }, []);
+  useEffect(() => {
+    if (choicesFetchedRef.current) return;
+    choicesFetchedRef.current = true;
 
-  console.log('Current userData:', userData);
+    getRubriqueById(rubriqueId)
+      .then(rubrique => {
+        const arr = rubrique.consultationChoices || [];
+        setChoices(arr);
+      })
+      .catch(err => console.error('[Choices] ❌', err))
+      .finally(() => setLoading(false));
+  }, []);
+
 
   const handleOfferingValidation = useCallback(
     async (selectedAlternative: OfferingAlternative) => {
@@ -182,9 +178,7 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
       return;
     }
     try {
-      console.log('userData envoyé à mapFormDataToBackend:', userData);
       const mappedFormData = mapFormDataToBackend(userData);
-      console.log('formData généré pour payload:', mappedFormData);
       const payload = {
         serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
         type: typeconsultation,
@@ -194,10 +188,8 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
         status: 'pending_payment',
         alternatives: choice.offering.alternatives,
       };
-      console.log('Creating consultation with payload:', payload);
 
       const consultationRes = await api.post('/consultations', payload);
-      console.log('Consultation created:', consultationRes.data);
       if (consultationRes.status !== 200 && consultationRes.status !== 201) {
         throw new Error(consultationRes.data?.message || 'Erreur lors de la création');
       }

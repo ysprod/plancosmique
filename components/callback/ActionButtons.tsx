@@ -1,5 +1,4 @@
 'use client';
-
 import { motion, type Variants } from 'framer-motion';
 import { Download, Eye, Home, RefreshCw, ArrowRight } from 'lucide-react';
 import type { PaymentStatus } from './types';

@@ -26,7 +26,7 @@ export interface OfferingDetails {
 }
 
 export interface TransactionItem {
-  offeringId: OfferingDetails | string; // Peut être peuplé ou juste l'ID
+  offeringId: OfferingDetails | string;  
 }
 
 export interface Stats {

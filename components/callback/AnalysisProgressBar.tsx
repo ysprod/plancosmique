@@ -1,8 +1,6 @@
- 
-import { motion } from 'framer-motion';
+ import { motion } from 'framer-motion';
 import { AnalysisStage } from './types';
  
-
 export type AnalysisProgressBarProps = {
   analysisProgress: number;
   currentStageIndex: number;

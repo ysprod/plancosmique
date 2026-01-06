@@ -26,6 +26,7 @@ const ActionButton = memo(({ onClick, icon: Icon, label, gradient, disabled = fa
         <span>{label}</span>
     </motion.button>
 ));
+
 ActionButton.displayName = 'ActionButton';
 
 export default ActionButton;

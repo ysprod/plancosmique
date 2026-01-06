@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api } from '@/lib/api/client';
 import type { BackendHoroscope } from '@/lib/interfaces';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 type HoroscopeTypeId = 'mensuel' | 'annuel';
 

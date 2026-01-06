@@ -1,3 +1,4 @@
+import { Offering } from '@/lib/interfaces';
 import React from 'react';
 
 interface Category {
@@ -5,17 +6,7 @@ interface Category {
   label: string;
   color: string;
   emoji: string;
-}
-
-interface Offering {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  priceUSD: number;
-  icon: string;
-  description: string;
-}
+} 
 
 interface OffrandesListProps {
   offerings: Offering[];

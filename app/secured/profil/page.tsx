@@ -7,7 +7,7 @@ import ProfilNonPremiumSection from "@/components/profil/ProfilNonPremiumSection
 import TopProgressBar from "@/components/profil/TopProgressBar";
 import { useProfilCategories } from "@/hooks/profil/useProfilCategories";
 import { useProfilHighlightCards } from "@/hooks/profil/useProfilHighlightCards";
-import { useProfilUser } from "@/hooks/useProfilUser";
+import { useProfilUser } from "@/hooks/commons/useProfilUser";
 
 export default function ProfilPage() {
   const { userdata, loading } = useProfilUser();
@@ -30,7 +30,6 @@ export default function ProfilPage() {
       </div>
 
       <StatsCounter />
-
       <div className="h-16 sm:h-20" />
     </div>
   );

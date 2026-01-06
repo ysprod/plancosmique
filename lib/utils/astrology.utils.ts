@@ -1,8 +1,6 @@
 import { CarteDuCielData, CinqPortes } from "../types/astrology.types";
 
- 
-
-// Mapping des signes opposés pour calculer le Descendant
+ // Mapping des signes opposés pour calculer le Descendant
 const SIGNES_OPPOSES: Record<string, string> = {
   'Bélier': 'Balance',
   'Taureau': 'Scorpion',

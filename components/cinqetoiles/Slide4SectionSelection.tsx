@@ -1,7 +1,7 @@
-import { AnimatePresence, motion } from 'framer-motion';
 import ConsultationCard from '@/components/cinqetoiles/ConsultationCard';
 import LoadingState from '@/components/cinqetoiles/LoadingState';
 import SelectionHeader from '@/components/cinqetoiles/SelectionHeader';
+import { motion } from 'framer-motion';
 
 export function Slide4SectionSelection({ loading, choices, handleSelect, containerVariants, itemVariants, fadeVariants }: any) {
   return (

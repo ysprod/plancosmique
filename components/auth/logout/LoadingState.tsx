@@ -47,6 +47,7 @@ export const LoadingState = ({ progress }: { progress: number }) => (
       </div>
       <motion.p animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 1.5, repeat: Infinity }} className="text-xs sm:text-sm text-slate-500 mt-2 font-semibold">{progress}%</motion.p>
     </div>
+    
     <div className="flex items-center justify-center gap-3 sm:gap-4 text-slate-400">
       {[
         { Icon: Shield, color: "text-blue-400" },

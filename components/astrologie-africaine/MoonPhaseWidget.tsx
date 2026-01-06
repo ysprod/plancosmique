@@ -1,32 +1,21 @@
 "use client";
-
-import React, { memo, useMemo, useCallback, useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Sparkles, 
-  Moon,
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
   Info,
-  Zap,
   X
 } from "lucide-react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { DayCard } from "./DayCard";
-import { getPhaseConfig, getAdvice, normalizeIllumination, useThrottle } from "./moonPhaseUtils";
-import { dayVariants, containerVariants, modalVariants } from "./moonPhaseVariants";
+import { Header } from "./Header";
+import { getAdvice, getPhaseConfig, normalizeIllumination, useThrottle } from "./moonPhaseUtils";
+import { containerVariants, modalVariants } from "./moonPhaseVariants";
 
-// Légende des phases lunaires pour l'affichage
 const LEGEND_ITEMS = [
   { emoji: "🌑", label: "Nouvelle Lune" },
   { emoji: "🌓", label: "Premier Quartier" },
   { emoji: "🌕", label: "Pleine Lune" },
   { emoji: "🌗", label: "Dernier Quartier" },
 ];
-import { Header } from "./Header";
-
-// ============================================================================
-// TYPES
-// ============================================================================
 
 interface MoonPhaseDay {
   day: number;
@@ -166,9 +155,6 @@ const DetailModal = memo<DetailModalProps>(({ day, onClose }) => {
 });
 DetailModal.displayName = "DetailModal";
 
-// ============================================================================
-// COMPOSANT PRINCIPAL
-// ============================================================================
 
 export function MoonPhaseWidget() {
   const [monthData, setMonthData] = useState<MonthData | null>(null);
@@ -179,9 +165,7 @@ export function MoonPhaseWidget() {
 
   const prefersReducedMotion = useReducedMotion();
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // CALLBACKS
-  // ─────────────────────────────────────────────────────────────────────────
+
   const fetchMonthData = useCallback(async (date: Date) => {
     setLoading(true);
     setError(null);
@@ -189,7 +173,7 @@ export function MoonPhaseWidget() {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const cacheKey = `moon-${year}-${month}`;
-    
+
     const cached = sessionStorage.getItem(cacheKey);
     if (cached) {
       try {
@@ -205,7 +189,7 @@ export function MoonPhaseWidget() {
       const url = `https://www.icalendar37.net/lunar/api/?lang=fr&year=${year}&month=${month}&LDZ=${Date.now()}`;
       const res = await fetch(url);
       const data = await res.json();
-      
+
       const processedData = { year, month, phases: data.phase };
       setMonthData(processedData);
       sessionStorage.setItem(cacheKey, JSON.stringify(processedData));
@@ -247,8 +231,8 @@ export function MoonPhaseWidget() {
   const moonDays = useMemo(() => {
     if (!monthData?.phases) return [];
     const today = new Date();
-    const isCurrentMonth = 
-      monthData.year === today.getFullYear() && 
+    const isCurrentMonth =
+      monthData.year === today.getFullYear() &&
       monthData.month === today.getMonth() + 1;
 
     return Object.entries(monthData.phases)

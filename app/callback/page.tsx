@@ -5,32 +5,20 @@ import { useSearchParams } from 'next/navigation';
 import AnalysisProgressBar from '@/components/callback/AnalysisProgressBar';
 import AnalysisPreview from '@/components/callback/AnalysisPreview';
 import LoadingState from '@/components/callback/LoadingState';
-import { useAnimationVariants } from '@/hooks/useAnimationVariants';
-import { usePaymentCallback } from '@/hooks/usePaymentCallback';
+import { useAnimationVariants } from '@/hooks/commons/useAnimationVariants';
+import { usePaymentCallback } from '@/hooks/commons/usePaymentCallback';
 import { BackgroundBlobs, CompletionBanner, StatusCard, ActionButtons, SecurityNote } from '@/components/callback';
 
 const PaymentCallbackContent = () => {
-  const searchParams = useSearchParams();  
+  const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
   const {
-    isLoading,
-    isProcessing,
-    status,
-    statusConfig,
-    analysisStages,
-    isGeneratingAnalysis,
-    analysisCompleted,
-    analysisProgress,
-    currentStageIndex,
-    currentStageMessage,
-    consultationId,
-    downloadUrl,
-    shouldAutoRedirect,
-    autoRedirectCountdown,
-    handleViewConsultation,
-    handleDownloadBook,
-    handleRetry,
+    isLoading, isProcessing, status, statusConfig, analysisStages,
+    isGeneratingAnalysis, analysisCompleted, analysisProgress,
+    currentStageIndex, currentStageMessage, consultationId,
+    downloadUrl, shouldAutoRedirect, autoRedirectCountdown,
+    handleViewConsultation, handleDownloadBook, handleRetry,
     handleGoHome,
   } = usePaymentCallback(token);
 

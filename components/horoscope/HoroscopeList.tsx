@@ -1,16 +1,14 @@
-import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import HoroscopeCard from '@/components/horoscope/HoroscopeCard';
 import { BackendHoroscope } from '@/lib/interfaces';
-
 interface HoroscopeListProps {
   horoscopes: BackendHoroscope[];
   activeTab: string;
   onHoroscopeClick: (horoscope: BackendHoroscope) => void;
 }
 
-const HoroscopeList: React.FC<HoroscopeListProps> = ({ horoscopes, activeTab, onHoroscopeClick }) => {
+export default function HoroscopeList({ horoscopes, activeTab, onHoroscopeClick }: HoroscopeListProps) {
   if (!horoscopes.length) return null;
   return (
     <motion.div
@@ -35,6 +33,4 @@ const HoroscopeList: React.FC<HoroscopeListProps> = ({ horoscopes, activeTab, on
       </div>
     </motion.div>
   );
-};
-
-export default HoroscopeList;
+}

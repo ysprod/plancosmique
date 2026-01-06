@@ -200,7 +200,7 @@ export function usePaymentCallback(token: string | null) {
               }
             }, delay);
           } else {
-            console.log('⚠️ Max reconnection attempts reached');
+            console.warn('⚠️ Max reconnection attempts reached');
           }
         };
       } catch (err) {

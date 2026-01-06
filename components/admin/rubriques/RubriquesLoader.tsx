@@ -2,18 +2,11 @@ import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Loader2, Sparkles } from "lucide-react";
 
-// ============================================================================
-// TYPES
-// ============================================================================
-
 interface RubriquesLoaderProps {
   loading: boolean;
   offeringsLoading: boolean;
 }
 
-// ============================================================================
-// VARIANTS D'ANIMATION
-// ============================================================================
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -62,9 +55,6 @@ const floatVariants = {
   }
 };
 
-// ============================================================================
-// COMPOSANT OPTIMISÉ
-// ============================================================================
 
 export const RubriquesLoader = memo<RubriquesLoaderProps>(({ loading, offeringsLoading }) => {
   const message = loading ? "Chargement des rubriques..." : "Chargement des offrandes...";

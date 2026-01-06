@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { Loader2, Save, User, Phone, Globe, Shield } from 'lucide-react';
 import { countries } from '@/components/auth/countries';
+import { motion } from 'framer-motion';
+import { Loader2, Save, User } from 'lucide-react';
 import React from 'react';
 
 interface NewUserFormProps {

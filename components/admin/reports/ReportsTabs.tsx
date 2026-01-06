@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-import { ReportType } from '@/hooks/useAdminReportsPage';
+import { ReportType } from '@/hooks/admin/useAdminReportsPage';
 interface ReportsTabsProps {
   selectedReport: ReportType;
   setSelectedReport: (v: ReportType) => void;

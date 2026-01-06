@@ -1,14 +1,15 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
-import useHoroscopeTabs, { HoroscopeTypeId, Tab } from '@/hooks/horoscope/useHoroscopeTabs';
+import React from 'react';
+import { Tab, HoroscopeTypeId } from '@/lib/interfaces';
 
 interface HoroscopeTabsProps {
+  tabs: Tab[];
   activeTab: HoroscopeTypeId;
   onTabChange: (tabId: HoroscopeTypeId) => void;
 }
 
-const HoroscopeTabs: React.FC<HoroscopeTabsProps> = ({ activeTab, onTabChange }) => {
-  const tabs = useHoroscopeTabs();
+export default function HoroscopeTabs({ tabs, activeTab, onTabChange }: HoroscopeTabsProps) {
   return (
     <div className="mb-6">
       <div className="grid grid-cols-2 gap-2">
@@ -31,9 +32,7 @@ const HoroscopeTabs: React.FC<HoroscopeTabsProps> = ({ activeTab, onTabChange })
               />
             )}
             <div className="relative z-10 text-center">
-              <tab.icon
-                className={`w-5 h-5 mx-auto mb-1 ${activeTab === tab.id ? 'text-white' : 'text-gray-600'}`}
-              />
+              <tab.icon className={`w-5 h-5 mx-auto mb-1 ${activeTab === tab.id ? 'text-white' : 'text-gray-600'}`} />
               <div className={`font-bold text-sm ${activeTab === tab.id ? 'text-white' : 'text-gray-900'}`}>{tab.title}</div>
               <div className={`text-xs mt-0.5 ${activeTab === tab.id ? 'text-purple-100' : 'text-gray-500'}`}>{tab.subtitle}</div>
             </div>
@@ -42,6 +41,4 @@ const HoroscopeTabs: React.FC<HoroscopeTabsProps> = ({ activeTab, onTabChange })
       </div>
     </div>
   );
-};
-
-export default HoroscopeTabs;
+}

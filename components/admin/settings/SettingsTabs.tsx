@@ -6,7 +6,6 @@ interface Tab {
   icon: React.ElementType;
 }
 
-
 type TabId = string;
 interface SettingsTabsProps<T extends TabId = string> {
   tabs: readonly Tab[];

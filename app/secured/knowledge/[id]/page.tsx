@@ -81,7 +81,6 @@ export default function KnowledgeDetailPage() {
           </div>
 
           <h1 className="text-4xl font-bold text-white mb-6">{knowledge.title}</h1>
-
           <KnowledgeMeta knowledge={knowledge} isLiked={isLiked} onLike={handleLike} />
           {knowledge.tags && knowledge.tags.length > 0 && <KnowledgeTags tags={knowledge.tags} />}
           <KnowledgeContent content={knowledge.content} />

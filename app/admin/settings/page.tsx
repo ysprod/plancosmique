@@ -1,14 +1,7 @@
 'use client';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Bell, Lock, CreditCard, Database, Settings, Loader } from 'lucide-react';
-import SettingsTabs from '@/components/admin/settings/SettingsTabs';
-import SettingsGeneralTab from '@/components/admin/settings/SettingsGeneralTab';
-import SettingsNotificationsTab from '@/components/admin/settings/SettingsNotificationsTab';
-import SettingsSecurityTab from '@/components/admin/settings/SettingsSecurityTab';
-import SettingsPaymentTab from '@/components/admin/settings/SettingsPaymentTab';
-import SettingsSystemTab from '@/components/admin/settings/SettingsSystemTab';
-import SettingsHeader from './SettingsHeader';
-import SettingsSaveButton from './SettingsSaveButton';
+import { Bell, Lock, CreditCard, Database, Settings } from 'lucide-react';
+import SettingsLayout from './SettingsLayout';
+import SettingsTabContent from './SettingsTabContent';
 import { useSettingsView } from './useSettingsView';
 
 export default function SettingsPage() {
@@ -43,87 +36,34 @@ export default function SettingsPage() {
     { id: 'system', label: 'Système', icon: Database },
   ] as const;
 
+  const tabProps = {
+    general: {
+      siteName, setSiteName, siteEmail, setSiteEmail, sitePhone, setSitePhone, maintenanceMode, setMaintenanceMode
+    },
+    notifications: {
+      emailNotifications, setEmailNotifications, newUserNotif, setNewUserNotif, newConsultationNotif, setNewConsultationNotif, paymentNotif, setPaymentNotif
+    },
+    security: {
+      twoFactorAuth, setTwoFactorAuth, sessionTimeout, setSessionTimeout, passwordExpiry, setPasswordExpiry
+    },
+    payment: {
+      moneyFusionApiKey, setMoneyFusionApiKey, showApiKey, setShowApiKey, paymentMethods, setPaymentMethods
+    },
+    system: {
+      maxUploadSize, setMaxUploadSize, backupFrequency, setBackupFrequency, logLevel, setLogLevel
+    }
+  };
+
   return (
-    <div className="bg-gray-50">
-      <SettingsHeader />
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3 flex justify-end">
-        <SettingsSaveButton isSaving={isSaving} saveSuccess={saveSuccess} onClick={handleSave} />
-      </div>
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="lg:w-64 flex-shrink-0">
-            <SettingsTabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-          </div>
-          
-          <div className="flex-1">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-                className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6"
-              >
-                {activeTab === 'general' && (
-                  <SettingsGeneralTab
-                    siteName={siteName}
-                    setSiteName={setSiteName}
-                    siteEmail={siteEmail}
-                    setSiteEmail={setSiteEmail}
-                    sitePhone={sitePhone}
-                    setSitePhone={setSitePhone}
-                    maintenanceMode={maintenanceMode}
-                    setMaintenanceMode={setMaintenanceMode}
-                  />
-                )}
-                {activeTab === 'notifications' && (
-                  <SettingsNotificationsTab
-                    emailNotifications={emailNotifications}
-                    setEmailNotifications={setEmailNotifications}
-                    newUserNotif={newUserNotif}
-                    setNewUserNotif={setNewUserNotif}
-                    newConsultationNotif={newConsultationNotif}
-                    setNewConsultationNotif={setNewConsultationNotif}
-                    paymentNotif={paymentNotif}
-                    setPaymentNotif={setPaymentNotif}
-                  />
-                )}
-                {activeTab === 'security' && (
-                  <SettingsSecurityTab
-                    twoFactorAuth={twoFactorAuth}
-                    setTwoFactorAuth={setTwoFactorAuth}
-                    sessionTimeout={sessionTimeout}
-                    setSessionTimeout={setSessionTimeout}
-                    passwordExpiry={passwordExpiry}
-                    setPasswordExpiry={setPasswordExpiry}
-                  />
-                )}
-                {activeTab === 'payment' && (
-                  <SettingsPaymentTab
-                    moneyFusionApiKey={moneyFusionApiKey}
-                    setMoneyFusionApiKey={setMoneyFusionApiKey}
-                    showApiKey={showApiKey}
-                    setShowApiKey={setShowApiKey}
-                    paymentMethods={paymentMethods}
-                    setPaymentMethods={setPaymentMethods}
-                  />
-                )}
-                {activeTab === 'system' && (
-                  <SettingsSystemTab
-                    maxUploadSize={maxUploadSize}
-                    setMaxUploadSize={setMaxUploadSize}
-                    backupFrequency={backupFrequency}
-                    setBackupFrequency={setBackupFrequency}
-                    logLevel={logLevel}
-                    setLogLevel={setLogLevel}
-                  />
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-      </div>
-    </div>
+    <SettingsLayout
+      tabs={tabs}
+      activeTab={activeTab}
+      setActiveTab={(tab: string) => setActiveTab(tab as any)}
+      isSaving={isSaving}
+      saveSuccess={saveSuccess}
+      onSave={handleSave}
+    >
+      <SettingsTabContent activeTab={activeTab} tabProps={tabProps} />
+    </SettingsLayout>
   );
 }

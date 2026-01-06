@@ -3,9 +3,8 @@ export { BackgroundBlobs } from './BackgroundBlobs';
 export { CompletionBanner } from './CompletionBanner';
 export { SecurityNote } from './SecurityNote';
 export { StatusCard } from './StatusCard';
-
 // Hooks
-export { useAnalysisProgress } from '@/hooks/useAnalysisProgress';
+export { useAnalysisProgress } from '@/hooks/commons/useAnalysisProgress';
 export { useAnimationVariants } from './useAnimationVariants';
 export { usePaymentCallback } from './usePaymentCallback';
 // Types

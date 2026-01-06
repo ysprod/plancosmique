@@ -7,7 +7,7 @@ import { AdminPaymentsPagination } from '@/components/admin/payments/AdminPaymen
 import PaymentsFilters from '@/components/admin/payments/PaymentsFilters';
 import PaymentsList from '@/components/admin/payments/PaymentsList';
 import PaymentsStats from '@/components/admin/payments/PaymentsStats';
-import { useAdminPaymentsPage } from '@/hooks/useAdminPaymentsPage';
+import { useAdminPaymentsPage } from '@/hooks/admin/useAdminPaymentsPage';
 
 export default function PaymentsPage() {
   const {
@@ -33,7 +33,6 @@ export default function PaymentsPage() {
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
         <PaymentsStats stats={stats} />
-
         <PaymentsFilters
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}

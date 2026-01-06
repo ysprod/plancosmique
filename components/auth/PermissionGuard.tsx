@@ -1,9 +1,4 @@
-'use client';
-
-/**
- * Composant de protection par permission
- */
-
+'use client'; 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/hooks';
@@ -78,10 +73,7 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = ({
 
   return <>{children}</>;
 };
-
-/**
- * Composant de permission refusée
- */
+ 
 const PermissionDenied: React.FC<{ message: string; userRole?: string }> = ({
   message,
   userRole,

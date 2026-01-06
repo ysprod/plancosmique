@@ -25,4 +25,5 @@ const FloatingParticle = memo<FloatingParticleProps>(({ x, y, delay }) => (
 ));
 
 FloatingParticle.displayName = 'FloatingParticle';
+
 export default FloatingParticle;

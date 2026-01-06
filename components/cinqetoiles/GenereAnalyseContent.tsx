@@ -82,9 +82,7 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
   return (
     <div className=" bg-gradient-to-br from-gray-50 via-white to-purple-50/30 \
                   dark:from-gray-950 dark:via-gray-900 dark:to-purple-950/10">
-      
 
-      {/* Contenu principal avec animations optimisées */}
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <motion.div
           variants={containerVariants}
@@ -113,7 +111,7 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
                 Les résultats sont disponibles dans votre espace personnel.
               </span>
             </p>
-          </motion.div> 
+          </motion.div>
           <motion.div
             variants={itemVariants}
             className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4"
@@ -171,7 +169,7 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
         </motion.div>
       </main>
 
- 
+
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-72 h-72 bg-purple-300/10 \
                       dark:bg-purple-500/5 rounded-full blur-3xl" />

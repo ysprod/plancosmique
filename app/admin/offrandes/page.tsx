@@ -3,17 +3,17 @@ import OffrandesAddModal from '@/components/admin/offrandes/OffrandesAddModal';
 import OffrandesGestionPanel from '@/components/admin/offrandes/OffrandesGestionPanel';
 import OffrandesStats from '@/components/admin/offrandes/OffrandesStats';
 import OffrandesTabs from '@/components/admin/offrandes/OffrandesTabs';
-import { useAdminOffrandes } from '@/hooks/useAdminOffrandes';
-import useAdminOffrandesTabs from '@/hooks/useAdminOffrandesTabs';
+import { useAdminOffrandes } from '@/hooks/admin/useAdminOffrandes';
+import useAdminOffrandesTabs from '@/hooks/admin/useAdminOffrandesTabs';
 import { AnimatePresence } from 'framer-motion';
 import AssociationsConsultationsOffrandes from '@/components/admin/AssociationsConsultationsOffrandes';
 
 export default function AdminOffrandes() {
     const {
         offerings, statsData, loading, saving, showAddModal, editingId,
-        formData, setShowAddModal, setFormData, successMessage,
-        errorMessage, setErrorMessage, fetchOfferings,
-        handleAdd, handleEdit, handleConfirm, handleDelete,
+        formData, setShowAddModal, setFormData, successMessage, errorMessage,
+        setErrorMessage, fetchOfferings, handleConfirm, handleDelete,
+        handleAdd, handleEdit,
     } = useAdminOffrandes();
 
     const { activeTab, setActiveTab } = useAdminOffrandesTabs();
@@ -63,10 +63,9 @@ export default function AdminOffrandes() {
                     )}
                 </AnimatePresence>
 
-                {/* Associations consultations & offrandes */}
                 <div className="mt-12">
-                  <h2 className="text-xl font-bold mb-4 text-amber-800">Associations consultations & offrandes</h2>
-                  <AssociationsConsultationsOffrandes />
+                    <h2 className="text-xl font-bold mb-4 text-amber-800">Associations consultations & offrandes</h2>
+                    <AssociationsConsultationsOffrandes />
                 </div>
             </div>
         </div>

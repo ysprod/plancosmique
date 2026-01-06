@@ -12,7 +12,7 @@ function generateFilename(sujet: Sujet): string {
       .replace(/[^a-zA-Z0-9\s-]/g, '')
       .replace(/\s+/g, '-')
       .toLowerCase()
-      .substring(0, 40); 
+      .substring(0, 40);
 
   const prenoms = sanitize(sujet.prenoms);
   const nom = sanitize(sujet.nom);
@@ -130,6 +130,7 @@ export async function GET(
     }
 
     let stream;
+    
     try {
       stream = await renderToStream(pdfDocument as any);
     } catch (err: any) {

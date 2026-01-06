@@ -21,7 +21,6 @@ export function EditUserForm({ formData, setFormData, saving, success, onSubmit 
       onSubmit={onSubmit}
       className="bg-white rounded-2xl shadow-lg border border-slate-200 p-6 space-y-6"
     >
-      {/* Informations de base */}
       <div>
         <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
           <User className="w-5 h-5 text-violet-600" />

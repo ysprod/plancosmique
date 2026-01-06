@@ -35,4 +35,5 @@ const RitualCard = memo<RitualCardProps>(({ ritual, index }) => (
   </motion.div>
 ));
 RitualCard.displayName = 'RitualCard';
+
 export { RitualCard };

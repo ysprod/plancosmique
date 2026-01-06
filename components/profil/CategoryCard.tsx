@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { memo } from "react";
-import { Zap, ArrowRight } from "lucide-react";
 
 interface CategoryCardProps {
   category: {

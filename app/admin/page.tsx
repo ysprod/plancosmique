@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useAdminDashboardPage } from '@/hooks/useAdminDashboardPage';
+import { useAdminDashboardPage } from '@/hooks/admin/useAdminDashboardPage';
 import AdminHeader from '@/components/admin/dashboard/AdminHeader';
 import ErrorState from '@/components/admin/dashboard/ErrorState';
 import LoadingState from '@/components/admin/dashboard/LoadingState';
@@ -11,8 +11,7 @@ import StatsGrid from '@/components/admin/dashboard/StatsGrid';
 import { DetailsGrid } from '@/components/admin/dashboard/DetailsGrid';
 
 export default function AdminDashboard() {
-  const {
-    stats, loading, error, lastUpdated,
+  const { stats, loading, error, lastUpdated,
     isRefreshing, derivedStats, showRefreshBanner, handleRefresh,
   } = useAdminDashboardPage();
 

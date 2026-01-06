@@ -175,7 +175,7 @@ const consultation = getConsultationById('mission');
 
 // Statistiques de la plateforme
 const stats = getPlatformStats();
-console.log(stats);
+ 
 // {
 //   totalDomaines: 1,
 //   totalRubriques: 2,
@@ -205,8 +205,7 @@ const cartItems = [
   { offeringId: '...', quantity: 2, name: 'Poule', price: 5000, category: 'animal', icon: '🐔' }
 ];
 const total = calculateCartTotal(cartItems);
-console.log(formatPriceCFA(total)); // "10 000 CFA"
-```
+ ```
 
 ### Visualiser l'architecture complète
 

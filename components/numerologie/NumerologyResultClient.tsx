@@ -3,12 +3,12 @@
 import React, { useMemo } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Calendar, Sparkles } from 'lucide-react';
-import { LifeCyclesSection } from './sections/LifeCyclesSection';
-import { OfferingsSection } from './sections/OfferingsSection';
-import { SynthesisSection } from './sections/SynthesisSection';
-import { CyclesSection } from './sections/CyclesSection';
-import { ThemeNaissanceSection } from './sections/ThemeNaissanceSection';
-import { WisdomSection } from './sections/WisdomSection';
+import { LifeCyclesSection } from './LifeCyclesSection';
+import { OfferingsSection } from './OfferingsSection';
+import { SynthesisSection } from './SynthesisSection';
+import { CyclesSection } from './CyclesSection';
+import { ThemeNaissanceSection } from './ThemeNaissanceSection';
+import { WisdomSection } from './WisdomSection';
  
 
 // ============================================================================

@@ -60,8 +60,7 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
       // Ajoute d'autres champs backend utiles ici
       ...form
     };
-    console.log('mapFormDataToBackend input:', form);
-    console.log('mapFormDataToBackend output:', result);
+ 
     return result;
   }
 
@@ -70,18 +69,17 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
       api.get(`/users/me`)
         .then(res => {
           setUserData(res.data);
-          console.log('User data fetched successfully.', res.data);
+   
         })
         .catch(err => {
           console.error('Erreur chargement utilisateur:', err);
           setUserData(null);
         })
         .finally(() => {
-          console.log('User data fetch attempt finished.');
+          console.warn('User data fetch attempt finished.');
         });
     } else {
-      console.log('Utilisateur non connecté, pas de chargement des données utilisateur.');
-      setUserData(null);
+       setUserData(null);
     }
   }, [user?._id]);
 
@@ -99,8 +97,7 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
         .finally(() => setLoading(false));
     }, []);
 
-  console.log('Current userData:', userData);
-
+ 
   const handleOfferingValidation = useCallback(
     async (selectedAlternative: OfferingAlternative) => {
       try {
@@ -183,10 +180,8 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
       return;
     }
     try {
-      console.log('userData envoyé à mapFormDataToBackend:', userData);
-      const mappedFormData = mapFormDataToBackend(userData);
-      console.log('formData généré pour payload:', mappedFormData);
-      const payload = {
+       const mappedFormData = mapFormDataToBackend(userData);
+       const payload = {
         serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
         type: typeconsultation,
         title: choice.title,
@@ -195,11 +190,9 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
         status: 'pending_payment',
         alternatives: choice.offering.alternatives,
       };
-      console.log('Creating consultation with payload:', payload);
-
+ 
       const consultationRes = await api.post('/consultations', payload);
-      console.log('Consultation created:', consultationRes.data);
-      if (consultationRes.status !== 200 && consultationRes.status !== 201) {
+       if (consultationRes.status !== 200 && consultationRes.status !== 201) {
         throw new Error(consultationRes.data?.message || 'Erreur lors de la création');
       }
       const id = consultationRes.data?.id || consultationRes.data?.consultationId;

@@ -443,10 +443,9 @@ function ProtectedRouteComponent({
     if (isLoading) return;
     
     if (!isAuthenticated) {
-      console.log('[ProtectedRoute] 🚫 Non authentifié, redirection vers:', loginUrl);
-      router.push(loginUrl);
+       router.push(loginUrl);
     } else {
-      console.log('[ProtectedRoute] ✅ Authentifié');
+      console.warn('[ProtectedRoute] ✅ Authentifié');
     }
   }, [isAuthenticated, isLoading, router, loginUrl]);
 

@@ -86,13 +86,13 @@ const PaginationControls = memo(({
               page === '...'
                 ? <span key={`ellipsis-${index}`} className="px-1.5 text-gray-400 text-[10px]">•••</span>
                 : <button
-                    key={page}
-                    onClick={() => onPageChange(page as number)}
-                    disabled={loading}
-                    className={`min-w-[28px] px-2 py-1 rounded-lg text-[10px] font-bold transition-all ${page === currentPage ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md scale-105' : 'border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'} disabled:opacity-30`}
-                  >
-                    {page}
-                  </button>
+                  key={page}
+                  onClick={() => onPageChange(page as number)}
+                  disabled={loading}
+                  className={`min-w-[28px] px-2 py-1 rounded-lg text-[10px] font-bold transition-all ${page === currentPage ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md scale-105' : 'border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'} disabled:opacity-30`}
+                >
+                  {page}
+                </button>
             ))}
           </div>
           <div className="sm:hidden px-2.5 py-1 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg text-[10px] font-bold shadow-md">

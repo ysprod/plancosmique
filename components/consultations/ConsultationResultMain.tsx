@@ -1,12 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertCircle, ArrowLeft, Download, Star } from 'lucide-react';
 import CosmicLoader from './CosmicLoader';
-import SubjectHeader from './SubjectHeader';
 import MarkdownContent from './MarkdownContent';
-// import CosmicLoader from '../../app/secured/consultations/[id]/CosmicLoader';
-// import SubjectHeader from '../../app/secured/consultations/[id]/SubjectHeader';
-// import MarkdownContent from '../../app/secured/consultations/[id]/MarkdownContent';
-
+import SubjectHeader from './SubjectHeader';
+ 
 interface ConsultationResultMainProps {
   loading: boolean;
   error: string | null;

@@ -107,8 +107,7 @@ export const CartModal: React.FC<CartModalProps> = ({
                                                     </div>
                                                     <div className="flex items-center gap-2 flex-shrink-0">
                                                         <button
-                                                            onClick={() => {
-                                                                console.log("➖ Clic -1 sur:", itemId);
+                                                            onClick={() => {        
                                                                 onUpdateQuantity(itemId, -1);
                                                             }}
                                                             className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:border-amber-500 active:scale-90 flex items-center justify-center transition-all"
@@ -117,8 +116,7 @@ export const CartModal: React.FC<CartModalProps> = ({
                                                         </button>
                                                         <span className="font-bold text-base sm:text-lg w-6 sm:w-8 text-center text-gray-900 dark:text-white">{item.quantity}</span>
                                                         <button
-                                                            onClick={() => {
-                                                                console.log("➕ Clic +1 sur:", itemId);
+                                                            onClick={() => { 
                                                                 onUpdateQuantity(itemId, 1);
                                                             }}
                                                             className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:border-amber-500 active:scale-90 flex items-center justify-center transition-all"
@@ -128,8 +126,7 @@ export const CartModal: React.FC<CartModalProps> = ({
                                                     </div>
                                                     <button
                                                         onClick={() => {
-                                                            console.log("🗑️ Clic suppression sur:", itemId);
-                                                            onRemoveFromCart(itemId);
+                                                             onRemoveFromCart(itemId);
                                                         }}
                                                         className="text-red-500 hover:text-red-700 active:scale-90 transition-all p-2"
                                                     >

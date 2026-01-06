@@ -12,8 +12,7 @@ interface ConsultationSectionProps {
 
 export function ConsultationSection({ rubrique }: ConsultationSectionProps) {
   const router = useRouter();
-  console.log("ConsultationSection rubrique:", rubrique);
-  useEffect(() => {
+   useEffect(() => {
     if (rubrique.typeconsultation === 'HOROSCOPE') {
       router.push('/secured/horoscope');
     }

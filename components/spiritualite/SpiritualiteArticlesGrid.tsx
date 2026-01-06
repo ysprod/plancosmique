@@ -1,4 +1,3 @@
-
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Calendar, Clock, Eye, Heart, ArrowRight, Flame } from 'lucide-react';

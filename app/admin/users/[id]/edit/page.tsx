@@ -4,10 +4,12 @@ import { EditUserForm } from '@/components/admin/users/EditUserForm';
 import { EditUserHeader } from '@/components/admin/users/EditUserHeader';
 import { EditUserLoading } from '@/components/admin/users/EditUserLoading';
 import { EditUserSuccessAlert } from '@/components/admin/users/EditUserSuccessAlert';
-import { useEditUserPage } from '@/hooks/useEditUserPage';
+import { useEditUserPage } from '@/hooks/commons/useEditUserPage';
 
 export default function EditUserPage() {
-  const { loading, saving, error, success, formData, setError, setFormData, handleSubmit } = useEditUserPage();
+  const { loading, saving, error, success, formData,
+    setError, setFormData, handleSubmit
+  } = useEditUserPage();
 
   if (loading) {
     return <EditUserLoading />;
@@ -19,7 +21,7 @@ export default function EditUserPage() {
         <EditUserHeader />
 
         {success && <EditUserSuccessAlert />}
-        
+
         {error && <EditUserErrorAlert error={error} onClose={() => setError(null)} />}
 
         <EditUserForm

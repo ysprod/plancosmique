@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Plus, X, CheckCircle, ArrowRight, ArrowLeft, Save, Loader2 } from 'lucide-react';
-import { BookFormData } from '@/hooks/useAdminBooks';
+import { BookFormData } from '@/hooks/books/useAdminBooks';
 
 interface BookAddModalProps {
   show: boolean;
