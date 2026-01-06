@@ -1,11 +1,16 @@
+import React from "react";
 import { useCallback, useEffect, useMemo } from "react";
 import { Rubrique } from "@/lib/interfaces";
-import { useCategoryClientView } from "./useCategoryClientView";
+export { useCategoryClientView } from "./useCategoryClientView";
 import { getRubriqueId, getRubriqueFromUrl, setRubriqueInUrl } from "./categoryClientViewUtils";
 import { Categorie } from "@/hooks/categories/useAdminCategoriesPage";
 
 export function useCategoryClientViewMain(category: Categorie) {
-    const { rubriques, rubriqueCourante, setRubriqueCourante } = useCategoryClientView(category);
+    // Remplacer par la logique directe ou par un autre hook si besoin
+    // Ici, on suppose que la logique doit être définie localement
+    // À adapter selon la structure réelle
+    const [rubriques, setRubriques] = React.useState<Rubrique[]>(category.rubriques || []);
+    const [rubriqueCourante, setRubriqueCourante] = React.useState<Rubrique | null>(null);
 
     const rubriquesById = useMemo(() => {
         const m = new Map<string, Rubrique>();

@@ -1,13 +1,12 @@
 "use client";
-import React from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import type { Categorie } from "@/hooks/categories/useAdminCategoriesPage";
-import type { Rubrique } from "@/lib/interfaces";
-import { RubriqueView } from "./RubriqueView";
-import CategoryHeader from "./CategoryHeader";
+import { AnimatePresence, motion } from "framer-motion";
+import React from "react";
 import CategoryEmptyState from "./CategoryEmptyState";
+import CategoryHeader from "./CategoryHeader";
 import CategoryRubriquesList from "./CategoryRubriquesList";
-import { useCategoryClientView } from "./useCategoryClientViewMain";
+import { RubriqueView } from "./RubriqueView";
+import { useCategoryClientViewMain } from "./useCategoryClientViewMain";
 
 const pageVariants = {
   initial: { opacity: 0, y: 10, filter: "blur(2px)" },
@@ -15,17 +14,12 @@ const pageVariants = {
   exit: { opacity: 0, y: -8, filter: "blur(2px)", transition: { duration: 0.18 } },
 };
 
-const listVariants = {
-  initial: {},
-  animate: { transition: { staggerChildren: 0.05, delayChildren: 0.05 } },
-};
-
 interface CategoryClientViewProps {
   category: Categorie;
 }
 
 const CategoryClientView: React.FC<CategoryClientViewProps> = ({ category }) => {
-  const { rubriques, rubriqueCourante, openRubriqueById, closeRubrique } = useCategoryClientView(category);
+  const { rubriques, rubriqueCourante, openRubriqueById, closeRubrique } = useCategoryClientViewMain(category);
   const hasRubriques = rubriques.length > 0;
 
   return (
@@ -54,7 +48,6 @@ const CategoryClientView: React.FC<CategoryClientViewProps> = ({ category }) => 
             <CategoryRubriquesList
               rubriques={rubriques}
               onOpen={openRubriqueById}
-              variants={listVariants}
             />
           )}
         </AnimatePresence>
