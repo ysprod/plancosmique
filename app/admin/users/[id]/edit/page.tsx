@@ -11,9 +11,7 @@ export default function EditUserPage() {
     setError, setFormData, handleSubmit
   } = useEditUserPage();
 
-  if (loading) {
-    return <EditUserLoading />;
-  }
+  if (loading) { return <EditUserLoading />; }
 
   return (
     <div className="bg-gradient-to-br from-slate-50 to-violet-50 p-4 sm:p-6">

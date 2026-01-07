@@ -13,10 +13,9 @@ export default function PaymentsPage() {
   const {
     payments, total, showFilters, loading, totalPages, error,
     stats, methodFilter, currentPage, isRefreshing,
-    searchQuery, statusFilter,
+    searchQuery, statusFilter, handleResetFilters,
     setStatusFilter, setSearchQuery, setMethodFilter,
     setCurrentPage, setShowFilters, handleRefresh,
-    handleResetFilters,
   } = useAdminPaymentsPage();
 
   if (loading) {

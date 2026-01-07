@@ -1,28 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import { containerVariants, processingVariants } from '@/lib/animation.constants';
 import { api } from '@/lib/api/client';
+import { getRubriqueById } from '@/lib/api/services/rubriques.service';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { ConsultationChoice, ConsultationData, OfferingAlternative, UserData, WalletOffering } from '@/lib/interfaces';
+import { mapFormDataToBackend } from '@/lib/functions';
+import { ConsultationChoice, ConsultationData, OfferingAlternative, Rubrique, UserData, WalletOffering } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { containerVariants, processingVariants } from '../../lib/animation.constants';
-import OfferingStep from './OfferingStep';
 import AnalyseGenere from './AnalyseGenere';
-import ConsultationSelection from './ConsultationSelection';
+import ConsultationCard from './ConsultationCard';
 import ErrorToast from './ErrorToast';
 import LoadingOverlay from './LoadingOverlay';
+import OfferingStep from './OfferingStep';
 import PaymentProcessing from './PaymentProcessing';
-import { getRubriqueById } from '@/lib/api/services/rubriques.service';
+import { ConsultationSelection } from './ConsultationSection';
 
 interface Slide4SectionProps {
-  rubriqueId: string;
-  typeconsultation: string;
+  rubrique: Rubrique;
 }
 
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm' | 'consulter' | 'genereanalyse';
 
-function Slide4SectionComponent({ rubriqueId, typeconsultation }: Slide4SectionProps) {
+function Slide4SectionComponent({ rubrique }: Slide4SectionProps) {
+  const [alreadyDoneConsultationIds, setAlreadyDoneConsultationIds] = useState<Record<string, string>>({});
+  const [alreadyDoneChoices, setAlreadyDoneChoices] = useState<string[]>([]);
   const router = useRouter();
   const { user } = useAuth();
   const [step, setStep] = useState<StepType>('selection');
@@ -35,33 +38,6 @@ function Slide4SectionComponent({ rubriqueId, typeconsultation }: Slide4SectionP
   const choicesFetchedRef = useRef(false);
   const [choices, setChoices] = useState<ConsultationChoice[]>([]);
   const [loading, setLoading] = useState(true);
-  // Mapping formData frontend -> backend (strict)
-  function mapFormDataToBackend(form: any) {
-    if (!form) {
-      console.warn('mapFormDataToBackend: form is null or undefined');
-      return {};
-    }
-    const result = {
-      firstName: form.prenoms || form.firstName || '',
-      lastName: form.nom || form.lastName || '',
-      dateOfBirth: form.dateNaissance
-        ? new Date(form.dateNaissance).toISOString()
-        : (form.dateOfBirth ? new Date(form.dateOfBirth).toISOString() : ''),
-      timeOfBirth: form.heureNaissance || form.timeOfBirth || '',
-      countryOfBirth: form.paysNaissance || form.countryOfBirth || '',
-      cityOfBirth: form.villeNaissance || form.cityOfBirth || '',
-      gender: form.genre || form.gender || '',
-      phone: form.phone || form.numeroSend || '',
-      email: form.email || '',
-      country: form.country || form.paysNaissance || '',
-      question: form.question || '',
-      username: form.username || '',
-      // Ajoute d'autres champs backend utiles ici
-      ...form
-    };
-
-    return result;
-  }
 
   useEffect(() => {
     if (user?._id) {
@@ -86,14 +62,44 @@ function Slide4SectionComponent({ rubriqueId, typeconsultation }: Slide4SectionP
     if (choicesFetchedRef.current) return;
     choicesFetchedRef.current = true;
 
-    getRubriqueById(rubriqueId)
+    getRubriqueById(rubrique?._id || '')
       .then(rubrique => {
         const arr = rubrique.consultationChoices || [];
         setChoices(arr);
       })
       .catch(err => console.error('[Choices] ❌', err))
       .finally(() => setLoading(false));
-  }, []);
+
+    // Récupérer les choix déjà effectués
+    if (user?._id) {
+      api.get(`/user-consultation-choices?userId=${user._id}`)
+        .then(res => {
+          // Si l'API retourne [{choiceId, consultationId}, ...]
+          if (Array.isArray(res.data)) {
+            const ids: string[] = [];
+            const map: Record<string, string> = {};
+            res.data.forEach((item: any) => {
+              if (typeof item === 'string') {
+                ids.push(item);
+              } else if (item.choiceId && item.consultationId) {
+                ids.push(item.choiceId);
+                map[item.choiceId] = item.consultationId;
+              }
+            });
+            setAlreadyDoneChoices(ids);
+            setAlreadyDoneConsultationIds(map);
+          } else {
+            setAlreadyDoneChoices([]);
+            setAlreadyDoneConsultationIds({});
+          }
+        })
+        .catch(err => {
+          console.error('[AlreadyDoneChoices] ❌', err);
+          setAlreadyDoneChoices([]);
+          setAlreadyDoneConsultationIds({});
+        });
+    }
+  }, [user?._id, rubrique?._id]);
 
 
   const handleOfferingValidation = useCallback(
@@ -181,7 +187,7 @@ function Slide4SectionComponent({ rubriqueId, typeconsultation }: Slide4SectionP
       const mappedFormData = mapFormDataToBackend(userData);
       const payload = {
         serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
-        type: typeconsultation,
+        type: rubrique?.typeconsultation,
         title: choice.title,
         formData: mappedFormData,
         description: choice.description,
@@ -238,10 +244,7 @@ function Slide4SectionComponent({ rubriqueId, typeconsultation }: Slide4SectionP
   }, []);
 
   return (
-    <div className=" bg-gradient-to-br 
-                    from-purple-50/80 via-pink-50/50 to-orange-50/80
-                    dark:from-gray-950 dark:via-purple-950/10 dark:to-gray-900
-                    relative overflow-hidden">
+    <div className="bg-gradient-to-br from-purple-50/80 via-pink-50/50 to-orange-50/80 dark:from-gray-950 dark:via-purple-950/10 dark:to-gray-900 relative overflow-hidden">
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <motion.div
           animate={{
@@ -273,7 +276,6 @@ function Slide4SectionComponent({ rubriqueId, typeconsultation }: Slide4SectionP
                    rounded-full blur-3xl"
         />
       </div>
-
       <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
         <AnimatePresence mode="wait">
           {step === 'selection' && !paymentLoading && (
@@ -284,7 +286,7 @@ function Slide4SectionComponent({ rubriqueId, typeconsultation }: Slide4SectionP
               animate="visible"
               exit="exit"
             >
-              <ConsultationSelection onSelect={handleSelectConsultation} choices={choices} />
+              <ConsultationSelection onSelect={handleSelectConsultation} choices={choices} alreadyDoneChoices={alreadyDoneChoices} alreadyDoneConsultationIds={alreadyDoneConsultationIds} />
             </motion.div>
           )}
           {paymentLoading && (
@@ -366,3 +368,40 @@ function Slide4SectionComponent({ rubriqueId, typeconsultation }: Slide4SectionP
 export default memo(Slide4SectionComponent, () => {
   return true;
 });
+
+
+// const ConsultationSelection: React.FC<{
+//   onSelect: (choice: ConsultationChoice) => void;
+//   title?: string;
+//   choices: ConsultationChoice[];
+//   alreadyDoneChoices: string[];
+//   alreadyDoneConsultationIds?: Record<string, string>;
+// }> = ({ onSelect, title, choices, alreadyDoneChoices, alreadyDoneConsultationIds }) => (
+//   <>
+//     <motion.div
+//       initial={{ opacity: 0, y: -20 }}
+//       animate={{ opacity: 1, y: 0 }}
+//       className="text-center mb-8"
+//     >
+//       <h2 className="text-xl sm:text-xl lg:text-xl font-bold mb-3">
+//         {title || 'Veuillez choisir une consultation'}
+//       </h2>
+//     </motion.div>
+//     <motion.div
+//       initial={{ opacity: 0 }}
+//       animate={{ opacity: 1 }}
+//       transition={{ delay: 0.2 }}
+//       className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2"
+//     >
+//       {choices.map((choice) => (
+//         <ConsultationCard
+//           key={choice.id}
+//           choice={choice}
+//           onSelect={() => onSelect(choice)}
+//           alreadyDone={alreadyDoneChoices.includes(choice.id)}
+//           consultationId={alreadyDoneConsultationIds?.[choice.id]}
+//         />
+//       ))}
+//     </motion.div>
+//   </>
+// );

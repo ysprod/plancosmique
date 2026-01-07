@@ -19,7 +19,9 @@ export default function WelcomePage() {
           className="h-full w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent"
         />
       </motion.div>
+
       <WelcomeHeader />
+
       <div className="px-4 py-6 max-w-2xl mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
@@ -29,6 +31,7 @@ export default function WelcomePage() {
         >
           Bienvenue dans ce temple virtuel, où chacun vient chercher une réponse aux trois grandes questions de l'existence :
         </motion.p>
+        
         <WelcomeQuestions />
         <WelcomeIntro />
       </div>

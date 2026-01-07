@@ -61,7 +61,6 @@ export default function NotificationsPage() {
         setShowSettings={setShowSettings}
       />
       <NotificationFilterBar filter={filter} setFilter={setFilter} />
-
       <div className="container mx-auto px-4 py-8">
         <NotificationList
           notifications={filteredNotifications}
@@ -71,7 +70,6 @@ export default function NotificationsPage() {
           onDelete={handleDelete}
         />
       </div>
-      
       <NotificationSettingsModal show={showSettings} onClose={() => setShowSettings(false)} />
     </div>
   );

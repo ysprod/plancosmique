@@ -10,10 +10,9 @@ import AssociationsConsultationsOffrandes from '@/components/admin/AssociationsC
 
 export default function AdminOffrandes() {
     const {
-        offerings, statsData, loading, saving, showAddModal, editingId,
-        formData, setShowAddModal, setFormData, successMessage, errorMessage,
-        setErrorMessage, fetchOfferings, handleConfirm, handleDelete,
-        handleAdd, handleEdit,
+        offerings, statsData, loading, saving, showAddModal, editingId, formData,
+        setShowAddModal, setFormData, successMessage, errorMessage, handleAdd,
+        setErrorMessage, fetchOfferings, handleConfirm, handleDelete, handleEdit,
     } = useAdminOffrandes();
 
     const { activeTab, setActiveTab } = useAdminOffrandesTabs();

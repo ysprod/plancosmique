@@ -28,8 +28,11 @@ export function RubriquesList({ rubriques, selectedRubrique, onSelect, onDelete 
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <h3 className="font-bold text-slate-900">{rub.titre}</h3>
+              {rub.categorieId && (
+                <div className="text-xs text-violet-700 font-semibold mb-1">Categorie : {rub.categorieId.nom}</div>
+              )}
               {rub.typeconsultation && (
-                <div className="text-xs text-violet-700 font-semibold mb-1">Type : {rub.typeconsultation}</div>
+                <div className="text-xs text-orange-700 font-semibold mb-1">Type : {rub.typeconsultation}</div>
               )}
               <p className="text-xs text-slate-600 mt-1 line-clamp-2">{rub.description}</p>
               <p className="text-xs text-slate-600 mt-1 line-clamp-2"># {rub._id}</p>

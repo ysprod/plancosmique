@@ -66,6 +66,7 @@ const CinqPortesSection = memo<CinqPortesSectionProps>(({ carteDuCiel, isPremium
           />
         ))}
       </div>
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -73,7 +74,7 @@ const CinqPortesSection = memo<CinqPortesSectionProps>(({ carteDuCiel, isPremium
         className="mt-4 text-center"
       >
         <p className="text-[10px] text-white/40">
-          Basé sur votre thème astral complet • Calculs astrologiques précis
+          Basé sur votre thème astral • Calculs astrologiques précis
         </p>
       </motion.div>
     </section>

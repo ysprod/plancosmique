@@ -11,8 +11,8 @@ import { AnimatePresence } from "framer-motion";
 export default function ConsultationsPage() {
   const {
     consultations, total, loading, error, isRefreshing, toastMessage,
-    generatingIds, notifyingIds, currentPage, totalPages,
-    handlePageChange, handleToastClose, handleRefresh, handleGenerateAnalysis,
+    generatingIds, notifyingIds, currentPage, totalPages, handlePageChange,
+    handleToastClose, handleRefresh, handleGenerateAnalysis,
   } = useAdminConsultationsPage();
 
   if (loading) return <CosmicLoader />;

@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     'cartomancie',
     'prédictions futures',
     'astrologie personnalisée',
-    'thème astral complet',
+    'thème astral',
     'carte du ciel',
     'horoscope détaillé',
     'astrologie karmique',

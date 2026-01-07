@@ -6,9 +6,6 @@ import { getRubriqueId, getRubriqueFromUrl, setRubriqueInUrl } from "./categoryC
 import { Categorie } from "@/hooks/categories/useAdminCategoriesPage";
 
 export function useCategoryClientViewMain(category: Categorie) {
-    // Remplacer par la logique directe ou par un autre hook si besoin
-    // Ici, on suppose que la logique doit être définie localement
-    // À adapter selon la structure réelle
     const [rubriques, setRubriques] = React.useState<Rubrique[]>(category.rubriques || []);
     const [rubriqueCourante, setRubriqueCourante] = React.useState<Rubrique | null>(null);
 

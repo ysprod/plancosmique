@@ -1,31 +1,20 @@
 "use client";
 import { AnimatePresence, useReducedMotion } from "framer-motion";
-import TopBar from "./components/TopBar";
-import ReloadButtons from "./components/ReloadButtons";
-import CreateCategoryButton from "./components/CreateCategoryButton";
-import CategoriesList from "./components/CategoriesList";
-import CategoriesErrorAlert from "./components/CategoriesErrorAlert";
+import TopBar from "@/components/admin/categories/TopBar";
+import ReloadButtons from "@/components/admin/categories/ReloadButtons";
+import CreateCategoryButton from "@/components/admin/categories/CreateCategoryButton";
+import CategoriesList from "@/components/admin/categories/CategoriesList";
+import CategoriesErrorAlert from "@/components/admin/categories/CategoriesErrorAlert";
 import { Banner } from "@/components/admin/categories/Banner";
-import { useAdminCategoriesView } from "./useAdminCategoriesView";
+import { useAdminCategoriesView } from "@/hooks/useAdminCategoriesView";
 
 export default function AdminCategoriesPage() {
     const reducedMotion = useReducedMotion();
     const {
-        rubriques,
-        categories,
-        categoriesLoading,
-        categoriesError,
-        rubriquesLoading,
-        rubriquesError,
-        banner,
-        editingId,
-        startEdit,
-        stopEdit,
-        handleDeleteCategory,
-        saveEdit,
-        fetchCategories,
-        fetchRubriques,
-        counts,
+        rubriques, categories, categoriesLoading, categoriesError,
+        rubriquesLoading, rubriquesError, banner, editingId,
+        startEdit, stopEdit, handleDeleteCategory, saveEdit,
+        fetchCategories, fetchRubriques, counts,
     } = useAdminCategoriesView();
 
     return (

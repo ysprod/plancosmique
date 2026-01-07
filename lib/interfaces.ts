@@ -206,6 +206,8 @@ export interface Rubrique {
   consultationChoices: ConsultationChoice[];
   createdAt?: string;
   updatedAt?: string;
+  
+categorieId?: any;
 }
 
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';

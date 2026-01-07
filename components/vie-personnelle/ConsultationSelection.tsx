@@ -31,6 +31,8 @@ const ConsultationSelection: React.FC<Props> = ({ onSelect, title, choices }) =>
           key={choice.id}
           choice={choice}
           onSelect={() => onSelect(choice)}
+          alreadyDone={false} // à remplacer par la vraie logique si disponible
+          consultationId={undefined} // à remplacer par la vraie logique si disponible
         />
       ))}
     </motion.div>

@@ -81,6 +81,7 @@ const ConsultationCard: React.FC<{ consultation: ConsultationConfig }> = ({ cons
           </div>
         )}
       </div>
+
       <ConsultationEditModal
         consultation={consultation}
         open={editOpen}

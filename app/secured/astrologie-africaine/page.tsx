@@ -12,7 +12,8 @@ export default function AstrologieAfricainePage() {
   return (
     <div className="relative overflow-hidden">
       <AstrologieAfricaineProgressBar />
-      <AstrologieAfricaineBackground />      
+      <AstrologieAfricaineBackground />
+      
       <div className="relative z-10 container mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:py-12 max-w-6xl">
         <PageHeader />
         <AstrologieAfricaineTabs tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />

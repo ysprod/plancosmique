@@ -30,6 +30,7 @@ export default function ProfilPage() {
       </div>
 
       <StatsCounter />
+
       <div className="h-16 sm:h-20" />
     </div>
   );

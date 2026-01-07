@@ -9,15 +9,15 @@ import { RubriquesToast } from '@/components/admin/rubriques/RubriquesToast';
 
 export default function RubriquesAdminPage() {
   const {
-    handleCreate, setSelectedRubrique, handleDelete,
+    handleCreate, setSelectedRubrique, handleDelete, setToast,
     selectedRubrique, editingRubrique, loading, saving, toast, rubriques,
-    offerings, offeringsLoading, setToast, setEditingRubrique, handleSave,
+    offerings, offeringsLoading, setEditingRubrique, handleSave,
   } = useAdminRubriquesPage();
 
   if (loading || offeringsLoading) {
     return <RubriquesLoader loading={loading} offeringsLoading={offeringsLoading} />;
   }
-
+ 
   return (
     <div className="bg-gradient-to-br from-slate-50 via-violet-50 to-purple-50 p-4">
       <div className="max-w-7xl mx-auto">
@@ -29,6 +29,7 @@ export default function RubriquesAdminPage() {
             Voir l'aperçu des rubriques
           </a>
         </div>
+
         <RubriquesHeader
           rubriquesCount={rubriques.length}
           offeringsCount={offerings.length}
@@ -64,7 +65,7 @@ export default function RubriquesAdminPage() {
           </div>
         </div>
       </div>
-      
+
       <RubriquesToast toast={toast} onClose={() => setToast(null)} />
     </div>
   );

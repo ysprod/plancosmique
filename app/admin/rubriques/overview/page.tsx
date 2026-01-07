@@ -1,10 +1,10 @@
 'use client';
+import DomaineCard from '@/components/admin/rubriques/overview/DomaineCard';
+import StatCard from '@/components/admin/rubriques/overview/StatCard';
 import { useRubriquesOverviewState } from '@/hooks/commons/useRubriquesOverviewState';
 import { DOMAINES, getPlatformStats } from '@/lib/config/rubriques.config';
 import { motion } from 'framer-motion';
 import { Book, Calendar, Clock, Star, TrendingUp } from 'lucide-react';
-import DomaineCard from './DomaineCard';
-import StatCard from './StatCard';
 
 export default function RubriquesOverviewPage() {
   const {

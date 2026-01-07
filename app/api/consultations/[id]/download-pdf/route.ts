@@ -41,7 +41,6 @@ export async function GET(
       );
 
       backendData = response.data;
-
       if (!backendData || !backendData.analyse) {
         console.error('[PDF] ❌ Réponse API invalide:', {
           status: response.status,
@@ -113,7 +112,6 @@ export async function GET(
     const analyse = backendData.analyse;
 
     let pdfDocument;
-
     try {
       pdfDocument = createElement(AnalysisDocument, { analyse });
     } catch (err: any) {

@@ -1,11 +1,11 @@
 'use client';
 import AnimatedBackground from '@/components/spiritualite/AnimatedBackground';
 import { SpiritualiteErrorState, SpiritualiteLoadingState } from '@/components/spiritualite/SpiritualitePageStates';
+import SpiritualiteArticlesSection from '@/components/SpiritualiteArticlesSection';
+import SpiritualiteHeader from '@/components/SpiritualiteHeader';
+import SpiritualiteNoResultsSection from '@/components/SpiritualiteNoResultsSection';
+import { useSpiritualiteBlogPage } from '@/hooks/useSpiritualiteBlogPage';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
-import SpiritualiteHeader from './SpiritualiteHeader';
-import SpiritualiteArticlesSection from './SpiritualiteArticlesSection';
-import SpiritualiteNoResultsSection from './SpiritualiteNoResultsSection';
-import { useSpiritualiteBlogPage } from './useSpiritualiteBlogPage';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -24,15 +24,8 @@ const containerVariants: Variants = {
 
 export default function SpiritualiteBlogPage() {
   const {
-    setSearchQuery,
-    setSelectedCategory,
-    loading,
-    error,
-    handleRetry,
-    featuredArticle,
-    regularArticles,
-    hasArticles,
-    formatDate,
+    setSearchQuery, setSelectedCategory, loading, error, handleRetry,
+    featuredArticle, regularArticles, hasArticles,
   } = useSpiritualiteBlogPage();
 
   if (loading) {

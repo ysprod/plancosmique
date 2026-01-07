@@ -35,6 +35,7 @@ export default function AdminDashboard() {
         loading={loading}
         onRefresh={handleRefresh}
       />
+
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
         <AnimatePresence>
           <RefreshBanner

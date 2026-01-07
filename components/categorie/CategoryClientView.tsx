@@ -21,6 +21,8 @@ interface CategoryClientViewProps {
 const CategoryClientView: React.FC<CategoryClientViewProps> = ({ category }) => {
   const { rubriques, rubriqueCourante, openRubriqueById, closeRubrique } = useCategoryClientViewMain(category);
   const hasRubriques = rubriques.length > 0;
+  
+  console.log("Rendering CategoryClientView for category:", rubriqueCourante);
 
   return (
     <div className="bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">

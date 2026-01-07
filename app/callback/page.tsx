@@ -18,8 +18,7 @@ const PaymentCallbackContent = () => {
     isGeneratingAnalysis, analysisCompleted, analysisProgress,
     currentStageIndex, currentStageMessage, consultationId,
     downloadUrl, shouldAutoRedirect, autoRedirectCountdown,
-    handleViewConsultation, handleDownloadBook, handleRetry,
-    handleGoHome,
+    handleViewConsultation, handleDownloadBook, handleRetry, handleGoHome,
   } = usePaymentCallback(token);
 
   const { containerVariants, itemVariants, pulseVariants } = useAnimationVariants();
@@ -47,7 +46,6 @@ const PaymentCallbackContent = () => {
             currentStageMessage={currentStageMessage}
             analysisStages={analysisStages}
           />
-
           {isGeneratingAnalysis && (
             <AnalysisProgressBar
               analysisProgress={analysisProgress}
@@ -56,11 +54,9 @@ const PaymentCallbackContent = () => {
               analysisStages={analysisStages}
             />
           )}
-
           {analysisCompleted && !isGeneratingAnalysis && (
             <CompletionBanner />
           )}
-
           {analysisCompleted &&
             !isGeneratingAnalysis &&
             status === 'paid' &&
@@ -71,7 +67,6 @@ const PaymentCallbackContent = () => {
                 itemVariants={itemVariants}
               />
             )}
-
           <StatusCard
             status={status}
             statusConfig={statusConfig}
@@ -83,7 +78,6 @@ const PaymentCallbackContent = () => {
             itemVariants={itemVariants}
             pulseVariants={pulseVariants}
           />
-
           <ActionButtons
             status={status}
             downloadUrl={downloadUrl}
@@ -94,7 +88,6 @@ const PaymentCallbackContent = () => {
             onGoHome={handleGoHome}
             itemVariants={itemVariants}
           />
-
           <SecurityNote itemVariants={itemVariants} />
         </motion.div>
       </AnimatePresence>

@@ -14,9 +14,6 @@ export default function HoroscopeForm({ loadingUser, activeTab, filteredHoroscop
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="text-center">
-        <div className="w-16 h-16 mx-auto mb-3 bg-white rounded-full flex items-center justify-center shadow-md">
-          <Sparkles className="w-8 h-8 text-purple-600" />
-        </div>
         <h3 className="text-lg font-bold text-gray-900 mb-2">
           {filteredHoroscopesLength > 0
             ? 'Générer un nouvel horoscope'
