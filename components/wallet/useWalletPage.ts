@@ -2,8 +2,8 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "@/lib/api/client";
-import { Transaction, TransactionFilter, SortOrder, Stats } from '@/app/secured/wallet/page';
-
+import { SortOrder, Stats, Transaction, TransactionFilter } from "./page/types";
+ 
 export function useWalletPage() {
   const router = useRouter();
   const { user } = useAuth();

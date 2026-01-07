@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { getCategoryConfig } from './utils';
-import type { OfferingDetails } from '@/app/secured/wallet/page';
+import { OfferingDetails } from './page/types';
+ 
 
 interface UnusedOfferingsListProps {
   unusedOfferings: any[];

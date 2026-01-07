@@ -1,7 +1,8 @@
 // Utility functions for wallet components
 
-import type { OfferingCategory, OfferingDetails, TransactionItem } from '@/app/secured/wallet/page';
+import { OfferingCategory, TransactionItem } from "./page/types";
 
+ 
 export function getCategoryConfig(category: OfferingCategory) {
   switch (category) {
     case 'animal':

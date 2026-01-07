@@ -1,6 +1,7 @@
+import { Stats } from './page/types';
 import StatsCard from './StatsCard';
 import { ShoppingBag, Sparkles, TrendingUp } from 'lucide-react';
-import type { Stats } from '@/app/secured/wallet/page';
+ 
 
 interface WalletStatsProps {
   stats: Stats;
