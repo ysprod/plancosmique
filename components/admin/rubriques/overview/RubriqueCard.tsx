@@ -1,11 +1,10 @@
 import React from "react";
 import { Star } from "lucide-react";
 import { motion } from "framer-motion";
-import { Rubrique, SousRubrique } from "@/lib/config/rubriques.config";
 import SousRubriqueCard from "./SousRubriqueCard";
 
 interface RubriqueCardProps {
-  rubrique: Rubrique;
+  rubrique: any;
   isExpanded: boolean;
   onToggle: () => void;
   expandedSousRubrique: string | null;
@@ -32,7 +31,7 @@ const RubriqueCard: React.FC<RubriqueCardProps> = ({
           <div className="text-left">
             <h3 className="text-xl font-bold text-gray-800">{rubrique.titre}</h3>
             <p className="text-gray-600 text-sm">{rubrique.description}</p>
-            <p className="text-xs text-gray-500 mt-1">{rubrique.sousRubriques.length} sous-rubrique(s)</p>
+            <p className="text-xs text-gray-500 mt-1">{Array.isArray(rubrique.sousRubriques) ? rubrique.sousRubriques.length : 0} sous-rubrique(s)</p>
           </div>
         </div>
         <div className={`transform transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
@@ -42,14 +41,15 @@ const RubriqueCard: React.FC<RubriqueCardProps> = ({
         </div>
       </button>
 
-      {isExpanded && (
+      {isExpanded && Array.isArray(rubrique.sousRubriques) && rubrique.sousRubriques.length > 0 && (
         <motion.div
+          key={`sousrubriques-${rubrique.id}`}
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
           className="border-t border-gray-100 p-4 bg-gray-50 space-y-3"
         >
-          {rubrique.sousRubriques.map((sousRubrique: SousRubrique) => (
+          {rubrique.sousRubriques.map((sousRubrique: any) => (
             <SousRubriqueCard
               key={sousRubrique.id}
               sousRubrique={sousRubrique}

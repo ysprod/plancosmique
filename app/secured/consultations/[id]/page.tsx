@@ -12,6 +12,7 @@ export default function ConsultationResultPage() {
   if (loading) {
     return (<CosmicLoader />);
   }
+  
   if (error || !analyse) {
     return <ConsultationError error={error} onBack={handleBack} />;
   }

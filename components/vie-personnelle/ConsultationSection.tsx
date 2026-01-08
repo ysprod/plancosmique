@@ -74,9 +74,9 @@ export const ConsultationSelection: React.FC<{
       transition={{ delay: 0.2 }}
       className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2"
     >
-      {choices.map((choice) => (
+      {choices.map((choice, idx) => (
         <ConsultationCard
-          key={choice.id}
+          key={choice.id || idx}
           choice={choice}
           onSelect={() => onSelect(choice)}
           alreadyDone={alreadyDoneChoices.includes(choice.id)}

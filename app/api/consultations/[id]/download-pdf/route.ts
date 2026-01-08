@@ -128,7 +128,6 @@ export async function GET(
     }
 
     let stream;
-    
     try {
       stream = await renderToStream(pdfDocument as any);
     } catch (err: any) {

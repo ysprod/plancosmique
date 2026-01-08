@@ -5,6 +5,7 @@ import WelcomeQuestions from '@/components/accueil/WelcomeQuestions';
 import WelcomeIntro from '@/components/accueil/WelcomeIntro';
 
 export default function WelcomePage() {
+  
   return (
     <div className="bg-white">
       <motion.div
@@ -33,6 +34,7 @@ export default function WelcomePage() {
         </motion.p>
         
         <WelcomeQuestions />
+
         <WelcomeIntro />
       </div>
     </div>

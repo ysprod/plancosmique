@@ -2,7 +2,6 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { TrendingUp, Calendar, Sun, Moon, Globe } from 'lucide-react';
-
  
 interface CycleData {
   valeur: number;
@@ -21,11 +20,7 @@ interface CyclesData {
   moisPersonnel: CycleData;
   jourPersonnel: CycleData;
 }
-
-// ============================================================================
-// ANIMATION VARIANTS
-// ============================================================================
-
+ 
 const sectionVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
@@ -60,11 +55,7 @@ const cycleCardVariants: Variants = {
     },
   },
 };
-
-// ============================================================================
-// COMPOSANTS
-// ============================================================================
-
+ 
 const CycleCard = React.memo<{
   title: string;
   icon: React.ReactNode;
@@ -134,11 +125,7 @@ const CycleCard = React.memo<{
   </motion.article>
 ));
 CycleCard.displayName = 'CycleCard';
-
-// ============================================================================
-// SECTION PRINCIPALE
-// ============================================================================
-
+ 
 interface Props {
   data: CyclesData;
 }

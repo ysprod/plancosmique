@@ -1,6 +1,6 @@
+import { ConsultationConfig } from "@/lib/interfaces";
+import { Briefcase, Clock, User, Users } from "lucide-react";
 import React, { useState } from "react";
-import { Clock, User, Users, Briefcase } from "lucide-react";
-import { ConsultationConfig } from "@/lib/config/rubriques.config";
 import ConsultationEditModal from "./ConsultationEditModal";
 
 const FREQUENCE_LABELS = {

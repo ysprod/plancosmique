@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useSearchParams } from 'next/navigation';
-import AnalysisProgressBar from '@/components/callback/AnalysisProgressBar';
+import { ActionButtons, BackgroundBlobs, CompletionBanner, SecurityNote, StatusCard } from '@/components/callback';
 import AnalysisPreview from '@/components/callback/AnalysisPreview';
+import AnalysisProgressBar from '@/components/callback/AnalysisProgressBar';
 import LoadingState from '@/components/callback/LoadingState';
 import { useAnimationVariants } from '@/hooks/commons/useAnimationVariants';
 import { usePaymentCallback } from '@/hooks/commons/usePaymentCallback';
-import { BackgroundBlobs, CompletionBanner, StatusCard, ActionButtons, SecurityNote } from '@/components/callback';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useSearchParams } from 'next/navigation';
 
 const PaymentCallbackContent = () => {
   const searchParams = useSearchParams();

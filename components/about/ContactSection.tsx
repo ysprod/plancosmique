@@ -6,7 +6,7 @@ import { Phone, Mail, MapPin, Send } from 'lucide-react';
 const contactInfo = [
   {
     icon: Phone,
-    title: 'Téléphones',
+    title: 'Téléphone',
     items: ['07 47 428 676', '01 73 922 200', '07 69 938 388', '01 41 888 858'],
     gradient: 'from-blue-500 to-cyan-500',
   },

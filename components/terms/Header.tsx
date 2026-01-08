@@ -1,7 +1,6 @@
-import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { ArrowLeft, FileText } from 'lucide-react';
-import React, { memo } from 'react';
+import Link from 'next/link';
+import { memo } from 'react';
 
 const Header = memo(() => (
     <div className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl 

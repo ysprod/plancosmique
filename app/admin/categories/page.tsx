@@ -6,21 +6,21 @@ import CreateCategoryButton from "@/components/admin/categories/CreateCategoryBu
 import CategoriesList from "@/components/admin/categories/CategoriesList";
 import CategoriesErrorAlert from "@/components/admin/categories/CategoriesErrorAlert";
 import { Banner } from "@/components/admin/categories/Banner";
-import { useAdminCategoriesView } from "@/hooks/useAdminCategoriesView";
+import { useAdminCategoriesView } from "@/hooks/commons/useAdminCategoriesView";
 
 export default function AdminCategoriesPage() {
     const reducedMotion = useReducedMotion();
     const {
-        rubriques, categories, categoriesLoading, categoriesError,
-        rubriquesLoading, rubriquesError, banner, editingId,
-        startEdit, stopEdit, handleDeleteCategory, saveEdit,
-        fetchCategories, fetchRubriques, counts,
+        rubriques, categories, categoriesLoading, categoriesError, stopEdit,
+        rubriquesLoading, rubriquesError, banner, editingId, counts, startEdit,
+        handleDeleteCategory, saveEdit, fetchCategories, fetchRubriques,
     } = useAdminCategoriesView();
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
             <div className="mx-auto max-w-3xl px-3 py-5 sm:px-4 sm:py-8">
                 <TopBar counts={counts} reducedMotion={reducedMotion!} />
+
                 <ReloadButtons
                     fetchCategories={fetchCategories}
                     fetchRubriques={fetchRubriques}

@@ -1,6 +1,5 @@
-import { Calculator, Calendar, User, Loader2, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { NumerologyFormData } from '@/hooks/numerologie/useNumerologyForm';
+import { Calculator, Calendar, Loader2, Sparkles, User } from 'lucide-react';
 
 interface NumerologyFormProps {
   formData: NumerologyFormData;

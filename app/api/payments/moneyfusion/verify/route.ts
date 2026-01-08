@@ -32,7 +32,6 @@ export async function POST(request: NextRequest) {
         const data = response.data;
 
         if (data.statut && data.code_statut === 1) {
-            // Paiement réussi
             return NextResponse.json({
                 success: true,
                 status: 'success',

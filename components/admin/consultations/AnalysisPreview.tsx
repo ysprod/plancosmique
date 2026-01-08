@@ -6,7 +6,6 @@ import AnalysisSection from "./AnalysisSection";
 const AnalysisPreview = memo(({ analysis }: { analysis: any }) => {
     const [isMainExpanded, setIsMainExpanded] = useState(true);
 
-    // Mémoisation des données d'analyse
     const analysisData = useMemo(() => {
         if (!analysis) return null;
 

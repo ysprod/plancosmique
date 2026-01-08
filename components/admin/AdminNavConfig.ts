@@ -1,0 +1,39 @@
+import {
+  BookOpen,
+  ChevronRight,
+  CreditCard,
+  FileText,
+  Flame,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  Settings,
+  Shield,
+  Users,
+  X
+} from 'lucide-react';
+
+export const navItems = [
+  { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard, color: 'amber' },
+  { href: '/admin/users', label: 'Utilisateurs', icon: Users, color: 'blue' },
+  { href: '/admin/consultations', label: 'Consultations', icon: FileText, color: 'green' },
+  { href: '/admin/payments', label: 'Paiements', icon: CreditCard, color: 'purple' },
+  { href: '/admin/books', label: 'Livres', icon: BookOpen, color: 'indigo' },
+  { href: '/admin/offrandes', label: 'Offrandes', icon: Shield, color: 'violet' },
+  { href: '/admin/categories', label: 'Catégories', icon: FileText, color: 'teal' },
+  { href: '/admin/rubriques', label: 'Rubriques', icon: FileText, color: 'pink' },
+  { href: '/admin/spiritualite', label: 'Spiritualité', icon: Flame, color: 'orange' },
+  { href: '/admin/settings', label: 'Paramètres', icon: Settings, color: 'gray' },
+];
+
+export const colorClasses = {
+  amber: 'bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400',
+  blue: 'bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-400',
+  green: 'bg-green-50 text-green-700 hover:bg-green-100 dark:bg-green-950/30 dark:text-green-400',
+  purple: 'bg-purple-50 text-purple-700 hover:bg-purple-100 dark:bg-purple-950/30 dark:text-purple-400',
+  indigo: 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-950/30 dark:text-indigo-400',
+  violet: 'bg-violet-50 text-violet-700 hover:bg-violet-100 dark:bg-violet-950/30 dark:text-violet-400',
+  orange: 'bg-orange-50 text-orange-700 hover:bg-orange-100 dark:bg-orange-950/30 dark:text-orange-400',
+  gray: 'bg-gray-50 text-gray-700 hover:bg-gray-100 dark:bg-gray-950/30 dark:text-gray-400',
+  teal: 'bg-teal-50 text-teal-700 hover:bg-teal-100 dark:bg-teal-950/30 dark:text-teal-400',
+};

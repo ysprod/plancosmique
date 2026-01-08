@@ -1,4 +1,4 @@
-import { Tab, TabId } from './useAstrologieAfricainePage';
+import { Tab, TabId } from '../../hooks/useAstrologieAfricainePage';
 import { TabButton } from './TabButton';
 import React from 'react';
 

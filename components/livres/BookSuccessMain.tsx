@@ -35,7 +35,6 @@ export default function BookSuccessMain({ purchaseInfo, onDownload }: { purchase
           >
             Paiement Réussi ! 🎉
           </motion.h1>
-
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

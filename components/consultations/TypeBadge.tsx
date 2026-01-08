@@ -31,4 +31,5 @@ const TypeBadge: React.FC<TypeBadgeProps> = ({ type }) => {
     </div>
   );
 };
+
 export default TypeBadge;

@@ -173,6 +173,7 @@ export interface ConsultationOffering {
 
 export interface ConsultationChoice {
   id: string;
+_id?: string;
   title: string;
   description: string;
   frequence?: 'UNE_FOIS_VIE' | 'ANNUELLE' | 'MENSUELLE' | 'QUOTIDIENNE' | 'LIBRE';
@@ -462,3 +463,43 @@ export type ConsultationType =
   | 'CYCLES_PERSONNELS'| 'CINQ_ETOILES'
   | 'NUMEROLOGIE'
   | 'AUTRE';
+
+
+  export type FrequenceConsultation =
+  | 'UNE_FOIS_VIE'      // Consultation faite une seule fois dans la vie
+  | 'ANNUELLE'          // Peut être faite chaque année
+  | 'MENSUELLE'         // Peut être faite chaque mois
+  | 'QUOTIDIENNE'       // Peut être faite chaque jour
+  | 'LIBRE';            // Peut être faite à tout moment
+
+export type TypeParticipants =
+  | 'SOLO'              // Uniquement l'utilisateur
+  | 'AVEC_TIERS'        // Utilisateur + une personne tierce
+  | 'GROUPE';     
+
+  
+  export interface Domaine {
+    id: string;
+    titre: string;
+    description: string;
+    rubriques: Rubrique[];
+  }
+
+
+  export interface ConsultationConfig {
+  id: string;
+  titre: string;
+  description: string;
+  frequence: FrequenceConsultation;
+  typeParticipants: TypeParticipants;
+  typeTechnique: string;  
+  offering: {
+    alternatives: Array<{
+      category: 'animal' | 'vegetal' | 'beverage';
+      offeringId: string;
+      quantity: number;
+    }>;
+  };
+  noteImplementation?: string;
+}
+  

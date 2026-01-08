@@ -5,9 +5,10 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { User, LogOut, Menu, X } from "lucide-react";
 import NotificationBell from "@/components/commons/NotificationBell";
+import { UserData } from "@/lib/interfaces";
 
 export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handleLogout }: {
-  user: any;
+  user: UserData;
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
   handleLogout: () => void;

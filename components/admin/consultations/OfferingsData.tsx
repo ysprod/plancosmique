@@ -31,4 +31,5 @@ const OfferingsData = memo(({ alternatives }: { alternatives: any[] }) => {
   );
 });
 OfferingsData.displayName = 'OfferingsData';
+
 export default OfferingsData;

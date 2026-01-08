@@ -6,7 +6,6 @@ import { notFound, useParams } from "next/navigation";
 export default async function RubriquePage() {
     const { id } = useParams() as { id?: string };
     if (!id) return notFound();
-
     const rubrique = await getRubrique(id);
     if (!rubrique) return notFound();
 

@@ -6,7 +6,6 @@ import OffrandesTabs from '@/components/admin/offrandes/OffrandesTabs';
 import { useAdminOffrandes } from '@/hooks/admin/useAdminOffrandes';
 import useAdminOffrandesTabs from '@/hooks/admin/useAdminOffrandesTabs';
 import { AnimatePresence } from 'framer-motion';
-import AssociationsConsultationsOffrandes from '@/components/admin/AssociationsConsultationsOffrandes';
 
 export default function AdminOffrandes() {
     const {
@@ -61,11 +60,6 @@ export default function AdminOffrandes() {
                         />
                     )}
                 </AnimatePresence>
-
-                <div className="mt-12">
-                    <h2 className="text-xl font-bold mb-4 text-amber-800">Associations consultations & offrandes</h2>
-                    <AssociationsConsultationsOffrandes />
-                </div>
             </div>
         </div>
     );

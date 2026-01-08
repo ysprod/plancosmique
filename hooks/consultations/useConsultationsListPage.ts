@@ -1,4 +1,4 @@
-import { useConsultationsListPage as useConsultationsListPageBase } from '@/components/consultations/useConsultationsListPage';
+import { useConsultationsListPage as useConsultationsListPageBase } from '@/hooks/commons/useConsultationsListPage';
 
 export default function useConsultationsListPage() {
   return useConsultationsListPageBase();

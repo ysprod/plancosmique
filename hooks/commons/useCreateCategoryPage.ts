@@ -1,21 +1,84 @@
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useAdminRubriquesPage } from "@/hooks/admin/useAdminRubriquesPage";
 import { createCategory } from "@/lib/api/services/categories.service";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Rubrique } from "@/lib/interfaces";
+import { getRubriqueId, rubriqueLabel } from "@/lib/functions";
+
+export type ViewMode = "create" | "preview" | "success";
+export type Banner = { type: "success" | "error" | "info"; message: string } | null;
 
 export function useCreateCategoryPage() {
-  const router = useRouter();
   const { rubriques, loading: rubriquesLoading } = useAdminRubriquesPage();
+  const [view, setView] = useState<ViewMode>("create");
   const [nom, setNom] = useState("");
   const [description, setDescription] = useState("");
   const [rubriqueIds, setRubriqueIds] = useState<string[]>([]);
+  const selectedSet = useMemo(() => new Set(rubriqueIds), [rubriqueIds]);
   const [busy, setBusy] = useState(false);
-  const [banner, setBanner] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [banner, setBanner] = useState<Banner>(null);
+  const bannerTimer = useRef<number | null>(null);
 
-  const selectedRubriques = (rubriques ?? []).filter((r) => rubriqueIds.includes(r._id!));
-  const canCreate = nom.trim().length > 0 && !busy;
+  const showBanner = useCallback((b: Banner) => {
+    if (bannerTimer.current) window.clearTimeout(bannerTimer.current);
+    setBanner(b);
+    if (b) bannerTimer.current = window.setTimeout(() => setBanner(null), 2400);
+  }, []);
 
-  async function handleCreate() {
+  const rubriquesById = useMemo(() => {
+    const m = new Map<string, Rubrique>();
+    (rubriques ?? []).forEach((r: any) => {
+      const id = getRubriqueId(r);
+      if (id) m.set(id, r);
+    });
+    return m;
+  }, [rubriques]);
+
+  const selectedRubriques = useMemo(() => {
+    const out: Rubrique[] = [];
+    for (const id of rubriqueIds) {
+      const r = rubriquesById.get(id);
+      if (r) out.push(r);
+    }
+    return out;
+  }, [rubriqueIds, rubriquesById]);
+
+  const invalidRubriquesCount = useMemo(() => {
+    const all = rubriques ?? [];
+    const valid = all.filter((r: any) => !!getRubriqueId(r)).length;
+    return all.length - valid;
+  }, [rubriques]);
+
+  const canCreate = useMemo(() => nom.trim().length > 0 && !busy, [nom, busy]);
+
+  const toggleRubrique = useCallback((id: string) => {
+    setRubriqueIds((prev) => {
+      const s = new Set(prev);
+      if (s.has(id)) s.delete(id);
+      else s.add(id);
+      return Array.from(s);
+    });
+  }, []);
+
+  const clearSelection = useCallback(() => setRubriqueIds([]), []);
+
+  const goPreview = useCallback(() => {
+    if (!nom.trim()) {
+      showBanner({ type: "error", message: "Le nom de la catégorie est requis." });
+      return;
+    }
+    setView("preview");
+  }, [nom, showBanner]);
+
+  const goCreate = useCallback(() => setView("create"), []);
+  const goSuccess = useCallback(() => setView("success"), []);
+
+  const selectionSummary = useMemo(() => {
+    if (selectedRubriques.length === 0) return "Aucune rubrique sélectionnée.";
+    const names = selectedRubriques.map(rubriqueLabel);
+    return names.slice(0, 3).join(" • ") + (names.length > 3 ? " • …" : "");
+  }, [selectedRubriques]);
+
+  const handleCreate = useCallback(async () => { 
     if (!canCreate) return;
     setBusy(true);
     setBanner(null);
@@ -25,38 +88,41 @@ export function useCreateCategoryPage() {
         description: description.trim(),
         rubriques: rubriqueIds,
       });
-      setBanner({ type: "success", message: "Catégorie créée !" });
-      setTimeout(() => router.push("/admin/categories"), 1200);
+      showBanner({ type: "success", message: "Catégorie créée avec succès." });
+      goSuccess();
     } catch {
-      setBanner({ type: "error", message: "Erreur lors de la création." });
+      showBanner({ type: "error", message: "Erreur lors de la création." });
+      setView("create");
     } finally {
       setBusy(false);
     }
-  }
-
-  function toggleRubrique(id: string) {
-    setRubriqueIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
-  }
-
-  function goBack() {
-    router.push("/admin/categories");
-  }
+  }, [canCreate, nom, description, rubriqueIds, goSuccess]);
 
   return {
+    rubriques,
+    rubriquesLoading,
+    view,
+    setView,
     nom,
     setNom,
     description,
     setDescription,
     rubriqueIds,
     setRubriqueIds,
-    rubriques,
-    rubriquesLoading,
+    selectedSet,
     busy,
     banner,
-    canCreate,
+    showBanner,
+    rubriquesById,
     selectedRubriques,
-    handleCreate,
+    invalidRubriquesCount,
+    canCreate,
     toggleRubrique,
-    goBack, 
+    clearSelection,
+    goPreview,
+    goCreate,
+    goSuccess,
+    selectionSummary,
+    handleCreate,
   };
 }

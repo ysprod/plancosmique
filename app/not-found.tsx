@@ -6,7 +6,7 @@ import { Home } from 'lucide-react';
 import AnimatedStar from '@/components/notfound/AnimatedStar';
 import BackgroundOrbs from '@/components/notfound/BackgroundOrbs';
 import IconGroup from '@/components/notfound/IconGroup';
-import { useStars } from '@/hooks/useStars';
+import { useStars } from '@/hooks/commons/useStars';
 
 const containerVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -103,6 +103,7 @@ function NotFoundComponent() {
             <span>Revenir à l'accueil</span>
           </Link>
         </motion.div>
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

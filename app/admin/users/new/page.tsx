@@ -15,6 +15,7 @@ export default function NewUserPage() {
       <div className="max-w-4xl mx-auto">
         <NewUserHeader />
         <NewUserToast toast={toast} onClose={() => setToast(null)} />
+
         <NewUserForm
           formData={formData}
           errors={errors}

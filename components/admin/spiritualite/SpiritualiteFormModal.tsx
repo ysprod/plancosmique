@@ -1,7 +1,7 @@
-import React from "react";
 import { motion } from "framer-motion";
-import { Sparkles, X, BookOpen, ChevronUp, ChevronDown, Eye, EyeOff, Loader, Save, Plus, List, Target, Lightbulb, AlertTriangle, Package } from "lucide-react";
-import { ArraySection, ArraySectionProps } from "./ArraySection";
+import { AlertTriangle, BookOpen, ChevronDown, ChevronUp, Eye, EyeOff, Lightbulb, List, Loader, Package, Save, Sparkles, Target, X } from "lucide-react";
+import React from "react";
+import { ArraySection } from "./ArraySection";
 
 interface FormData {
   title: string;

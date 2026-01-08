@@ -1,6 +1,6 @@
 import { AnimatePresence } from 'framer-motion';
 import { CalendrierLunaireContent, IncantationsContent, RituelsContent } from './TabContents';
-import { TabId } from './useAstrologieAfricainePage';
+import { TabId } from '../../hooks/useAstrologieAfricainePage';
 
 interface AstrologieAfricaineContentProps {
   activeTab: TabId;

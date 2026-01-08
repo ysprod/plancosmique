@@ -1,8 +1,7 @@
 import TransactionCard from './TransactionCard';
 import { motion } from 'framer-motion';
 import { ShoppingBag } from 'lucide-react';
-import { Transaction } from './page/types';
- 
+import { Transaction } from './types'; 
 
 interface TransactionsListProps {
   filteredTransactions: Transaction[];

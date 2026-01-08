@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, X, Plus, CreditCard, ChevronRight } from 'lucide-react';
-import { CartItem } from './types';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronRight, CreditCard, Plus, ShoppingCart, X } from 'lucide-react';
+import React from 'react';
 import { slideFromBottom } from './animations';
+import { CartItem } from './types';
 
 interface CartModalProps {
     showCart: boolean;

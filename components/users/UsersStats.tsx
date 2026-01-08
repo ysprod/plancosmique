@@ -18,11 +18,11 @@ const statsConfig: Array<{
   color: string;
   span?: string;
 }> = [
-  { icon: Users, label: 'Total', key: 'total', color: 'blue' },
-  { icon: CheckCircle, label: 'Actifs', key: 'active', color: 'green' },
-  { icon: Clock, label: 'Inactifs', key: 'inactive', color: 'gray' },
-  { icon: Shield, label: 'Admins', key: 'admins', color: 'purple' },
-];
+    { icon: Users, label: 'Total', key: 'total', color: 'blue' },
+    { icon: CheckCircle, label: 'Actifs', key: 'active', color: 'green' },
+    { icon: Clock, label: 'Inactifs', key: 'inactive', color: 'gray' },
+    { icon: Shield, label: 'Admins', key: 'admins', color: 'purple' },
+  ];
 
 export default function UsersStats({ stats }: UsersStatsProps) {
   return (

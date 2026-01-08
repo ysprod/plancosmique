@@ -38,6 +38,7 @@ export default function WelcomeIntro() {
         <p className="text-base sm:text-lg font-black text-black leading-tight">
           Votre naissance a un but.<br />Découvrez ce que votre âme est venue accomplir.
         </p>
+        
         <Link href="/secured/profil" className="block">
           <motion.button
             whileHover={{ scale: 1.02 }}

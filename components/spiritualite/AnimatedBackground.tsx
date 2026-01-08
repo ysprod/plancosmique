@@ -30,6 +30,7 @@ const AnimatedBackground = React.memo(() => (
     />
   </div>
 ));
+
 AnimatedBackground.displayName = 'AnimatedBackground';
 
 export default AnimatedBackground;

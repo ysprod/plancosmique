@@ -29,9 +29,7 @@ export default function SpiritualPracticeDetailPage() {
   const slug = params.id as string;
   const { practice, loading, error, expandedSections, toggleSection } = useSpiritualPracticeDetail(slug);
 
-  if (loading) {
-    return <SpiritualPracticeLoading />;
-  }
+  if (loading) { return <SpiritualPracticeLoading />; }
 
   if (error) {
     return <SpiritualPracticeError error={error} />;
@@ -46,7 +44,7 @@ export default function SpiritualPracticeDetailPage() {
         description={practice.description}
         icon={iconMap[practice.iconName] || <Flame className="w-8 h-8" />}
         color={colorMap[practice.slug] || 'from-purple-900 to-indigo-900'}
-      />            
+      />
       <div className="max-w-4xl mx-auto px-6 py-12">
         <SpiritualPracticeSections
           practice={practice}

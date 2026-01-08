@@ -11,6 +11,7 @@ export default function SpiritualiteAdmin() {
   return (
     <div className="bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50">
       <div className="max-w-7xl mx-auto">
+
         <SpiritualiteHeader
           onCreate={spiritualite.handleCreate}
           loading={spiritualite.loading}
@@ -18,6 +19,7 @@ export default function SpiritualiteAdmin() {
           publishedCount={spiritualite.practices.filter(p => p.published).length}
           draftCount={spiritualite.practices.filter(p => !p.published).length}
         />
+        
         <SpiritualiteMessages error={spiritualite.error} success={spiritualite.success} />
 
         <SpiritualiteFormModal

@@ -1,13 +1,9 @@
 'use client';
-
 import React, { memo, useMemo } from 'react';
 import { motion, useReducedMotion, Variants } from 'framer-motion';
 import { Sparkles, Heart, Briefcase, Activity, Star, Moon, Zap, Sun } from 'lucide-react';
 import { HoroscopeResult } from '@/lib/interfaces';
-// ========================================
-// 🎨 ANIMATION VARIANTS (Optimisés)
-// ========================================
-
+ 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {

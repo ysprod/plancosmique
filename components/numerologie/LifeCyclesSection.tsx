@@ -1,8 +1,7 @@
 'use client';
-import React from 'react';
 import { motion, Variants } from 'framer-motion';
-import { Clock, TrendingUp } from 'lucide-react';
-
+import { Clock } from 'lucide-react';
+import React from 'react';
  
 interface LifeCycle {
   periode: string;
@@ -10,7 +9,6 @@ interface LifeCycle {
   nombre: number;
   theme: string;
 }
-
  
 const sectionVariants: Variants = {
   hidden: { opacity: 0, y: 30 },

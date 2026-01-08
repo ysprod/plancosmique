@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import OfferingItemCard from "./OfferingItemCard";
 import { normalizeItem, getCategoryConfig } from './utils';
 
-import type { Transaction } from '@/components/wallet/page/types';
+import type { Transaction } from '@/components/wallet/types';
 
 interface TransactionCardProps {
   transaction: Transaction;

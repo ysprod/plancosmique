@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { getCategoryConfig } from './utils';
-import { OfferingDetails } from './page/types';
- 
+import { OfferingDetails } from './types'; 
 
 interface UnusedOfferingsListProps {
   unusedOfferings: any[];

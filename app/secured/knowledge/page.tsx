@@ -19,13 +19,11 @@ export default function KnowledgePage() {
       <div className="bg-white/5 backdrop-blur-xl border-b border-white/10">
         <div className="container mx-auto px-4 py-8">
           <KnowledgeHeader onShare={() => { }} />
-
           <KnowledgeSearchBar
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             handleSearch={handleSearch}
           />
-
           <KnowledgeTabs activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
       </div>

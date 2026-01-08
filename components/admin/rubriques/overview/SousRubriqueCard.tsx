@@ -1,11 +1,10 @@
 import React from "react";
 import { TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
-import { SousRubrique, ConsultationConfig } from "@/lib/config/rubriques.config";
 import ConsultationCard from "./ConsultationCard";
 
 interface SousRubriqueCardProps {
-  sousRubrique: SousRubrique;
+  sousRubrique: any;
   isExpanded: boolean;
   onToggle: () => void;
 }
@@ -45,7 +44,7 @@ const SousRubriqueCard: React.FC<SousRubriqueCardProps> = ({
           exit={{ opacity: 0, height: 0 }}
           className="border-t border-gray-100 p-3 bg-gray-50 space-y-2"
         >
-          {sousRubrique.consultations.map((consultation: ConsultationConfig) => (
+          {sousRubrique.consultations && sousRubrique.consultations.map((consultation: any) => (
             <ConsultationCard key={consultation.id} consultation={consultation} />
           ))}
         </motion.div>

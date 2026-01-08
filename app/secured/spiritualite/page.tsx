@@ -1,10 +1,10 @@
 'use client';
 import AnimatedBackground from '@/components/spiritualite/AnimatedBackground';
+import SpiritualiteArticlesSection from '@/components/spiritualite/SpiritualiteArticlesSection';
+import SpiritualiteNoResultsSection from '@/components/spiritualite/SpiritualiteNoResultsSection';
 import { SpiritualiteErrorState, SpiritualiteLoadingState } from '@/components/spiritualite/SpiritualitePageStates';
-import SpiritualiteArticlesSection from '@/components/SpiritualiteArticlesSection';
-import SpiritualiteHeader from '@/components/SpiritualiteHeader';
-import SpiritualiteNoResultsSection from '@/components/SpiritualiteNoResultsSection';
-import { useSpiritualiteBlogPage } from '@/hooks/useSpiritualiteBlogPage';
+import SpiritualiteHeader from '@/components/spiritualite/SpiritualiteHeader';
+import { useSpiritualiteBlogPage } from '@/hooks/commons/useSpiritualiteBlogPage';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 
 const containerVariants: Variants = {
@@ -28,9 +28,7 @@ export default function SpiritualiteBlogPage() {
     featuredArticle, regularArticles, hasArticles,
   } = useSpiritualiteBlogPage();
 
-  if (loading) {
-    return <SpiritualiteLoadingState />;
-  }
+  if (loading) {    return <SpiritualiteLoadingState />;  }
 
   if (error) {
     return <SpiritualiteErrorState error={error} onRetry={handleRetry} />;

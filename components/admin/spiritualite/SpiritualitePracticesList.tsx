@@ -95,7 +95,7 @@ export function SpiritualitePracticesList({
                   <div className={`px-2 sm:px-3 py-1 rounded-full text-xs font-bold ${practice.published
                     ? 'bg-green-500 text-white'
                     : 'bg-gray-300 text-gray-700'
-                  }`}>
+                    }`}>
                     {practice.published ? 'Publié' : 'Brouillon'}
                   </div>
                   <motion.button

@@ -47,4 +47,5 @@ const AstrologyData = memo(({ formData }: { formData: any }) => {
   );
 });
 AstrologyData.displayName = 'AstrologyData';
+
 export default AstrologyData;

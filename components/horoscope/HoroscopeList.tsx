@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import HoroscopeCard from '@/components/horoscope/HoroscopeCard';
 import { BackendHoroscope } from '@/lib/interfaces';
+
 interface HoroscopeListProps {
   horoscopes: BackendHoroscope[];
   activeTab: string;

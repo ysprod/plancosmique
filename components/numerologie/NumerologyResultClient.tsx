@@ -1,20 +1,13 @@
 'use client';
-
-import React, { useMemo } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Calendar, Sparkles } from 'lucide-react';
-import { LifeCyclesSection } from './LifeCyclesSection';
-import { OfferingsSection } from './OfferingsSection';
-import { SynthesisSection } from './SynthesisSection';
+import React, { useMemo } from 'react';
 import { CyclesSection } from './CyclesSection';
+import { LifeCyclesSection } from './LifeCyclesSection';
+import { SynthesisSection } from './SynthesisSection';
 import { ThemeNaissanceSection } from './ThemeNaissanceSection';
 import { WisdomSection } from './WisdomSection';
- 
-
-// ============================================================================
-// ANIMATION VARIANTS
-// ============================================================================
-
+  
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {

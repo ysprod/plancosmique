@@ -1,5 +1,5 @@
+import { ConsultationConfig } from "@/lib/interfaces";
 import React, { useState } from "react";
-import { ConsultationConfig } from "@/lib/config/rubriques.config";
 
 interface ConsultationEditModalProps {
   consultation: ConsultationConfig;

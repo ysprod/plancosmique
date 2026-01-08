@@ -1,11 +1,11 @@
 "use client";
 import { AnimatePresence } from "framer-motion";
-import { AnimatedBackground } from "@/components/auth/logout/AnimatedBackground";
-import { StarField } from "@/components/auth/logout/StarField";
-import { LoadingState } from "@/components/auth/logout/LoadingState";
-import { SuccessState } from "@/components/auth/logout/SuccessState";
-import { ErrorState } from "@/components/auth/logout/ErrorState";
-import { SecurityBadge } from "@/components/auth/logout/SecurityBadge";
+import { AnimatedBackground } from "@/components/auth/AnimatedBackground";
+import { StarField } from "@/components/auth/StarField";
+import { LoadingState } from "@/components/auth/LoadingState";
+import { SuccessState } from "@/components/auth/SuccessState";
+import { ErrorState } from "@/components/auth/ErrorState";
+import { SecurityBadge } from "@/components/auth/SecurityBadge";
 import { useLogoutPage } from "@/hooks/commons/useLogoutPage";
 
 export default function LogoutPage() {
@@ -24,7 +24,9 @@ export default function LogoutPage() {
       <div className="absolute inset-0 overflow-hidden">
         <AnimatedBackground />
       </div>
+
       <StarField />
+
       <div className="relative z-10 w-full max-w-sm sm:max-w-md">
         <AnimatePresence mode="wait">
           {renderContent}

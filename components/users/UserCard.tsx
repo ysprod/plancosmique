@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Edit, Trash2, Mail, Phone, Globe, User, Calendar, Star, CreditCard, CheckCircle, Ban, Shield } from 'lucide-react';
 import { UserData } from '@/lib/interfaces';
+import { motion } from 'framer-motion';
+import { Ban, Calendar, CheckCircle, Edit, Globe, Mail, Phone, Shield, Star, Trash2, User } from 'lucide-react';
+import Link from 'next/link';
 
 type UserCardProps = {
   user: UserData;

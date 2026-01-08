@@ -9,7 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 export default function MarcheOffrandesMain() {
   const {
     cart, cartTotal, cartCount, addToCart, removeFromCart, updateQuantity, clearCart,
-    showCart, showCheckout, openCart, closeCart, openCheckout, closeCheckout, backToCart,
+    showCart, showCheckout, openCart, closeCart, closeCheckout, 
     offerings, loading, error, selectedCategory, setSelectedCategory, filteredOfferings,
     handleProceedToCheckout, handleResetCategory, handleRetry
   } = useMarcheOffrandesMain();

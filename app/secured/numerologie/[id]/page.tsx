@@ -14,6 +14,7 @@ export default function NumerologiePage({ params }: NumerologiePageProps) {
   const { consultation, loading, error, fetchConsultation } = useNumerologieConsultation(id);
 
   if (loading) return <NumerologieLoadingState />;
+  
   if (error) return <NumerologieErrorState error={error} onRetry={fetchConsultation} />;
 
   if (!consultation) return <NumerologieErrorState error="Aucune donnée disponible" onRetry={fetchConsultation} />;

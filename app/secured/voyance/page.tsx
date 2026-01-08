@@ -1,18 +1,14 @@
 'use client';
-import { AnimatePresence, motion } from 'framer-motion';
-import VoyanceHeader from '@/components/voyance/VoyanceHeader';
 import VoyanceFormSection from '@/components/voyance/VoyanceFormSection';
+import VoyanceHeader from '@/components/voyance/VoyanceHeader';
 import VoyancePredictionSection from '@/components/voyance/VoyancePredictionSection';
-import { useVoyancePage } from '@/hooks/useVoyancePage';
+import { useVoyancePage } from '@/hooks/commons/useVoyancePage';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function VoyancePage() {
   const {
-    selectedCategory, setSelectedCategory,
-    name, setName,
-    birthDate, setBirthDate,
-    question, setQuestion,
-    isRevealing, prediction,
-    handleReveal, handleReset
+    selectedCategory, setSelectedCategory, name, setName, birthDate, setBirthDate,
+    question, setQuestion, isRevealing, prediction, handleReveal, handleReset
   } = useVoyancePage();
 
   return (

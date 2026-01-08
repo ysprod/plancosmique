@@ -1,13 +1,6 @@
 import { CATEGORIES_OFFRANDES } from '@/lib/constants';
 import React from 'react';
 
-interface Category {
-  value: string;
-  label: string;
-  color: string;
-  emoji: string;
-}
-
 interface OfferingFormData {
   id: string;
   name: string;
@@ -24,8 +17,7 @@ interface OffrandesAddModalProps {
   onConfirm: () => void;
   formData: OfferingFormData;
   setFormData: (data: OfferingFormData) => void;
-  editingId: string | null;
- 
+  editingId: string | null; 
   saving?: boolean;
   errorMessage?: string | null;
 }

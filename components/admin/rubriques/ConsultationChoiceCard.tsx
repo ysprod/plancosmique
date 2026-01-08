@@ -1,4 +1,3 @@
- 
 import { ConsultationChoice } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp, DollarSign, Package, Search, Trash2 } from "lucide-react";

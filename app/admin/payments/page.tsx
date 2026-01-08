@@ -18,9 +18,7 @@ export default function PaymentsPage() {
     setCurrentPage, setShowFilters, handleRefresh,
   } = useAdminPaymentsPage();
 
-  if (loading) {
-    return <AdminPaymentsLoader />;
-  }
+  if (loading) { return <AdminPaymentsLoader />; }
 
   if (error) {
     return <AdminPaymentsErrorAlert error={error} onRetry={handleRefresh} />;

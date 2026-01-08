@@ -1,5 +1,5 @@
 import { Search, RefreshCw } from "lucide-react";
-import { TransactionFilter, SortOrder } from '@/components/wallet/page/types';
+import { TransactionFilter, SortOrder } from '@/components/wallet/types';
 
 interface FilterBarProps {
   searchQuery: string;

@@ -1,16 +1,11 @@
 import CosmicLoader from '@/components/analysehoroscope/CosmicLoader';
-import PageHeader from '@/components/analysehoroscope/PageHeader';
-import AnalyseGenere from '@/components/vie-personnelle/AnalyseGenere';
-import ErrorToast from '@/components/vie-personnelle/ErrorToast';
-import LoadingOverlay from '@/components/vie-personnelle/LoadingOverlay';
-import OfferingStep from '@/components/vie-personnelle/OfferingStep';
-import PaymentProcessing from '@/components/vie-personnelle/PaymentProcessing';
-import { containerVariants, processingVariants } from '@/lib/animation.constants';
+import { AnalyseHoroscopeHeader } from '@/components/analysehoroscope/AnalyseHoroscopeHeader';
+import { AnalyseHoroscopeSteps } from '@/components/analysehoroscope/AnalyseHoroscopeSteps';
+import { AnalyseHoroscopeErrorToast } from '@/components/analysehoroscope/AnalyseHoroscopeErrorToast';
+import { AnalyseHoroscopeLoadingOverlay } from '@/components/analysehoroscope/AnalyseHoroscopeLoadingOverlay';
+import { useAnalyseHoroscopePageUI } from '@/hooks/commons/useAnalyseHoroscopePageUI';
 import { OfferingAlternative, WalletOffering } from '@/lib/interfaces';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import { useCallback } from 'react';
-import { StepType } from './useAnalyseHoroscopePage';
+import { StepType } from '../../hooks/commons/useAnalyseHoroscopePage';
 
 interface AnalyseHoroscopePageUIProps {
     step: StepType;
@@ -33,67 +28,33 @@ const AnalyseHoroscopePageUI = ({
     handleOfferingValidation,
     handleCloseError,
 }: AnalyseHoroscopePageUIProps) => {
-    const router = useRouter();
-    const handleBack = useCallback(() => router.back(), [router]);
+    const { handleBack } = useAnalyseHoroscopePageUI();
 
     if (loading) {
         return (
-            <div className=" flex items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50">
+            <div className="flex items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50">
                 <CosmicLoader />
             </div>
         );
     }
 
     return (
-        <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 py-4 px-3">
-            <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className="max-w-7xl mx-auto"
-            >
-                <PageHeader />
-                <div className="relative overflow-hidden">
-                    <div className="max-w-4xl mx-auto py-6">
-                        <AnimatePresence mode="wait">
-                            {paymentLoading && (
-                                <motion.div
-                                    key="processing"
-                                    variants={processingVariants}
-                                    initial="hidden"
-                                    animate="visible"
-                                    exit="exit"
-                                    className="flex justify-center min-h-[60vh]"
-                                >
-                                    <PaymentProcessing />
-                                </motion.div>
-                            )}
-                            {step === 'consulter' && consultation && (
-                                <OfferingStep
-                                    requiredOfferings={consultation.alternatives}
-                                    walletOfferings={walletOfferings}
-                                    onNext={handleOfferingValidation}
-                                    onBack={handleBack}
-                                />
-                            )}
-                            {step === 'genereanalyse' && (
-                                <AnalyseGenere />
-                            )}
-                        </AnimatePresence>
-                    </div>
-                    <AnimatePresence>
-                        {paymentLoading && step === 'selection' && <LoadingOverlay />}
-                    </AnimatePresence>
-                </div>
-            </motion.div>
-            <AnimatePresence>
-                {error && (
-                    <ErrorToast
-                        message={error}
-                        onClose={handleCloseError}
+        <div className="bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 py-4 px-3">
+            <AnalyseHoroscopeHeader />
+            <div className="relative overflow-hidden">
+                <div className="max-w-4xl mx-auto py-6">
+                    <AnalyseHoroscopeSteps
+                        step={step}
+                        paymentLoading={paymentLoading}
+                        consultation={consultation}
+                        walletOfferings={walletOfferings}
+                        handleOfferingValidation={handleOfferingValidation}
+                        handleBack={handleBack}
                     />
-                )}
-            </AnimatePresence>
+                </div>
+                <AnalyseHoroscopeLoadingOverlay paymentLoading={paymentLoading} step={step} />
+            </div>
+            <AnalyseHoroscopeErrorToast error={error} handleCloseError={handleCloseError} />
         </div>
     );
 };

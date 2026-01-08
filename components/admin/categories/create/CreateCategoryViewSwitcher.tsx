@@ -1,8 +1,8 @@
+import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import CreateCategoryForm from "./CreateCategoryForm";
 import PreviewCard from "./PreviewCard";
 import SuccessCard from "./SuccessCard";
-import CreateCategoryForm from "./CreateCategoryForm";
 
 const viewVariants = {
     initial: { opacity: 0, y: 10, filter: "blur(2px)" },

@@ -220,7 +220,6 @@ export default function OfferingStep({
   const [activeTab, setActiveTab] = useState<Category>('animal');
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  // Memoization des calculs coûteux
   const walletMap = useMemo(() => {
     const map = new Map<string, number>();
     walletOfferings.forEach(w => map.set(w.offeringId, w.quantity));

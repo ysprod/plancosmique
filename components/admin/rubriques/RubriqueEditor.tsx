@@ -1,4 +1,3 @@
- 
 import { ConsultationChoice, ConsultationType, Offering } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Package, Plus, Save, X } from "lucide-react";
@@ -119,7 +118,7 @@ const RubriqueEditor = memo(({
 
         <div className="space-y-4">
           <AnimatePresence>
-            {rubrique.consultationChoices.map((choice: any, index:any) => (
+            {rubrique.consultationChoices.map((choice: any, index: any) => (
               <ConsultationChoiceCard
                 key={index}
                 choice={choice}
@@ -175,5 +174,7 @@ const RubriqueEditor = memo(({
     </motion.div>
   );
 });
+
 RubriqueEditor.displayName = "RubriqueEditor";
+
 export default RubriqueEditor;

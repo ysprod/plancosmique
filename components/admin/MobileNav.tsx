@@ -3,20 +3,15 @@ import { useAuth } from '@/lib/auth/AuthContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Activity,
-  CreditCard,
-  FileText,
-  LayoutDashboard,
   LogOut,
   Menu,
-  Settings,
   Sparkles,
-  Users,
   X
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import { navItems } from './AdminShell'; 
+import { navItems } from './AdminNavConfig';
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);

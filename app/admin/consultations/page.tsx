@@ -23,6 +23,7 @@ export default function ConsultationsPage() {
 
   return (
     <div className="bg-gray-50 dark:bg-gray-950">
+
       <ConsultationsHeader
         total={total}
         onRefresh={handleRefresh}
@@ -47,7 +48,6 @@ export default function ConsultationsPage() {
           <ConsultationsEmptyState />
         )}
       </div>
-
       <AnimatePresence>
         {toastMessage && (
           <Toast message={toastMessage} onClose={handleToastClose} />

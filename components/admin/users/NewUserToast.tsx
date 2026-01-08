@@ -6,6 +6,7 @@ export function NewUserToast({ toast, onClose }: {
   toast: { type: 'success' | 'error'; message: string } | null;
   onClose: () => void;
 }) {
+  
   return (
     <AnimatePresence>
       {toast && (

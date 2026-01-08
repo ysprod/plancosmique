@@ -1,7 +1,4 @@
-// Utility functions for wallet components
-
-import { OfferingCategory, TransactionItem } from "./page/types";
-
+import { OfferingCategory, TransactionItem } from "./types";
  
 export function getCategoryConfig(category: OfferingCategory) {
   switch (category) {

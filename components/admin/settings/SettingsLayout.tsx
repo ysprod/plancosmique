@@ -4,6 +4,7 @@ import SettingsSaveButton from "./SettingsSaveButton";
 import SettingsTabs from "@/components/admin/settings/SettingsTabs";
 
 type Tab = { id: string; label: string; icon: React.ElementType };
+
 interface SettingsLayoutProps {
     children: React.ReactNode;
     tabs: readonly Tab[] | Tab[];

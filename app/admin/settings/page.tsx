@@ -1,8 +1,8 @@
 'use client';
-import { Bell, Lock, CreditCard, Database, Settings } from 'lucide-react';
-import { useSettingsView } from '@/hooks/useSettingsView';
 import SettingsLayout from '@/components/admin/settings/SettingsLayout';
 import SettingsTabContent from '@/components/admin/settings/SettingsTabContent';
+import { useSettingsView } from '@/hooks/commons/useSettingsView';
+import { Bell, CreditCard, Database, Lock, Settings } from 'lucide-react';
 
 export default function SettingsPage() {
   const {
