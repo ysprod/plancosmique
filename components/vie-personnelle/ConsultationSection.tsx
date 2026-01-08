@@ -58,16 +58,7 @@ export const ConsultationSelection: React.FC<{
   alreadyDoneChoices: string[];
   alreadyDoneConsultationIds?: Record<string, string>;
 }> = ({ onSelect, title, choices, alreadyDoneChoices, alreadyDoneConsultationIds }) => (
-  <>
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="text-center mb-8"
-    >
-      <h2 className="text-xl sm:text-xl lg:text-xl font-bold mb-3">
-        {title || 'Veuillez choisir une consultation'}
-      </h2>
-    </motion.div>
+  <> 
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
