@@ -1,4 +1,3 @@
-
 'use client';
 import { config } from '@/lib/config';
 import { useAuth } from '@/lib/hooks';
@@ -19,7 +18,6 @@ function ProtectedRouteComponent({
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
-  // Mémoïser la construction de l'URL de redirection
   const loginUrl = useMemo(() => {
     if (typeof window === 'undefined') return redirectTo;
     const currentUrl = window.location.pathname + window.location.search;
@@ -35,7 +33,6 @@ function ProtectedRouteComponent({
     }
   }, [isAuthenticated, isLoading, router, loginUrl]);
 
-  // Afficher le loader cosmique pendant le chargement
   if (isLoading) {
     return (
       <AnimatePresence mode="wait">
@@ -44,22 +41,17 @@ function ProtectedRouteComponent({
     );
   }
 
-  // Si non authentifié, ne rien afficher (redirection en cours)
   if (!isAuthenticated) {
     return null;
   }
 
-  // Utilisateur authentifié, afficher le contenu protégé
   return <>{children}</>;
 }
 
 export const ProtectedRoute = memo(ProtectedRouteComponent, (prev, next) => {
-  // Re-render seulement si redirectTo change
   return prev.redirectTo === next.redirectTo;
 });
 
 ProtectedRoute.displayName = 'ProtectedRoute';
 
-export default ProtectedRoute;
-
-export default ProtectedRoute;
+export default ProtectedRoute; 

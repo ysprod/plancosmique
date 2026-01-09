@@ -72,4 +72,5 @@ export const DayCard = memo<DayCardProps>(({ day, onClick }) => {
     </motion.button>
   );
 });
+
 DayCard.displayName = "DayCard";

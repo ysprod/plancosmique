@@ -1,5 +1,4 @@
 'use client';
-
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { Loader2, Shield, Lock, Phone, User } from 'lucide-react';

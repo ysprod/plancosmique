@@ -26,6 +26,7 @@ const LoginLogoHeader = memo(() => (
     </motion.div>
   </Link>
 ));
+
 LoginLogoHeader.displayName = 'LoginLogoHeader';
 
 export default LoginLogoHeader;

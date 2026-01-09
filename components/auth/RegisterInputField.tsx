@@ -89,6 +89,7 @@ const RegisterInputField = memo<InputFieldProps>(({
     )}
   </div>
 ));
+
 RegisterInputField.displayName = 'RegisterInputField';
 
 export default RegisterInputField;

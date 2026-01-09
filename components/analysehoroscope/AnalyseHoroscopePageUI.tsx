@@ -5,7 +5,7 @@ import { AnalyseHoroscopeErrorToast } from '@/components/analysehoroscope/Analys
 import { AnalyseHoroscopeLoadingOverlay } from '@/components/analysehoroscope/AnalyseHoroscopeLoadingOverlay';
 import { useAnalyseHoroscopePageUI } from '@/hooks/commons/useAnalyseHoroscopePageUI';
 import { OfferingAlternative, WalletOffering } from '@/lib/interfaces';
-import { StepType } from '../../hooks/commons/useAnalyseHoroscopePage';
+import { StepType } from '@/hooks/commons/useAnalyseHoroscopePage';
 
 interface AnalyseHoroscopePageUIProps {
     step: StepType;

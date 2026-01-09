@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 export default function WelcomeHeader() {
-
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}

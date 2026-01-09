@@ -18,4 +18,5 @@ const PageHeader = memo(() => (
 ), () => true);
 
 PageHeader.displayName = 'PageHeader';
+
 export default PageHeader;

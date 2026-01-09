@@ -57,7 +57,7 @@ const CosmicLoader = memo(() => (
                 <CosmicOrbit size={144} duration={3} delay={0} />
                 <CosmicOrbit size={108} duration={4} delay={0.5} reverse />
                 <CosmicOrbit size={72} duration={5} delay={1} />
-                
+
                 <FloatingParticle icon={Sparkles} delay={0} left="10%" top="20%" duration={4} />
                 <FloatingParticle icon={Star} delay={1} left="85%" top="30%" duration={5} />
                 <FloatingParticle icon={Zap} delay={2} left="15%" top="75%" duration={4.5} />
