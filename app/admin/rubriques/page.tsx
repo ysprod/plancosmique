@@ -6,7 +6,9 @@ import { RubriquesHeader } from '@/components/admin/rubriques/RubriquesHeader';
 import { RubriquesList } from '@/components/admin/rubriques/RubriquesList';
 import { RubriquesLoader } from '@/components/admin/rubriques/RubriquesLoader';
 import { RubriquesToast } from '@/components/admin/rubriques/RubriquesToast';
+import { RubriquesTabs } from '@/components/admin/rubriques/RubriquesTabs';
 import { useAdminRubriquesPage } from '@/hooks/admin/useAdminRubriquesPage';
+import { Rubrique } from '@/lib/interfaces';
 import { useState } from 'react';
 
 export default function RubriquesAdminPage() {
@@ -24,21 +26,7 @@ export default function RubriquesAdminPage() {
   return (
     <div className="bg-gradient-to-br from-slate-50 via-violet-50 to-purple-50 p-4">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-6 flex gap-2">
-          <button
-            className={`px-4 py-2 rounded-t-lg font-semibold transition border-b-2 ${activeTab === 'gestion' ? 'bg-white border-violet-500 text-violet-800' : 'bg-violet-50 border-transparent text-violet-500 hover:bg-violet-100'}`}
-            onClick={() => setActiveTab('gestion')}
-          >
-            Gestion des rubriques
-          </button>
-          <button
-            className={`px-4 py-2 rounded-t-lg font-semibold transition border-b-2 ${activeTab === 'overview' ? 'bg-white border-fuchsia-500 text-fuchsia-800' : 'bg-fuchsia-50 border-transparent text-fuchsia-500 hover:bg-fuchsia-100'}`}
-            onClick={() => setActiveTab('overview')}
-          >
-            Vue d'Ensemble
-          </button>
-        </div>
-
+        <RubriquesTabs activeTab={activeTab} setActiveTab={setActiveTab} />
         {activeTab === 'gestion' && (
           <>
             <RubriquesHeader
@@ -53,7 +41,7 @@ export default function RubriquesAdminPage() {
                   <RubriquesList
                     rubriques={rubriques}
                     selectedRubrique={selectedRubrique}
-                    onSelect={(rub: any) => {
+                    onSelect={(rub: Rubrique) => {
                       setSelectedRubrique(rub);
                       setEditingRubrique(rub);
                     }}

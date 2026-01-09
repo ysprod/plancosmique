@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { AnimatePresence, motion } from 'framer-motion';
 import PaymentProcessing from '../vie-personnelle/PaymentProcessing';

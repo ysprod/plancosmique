@@ -28,7 +28,7 @@ export default function SpiritualiteBlogPage() {
     featuredArticle, regularArticles, hasArticles,
   } = useSpiritualiteBlogPage();
 
-  if (loading) {    return <SpiritualiteLoadingState />;  }
+  if (loading) { return <SpiritualiteLoadingState />; }
 
   if (error) {
     return <SpiritualiteErrorState error={error} onRetry={handleRetry} />;

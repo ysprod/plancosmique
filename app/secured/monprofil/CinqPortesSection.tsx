@@ -1,10 +1,10 @@
 'use client';
-import { memo } from 'react';
-import { motion } from 'framer-motion';
-import { CarteDuCielData } from '@/lib/types/astrology.types';
+import CinqPortesNotAvailableSection from '@/components/carteduciel/CinqPortesNotAvailableSection';
 import PorteCard from '@/components/carteduciel/PorteCard';
 import { useCinqPortes } from '@/hooks/carteduciel/useCinqPortes';
-import CINQ_PORTES_NOT_AVAILABLE from '@/components/carteduciel/cinqPortesNotAvailable';
+import { CarteDuCielData } from '@/lib/types/astrology.types';
+import { motion } from 'framer-motion';
+import { memo } from 'react';
 
 interface CinqPortesSectionProps {
   carteDuCiel: CarteDuCielData | null;
@@ -15,15 +15,7 @@ const CinqPortesSection = memo<CinqPortesSectionProps>(({ carteDuCiel, isPremium
   const { cinqPortes, portesArray } = useCinqPortes(carteDuCiel);
 
   if (!cinqPortes) {
-    return (
-      <section className="mb-6 px-3">
-        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center">
-          <p className="text-white/50 text-sm">
-            {CINQ_PORTES_NOT_AVAILABLE}
-          </p>
-        </div>
-      </section>
-    );
+    return <CinqPortesNotAvailableSection />;
   }
 
   return (

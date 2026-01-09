@@ -1,33 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api/client';
-
-interface Consultation {
-  id: string;
-  title: string;
-  type: 'SPIRITUALITE' | 'TAROT' | 'ASTROLOGIE' | 'NUMEROLOGIE';
-  status: 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR';
-  clientName?: string;
-  clientEmail?: string;
-  clientId?: {
-    email: string;
-  };
-  price: number;
-  isPaid: boolean;
-  rating?: number;
-  review?: string;
-  createdAt: string;
-  completedAt?: string;
-  resultData?: any;
-  formData?: {
-    prenoms: string;
-    nom: string;
-    numeroSend?: string;
-    paysNaissance?: string;
-    villeNaissance?: string;
-  };
-  [key: string]: any;
-}
-
+import { Consultation } from '@/lib/interfaces';
+ 
 interface UseAdminConsultationsOptions {
   search?: string;
   status?: string;
@@ -83,7 +57,6 @@ export function useAdminConsultations(options: UseAdminConsultationsOptions = {}
 
   useEffect(() => {
     fetchConsultations();
-    // Pas d'annulation nécessaire sans AbortController
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchConsultations]);
 

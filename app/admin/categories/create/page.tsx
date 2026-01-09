@@ -8,16 +8,14 @@ import { useCreateCategoryPage } from "@/hooks/commons/useCreateCategoryPage";
 export default function CreateCategoryPage() {
   const reducedMotion = useReducedMotion();
   const {
-    rubriques, rubriquesLoading, view, setView, nom,
-    setNom, description, setDescription, rubriqueIds,
-    setRubriqueIds, selectedSet, busy, banner, showBanner,
-    selectedRubriques, invalidRubriquesCount,
-    toggleRubrique, clearSelection, goPreview, goCreate,
-    selectionSummary, handleCreate,
+    rubriques, rubriquesLoading, view, setView, nom, setDescription, rubriqueIds,
+    setNom, description, selectedRubriques, invalidRubriquesCount,
+    setRubriqueIds, selectedSet, busy, banner, showBanner, goPreview, goCreate,
+    selectionSummary, handleCreate, toggleRubrique, clearSelection,
   } = useCreateCategoryPage();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
+    <div className="bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
       <div className="mx-auto max-w-2xl px-3 py-6 sm:px-4 sm:py-10">
         <CreateCategoryHeader view={view} />
 

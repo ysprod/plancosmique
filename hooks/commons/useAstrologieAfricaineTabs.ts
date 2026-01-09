@@ -1,4 +1,4 @@
-import { useAstrologieAfricainePage } from '@/hooks/useAstrologieAfricainePage';
+import { useAstrologieAfricainePage } from '@/hooks/astrologie-africaine/useAstrologieAfricainePage';
 
 export function useAstrologieAfricaineTabs() {
   const { activeTab, handleTabChange, tabs } = useAstrologieAfricainePage();

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { formatDate } from '@/lib/functions';
 import { AnalyseAstrologique } from '@/lib/interfaces';

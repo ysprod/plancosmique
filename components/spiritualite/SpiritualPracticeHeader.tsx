@@ -1,16 +1,36 @@
+
 import { Flame, Sparkle, ArrowLeft, BookOpen, CircleDollarSign, Feather, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 
-interface Props {
+const iconMap: Record<string, React.ReactNode> = {
+  'BookOpen': <BookOpen className="w-6 h-6" />,
+  'Shield': <Shield className="w-6 h-6" />,
+  'CircleDollarSign': <CircleDollarSign className="w-6 h-6" />,
+  'Feather': <Feather className="w-6 h-6" />,
+  'Sparkle': <Sparkle className="w-6 h-6" />,
+  'Flame': <Flame className="w-6 h-6" />,
+};
+
+const colorMap: Record<string, string> = {
+  'bases': 'from-purple-600 to-indigo-600',
+  'protection': 'from-blue-600 to-cyan-600',
+  'abondance': 'from-yellow-600 to-amber-600',
+  'ancetres': 'from-orange-600 to-red-600',
+  'meditations': 'from-pink-600 to-rose-600',
+};
+
+interface Practice {
   title: string;
   description: string;
-  icon: React.ReactNode;
-  color: string;
+  iconName: string;
+  slug: string;
 }
 
-export default function SpiritualPracticeHeader({ title, description, icon, color }: Props) {
+export default function SpiritualPracticeHeader({ practice }: { practice: Practice }) {
   const router = useRouter();
+  const icon = iconMap[practice.iconName] || <Flame className="w-8 h-8" />;
+  const color = colorMap[practice.slug] || 'from-purple-900 to-indigo-900';
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -39,8 +59,8 @@ export default function SpiritualPracticeHeader({ title, description, icon, colo
               {icon}
             </div>
             <div>
-              <h1 className="text-4xl sm:text-5xl font-bold">{title}</h1>
-              <p className="text-xl text-white/80 mt-2">{description}</p>
+              <h1 className="text-4xl sm:text-5xl font-bold">{practice.title}</h1>
+              <p className="text-xl text-white/80 mt-2">{practice.description}</p>
             </div>
           </div>
         </motion.div>

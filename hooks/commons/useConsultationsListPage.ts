@@ -58,8 +58,8 @@ export function useConsultationsListPage() {
     if (searchQuery) {
       filtered = filtered.filter(c =>
         c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.formData.prenoms.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.formData.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (c.formData?.prenoms && c.formData.prenoms.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (c.formData?.nom && c.formData.nom.toLowerCase().includes(searchQuery.toLowerCase())) ||
         c.description.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }

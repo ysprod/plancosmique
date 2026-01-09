@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/**
- * Utilitaires pour la gestion des tokens JWT
- */
-
 import { config } from '../config';
 import type { TokenPayload } from '@/lib/types/auth.types';
 

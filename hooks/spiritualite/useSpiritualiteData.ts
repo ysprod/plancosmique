@@ -1,24 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api/client';
-
-export interface SpiritualPractice {
-  _id: string;
-  slug: string;
-  title: string;
-  description: string;
-  detailedGuide?: string;
-  benefits?: string[];
-  practicalSteps?: string[];
-  category?: string;
-  readTime?: number;
-  publishedAt?: string;
-  author?: string;
-  views?: number;
-  likes?: number;
-  comments?: number;
-  featured?: boolean;
-  trending?: boolean;
-}
+import { SpiritualPractice } from '@/lib/interfaces';
 
 export function useSpiritualiteData(categories: { id: string; label: string; icon: any }[]) {
   const [practices, setPractices] = useState<SpiritualPractice[]>([]);

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from '@/lib/api/client';
 import { BackendResponse, Sujet } from '@/lib/interfaces';
 import { AnalysisDocument } from '@/lib/pdf/analysis-pdf';

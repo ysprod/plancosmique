@@ -69,22 +69,6 @@ export function useAdminOffrandes() {
     }
   }, []);
 
-  const fetchStats = async () => {
-    setStatsLoading(true);
-    setStatsError(null);
-    try {
-      const response = await api.get('/admin/offerings/stats');
-      if (response.status === 200 && response.data) {
-        setStatsData(response.data);
-      } else {
-        setStatsError('Erreur lors du chargement des statistiques');
-      }
-    } catch (err: any) {
-      setStatsError('Erreur lors du chargement des statistiques');
-    } finally {
-      setStatsLoading(false);
-    }
-  };
 
   useEffect(() => {
     fetchOfferings();
@@ -109,7 +93,7 @@ export function useAdminOffrandes() {
     setFormData({ ...offering });
     setShowAddModal(true);
   };
- 
+
   const handleConfirm = async () => {
     if (!formData.name || !formData.category || !formData.price || !formData.icon || !formData.description) {
       setErrorMessage('Veuillez remplir tous les champs obligatoires');
@@ -133,7 +117,7 @@ export function useAdminOffrandes() {
       setSaving(false);
     }
   };
- 
+
   const handleDelete = async (id: string) => {
     setSaving(true);
     try {
@@ -154,7 +138,7 @@ export function useAdminOffrandes() {
       setSuccessMessage(null);
     }
   }, [showAddModal]);
- 
+
   useEffect(() => {
     if (formData.price) {
       setFormData((prev) => ({ ...prev, priceUSD: Math.round(formData.price / 563.5) }));

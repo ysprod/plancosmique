@@ -6,7 +6,6 @@ import { AnalyseData, GenerationStep } from '@/lib/interfaces';
 export function useGenereAnalysePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const [step, setStep] = useState<GenerationStep>('loading');
   const [analyseData, setAnalyseData] = useState<AnalyseData | null>(null);
   const [error, setError] = useState<string | null>(null);

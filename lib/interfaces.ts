@@ -1,4 +1,3 @@
-// ConsultationData utilisé pour les consultations personnalisées (Cinq Étoiles)
 export interface ConsultationData {
   _id: string;
   title: string;
@@ -7,6 +6,7 @@ export interface ConsultationData {
   formData?: any;
   status: string;
 }
+
 export interface Book {
   _id: string;
   bookId: string;
@@ -19,12 +19,9 @@ export interface Book {
   author: string;
   isActive: boolean;
   createdAt: string;
-
-  
   coverImage?: string;
   updatedAt?: string;
 }
-
 
 export interface SubjectInfo {
   nom: string;
@@ -35,8 +32,7 @@ export interface SubjectInfo {
 }
 
 export interface Position {
- 
-   planete?: string;
+  planete?: string;
   astre?: string;
   signe?: string;
   maison?: string | number;
@@ -50,7 +46,6 @@ export interface CarteDuCiel {
   aspectsTexte: string;
 }
 
- 
 export interface Sujet {
   nom: string;
   prenoms: string;
@@ -58,8 +53,6 @@ export interface Sujet {
   lieuNaissance: string;
   heureNaissance: string;
 }
-
- 
 
 export interface MissionDeVie {
   titre: string;
@@ -84,20 +77,20 @@ export interface AnalyseAstrologique {
 }
 
 export interface Offering {
-    _id?: string;
-    id: string;
-    name: string;
-    price: number;
-    priceUSD: number;
-    category: 'animal' | 'vegetal' | 'beverage';
-    icon: string;
-    description: string;   
+  _id?: string;
+  id: string;
+  name: string;
+  price: number;
+  priceUSD: number;
+  category: 'animal' | 'vegetal' | 'beverage';
+  icon: string;
+  description: string;
 }
 
 export interface UserData {
   premium?: boolean;
   _id?: string;
-  id: string; 
+  id: string;
   username: string;
   email: string;
   phone?: string;
@@ -110,17 +103,11 @@ export interface UserData {
   preferences?: {
     notifications?: boolean;
     newsletter?: boolean;
-  };  
- 
+  };
+
   totalConsultations: number;
   rating: number;
-
-
   createdAt: string;
-
- 
-  
- 
   dateNaissance?: string;
   genre?: string;
   heureNaissance?: string;
@@ -151,15 +138,10 @@ export interface WalletOffering {
   category: string;
   price: number;
 }
- 
 
 export interface ConsultationOffering {
   alternatives: OfferingAlternative[];
 }
-
-
-// Types partagés pour la consultation
-
 
 export interface OfferingAlternative {
   category: 'animal' | 'vegetal' | 'beverage';
@@ -173,7 +155,7 @@ export interface ConsultationOffering {
 
 export interface ConsultationChoice {
   id: string;
-_id?: string;
+  _id?: string;
   title: string;
   description: string;
   frequence?: 'UNE_FOIS_VIE' | 'ANNUELLE' | 'MENSUELLE' | 'QUOTIDIENNE' | 'LIBRE';
@@ -207,15 +189,11 @@ export interface Rubrique {
   consultationChoices: ConsultationChoice[];
   createdAt?: string;
   updatedAt?: string;
-  
-categorieId?: any;
+  categorieId?: any;
 }
 
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';
 
-
-
- 
 export interface MissionDeVie {
   titre: string;
   contenu: string;
@@ -236,16 +214,12 @@ export interface AnalyseData {
   missionDeVie: MissionDeVie;
   metadata: Metadata;
   dateGeneration: string;
-
   _id: string;
   userId?: string;
-   
   createdAt?: string;
   updatedAt?: string;
   __v?: number;
 }
-
-
 
 export interface ConsultationData {
   _id: string;
@@ -257,11 +231,7 @@ export interface ConsultationData {
 
 export type GenerationStep = 'loading' | 'fetching' | 'generating' | 'success' | 'error';
 
-
-
-
-
-export type ConsultationStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+export type ConsultationStatus = 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR' | 'PROCESSING' | 'FAILED';
 
 export interface ConsultationFormData {
   nom: string;
@@ -294,7 +264,7 @@ export interface ResultData {
 
 export interface Consultation {
   _id: string;
-  clientId: {
+  clientId?: {
     _id: string;
     email: string;
   };
@@ -303,22 +273,26 @@ export interface Consultation {
   status: ConsultationStatus;
   title: string;
   description: string;
-  formData: ConsultationFormData;
+  formData?: ConsultationFormData;
   result: any;
-  resultData: ResultData | null;
+  resultData?: ResultData | null;
   scheduledDate: string | null;
   completedDate: string | null;
   price: number;
   isPaid: boolean;
   paymentId: string | null;
-  rating: number | null;
-  review: string | null;
+  rating?: number | null;
+  review?: string | null;
   attachments: string[];
   notes: string | null;
   createdAt: string;
   updatedAt: string;
+  id: string;
+  clientName?: string;
+  clientEmail?: string;
+  completedAt?: string;
+  [key: string]: any;
 }
- 
 
 export interface Transaction {
   _id: string;
@@ -348,8 +322,6 @@ export interface TransactionItem {
   offeringId: OfferingDetails | string; // Peut être peuplé ou juste l'ID
 }
 
-
-
 export interface OfferingDetails {
   _id: string;
   name: string;
@@ -359,27 +331,10 @@ export interface OfferingDetails {
   description?: string;
 }
 
-
-
-// interface AnalyseData {
-//   _id: string;
-//   userId: string;
-//   consultationId: string;
-//   carteDuCiel: CarteDuCiel;
-//   missionDeVie: MissionDeVie;
-//   dateGeneration: string;
-//   createdAt: string;
-//   updatedAt: string;
-//   __v: number;
-// }
-
 export interface BackendResponse {
   success?: boolean;
   analyse?: AnalyseData;
 }
-
-
-
 
 export type HoroscopeTypeId = 'mensuel' | 'annuel';
 
@@ -449,7 +404,6 @@ export interface SpiritualitePractice {
     avatar?: string;
   };
 }
- 
 
 export type ConsultationType =
   | 'SPIRITUALITE'
@@ -460,12 +414,12 @@ export type ConsultationType =
   | 'ASTROLOGIE_AFRICAINE'
   | 'HOROSCOPE'
   | 'NOMBRES_PERSONNELS'
-  | 'CYCLES_PERSONNELS'| 'CINQ_ETOILES'
+  | 'CYCLES_PERSONNELS' | 'CINQ_ETOILES'
   | 'NUMEROLOGIE'
   | 'AUTRE';
 
 
-  export type FrequenceConsultation =
+export type FrequenceConsultation =
   | 'UNE_FOIS_VIE'      // Consultation faite une seule fois dans la vie
   | 'ANNUELLE'          // Peut être faite chaque année
   | 'MENSUELLE'         // Peut être faite chaque mois
@@ -475,24 +429,24 @@ export type ConsultationType =
 export type TypeParticipants =
   | 'SOLO'              // Uniquement l'utilisateur
   | 'AVEC_TIERS'        // Utilisateur + une personne tierce
-  | 'GROUPE';     
-
-  
-  export interface Domaine {
-    id: string;
-    titre: string;
-    description: string;
-    rubriques: Rubrique[];
-  }
+  | 'GROUPE';
 
 
-  export interface ConsultationConfig {
+export interface Domaine {
+  id: string;
+  titre: string;
+  description: string;
+  rubriques: Rubrique[];
+}
+
+
+export interface ConsultationConfig {
   id: string;
   titre: string;
   description: string;
   frequence: FrequenceConsultation;
   typeParticipants: TypeParticipants;
-  typeTechnique: string;  
+  typeTechnique: string;
   offering: {
     alternatives: Array<{
       category: 'animal' | 'vegetal' | 'beverage';
@@ -502,4 +456,79 @@ export type TypeParticipants =
   };
   noteImplementation?: string;
 }
-  
+
+
+export interface Payment {
+  id: string;
+  reference: string;
+  amount: number;
+  status: 'pending' | 'completed' | 'failed' | 'cancelled';
+  method: string;
+  customerName: string;
+  customerPhone: string;
+  createdAt: string;
+  completedAt?: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  nom: string;
+  prenom: string;
+  username: string;
+  telephone: string;
+  phone?: string;
+  role: 'USER' | 'ADMIN';
+  status: 'active' | 'inactive' | 'suspended';
+  isActive: boolean;
+  emailVerified: boolean;
+  createdAt: string;
+  lastLogin: string;
+  consultationsCount: number;
+  totalConsultations: number;
+  rating: number;
+  credits: number;
+  country?: string;
+  gender?: string;
+  preferences?: {
+    notifications?: boolean;
+  };
+}
+
+export interface SpiritualPractice {
+  _id: string;
+  slug: string;
+  title: string;
+  description: string;
+  detailedGuide?: string;
+  benefits?: string[];
+  practicalSteps?: string[];
+  category?: string;
+  readTime?: number;
+  publishedAt?: string;
+  author?: string;
+  views?: number;
+  likes?: number;
+  comments?: number;
+  featured?: boolean;
+  trending?: boolean;
+}
+
+export interface SpiritualPractice {
+  _id: string;
+  slug: string;
+  title: string;
+  description: string;
+  detailedGuide?: string;
+  benefits?: string[];
+  practicalSteps?: string[];
+  category?: string;
+  readTime?: number;
+  publishedAt?: string;
+  author?: string;
+  views?: number;
+  likes?: number;
+  comments?: number;
+  featured?: boolean;
+  trending?: boolean;
+}

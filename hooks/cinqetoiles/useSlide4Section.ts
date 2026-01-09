@@ -14,8 +14,8 @@ const validateForm = (form: FormData): FormErrors => {
   const errors: FormErrors = {};
   if (!form.nom.trim()) errors.nom = 'Nom requis';
   if (!form.prenoms.trim()) errors.prenoms = 'Prénoms requis';
-   if (!form.dateNaissance) errors.dateNaissance = 'Date de naissance requise';
-   if (!form.villeNaissance.trim()) errors.villeNaissance = 'Ville de naissance requise';
+  if (!form.dateNaissance) errors.dateNaissance = 'Date de naissance requise';
+  if (!form.villeNaissance.trim()) errors.villeNaissance = 'Ville de naissance requise';
   if (!form.heureNaissance) errors.heureNaissance = 'Heure de naissance requise';
   return errors;
 };
@@ -131,7 +131,7 @@ export function useSlide4Section() {
         setChoices(arr);
         if (arr.length > 0) setSelected(arr[0]);
       })
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   }, []);
 

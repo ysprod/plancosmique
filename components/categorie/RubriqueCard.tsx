@@ -174,25 +174,12 @@ export const RubriqueCard = memo(
           {/* Contenu */}
           <div className="relative">
             <div className="flex items-start justify-between gap-3">
-              <div className="flex min-w-0 flex-1 items-center gap-3">
-                <motion.span
-                  className={cx(
-                    "relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-2xl",
-                    "bg-gradient-to-br from-violet-600 to-indigo-600",
-                    "shadow-sm shadow-violet-500/25"
-                  )}
-                  whileHover={reduceMotion ? undefined : { rotate: 10 }}
-                  transition={{ type: "spring", stiffness: 420, damping: 14 }}
-                >
-                  <Sparkles className="h-4 w-4 text-white" />
-                  <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/20 to-transparent" />
-                </motion.span>
-
+              <div className="flex min-w-0 flex-1 items-center gap-3">             
                 <div className="min-w-0 flex-1">
                   <h3 className="truncate text-[15px] font-extrabold leading-tight text-slate-900 dark:text-white">
                     {derived.title}
                   </h3>
-                  <p className="mt-1 line-clamp-2 text-[12px] leading-snug text-slate-600/90 dark:text-zinc-300/90">
+                  <p className="mt-1  text-slate-600/90 text-sm leading-relaxed text-slate-600/90 dark:text-zinc-300/90">
                     {derived.desc}
                   </p>
                 </div>

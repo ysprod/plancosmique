@@ -7,14 +7,14 @@ import { useEditCategoryPage } from "@/hooks/commons/useEditCategoryPage";
 export default function EditCategoryPage() {
   const {
     rubriques, rubriquesLoading, description, pageLoading, view, selectedRubriques,
-    nom, selectionSummary, rubriqueIds, selectedSet, busy, banner,
-    setNom, setDescription, toggleRubrique, clearSelection, goEdit, goPreview, handleEdit,
+    nom, selectionSummary, rubriqueIds, selectedSet, busy, banner, goPreview,
+    setNom, setDescription, toggleRubrique, clearSelection, goEdit, handleEdit,
   } = useEditCategoryPage();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
+    <div className="bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
       <div className="mx-auto max-w-2xl px-3 py-6 sm:px-4 sm:py-10">
-        
+
         <Header view={view} onBack={() => window.history.back()} />
 
         <Title selectionSummary={selectionSummary} />

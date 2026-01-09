@@ -25,6 +25,14 @@ interface OffrandesStatsProps {
 
 const OffrandesStats: React.FC<OffrandesStatsProps> = ({ statsData}) => {
   if (!statsData) return null;
+  // Totaux par catégorie
+  const totalCatRevenue = statsData.byCategory.reduce((sum, c) => sum + c.revenue, 0);
+  const totalCatQty = statsData.byCategory.reduce((sum, c) => sum + c.quantitySold, 0);
+
+  // Totaux par offrande
+  const totalOffrandeRevenue = statsData.byOffering.reduce((sum, o) => sum + o.revenue, 0);
+  const totalOffrandeQty = statsData.byOffering.reduce((sum, o) => sum + o.quantitySold, 0);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
       {/* Par catégorie */}
@@ -40,6 +48,12 @@ const OffrandesStats: React.FC<OffrandesStatsProps> = ({ statsData}) => {
               <span className="text-xs text-gray-500 ml-2">({cat.quantitySold})</span>
             </div>
           ))}
+          {/* Total catégorie */}
+          <div className="flex items-center justify-between border-t pt-2 mt-2">
+            <span className="font-bold text-gray-900 dark:text-gray-100">Total</span>
+            <span className="font-black text-md text-emerald-900 dark:text-emerald-100">{totalCatRevenue.toLocaleString()} F</span>
+            <span className="text-xs text-gray-700 ml-2">({totalCatQty})</span>
+          </div>
         </div>
       </div>
       {/* Par période */}
@@ -88,6 +102,13 @@ const OffrandesStats: React.FC<OffrandesStatsProps> = ({ statsData}) => {
                 <td className="px-3 py-2">{o.avgUnitPrice ? o.avgUnitPrice.toLocaleString() : '-'}</td>
               </tr>
             ))}
+            {/* Total offrandes */}
+            <tr className="bg-gray-50 dark:bg-gray-900 font-bold">
+              <td className="px-3 py-2" colSpan={2}>Total</td>
+              <td className="px-3 py-2">{totalOffrandeQty}</td>
+              <td className="px-3 py-2">{totalOffrandeRevenue.toLocaleString()} F</td>
+              <td className="px-3 py-2">-</td>
+            </tr>
           </tbody>
         </table>
       </div>

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { api } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthContext';
@@ -9,7 +8,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { containerVariants, processingVariants } from '../../lib/animation.constants';
  
 import { getRubriqueById } from '@/lib/api/services/rubriques.service';
-import ConsultationSelection from '../vie-personnelle/ConsultationSelection';
+import ConsultationSelection from './ConsultationSelection';
 import PaymentProcessing from '../vie-personnelle/PaymentProcessing';
 import OfferingStep from '../vie-personnelle/OfferingStep';
 import AnalyseGenere from '../vie-personnelle/AnalyseGenere';

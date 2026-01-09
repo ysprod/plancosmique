@@ -11,7 +11,6 @@ export default function SpiritualiteAdmin() {
   return (
     <div className="bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50">
       <div className="max-w-7xl mx-auto">
-
         <SpiritualiteHeader
           onCreate={spiritualite.handleCreate}
           loading={spiritualite.loading}
@@ -21,7 +20,6 @@ export default function SpiritualiteAdmin() {
         />
         
         <SpiritualiteMessages error={spiritualite.error} success={spiritualite.success} />
-
         <SpiritualiteFormModal
           show={spiritualite.showForm}
           onClose={() => spiritualite.setShowForm(false)}

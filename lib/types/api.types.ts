@@ -85,35 +85,35 @@ export enum PaymentStatus {
   REFUNDED = 'refunded'
 }
 
-export interface Payment {
-  _id: string;
-  userId: string;
-  consultationId: string;
-  amount: number;
-  currency: string;
-  status: PaymentStatus;
-  paymentMethod: PaymentMethod;
-  transactionId?: string;
-  metadata?: Record<string, any>;
-  refundedAt?: Date;
-  createdAt: Date;
-  updatedAt: Date;
-}
+// export interface Payment {
+//   _id: string;
+//   userId: string;
+//   consultationId: string;
+//   amount: number;
+//   currency: string;
+//   status: PaymentStatus;
+//   paymentMethod: PaymentMethod;
+//   transactionId?: string;
+//   metadata?: Record<string, any>;
+//   refundedAt?: Date;
+//   createdAt: Date;
+//   updatedAt: Date;
+// }
 
-export interface Service {
-  _id: string;
-  slug: string;
-  name: string;
-  description: string;
-  price: number;
-  currency: string;
-  duration?: number;
-  features: string[];
-  isActive: boolean;
-  isFeatured: boolean;
-  icon?: string;
-  color?: string;
-  metadata?: Record<string, any>;
-  createdAt: Date;
-  updatedAt: Date;
-}
+// export interface Service {
+//   _id: string;
+//   slug: string;
+//   name: string;
+//   description: string;
+//   price: number;
+//   currency: string;
+//   duration?: number;
+//   features: string[];
+//   isActive: boolean;
+//   isFeatured: boolean;
+//   icon?: string;
+//   color?: string;
+//   metadata?: Record<string, any>;
+//   createdAt: Date;
+//   updatedAt: Date;
+// }

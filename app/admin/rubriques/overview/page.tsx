@@ -5,15 +5,14 @@ import { useRubriquesOverview } from '@/hooks/commons/useRubriquesOverview';
 
 export default function RubriquesOverviewPage() {
   const {
-    domaines, stats, loading, error,
-    expandedDomaine, setExpandedDomaine,
-    expandedRubrique, setExpandedRubrique,
-    expandedSousRubrique, setExpandedSousRubrique
+    domaines, stats, loading, error, expandedDomaine, setExpandedDomaine,
+    expandedSousRubrique, setExpandedSousRubrique, expandedRubrique, setExpandedRubrique,
   } = useRubriquesOverview();
 
   if (loading) {
     return <div className="p-8 text-center text-lg text-gray-500">Chargement de l'architecture...</div>;
   }
+
   if (error) {
     return <div className="p-8 text-center text-red-500">Erreur de chargement : {error}</div>;
   }
@@ -28,7 +27,6 @@ export default function RubriquesOverviewPage() {
         </div>
 
         <RubriquesOverviewStats stats={stats} />
-
         <RubriquesOverviewDomaines
           domaines={domaines}
           expandedDomaine={expandedDomaine}

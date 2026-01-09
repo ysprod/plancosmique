@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/**
- * Client API Axios avec interceptors JWT et refresh automatique
- */
-
 import axios, {
   AxiosInstance,
   AxiosRequestConfig,

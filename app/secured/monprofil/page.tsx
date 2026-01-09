@@ -19,10 +19,12 @@ export default function MonProfilPage() {
       <div className="max-w-4xl mx-auto">
         <ProfileHeader userData={processedData} />
         <br /><br />
+
         <CinqPortesSection
           carteDuCiel={processedData?.carteDuCiel?.carteDuCiel ?? null}
           isPremium={user.premium}
         />
+
         <SkyChart carteDuCiel={processedData.carteDuCiel} />
       </div>
     </main>

@@ -14,9 +14,6 @@ import {
 } from '@/lib/utils/token.utils';
 
 export const authService = {
-  /**
-   * Inscription d'un nouvel utilisateur
-   */
   register: async (data: RegisterDto): Promise<AuthResponse> => {
     const response = await api.post<AuthResponse>(endpoints.auth.register, data);
     const { accessToken, refreshToken, user } = response.data;

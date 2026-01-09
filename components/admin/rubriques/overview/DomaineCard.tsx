@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { memo, useCallback, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";

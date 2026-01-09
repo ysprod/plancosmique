@@ -49,9 +49,7 @@ export default function LivresPage() {
     }
   };
 
-  if (loading) {
-    return <BooksListLoading />;
-  }
+  if (loading) { return <BooksListLoading />; }
 
   return (
     <div className=" bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50">
@@ -59,13 +57,11 @@ export default function LivresPage() {
         <div className="mb-8">
           <BooksHeader />
         </div>
-
         {error && (
           <div className="mb-6 bg-red-50 border-2 border-red-200 rounded-xl p-4 text-center">
             <p className="text-red-700 font-semibold">{error}</p>
           </div>
         )}
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           <BooksGrid books={books} purchasingBookId={purchasingBookId} onPurchase={handlePurchase} />
         </div>

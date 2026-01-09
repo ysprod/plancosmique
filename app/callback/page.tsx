@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { ActionButtons, BackgroundBlobs, CompletionBanner, SecurityNote, StatusCard } from '@/components/callback';
 import AnalysisPreview from '@/components/callback/AnalysisPreview';
@@ -67,6 +66,7 @@ const PaymentCallbackContent = () => {
                 itemVariants={itemVariants}
               />
             )}
+
           <StatusCard
             status={status}
             statusConfig={statusConfig}

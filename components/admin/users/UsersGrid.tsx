@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AnimatePresence, motion } from 'framer-motion';
 import { Users } from 'lucide-react';
 import UsersPagination from '@/components/admin/users/UsersPagination';

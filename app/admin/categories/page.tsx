@@ -6,10 +6,11 @@ import CreateCategoryButton from "@/components/admin/categories/CreateCategoryBu
 import CategoriesList from "@/components/admin/categories/CategoriesList";
 import CategoriesErrorAlert from "@/components/admin/categories/CategoriesErrorAlert";
 import { Banner } from "@/components/admin/categories/Banner";
-import { useAdminCategoriesView } from "@/hooks/commons/useAdminCategoriesView";
+import { useAdminCategoriesView } from "@/hooks/admin/useAdminCategoriesView";
 
 export default function AdminCategoriesPage() {
     const reducedMotion = useReducedMotion();
+
     const {
         rubriques, categories, categoriesLoading, categoriesError, stopEdit,
         rubriquesLoading, rubriquesError, banner, editingId, counts, startEdit,
@@ -33,6 +34,7 @@ export default function AdminCategoriesPage() {
                 </AnimatePresence>
 
                 {categoriesError && <CategoriesErrorAlert message={categoriesError} />}
+
                 {rubriquesError && <CategoriesErrorAlert message={rubriquesError} />}
 
                 <CreateCategoryButton />

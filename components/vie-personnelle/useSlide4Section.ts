@@ -26,10 +26,10 @@ export interface Slide4SectionMainProps {
 }
 
 export function useSlide4Section(rubrique: Rubrique) {
-  const [alreadyDoneConsultationIds, setAlreadyDoneConsultationIds] = useState<Record<string, string>>({});
-  const [alreadyDoneChoices, setAlreadyDoneChoices] = useState<string[]>([]);
   const router = useRouter();
   const { user } = useAuth();
+  const [alreadyDoneConsultationIds, setAlreadyDoneConsultationIds] = useState<Record<string, string>>({});
+  const [alreadyDoneChoices, setAlreadyDoneChoices] = useState<string[]>([]);
   const [step, setStep] = useState<StepType>('selection');
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -189,7 +189,7 @@ export function useSlide4Section(rubrique: Rubrique) {
         description: choice.description,
         status: 'PENDING',
         alternatives: choice.offering.alternatives,
-        choice,  
+        choice,
       };
       console.log('[Slide4] 🛰️ Création consultation avec payload:', payload);
       const consultationRes = await api.post('/consultations', payload);
@@ -222,8 +222,8 @@ export function useSlide4Section(rubrique: Rubrique) {
         status: raw.status || raw.statut || '',
       };
       setConsultation(consultationData);
-      
-     // setStep('consulter');
+
+      setStep('consulter');
       setPaymentLoading(false);
     } catch (err: any) {
       console.error('[Slide4] ❌ Erreur:', err);

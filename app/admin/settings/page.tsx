@@ -6,21 +6,21 @@ import { Bell, CreditCard, Database, Lock, Settings } from 'lucide-react';
 
 export default function SettingsPage() {
   const {
-    activeTab, setActiveTab, isSaving, setIsSaving, logLevel,
-    saveSuccess, setSaveSuccess, showApiKey, setShowApiKey,
-    siteName, setSiteName, siteEmail, setSiteEmail, setLogLevel,
-    sitePhone, setSitePhone, maintenanceMode, setMaintenanceMode,
-    emailNotifications, setEmailNotifications, setNewConsultationNotif,
-    newUserNotif, setNewUserNotif, newConsultationNotif,
-    paymentNotif, setPaymentNotif, twoFactorAuth, setTwoFactorAuth,
-    sessionTimeout, setSessionTimeout, passwordExpiry, setPasswordExpiry,
-    moneyFusionApiKey, setMoneyFusionApiKey, paymentMethods, setPaymentMethods,
-    maxUploadSize, setMaxUploadSize, backupFrequency, setBackupFrequency,
+    activeTab, setActiveTab, isSaving, setIsSaving, logLevel, siteEmail, setSiteEmail,
+    saveSuccess, setSaveSuccess, showApiKey, setShowApiKey, setSitePhone, maintenanceMode,
+    siteName, setSiteName, setLogLevel, setEmailNotifications, setNewConsultationNotif,
+    sitePhone, setMaintenanceMode, emailNotifications, newConsultationNotif,
+    twoFactorAuth, setTwoFactorAuth, passwordExpiry, setPasswordExpiry,
+    newUserNotif, setNewUserNotif, paymentMethods, setPaymentMethods,
+    paymentNotif, setPaymentNotif, backupFrequency, setBackupFrequency,
+    sessionTimeout, setSessionTimeout, moneyFusionApiKey, setMoneyFusionApiKey,
+    maxUploadSize, setMaxUploadSize,
   } = useSettingsView();
 
   const handleSave = async () => {
     setIsSaving(true);
     setSaveSuccess(false);
+
     await new Promise(resolve => setTimeout(resolve, 1500));
     setIsSaving(false);
     setSaveSuccess(true);

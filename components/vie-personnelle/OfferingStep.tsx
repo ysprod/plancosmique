@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { OfferingAlternative, WalletOffering } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";

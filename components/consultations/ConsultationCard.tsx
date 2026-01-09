@@ -41,20 +41,22 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ consultation, index
       <div className="space-y-2 mb-4 p-4 bg-black/20 rounded-xl">
         <div className="flex items-center gap-2 text-sm text-purple-200">
           <User className="w-4 h-4 flex-shrink-0" />
-          <span className="font-medium">{consultation.formData.prenoms} {consultation.formData.nom}</span>
+          <span className="font-medium">
+            {consultation.formData?.prenoms || '-'} {consultation.formData?.nom || '-'}
+          </span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-purple-300">
           <div className="flex items-center gap-2">
             <Calendar className="w-3.5 h-3.5 flex-shrink-0" />
-            Né(e) le {formatDate(consultation.formData.dateNaissance)}
+            Né(e) le {consultation.formData?.dateNaissance ? formatDate(consultation.formData.dateNaissance) : '-'}
           </div>
           <div className="flex items-center gap-2">
             <Clock className="w-3.5 h-3.5 flex-shrink-0" />
-            à {consultation.formData.heureNaissance}
+            à {consultation.formData?.heureNaissance || '-'}
           </div>
           <div className="flex items-center gap-2 col-span-1 sm:col-span-2">
             <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-            {consultation.formData.villeNaissance}, {consultation.formData.paysNaissance}
+            {consultation.formData?.villeNaissance || '-'}, {consultation.formData?.paysNaissance || '-'}
           </div>
         </div>
       </div>

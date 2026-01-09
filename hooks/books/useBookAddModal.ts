@@ -14,7 +14,6 @@ export function useBookAddModal(initialFormData: BookFormData) {
   const handleAddBook = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    // Validation et soumission ici
     setSubmitting(false);
   };
 

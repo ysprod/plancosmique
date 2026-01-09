@@ -1,30 +1,6 @@
 import { api } from '@/lib/api/client';
 import { useCallback, useEffect, useState } from 'react';
-
-interface User {
-  id: string;
-  email: string;
-  nom: string;
-  prenom: string;
-  username: string;
-  telephone: string;
-  phone?: string;
-  role: 'USER' | 'ADMIN';
-  status: 'active' | 'inactive' | 'suspended';
-  isActive: boolean;
-  emailVerified: boolean;
-  createdAt: string;
-  lastLogin: string;
-  consultationsCount: number;
-  totalConsultations: number;
-  rating: number;
-  credits: number;
-  country?: string;
-  gender?: string;
-  preferences?: {
-    notifications?: boolean;
-  };
-}
+import { User } from '@/lib/interfaces';
 
 interface UseAdminUsersOptions {
   search?: string;
@@ -39,7 +15,6 @@ export function useAdminUsers(options: UseAdminUsersOptions = {}) {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -66,8 +41,8 @@ export function useAdminUsers(options: UseAdminUsersOptions = {}) {
       let errorMessage = 'Erreur inconnue';
 
       if (err.response) {
-        errorMessage = err.response.data?.message || 
-                      `Erreur ${err.response.status}`;
+        errorMessage = err.response.data?.message ||
+          `Erreur ${err.response.status}`;
       } else if (err.request) {
         errorMessage = 'Erreur de connexion au serveur';
       } else {

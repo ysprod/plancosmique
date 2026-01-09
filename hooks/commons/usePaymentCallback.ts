@@ -1,1 +1,1 @@
-export { usePaymentCallback } from '../usePaymentCallback';
+export { usePaymentCallback } from './usePaymentCallback.new';

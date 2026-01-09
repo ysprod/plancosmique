@@ -1,14 +1,13 @@
-import React from "react";
+import { containerVariants } from '@/lib/animation.constants';
 import { AnimatePresence, motion } from "framer-motion";
-import { containerVariants, processingVariants } from '@/lib/animation.constants';
-import Slide4SectionSelection from './Slide4SectionSelection';
-import Slide4SectionProcessing from './Slide4SectionProcessing';
-import Slide4SectionGenereAnalyse from './Slide4SectionGenereAnalyse';
-import Slide4SectionErrorToast from './Slide4SectionErrorToast';
-import Slide4SectionLoadingOverlay from './Slide4SectionLoadingOverlay';
+import React from "react";
 import Slide4SectionBackground from './Slide4SectionBackground';
 import Slide4SectionConsulter from './Slide4SectionConsulter';
-import { StepType } from './useSlide4Section';
+import Slide4SectionErrorToast from './Slide4SectionErrorToast';
+import Slide4SectionGenereAnalyse from './Slide4SectionGenereAnalyse';
+import Slide4SectionLoadingOverlay from './Slide4SectionLoadingOverlay';
+import Slide4SectionProcessing from './Slide4SectionProcessing';
+import Slide4SectionSelection from './Slide4SectionSelection';
 import { Slide4SectionMainProps } from './useSlide4Section';
 
 const Slide4SectionMain: React.FC<Slide4SectionMainProps> = ({

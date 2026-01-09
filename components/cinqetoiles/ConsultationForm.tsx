@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import InputField from '@/components/vie-personnelle/InputField';
 import { birthCountries } from '@/lib/birthCountries';
 import { motion } from 'framer-motion';

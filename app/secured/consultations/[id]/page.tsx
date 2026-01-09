@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import ConsultationContent from '@/components/consultations/ConsultationContent';
 import ConsultationError from '@/components/consultations/ConsultationError';

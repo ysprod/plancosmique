@@ -5,9 +5,7 @@ import { NewUserToast } from '@/components/admin/users/NewUserToast';
 import { useNewUserPage } from '@/hooks/commons/useNewUserPage';
 
 export default function NewUserPage() {
-  const {
-    saving, toast, isFormValid, errors, formData,
-    setToast, handleChange, handleSubmit,
+  const { saving, toast, isFormValid, errors, formData, setToast, handleChange, handleSubmit,
   } = useNewUserPage();
 
   return (

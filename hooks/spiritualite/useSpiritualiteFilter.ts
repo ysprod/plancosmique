@@ -1,5 +1,5 @@
+import { SpiritualPractice } from '@/lib/interfaces';
 import { useState, useEffect } from 'react';
-import { SpiritualPractice } from './useSpiritualiteData';
 
 export function useSpiritualiteFilter(practices: SpiritualPractice[], searchQuery: string, selectedCategory: string, sortBy: 'recent' | 'popular' | 'trending') {
   const [filteredPractices, setFilteredPractices] = useState<SpiritualPractice[]>([]);

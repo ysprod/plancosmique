@@ -1,7 +1,7 @@
-import React, { memo } from "react";
-import { Layers, ArrowLeft, Sparkles, ChevronLeft, FolderOpen } from "lucide-react";
 import type { Categorie } from "@/hooks/categories/useAdminCategoriesPage";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, FolderOpen, Sparkles } from "lucide-react";
+import React, { memo } from "react";
 
 interface CategoryHeaderProps {
   category: Categorie;
@@ -16,12 +16,10 @@ const CategoryHeader: React.FC<CategoryHeaderProps> = memo(({
   rubriqueCourante, 
   closeRubrique 
 }) => {
-  // Dérivés calculés une fois
   const hasDescription = Boolean(category.description?.trim());
   const description = category.description?.trim() || "";
-  const categoryName = category.nom?.trim() || "Catégorie sans nom";
+  const categoryName = category.nom?.trim() || "Catégorie";
   
-  // Constantes pour les animations
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -68,25 +66,21 @@ const CategoryHeader: React.FC<CategoryHeaderProps> = memo(({
       animate="visible"
       variants={containerVariants}
     >
-      {/* Effets de fond décoratifs */}
-      <div className="pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full bg-gradient-to-br from-violet-500/10 to-fuchsia-500/5 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-gradient-to-tr from-emerald-500/10 to-cyan-500/5 blur-3xl" />
+      <div className="pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full bg-gradient-to-br from-violet-500/10 to-red-500/5 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-gradient-to-tr from-emerald-500/10 to-red-500/5 blur-3xl" />
       
-      {/* Ligne d'accent colorée */}
       <motion.div 
-        className="h-[3px] w-24 rounded-full bg-gradient-to-r from-violet-600 via-indigo-500 to-emerald-500 mb-4"
+        className="h-[3px] w-24 rounded-full bg-gradient-to-r from-violet-600 via-red-500 to-emerald-500 mb-4"
         initial={{ width: 0 }}
         animate={{ width: 96 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       />
       
       <div className="flex flex-col gap-3">
-        {/* En-tête principal avec bouton conditionnel */}
         <motion.div 
           className="flex items-start justify-between gap-4"
           variants={itemVariants}
         >
-          {/* Section titre avec icône */}
           <div className="flex min-w-0 flex-1 items-start gap-3">
             <motion.div
               className="relative mt-0.5"
@@ -141,7 +135,6 @@ const CategoryHeader: React.FC<CategoryHeaderProps> = memo(({
             </div>
           </div>
 
-          {/* Bouton conditionnel */}
           <AnimatePresence mode="wait">
             {rubriqueCourante ? (
               <motion.button

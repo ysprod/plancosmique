@@ -1,17 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api/client';
-
-interface Payment {
-  id: string;
-  reference: string;
-  amount: number;
-  status: 'pending' | 'completed' | 'failed' | 'cancelled';
-  method: string;
-  customerName: string;
-  customerPhone: string;
-  createdAt: string;
-  completedAt?: string;
-}
+import { Payment } from '@/lib/interfaces';
 
 interface UseAdminPaymentsOptions {
   search?: string;
@@ -52,8 +41,8 @@ export function useAdminPayments(options: UseAdminPaymentsOptions = {}) {
       let errorMessage = 'Erreur inconnue';
 
       if (err.response) {
-        errorMessage = err.response.data?.message || 
-                      `Erreur ${err.response.status}`;
+        errorMessage = err.response.data?.message ||
+          `Erreur ${err.response.status}`;
       } else if (err.request) {
         errorMessage = 'Erreur de connexion au serveur';
       } else {

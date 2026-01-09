@@ -21,9 +21,7 @@ export default function AdminBooksPage() {
     handleNextStep, handlePrevStep, handleAddBook, openAddModal,
   } = useAdminBooks();
 
-  if (loading) {
-    return <BooksLoading />;
-  }
+  if (loading) { return <BooksLoading />; }
 
   return (
     <div className="p-4 lg:p-6 max-w-7xl mx-auto">
@@ -35,7 +33,7 @@ export default function AdminBooksPage() {
       />
 
       <AdminBooksErrorAlert error={error} onClose={() => setError(null)} />
-        
+
       <BookStats stats={stats} />
 
       {books.length > 0 && (

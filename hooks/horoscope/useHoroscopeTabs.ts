@@ -18,4 +18,5 @@ const useHoroscopeTabs = () => {
 };
 
 export type { HoroscopeTypeId, Tab };
+
 export default useHoroscopeTabs;

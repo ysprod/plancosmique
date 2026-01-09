@@ -11,11 +11,10 @@ import { useAdminPaymentsPage } from '@/hooks/admin/useAdminPaymentsPage';
 
 export default function PaymentsPage() {
   const {
-    payments, total, showFilters, loading, totalPages, error,
-    stats, methodFilter, currentPage, isRefreshing,
-    searchQuery, statusFilter, handleResetFilters,
-    setStatusFilter, setSearchQuery, setMethodFilter,
-    setCurrentPage, setShowFilters, handleRefresh,
+    payments, total, showFilters, loading, totalPages, error, handleResetFilters,
+    stats, methodFilter, currentPage, isRefreshing, handleRefresh,
+    searchQuery, statusFilter, setSearchQuery, setMethodFilter,
+    setStatusFilter, setCurrentPage, setShowFilters,
   } = useAdminPaymentsPage();
 
   if (loading) { return <AdminPaymentsLoader />; }
@@ -30,6 +29,7 @@ export default function PaymentsPage() {
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
         <PaymentsStats stats={stats} />
+
         <PaymentsFilters
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}

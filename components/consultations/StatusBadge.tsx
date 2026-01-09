@@ -6,7 +6,9 @@ const STATUS_CONFIG: Record<ConsultationStatus, { label: string; color: string; 
   COMPLETED: { label: 'Complète', color: 'bg-green-100 text-green-800', icon: CheckCircle },
   PROCESSING: { label: 'En cours', color: 'bg-blue-100 text-blue-800', icon: Loader2 },
   PENDING: { label: 'En attente', color: 'bg-gray-100 text-gray-800', icon: Clock },
-  FAILED: { label: 'Erreur', color: 'bg-red-100 text-red-800', icon: AlertCircle }
+  FAILED: { label: 'Erreur', color: 'bg-red-100 text-red-800', icon: AlertCircle },
+  GENERATING: { label: 'Génération', color: 'bg-yellow-100 text-yellow-800', icon: Loader2 },
+  ERROR: { label: 'Erreur', color: 'bg-red-100 text-red-800', icon: AlertCircle },
 };
 const DEFAULT_STATUS_CONFIG = { label: 'Inconnu', color: 'bg-gray-100 text-gray-800', icon: Clock };
 
