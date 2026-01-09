@@ -1,9 +1,8 @@
 "use client";
-
 import type { Rubrique } from "@/lib/interfaces";
 import { motion, useReducedMotion } from "framer-motion";
-import React, { memo, useCallback, useMemo } from "react";
-import { ChevronRight, Sparkles, Eye } from "lucide-react";
+import { ChevronRight, Eye } from "lucide-react";
+import { memo, useCallback, useMemo } from "react";
 
 const itemVariants = {
   initial: { opacity: 0, y: 14, scale: 0.985, filter: "blur(6px)" },

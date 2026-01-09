@@ -11,9 +11,11 @@ interface NumerologyConsultationCardClientProps {
 
 const NumerologyConsultationCardClient: React.FC<NumerologyConsultationCardClientProps> = ({ consultation, index = 0 }) => {
   const resultData = consultation.resultData as ResultData | null;
+  
   const handleDownload = () => {
     window.open(`/api/consultations/${consultation._id}/download-pdf`, '_blank');
   };
+
   return (
     <div
       className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all"

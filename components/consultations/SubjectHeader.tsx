@@ -48,4 +48,5 @@ const SubjectHeader = memo<SubjectHeaderProps>(({ sujet }) => (
 		</div>
 	</motion.div>
 ));
+
 export default SubjectHeader;

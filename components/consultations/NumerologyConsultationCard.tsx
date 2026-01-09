@@ -12,8 +12,8 @@ interface NumerologyConsultationCardProps {
 }
 
 const NumerologyConsultationCard: React.FC<NumerologyConsultationCardProps> = ({ consultation, index, onView, onDownload }) => {
-  // resultData: { numbers: [...], cycles: [...] }
   const resultData = consultation.resultData as ResultData | null;
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

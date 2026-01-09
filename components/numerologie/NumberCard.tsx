@@ -3,10 +3,6 @@ import React, { useState, useCallback } from 'react';
 import { motion, Variants, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-// ============================================================================
-// ANIMATION VARIANTS
-// ============================================================================
-
 const cardVariants: Variants = {
   hidden: { opacity: 0, scale: 0.9, y: 20 },
   visible: {

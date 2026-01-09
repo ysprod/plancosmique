@@ -34,8 +34,11 @@ export const SuccessState = () => (
         <motion.div key={i} className="absolute inset-0 border-3 border-green-400 rounded-full" initial={{ scale: 1, opacity: 0.8 }} animate={{ scale: 1.8 + i * 0.4, opacity: 0 }} transition={{ duration: 1.2, delay: i * 0.15, repeat: Infinity, ease: "easeOut" }} />
       ))}
     </motion.div>
+
     <motion.h2 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-xl sm:text-2xl font-bold text-slate-900 mb-2 sm:mb-3">Déconnexion réussie !</motion.h2>
+    
     <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="text-slate-600 text-sm sm:text-base">À bientôt sur Mon Étoile ✨</motion.p>
+    
     <div className="mt-5 sm:mt-6 flex items-center justify-center gap-1.5 sm:gap-2">
       {Array.from({ length: CELEBRATION_STARS }, (_, i) => (
         <motion.div key={i} initial={{ opacity: 0, y: 15, scale: 0 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.45 + i * 0.08, type: "spring", stiffness: 220 }}>

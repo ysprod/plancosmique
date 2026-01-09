@@ -1,15 +1,9 @@
 'use client';
-
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Star, Heart, Sparkles, Eye } from 'lucide-react';
 import { NumberCard } from './NumberCard';
- 
-
-// ============================================================================
-// TYPES
-// ============================================================================
-
+  
 interface NumberData {
   valeur: number | string;
   calcul: string;
