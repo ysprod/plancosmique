@@ -8,7 +8,7 @@ export function RubriqueView({ rubrique }: { rubrique: Rubrique }) {
   const derived = useRubriqueDerived(rubrique);
   return (
     <div className="relative mx-auto max-w-4xl">
-      <RubriqueHeader title={derived.title} description={derived.description} />
+      <RubriqueHeader title={derived.title} description={derived.desc} />
       <RubriqueConsultationSection rubrique={rubrique} />
     </div>
   );

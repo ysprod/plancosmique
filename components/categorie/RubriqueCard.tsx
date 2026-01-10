@@ -1,7 +1,9 @@
 "use client";
+import { cx } from "@/lib/functions";
 import type { Rubrique } from "@/lib/interfaces";
 import { motion } from "framer-motion";
 import { memo, useCallback, useMemo } from "react";
+import { useRubriqueUtils } from "./useRubriqueUtils";
 
 const itemVariants = {
   initial: { opacity: 0, y: 10, scale: 0.98 },
@@ -29,9 +31,7 @@ function clampText(s: string, max = 120) {
   return x.length > max ? x.slice(0, max - 1) + "…" : x;
 }
 
-function cx(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
+
 
 /** Hash déterministe (rapide) */
 function hashString(input: string): number {
@@ -131,7 +131,6 @@ export const RubriqueCard = memo(
     const p: any = prev.rub;
     const n: any = next.rub;
     if (p === n) return true;
-    // Compare les props essentielles pour éviter les rerendus inutiles
     return (
       String(p?._id ?? "") === String(n?._id ?? "") &&
       String(p?.titre ?? "") === String(n?.titre ?? "") &&

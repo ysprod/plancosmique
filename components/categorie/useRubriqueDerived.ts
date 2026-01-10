@@ -1,13 +1,18 @@
 import { useMemo } from "react";
 import type { Rubrique } from "@/lib/interfaces";
-import { getBorderGradient } from "./getBorderGradient";
+import { getBorderGradientFromId } from "./getBorderGradient";
 
-export function useRubriqueDerived(rubrique: Rubrique) {
+import { useRubriqueUtils } from './useRubriqueUtils';
+export function useRubriqueDerived(rub: Rubrique) {
+  const { clampText, getStableRubriqueId } = useRubriqueUtils();
   return useMemo(() => {
-    const id = String((rubrique as any)?._id ?? Math.random().toString(36));
-    const title = String(rubrique.titre ?? "Rubrique").trim();
-    const description = String(rubrique.description ?? "").trim();
-    const borderClass = getBorderGradient(id);
-    return { id, title, description, borderClass };
-  }, [rubrique]);
+    const id = getStableRubriqueId(rub);
+    const title = typeof rub.titre === "string" ? rub.titre.trim() : "Rubrique";
+    const desc = rub.description ? clampText(rub.description, 140) : "—";
+    const borderClass = getBorderGradientFromId(id);
+    const choicesCount = Array.isArray((rub as any)?.consultationChoices)
+      ? (rub as any).consultationChoices.length
+      : undefined;
+    return { id, title, desc, borderClass, choicesCount };
+  }, [rub._id, rub.titre, rub.description, (rub as any)?.consultationChoices]);
 }
