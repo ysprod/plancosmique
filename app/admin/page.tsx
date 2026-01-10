@@ -51,9 +51,7 @@ export default function AdminDashboard() {
           className="space-y-4"
         >
           <ActivitySection stats={stats} derivedStats={derivedStats} />
-
           <StatsGrid stats={stats} derivedStats={derivedStats} />
-
           <DetailsGrid stats={stats} derivedStats={derivedStats} />
         </motion.div>
       </div>

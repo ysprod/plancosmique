@@ -8,10 +8,7 @@ import useConsultationResultPage from '@/hooks/consultations/useConsultationResu
 export default function ConsultationResultPage() {
   const { loading, error, analyse, handleBack, handleDownloadPDF } = useConsultationResultPage();
 
-  if (loading) {
-    return (<CosmicLoader />);
-  }
-  
+  if (loading) { return (<CosmicLoader />); }
   if (error || !analyse) {
     return <ConsultationError error={error} onBack={handleBack} />;
   }

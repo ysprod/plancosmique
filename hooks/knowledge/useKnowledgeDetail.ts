@@ -7,6 +7,20 @@ export function useKnowledgeDetail(id: string) {
   const [isLoading, setIsLoading] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
 
+  const handleShare = () => {
+    if (navigator.share && knowledge) {
+      navigator.share({
+        title: knowledge.title,
+        text: knowledge.content.substring(0, 100),
+        url: window.location.href,
+      }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Lien copié dans le presse-papier !');
+    }
+  };
+
+
   const loadKnowledge = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -35,5 +49,5 @@ export function useKnowledgeDetail(id: string) {
     }
   }, [knowledge]);
 
-  return { knowledge, isLoading, isLiked, setIsLiked, setKnowledge, handleLike };
+  return { knowledge, isLoading, isLiked, setIsLiked, setKnowledge, handleLike, handleShare };
 }

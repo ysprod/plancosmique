@@ -6,6 +6,9 @@ import React, { memo, useEffect } from 'react';
 import LoginLogoHeader from './LoginLogoHeader';
 import LoginErrorAlert from './LoginErrorAlert';
 import LoginInputField from './LoginInputField';
+import LoginTitle from './LoginTitle';
+import LoginRegisterLink from './LoginRegisterLink';
+import LoginFooter from './LoginFooter';
 import { useLoginForm } from '@/hooks/commons/useLoginForm';
 
 const LoginForm = () => {
@@ -58,14 +61,7 @@ const LoginForm = () => {
           <LoginLogoHeader />
 
           {/* Titre */}
-          <div className="text-center mb-6">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-              Connexion
-            </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Accédez à votre espace personnel
-            </p>
-          </div>
+          <LoginTitle />
 
           {/* Erreur globale */}
           {error && <LoginErrorAlert message={error} />}
@@ -125,32 +121,11 @@ const LoginForm = () => {
           </form>
 
           {/* Lien inscription */}
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Pas encore de compte ?{' '}
-              <Link
-                href="/auth/register"
-                className="text-purple-600 dark:text-purple-400 font-semibold 
-                         hover:underline transition-colors"
-              >
-                Inscription
-              </Link>
-            </p>
-          </div>
+          <LoginRegisterLink />
         </div>
 
         {/* Footer discret */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="text-center mt-6 text-xs text-gray-500 dark:text-gray-600"
-        >
-          En vous connectant, vous acceptez nos{' '}
-          <Link href="/terms" className="underline hover:text-gray-700 dark:hover:text-gray-400">
-            conditions 
-          </Link>
-        </motion.p>
+        <LoginFooter />
       </motion.div>
     </div>
   );

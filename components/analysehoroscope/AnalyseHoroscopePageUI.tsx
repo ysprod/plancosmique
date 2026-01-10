@@ -3,9 +3,9 @@ import { AnalyseHoroscopeHeader } from '@/components/analysehoroscope/AnalyseHor
 import { AnalyseHoroscopeSteps } from '@/components/analysehoroscope/AnalyseHoroscopeSteps';
 import { AnalyseHoroscopeErrorToast } from '@/components/analysehoroscope/AnalyseHoroscopeErrorToast';
 import { AnalyseHoroscopeLoadingOverlay } from '@/components/analysehoroscope/AnalyseHoroscopeLoadingOverlay';
-import { useAnalyseHoroscopePageUI } from '@/hooks/commons/useAnalyseHoroscopePageUI';
+import { useAnalyseHoroscopePageUI } from '@/hooks/analysehoroscope/useAnalyseHoroscopePageUI';
 import { OfferingAlternative, WalletOffering } from '@/lib/interfaces';
-import { StepType } from '@/hooks/commons/useAnalyseHoroscopePage';
+import { StepType } from '@/hooks/analysehoroscope/useAnalyseHoroscopePage';
 
 interface AnalyseHoroscopePageUIProps {
     step: StepType;

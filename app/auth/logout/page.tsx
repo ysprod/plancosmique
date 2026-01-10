@@ -24,7 +24,9 @@ export default function LogoutPage() {
       <div className="absolute inset-0 overflow-hidden">
         <AnimatedBackground />
       </div>
+
       <StarField />
+      
       <div className="relative z-10 w-full max-w-sm sm:max-w-md">
         <AnimatePresence mode="wait">
           {renderContent}

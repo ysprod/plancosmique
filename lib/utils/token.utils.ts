@@ -1,7 +1,6 @@
 import { config } from '../config';
 import type { TokenPayload } from '@/lib/types/auth.types';
 import { User } from '../interfaces';
-
  
 export const setAccessToken = (token: string): void => {
   if (typeof window !== 'undefined') {

@@ -1,7 +1,6 @@
 
-import React, { memo } from "react";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import React, { memo } from "react";
 
 interface RubriqueHeaderProps {
   title: string;

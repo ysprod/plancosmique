@@ -45,7 +45,7 @@ export default function SpiritualPracticeSections({ practice, expandedSections, 
           )}
         </AnimatePresence>
       </section>
-      {/* Guide Détaillé */}
+     
       <section>
         <motion.button onClick={() => toggleSection('guide')} className="w-full flex items-center justify-between py-4 px-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl hover:from-blue-100 hover:to-cyan-100 transition-all font-semibold text-slate-900">
           <span className="flex items-center gap-2">

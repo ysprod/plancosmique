@@ -17,9 +17,7 @@ export default function ConsultationsPage() {
 
   if (loading) return <CosmicLoader />;
 
-  if (error) {
-    return <ConsultationsError error={error} onRetry={handleRefresh} />;
-  }
+  if (error) { return <ConsultationsError error={error} onRetry={handleRefresh} />; }
 
   return (
     <div className="bg-gray-50 dark:bg-gray-950">

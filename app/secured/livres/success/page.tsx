@@ -9,13 +9,11 @@ function BookSuccessContent() {
   const { purchaseInfo, loading, error, handleDownload } = useBookSuccess();
   if (loading) return <BookSuccessLoading />;
   if (error) return <BookSuccessError error={error} />;
-
   if (purchaseInfo) return <BookSuccessMain purchaseInfo={purchaseInfo} onDownload={handleDownload} />;
   return null;
 }
 
 export default function BookSuccessPage() {
-
   return (
     <Suspense fallback={
       <div className=" flex items-center justify-center">

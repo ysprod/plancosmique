@@ -3,7 +3,6 @@ import { cx } from "@/lib/functions";
 import type { Rubrique } from "@/lib/interfaces";
 import { motion } from "framer-motion";
 import { memo, useCallback, useMemo } from "react";
-import { useRubriqueUtils } from "./useRubriqueUtils";
 
 const itemVariants = {
   initial: { opacity: 0, y: 10, scale: 0.98 },
@@ -30,10 +29,7 @@ function clampText(s: string, max = 120) {
   const x = typeof s === "string" ? s.replace(/\s+/g, " ").trim() : "";
   return x.length > max ? x.slice(0, max - 1) + "…" : x;
 }
-
-
-
-/** Hash déterministe (rapide) */
+ 
 function hashString(input: string): number {
   let h = 2166136261;
   for (let i = 0; i < input.length; i++) {

@@ -20,8 +20,7 @@ function generateFilename(sujet: Sujet): string {
 }
 
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: Request, { params }: { params: { id: string } }
 ) {
   const startTime = Date.now();
 

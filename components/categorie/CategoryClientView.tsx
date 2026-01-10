@@ -21,7 +21,7 @@ const CategoryClientView: React.FC<CategoryClientViewProps> = ({ category }) => 
 
   if (!category) { return <CategoryNotSelected />; }
 
-  const { rubriques, rubriqueCourante, openRubriqueById, closeRubrique, ui } = useCategoryClientView(category);
+  const { rubriques, rubriqueCourante, setRubriqueCourante, ui } = useCategoryClientView(category);
 
   return (
     <div className="bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
@@ -35,13 +35,13 @@ const CategoryClientView: React.FC<CategoryClientViewProps> = ({ category }) => 
           category={category}
           rubriqueCount={ui.rubriqueCount}
           rubriqueCourante={rubriqueCourante}
-          closeRubrique={closeRubrique}
+          closeRubrique={() => setRubriqueCourante(null)}
         />
         <CategoryClientMain
           ui={ui}
           rubriqueCourante={rubriqueCourante}
           rubriques={rubriques}
-          openRubriqueById={openRubriqueById}
+          openRubriqueById={setRubriqueCourante}
           pageVariants={pageVariants}
         />
       </motion.div>

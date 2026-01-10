@@ -25,23 +25,9 @@ const categoryLabels = {
 export default function KnowledgeDetailPage() {
   const params = useParams();
   const id = params?.id as string;
-  const { knowledge, isLoading, isLiked, handleLike } = useKnowledgeDetail(id);
-
-  const handleShare = () => {
-    if (navigator.share && knowledge) {
-      navigator.share({
-        title: knowledge.title,
-        text: knowledge.content.substring(0, 100),
-        url: window.location.href,
-      }).catch(console.error);
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert('Lien copié dans le presse-papier !');
-    }
-  };
+  const { knowledge, handleShare, isLoading, isLiked, handleLike } = useKnowledgeDetail(id);
 
   if (isLoading) { return <KnowledgeLoading />; }
-
   if (!knowledge) { return <KnowledgeNotFound />; }
 
   return (
@@ -62,7 +48,9 @@ export default function KnowledgeDetailPage() {
           <h1 className="text-4xl font-bold text-white mb-6">{knowledge.title}</h1>
 
           <KnowledgeMeta knowledge={knowledge} isLiked={isLiked} onLike={handleLike} />
+
           {knowledge.tags && knowledge.tags.length > 0 && <KnowledgeTags tags={knowledge.tags} />}
+
           <KnowledgeContent content={knowledge.content} />
           <KnowledgeFooter publishedAt={knowledge.publishedAt ?? undefined} createdAt={knowledge.createdAt} isLiked={isLiked} onLike={handleLike} />
         </motion.article>

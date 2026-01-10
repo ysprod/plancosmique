@@ -14,9 +14,7 @@ interface CinqPortesSectionProps {
 const CinqPortesSection = memo<CinqPortesSectionProps>(({ carteDuCiel, isPremium }) => {
   const { cinqPortes, portesArray } = useCinqPortes(carteDuCiel);
 
-  if (!cinqPortes) {
-    return <CinqPortesNotAvailableSection />;
-  }
+  if (!cinqPortes) { return <CinqPortesNotAvailableSection />; }
 
   return (
     <section className="mb-6 px-3">

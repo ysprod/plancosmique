@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Users, CheckCircle, Clock, Shield, Mail } from 'lucide-react';
+import { CheckCircle, Clock, Shield, Users } from 'lucide-react';
 
 type UsersStatsProps = {
   stats: {

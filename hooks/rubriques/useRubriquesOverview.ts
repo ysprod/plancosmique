@@ -1,5 +1,5 @@
-import { useDomaines, usePlatformStats } from '@/hooks/commons/useRubriquesOverviewData';
-import { useRubriquesOverviewState } from '@/hooks/commons/useRubriquesOverviewState';
+import { useDomaines, usePlatformStats } from '@/hooks/rubriques/useRubriquesOverviewData';
+import { useRubriquesOverviewState } from '@/hooks/rubriques/useRubriquesOverviewState';
 
 export function useRubriquesOverview() {
     const {

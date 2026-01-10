@@ -20,7 +20,6 @@ export default function AdminOffrandes() {
         <div className="dark:bg-gray-950 p-4 sm:p-6">
             <div className="max-w-7xl mx-auto">
                 <h1 className="text-2xl font-bold mb-6 text-center text-cosmic-900 dark:text-cosmic-100">Gestion des Offrandes</h1>
-
                 <OffrandesTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
                 {activeTab === 'gestion' && (
@@ -47,7 +46,6 @@ export default function AdminOffrandes() {
                         {statsData && (<OffrandesStats statsData={statsData} />)}
                     </div>
                 )}
-
                 <AnimatePresence>
                     {showAddModal && (
                         <OffrandesAddModal

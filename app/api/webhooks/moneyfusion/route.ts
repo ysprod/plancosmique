@@ -94,7 +94,6 @@ export async function POST(request: NextRequest) {
     }
 }
 
-// Support des requêtes GET pour tester l'endpoint
 export async function GET() {
     return NextResponse.json({
         message: 'Webhook MoneyFusion - Utilisez POST pour envoyer des notifications',

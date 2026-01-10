@@ -3,22 +3,19 @@ import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Gift } from 'lucide-react';
 import OfferingCard from './OfferingCard';
-
-// ============================================================================
-// TYPES
-// ============================================================================
-
-interface Offering {
-  offeringId: string;
-  name: string;
-  icon: string;
-  description: string;
-  category: string;
-  quantity: number;
-  price: number;
-  priceUSD: number;
-  visible: boolean;
-}
+import { Offering } from '@/lib/interfaces';
+ 
+// interface Offering {
+//   offeringId: string;
+//   name: string;
+//   icon: string;
+//   description: string;
+//   category: string;
+//   quantity: number;
+//   price: number;
+//   priceUSD: number;
+//   visible: boolean;
+// }
 
 // ============================================================================
 // ANIMATION VARIANTS

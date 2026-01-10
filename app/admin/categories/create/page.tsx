@@ -1,9 +1,9 @@
 "use client";
-import { useReducedMotion } from "framer-motion";
 import CreateCategoryHeader from "@/components/admin/categories/create/CreateCategoryHeader";
-import CreateCategoryTitle from "@/components/admin/categories/create/CreateCategoryTitle";
 import CreateCategoryMainContent from "@/components/admin/categories/create/CreateCategoryMainContent";
+import CreateCategoryTitle from "@/components/admin/categories/create/CreateCategoryTitle";
 import { useCreateCategoryPage } from "@/hooks/commons/useCreateCategoryPage";
+import { useReducedMotion } from "framer-motion";
 
 export default function CreateCategoryPage() {
   const reducedMotion = useReducedMotion();

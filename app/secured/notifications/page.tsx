@@ -3,10 +3,10 @@ import NotificationsContainer from '@/components/notifications/NotificationsCont
 import { useNotificationsPage } from '@/hooks/notifications/useNotificationsPage';
 
 export default function NotificationsPage() {
-  
+
   const {
     filter, setFilter, showSettings, unreadCount, markAllAsRead, setShowSettings,
-    filteredNotifications, isLoading, handleNotificationClick, handleDelete
+    isLoading, filteredNotifications, handleNotificationClick, handleDelete
   } = useNotificationsPage();
 
   return (

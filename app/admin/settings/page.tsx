@@ -10,17 +10,15 @@ export default function SettingsPage() {
     saveSuccess, setSaveSuccess, showApiKey, setShowApiKey, setSitePhone, maintenanceMode,
     siteName, setSiteName, setLogLevel, setEmailNotifications, setNewConsultationNotif,
     sitePhone, setMaintenanceMode, emailNotifications, newConsultationNotif,
-    twoFactorAuth, setTwoFactorAuth, passwordExpiry, setPasswordExpiry,
-    newUserNotif, setNewUserNotif, paymentMethods, setPaymentMethods,
+    twoFactorAuth, setTwoFactorAuth, passwordExpiry, setPasswordExpiry, maxUploadSize,
+    newUserNotif, setNewUserNotif, paymentMethods, setPaymentMethods, setMaxUploadSize,
     paymentNotif, setPaymentNotif, backupFrequency, setBackupFrequency,
     sessionTimeout, setSessionTimeout, moneyFusionApiKey, setMoneyFusionApiKey,
-    maxUploadSize, setMaxUploadSize,
   } = useSettingsView();
 
   const handleSave = async () => {
     setIsSaving(true);
     setSaveSuccess(false);
-
     await new Promise(resolve => setTimeout(resolve, 1500));
     setIsSaving(false);
     setSaveSuccess(true);

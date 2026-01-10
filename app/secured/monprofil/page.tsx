@@ -10,7 +10,6 @@ export default function MonProfilPage() {
   const { user, processedData, isLoading } = useMonProfil();
 
   if (isLoading) { return <LoadingState />; }
-
   if (!user || !processedData) { return <ErrorState />; }
 
   return (
@@ -20,7 +19,6 @@ export default function MonProfilPage() {
         <ProfileHeader userData={processedData} />
         <br /><br />
 
-
         <CinqPortesSection
           carteDuCiel={
             processedData?.carteDuCiel && 'carteDuCiel' in processedData.carteDuCiel
@@ -29,7 +27,6 @@ export default function MonProfilPage() {
           }
           isPremium={user.premium}
         />
-
         <SkyChart carteDuCiel={processedData.carteDuCiel} />
       </div>
     </main>

@@ -30,7 +30,6 @@ export function ActionButtons({
       className="bg-white rounded-2xl sm:rounded-3xl shadow-xl p-4 sm:p-6 mt-4 sm:mt-6"
     >
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-        {/* Bouton Télécharger (pour les livres) */}
         {status === 'paid' && downloadUrl && (
           <motion.button
             whileHover={{ scale: 1.02 }}

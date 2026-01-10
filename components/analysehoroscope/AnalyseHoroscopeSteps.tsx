@@ -3,7 +3,7 @@ import PaymentProcessing from '@/components/vie-personnelle/PaymentProcessing';
 import OfferingStep from '@/components/vie-personnelle/OfferingStep';
 import AnalyseGenere from '@/components/vie-personnelle/AnalyseGenere';
 import { processingVariants } from '@/lib/animation.constants';
-import { StepType } from '../../hooks/commons/useAnalyseHoroscopePage';
+import { StepType } from '../../hooks/analysehoroscope/useAnalyseHoroscopePage';
 import { OfferingAlternative, WalletOffering } from '@/lib/interfaces';
 
 interface AnalyseHoroscopeStepsProps {

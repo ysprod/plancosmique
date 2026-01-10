@@ -9,11 +9,10 @@ export const authService = {
     const response = await api.post<AuthResponse>(endpoints.auth.register, data);
     const { accessToken, refreshToken, user } = response.data;
 
-    // Stocker les tokens et l'utilisateur
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
     setUser(user);
-    // Ajout : synchronisation du cookie pour le middleware
+
     if (typeof window !== 'undefined') {
       document.cookie = `monetoile_access_token=${accessToken}; path=/; secure; samesite=lax`;
     }

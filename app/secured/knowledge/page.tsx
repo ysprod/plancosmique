@@ -11,7 +11,7 @@ import { useKnowledgePage } from '@/hooks/knowledge/useKnowledgePage';
 export default function KnowledgePage() {
   const {
     isLoading, displayedKnowledges, selectedCategory, searchQuery, activeTab,
-    setSearchQuery, setActiveTab, handleSearch, handleCategoryChange, handleLike,
+    handleSearch, setSearchQuery, setActiveTab, handleCategoryChange, handleLike,
   } = useKnowledgePage();
 
   return (

@@ -13,6 +13,7 @@ const STATUS_CONFIG: Record<ConsultationStatus, { label: string; color: string; 
   cancelled: { label: 'Annulée', color: 'bg-gray-200 text-gray-700', icon: Clock },
   refunded: { label: 'Remboursée', color: 'bg-blue-100 text-blue-800', icon: Clock },
 };
+
 const DEFAULT_STATUS_CONFIG = { label: 'Inconnu', color: 'bg-gray-100 text-gray-800', icon: Clock };
 
 export interface StatusBadgeProps {

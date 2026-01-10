@@ -1,9 +1,13 @@
 'use client';
+import ZodiacSymbol from './ZodiacSymbol';
+import AnimatedBadge from './AnimatedBadge';
+import SectionCard from './SectionCard';
+import InfoCard from './InfoCard';
 import React, { memo, useMemo } from 'react';
 import { motion, useReducedMotion, Variants } from 'framer-motion';
 import { Sparkles, Heart, Briefcase, Activity, Star, Moon, Zap, Sun } from 'lucide-react';
 import { HoroscopeResult } from '@/lib/interfaces';
- 
+
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -42,32 +46,6 @@ const headerVariants: Variants = {
   }
 };
 
-const symbolVariants: Variants = {
-  hidden: { opacity: 0, scale: 0, rotate: -180 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    rotate: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 200,
-      damping: 12,
-      delay: 0.2
-    }
-  }
-};
-
-const floatingVariants: Variants = {
-  float: {
-    y: [0, -10, 0],
-    transition: {
-      duration: 3,
-      repeat: Infinity,
-      ease: 'easeInOut'
-    }
-  }
-};
-
 const pulseVariants: Variants = {
   pulse: {
     scale: [1, 1.05, 1],
@@ -79,21 +57,6 @@ const pulseVariants: Variants = {
     }
   }
 };
-
-const shimmerVariants: Variants = {
-  shimmer: {
-    backgroundPosition: ['200% 0', '-200% 0'],
-    transition: {
-      duration: 8,
-      repeat: Infinity,
-      ease: 'linear'
-    }
-  }
-};
-
-// ========================================
-// 🎨 ICON MAPPING
-// ========================================
 
 const SECTION_ICONS = {
   love: Heart,
@@ -122,256 +85,6 @@ const SECTION_COLORS = {
   }
 } as const;
 
-// ========================================
-// 🎨 SUB-COMPONENTS (Memoized)
-// ========================================
-
-/**
- * Zodiac Symbol avec animations avancées
- */
-const ZodiacSymbol = memo<{ symbol: string }>(({ symbol }) => {
-  const prefersReducedMotion = useReducedMotion();
-
-  return (
-    <motion.div
-      variants={symbolVariants}
-      className="relative inline-block"
-    >
-      {/* Glow effect */}
-      <motion.div
-        variants={pulseVariants}
-        animate="pulse"
-        className="absolute inset-0 blur-2xl bg-gradient-to-br from-purple-400 to-pink-400 rounded-full"
-      />
-      
-      {/* Symbol */}
-      <motion.div
-        className="relative text-6xl sm:text-7xl md:text-8xl"
-        animate={prefersReducedMotion ? {} : {
-          rotate: [0, 5, -5, 0],
-          scale: [1, 1.05, 1]
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          repeatDelay: 2,
-          ease: 'easeInOut'
-        }}
-      >
-        {symbol}
-      </motion.div>
-
-      {/* Sparkles autour */}
-      {!prefersReducedMotion && (
-        <>
-          <motion.div
-            className="absolute -top-2 -right-2 text-yellow-400"
-            animate={{
-              scale: [0, 1, 0],
-              rotate: [0, 180, 360]
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              repeatDelay: 1
-            }}
-          >
-            <Sparkles className="w-5 h-5" />
-          </motion.div>
-          <motion.div
-            className="absolute -bottom-2 -left-2 text-purple-400"
-            animate={{
-              scale: [0, 1, 0],
-              rotate: [360, 180, 0]
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              repeatDelay: 1.5,
-              delay: 0.5
-            }}
-          >
-            <Star className="w-4 h-4" />
-          </motion.div>
-        </>
-      )}
-    </motion.div>
-  );
-}, (prev, next) => prev.symbol === next.symbol);
-
-ZodiacSymbol.displayName = 'ZodiacSymbol';
-
-/**
- * Badge animé
- */
-const AnimatedBadge = memo<{ text: string; color: string }>(({ text, color }) => (
-  <motion.span
-    whileHover={{ scale: 1.1, rotate: 2 }}
-    whileTap={{ scale: 0.95 }}
-    className={`px-4 py-1.5 ${color} rounded-full font-bold text-xs sm:text-sm
-               shadow-sm hover:shadow-md transition-shadow cursor-default
-               relative overflow-hidden`}
-  >
-    {/* Shimmer effect */}
-    <motion.div
-      variants={shimmerVariants}
-      animate="shimmer"
-      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-      style={{ backgroundSize: '200% 100%' }}
-    />
-    <span className="relative z-10">{text}</span>
-  </motion.span>
-), (prev, next) => prev.text === next.text && prev.color === next.color);
-
-AnimatedBadge.displayName = 'AnimatedBadge';
-
-/**
- * Section Card avec animations avancées
- */
-interface SectionCardProps {
-  icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  content: string;
-  colors: {
-    icon: string;
-    bg: string;
-    hover: string;
-    gradient: string;
-  };
-}
-
-const SectionCard = memo<SectionCardProps>(({ icon: Icon, title, content, colors }) => {
-  const prefersReducedMotion = useReducedMotion();
-
-  return (
-    <motion.div
-      variants={itemVariants}
-      whileHover={prefersReducedMotion ? {} : { 
-        scale: 1.02, 
-        y: -4,
-        boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)'
-      }}
-      whileTap={{ scale: 0.98 }}
-      className={`group relative bg-white rounded-2xl p-4 sm:p-5 
-                 border-2 border-gray-100 ${colors.hover} 
-                 transition-all duration-300 overflow-hidden cursor-pointer`}
-    >
-      {/* Gradient background on hover */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${colors.gradient} 
-                      opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-      
-      {/* Content */}
-      <div className="relative z-10 flex items-start gap-3 sm:gap-4">
-        {/* Icon */}
-        <motion.div
-          whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
-          transition={{ duration: 0.5 }}
-          className={`w-10 h-10 sm:w-12 sm:h-12 ${colors.bg} rounded-xl 
-                     flex items-center justify-center flex-shrink-0
-                     shadow-md group-hover:shadow-lg transition-shadow`}
-        >
-          <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${colors.icon}`} />
-        </motion.div>
-
-        {/* Text */}
-        <div className="flex-1 min-w-0">
-          <h4 className="font-bold text-gray-900 mb-1.5 text-sm sm:text-base
-                       group-hover:text-gray-800 transition-colors">
-            {title}
-          </h4>
-          <p className="text-gray-600 text-xs sm:text-sm leading-relaxed
-                      group-hover:text-gray-700 transition-colors">
-            {content}
-          </p>
-        </div>
-      </div>
-
-      {/* Decorative corner */}
-      <motion.div
-        className="absolute -top-1 -right-1 w-20 h-20 opacity-10"
-        animate={prefersReducedMotion ? {} : {
-          rotate: 360
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: 'linear'
-        }}
-      >
-        <Icon className={`w-full h-full ${colors.icon}`} />
-      </motion.div>
-    </motion.div>
-  );
-}, (prev, next) => 
-  prev.title === next.title && 
-  prev.content === next.content
-);
-
-SectionCard.displayName = 'SectionCard';
-
-/**
- * Info Card avec animations
- */
-interface InfoCardProps {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-  color: string;
-}
-
-const InfoCard = memo<InfoCardProps>(({ icon: Icon, label, value, color }) => (
-  <motion.div
-    variants={itemVariants}
-    whileHover={{ scale: 1.05, rotate: 2 }}
-    whileTap={{ scale: 0.95 }}
-    className="relative bg-white rounded-2xl p-4 border-2 border-gray-100 
-               hover:border-gray-200 transition-all text-center overflow-hidden
-               group cursor-pointer"
-  >
-    {/* Animated background */}
-    <motion.div
-      className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 
-                 group-hover:opacity-10 transition-opacity duration-300`}
-    />
-
-    {/* Content */}
-    <div className="relative z-10">
-      <motion.div
-        variants={floatingVariants}
-        animate="float"
-        className="inline-block"
-      >
-        <Icon className={`w-6 h-6 mx-auto mb-2 text-${color.split('-')[1]}-600`} />
-      </motion.div>
-      <p className="text-xs text-gray-600 mb-1 font-medium">{label}</p>
-      <p className="font-bold text-gray-900 text-sm leading-tight">{value}</p>
-    </div>
-
-    {/* Shimmer effect */}
-    <motion.div
-      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-      animate={{
-        x: ['-100%', '100%']
-      }}
-      transition={{
-        duration: 3,
-        repeat: Infinity,
-        repeatDelay: 2,
-        ease: 'easeInOut'
-      }}
-    />
-  </motion.div>
-), (prev, next) => 
-  prev.label === next.label && 
-  prev.value === next.value
-);
-
-InfoCard.displayName = 'InfoCard';
-
-// ========================================
-// 🎯 MAIN COMPONENT
-// ========================================
-
 interface ResultDisplayProps {
   result: HoroscopeResult;
 }
@@ -379,7 +92,6 @@ interface ResultDisplayProps {
 const ResultDisplay = memo<ResultDisplayProps>(({ result }) => {
   const prefersReducedMotion = useReducedMotion();
 
-  // Memoize sections data
   const sections = useMemo(() => [
     { key: 'love', title: 'Amour & Relations', content: result.love },
     { key: 'work', title: 'Travail & Carrière', content: result.work },
@@ -570,7 +282,7 @@ const ResultDisplay = memo<ResultDisplayProps>(({ result }) => {
       </div>
     </motion.div>
   );
-}, (prev, next) => 
+}, (prev, next) =>
   prev.result.zodiacSign === next.result.zodiacSign &&
   prev.result.generalForecast === next.result.generalForecast &&
   prev.result.love === next.result.love &&

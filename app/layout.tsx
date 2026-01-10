@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     template: "%s | Mon Étoile",
   },
   description:
-    "✨ Découvrez votre destinée avec Mon Étoile : consultations de voyance authentiques, analyses astrologiques personnalisées, numérologie avancée et guidance spirituelle par des experts certifiés. Révélez votre potentiel cosmique dès maintenant.",
+    "✨ Découvrez votre destinée avec Mon Étoile : consultations de voyance authentiques, analyses astrologiques personnalisées, numérologie avancée et guidance spirituelle par des experts certifiés. Révélez votre potentiel cosmique dès maintenant",
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://www.monetoile.org"),
   openGraph: {
     type: "website",

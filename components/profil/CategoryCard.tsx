@@ -70,5 +70,7 @@ const CategoryCard = memo(({ category, index }: CategoryCardProps) => {
     </Link>
   );
 });
+
 CategoryCard.displayName = 'CategoryCard';
+
 export default CategoryCard;

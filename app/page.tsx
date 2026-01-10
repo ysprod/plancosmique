@@ -22,6 +22,7 @@ export default function WelcomePage() {
       </motion.div>
 
       <WelcomeHeader />
+
       <div className="px-4 py-6 max-w-2xl mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
@@ -33,6 +34,7 @@ export default function WelcomePage() {
         </motion.p>
 
         <WelcomeQuestions />
+
         <WelcomeIntro />
       </div>
     </div>

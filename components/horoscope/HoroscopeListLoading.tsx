@@ -17,6 +17,7 @@ export default function HoroscopeListLoading() {
         >
           <span className="block w-full h-full bg-gradient-to-r from-purple-400 to-pink-400 rounded-full" />
         </motion.div>
+        
         <p className="text-gray-600 text-sm">
           Chargement de vos horoscopes...
         </p>

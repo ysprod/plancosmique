@@ -1,5 +1,5 @@
 "use client";
-import { useRubriquesPickerSimple } from "@/hooks/commons/useRubriquesPickerSimple";
+import { useRubriquesPickerSimple } from "@/hooks/rubriques/useRubriquesPickerSimple";
 import { Rubrique } from "@/lib/interfaces";
 import { Trash2 } from "lucide-react";
 import React from "react";

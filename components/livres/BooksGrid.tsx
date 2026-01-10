@@ -1,6 +1,6 @@
+import { Book } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import { BookOpen, ShoppingCart } from 'lucide-react';
-import { Book } from '@/lib/interfaces';
 import React from 'react';
 
 interface BooksGridProps {

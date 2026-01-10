@@ -4,7 +4,7 @@ import { Rubrique } from "@/lib/interfaces";
 import RubriquesPickerHeader from "./RubriquesPickerHeader";
 import RubriquesPickerChips from "./RubriquesPickerChips";
 import RubriquesPickerGrid from "./RubriquesPickerGrid";
-import { useRubriquesPickerSimple } from "@/hooks/commons/useRubriquesPickerSimple";
+import { useRubriquesPickerSimple } from "@/hooks/rubriques/useRubriquesPickerSimple";
 
 const RubriquesPickerSimple = React.memo(function RubriquesPickerSimple({
   rubriques,

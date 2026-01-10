@@ -12,9 +12,9 @@ import { useAdminPaymentsPage } from '@/hooks/admin/useAdminPaymentsPage';
 export default function PaymentsPage() {
   const {
     payments, total, showFilters, loading, totalPages, error, handleResetFilters,
-    stats, methodFilter, currentPage, isRefreshing, handleRefresh,
+    stats, methodFilter, currentPage, isRefreshing, handleRefresh, setStatusFilter,
     searchQuery, statusFilter, setSearchQuery, setMethodFilter,
-    setStatusFilter, setCurrentPage, setShowFilters,
+    setCurrentPage, setShowFilters,
   } = useAdminPaymentsPage();
 
   if (loading) { return <AdminPaymentsLoader />; }

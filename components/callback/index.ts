@@ -3,7 +3,7 @@ export { BackgroundBlobs } from './BackgroundBlobs';
 export { CompletionBanner } from './CompletionBanner';
 export { SecurityNote } from './SecurityNote';
 export { StatusCard } from './StatusCard';
-export { useAnalysisProgress } from '@/hooks/commons/useAnalysisProgress';
+export { useAnalysisProgress } from '@/hooks/callback/useAnalysisProgress';
 export { useAnimationVariants } from '@/hooks/callback/useAnimationVariants';
 export { usePaymentCallback } from '@/hooks/commons/usePaymentCallback';
 export type {

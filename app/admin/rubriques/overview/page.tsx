@@ -1,7 +1,7 @@
 'use client';
 import { RubriquesOverviewDomaines } from '@/components/admin/rubriques/overview/RubriquesOverviewDomaines';
 import { RubriquesOverviewStats } from '@/components/admin/rubriques/overview/RubriquesOverviewStats';
-import { useRubriquesOverview } from '@/hooks/commons/useRubriquesOverview';
+import { useRubriquesOverview } from '@/hooks/rubriques/useRubriquesOverview';
 
 export default function RubriquesOverviewPage() {
   const {
@@ -20,6 +20,7 @@ export default function RubriquesOverviewPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-violet-50 to-purple-50 p-6">
       <div className="max-w-7xl mx-auto">
+
         <div className="mb-8">
           <p className="text-gray-600">
             Architecture complète de tous les services proposés sur la plateforme
@@ -27,6 +28,7 @@ export default function RubriquesOverviewPage() {
         </div>
 
         <RubriquesOverviewStats stats={stats} />
+
         <RubriquesOverviewDomaines
           domaines={domaines}
           expandedDomaine={expandedDomaine}

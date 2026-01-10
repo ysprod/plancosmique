@@ -20,11 +20,9 @@ export default function GenereAnalysePage() {
         {(step === 'loading' || step === 'fetching' || step === 'generating') && (
           <GenereAnalyseLoading step={step} />
         )}
-
         {step === 'success' && analyseData && (
           <GenereAnalyseSuccess analyseData={analyseData} />
         )}
-
         {step === 'error' && (
           <GenereAnalyseError error={error} onRetry={handleRetry} />
         )}

@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 export default function LivresPage() {
   const { user } = useAuth();
-  const { books, loading, error, setError } = useBooks();
+  const { books, error, loading, setError } = useBooks();
   const [purchasingBookId, setPurchasingBookId] = useState<string | null>(null);
 
   const handlePurchase = async (book: any) => {

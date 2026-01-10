@@ -39,12 +39,6 @@ export enum Permission {
   SYSTEM_CONFIG = 'SYSTEM_CONFIG'
 }
 
-export interface UserProfile {
-  avatar?: string;
-  bio?: string;
-  preferences?: Record<string, any>;
-}
-
 export interface RegisterDto {
   username: string;
   gender: string;

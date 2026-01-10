@@ -1,6 +1,6 @@
 "use client";
-import { memo } from 'react';
 import Slide4SectionMain from '@/components/cinqetoiles/Slide4SectionMain';
+import { memo } from 'react';
 
 function Slide4Section() {
   return (

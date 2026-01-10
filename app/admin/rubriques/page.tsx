@@ -1,23 +1,25 @@
 "use client";
 import RubriquesOverviewPage from '@/app/admin/rubriques/overview/page';
-import { RubriquesEditorPanel } from '@/components/admin/rubriques/RubriquesEditorPanel';
-import { RubriquesEmptyState } from '@/components/admin/rubriques/RubriquesEmptyState';
+import { RubriquesGestionEditPanel } from '@/components/admin/rubriques/RubriquesGestionEditPanel';
+import { RubriquesGestionListPanel } from '@/components/admin/rubriques/RubriquesGestionListPanel';
 import { RubriquesHeader } from '@/components/admin/rubriques/RubriquesHeader';
-import { RubriquesList } from '@/components/admin/rubriques/RubriquesList';
 import { RubriquesLoader } from '@/components/admin/rubriques/RubriquesLoader';
-import { RubriquesToast } from '@/components/admin/rubriques/RubriquesToast';
 import { RubriquesTabs } from '@/components/admin/rubriques/RubriquesTabs';
+import { RubriquesToast } from '@/components/admin/rubriques/RubriquesToast';
 import { useAdminRubriquesPage } from '@/hooks/admin/useAdminRubriquesPage';
-import { Rubrique } from '@/lib/interfaces';
+import { useRubriquesGestionView } from '@/hooks/admin/useRubriquesGestionView';
 import { useState } from 'react';
 
 export default function RubriquesAdminPage() {
   const [activeTab, setActiveTab] = useState<'gestion' | 'overview'>('gestion');
-  const {
-    handleCreate, setSelectedRubrique, handleDelete, setToast,
-    selectedRubrique, editingRubrique, loading, saving, toast, rubriques,
-    offerings, offeringsLoading, setEditingRubrique, handleSave,
+  const { handleCreate, handleDelete, setToast, loading, saving, toast, rubriques,
+    offerings, offeringsLoading, handleSave,
   } = useAdminRubriquesPage();
+
+  const {
+    gestionView, selectedRubrique, editingRubrique, setEditingRubrique,
+    handleSelectRubrique, handleCreateRubrique, handleBackToList
+  } = useRubriquesGestionView();
 
   if (loading || offeringsLoading) {
     return <RubriquesLoader loading={loading} offeringsLoading={offeringsLoading} />;
@@ -32,44 +34,38 @@ export default function RubriquesAdminPage() {
             <RubriquesHeader
               rubriquesCount={rubriques.length}
               offeringsCount={offerings.length}
-              onCreate={handleCreate}
+              onCreate={() => handleCreateRubrique(handleCreate)}
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-1">
-                {rubriques.length > 0 ? (
-                  <RubriquesList
-                    rubriques={rubriques}
-                    selectedRubrique={selectedRubrique}
-                    onSelect={(rub: Rubrique) => {
-                      setSelectedRubrique(rub);
-                      setEditingRubrique(rub);
-                    }}
-                    onDelete={handleDelete}
-                  />
-                ) : (
-                  <RubriquesEmptyState />
-                )}
-              </div>
+            {gestionView === 'list' && (
+              <RubriquesGestionListPanel
+                rubriques={rubriques}
+                selectedRubrique={selectedRubrique}
+                onSelect={handleSelectRubrique}
+                onDelete={handleDelete}
+              />
+            )}
 
-              <div className="lg:col-span-2">
-                <RubriquesEditorPanel
-                  editingRubrique={editingRubrique}
-                  setEditingRubrique={setEditingRubrique}
-                  onSave={handleSave}
-                  onCancel={() => setEditingRubrique(null)}
-                  isSaving={saving}
-                  offerings={offerings}
-                />
-              </div>
-            </div>
+            {gestionView === 'edit' && (
+              <RubriquesGestionEditPanel
+                editingRubrique={editingRubrique}
+                setEditingRubrique={setEditingRubrique}
+                onSave={() => {
+                  handleSave();
+                  handleBackToList();
+                }}
+                onCancel={handleBackToList}
+                isSaving={saving}
+                offerings={offerings}
+                onBack={handleBackToList}
+              />
+            )}
           </>
         )}
         {activeTab === 'overview' && (
           <RubriquesOverviewPage />
         )}
       </div>
-
       <RubriquesToast toast={toast} onClose={() => setToast(null)} />
     </div>
   );

@@ -1,4 +1,4 @@
-import { User  } from '@/lib/interfaces';
+import { User } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import { Ban, Calendar, CheckCircle, Edit, Globe, Mail, Phone, Shield, Star, Trash2, User as UserIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -34,7 +34,7 @@ export default function UserCard({ user, cardVariants, setDeleteModal }: UserCar
           </p>
         </div>
       </div>
-      {/* Informations compactes */}
+
       <div className="space-y-1 mb-2.5 pb-2.5 border-b border-gray-100">
         {user.phone && (
           <div className="flex items-center gap-1.5 text-xs text-gray-600">
@@ -110,7 +110,7 @@ export default function UserCard({ user, cardVariants, setDeleteModal }: UserCar
           </span>
         )}
       </div>
-      {/* Boutons d'action */}
+
       <div className="flex gap-1.5">
         <Link
           href={`/admin/users/${user._id}/edit`}

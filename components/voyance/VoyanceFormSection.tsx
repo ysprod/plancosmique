@@ -34,7 +34,9 @@ export default function VoyanceFormSection({
       className="bg-slate-800/50 backdrop-blur-xl rounded-3xl p-8 border-2 border-purple-500/30 shadow-2xl"
     >
       <VoyanceCategorySelector selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+     
       <VoyanceFormFields name={name} setName={setName} birthDate={birthDate} setBirthDate={setBirthDate} question={question} setQuestion={setQuestion} />
+     
       <motion.button
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}

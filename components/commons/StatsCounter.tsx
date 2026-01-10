@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Users, Eye, TrendingUp, AlertCircle } from 'lucide-react';
 import { api } from '@/lib/api/client';
 
-// Types
 interface Stats {
   subscribers: number;
   visits: number;
@@ -18,7 +16,6 @@ interface StatCardProps {
   color: 'purple' | 'fuchsia';
 }
 
-// Constantes
 const STAT_COLORS = {
   purple: {
     text: 'text-purple-700',
@@ -34,14 +31,13 @@ const STAT_COLORS = {
   },
 } as const;
 
-// Utilitaires
 const formatNumber = (num: number): string => {
   if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
   if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
   return num.toString();
 };
 
-// Composants
+
 const StatCard: React.FC<StatCardProps> = ({ value, label, icon, loading, color }) => {
   const colors = STAT_COLORS[color];
 
@@ -53,15 +49,14 @@ const StatCard: React.FC<StatCardProps> = ({ value, label, icon, loading, color 
       transition={{ type: 'spring', stiffness: 300 }}
       className={`flex flex-col items-center bg-white rounded-2xl shadow-lg hover:shadow-xl px-8 py-6 border-2 ${colors.border} transition-all relative overflow-hidden min-w-[160px]`}
     >
-      {/* Background decoration */}
+
       <div className={`absolute top-0 right-0 w-24 h-24 ${colors.bg} rounded-full blur-3xl opacity-30 -z-10`} />
 
-      {/* Icon */}
+
       <div className={`${colors.iconBg} p-3 rounded-xl mb-3`}>
         {icon}
       </div>
 
-      {/* Value */}
       <span className={`text-4xl font-extrabold ${colors.text} tracking-tight`}>
         {loading ? (
           <span className="animate-pulse">...</span>

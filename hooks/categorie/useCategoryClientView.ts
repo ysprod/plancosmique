@@ -1,9 +1,9 @@
 import type { CategorieAdmin } from "@/lib/interfaces";
-import { useCategoryClientViewMain } from "@/hooks/commons/useCategoryClientViewMain";
+import { useCategoryClientView as useCategoryClientViewMain } from "@/hooks/commons/useCategoryClientView";
 import { useMemo } from "react";
 
 export function useCategoryClientView(category: CategorieAdmin) {
-  const { rubriques, rubriqueCourante, openRubriqueById, closeRubrique } = useCategoryClientViewMain(category);
+  const { rubriques, rubriqueCourante, setRubriqueCourante } = useCategoryClientViewMain(category);
 
   const ui = useMemo(() => {
     const count = rubriques?.length ?? 0;
@@ -17,8 +17,7 @@ export function useCategoryClientView(category: CategorieAdmin) {
   return {
     rubriques,
     rubriqueCourante,
-    openRubriqueById,
-    closeRubrique,
+    setRubriqueCourante,
     ui,
   };
 }

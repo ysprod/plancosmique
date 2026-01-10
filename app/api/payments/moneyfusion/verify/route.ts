@@ -39,7 +39,6 @@ export async function POST(request: NextRequest) {
                 message: data.message || 'Paiement vérifié avec succès',
             });
         } else if (data.code_statut === 2) {
-            // Paiement déjà utilisé
             return NextResponse.json({
                 success: false,
                 status: 'already_used',

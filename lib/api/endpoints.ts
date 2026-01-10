@@ -1,7 +1,3 @@
-/**
- * Endpoints API organisés par module
- */
-
 export const endpoints = {
   // Root
   root: '/',

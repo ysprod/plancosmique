@@ -1,13 +1,12 @@
 "use client";
 import { OfferingAlternative, WalletOffering } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  AlertTriangle, ArrowRight, CheckCircle2, ChevronRight, Circle, Package, ShoppingBag
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import { memo, useCallback, useMemo, useState } from "react";
+import { ArrowRight, ChevronRight, Package, ShoppingBag } from "lucide-react";
+import { TabButton, OfferingCard } from "./OfferingStepCards";
+import { StatusBanner } from "./OfferingStepStatusBanner";
+import { useOfferingStep } from "@/hooks/cinqetoiles/useOfferingStep";
 
-type Category = 'animal' | 'vegetal' | 'beverage';
+export type Category = 'animal' | 'vegetal' | 'beverage';
 
 interface OfferingStepProps {
   requiredOfferings: OfferingAlternative[];
@@ -45,239 +44,26 @@ export const CATEGORY_CONFIG: Record<Category, {
     darkBg: "dark:bg-blue-900/20"
   }
 };
-
-const TabButton = memo(({
-  category,
-  isActive,
-  onClick,
-  count
-}: {
-  category: Category;
-  isActive: boolean;
-  onClick: () => void;
-  count: number;
-}) => {
-  const config = CATEGORY_CONFIG[category];
-
-  return (
-    <button
-      onClick={onClick}
-      className={`
-        flex-1 relative py-3 px-4 rounded-xl font-semibold text-sm transition-all
-        ${isActive
-          ? `bg-gradient-to-r ${config.gradient} text-white shadow-lg`
-          : `${config.lightBg} ${config.darkBg} text-gray-700 dark:text-gray-300 hover:opacity-80`
-        }
-      `}
-    >
-      <span className="flex items-center justify-center gap-1.5">
-        <span className="text-base">{config.icon}</span>
-        <span>{config.label}</span>
-      </span>
-
-    </button>
-  );
-});
-TabButton.displayName = 'TabButton';
-
-const OfferingCard = memo(({
-  offering,
-  isSelected,
-  availableQuantity,
-  onSelect,
-  index
-}: {
-  offering: OfferingAlternative;
-  isSelected: boolean;
-  availableQuantity: number;
-  onSelect: () => void;
-  index: number;
-}) => {
-  const isSufficient = availableQuantity >= offering.quantity;
-  const config = CATEGORY_CONFIG[offering.category];
-
-  return (
-    <motion.button
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: index * 0.05 }}
-      onClick={isSufficient ? onSelect : undefined}
-      disabled={!isSufficient}
-      className={`
-        w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left
-        ${isSelected
-          ? `border-purple-500 ${config.lightBg} ${config.darkBg} shadow-md`
-          : isSufficient
-            ? "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-purple-300 active:scale-[0.98]"
-            : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 opacity-50 cursor-not-allowed"
-        }
-      `}
-    >
-      <div className="flex-shrink-0">
-        {isSelected ? (
-          <CheckCircle2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-        ) : (
-          <Circle className="w-5 h-5 text-gray-300 dark:text-gray-600" />
-        )}
-      </div>
-
-      <div className={`
-        w-10 h-10 rounded-lg flex items-center justify-center text-xl flex-shrink-0
-        ${isSelected
-          ? `bg-gradient-to-br ${config.gradient} text-white shadow-sm`
-          : "bg-gray-100 dark:bg-gray-700"
-        }
-      `}>
-        {offering.icon || config.icon}
-      </div>
-
-      {/* Info */}
-      <div className="flex-1 min-w-0">
-        <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 truncate">
-          {offering.name || `${config.label} ${index + 1}`}
-        </h4>
-        <div className="flex items-center gap-2 text-[11px] text-gray-600 dark:text-gray-400">
-          <span>Requis: <strong>{offering.quantity}</strong></span>
-          <span>•</span>
-          <span className={isSufficient ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
-            Dispo: <strong>{availableQuantity}</strong>
-          </span>
-        </div>
-      </div>
-    </motion.button>
-  );
-});
-OfferingCard.displayName = 'OfferingCard';
-
-const StatusBanner = memo(({
-  hasSelection,
-  isSufficient
-}: {
-  hasSelection: boolean;
-  isSufficient: boolean;
-}) => {
-  if (!hasSelection) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: -5 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex items-start gap-2 p-3 rounded-xl bg-yellow-50 dark:bg-yellow-900/20 
-                 border border-yellow-200 dark:border-yellow-800"
-      >
-        <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0" />
-        <p className="text-xs text-yellow-700 dark:text-yellow-300">
-          Sélectionnez une alternative disponible pour continuer
-        </p>
-      </motion.div>
-    );
-  }
-
-  if (!isSufficient) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: -5 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex items-start gap-2 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 
-                 border border-red-200 dark:border-red-800"
-      >
-        <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-        <p className="text-xs text-red-700 dark:text-red-300">
-          Quantité insuffisante. Rendez-vous au marché pour acquérir cette offrande.
-        </p>
-      </motion.div>
-    );
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="flex items-start gap-2 p-3 rounded-xl bg-green-50 dark:bg-green-900/20 
-               border border-green-200 dark:border-green-800"
-    >
-      <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
-      <p className="text-xs text-green-700 dark:text-green-300">
-        Alternative sélectionnée et disponible. Prêt à continuer !
-      </p>
-    </motion.div>
-  );
-});
-StatusBanner.displayName = 'StatusBanner';
-
-// =====================================================
-// COMPOSANT PRINCIPAL
-// =====================================================
+ 
 export default function OfferingStep({
   requiredOfferings,
   walletOfferings,
   onNext,
   onBack,
 }: OfferingStepProps) {
-  const router = useRouter();
-
-  // État local (minimal pour éviter re-renders)
-  const [activeTab, setActiveTab] = useState<Category>('animal');
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-
-  const walletMap = useMemo(() => {
-    const map = new Map<string, number>();
-    walletOfferings.forEach(w => map.set(w.offeringId, w.quantity));
-    return map;
-  }, [walletOfferings]);
-
-  const offeringsByCategory = useMemo(() => {
-    const grouped: Record<Category, OfferingAlternative[]> = {
-      animal: [],
-      vegetal: [],
-      beverage: []
-    };
-    requiredOfferings.forEach(off => {
-      grouped[off.category].push(off);
-    });
-    return grouped;
-  }, [requiredOfferings]);
-
-  const categoryCounts = useMemo(() => ({
-    animal: offeringsByCategory.animal.length,
-    vegetal: offeringsByCategory.vegetal.length,
-    beverage: offeringsByCategory.beverage.length
-  }), [offeringsByCategory]);
-
-  const selectedOffering = useMemo(
-    () => requiredOfferings.find(off => off.offeringId === selectedId),
-    [requiredOfferings, selectedId]
-  );
-
-  const availableQty = useMemo(
-    () => selectedOffering ? (walletMap.get(selectedOffering.offeringId) || 0) : 0,
-    [selectedOffering, walletMap]
-  );
-
-  const canProceed = useMemo(
-    () => !!selectedOffering && availableQty >= selectedOffering.quantity,
-    [selectedOffering, availableQty]
-  );
-
-  // Handlers mémorisés
-  const handleTabChange = useCallback((category: Category) => {
-    setActiveTab(category);
-  }, []);
-
-  const handleSelect = useCallback((offeringId: string) => {
-    setSelectedId(offeringId);
-  }, []);
-
-  const handleNext = useCallback(() => {
-    if (selectedOffering && canProceed) {
-      onNext(selectedOffering);
-    }
-  }, [selectedOffering, canProceed, onNext]);
-
-  const handleGoToMarket = useCallback(() => {
-    router.push('/secured/marcheoffrandes');
-  }, [router]);
-
-  const currentOfferings = offeringsByCategory[activeTab];
+  const {
+    activeTab,
+    selectedId,
+    walletMap,
+    categoryCounts,
+    selectedOffering,
+    canProceed,
+    handleTabChange,
+    handleSelect,
+    handleNext,
+    handleGoToMarket,
+    currentOfferings
+  } = useOfferingStep(requiredOfferings, walletOfferings, onNext);
 
   return (
     <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
