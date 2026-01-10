@@ -72,7 +72,7 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ consultation, index
           </div>
         )}
       </div>
-      {consultation.status === 'COMPLETED' && (
+      {consultation.status === 'completed' && (
         <div className="flex gap-2">
           <button
             onClick={() => onView(consultation._id)}
@@ -90,12 +90,12 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ consultation, index
           </button>
         </div>
       )}
-      {consultation.status === 'PROCESSING' && (
+      {consultation.status === 'processing' && (
         <div className="text-center py-3 bg-blue-500/20 rounded-xl border border-blue-500/30">
           <p className="text-blue-200 text-sm font-medium">Génération en cours... Revenez dans quelques instants</p>
         </div>
       )}
-      {consultation.status === 'FAILED' && (
+      {consultation.status === 'failed' && (
         <div className="text-center py-3 bg-red-500/20 rounded-xl border border-red-500/30">
           <p className="text-red-200 text-sm font-medium">Une erreur est survenue. Contactez le support.</p>
         </div>

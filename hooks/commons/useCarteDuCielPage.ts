@@ -2,9 +2,10 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import { api } from "@/lib/api/client";
 import { useEffect, useMemo, useState } from "react";
 import { formatDate } from "@/lib/functions";
-import { UserData, ProcessedUserData } from "@/lib/types/carteduciel";
+import { ProcessedUserData } from "@/lib/types/carteduciel";
+import { User, CarteDuCielBase } from "@/lib/interfaces";
 
-const processUserData = (userData: UserData | null): ProcessedUserData | null => {
+const processUserData = (userData: User | null): ProcessedUserData | null => {
   if (!userData) return null;
   return {
     prenoms: userData.prenoms || userData.username || "",
@@ -16,24 +17,24 @@ const processUserData = (userData: UserData | null): ProcessedUserData | null =>
       ? `${userData.villeNaissance}, ${userData.paysNaissance || userData.country}`
       : userData.country || "-",
     heureNaissance: userData.heureNaissance || "-",
-    country: userData.country,
+    country: userData.country!,
     role: userData.role,
     premium: userData.premium,
     credits: userData.credits,
     totalConsultations: userData.totalConsultations,
     rating: userData.rating,
     emailVerified: userData.emailVerified,
-    carteDuCiel: userData.carteDuCiel
+    carteDuCiel: userData.carteDuCiel as CarteDuCielBase | undefined
   };
 };
 
 export function useCarteDuCielPage(): {
-  user: UserData | null;
+  user: User | null;
   processedData: ProcessedUserData | null;
   isLoading: boolean;
 } {
   const { user, isLoading: authLoading } = useAuth();
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
 
   useEffect(() => {

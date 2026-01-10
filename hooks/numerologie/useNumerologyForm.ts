@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { api } from '@/lib/api/client';
-import type { UserData } from '@/lib/interfaces';
+import type { User } from '@/lib/interfaces';
 
 export interface NumerologyFormData {
   firstName: string;
@@ -18,7 +18,7 @@ export function useNumerologyForm() {
   const [error, setError] = useState('');
 
   const fetchUserData = useCallback(() => {
-    api.get<UserData>('/users/me')
+    api.get<User>('/users/me')
       .then(res => {
         const user = res.data;
         setFormData(prev => ({

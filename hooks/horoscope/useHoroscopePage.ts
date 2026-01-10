@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api } from '@/lib/api/client';
-import type { UserData } from '@/lib/interfaces';
+import type { User } from '@/lib/interfaces';
 import type { BackendHoroscope, HoroscopeResult, HoroscopeTypeId } from '@/lib/interfaces';
 
 function getZodiacSymbol(sign: string): string {
@@ -48,7 +48,7 @@ function transformBackendToResult(backend: BackendHoroscope): HoroscopeResult | 
 
 export default function useHoroscopePage() {
   const router = useRouter();
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
   const [activeTab, setActiveTab] = useState<HoroscopeTypeId>('mensuel');
   const [result, setResult] = useState<HoroscopeResult | null>(null);
@@ -61,7 +61,7 @@ export default function useHoroscopePage() {
   useEffect(() => {
     if (hasFetchedUserRef.current) return;
     hasFetchedUserRef.current = true;
-    api.get<UserData>('/users/me')
+    api.get<User>('/users/me')
       .then(res => setUserData(res.data))
       .catch(() => {})
       .finally(() => setLoadingUser(false));

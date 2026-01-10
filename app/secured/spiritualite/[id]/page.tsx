@@ -3,7 +3,7 @@ import SpiritualPracticeError from '@/components/spiritualite/SpiritualPracticeE
 import SpiritualPracticeHeader from '@/components/spiritualite/SpiritualPracticeHeader';
 import SpiritualPracticeLoading from '@/components/spiritualite/SpiritualPracticeLoading';
 import SpiritualPracticeSections from '@/components/spiritualite/SpiritualPracticeSections';
-import { useSpiritualPracticeDetail } from '@/hooks/commons/useSpiritualPracticeDetail';
+import { useSpiritualPracticeDetail } from '@/hooks/spiritualite/useSpiritualPracticeDetail';
 import { useParams } from 'next/navigation';
 
 export default function SpiritualPracticeDetailPage() {

@@ -1,17 +1,8 @@
+import { User } from '@/lib/interfaces';
 import { api } from '../client';
 import { endpoints } from '../endpoints';
-import type {
-  LoginDto,
-  RegisterDto,
-  AuthResponse,
-  User,
-} from '@/lib/types/auth.types';
-import {
-  setAccessToken,
-  setRefreshToken,
-  setUser,
-  clearAuth,
-} from '@/lib/utils/token.utils';
+import type { LoginDto, RegisterDto, AuthResponse, } from '@/lib/types/auth.types';
+import { setAccessToken, setRefreshToken, setUser, clearAuth, } from '@/lib/utils/token.utils';
 
 export const authService = {
   register: async (data: RegisterDto): Promise<AuthResponse> => {

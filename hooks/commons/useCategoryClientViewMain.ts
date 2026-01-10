@@ -3,9 +3,9 @@ import { useCallback, useEffect, useMemo } from "react";
 import { Rubrique } from "@/lib/interfaces";
 export { useCategoryClientView } from "./useCategoryClientView";
 import { getRubriqueId, getRubriqueFromUrl, setRubriqueInUrl } from "@/components/categorie/categoryClientViewUtils";
-import { Categorie } from "@/hooks/categories/useAdminCategoriesPage";
+import { CategorieAdmin } from "@/lib/interfaces";
 
-export function useCategoryClientViewMain(category: Categorie) {
+export function useCategoryClientViewMain(category: CategorieAdmin) {
     const [rubriques, setRubriques] = React.useState<Rubrique[]>(category.rubriques || []);
     const [rubriqueCourante, setRubriqueCourante] = React.useState<Rubrique | null>(null);
 

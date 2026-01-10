@@ -1,22 +1,22 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getCategories, createCategory, updateCategory, deleteCategory } from "@/lib/api/services/categories.service";
-import { Rubrique } from "@/lib/interfaces";
+import { CategorieAdmin, Rubrique } from "@/lib/interfaces";
 import { useAdminRubriquesPage } from "@/hooks/admin/useAdminRubriquesPage";
 
-export interface Categorie {
-  _id: string;
-  id: string;
-  nom: string;
-  description: string;
-  rubriques: Rubrique[];
-}
+// export interface CategorieAdmin {
+//   _id: string;
+//   id: string;
+//   nom: string;
+//   description: string;
+//   rubriques: Rubrique[];
+// }
 
 export type BannerType = "success" | "error" | "info";
 export type BannerState = { type: BannerType; message: string } | null;
 
 export function useAdminCategoriesPage() {
   const { rubriques } = useAdminRubriquesPage();
-  const [categories, setCategories] = useState<Categorie[]>([]);
+  const [categories, setCategories] = useState<CategorieAdmin[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [categoriesError, setCategoriesError] = useState<string | null>(null);
   const [rubriquesLoading, setRubriquesLoading] = useState(false);
@@ -130,7 +130,7 @@ export function useAdminCategoriesPage() {
   const stopEdit = useCallback(() => setEditingId(null), []);
 
   const saveEdit = useCallback(
-    async (id: string, patch: Partial<Categorie>) => {
+    async (id: string, patch: Partial<CategorieAdmin>) => {
       try {
         await updateCategory(id, {
           nom: patch.nom ?? "",

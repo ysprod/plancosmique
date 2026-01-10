@@ -1,39 +1,19 @@
-/**
- * Types TypeScript pour l'analyse astrologique
- * Basé sur les analyses générées par DeepSeek
- */
+import { Position } from "../interfaces";  
 
-import { Position } from "../interfaces";
-
-// ==================== DONNÉES DE NAISSANCE ====================
-
-export interface BirthData {
-  nom: string;
-  prenoms: string;
-  genre: 'homme' | 'femme';
-  dateNaissance: string; // Format: YYYY-MM-DD
-  heureNaissance: string; // Format: HH:MM
-  paysNaissance: string;
-  villeNaissance: string;
-  email?: string; // Email pour les notifications
-}
-
-// ==================== CARTE DU CIEL ====================
-
-export type SigneZodiacal = 
-  | 'Bélier' | 'Taureau' | 'Gémeaux' | 'Cancer' 
+export type SigneZodiacal =
+  | 'Bélier' | 'Taureau' | 'Gémeaux' | 'Cancer'
   | 'Lion' | 'Vierge' | 'Balance' | 'Scorpion'
   | 'Sagittaire' | 'Capricorne' | 'Verseau' | 'Poissons';
 
-export type Planete = 
+export type Planete =
   | 'Soleil' | 'Lune' | 'Mercure' | 'Vénus' | 'Mars'
   | 'Jupiter' | 'Saturne' | 'Uranus' | 'Neptune' | 'Pluton';
 
-export type PointAstrologique = 
+export type PointAstrologique =
   | 'Ascendant' | 'Milieu du Ciel' | 'Nœud Nord' | 'Nœud Sud'
   | 'Lilith' | 'Chiron' | 'Vertex' | 'Part de Fortune';
 
-export type Asteroide = 
+export type Asteroide =
   | 'Pallas' | 'Vesta' | 'Cérès' | 'Junon';
 
 export interface PositionPlanetaire {
@@ -55,9 +35,7 @@ export interface CarteDuCiel {
   };
   positions: PositionPlanetaire[];
   aspectsTexte?: string; // Texte brut des aspects (optionnel)
-}
-
-// ==================== ANALYSES ASTROLOGIQUES ====================
+} 
 
 export interface MissionDeVie {
   titre: string;
@@ -219,8 +197,6 @@ export interface SpiritualiteCroissance {
   synthese: string[];
 }
 
-// ==================== ANALYSE COMPLÈTE ====================
-
 export interface AnalyseAstrologique {
   consultationId: string;
   carteDuCiel: CarteDuCiel;
@@ -231,12 +207,10 @@ export interface AnalyseAstrologique {
   carriereVocation?: CarriereVocation;
   spiritualiteCroissance?: SpiritualiteCroissance;
   dateGeneration: string;
-  texteComplet?: string; // Texte brut complet si nécessaire
+  texteComplet?: string;  
 }
-
-// ==================== STATUT DE GÉNÉRATION ====================
-
-export type StatutGeneration = 
+ 
+export type StatutGeneration =
   | 'pending' // En attente
   | 'generating_chart' // Génération carte du ciel en cours
   | 'generating_analysis' // Génération analyses en cours
@@ -251,43 +225,7 @@ export interface StatutConsultation {
   erreur?: string;
   dateDebut?: string;
   dateFin?: string;
-}
-
-// ==================== REQUÊTES API ====================
-
-export interface GenerateChartRequest {
-  consultationId: string;
-  birthData: BirthData;
-}
-
-export interface GenerateChartResponse {
-  success: boolean;
-  consultationId: string;
-  statut: StatutGeneration;
-  message?: string;
-  erreur?: string;
-}
-
-export interface GetAnalysisRequest {
-  consultationId: string;
-}
-
-export interface GetAnalysisResponse {
-  success: boolean;
-  analyse?: AnalyseAstrologique;
-  statut?: StatutConsultation;
-  erreur?: string;
-}
-
-
-
-// Types pour carteDuCiel
-export interface CarteDuCielPosition {
-  planete: string;
-  signe: string;
-  maison: number;
-  retrograde?: boolean;
-}
+}    
 
 export interface CarteDuCielData {
   sujet: {
@@ -297,10 +235,9 @@ export interface CarteDuCielData {
     lieuNaissance: string;
     heureNaissance: string;
   };
-  positions:  Position[];
+  positions: Position[];
 }
-
-// Type pour les 5 Portes
+ 
 export interface CinqPortes {
   signesolaire: {
     label: string;

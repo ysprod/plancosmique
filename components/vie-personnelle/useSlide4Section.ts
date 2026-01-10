@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api } from '@/lib/api/client';
 import { getRubriqueById } from '@/lib/api/services/rubriques.service';
 import { mapFormDataToBackend } from '@/lib/functions';
-import { ConsultationChoice, ConsultationData, OfferingAlternative, Rubrique, UserData, WalletOffering } from '@/lib/interfaces';
+import { ConsultationChoice, ConsultationData, OfferingAlternative, Rubrique, User, WalletOffering } from '@/lib/interfaces';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth/AuthContext';
 
@@ -36,7 +36,7 @@ export function useSlide4Section(rubrique: Rubrique) {
   const [consultationId, setConsultationId] = useState<string | null>(null);
   const [walletOfferings, setWalletOfferings] = useState<WalletOffering[]>([]);
   const [consultation, setConsultation] = useState<any>(null);
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const choicesFetchedRef = useRef(false);
   const [choices, setChoices] = useState<ConsultationChoice[]>([]);
   const [loading, setLoading] = useState(true);

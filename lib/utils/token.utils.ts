@@ -1,9 +1,8 @@
 import { config } from '../config';
 import type { TokenPayload } from '@/lib/types/auth.types';
+import { User } from '../interfaces';
 
-/**
- * Stocke le token d'accès
- */
+ 
 export const setAccessToken = (token: string): void => {
   if (typeof window !== 'undefined') {
     localStorage.setItem(config.auth.tokenKey, token);
@@ -69,7 +68,7 @@ export const setUser = (user: any): void => {
 /**
  * Récupère les données utilisateur
  */
-export const getUser = (): any | null => {
+export const getUser = (): User | null => {
   if (typeof window !== 'undefined') {
     const userData = localStorage.getItem(config.auth.userKey);
     return userData ? JSON.parse(userData) : null;

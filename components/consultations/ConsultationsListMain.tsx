@@ -34,7 +34,7 @@ export default function ConsultationsListMain() {
         ) : (
           <div className="grid gap-6">
             {filteredConsultations.map((consultation, index) => (
-              (consultation.type === 'NOMBRES_PERSONNELS' || consultation.type === 'CYCLES_PERSONNELS') ? (
+              (consultation.type === 'nombres-personnels' || consultation.type === 'cycles-personnels') ? (
                 <NumerologyConsultationCard
                   key={consultation._id}
                   consultation={consultation}

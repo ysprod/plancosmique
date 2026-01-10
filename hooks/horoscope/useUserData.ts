@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from '@/lib/api/client';
-import type { UserData } from '@/lib/interfaces';
+import type { User } from '@/lib/interfaces';
 
 const useUserData = () => {
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
   const hasFetchedRef = useRef(false);
 
@@ -11,7 +11,7 @@ const useUserData = () => {
     if (hasFetchedRef.current) return;
     hasFetchedRef.current = true;
 
-    api.get<UserData>('/users/me')
+    api.get<User>('/users/me')
       .then(res => {
         setUserData(res.data);
       })

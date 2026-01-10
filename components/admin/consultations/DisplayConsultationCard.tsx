@@ -95,10 +95,7 @@ const DisplayConsultationCard = memo(({
                     label="Modifier"
                     gradient="from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800"
                 />
-            </div>
-
-            {/* Analyse Preview animée */}
-            <AnalysisPreview analysis={consultation} />
+            </div> 
         </motion.div>
     );
 }, (prevProps, nextProps) => {

@@ -1,13 +1,14 @@
-import { Loader2, Save, CheckCircle, X, Shield, Star, User, Phone, Globe } from 'lucide-react';
+import { Loader2, Save, CheckCircle, X, Shield, Star, User as UserIcon, Phone, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { countries } from '@/components/auth/countries';
-import { UserData } from '@/lib/interfaces';
+import { User } from '@/lib/interfaces';
+import { Role } from '@/lib/types/auth.types';
 import React from 'react';
 
 interface EditUserFormProps {
-  formData: Partial<UserData>;
-  setFormData: (data: Partial<UserData>) => void;
+  formData: Partial<User>;
+  setFormData: (data: Partial<User>) => void;
   saving: boolean;
   success: boolean;
   onSubmit: (e: React.FormEvent) => void;
@@ -23,7 +24,7 @@ export function EditUserForm({ formData, setFormData, saving, success, onSubmit 
     >
       <div>
         <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-          <User className="w-5 h-5 text-violet-600" />
+          <UserIcon className="w-5 h-5 text-violet-600" />
           Informations de base
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -119,8 +120,8 @@ export function EditUserForm({ formData, setFormData, saving, success, onSubmit 
               Rôle
             </label>
             <select
-              value={formData.role || 'USER'}
-              onChange={(e) => setFormData({ ...formData, role: e.target.value as 'USER' | 'ADMIN' | 'SUPER_ADMIN' })}
+              value={formData.role || Role.USER}
+              onChange={(e) => setFormData({ ...formData, role: e.target.value as Role })}
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
             >
               <option value="USER">Utilisateur</option>

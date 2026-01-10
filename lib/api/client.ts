@@ -1,9 +1,5 @@
 import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  AxiosError,
-  InternalAxiosRequestConfig,
+  AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig,
 } from 'axios';
 import { config } from '../config';
 import {
@@ -16,7 +12,6 @@ import {
   isTokenExpiringSoon,
 } from '../utils/token.utils';
 
-// Flag pour éviter les boucles infinies de refresh
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (value?: any) => void;

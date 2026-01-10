@@ -25,7 +25,11 @@ const CinqPortesMain = ({ user, processedData, isLoading }: CinqPortesMainProps)
         <br /><br />
 
         <CinqPortesSection
-          carteDuCiel={processedData?.carteDuCiel?.carteDuCiel ?? null}
+          carteDuCiel={
+            processedData?.carteDuCiel && 'carteDuCiel' in processedData.carteDuCiel
+              ? processedData.carteDuCiel.carteDuCiel
+              : null
+          }
           isPremium={user.premium}
         />
       </div>

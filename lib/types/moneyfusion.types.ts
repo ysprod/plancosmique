@@ -5,7 +5,7 @@
 
 // ==================== TYPES DE BASE ====================
 
-export type PaymentStatus = 
+export type PaymentStatus =
   | 'pending'        // En attente d'initialisation
   | 'initiated'      // Paiement initié, en attente de l'utilisateur
   | 'processing'     // Traitement en cours
@@ -42,25 +42,25 @@ export interface PersonalInfo {
 export interface MoneyFusionPaymentRequest {
   /** Montant total en FCFA */
   totalPrice: number;
-  
+
   /** Liste des articles avec leurs montants */
   article: PaymentArticle[];
-  
+
   /** Numéro de téléphone pour le paiement (format: 0XXXXXXXXX) */
   numeroSend: string;
-  
+
   /** Nom complet du client */
   nomclient: string;
-  
+
   /** URL de retour après paiement (obligatoire) */
   return_url: string;
-  
+
   /** URL webhook pour notification asynchrone (obligatoire) */
   webhook_url: string;
-  
+
   /** Informations additionnelles (optionnel) */
   personal_Info?: PersonalInfo[];
-  
+
   /** Référence de commande (générée automatiquement si non fournie) */
   reference?: string;
 }
@@ -73,19 +73,19 @@ export interface MoneyFusionPaymentRequest {
 export interface MoneyFusionPaymentData {
   /** Token unique pour vérifier le paiement */
   token: string;
-  
+
   /** URL de redirection vers la page de paiement */
   url: string;
-  
+
   /** Montant du paiement */
   montant: number;
-  
+
   /** Numéro de téléphone */
   numeroSend: string;
-  
+
   /** Nom du client */
   nomclient: string;
-  
+
   /** Référence de la transaction */
   reference?: string;
 }
@@ -96,16 +96,16 @@ export interface MoneyFusionPaymentData {
 export interface MoneyFusionPaymentResponse {
   /** Statut de la requête (true = succès) */
   statut: boolean;
-  
+
   /** Message descriptif */
   message: string;
-  
+
   /** Code de statut HTTP */
   code_statut: number;
-  
+
   /** Données du paiement (si statut = true) */
   data?: MoneyFusionPaymentData;
-  
+
   /** URL de paiement (si statut = true) */
   url?: string;
 }
@@ -128,28 +128,28 @@ export interface MoneyFusionVerifyRequest {
 export interface MoneyFusionVerifiedPayment {
   /** Token du paiement */
   token: string;
-  
+
   /** Montant payé */
   montant: number;
-  
+
   /** Numéro de téléphone */
   numeroSend: string;
-  
+
   /** Nom du client */
   nomclient: string;
-  
+
   /** Date du paiement */
   date_paiement?: string;
-  
+
   /** Référence de la transaction */
   reference?: string;
-  
+
   /** Statut du paiement */
   statut: PaymentStatus;
-  
+
   /** Méthode de paiement utilisée */
   paymentMethod?: PaymentMethod;
-  
+
   /** Informations additionnelles */
   personal_Info?: PersonalInfo[];
 }
@@ -160,19 +160,19 @@ export interface MoneyFusionVerifiedPayment {
 export interface MoneyFusionVerifyResponse {
   /** Statut de la requête (true = succès) */
   statut: boolean;
-  
+
   /** Message descriptif */
   message: string;
-  
+
   /** Code de statut HTTP */
   code_statut: number;
-  
+
   /** Détails du paiement (si statut = true) */
   data?: MoneyFusionVerifiedPayment;
-  
+
   /** Statut du paiement (success, failed, pending) */
   status?: 'success' | 'failed' | 'pending' | 'already_used';
-  
+
   /** Détails du paiement (alias de data) */
   payment?: MoneyFusionVerifiedPayment;
 }
@@ -185,28 +185,28 @@ export interface MoneyFusionVerifyResponse {
 export interface MoneyFusionWebhookPayload {
   /** Token du paiement */
   token: string;
-  
+
   /** Statut du paiement */
   status: PaymentStatus;
-  
+
   /** Montant payé */
   amount: number;
-  
+
   /** Référence de la transaction */
   reference?: string;
-  
+
   /** Numéro de téléphone */
   phone?: string;
-  
+
   /** Nom du client */
   customer_name?: string;
-  
+
   /** Date du paiement */
   payment_date?: string;
-  
+
   /** Méthode de paiement */
   payment_method?: PaymentMethod;
-  
+
   /** Informations additionnelles */
   metadata?: PersonalInfo[];
 }
@@ -219,19 +219,19 @@ export interface MoneyFusionWebhookPayload {
 export interface PaymentState {
   /** Statut actuel */
   status: PaymentStatus;
-  
+
   /** Token de paiement (si disponible) */
   token: string | null;
-  
+
   /** URL de redirection (si disponible) */
   paymentUrl: string | null;
-  
+
   /** Détails du paiement vérifié */
   paymentDetails: MoneyFusionVerifiedPayment | null;
-  
+
   /** Chargement en cours */
   loading: boolean;
-  
+
   /** Message d'erreur */
   error: string | null;
 }
@@ -242,25 +242,25 @@ export interface PaymentState {
 export interface InitiatePaymentConfig {
   /** Montant total */
   amount: number;
-  
+
   /** Articles du panier */
   items: PaymentArticle[];
-  
+
   /** Numéro de téléphone du client */
   phoneNumber: string;
-  
+
   /** Nom complet du client */
   customerName: string;
-  
+
   /** Métadonnées additionnelles */
   metadata?: PersonalInfo;
-  
+
   /** Référence personnalisée */
   reference?: string;
-  
+
   /** URL de retour personnalisée (optionnel, utilise celle par défaut sinon) */
   returnUrl?: string;
-  
+
   /** URL webhook personnalisée (optionnel, utilise celle par défaut sinon) */
   webhookUrl?: string;
 }
@@ -271,16 +271,16 @@ export interface InitiatePaymentConfig {
 export interface InitiatePaymentResult {
   /** Succès de l'opération */
   success: boolean;
-  
+
   /** Token de paiement */
   token?: string;
-  
+
   /** URL de redirection */
   paymentUrl?: string;
-  
+
   /** Message d'erreur */
   error?: string;
-  
+
   /** Données complètes de la réponse */
   data?: MoneyFusionPaymentResponse;
 }
@@ -291,16 +291,16 @@ export interface InitiatePaymentResult {
 export interface VerifyPaymentResult {
   /** Succès de l'opération */
   success: boolean;
-  
+
   /** Statut du paiement */
   status?: PaymentStatus;
-  
+
   /** Détails du paiement */
   payment?: MoneyFusionVerifiedPayment;
-  
+
   /** Message d'erreur */
   error?: string;
-  
+
   /** Données complètes de la réponse */
   data?: MoneyFusionVerifyResponse;
 }
@@ -313,16 +313,16 @@ export interface VerifyPaymentResult {
 export interface MoneyFusionConfig {
   /** URL de l'API MoneyFusion */
   apiUrl: string;
-  
+
   /** URL de retour par défaut après paiement */
   defaultReturnUrl: string;
-  
+
   /** URL webhook par défaut pour les notifications */
   defaultWebhookUrl: string;
-  
+
   /** Clé API ou identifiant marchand (si nécessaire) */
   merchantId?: string;
-  
+
   /** Mode sandbox (true) ou production (false) */
   sandbox?: boolean;
 }

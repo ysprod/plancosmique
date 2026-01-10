@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { AlertCircle, ChevronDown, ChevronUp, Star, TrendingUp } from "lucide-react";
 import { memo, useCallback, useState } from "react";
 import { CarteDuCiel } from "@/lib/types/carteduciel";
+import { CarteDuCielBase, Position } from "@/lib/interfaces";
 import PositionCard from "./PositionCard";
 
 const cardVariants = {
@@ -20,7 +21,7 @@ const cardVariants = {
   })
 };
 
-const SkyChart = memo(({ carteDuCiel }: { carteDuCiel?: CarteDuCiel }) => {
+const SkyChart = memo(({ carteDuCiel }: { carteDuCiel?: CarteDuCiel | CarteDuCielBase }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpanded = useCallback(() => {
@@ -46,7 +47,12 @@ const SkyChart = memo(({ carteDuCiel }: { carteDuCiel?: CarteDuCiel }) => {
     );
   }
 
-  const positions = carteDuCiel.carteDuCiel.positions || [];
+  let positions: Position[] = [];
+  if ('carteDuCiel' in (carteDuCiel ?? {})) {
+    positions = (carteDuCiel as CarteDuCiel).carteDuCiel.positions || [];
+  } else if (carteDuCiel && 'positions' in carteDuCiel) {
+    positions = (carteDuCiel as CarteDuCielBase).positions || [];
+  }
   const mainPositions = positions.slice(0, 6);
   const otherPositions = positions.slice(6);
 

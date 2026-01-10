@@ -1,6 +1,7 @@
 export type KnowledgeCategory =
   | 'ASTROLOGIE' | 'NUMEROLOGIE' | 'TAROT' | 'SPIRITUALITE'
-  | 'MEDITATION' | 'DEVELOPPEMENT_PERSONNEL' | 'RITUELS' | 'AUTRES';
+  | 'MEDITATION' | 'DEVELOPPEMENT_PERSONNEL'
+  | 'RITUELS' | 'AUTRES';
 
 export interface KnowledgeAuthor {
   _id: string;

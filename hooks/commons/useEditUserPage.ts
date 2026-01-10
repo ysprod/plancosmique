@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { api } from '@/lib/api/client';
-import { UserData } from '@/lib/interfaces';
+import { User } from '@/lib/interfaces';
+import { Role } from '@/lib/types/auth.types';
 
 export function useEditUserPage() {
   const router = useRouter();
@@ -12,12 +13,12 @@ export function useEditUserPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [formData, setFormData] = useState<Partial<UserData>>({
+  const [formData, setFormData] = useState<Partial<User>>({
     username: '',
     phone: '',
     country: '',
     gender: 'Other',
-    role: 'USER',
+    role: Role.USER,
     isActive: true,
     emailVerified: false,
     credits: 0,

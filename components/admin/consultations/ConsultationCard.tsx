@@ -93,10 +93,7 @@ const ConsultationCard = memo(({
                 )}
             </div>
 
-            <div className="space-y-1 mb-2">
-                {hasResultData && <NumerologyData resultData={consultation.resultData} />}
-                {hasCarteDuCiel && <AstrologyData formData={consultation.formData} />}
-            </div>
+           
 
             <div className="grid grid-cols-2 gap-1.5">
                 {consultation.status === 'COMPLETED' && (

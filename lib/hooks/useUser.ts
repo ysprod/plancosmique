@@ -1,19 +1,10 @@
 'use client';
-
-/**
- * Hook pour gérer les opérations utilisateur
- */
-
 import { useState, useCallback } from 'react';
 import { usersService } from '@/lib/api/services';
-  
-import type { User, Role, Permission } from '@/lib/types/auth.types';
+import type { Role, Permission } from '@/lib/types/auth.types';
 import type { PaginatedResponse, QueryParams } from '@/lib/types/api.types';
-import type {
-  CreateUserDto,
-  UpdateUserDto,
-  UserStats,
-} from '@/lib/api/services/users.service';
+import type { CreateUserDto, UpdateUserDto, UserStats, } from '@/lib/api/services/users.service';
+import { User } from '../interfaces';
 
 export const useUser = () => {
   const [loading, setLoading] = useState(false);

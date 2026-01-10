@@ -1,12 +1,12 @@
-import { UserData } from '@/lib/interfaces';
+import { User  } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
-import { Ban, Calendar, CheckCircle, Edit, Globe, Mail, Phone, Shield, Star, Trash2, User } from 'lucide-react';
+import { Ban, Calendar, CheckCircle, Edit, Globe, Mail, Phone, Shield, Star, Trash2, User as UserIcon } from 'lucide-react';
 import Link from 'next/link';
 
 type UserCardProps = {
-  user: UserData;
+  user: User;
   cardVariants: any;
-  setDeleteModal: (modal: { show: boolean; user: UserData | null }) => void;
+  setDeleteModal: (modal: { show: boolean; user: User | null }) => void;
 };
 
 export default function UserCard({ user, cardVariants, setDeleteModal }: UserCardProps) {
@@ -50,7 +50,7 @@ export default function UserCard({ user, cardVariants, setDeleteModal }: UserCar
         )}
         {user.gender && (
           <div className="flex items-center gap-1.5 text-xs text-gray-600">
-            <User className="w-3 h-3 flex-shrink-0" />
+            <UserIcon className="w-3 h-3 flex-shrink-0" />
             {user.gender === 'M' ? 'Homme' : 'Femme'}
           </div>
         )}

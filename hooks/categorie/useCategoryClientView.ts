@@ -1,8 +1,8 @@
-import type { Categorie } from "@/hooks/categories/useAdminCategoriesPage";
+import type { CategorieAdmin } from "@/lib/interfaces";
 import { useCategoryClientViewMain } from "@/hooks/commons/useCategoryClientViewMain";
 import { useMemo } from "react";
 
-export function useCategoryClientView(category: Categorie) {
+export function useCategoryClientView(category: CategorieAdmin) {
   const { rubriques, rubriqueCourante, openRubriqueById, closeRubrique } = useCategoryClientViewMain(category);
 
   const ui = useMemo(() => {

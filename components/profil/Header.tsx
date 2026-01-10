@@ -2,12 +2,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { User, LogOut, Menu, X } from "lucide-react";
+import { User as UserIcon, LogOut, Menu, X } from "lucide-react";
 import NotificationBell from "@/components/commons/NotificationBell";
-import { UserData } from "@/lib/interfaces";
+import { User } from "@/lib/interfaces";
 
 export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handleLogout }: {
-  user: UserData;
+  user: User;
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
   handleLogout: () => void;
@@ -79,7 +79,7 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
             {/* User Info */}
             <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-violet-50 border border-violet-100">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">
-                <User className="w-5 h-5 text-white" />
+                <UserIcon className="w-5 h-5 text-white" />
               </div>
               <div className="text-left">
                 <p className="text-sm font-bold text-slate-900">

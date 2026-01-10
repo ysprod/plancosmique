@@ -1,12 +1,13 @@
 import { api } from "@/lib/api/client";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { processUserData } from "@/lib/carteduciel/processUserData";
-import { UserData } from "@/lib/types/carteduciel";
+import { User } from "@/lib/interfaces";
+ 
 import { useEffect, useMemo, useState } from "react";
 
 export function useCinqPortesPage() {
   const { user, isLoading: authLoading } = useAuth();
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
 
   useEffect(() => {

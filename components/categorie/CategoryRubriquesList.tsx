@@ -22,7 +22,7 @@ const CategoryRubriquesList: React.FC<CategoryRubriquesListProps> = ({ rubriques
       variants={listVariants}
       initial="initial"
       animate="animate"
-      className="grid grid-cols-2 gap-8 sm:gap-8"
+      className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8"
       aria-label="Liste des rubriques"
     >
       {rubriques.map((rub) => (

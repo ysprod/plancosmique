@@ -1,4 +1,4 @@
-import { MissionDeVie, Position } from '@/lib/interfaces';
+import { MissionDeVie, Position, CarteDuCielBase } from '@/lib/interfaces';
 
 export interface CarteDuCielData {
   sujet: {
@@ -24,31 +24,6 @@ export interface CarteDuCiel {
   };
 }
 
-export interface UserData {
-  _id: string;
-  username: string;
-  gender: string;
-  country: string;
-  phone: string;
-  email: string;
-  role: string;
-  isActive: boolean;
-  emailVerified: boolean;
-  rating: number;
-  totalConsultations: number;
-  credits: number;
-  premium: boolean;
-  dateNaissance?: string;
-  genre?: string;
-  heureNaissance?: string;
-  nom?: string;
-  prenoms?: string;
-  paysNaissance?: string;
-  villeNaissance?: string;
-  carteDuCiel?: CarteDuCiel;
-  [key: string]: any;
-}
-
 export interface ProcessedUserData {
   prenoms: string;
   nom: string;
@@ -64,5 +39,5 @@ export interface ProcessedUserData {
   totalConsultations: number;
   rating: number;
   emailVerified: boolean;
-  carteDuCiel?: CarteDuCiel;
+  carteDuCiel?: CarteDuCiel | CarteDuCielBase;
 }

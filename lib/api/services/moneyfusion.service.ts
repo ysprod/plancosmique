@@ -44,7 +44,7 @@ import { MONEYFUSION_ERROR_MESSAGES } from '@/lib/types/moneyfusion.types';
  */
 const DEFAULT_CONFIG: MoneyFusionConfig = {
   apiUrl: 'https://www.pay.moneyfusion.net/Mon_Etoile/e47b0c544d03cab1/pay/',
-  defaultReturnUrl: process.env.NEXT_PUBLIC_APP_URL 
+  defaultReturnUrl: process.env.NEXT_PUBLIC_APP_URL
     ? `${process.env.NEXT_PUBLIC_APP_URL}/callback`
     : 'https://www.monetoile.org/callback',
   defaultWebhookUrl: process.env.NEXT_PUBLIC_APP_URL
@@ -266,7 +266,7 @@ class MoneyFusionService {
    */
   public getTokenFromUrl(): string | null {
     if (typeof window === 'undefined') return null;
-    
+
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('token') || urlParams.get('t');
   }
@@ -276,7 +276,7 @@ class MoneyFusionService {
    */
   public getStatusFromUrl(): string | null {
     if (typeof window === 'undefined') return null;
-    
+
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('status');
   }
@@ -286,7 +286,7 @@ class MoneyFusionService {
    */
   public cleanUrl(): void {
     if (typeof window === 'undefined') return;
-    
+
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 
@@ -295,7 +295,7 @@ class MoneyFusionService {
    */
   public generateCallbackUrl(params?: Record<string, string>): string {
     const baseUrl = this.config.defaultReturnUrl;
-    
+
     if (!params || Object.keys(params).length === 0) {
       return baseUrl;
     }
@@ -329,7 +329,7 @@ class MoneyFusionService {
 
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError<MoneyFusionPaymentResponse>;
-      
+
       if (axiosError.response?.data) {
         return {
           success: false,
@@ -377,7 +377,7 @@ class MoneyFusionService {
 
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError<MoneyFusionVerifyResponse>;
-      
+
       if (axiosError.response?.data) {
         return {
           success: false,

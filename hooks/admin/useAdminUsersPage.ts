@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import api from '@/lib/api/client';
 import { useAdminUsers } from '@/hooks/admin/useAdminUsers';
-import { UserData } from '@/lib/interfaces';
+import { User } from '@/lib/interfaces';
 
 export type UserStatus = 'all' | 'active' | 'inactive';
 export type UserRole = 'all' | 'USER' | 'ADMIN' | 'SUPER_ADMIN';
@@ -12,7 +12,7 @@ export function useAdminUsersPage() {
   const [roleFilter, setRoleFilter] = useState<UserRole>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
-  const [deleteModal, setDeleteModal] = useState<{ show: boolean; user: UserData | null }>({ show: false, user: null });
+  const [deleteModal, setDeleteModal] = useState<{ show: boolean; user: User | null }>({ show: false, user: null });
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -25,26 +25,37 @@ export function useAdminUsersPage() {
     limit: 18,
   });
 
-  const mapUserToUserData = (user: any): UserData => ({
+  const mapUserToUserData = (user: any): User => ({
     id: user.id,
-    _id: user._id,
-    username: user.username,
     email: user.email,
-    phone: user.phone || user.telephone,
-    country: user.country,
-    gender: user.gender === 'M' || user.gender === 'F' || user.gender === 'Other' ? user.gender : 'Other',
-    role: user.role,
+    nom: user.nom ?? user.lastName ?? '',
+    prenom: user.prenom ?? user.firstName ?? '',
+    username: user.username,
+    telephone: user.telephone ?? user.phone ?? '',
+    phone: user.phone ?? user.telephone,
+    status: user.status ?? 'active',
     isActive: user.isActive,
     emailVerified: user.emailVerified,
-    credits: user.credits,
-    preferences: user.preferences,
-    totalConsultations: user.totalConsultations ?? user.consultationsCount ?? 0,
-    rating: user.rating,
     createdAt: user.createdAt,
+    lastLogin: user.lastLogin ?? '',
+    consultationsCount: user.consultationsCount ?? 0,
+    totalConsultations: user.totalConsultations ?? user.consultationsCount ?? 0,
+    rating: user.rating ?? 0,
+    credits: user.credits ?? 0,
+    country: user.country ?? '',
+    gender: user.gender === 'M' || user.gender === 'F' || user.gender === 'Other' ? user.gender : 'Other',
     premium: user.premium || false,
+    firstName: user.firstName ?? '',
+    lastName: user.lastName ?? '',
+    client: user.client ?? false,
+    role: user.role,
+    avatar: user.avatar ?? '',
+    customPermissions: user.customPermissions ?? [],
+    dateOfBirth: user.dateOfBirth ?? undefined,
+    updatedAt: user.updatedAt ?? new Date(),
   });
 
-  const users: UserData[] = useMemo(() => (apiUsers ? apiUsers.map(mapUserToUserData) : []), [apiUsers]);
+  const users: User[] = useMemo(() => (apiUsers ? apiUsers.map(mapUserToUserData) : []), [apiUsers]);
   const stats = useMemo(() => {
     if (!users) return null;
     return {

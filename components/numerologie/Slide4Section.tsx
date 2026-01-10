@@ -1,7 +1,7 @@
 "use client";
 import { api } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { ConsultationChoice, ConsultationData, OfferingAlternative, UserData, WalletOffering } from '@/lib/interfaces';
+import { ConsultationChoice, ConsultationData, OfferingAlternative, User, WalletOffering } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -31,7 +31,7 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
   const [consultationId, setConsultationId] = useState<string | null>(null);
   const [walletOfferings, setWalletOfferings] = useState<WalletOffering[]>([]);
   const [consultation, setConsultation] = useState<any>(null);
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const choicesFetchedRef = useRef(false);
     const [choices, setChoices] = useState<ConsultationChoice[]>([]);
     const [loading, setLoading] = useState(true);

@@ -1,7 +1,8 @@
 import { api } from '../client';
 import { endpoints } from '../endpoints';
-import type { User, Role, Permission } from '@/lib/types/auth.types';
+import type { Role, Permission } from '@/lib/types/auth.types';
 import type { PaginatedResponse, QueryParams } from '@/lib/types/api.types';
+import { User } from '@/lib/interfaces';
 
 export interface CreateUserDto {
   firstName: string;

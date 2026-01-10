@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
 import { Pencil, Save, X } from "lucide-react";
 import { Rubrique } from "@/lib/interfaces";
-import { Categorie } from "@/hooks/categories/useAdminCategoriesPage";
+import { CategorieAdmin } from "@/lib/interfaces";
 import { RubriquesPickerPro } from "./RubriquesPickerPro";
 
 export const EditCategoryCardPro = memo(function EditCategoryCardPro({
@@ -11,11 +11,11 @@ export const EditCategoryCardPro = memo(function EditCategoryCardPro({
   onCancel,
   onSave,
 }: {
-  cat: Categorie;
+  cat: CategorieAdmin;
   rubriques: Rubrique[];
   loadingRubriques: boolean;
   onCancel: () => void;
-  onSave: (id: string, patch: Partial<Categorie>) => void;
+  onSave: (id: string, patch: Partial<CategorieAdmin>) => void;
 }) {
   const [nom, setNom] = useState(cat.nom);
   const [description, setDescription] = useState(cat.description);

@@ -1,7 +1,8 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { api } from '@/lib/api/client';
-import { UserData } from '@/lib/interfaces';
+import { User } from '@/lib/interfaces';
+import { Role } from '@/lib/types/auth.types';
 
 const validatePhone = (phone: string): boolean => {
   return /^\+?[\d\s-()]+$/.test(phone);
@@ -12,12 +13,12 @@ export function useNewUserPage() {
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [errors, setErrors] = useState<any>({});
-  const [formData, setFormData] = useState<Partial<UserData>>({
+  const [formData, setFormData] = useState<Partial<User>>({
     username: '',
     phone: '',
     country: '',
     gender: 'Other',
-    role: 'USER',
+    role: Role.USER,
     isActive: true,
     emailVerified: false,
     credits: 0,

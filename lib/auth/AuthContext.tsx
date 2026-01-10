@@ -1,16 +1,12 @@
 'use client';
-
-/**
- * Contexte d'authentification avec gestion JWT
- */
-
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import type { User, LoginDto, RegisterDto, Permission } from '@/lib/types/auth.types';
+import type { LoginDto, RegisterDto, Permission } from '@/lib/types/auth.types';
 import { Role } from '@/lib/types/auth.types';
 import { authService } from '@/lib/api/services';
 import { getUser, clearAuth, getAccessToken } from '@/lib/utils/token.utils';
 import { config } from '@/lib/config';
+import { User } from '../interfaces';
 
 interface AuthContextType {
   user: User | null;
@@ -149,7 +145,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    */
   const hasRole = useCallback((roles: Role | Role[]): boolean => {
     if (!user) return false;
-    
+
     const roleArray = Array.isArray(roles) ? roles : [roles];
     return roleArray.includes(user.role);
   }, [user]);
@@ -161,7 +157,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (!user) return false;
 
     const permissionArray = Array.isArray(permissions) ? permissions : [permissions];
-    
+
     // Super Admin a toutes les permissions
     if (user.role === Role.SUPER_ADMIN) return true;
 

@@ -3,6 +3,7 @@ import StatusBadge from './StatusBadge';
 import ConsultationCard from './ConsultationCard';
 import PaginationControls from './PaginationControls';
 import React from 'react';
+import AnalysisPreview from './AnalysisPreview';
 
 interface ConsultationsListProps {
   consultations: any[];
@@ -40,6 +41,7 @@ export const ConsultationsList: React.FC<ConsultationsListProps> = ({
               isGenerating={generatingIds.has(consultation.id)}
               isNotifying={notifyingIds.has(consultation.id)}
             />
+              {/* <AnalysisPreview analysis={consultation} /> */}
           </div>
         ))}
       </AnimatePresence>

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { memo } from 'react';
 import PlanetChip from './PlanetChip';
-import { CarteDuCiel } from '@/lib/interfaces';
+import { CarteDuCielBase } from '@/lib/interfaces';
 import type { Position as LocalPosition } from '@/lib/interfaces';
 
 const mapToLocalPosition = (pos: any): LocalPosition => ({
@@ -11,7 +11,7 @@ const mapToLocalPosition = (pos: any): LocalPosition => ({
   retrograde: !!pos.retrograde,
 });
 
-const SkyChartSection = memo(({ carteDuCiel }: { carteDuCiel: CarteDuCiel }) => (
+const SkyChartSection = memo(({ carteDuCiel }: { carteDuCiel: CarteDuCielBase }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}

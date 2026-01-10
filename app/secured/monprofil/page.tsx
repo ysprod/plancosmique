@@ -20,8 +20,13 @@ export default function MonProfilPage() {
         <ProfileHeader userData={processedData} />
         <br /><br />
 
+
         <CinqPortesSection
-          carteDuCiel={processedData?.carteDuCiel?.carteDuCiel ?? null}
+          carteDuCiel={
+            processedData?.carteDuCiel && 'carteDuCiel' in processedData.carteDuCiel
+              ? processedData.carteDuCiel.carteDuCiel
+              : null
+          }
           isPremium={user.premium}
         />
 

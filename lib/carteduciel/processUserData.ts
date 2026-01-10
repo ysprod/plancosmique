@@ -1,7 +1,8 @@
 import { formatDate } from '@/lib/functions';
-import { ProcessedUserData, UserData } from '@/lib/types/carteduciel';
+import { ProcessedUserData } from '@/lib/types/carteduciel';
+import { User } from '../interfaces';
 
-export function processUserData(userData: UserData | null): ProcessedUserData | null {
+export function processUserData(userData: User | null): ProcessedUserData | null {
   if (!userData) return null;
 
   return {
@@ -14,7 +15,7 @@ export function processUserData(userData: UserData | null): ProcessedUserData | 
       ? `${userData.villeNaissance}, ${userData.paysNaissance || userData.country}`
       : userData.country || "-",
     heureNaissance: userData.heureNaissance || "-",
-    country: userData.country,
+    country: userData.country!,
     role: userData.role,
     premium: userData.premium,
     credits: userData.credits,

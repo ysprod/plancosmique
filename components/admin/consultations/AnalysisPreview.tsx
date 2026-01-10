@@ -2,13 +2,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, Clock, ChevronDown, Sparkle, TrendingUp, Sparkles, User } from "lucide-react";
 import { memo, useState, useMemo, useCallback } from "react";
 import AnalysisSection from "./AnalysisSection";
+import NumerologyData from "./NumerologyData";
+import AstrologyData from "./AstrologyData";
 
-const AnalysisPreview = memo(({ analysis }: { analysis: any }) => {
+
+const AnalysisPreview = memo(({ analysis, consultation }: { analysis: any, consultation?: any }) => {
     const [isMainExpanded, setIsMainExpanded] = useState(true);
 
     const analysisData = useMemo(() => {
         if (!analysis) return null;
-
         return {
             carteDuCiel: analysis.carteDuCiel || null,
             missionDeVie: analysis.missionDeVie || null,
@@ -18,6 +20,10 @@ const AnalysisPreview = memo(({ analysis }: { analysis: any }) => {
             sujet: analysis.carteDuCiel?.sujet || null
         };
     }, [analysis]);
+
+    // Derived booleans memoized
+    const hasResultData = useMemo(() => !!consultation && typeof consultation === 'object' && 'resultData' in consultation && !!consultation.resultData, [consultation]);
+    const hasCarteDuCiel = useMemo(() => !!consultation && typeof consultation === 'object' && 'formData' in consultation && !!consultation.formData, [consultation]);
 
     // Toggle handler mémorisé
     const handleMainToggle = useCallback(() => {
@@ -127,14 +133,19 @@ const AnalysisPreview = memo(({ analysis }: { analysis: any }) => {
                                 index={2}
                             />
                         )}
+
                     </motion.div>
                 )}
             </AnimatePresence>
+            <div className="space-y-1 mb-2">
+                {hasResultData && consultation?.resultData && <NumerologyData resultData={consultation.resultData} />}
+                {hasCarteDuCiel && consultation?.formData && <AstrologyData formData={consultation.formData} />}
+            </div>
         </motion.div>
     );
 }, (prevProps, nextProps) => {
     // Custom comparison
-    return prevProps.analysis === nextProps.analysis;
+    return prevProps.analysis === nextProps.analysis && prevProps.consultation === nextProps.consultation;
 });
 
 AnalysisPreview.displayName = 'AnalysisPreview';

@@ -1,10 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, AlertTriangle, Loader2, Trash2 } from 'lucide-react';
-import { UserData } from '@/lib/interfaces';
+import { User } from '@/lib/interfaces';
 
 type DeleteUserModalProps = {
   show: boolean;
-  user: UserData | null;
+  user: User| null;
   isDeleting: boolean;
   deleteSuccess: boolean;
   onClose: () => void;

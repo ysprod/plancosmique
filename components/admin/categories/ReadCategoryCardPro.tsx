@@ -1,5 +1,5 @@
 "use client";
-import { Categorie } from "@/hooks/categories/useAdminCategoriesPage";
+import { CategorieAdmin } from "@/lib/interfaces";
 import { rubriqueLabel } from "@/lib/functions";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Check, Copy, FolderTree, Pencil, Trash2 } from "lucide-react";
@@ -21,7 +21,7 @@ export const ReadCategoryCardPro = memo(function ReadCategoryCardPro({
   onEdit,
   onDelete,
 }: {
-  cat: Categorie;
+  cat: CategorieAdmin;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
 }) {

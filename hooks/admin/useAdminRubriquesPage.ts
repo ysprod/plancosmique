@@ -1,6 +1,7 @@
 import { api } from "@/lib/api/client";
 import { offeringsService } from '@/lib/api/services/offerings.service';
 import type { Offering, Rubrique } from '@/lib/interfaces';
+import { ConsultationType } from '@/lib/interfaces';
 import { useCallback, useEffect, useState } from "react";
 
 export function useAdminRubriquesPage() {
@@ -50,10 +51,10 @@ export function useAdminRubriquesPage() {
       description: "",
       categorie: "GENERAL",
       consultationChoices: [],
-      type: 'AUTRE',
+      type: ConsultationType.AUTRE,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      typeconsultation: 'AUTRE',
+      typeconsultation: ConsultationType.AUTRE,
     };
     setEditingRubrique(newRubrique);
     setSelectedRubrique(null);

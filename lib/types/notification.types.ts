@@ -1,4 +1,4 @@
-export type NotificationType = 
+export type NotificationType =
   | 'CONSULTATION_RESULT'
   | 'CONSULTATION_ASSIGNED'
   | 'PAYMENT_CONFIRMED'

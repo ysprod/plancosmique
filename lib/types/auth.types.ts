@@ -1,6 +1,4 @@
-/**
- * Types pour l'authentification et la gestion des utilisateurs
- */
+import { User } from "../interfaces";
 
 export enum Role {
   SUPER_ADMIN = 'SUPER_ADMIN',
@@ -11,7 +9,6 @@ export enum Role {
 }
 
 export enum Permission {
-  // User permissions
   CREATE_USER = 'CREATE_USER',
   READ_USER = 'READ_USER',
   READ_ANY_USER = 'READ_ANY_USER',
@@ -19,8 +16,6 @@ export enum Permission {
   UPDATE_ANY_USER = 'UPDATE_ANY_USER',
   DELETE_USER = 'DELETE_USER',
   DELETE_ANY_USER = 'DELETE_ANY_USER',
-  
-  // Consultation permissions
   CREATE_CONSULTATION = 'CREATE_CONSULTATION',
   READ_CONSULTATION = 'READ_CONSULTATION',
   READ_ANY_CONSULTATION = 'READ_ANY_CONSULTATION',
@@ -29,20 +24,14 @@ export enum Permission {
   DELETE_CONSULTATION = 'DELETE_CONSULTATION',
   ASSIGN_CONSULTANT = 'ASSIGN_CONSULTANT',
   COMPLETE_CONSULTATION = 'COMPLETE_CONSULTATION',
-  
-  // Service permissions
   CREATE_SERVICE = 'CREATE_SERVICE',
   READ_SERVICE = 'READ_SERVICE',
   UPDATE_SERVICE = 'UPDATE_SERVICE',
   DELETE_SERVICE = 'DELETE_SERVICE',
-  
-  // Payment permissions
   CREATE_PAYMENT = 'CREATE_PAYMENT',
   READ_PAYMENT = 'READ_PAYMENT',
   READ_ANY_PAYMENT = 'READ_ANY_PAYMENT',
   REFUND_PAYMENT = 'REFUND_PAYMENT',
-  
-  // System permissions
   VIEW_ANALYTICS = 'VIEW_ANALYTICS',
   VIEW_LOGS = 'VIEW_LOGS',
   MANAGE_ROLES = 'MANAGE_ROLES',
@@ -54,27 +43,6 @@ export interface UserProfile {
   avatar?: string;
   bio?: string;
   preferences?: Record<string, any>;
-}
-
-export interface User {
-  _id: string;
-  premium: boolean;
-  firstName: string;
-  username: string;
-  lastName: string;
-  client: boolean;
-  email: string;
-  role: Role;
-  avatar?: string;
-  customPermissions?: Permission[];
-  phone?: string;
-  dateOfBirth?: Date;
-  isActive: boolean;
-  profile?: UserProfile;
-  consultationHistory?: string[];
-  lastLogin?: Date;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface RegisterDto {

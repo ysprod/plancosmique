@@ -26,7 +26,7 @@ interface Sujet {
   heureNaissance: string;
 }
 
-interface CarteDuCiel {
+interface CarteDuCielBase {
   sujet: Sujet;
   positions: Position[];
   aspectsTexte: string;
@@ -39,7 +39,7 @@ interface MissionDeVie {
 
 interface AnalyseData {
   _id: string;
-  carteDuCiel: CarteDuCiel;
+  carteDuCiel: CarteDuCielBase;
   missionDeVie: MissionDeVie;
   dateGeneration: string;
 }

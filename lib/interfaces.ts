@@ -1,3 +1,26 @@
+import { Permission, Role, UserProfile } from "./types/auth.types";
+import type { CarteDuCiel } from "./types/carteduciel";
+
+export type Category = 'animal' | 'vegetal' | 'beverage';
+export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';
+export type GenerationStep = 'loading' | 'fetching' | 'generating' | 'success' | 'error';
+export type TransactionFilter = "all" | "simulation" | "real";
+export type SortOrder = "newest" | "oldest" | "amount_high" | "amount_low";
+export type OfferingCategory = "animal" | "vegetal" | "beverage";
+export type HoroscopeTypeId = 'mensuel' | 'annuel';
+
+export type FrequenceConsultation =
+  | 'UNE_FOIS_VIE'      // Consultation faite une seule fois dans la vie
+  | 'ANNUELLE'          // Peut être faite chaque année
+  | 'MENSUELLE'         // Peut être faite chaque mois
+  | 'QUOTIDIENNE'       // Peut être faite chaque jour
+  | 'LIBRE';            // Peut être faite à tout moment
+
+export type TypeParticipants =
+  | 'SOLO'              // Uniquement l'utilisateur
+  | 'AVEC_TIERS'        // Utilisateur + une personne tierce
+  | 'GROUPE';
+
 export interface ConsultationData {
   _id: string;
   title: string;
@@ -40,7 +63,7 @@ export interface Position {
   retrograde?: boolean;
 }
 
-export interface CarteDuCiel {
+export interface CarteDuCielBase {
   sujet: SubjectInfo;
   positions: Position[];
   aspectsTexte: string;
@@ -56,7 +79,7 @@ export interface Sujet {
 
 export interface MissionDeVie {
   titre: string;
-  contenu: string; // Markdown format
+  contenu: string;
 }
 
 export interface Section {
@@ -69,11 +92,11 @@ export interface AnalyseAstrologique {
   _id: string;
   userId: string;
   consultationId: string;
-  carteDuCiel: CarteDuCiel;
+  carteDuCiel: CarteDuCielBase;
   missionDeVie: Section;
   dateGeneration: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
 }
 
 export interface Offering {
@@ -86,40 +109,6 @@ export interface Offering {
   icon: string;
   description: string;
 }
-
-export interface UserData {
-  premium?: boolean;
-  _id?: string;
-  id: string;
-  username: string;
-  email: string;
-  phone?: string;
-  country?: string;
-  gender?: 'M' | 'F' | 'Other';
-  role: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
-  isActive: boolean;
-  emailVerified: boolean;
-  credits?: number;
-  preferences?: {
-    notifications?: boolean;
-    newsletter?: boolean;
-  };
-
-  totalConsultations: number;
-  rating: number;
-  createdAt: string;
-  dateNaissance?: string;
-  genre?: string;
-  heureNaissance?: string;
-  nom?: string;
-  prenoms?: string;
-  paysNaissance?: string;
-  villeNaissance?: string;
-  carteDuCiel?: CarteDuCiel;
-  [key: string]: any;
-}
-
-type Category = 'animal' | 'vegetal' | 'beverage';
 
 export interface OfferingAlternative {
   category: Category;
@@ -192,8 +181,6 @@ export interface Rubrique {
   categorieId?: any;
 }
 
-export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';
-
 export interface MissionDeVie {
   titre: string;
   contenu: string;
@@ -210,7 +197,7 @@ export interface AnalyseData {
   consultationId: string;
   sessionId: string;
   timestamp: string;
-  carteDuCiel: CarteDuCiel;
+  carteDuCiel: CarteDuCielBase;
   missionDeVie: MissionDeVie;
   metadata: Metadata;
   dateGeneration: string;
@@ -228,10 +215,6 @@ export interface ConsultationData {
   alternatives: { offeringId: string; quantity: number }[];
   status: string;
 }
-
-export type GenerationStep = 'loading' | 'fetching' | 'generating' | 'success' | 'error';
-
-export type ConsultationStatus = 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR' | 'PROCESSING' | 'FAILED';
 
 export interface ConsultationFormData {
   nom: string;
@@ -257,41 +240,8 @@ export interface ResultData {
     model: string;
   };
   dateGeneration: string;
-  // Numerology fields (optional)
   numbers?: Array<{ label: string; value: string | number }>;
   cycles?: Array<{ label: string; value: string | number }>;
-}
-
-export interface Consultation {
-  _id: string;
-  clientId?: {
-    _id: string;
-    email: string;
-  };
-  consultantId: string | null;
-  type: ConsultationType;
-  status: ConsultationStatus;
-  title: string;
-  description: string;
-  formData?: ConsultationFormData;
-  result: any;
-  resultData?: ResultData | null;
-  scheduledDate: string | null;
-  completedDate: string | null;
-  price: number;
-  isPaid: boolean;
-  paymentId: string | null;
-  rating?: number | null;
-  review?: string | null;
-  attachments: string[];
-  notes: string | null;
-  createdAt: string;
-  updatedAt: string;
-  id: string;
-  clientName?: string;
-  clientEmail?: string;
-  completedAt?: string;
-  [key: string]: any;
 }
 
 export interface Transaction {
@@ -314,12 +264,8 @@ export interface Stats {
   totalSimulated: number;
 }
 
-export type TransactionFilter = "all" | "simulation" | "real";
-export type SortOrder = "newest" | "oldest" | "amount_high" | "amount_low";
-export type OfferingCategory = "animal" | "vegetal" | "beverage";
-
 export interface TransactionItem {
-  offeringId: OfferingDetails | string; // Peut être peuplé ou juste l'ID
+  offeringId: OfferingDetails | string;
 }
 
 export interface OfferingDetails {
@@ -335,8 +281,6 @@ export interface BackendResponse {
   success?: boolean;
   analyse?: AnalyseData;
 }
-
-export type HoroscopeTypeId = 'mensuel' | 'annuel';
 
 export interface Tab {
   id: HoroscopeTypeId;
@@ -405,40 +349,12 @@ export interface SpiritualitePractice {
   };
 }
 
-export type ConsultationType =
-  | 'SPIRITUALITE'
-  | 'VIE_PERSONNELLE'
-  | 'RELATIONS'
-  | 'PROFESSIONNEL'
-  | 'OFFRANDES'
-  | 'ASTROLOGIE_AFRICAINE'
-  | 'HOROSCOPE'
-  | 'NOMBRES_PERSONNELS'
-  | 'CYCLES_PERSONNELS' | 'CINQ_ETOILES'
-  | 'NUMEROLOGIE'
-  | 'AUTRE';
-
-
-export type FrequenceConsultation =
-  | 'UNE_FOIS_VIE'      // Consultation faite une seule fois dans la vie
-  | 'ANNUELLE'          // Peut être faite chaque année
-  | 'MENSUELLE'         // Peut être faite chaque mois
-  | 'QUOTIDIENNE'       // Peut être faite chaque jour
-  | 'LIBRE';            // Peut être faite à tout moment
-
-export type TypeParticipants =
-  | 'SOLO'              // Uniquement l'utilisateur
-  | 'AVEC_TIERS'        // Utilisateur + une personne tierce
-  | 'GROUPE';
-
-
 export interface Domaine {
   id: string;
   titre: string;
   description: string;
   rubriques: Rubrique[];
 }
-
 
 export interface ConsultationConfig {
   id: string;
@@ -456,7 +372,6 @@ export interface ConsultationConfig {
   };
   noteImplementation?: string;
 }
-
 
 export interface Payment {
   id: string;
@@ -478,7 +393,6 @@ export interface User {
   username: string;
   telephone: string;
   phone?: string;
-  role: 'USER' | 'ADMIN';
   status: 'active' | 'inactive' | 'suspended';
   isActive: boolean;
   emailVerified: boolean;
@@ -490,8 +404,29 @@ export interface User {
   credits: number;
   country?: string;
   gender?: string;
+  premium: boolean;
+  firstName: string;
+  lastName: string;
+  client: boolean;
+  role: Role;
+  avatar?: string;
+  customPermissions?: Permission[];
+  dateOfBirth?: Date;
+  profile?: UserProfile;
+  consultationHistory?: string[];
+  updatedAt: Date;
+  _id?: string;
+  dateNaissance?: string;
+  genre?: string;
+  heureNaissance?: string;
+  prenoms?: string;
+  paysNaissance?: string;
+  villeNaissance?: string;
+  carteDuCiel?: CarteDuCielBase;
+  [key: string]: any;
   preferences?: {
     notifications?: boolean;
+    newsletter?: boolean;
   };
 }
 
@@ -532,3 +467,74 @@ export interface SpiritualPractice {
   featured?: boolean;
   trending?: boolean;
 }
+
+export enum ConsultationType {
+  HOROSCOPE = 'horoscope',
+  NUMEROLOGIE = 'numerologie',
+  VIE_PERSONNELLE = 'vie-personnelle',
+  RELATIONS = 'relations',
+  PROFESSIONNEL = 'professionnel',
+  ASTROLOGIE_AFRICAINE = 'astrologie-africaine',
+  SPIRITUALITE = 'spiritualite',
+  OFFRANDES = 'offrandes',
+  NOMBRES_PERSONNELS = 'nombres-personnels',
+  CYCLES_PERSONNELS = 'cycles-personnels',
+  CINQ_ETOILES = 'cinq-etoiles',
+  AUTRE = 'autre',
+}
+
+export enum ConsultationStatus {
+  PENDING = 'pending',
+  PROCESSING = 'processing',
+  AWAITING_PAYMENT = 'awaiting_payment',
+  COMPLETED = 'completed',
+  CANCELLED = 'cancelled',
+  REFUNDED = 'refunded',
+  FAILED = 'failed',
+  ERROR = 'error',
+  GENERATING = 'generating',
+}
+
+export interface Consultation {
+  _id: string;
+  userId: string;
+  clientId?: {
+    _id: string;
+    email: string;
+  };
+  consultantId?: string;
+  serviceType: ConsultationType;
+  results?: Record<string, any>;
+  status: ConsultationStatus;
+  scheduledDate?: Date;
+  completedDate?: Date;
+  paymentId?: string;
+  isPaid: boolean;
+  rating?: number;
+  review?: string;
+  metadata?: Record<string, any>;
+  type: ConsultationType;
+  title: string;
+  description: string;
+  formData?: ConsultationFormData;
+  result: any;
+  resultData?: ResultData | null;
+  price: number;
+  attachments: string[];
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+  clientName?: string;
+  clientEmail?: string;
+  completedAt?: string;
+  [key: string]: any;
+}
+
+export interface CategorieAdmin {
+  _id: string;
+  id: string;
+  nom: string;
+  description: string;
+  rubriques: Rubrique[];
+} 

@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect, useCallback } from 'react';
 import { notificationsService } from '@/lib/api/services';
 import { useAuth } from '@/lib/hooks/useAuth';

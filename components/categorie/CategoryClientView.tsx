@@ -1,6 +1,6 @@
 "use client";
 import { useCategoryClientView } from "@/hooks/categorie/useCategoryClientView";
-import type { Categorie } from "@/hooks/categories/useAdminCategoriesPage";
+import type { CategorieAdmin } from "@/lib/interfaces";
 import { motion } from "framer-motion";
 import React, { memo } from "react";
 import CategoryClientMain from "./CategoryClientMain";
@@ -14,7 +14,7 @@ const pageVariants = {
 } as const;
 
 interface CategoryClientViewProps {
-  category: Categorie;
+  category: CategorieAdmin;
 }
 
 const CategoryClientView: React.FC<CategoryClientViewProps> = ({ category }) => {

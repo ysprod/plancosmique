@@ -1,12 +1,12 @@
+import { CategorieAdmin } from '@/lib/interfaces';
 import { api } from '@/lib/api/client';
 
-// Utiliser les types génériques pour les réponses API
-export async function getCategory(id: string): Promise<any> {
-  const res = await api.get<any>(`/categories/${id}`);
+export async function getCategory(id: string): Promise<CategorieAdmin> {
+  const res = await api.get<CategorieAdmin>(`/categories/${id}`);
   return res.data;
 }
-export async function getCategories(): Promise<any[]> {
-  const res = await api.get<any[]>('/categories');
+export async function getCategories(): Promise<CategorieAdmin[]> {
+  const res = await api.get<CategorieAdmin[]>('/categories');
   return res.data;
 }
 

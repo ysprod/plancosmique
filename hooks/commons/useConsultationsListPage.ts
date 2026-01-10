@@ -74,7 +74,7 @@ export function useConsultationsListPage() {
 
   const handleView = (id: string) => {
     const consultation = consultations.find(c => c._id === id);
-    if (consultation && (consultation.type === 'NOMBRES_PERSONNELS' || consultation.type === 'CYCLES_PERSONNELS')) {
+    if (consultation && (consultation.type === 'nombres-personnels' || consultation.type === 'cycles-personnels')) {
       router.push(`/secured/numerologie/${id}`);
     } else {
       router.push(`/secured/consultations/${id}`);
