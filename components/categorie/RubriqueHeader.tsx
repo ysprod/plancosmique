@@ -44,7 +44,7 @@ const RubriqueHeader: React.FC<RubriqueHeaderProps> = memo(({ title, description
       </div>
       {description && (
         <motion.p
-          className="mt-2 text-sm xs:text-base sm:text-base leading-relaxed text-center text-slate-600/90 dark:text-zinc-300/90 max-w-2xl"
+          className="text-sm xs:text-base sm:text-base leading-relaxed text-center text-slate-600/90 dark:text-zinc-300/90 max-w-2xl"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 8 }}

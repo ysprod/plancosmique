@@ -1,26 +1,11 @@
 "use client";
-
-import { formatDate } from '@/lib/functions';
+import { cx } from '@/lib/functions';
 import type { Consultation } from '@/lib/interfaces';
 import { motion, useReducedMotion } from 'framer-motion';
-import { 
-  Calendar, 
-  CheckCircle, 
-  Clock, 
-  Download, 
-  Eye, 
-  MapPin, 
-  User,
-  Sparkles,
-  Zap,
-  FileText,
-  BarChart3,
-  Target,
-  Rocket,
-  Shield,
-  Crown
-} from 'lucide-react';
-import React, { memo, useCallback, useMemo } from 'react';
+import { Calendar, CheckCircle, Clock, Download, Eye, MapPin, Rocket, Shield, Sparkles, User } from 'lucide-react';
+import React, { memo, useCallback } from 'react';
+import TypeIndicator from './TypeIndicator';
+import useConsultationData from './useConsultationData';
 
 export interface ConsultationCardProps {
   consultation: Consultation;
@@ -28,126 +13,6 @@ export interface ConsultationCardProps {
   onView: (id: string) => void;
   onDownload: (id: string) => void;
 }
-
-// Optimisation: Mappage des couleurs par type
-const TYPE_CONFIG = {
-  'natal': { gradient: 'from-blue-500 to-cyan-500', icon: Target },
-  'thematique': { gradient: 'from-purple-500 to-pink-500', icon: BarChart3 },
-  'synastrie': { gradient: 'from-orange-500 to-red-500', icon: Shield },
-  'karmique': { gradient: 'from-emerald-500 to-teal-500', icon: Crown },
-  'default': { gradient: 'from-gray-500 to-slate-600', icon: FileText }
-} as const;
-
-// Optimisation: Mappage des couleurs par statut
-const STATUS_CONFIG = {
-  'completed': { 
-    gradient: 'from-emerald-500 to-green-500',
-    text: 'Complété',
-    icon: CheckCircle,
-    pulse: false
-  },
-  'processing': { 
-    gradient: 'from-amber-500 to-orange-500',
-    text: 'En cours',
-    icon: Zap,
-    pulse: true
-  },
-  'failed': { 
-    gradient: 'from-red-500 to-rose-500',
-    text: 'Échec',
-    icon: Shield,
-    pulse: false
-  },
-  'pending': { 
-    gradient: 'from-slate-500 to-gray-500',
-    text: 'En attente',
-    icon: Clock,
-    pulse: false
-  }
-} as const;
-
-// Composant mémoisé pour les badges
-const StatusIndicator = memo(({ status }: { status: Consultation['status'] }) => {
-const config = STATUS_CONFIG[status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.pending;  const Icon = config.icon;
-  
-  return (
-    <motion.div
-      initial={{ scale: 0.8, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      className={cx(
-        "relative inline-flex items-center gap-2 rounded-full px-3 py-1.5",
-        "bg-gradient-to-r shadow-lg", config.gradient
-      )}
-    >
-      {config.pulse && (
-        <motion.span
-          className="absolute inset-0 rounded-full bg-current"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.5, 0, 0.5]
-          }}
-          transition={{ 
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-      )}
-      <Icon className="h-3 w-3 text-white" />
-      <span className="text-xs font-extrabold text-white">{config.text}</span>
-    </motion.div>
-  );
-});
-
-StatusIndicator.displayName = 'StatusIndicator';
-
-const TypeIndicator = memo(({ type }: { type: Consultation['type'] }) => {
-  const config = TYPE_CONFIG[type as unknown as keyof typeof TYPE_CONFIG] || TYPE_CONFIG.default;
-  const Icon = config.icon;
-  
-  return (
-    <motion.div
-      whileHover={{ scale: 1.05, rotate: 5 }}
-      className={cx(
-        "inline-flex items-center gap-2 rounded-full px-3 py-1.5",
-        "bg-gradient-to-r shadow-md", config.gradient
-      )}
-    >
-      <Icon className="h-3 w-3 text-white" />
-      <span className="text-xs font-extrabold text-white capitalize">{type}</span>
-    </motion.div>
-  );
-});
-
-TypeIndicator.displayName = 'TypeIndicator';
-
-function cx(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
-
-// Hook personnalisé pour les données dérivées
-const useConsultationData = (consultation: Consultation) => {
-  return useMemo(() => {
-    const formData = consultation.formData  ;
-    const fullName = `${formData!.prenoms || ''} ${formData!.nom || ''}`.trim();
-    const birthLocation = [formData!.villeNaissance, formData!.paysNaissance]
-      .filter(Boolean)
-      .join(', ');
-    
-    return {
-      fullName,
-      birthLocation,
-      birthDate: formData!.dateNaissance ? formatDate(formData!.dateNaissance) : '—',
-      birthTime: formData!.heureNaissance || '—',
-      hasResult: Boolean(consultation.resultData),
-      createdAt: formatDate(consultation.createdAt),
-      completedDate: consultation.completedDate ? formatDate(consultation.completedDate) : null,
-      isProcessing: consultation.status === 'processing',
-      isFailed: consultation.status === 'failed',
-      isCompleted: consultation.status === 'completed',
-    };
-  }, [consultation]);
-};
 
 const ConsultationCard: React.FC<ConsultationCardProps> = memo(({ 
   consultation, 
@@ -277,11 +142,13 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
       
       {/* Contre-bordure pour effet de profondeur */}
       <div className="absolute -inset-px rounded-3xl bg-gradient-to-br from-white/20 to-transparent" />
-
-      {/* Contenu principal */}
       <div className="relative z-10">
+        <div className="flex flex-col items-end gap-2">          
+            <TypeIndicator type={consultation.type} />
+          </div>
         {/* Header avec badges */}
         <div className="flex items-start justify-between gap-4 mb-4">
+
           <div className="flex min-w-0 flex-1 items-center gap-3">
             <motion.div
               whileHover={{ rotate: 15, scale: 1.1 }}
@@ -318,12 +185,8 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
                 {consultation.description}
               </p>
             </div>
-          </div>
+          </div>         
           
-          <div className="flex flex-col items-end gap-2">
-            <StatusIndicator status={consultation.status} />
-            <TypeIndicator type={consultation.type} />
-          </div>
         </div>
 
         {/* Informations personnelles */}
