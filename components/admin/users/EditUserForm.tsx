@@ -84,12 +84,13 @@ export function EditUserForm({ formData, setFormData, saving, success, onSubmit 
               Genre
             </label>
             <select
-              value={formData.gender || 'Other'}
-              onChange={(e) => setFormData({ ...formData, gender: e.target.value as 'M' | 'F' | 'Other' })}
+              value={formData.gender || ''}
+              onChange={(e) => setFormData({ ...formData, gender: e.target.value as 'male' | 'female' | undefined })}
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
             >
-              <option value="M">Masculin</option>
-              <option value="F">Féminin</option>
+              <option value="">Non spécifié</option>
+              <option value="male">Masculin</option>
+              <option value="female">Féminin</option>
             </select>
           </div>
         </div>

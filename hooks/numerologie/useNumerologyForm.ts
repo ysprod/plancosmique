@@ -22,9 +22,11 @@ export function useNumerologyForm() {
       .then(res => {
         const user = res.data;
         setFormData(prev => ({
-          firstName: user.prenoms || user.firstName || '',
-          lastName: user.nom || user.lastName || '',
-          birthDate: user.dateNaissance || user.birthDate || '',
+          firstName: user.prenoms || '',
+          lastName: user.nom || '',
+          birthDate: user.dateNaissance
+            ? (typeof user.dateNaissance === 'string' ? user.dateNaissance : user.dateNaissance.toISOString().slice(0, 10))
+            : '',
         }));
       })
       .catch(() => { });

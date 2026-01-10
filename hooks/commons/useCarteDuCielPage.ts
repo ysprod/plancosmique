@@ -18,12 +18,12 @@ const processUserData = (userData: User | null): ProcessedUserData | null => {
       : userData.country || "-",
     heureNaissance: userData.heureNaissance || "-",
     country: userData.country!,
-    role: userData.role,
-    premium: userData.premium,
-    credits: userData.credits,
-    totalConsultations: userData.totalConsultations,
-    rating: userData.rating,
-    emailVerified: userData.emailVerified,
+    role: userData.role!,
+    premium: userData.premium || false,
+    credits: userData.credits || 0,
+    totalConsultations: userData.totalConsultations || 0,
+    rating: userData.rating || 0,
+    emailVerified: userData.emailVerified || false,
     carteDuCiel: userData.carteDuCiel as CarteDuCielBase | undefined
   };
 };

@@ -83,7 +83,7 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
               </div>
               <div className="text-left">
                 <p className="text-sm font-bold text-slate-900">
-                  {user?.firstName || "Utilisateur"}
+                  {user?.nom || "Utilisateur"}
                 </p>
                 <p className="text-xs text-violet-600 font-medium">
                   Profil Premium

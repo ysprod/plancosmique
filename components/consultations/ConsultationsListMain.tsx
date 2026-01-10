@@ -17,6 +17,7 @@ export default function ConsultationsListMain() {
   if (loading) {
     return <ConsultationsListLoading />;
   }
+  console.log('Filtered Consultations:', filteredConsultations);
 
   return (
     <div className="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 py-8 px-4">

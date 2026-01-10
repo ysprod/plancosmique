@@ -28,17 +28,7 @@ const HighlightCard = memo(({ card, index }: HighlightCardProps) => {
         whileHover={{ y: -6, scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
         className="group relative bg-gradient-to-br from-white to-gray-50 dark:from-slate-900 dark:to-slate-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 border-2 border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600 shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-full"
-      >
-        {card.badge && (
-          <motion.div
-            initial={{ x: 100 }}
-            animate={{ x: 0 }}
-            transition={{ delay: 0.5 + index * 0.1 }}
-            className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white text-[9px] sm:text-[10px] font-bold shadow-md"
-          >
-            {card.badge}
-          </motion.div>
-        )}
+      >        
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-200/30 dark:via-purple-700/20 to-transparent opacity-0 group-hover:opacity-100"
           initial={{ x: '-100%' }}
@@ -72,5 +62,7 @@ const HighlightCard = memo(({ card, index }: HighlightCardProps) => {
     </Link>
   );
 });
+
 HighlightCard.displayName = 'HighlightCard';
+
 export default HighlightCard;

@@ -2,23 +2,18 @@ import type { CategorieAdmin } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { memo } from "react";
 import CategoryBackButton from "./CategoryBackButton";
-import CategoryBadge from "./CategoryBadge";
 import CategoryDescription from "./CategoryDescription";
 import CategoryTitle from "./CategoryTitle";
 import { useCategoryHeader } from "./useCategoryHeader";
 
 interface CategoryHeaderProps {
   category: CategorieAdmin;
-  rubriqueCount: number;
   rubriqueCourante: any;
   closeRubrique: () => void;
 }
 
 const CategoryHeader: React.FC<CategoryHeaderProps> = memo(({
-  category,
-  rubriqueCount,
-  rubriqueCourante,
-  closeRubrique
+  category, rubriqueCourante, closeRubrique
 }) => {
   const { hasDescription, description, categoryName } = useCategoryHeader(category);
 
@@ -70,36 +65,33 @@ const CategoryHeader: React.FC<CategoryHeaderProps> = memo(({
     >
       <div className="pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full bg-gradient-to-br from-violet-500/10 to-red-500/5 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-gradient-to-tr from-emerald-500/10 to-red-500/5 blur-3xl" />
-        {!rubriqueCourante && (
-          <div className="flex flex-col gap-3 items-center justify-center w-full">
-            <motion.div 
-              className="flex flex-col items-center justify-center gap-2 w-full"
-              variants={itemVariants}
-            >
-              <div className="flex flex-col items-center justify-center gap-3 w-full">
-                <div className="min-w-0 flex-1 flex flex-col items-center justify-center">
-                  <CategoryTitle title={categoryName} />
-                  <AnimatePresence>
-                    {hasDescription && <CategoryDescription description={description} />}
-                  </AnimatePresence>
-                </div>
+      {!rubriqueCourante && (
+        <div className="flex flex-col gap-3 items-center justify-center w-full">
+          <motion.div
+            className="flex flex-col items-center justify-center gap-2 w-full"
+            variants={itemVariants}
+          >
+            <div className="flex flex-col items-center justify-center gap-3 w-full">
+              <div className="min-w-0 flex-1 flex flex-col items-center justify-center">
+                <CategoryTitle title={categoryName} />
+                <AnimatePresence>
+                  {hasDescription && <CategoryDescription description={description} />}
+                </AnimatePresence>
               </div>
-            </motion.div>     
-          </div>
-        )}
+            </div>
+          </motion.div>
+        </div>
+      )}
       <AnimatePresence mode="wait">
-        {rubriqueCourante ? (
+        {rubriqueCourante && (
           <CategoryBackButton onClick={closeRubrique} variants={buttonVariants} />
-        ) : (
-          <CategoryBadge rubriqueCount={rubriqueCount} itemVariants={itemVariants} />
         )}
-      </AnimatePresence>       
+      </AnimatePresence>
     </motion.div>
   );
 }, (prev, next) => {
   return (
     prev.category === next.category &&
-    prev.rubriqueCount === next.rubriqueCount &&
     prev.rubriqueCourante === next.rubriqueCourante &&
     prev.closeRubrique === next.closeRubrique
   );

@@ -23,17 +23,21 @@ const CategoryClientView: React.FC<CategoryClientViewProps> = ({ category }) => 
 
   const { rubriques, rubriqueCourante, setRubriqueCourante, ui } = useCategoryClientView(category);
 
+  const handleOpenRubriqueById = (id: string) => {
+    const rubrique = rubriques.find((r: any) => String(r._id) === String(id));
+    setRubriqueCourante(rubrique || null);
+  };
+
   return (
     <div className="bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
       <motion.div
         variants={pageVariants}
         initial="initial"
         animate="animate"
-        className="mx-auto max-w-4xl px-2 py-2 sm:px-8 sm:py-12"
+        className="mx-auto max-w-4xl"
       >
         <CategoryHeader
           category={category}
-          rubriqueCount={ui.rubriqueCount}
           rubriqueCourante={rubriqueCourante}
           closeRubrique={() => setRubriqueCourante(null)}
         />
@@ -41,7 +45,7 @@ const CategoryClientView: React.FC<CategoryClientViewProps> = ({ category }) => 
           ui={ui}
           rubriqueCourante={rubriqueCourante}
           rubriques={rubriques}
-          openRubriqueById={setRubriqueCourante}
+          openRubriqueById={handleOpenRubriqueById}
           pageVariants={pageVariants}
         />
       </motion.div>

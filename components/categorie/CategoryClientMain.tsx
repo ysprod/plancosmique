@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { RubriqueView } from "./RubriqueView";
 import CategoryEmptyState from "./CategoryEmptyState";
 import CategoryRubriquesList from "./CategoryRubriquesList";
+import { Rubrique } from "@/lib/interfaces";
 
 interface CategoryClientMainProps {
     ui: {
@@ -10,7 +11,7 @@ interface CategoryClientMainProps {
         hasRubriques: boolean;
         rubriqueCount: number;
     };
-    rubriqueCourante: any;
+    rubriqueCourante: Rubrique | null;
     rubriques: any[];
     openRubriqueById: (id: string) => void;
     pageVariants: any;
@@ -27,7 +28,7 @@ const CategoryClientMain: React.FC<CategoryClientMainProps> = ({ ui, rubriqueCou
                 exit="exit"
                 className="mt-3"
             >
-                <RubriqueView rubrique={rubriqueCourante} />
+                <RubriqueView rubrique={rubriqueCourante!} />
             </motion.div>
         ) : !ui.hasRubriques ? (
             <motion.div

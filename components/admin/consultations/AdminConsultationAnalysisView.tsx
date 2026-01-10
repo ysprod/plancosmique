@@ -48,7 +48,7 @@ export default function AdminConsultationAnalysisView() {
                     onNotifyUser={handleNotifyUser}
                     notifiedback={notified}
                 />
-                 {/* <AnalysisPreview analysis={analyse} /> */}
+                {/* <AnalysisPreview analysis={analyse} /> */}
             </motion.div>
             <AnimatePresence>
                 {toast && (

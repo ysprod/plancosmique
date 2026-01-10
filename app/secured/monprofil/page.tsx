@@ -25,7 +25,7 @@ export default function MonProfilPage() {
               ? processedData.carteDuCiel.carteDuCiel
               : null
           }
-          isPremium={user.premium}
+          isPremium={!!user.premium}
         />
         <SkyChart carteDuCiel={processedData.carteDuCiel} />
       </div>

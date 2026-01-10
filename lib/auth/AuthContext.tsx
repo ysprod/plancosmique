@@ -147,6 +147,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (!user) return false;
 
     const roleArray = Array.isArray(roles) ? roles : [roles];
+    if (!user.role) return false;
     return roleArray.includes(user.role);
   }, [user]);
 

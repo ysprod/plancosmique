@@ -51,7 +51,7 @@ export default function UserCard({ user, cardVariants, setDeleteModal }: UserCar
         {user.gender && (
           <div className="flex items-center gap-1.5 text-xs text-gray-600">
             <UserIcon className="w-3 h-3 flex-shrink-0" />
-            {user.gender === 'M' ? 'Homme' : 'Femme'}
+            {user.gender === 'male' ? 'Homme' : 'Femme'}
           </div>
         )}
         <div className="flex items-center gap-1.5 text-xs text-gray-600">

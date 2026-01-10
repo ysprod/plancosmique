@@ -17,7 +17,7 @@ export function useNewUserPage() {
     username: '',
     phone: '',
     country: '',
-    gender: 'Other',
+    gender: undefined,
     role: Role.USER,
     isActive: true,
     emailVerified: false,

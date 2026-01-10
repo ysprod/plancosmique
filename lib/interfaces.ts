@@ -412,49 +412,52 @@ export interface Payment {
 }
 
 export interface User {
+  createdAt: string | number | Date;
+  _id?: string;
   id: string;
   email: string;
   nom: string;
   prenom: string;
   username: string;
-  telephone: string;
-  phone?: string;
-  status: 'active' | 'inactive' | 'suspended';
-  isActive: boolean;
-  emailVerified: boolean;
-  createdAt: string;
-  lastLogin: string;
-  consultationsCount: number;
-  totalConsultations: number;
-  rating: number;
-  credits: number;
-  country?: string;
-  gender?: string;
-  premium: boolean;
-  firstName: string;
-  lastName: string;
-  client: boolean;
-  role: Role;
-  customPermissions?: Permission[];
-  dateOfBirth?: Date;
-  avatar?: string;
-  bio?: string;
-  consultationHistory?: string[];
-  updatedAt: Date;
-  _id?: string;
-  dateNaissance?: string;
-  genre?: string;
-  heureNaissance?: string;
+  gender: 'male' | 'female';
+  country: string;
+  phone: string;
+  carteDuCiel?: any;
   prenoms?: string;
+  dateNaissance?: Date;
   paysNaissance?: string;
   villeNaissance?: string;
-  carteDuCiel?: CarteDuCielBase;
-  [key: string]: any;
+  heureNaissance?: string;
+  password?: string;
+  role?: Role;
+  customPermissions?: Permission[];
+  dateOfBirth?: Date;
+  address?: string;
+  city?: string;
+  profilePicture?: string;
+  isActive?: boolean;
+  premium?: boolean;
+  emailVerified?: boolean;
+  emailVerificationToken?: string;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
+  lastLogin?: Date;
   preferences?: {
+    language?: string;
     notifications?: boolean;
     newsletter?: boolean;
   };
+  specialties?: string[];
+  bio?: string;
+  rating?: number;
+  totalConsultations?: number;
+  credits?: number;
+  status?: string;
+  consultationsCount?: number;
+  avatar?: string;
+  updatedAt?: string | Date;
 }
+
 
 export interface SpiritualPractice {
   _id: string;
@@ -564,3 +567,5 @@ export interface CategorieAdmin {
   description: string;
   rubriques: Rubrique[];
 } 
+
+export type RubriqueOrNone = Rubrique | null;

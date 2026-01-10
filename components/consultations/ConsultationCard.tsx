@@ -1,10 +1,26 @@
+"use client";
+
 import { formatDate } from '@/lib/functions';
-import { Consultation } from '@/lib/interfaces';
-import { motion } from 'framer-motion';
-import { Calendar, CheckCircle, Clock, Download, Eye, MapPin, User } from 'lucide-react';
-import React from 'react';
-import StatusBadge from './StatusBadge';
-import TypeBadge from './TypeBadge';
+import type { Consultation } from '@/lib/interfaces';
+import { motion, useReducedMotion } from 'framer-motion';
+import { 
+  Calendar, 
+  CheckCircle, 
+  Clock, 
+  Download, 
+  Eye, 
+  MapPin, 
+  User,
+  Sparkles,
+  Zap,
+  FileText,
+  BarChart3,
+  Target,
+  Rocket,
+  Shield,
+  Crown
+} from 'lucide-react';
+import React, { memo, useCallback, useMemo } from 'react';
 
 export interface ConsultationCardProps {
   consultation: Consultation;
@@ -13,94 +29,538 @@ export interface ConsultationCardProps {
   onDownload: (id: string) => void;
 }
 
-const ConsultationCard: React.FC<ConsultationCardProps> = ({ consultation, index, onView, onDownload }) => {
+// Optimisation: Mappage des couleurs par type
+const TYPE_CONFIG = {
+  'natal': { gradient: 'from-blue-500 to-cyan-500', icon: Target },
+  'thematique': { gradient: 'from-purple-500 to-pink-500', icon: BarChart3 },
+  'synastrie': { gradient: 'from-orange-500 to-red-500', icon: Shield },
+  'karmique': { gradient: 'from-emerald-500 to-teal-500', icon: Crown },
+  'default': { gradient: 'from-gray-500 to-slate-600', icon: FileText }
+} as const;
+
+// Optimisation: Mappage des couleurs par statut
+const STATUS_CONFIG = {
+  'completed': { 
+    gradient: 'from-emerald-500 to-green-500',
+    text: 'Complété',
+    icon: CheckCircle,
+    pulse: false
+  },
+  'processing': { 
+    gradient: 'from-amber-500 to-orange-500',
+    text: 'En cours',
+    icon: Zap,
+    pulse: true
+  },
+  'failed': { 
+    gradient: 'from-red-500 to-rose-500',
+    text: 'Échec',
+    icon: Shield,
+    pulse: false
+  },
+  'pending': { 
+    gradient: 'from-slate-500 to-gray-500',
+    text: 'En attente',
+    icon: Clock,
+    pulse: false
+  }
+} as const;
+
+// Composant mémoisé pour les badges
+const StatusIndicator = memo(({ status }: { status: Consultation['status'] }) => {
+const config = STATUS_CONFIG[status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.pending;  const Icon = config.icon;
+  
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      whileHover={{ y: -4 }}
-      className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all"
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      className={cx(
+        "relative inline-flex items-center gap-2 rounded-full px-3 py-1.5",
+        "bg-gradient-to-r shadow-lg", config.gradient
+      )}
     >
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-start gap-3 flex-1">
-          {/* <div className={`w-12 h-12 bg-gradient-to-br  rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
-            {consultation.type && React.createElement(TYPE_LABELS[consultation.type].icon, { className: 'w-6 h-6 text-white' })}
-          </div> */}
-          <div className="flex-1 min-w-0">
-            <h3 className="text-xl font-bold text-white mb-1 line-clamp-1">{consultation.title}</h3>
-            <p className="text-purple-200 text-sm line-clamp-2">{consultation.description}</p>
-          </div>
-        </div>
-        <StatusBadge status={consultation.status} />
+      {config.pulse && (
+        <motion.span
+          className="absolute inset-0 rounded-full bg-current"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.5, 0, 0.5]
+          }}
+          transition={{ 
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      )}
+      <Icon className="h-3 w-3 text-white" />
+      <span className="text-xs font-extrabold text-white">{config.text}</span>
+    </motion.div>
+  );
+});
+
+StatusIndicator.displayName = 'StatusIndicator';
+
+const TypeIndicator = memo(({ type }: { type: Consultation['type'] }) => {
+  const config = TYPE_CONFIG[type as unknown as keyof typeof TYPE_CONFIG] || TYPE_CONFIG.default;
+  const Icon = config.icon;
+  
+  return (
+    <motion.div
+      whileHover={{ scale: 1.05, rotate: 5 }}
+      className={cx(
+        "inline-flex items-center gap-2 rounded-full px-3 py-1.5",
+        "bg-gradient-to-r shadow-md", config.gradient
+      )}
+    >
+      <Icon className="h-3 w-3 text-white" />
+      <span className="text-xs font-extrabold text-white capitalize">{type}</span>
+    </motion.div>
+  );
+});
+
+TypeIndicator.displayName = 'TypeIndicator';
+
+function cx(...classes: Array<string | false | null | undefined>) {
+  return classes.filter(Boolean).join(" ");
+}
+
+// Hook personnalisé pour les données dérivées
+const useConsultationData = (consultation: Consultation) => {
+  return useMemo(() => {
+    const formData = consultation.formData  ;
+    const fullName = `${formData!.prenoms || ''} ${formData!.nom || ''}`.trim();
+    const birthLocation = [formData!.villeNaissance, formData!.paysNaissance]
+      .filter(Boolean)
+      .join(', ');
+    
+    return {
+      fullName,
+      birthLocation,
+      birthDate: formData!.dateNaissance ? formatDate(formData!.dateNaissance) : '—',
+      birthTime: formData!.heureNaissance || '—',
+      hasResult: Boolean(consultation.resultData),
+      createdAt: formatDate(consultation.createdAt),
+      completedDate: consultation.completedDate ? formatDate(consultation.completedDate) : null,
+      isProcessing: consultation.status === 'processing',
+      isFailed: consultation.status === 'failed',
+      isCompleted: consultation.status === 'completed',
+    };
+  }, [consultation]);
+};
+
+const ConsultationCard: React.FC<ConsultationCardProps> = memo(({ 
+  consultation, 
+  index, 
+  onView, 
+  onDownload 
+}) => {
+  const reduceMotion = useReducedMotion();
+  const derived = useConsultationData(consultation);
+  
+  // Handlers mémoisés
+  const handleView = useCallback(() => {
+    onView(consultation._id);
+  }, [consultation._id, onView]);
+
+  const handleDownload = useCallback(() => {
+    onDownload(consultation._id);
+  }, [consultation._id, onDownload]);
+
+  // Variants d'animation
+  const cardVariants = {
+    initial: { 
+      opacity: 0, 
+      y: 30, 
+      scale: 0.95,
+      filter: "blur(10px)" 
+    },
+    animate: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      filter: "blur(0px)",
+      transition: {
+        type: "spring",
+        stiffness: 280,
+        damping: 25,
+        mass: 0.8,
+        delay: index * 0.05 // Réduit pour plus de fluidité
+      }
+    },
+    hover: reduceMotion ? {} : {
+      y: -6,
+      scale: 1.02,
+      transition: { type: "spring", stiffness: 400, damping: 25 }
+    },
+    tap: { scale: 0.98 }
+  };
+
+  const buttonVariants = {
+    initial: { scale: 1 },
+    hover: { scale: 1.05 },
+    tap: { scale: 0.95 }
+  };
+
+  return (
+    <motion.article
+      variants={cardVariants}
+      initial="initial"
+      animate="animate"
+      whileHover="hover"
+      whileTap="tap"
+      layoutId={`consultation-${consultation._id}`}
+      className={cx(
+        "group relative isolate overflow-hidden rounded-3xl p-5",
+        "bg-gradient-to-br from-white/95 via-white/90 to-white/95",
+        "shadow-2xl shadow-black/5 backdrop-blur-xl",
+        "border border-white/40 dark:border-zinc-800/40",
+        "dark:from-zinc-900/95 dark:via-zinc-900/90 dark:to-zinc-900/95",
+        "dark:shadow-black/30"
+      )}
+      aria-label={`Consultation de ${derived.fullName}`}
+    >
+      {/* Effets de fond cosmiques */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gradient-to-br from-violet-500/8 to-fuchsia-500/4 blur-3xl"
+          animate={{ 
+            x: [0, 15, 0],
+            y: [0, -15, 0]
+          }}
+          transition={{ duration: 7, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-gradient-to-tr from-emerald-500/8 to-cyan-500/4 blur-3xl"
+          animate={{ 
+            x: [0, -15, 0],
+            y: [0, 15, 0]
+          }}
+          transition={{ duration: 9, repeat: Infinity }}
+        />
+        
+        {/* Effet de lumière mobile */}
+        {!reduceMotion && (
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-transparent"
+            animate={{
+              x: ["-100%", "200%", "-100%"],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            style={{
+              width: "50%",
+              height: "100%",
+            }}
+          />
+        )}
       </div>
-      <div className="mb-4">
-        <TypeBadge type={consultation.type} />
-      </div>
-      <div className="space-y-2 mb-4 p-4 bg-black/20 rounded-xl">
-        <div className="flex items-center gap-2 text-sm text-purple-200">
-          <User className="w-4 h-4 flex-shrink-0" />
-          <span className="font-medium">
-            {consultation.formData?.prenoms || '-'} {consultation.formData?.nom || '-'}
-          </span>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-purple-300">
-          <div className="flex items-center gap-2">
-            <Calendar className="w-3.5 h-3.5 flex-shrink-0" />
-            Né(e) le {consultation.formData?.dateNaissance ? formatDate(consultation.formData.dateNaissance) : '-'}
+
+      {/* Bordure animée */}
+      <motion.div
+        className="absolute -inset-px rounded-3xl bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-500 opacity-30"
+        animate={{
+          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        style={{
+          backgroundSize: "200% 200%",
+        }}
+      />
+      
+      {/* Contre-bordure pour effet de profondeur */}
+      <div className="absolute -inset-px rounded-3xl bg-gradient-to-br from-white/20 to-transparent" />
+
+      {/* Contenu principal */}
+      <div className="relative z-10">
+        {/* Header avec badges */}
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div className="flex min-w-0 flex-1 items-center gap-3">
+            <motion.div
+              whileHover={{ rotate: 15, scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="relative flex-shrink-0"
+            >
+              <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 shadow-lg shadow-violet-500/30">
+                <Sparkles className="h-6 w-6 text-white" />
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <motion.div
+                className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-500 shadow-sm"
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  rotate: [0, 180, 360]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <span className="text-[10px] font-black text-white">
+                  {index + 1}
+                </span>
+              </motion.div>
+            </motion.div>
+            
+            <div className="min-w-0 flex-1">
+              <h3 className="truncate text-lg font-black tracking-tight text-slate-900 dark:text-white">
+                {consultation.title}
+              </h3>
+              <p className="mt-1 line-clamp-2 text-sm text-slate-600/90 dark:text-zinc-300/90">
+                {consultation.description}
+              </p>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Clock className="w-3.5 h-3.5 flex-shrink-0" />
-            à {consultation.formData?.heureNaissance || '-'}
-          </div>
-          <div className="flex items-center gap-2 col-span-1 sm:col-span-2">
-            <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-            {consultation.formData?.villeNaissance || '-'}, {consultation.formData?.paysNaissance || '-'}
+          
+          <div className="flex flex-col items-end gap-2">
+            <StatusIndicator status={consultation.status} />
+            <TypeIndicator type={consultation.type} />
           </div>
         </div>
-      </div>
-      <div className="flex flex-wrap gap-3 text-xs text-purple-300 mb-4">
-        <div className="flex items-center gap-1.5">
-          <Calendar className="w-3.5 h-3.5" />
-          Créé le {formatDate(consultation.createdAt)}
+
+        {/* Informations personnelles */}
+        <div className="mb-4 rounded-2xl bg-gradient-to-br from-slate-50/80 to-white/80 p-4 backdrop-blur-sm dark:from-zinc-800/50 dark:to-zinc-900/50">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="rounded-xl bg-gradient-to-r from-violet-500/10 to-purple-500/10 p-2">
+              <User className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+            </div>
+            <div className="min-w-0">
+              <div className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                {derived.fullName || '—'}
+              </div>
+              <div className="text-xs text-slate-500 dark:text-zinc-400">
+                Sujet de l'analyse
+              </div>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-gradient-to-r from-amber-500/10 to-orange-500/10 p-1.5">
+                  <Calendar className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+                </div>
+                <span className="text-xs font-semibold text-slate-700 dark:text-zinc-300">
+                  {derived.birthDate}
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 p-1.5">
+                  <Clock className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+                </div>
+                <span className="text-xs font-semibold text-slate-700 dark:text-zinc-300">
+                  {derived.birthTime}
+                </span>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-gradient-to-r from-emerald-500/10 to-green-500/10 p-1.5">
+                  <MapPin className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <span className="text-xs font-semibold text-slate-700 dark:text-zinc-300 truncate">
+                  {derived.birthLocation || '—'}
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-gradient-to-r from-rose-500/10 to-pink-500/10 p-1.5">
+                  <Calendar className="h-3 w-3 text-rose-600 dark:text-rose-400" />
+                </div>
+                <span className="text-xs font-semibold text-slate-700 dark:text-zinc-300">
+                  Créé {derived.createdAt}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-        {consultation.completedDate && (
-          <div className="flex items-center gap-1.5">
-            <CheckCircle className="w-3.5 h-3.5" />
-            Complété le {formatDate(consultation.completedDate)}
+
+        {/* Métadonnées */}
+        {derived.completedDate && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-4 flex items-center justify-between rounded-2xl bg-gradient-to-br from-emerald-50/80 to-green-50/80 p-3 backdrop-blur-sm dark:from-emerald-900/20 dark:to-green-900/20"
+          >
+            <div className="flex items-center gap-2">
+              <div className="rounded-xl bg-gradient-to-r from-emerald-500/20 to-green-500/20 p-1.5">
+                <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-emerald-800 dark:text-emerald-200">
+                  Analyse complétée
+                </div>
+                <div className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80">
+                  Le {derived.completedDate}
+                </div>
+              </div>
+            </div>
+            
+            <motion.div
+              animate={{ 
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, -5, 0]
+              }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 3
+              }}
+              className="text-2xl"
+            >
+              🎯
+            </motion.div>
+          </motion.div>
+        )}
+
+        {/* Actions */}
+        {derived.hasResult ? (
+          <div className="flex gap-3">
+            <motion.button
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              onClick={handleView}
+              type="button"
+              className="group relative flex-1 flex items-center justify-center gap-3 rounded-2xl px-4 py-3"
+            >
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-slate-900 to-black shadow-lg group-hover:from-violet-900 group-hover:to-indigo-900 transition-all" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Eye className="relative h-4 w-4 text-white" />
+              <span className="relative text-sm font-extrabold text-white">
+                Voir l'analyse
+              </span>
+            </motion.button>
+            
+            <motion.button
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              onClick={handleDownload}
+              type="button"
+              className="group relative flex items-center justify-center gap-3 rounded-2xl px-4 py-3"
+            >
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg group-hover:from-purple-700 group-hover:to-pink-700 transition-all" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Download className="relative h-4 w-4 text-white" />
+              <span className="relative text-sm font-extrabold text-white">
+                PDF
+              </span>
+            </motion.button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {derived.isProcessing && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="rounded-2xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 p-4 border border-amber-500/30"
+              >
+                <div className="flex items-center gap-3">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    className="rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 p-2"
+                  >
+                    <Rocket className="h-4 w-4 text-white" />
+                  </motion.div>
+                  <div className="flex-1">
+                    <div className="text-sm font-bold text-amber-800 dark:text-amber-200">
+                      Génération en cours
+                    </div>
+                    <div className="text-xs text-amber-600/80 dark:text-amber-400/80">
+                      Votre analyse est en préparation. Revenez dans quelques instants.
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+            
+            {derived.isFailed && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="rounded-2xl bg-gradient-to-r from-red-500/20 to-rose-500/20 p-4 border border-red-500/30"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="rounded-xl bg-gradient-to-r from-red-500 to-rose-500 p-2">
+                    <Shield className="h-4 w-4 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-bold text-red-800 dark:text-red-200">
+                      Une erreur est survenue
+                    </div>
+                    <div className="text-xs text-red-600/80 dark:text-red-400/80">
+                      Contactez le support pour résoudre ce problème.
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+            
+            <motion.button
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              onClick={handleView}
+              type="button"
+              className="group relative w-full flex items-center justify-center gap-3 rounded-2xl px-4 py-3"
+            >
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-slate-900/80 to-black/80 shadow-lg group-hover:from-slate-800 group-hover:to-black transition-all" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Eye className="relative h-4 w-4 text-white" />
+              <span className="relative text-sm font-extrabold text-white">
+                {derived.isProcessing ? 'Suivre la progression' : 'Voir les détails'}
+              </span>
+            </motion.button>
           </div>
         )}
       </div>
-      {consultation.status === 'completed' && (
-        <div className="flex gap-2">
-          <button
-            onClick={() => onView(consultation._id)}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-white/20 hover:bg-white/30 text-white rounded-xl transition-all font-semibold"
-          >
-            <Eye className="w-4 h-4" />
-            Voir l'analyse
-          </button>
-          <button
-            onClick={() => onDownload(consultation._id)}
-            className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-lg text-white rounded-xl transition-all font-semibold"
-          >
-            <Download className="w-4 h-4" />
-            <span className="hidden sm:inline">PDF</span>
-          </button>
-        </div>
-      )}
-      {consultation.status === 'processing' && (
-        <div className="text-center py-3 bg-blue-500/20 rounded-xl border border-blue-500/30">
-          <p className="text-blue-200 text-sm font-medium">Génération en cours... Revenez dans quelques instants</p>
-        </div>
-      )}
-      {consultation.status === 'failed' && (
-        <div className="text-center py-3 bg-red-500/20 rounded-xl border border-red-500/30">
-          <p className="text-red-200 text-sm font-medium">Une erreur est survenue. Contactez le support.</p>
-        </div>
-      )}
-    </motion.div>
+    </motion.article>
   );
-};
+}, (prev, next) => {
+  // Comparator ultra-optimisé
+  if (prev.consultation === next.consultation && 
+      prev.index === next.index && 
+      prev.onView === next.onView && 
+      prev.onDownload === next.onDownload) {
+    return true;
+  }
+  
+  // Vérification fine des changements critiques
+  const p = prev.consultation;
+  const n = next.consultation;
+  
+  const sameId = p._id === n._id;
+  const sameStatus = p.status === n.status;
+  const sameResultData = p.resultData === n.resultData;
+  const sameTitle = p.title === n.title;
+  const sameDescription = p.description === n.description;
+  const sameCompletedDate = p.completedDate === n.completedDate;
+  
+  // Comparaison des données du formulaire
+  const pForm = p.formData;
+  const nForm = n.formData;
+  const sameFormData = (
+    pForm?.prenoms === nForm?.prenoms &&
+    pForm?.nom === nForm?.nom &&
+    pForm?.dateNaissance === nForm?.dateNaissance &&
+    pForm?.heureNaissance === nForm?.heureNaissance
+  );
+  
+  return sameId && sameStatus && sameResultData && sameTitle && 
+         sameDescription && sameCompletedDate && sameFormData;
+});
+
+ConsultationCard.displayName = 'ConsultationCard';
 export default ConsultationCard;

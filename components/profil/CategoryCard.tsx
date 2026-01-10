@@ -38,7 +38,7 @@ const CategoryCard = memo(({ category, index }: CategoryCardProps) => {
           whileHover={{ x: '100%' }}
           transition={{ duration: 0.7 }}
         />
-        <div className="relative z-10 flex flex-col h-full">
+        <div className="relative z-10 flex flex-col h-full items-center justify-center text-center">
           <motion.div
             whileHover={{ rotate: 5, scale: 1.05 }}
             transition={{ duration: 0.3 }}
@@ -49,15 +49,12 @@ const CategoryCard = memo(({ category, index }: CategoryCardProps) => {
           <h2 className={`text-xs sm:text-sm md:text-base font-bold bg-gradient-to-r ${category.color} bg-clip-text text-transparent mb-1 sm:mb-1.5 leading-tight`}>
             {category.title}
           </h2>
-          <p className="hidden sm:block text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 font-semibold mb-2 leading-tight">
-            {category.subtitle}
-          </p>
           <p className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 leading-relaxed mb-3 sm:mb-4 flex-grow line-clamp-2 sm:line-clamp-3">
             {category.description}
           </p>
-          <div className="flex items-center justify-between mt-auto">
+          <div className="flex items-center justify-center mt-auto w-full">
             <motion.div
-              className="flex items-center gap-1 text-[10px] sm:text-xs font-bold text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300"
+              className="flex items-center gap-1 text-[10px] sm:text-xs font-bold text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300 justify-center"
               whileHover={{ x: 2 }}
             >
               <span className="hidden sm:inline">Decouvrir</span>

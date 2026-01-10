@@ -17,7 +17,7 @@ export function useEditUserPage() {
     username: '',
     phone: '',
     country: '',
-    gender: 'Other',
+    gender:"male",
     role: Role.USER,
     isActive: true,
     emailVerified: false,
