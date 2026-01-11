@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { api } from '@/lib/api/client';
 import { User } from '@/lib/interfaces';
-import { Role } from '@/lib/types/auth.types';
+import { Role } from '@/lib/interfaces';
 
 export function useEditUserPage() {
   const router = useRouter();

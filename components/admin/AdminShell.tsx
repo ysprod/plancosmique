@@ -3,7 +3,7 @@
 import { MobileNav } from '@/components/admin/MobileNav';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { RoleGuard } from '@/components/auth/RoleGuard';
-import { Role } from '@/lib/types/auth.types';
+import { Role } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';

@@ -1,7 +1,7 @@
 'use client';
 import { config } from '@/lib/config';
 import { useAuth } from '@/lib/hooks';
-import { Role } from '@/lib/types/auth.types';
+import { Role } from '@/lib/interfaces';
 import { Loader2, ShieldAlert } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';

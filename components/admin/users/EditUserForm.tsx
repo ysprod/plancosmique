@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { countries } from '@/components/auth/countries';
 import { User } from '@/lib/interfaces';
-import { Role } from '@/lib/types/auth.types';
+import { Role } from '@/lib/interfaces';
 import React from 'react';
 
 interface EditUserFormProps {

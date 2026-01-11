@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import type { LoginDto, RegisterDto, Permission } from '@/lib/types/auth.types';
-import { Role } from '@/lib/types/auth.types';
+import { Role } from '@/lib/interfaces';
 import { authService } from '@/lib/api/services';
 import { getUser, clearAuth, getAccessToken } from '@/lib/utils/token.utils';
 import { config } from '@/lib/config';

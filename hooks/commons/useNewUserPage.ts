@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { api } from '@/lib/api/client';
 import { User } from '@/lib/interfaces';
-import { Role } from '@/lib/types/auth.types';
+import { Role } from '@/lib/interfaces';
 
 const validatePhone = (phone: string): boolean => {
   return /^\+?[\d\s-()]+$/.test(phone);
