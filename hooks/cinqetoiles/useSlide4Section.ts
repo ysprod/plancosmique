@@ -200,7 +200,7 @@ export function useSlide4Section() {
           title: selected.title,
           description: selected.description,
           formData: form,
-          status: 'pending_payment',
+          status: 'COMPLETED',
           alternatives: selected.offering.alternatives,
           visible: false
         };

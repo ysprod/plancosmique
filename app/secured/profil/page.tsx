@@ -12,6 +12,7 @@ import { useProfilHighlightCards } from "@/hooks/profil/useProfilHighlightCards"
 export default function ProfilPage() {
   const { userdata, loading } = useProfilUser();
 
+
   const highlightCards = useProfilHighlightCards();
   
   const categories = useProfilCategories();
@@ -27,7 +28,7 @@ export default function ProfilPage() {
           <ProfilCategories categories={categories} />
         </>
         )}
-        {!userdata?.premium && !loading && <ProfilNonPremiumSection />}
+        {!userdata?.premium && !loading && <ProfilNonPremiumSection userdata={userdata} />}
       </div>
 
       <StatsCounter />

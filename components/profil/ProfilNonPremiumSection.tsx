@@ -1,7 +1,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Slide4Section from "@/app/secured/cinqetoiles/Slide4Section";
+import { User } from "@/lib/interfaces";
 
-const ProfilNonPremiumSection = () => (
+interface ProfilNonPremiumSectionProps {
+  userdata?: User;
+}
+
+const ProfilNonPremiumSection: React.FC<ProfilNonPremiumSectionProps> = ({ userdata }) => (
   <div className="max-w-7xl mx-auto">
     <AnimatePresence mode="wait">
       <motion.div
@@ -11,7 +16,7 @@ const ProfilNonPremiumSection = () => (
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.5 }}
       >
-        <Slide4Section />
+        <Slide4Section userdata={userdata!} />
       </motion.div>
     </AnimatePresence>
   </div>
