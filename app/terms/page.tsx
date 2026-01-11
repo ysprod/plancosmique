@@ -6,8 +6,8 @@ import IntroAlert from '@/components/terms/IntroAlert';
 import List from '@/components/terms/List';
 import TermsSectionsList from '@/components/terms/TermsSectionsList';
 import { useTermsSections } from '@/hooks/commons/useTermsSections';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 export default function TermsPage() {
     const sections = useTermsSections(List, Link);

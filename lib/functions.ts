@@ -1,5 +1,5 @@
-import { Rubrique } from "./interfaces";
-import { CarteDuCielData, CinqPortes } from "../lib/types/astrology.types";
+import { CarteDuCielData, CinqPortes, ProcessedUserData, Rubrique, User } from "./interfaces";
+ 
 
 export const formatDate = (date: string | Date) => {
   const d = typeof date === 'string' ? new Date(date) : date;
@@ -129,5 +129,36 @@ export function extractCinqPortes(carteDuCiel: CarteDuCielData | null): CinqPort
       icon: '💫',
       gradient: 'from-pink-400 via-fuchsia-500 to-purple-600'
     }
+  };
+}
+
+
+
+export function processUserData(userData: User | null): ProcessedUserData | null {
+  if (!userData) return null;
+
+  return {
+    id: userData.id,
+    name: `${userData.prenom || userData.username || ""} ${userData.nom || ""}`.trim(),
+    birthDate: userData.dateNaissance
+      ? formatDate(userData.dateNaissance)
+      : "",
+    prenoms: userData.prenoms || userData.username || "",
+    nom: userData.nom || "",
+    email: userData.email,
+    phone: userData.phone || "",
+    dateNaissance: formatDate(userData.dateNaissance!),
+    lieuNaissance: userData.villeNaissance
+      ? `${userData.villeNaissance}, ${userData.paysNaissance || userData.country}`
+      : userData.country || "-",
+    heureNaissance: userData.heureNaissance || "-",
+    country: userData.country!,
+    role: userData.role ? userData.role.toString() : "",
+    premium: !!userData.premium,
+    credits: userData.credits ?? 0,
+    totalConsultations: userData.totalConsultations ?? 0,
+    rating: userData.rating ?? 0,
+    emailVerified: !!userData.emailVerified,
+    carteDuCiel: userData.carteDuCiel
   };
 }

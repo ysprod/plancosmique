@@ -10,8 +10,8 @@ import { AnimatePresence } from "framer-motion";
 
 export default function ConsultationsPage() {
   const {
-    consultations, total, loading, error, isRefreshing, toastMessage,
-    generatingIds, notifyingIds, currentPage, totalPages, handlePageChange,
+    consultations, total, loading, error, isRefreshing, toastMessage, totalPages,
+    generatingIds, notifyingIds, currentPage, handlePageChange,
     handleToastClose, handleRefresh, handleGenerateAnalysis,
   } = useAdminConsultationsPage();
 

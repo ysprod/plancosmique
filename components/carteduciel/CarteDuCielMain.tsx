@@ -2,8 +2,8 @@ import LoadingState from "@/components/carteduciel/LoadingState";
 import ErrorState from "@/components/carteduciel/ErrorState";
 import ProfileHeader from "@/components/carteduciel/ProfileHeader";
 import SkyChart from "@/components/carteduciel/SkyChart";
-import { ProcessedUserData } from "@/lib/types/carteduciel";
-
+import { ProcessedUserData } from "@/lib/interfaces";
+ 
 interface CarteDuCielMainProps {
   user: any;
   processedData: ProcessedUserData | null;

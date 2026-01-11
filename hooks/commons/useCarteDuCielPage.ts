@@ -2,12 +2,17 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import { api } from "@/lib/api/client";
 import { useEffect, useMemo, useState } from "react";
 import { formatDate } from "@/lib/functions";
-import { ProcessedUserData } from "@/lib/types/carteduciel";
+import { ProcessedUserData } from "@/lib/interfaces";
 import { User, CarteDuCielBase } from "@/lib/interfaces";
 
 const processUserData = (userData: User | null): ProcessedUserData | null => {
   if (!userData) return null;
   return {
+    id: userData.id,
+    name: `${userData.prenom || userData.username || ""} ${userData.nom || ""}`.trim(),
+    birthDate: userData.dateNaissance
+      ? formatDate(userData.dateNaissance)
+      : "",
     prenoms: userData.prenoms || userData.username || "",
     nom: userData.nom || "",
     email: userData.email,

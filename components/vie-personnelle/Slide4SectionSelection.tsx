@@ -38,7 +38,7 @@ const Slide4SectionSelection: FC<Slide4SectionSelectionProps> = ({
         const doneChoice = alreadyDoneChoices.find(dc => dc.choiceId === choice._id) || null;
         return (
           <ConsultationCard
-            key={choice.id || idx}
+            key={choice._id || idx}
             choice={choice}
             onSelect={() => onSelect(choice)}
             doneChoice={doneChoice}

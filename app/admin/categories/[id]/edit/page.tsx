@@ -8,7 +8,7 @@ export default function EditCategoryPage() {
   const {
     rubriques, rubriquesLoading, description, pageLoading, view, selectedRubriques,
     nom, selectionSummary, rubriqueIds, selectedSet, busy, banner, goPreview,
-    setNom, setDescription, toggleRubrique, clearSelection, goEdit, handleEdit,
+    setNom, setDescription, toggleRubrique, goEdit, clearSelection, handleEdit,
   } = useEditCategoryPage();
 
   return (

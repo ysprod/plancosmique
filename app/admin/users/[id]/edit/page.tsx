@@ -7,7 +7,7 @@ import { EditUserSuccessAlert } from '@/components/admin/users/EditUserSuccessAl
 import { useEditUserPage } from '@/hooks/commons/useEditUserPage';
 
 export default function EditUserPage() {
-  const { loading, saving, error, success, formData, setError, setFormData, handleSubmit
+  const { formData, loading, saving, error, success, setError, setFormData, handleSubmit
   } = useEditUserPage();
 
   if (loading) { return <EditUserLoading />; }
@@ -18,7 +18,7 @@ export default function EditUserPage() {
         <EditUserHeader />
 
         {success && <EditUserSuccessAlert />}
-        
+
         {error && <EditUserErrorAlert error={error} onClose={() => setError(null)} />}
 
         <EditUserForm

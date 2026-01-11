@@ -17,13 +17,13 @@ const ConsultationSelection: React.FC<Props> = ({ onSelect, title, choices, alre
       animate={{ opacity: 1 }}
       transition={{ delay: 0.2 }}
       className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2"
-    >
+    > 
       {choices.map((choice) => (
         <ConsultationCard
-          key={choice.id}
+          key={choice._id}
           choice={choice}
           onSelect={() => onSelect(choice)}
-          doneChoice={alreadyDoneChoices[choice.id]}
+          doneChoice={alreadyDoneChoices[choice._id!]}
         />
       ))}
     </motion.div>

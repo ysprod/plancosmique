@@ -17,7 +17,7 @@ export default function RubriquesAdminPage() {
   } = useAdminRubriquesPage();
 
   const {
-    gestionView, selectedRubrique, editingRubrique, setEditingRubrique,
+    editingRubrique, gestionView, selectedRubrique, setEditingRubrique,
     handleSelectRubrique, handleCreateRubrique, handleBackToList
   } = useRubriquesGestionView();
 

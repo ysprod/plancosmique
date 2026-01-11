@@ -11,7 +11,7 @@ export default function CreateCategoryPage() {
     rubriques, rubriquesLoading, view, setView, nom, setDescription, rubriqueIds,
     setNom, description, selectedRubriques, invalidRubriquesCount,
     setRubriqueIds, selectedSet, busy, banner, showBanner, goPreview, goCreate,
-    selectionSummary, handleCreate, toggleRubrique, clearSelection,
+    selectionSummary, handleCreate, clearSelection, toggleRubrique,
   } = useCreateCategoryPage();
 
   return (

@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertCircle, ChevronDown, ChevronUp, Star, TrendingUp } from "lucide-react";
 import { memo, useCallback, useState } from "react";
-import { CarteDuCiel } from "@/lib/types/carteduciel";
+import { CarteDuCiel } from "@/lib/interfaces";
 import { CarteDuCielBase, Position } from "@/lib/interfaces";
 import PositionCard from "./PositionCard";
 

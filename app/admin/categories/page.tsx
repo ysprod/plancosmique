@@ -13,7 +13,7 @@ export default function AdminCategoriesPage() {
 
     const {
         rubriques, categories, categoriesLoading, categoriesError, stopEdit,
-        rubriquesLoading, rubriquesError, banner, editingId, counts, startEdit,
+        rubriquesLoading, rubriquesError, counts, banner, editingId, startEdit,
         handleDeleteCategory, saveEdit, fetchCategories, fetchRubriques,
     } = useAdminCategoriesView();
 

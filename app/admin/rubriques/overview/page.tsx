@@ -5,8 +5,8 @@ import { useRubriquesOverview } from '@/hooks/rubriques/useRubriquesOverview';
 
 export default function RubriquesOverviewPage() {
   const {
-    domaines, stats, loading, error, expandedDomaine, setExpandedDomaine,
-    expandedSousRubrique, setExpandedSousRubrique, expandedRubrique, setExpandedRubrique,
+    domaines, stats, loading, error, expandedDomaine, expandedSousRubrique,
+    expandedRubrique, setExpandedSousRubrique, setExpandedRubrique, setExpandedDomaine,
   } = useRubriquesOverview();
 
   if (loading) {

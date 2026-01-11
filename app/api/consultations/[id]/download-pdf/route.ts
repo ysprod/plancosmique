@@ -2,8 +2,8 @@ import { api } from '@/lib/api/client';
 import { BackendResponse, Sujet } from '@/lib/interfaces';
 import { AnalysisDocument } from '@/lib/pdf/analysis-pdf';
 import { renderToStream } from '@react-pdf/renderer';
-import { NextResponse } from 'next/server';
 import { createElement } from 'react';
+import { NextResponse } from 'next/server';
 
 function generateFilename(sujet: Sujet): string {
   const sanitize = (str: string) =>

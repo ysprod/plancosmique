@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/hooks';
-import { Permission } from '@/lib/types/auth.types';
+import { Permission } from '@/lib/interfaces';
 import { config } from '@/lib/config';
 import { ShieldAlert, Loader2 } from 'lucide-react';
 

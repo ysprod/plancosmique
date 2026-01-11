@@ -1,4 +1,4 @@
-import { Role, User } from "../interfaces";
+import { Role, User, Permission } from "../interfaces";
 
 export interface RegisterDto {
   username: string;
@@ -26,3 +26,5 @@ export interface TokenPayload {
   iat: number;
   exp: number;
 }
+
+export type { Permission };

@@ -2,9 +2,9 @@
 import CinqPortesNotAvailableSection from '@/components/carteduciel/CinqPortesNotAvailableSection';
 import PorteCard from '@/components/carteduciel/PorteCard';
 import { useCinqPortes } from '@/hooks/carteduciel/useCinqPortes';
-import { CarteDuCielData } from '@/lib/types/astrology.types';
+ import { memo } from 'react';
 import { motion } from 'framer-motion';
-import { memo } from 'react';
+import { CarteDuCielData } from '@/lib/interfaces';
 
 interface CinqPortesSectionProps {
   carteDuCiel: CarteDuCielData | null;

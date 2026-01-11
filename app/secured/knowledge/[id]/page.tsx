@@ -28,6 +28,7 @@ export default function KnowledgeDetailPage() {
   const { knowledge, handleShare, isLoading, isLiked, handleLike } = useKnowledgeDetail(id);
 
   if (isLoading) { return <KnowledgeLoading />; }
+
   if (!knowledge) { return <KnowledgeNotFound />; }
 
   return (
@@ -45,6 +46,7 @@ export default function KnowledgeDetailPage() {
               {categoryLabels[knowledge.category as keyof typeof categoryLabels]}
             </span>
           </div>
+          
           <h1 className="text-4xl font-bold text-white mb-6">{knowledge.title}</h1>
 
           <KnowledgeMeta knowledge={knowledge} isLiked={isLiked} onLike={handleLike} />

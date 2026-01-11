@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
- 
+
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
@@ -8,9 +8,9 @@ export async function POST(request: NextRequest) {
 
         if (!token) {
             return NextResponse.json(
-                { 
-                    success: false, 
-                    error: 'Token manquant' 
+                {
+                    success: false,
+                    error: 'Token manquant'
                 },
                 { status: 400 }
             );

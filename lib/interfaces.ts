@@ -1,6 +1,3 @@
- 
-import type { CarteDuCiel } from "./types/carteduciel";
-
 export type Category = 'animal' | 'vegetal' | 'beverage';
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';
 export type GenerationStep = 'loading' | 'fetching' | 'generating' | 'success' | 'error';
@@ -34,8 +31,7 @@ export type PointAstrologique =
   | 'Ascendant' | 'Milieu du Ciel' | 'Nœud Nord' | 'Nœud Sud'
   | 'Lilith' | 'Chiron' | 'Vertex' | 'Part de Fortune';
 
-export type Asteroide =
-  | 'Pallas' | 'Vesta' | 'Cérès' | 'Junon';
+export type Asteroide = | 'Pallas' | 'Vesta' | 'Cérès' | 'Junon';
 
 export type StatutGeneration =
   | 'pending' // En attente
@@ -169,7 +165,6 @@ export interface ConsultationOffering {
 }
 
 export interface ConsultationChoice {
-  id: string;
   _id?: string;
   title: string;
   description: string;
@@ -566,24 +561,24 @@ export interface CategorieAdmin {
   nom: string;
   description: string;
   rubriques: Rubrique[];
-} 
+}
 
 export type RubriqueOrNone = Rubrique | null;
 
 export interface DoneChoice {
-    _id: string;
-    userId: string;
-    consultationId: string;
-    choiceTitle: string;
-    choiceId: string | null;
-    frequence: string;
-    participants: string;
-    createdAt: string;
-    updatedAt: string;
-    __v: number;
-  }
+  _id: string;
+  userId: string;
+  consultationId: string;
+  choiceTitle: string;
+  choiceId: string | null;
+  frequence: string;
+  participants: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
 
-  
+
 export enum Role {
   SUPER_ADMIN = 'SUPER_ADMIN',
   ADMIN = 'ADMIN',
@@ -621,4 +616,102 @@ export enum Permission {
   MANAGE_ROLES = 'MANAGE_ROLES',
   MANAGE_PERMISSIONS = 'MANAGE_PERMISSIONS',
   SYSTEM_CONFIG = 'SYSTEM_CONFIG'
+}
+
+
+
+export interface CarteDuCielData {
+  sujet: {
+    nom: string;
+    prenoms: string;
+    dateNaissance: string;
+    lieuNaissance: string;
+    heureNaissance: string;
+  };
+  positions: Position[];
+  aspectsTexte: string;
+}
+
+export interface CarteDuCiel {
+  sessionId: string;
+  timestamp: string;
+  carteDuCiel: CarteDuCielData;
+  missionDeVie: MissionDeVie;
+  metadata: {
+    processingTime: number;
+    tokensUsed: number;
+    model: string;
+  };
+}
+
+export interface ProcessedUserData {
+  id: string;
+  name: string;
+  birthDate: string;
+  prenoms: string;
+  nom: string;
+  email: string;
+  phone: string;
+  dateNaissance: string;
+  lieuNaissance: string;
+  heureNaissance: string;
+  country: string;
+  role: string;
+  premium: boolean;
+  credits: number;
+  totalConsultations: number;
+  rating: number;
+  emailVerified: boolean;
+  carteDuCiel?: CarteDuCiel | CarteDuCielBase;
+}
+
+
+
+export interface CarteDuCielData {
+  sujet: {
+    nom: string;
+    prenoms: string;
+    dateNaissance: string;
+    lieuNaissance: string;
+    heureNaissance: string;
+  };
+  positions: Position[];
+}
+
+export interface CinqPortes {
+  signesolaire: {
+    label: string;
+    valeur: string;
+    description: string;
+    icon: string;
+    gradient: string;
+  };
+  ascendant: {
+    label: string;
+    valeur: string;
+    description: string;
+    icon: string;
+    gradient: string;
+  };
+  signeLunaire: {
+    label: string;
+    valeur: string;
+    description: string;
+    icon: string;
+    gradient: string;
+  };
+  milieuDuCiel: {
+    label: string;
+    valeur: string;
+    description: string;
+    icon: string;
+    gradient: string;
+  };
+  descendant: {
+    label: string;
+    valeur: string;
+    description: string;
+    icon: string;
+    gradient: string;
+  };
 }

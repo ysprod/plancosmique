@@ -14,7 +14,7 @@ export default function AdminBooksPage() {
   const {
     books, loading, error, searchQuery, selectedCategory, sortOrder, stats,
     formErrors, statusFilter, sortField, showAddModal, currentStep, submitting,
-    showFilters, deleteConfirm, categories, filteredAndSortedBooks, formData,
+    showFilters, deleteConfirm, categories, formData, filteredAndSortedBooks,
     setFormData, setDeleteConfirm, setShowFilters, setSortOrder, setSortField,
     setStatusFilter, setSelectedCategory, setError, closeAddModal,
     setSearchQuery, fetchBooks, handleToggleActive, handleDeleteBook,

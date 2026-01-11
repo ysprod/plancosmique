@@ -8,7 +8,9 @@ export const AdminSidebarNav = React.memo(function AdminSidebarNav({ pathname, o
   return (
     <ul className="space-y-1">
       {navItems.map((item, index) => {
-        const isActive = pathname === item.href;
+        // Pour la racine /admin, égalité stricte. Pour les autres, startsWith
+        const isRoot = item.href === '/admin';
+        const isActive = isRoot ? pathname === item.href : pathname.startsWith(item.href);
         const Icon = item.icon;
         const colorClass = colorClasses[item.color as keyof typeof colorClasses];
         return isMobile ? (

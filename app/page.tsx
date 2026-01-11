@@ -32,9 +32,7 @@ export default function WelcomePage() {
         >
           Bienvenue dans ce temple virtuel, où chacun vient chercher une réponse aux trois grandes questions de l'existence :
         </motion.p>
-
         <WelcomeQuestions />
-
         <WelcomeIntro />
       </div>
     </div>

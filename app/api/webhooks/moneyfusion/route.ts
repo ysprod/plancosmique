@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-
-        // Structure attendue de MoneyFusion
         const {
             token,
             montant,
@@ -18,7 +16,6 @@ export async function POST(request: NextRequest) {
             personal_Info,
         } = body;
 
-        // Validation des données
         if (!token) {
             console.error('[MoneyFusion Webhook] Token manquant dans la notification');
             return NextResponse.json(
@@ -27,14 +24,11 @@ export async function POST(request: NextRequest) {
             );
         }
 
-
-        // Récupérer les métadonnées si disponibles
         let metadata = null;
         if (personal_Info && Array.isArray(personal_Info) && personal_Info.length > 0) {
             metadata = personal_Info[0];
         }
 
-        // Traiter selon le code statut
         if (code_statut === 1) {
             // Paiement réussi
             // TODO: Mettre à jour la base de données selon le type de paiement

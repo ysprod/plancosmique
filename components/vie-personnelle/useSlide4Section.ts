@@ -160,7 +160,7 @@ export function useSlide4Section(rubrique: Rubrique) {
     setApiError(null);
     setPaymentLoading(true);
     // Vérifie si une analyse existe déjà pour ce choix
-    if (alreadyDoneChoices.some(dc => dc.choiceId === choice.id)) {
+    if (alreadyDoneChoices.some(dc => dc.choiceId === choice._id)) {
       setApiError("Une analyse existe déjà pour ce choix de consultation. Vous ne pouvez effectuer cette analyse qu'une seule fois.");
       setPaymentLoading(false);
       return;

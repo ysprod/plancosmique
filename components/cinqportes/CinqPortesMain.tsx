@@ -2,7 +2,7 @@ import LoadingState from "@/components/carteduciel/LoadingState";
 import ErrorState from "@/components/carteduciel/ErrorState";
 import ProfileHeader from "@/components/carteduciel/ProfileHeader";
 import CinqPortesSection from "@/app/secured/monprofil/CinqPortesSection";
-import { ProcessedUserData } from "@/lib/types/carteduciel";
+import { ProcessedUserData } from "@/lib/interfaces";
 
 interface CinqPortesMainProps {
   user: any;

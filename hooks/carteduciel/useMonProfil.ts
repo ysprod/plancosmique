@@ -1,8 +1,8 @@
 import { useAuth } from '@/lib/auth/AuthContext';
 import { useEffect, useMemo, useState } from 'react';
-import { api } from '@/lib/api/client'; 
-import { processUserData } from '@/lib/carteduciel/processUserData';
+import { api } from '@/lib/api/client';  
 import { User } from '@/lib/interfaces';
+import { processUserData } from '@/lib/functions';
 
 export function useMonProfil() {
   const { user, isLoading: authLoading } = useAuth();

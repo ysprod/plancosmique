@@ -9,9 +9,7 @@ export default function ConsultationResultPage() {
   const { loading, error, analyse, handleBack, handleDownloadPDF } = useConsultationResultPage();
 
   if (loading) { return (<CosmicLoader />); }
-  if (error || !analyse) {
-    return <ConsultationError error={error} onBack={handleBack} />;
-  }
+  if (error || !analyse) { return <ConsultationError error={error} onBack={handleBack} />; }
 
   return (
     <div className="bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">

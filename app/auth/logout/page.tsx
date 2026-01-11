@@ -9,7 +9,7 @@ import { SecurityBadge } from "@/components/auth/SecurityBadge";
 import { useLogoutPage } from "@/hooks/commons/useLogoutPage";
 
 export default function LogoutPage() {
-  const { status, progress } = useLogoutPage();
+  const { progress, status, } = useLogoutPage();
 
   const renderContent = (() => {
     switch (status) {
@@ -26,7 +26,7 @@ export default function LogoutPage() {
       </div>
 
       <StarField />
-      
+
       <div className="relative z-10 w-full max-w-sm sm:max-w-md">
         <AnimatePresence mode="wait">
           {renderContent}

@@ -1,6 +1,6 @@
 import { api } from "@/lib/api/client";
 import { useAuth } from "@/lib/auth/AuthContext";
-import { processUserData } from "@/lib/carteduciel/processUserData";
+import { processUserData } from "@/lib/functions";
 import { User } from "@/lib/interfaces";
  
 import { useEffect, useMemo, useState } from "react";

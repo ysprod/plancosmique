@@ -12,7 +12,9 @@ export default function SpiritualPracticeDetailPage() {
   const { practice, loading, error, expandedSections, toggleSection } = useSpiritualPracticeDetail(slug);
 
   if (loading) { return <SpiritualPracticeLoading />; }
+
   if (error) { return <SpiritualPracticeError error={error} />; }
+  
   if (!practice) return null;
 
   return (

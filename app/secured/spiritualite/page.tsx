@@ -24,7 +24,7 @@ const containerVariants: Variants = {
 
 export default function SpiritualiteBlogPage() {
   const {
-    setSearchQuery, setSelectedCategory, loading, error, handleRetry,
+    setSearchQuery, setSelectedCategory, handleRetry, loading, error,
     featuredArticle, regularArticles, hasArticles,
   } = useSpiritualiteBlogPage();
 

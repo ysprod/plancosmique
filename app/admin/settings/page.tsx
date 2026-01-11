@@ -13,7 +13,7 @@ export default function SettingsPage() {
     twoFactorAuth, setTwoFactorAuth, passwordExpiry, setPasswordExpiry, maxUploadSize,
     newUserNotif, setNewUserNotif, paymentMethods, setPaymentMethods, setMaxUploadSize,
     paymentNotif, setPaymentNotif, backupFrequency, setBackupFrequency,
-    sessionTimeout, setSessionTimeout, moneyFusionApiKey, setMoneyFusionApiKey,
+    sessionTimeout, setSessionTimeout, setMoneyFusionApiKey, moneyFusionApiKey,
   } = useSettingsView();
 
   const handleSave = async () => {

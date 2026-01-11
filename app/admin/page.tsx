@@ -7,8 +7,7 @@ import LoadingState from '@/components/admin/dashboard/LoadingState';
 import RefreshBanner from '@/components/admin/dashboard/RefreshBanner';
 import StatsGrid from '@/components/admin/dashboard/StatsGrid';
 import { useAdminDashboardPage } from '@/hooks/admin/useAdminDashboardPage';
-import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
+import { AnimatePresence } from 'framer-motion';
 
 export default function AdminDashboard() {
   const { stats, loading, error, lastUpdated,
@@ -45,15 +44,10 @@ export default function AdminDashboard() {
           />
         </AnimatePresence>
 
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          className="space-y-4"
-        >
-          <ActivitySection stats={stats} derivedStats={derivedStats} />
-          <StatsGrid stats={stats} derivedStats={derivedStats} />
-          <DetailsGrid stats={stats} derivedStats={derivedStats} />
-        </motion.div>
+        <ActivitySection stats={stats} derivedStats={derivedStats} />
+
+        <StatsGrid stats={stats} derivedStats={derivedStats} />
+        <DetailsGrid stats={stats} derivedStats={derivedStats} />
       </div>
     </div>
   );

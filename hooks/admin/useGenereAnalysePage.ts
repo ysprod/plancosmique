@@ -50,7 +50,7 @@ export function useGenereAnalysePage() {
   };
 
   const handleBack = () => {
-    router.push('/secured/consultations');
+    router.push('/admin/consultations');
   };
 
   return {

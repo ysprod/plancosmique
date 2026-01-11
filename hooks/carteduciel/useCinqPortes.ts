@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
-import { CarteDuCielData } from '@/lib/types/astrology.types';
+ 
 import { extractCinqPortes } from '@/lib/functions'; 
+import { CarteDuCielData } from '@/lib/interfaces';
 
 export function useCinqPortes(carteDuCiel: CarteDuCielData | null) {
   const cinqPortes = useMemo(() => extractCinqPortes(carteDuCiel), [carteDuCiel]);

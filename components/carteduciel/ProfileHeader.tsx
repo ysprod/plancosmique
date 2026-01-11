@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Award, Calendar, Clock, MapPin, Phone, User } from "lucide-react";
 import { memo } from "react";
-import { ProcessedUserData } from "@/lib/types/carteduciel";
+import { ProcessedUserData } from "@/lib/interfaces";
 import InfoItem from "./InfoItem";
 
 const cardVariants = {

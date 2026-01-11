@@ -11,7 +11,9 @@ import { useProfilHighlightCards } from "@/hooks/profil/useProfilHighlightCards"
 
 export default function ProfilPage() {
   const { userdata, loading } = useProfilUser();
+
   const highlightCards = useProfilHighlightCards();
+  
   const categories = useProfilCategories();
 
   return (

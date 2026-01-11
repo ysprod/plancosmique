@@ -9,8 +9,8 @@ interface PageProps {
 export default async function CategoryPage({ params }: PageProps) {
     const id = params?.id;
     if (!id) return notFound();
-    const category = await getCategory(id);
 
+    const category = await getCategory(id);
     if (!category?._id) return notFound();
     return <CategoryClientView category={category} />;
 }

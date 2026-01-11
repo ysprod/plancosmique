@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     url: "/",
-    siteName: "Mon Étoile - Guide Spirituel",
+    siteName: "Mon Étoile",
     title: "Mon Étoile ✨ Votre Destinée Révélée | Voyance & Astrologie Authentique",
     description:
       "🔮 Consultations spirituelles professionnelles • Analyses astrologiques détaillées • Guidance authentique • Révélez votre potentiel cosmique avec nos experts certifiés.",

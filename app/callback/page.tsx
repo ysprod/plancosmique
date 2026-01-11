@@ -29,6 +29,7 @@ const PaymentCallbackContent = () => {
   return (
     <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 flex items-center justify-center p-3 sm:p-4 relative overflow-hidden">
       <BackgroundBlobs />
+
       <AnimatePresence mode="wait">
         <motion.div
           key={status}
@@ -65,6 +66,7 @@ const PaymentCallbackContent = () => {
                 itemVariants={itemVariants}
               />
             )}
+            
           <StatusCard
             status={status}
             statusConfig={statusConfig}

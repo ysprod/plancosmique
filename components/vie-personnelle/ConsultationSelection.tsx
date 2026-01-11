@@ -21,10 +21,9 @@ const ConsultationSelection: React.FC<ConsultationSelectionProps> = ({ onSelect,
     >
       {choices.map((choice, idx) => (
         <ConsultationCard
-          key={choice.id || idx}
+          key={choice._id || idx}
           choice={choice}
-          onSelect={() => onSelect(choice)}
-          // alreadyDone={alreadyDoneChoices.includes(choice.id)}
+          onSelect={() => onSelect(choice)} 
         />
       ))}
     </motion.div>

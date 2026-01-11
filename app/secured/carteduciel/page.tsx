@@ -1,6 +1,6 @@
 "use client";
-import { useCarteDuCielPage } from "@/hooks/commons/useCarteDuCielPage";
 import CarteDuCielMain from "@/components/carteduciel/CarteDuCielMain";
+import { useCarteDuCielPage } from "@/hooks/commons/useCarteDuCielPage";
 
 export default function MonProfilPage() {
   const { processedData, user, isLoading } = useCarteDuCielPage();
