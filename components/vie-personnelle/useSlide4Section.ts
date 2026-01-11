@@ -13,7 +13,6 @@ export interface Slide4SectionMainProps {
   paymentLoading: boolean;
   choices: ConsultationChoice[];
   alreadyDoneChoices: DoneChoice[];
-  alreadyDoneConsultationIds: Record<string, string>;
   handleSelectConsultation: (choice: ConsultationChoice) => Promise<void>;
   consultationId: string | null;
   consultation: any;
