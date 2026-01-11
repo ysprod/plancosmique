@@ -4,7 +4,7 @@ import { EditUserForm } from '@/components/admin/users/EditUserForm';
 import { EditUserHeader } from '@/components/admin/users/EditUserHeader';
 import { EditUserLoading } from '@/components/admin/users/EditUserLoading';
 import { EditUserSuccessAlert } from '@/components/admin/users/EditUserSuccessAlert';
-import { useEditUserPage } from '@/hooks/commons/useEditUserPage';
+import { useEditUserPage } from '@/hooks/admin/useEditUserPage';
 
 export default function EditUserPage() {
   const { formData, loading, saving, error, success, setError, setFormData, handleSubmit

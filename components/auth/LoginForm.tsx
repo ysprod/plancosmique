@@ -9,7 +9,7 @@ import LoginInputField from './LoginInputField';
 import LoginTitle from './LoginTitle';
 import LoginRegisterLink from './LoginRegisterLink';
 import LoginFooter from './LoginFooter';
-import { useLoginForm } from '@/hooks/commons/useLoginForm';
+import { useLoginForm } from '@/hooks/auth/useLoginForm';
 
 const LoginForm = () => {
   const {

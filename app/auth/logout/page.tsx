@@ -6,7 +6,7 @@ import { LoadingState } from "@/components/auth/LoadingState";
 import { SuccessState } from "@/components/auth/SuccessState";
 import { ErrorState } from "@/components/auth/ErrorState";
 import { SecurityBadge } from "@/components/auth/SecurityBadge";
-import { useLogoutPage } from "@/hooks/commons/useLogoutPage";
+import { useLogoutPage } from "@/hooks/auth/useLogoutPage";
 
 export default function LogoutPage() {
   const { progress, status, } = useLogoutPage();

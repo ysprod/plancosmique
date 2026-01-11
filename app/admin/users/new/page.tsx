@@ -2,7 +2,7 @@
 import { NewUserForm } from '@/components/admin/users/NewUserForm';
 import { NewUserHeader } from '@/components/admin/users/NewUserHeader';
 import { NewUserToast } from '@/components/admin/users/NewUserToast';
-import { useNewUserPage } from '@/hooks/commons/useNewUserPage';
+import { useNewUserPage } from '@/hooks/admin/useNewUserPage';
 
 export default function NewUserPage() {
   const {

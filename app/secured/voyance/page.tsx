@@ -2,7 +2,7 @@
 import VoyanceFormSection from '@/components/voyance/VoyanceFormSection';
 import VoyanceHeader from '@/components/voyance/VoyanceHeader';
 import VoyancePredictionSection from '@/components/voyance/VoyancePredictionSection';
-import { useVoyancePage } from '@/hooks/commons/useVoyancePage';
+import { useVoyancePage } from '@/hooks/voyance/useVoyancePage';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export default function VoyancePage() {

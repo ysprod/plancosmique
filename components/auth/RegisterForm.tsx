@@ -8,7 +8,7 @@ import RegisterErrorMessage from './RegisterErrorMessage';
 import RegisterPasswordStrengthIndicator from './RegisterPasswordStrengthIndicator';
 import RegisterInputField from './RegisterInputField';
 import RegisterSelectField from './RegisterSelectField';
-import { useRegisterForm } from '@/hooks/commons/useRegisterForm';
+import { useRegisterForm } from '@/hooks/auth/useRegisterForm';
 
 const RegisterForm: React.FC = () => {
   const {

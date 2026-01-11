@@ -1,10 +1,9 @@
 'use client';
-import { ActionButtons, BackgroundBlobs, CompletionBanner, SecurityNote, StatusCard } from '@/components/callback';
+import { ActionButtons, BackgroundBlobs, CompletionBanner, SecurityNote, StatusCard, useAnimationVariants } from '@/components/callback';
 import AnalysisPreview from '@/components/callback/AnalysisPreview';
 import AnalysisProgressBar from '@/components/callback/AnalysisProgressBar';
 import LoadingState from '@/components/callback/LoadingState';
-import { useAnimationVariants } from '@/hooks/commons/useAnimationVariants';
-import { usePaymentCallback } from '@/hooks/commons/usePaymentCallback';
+ import { usePaymentCallback } from '@/hooks/commons/usePaymentCallback';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
 
