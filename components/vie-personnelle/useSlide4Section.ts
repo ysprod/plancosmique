@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api } from '@/lib/api/client';
 import { getRubriqueById } from '@/lib/api/services/rubriques.service';
-import { mapFormDataToBackend } from '@/lib/functions';
-import { ConsultationChoice, ConsultationData, OfferingAlternative, Rubrique, User, WalletOffering } from '@/lib/interfaces';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth/AuthContext';
+import { mapFormDataToBackend } from '@/lib/functions';
+import { ConsultationChoice, ConsultationData, DoneChoice, OfferingAlternative, Rubrique, User, WalletOffering } from '@/lib/interfaces';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm' | 'consulter' | 'genereanalyse';
 
@@ -12,7 +12,7 @@ export interface Slide4SectionMainProps {
   step: StepType;
   paymentLoading: boolean;
   choices: ConsultationChoice[];
-  alreadyDoneChoices: string[];
+  alreadyDoneChoices: DoneChoice[];
   alreadyDoneConsultationIds: Record<string, string>;
   handleSelectConsultation: (choice: ConsultationChoice) => Promise<void>;
   consultationId: string | null;
@@ -28,8 +28,9 @@ export interface Slide4SectionMainProps {
 export function useSlide4Section(rubrique: Rubrique) {
   const router = useRouter();
   const { user } = useAuth();
+
   const [alreadyDoneConsultationIds, setAlreadyDoneConsultationIds] = useState<Record<string, string>>({});
-  const [alreadyDoneChoices, setAlreadyDoneChoices] = useState<string[]>([]);
+  const [alreadyDoneChoices, setAlreadyDoneChoices] = useState<DoneChoice[]>([]);
   const [step, setStep] = useState<StepType>('selection');
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -41,61 +42,66 @@ export function useSlide4Section(rubrique: Rubrique) {
   const [choices, setChoices] = useState<ConsultationChoice[]>([]);
   const [loading, setLoading] = useState(true);
 
+  console.log('alreadyDoneConsultationIds', alreadyDoneConsultationIds);
+  console.log('alreadyDoneChoices', alreadyDoneChoices);
+
   useEffect(() => {
-    if (user?._id) {
-      api.get(`/users/me`)
-        .then(res => {
+    async function fetchUser() {
+      if (user?._id) {
+        try {
+          const res = await api.get(`/users/me`);
           setUserData(res.data);
-        })
-        .catch(err => {
+        } catch (err) {
           console.error('Erreur chargement utilisateur:', err);
           setUserData(null);
-        })
-        .finally(() => {
+        } finally {
           console.warn('User data fetch attempt finished.');
-        });
-    } else {
-      setUserData(null);
+        }
+      } else {
+        setUserData(null);
+      }
     }
+    fetchUser();
   }, [user?._id]);
 
   useEffect(() => {
-    if (choicesFetchedRef.current) return;
-    choicesFetchedRef.current = true;
-    getRubriqueById(rubrique?._id || '')
-      .then(rubrique => {
-        const arr = rubrique.consultationChoices || [];
+    async function fetchChoicesAndDone() {
+      if (choicesFetchedRef.current) return;
+      choicesFetchedRef.current = true;
+      try {
+        const rubriqueData = await getRubriqueById(rubrique?._id || '');
+        const arr = rubriqueData.consultationChoices || [];
         setChoices(arr);
-      })
-      .catch(err => console.error('[Choices] ❌', err))
-      .finally(() => setLoading(false));
-    if (user?._id) {
-      api.get(`/user-consultation-choices?userId=${user._id}`)
-        .then(res => {
+      } catch (err) {
+        console.error('[Choices] ❌', err);
+      } finally {
+        setLoading(false);
+      }
+      if (user?._id) {
+        try {
+          const res = await api.get(`/user-consultation-choices?userId=${user._id}`);
+          console.log('[AlreadyDoneChoices] ✅', res);
           if (Array.isArray(res.data)) {
-            const ids: string[] = [];
+            setAlreadyDoneChoices(res.data);
             const map: Record<string, string> = {};
             res.data.forEach((item: any) => {
-              if (typeof item === 'string') {
-                ids.push(item);
-              } else if (item.choiceId && item.consultationId) {
-                ids.push(item.choiceId);
+              if (item.choiceId && item.consultationId) {
                 map[item.choiceId] = item.consultationId;
               }
             });
-            setAlreadyDoneChoices(ids);
             setAlreadyDoneConsultationIds(map);
           } else {
             setAlreadyDoneChoices([]);
             setAlreadyDoneConsultationIds({});
           }
-        })
-        .catch(err => {
+        } catch (err) {
           console.error('[AlreadyDoneChoices] ❌', err);
           setAlreadyDoneChoices([]);
           setAlreadyDoneConsultationIds({});
-        });
+        }
+      }
     }
+    fetchChoicesAndDone();
   }, [user?._id, rubrique?._id]);
 
   const handleOfferingValidation = useCallback(
@@ -169,7 +175,7 @@ export function useSlide4Section(rubrique: Rubrique) {
     setApiError(null);
     setPaymentLoading(true);
     // Vérifie si une analyse existe déjà pour ce choix
-    if (alreadyDoneChoices.includes(choice.id)) {
+    if (alreadyDoneChoices.some(dc => dc.choiceId === choice.id)) {
       setApiError("Une analyse existe déjà pour ce choix de consultation. Vous ne pouvez effectuer cette analyse qu'une seule fois.");
       setPaymentLoading(false);
       return;

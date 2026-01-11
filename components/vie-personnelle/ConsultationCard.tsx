@@ -9,13 +9,9 @@ const ConsultationCard: React.FC<{
   consultationId?: string;
 }> = ({ choice, onSelect, alreadyDone, consultationId }) => {
   const router = useRouter();
-  const handleClick = () => {
-    if (alreadyDone && consultationId) {
-      router.push(`/secured/consultation/${consultationId}`);
-    } else {
-      onSelect();
-    }
-  };
+  //   console.log('choice:', choice );
+
+  // console.log('ConsultationCard rendered for choice:', choice._id, 'alreadyDone:', alreadyDone, 'consultationId:', consultationId);
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
@@ -24,16 +20,21 @@ const ConsultationCard: React.FC<{
     >
       <h2 className="font-bold text-purple-700 text-lg mb-3">{choice.title}</h2>
       <p className="text-gray-600 text-sm leading-relaxed mb-4">{choice.description}</p>
-      <button
-        onClick={handleClick}
-        className={`w-full px-4 py-3 font-semibold rounded-xl shadow-md transition-all
-          ${alreadyDone
-            ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:scale-105 hover:shadow-lg'
-            : 'bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white hover:scale-105 hover:shadow-lg'}`}
-        disabled={false}
-      >
-        {alreadyDone ? "Voir l'analyse" : 'Consulter'}
-      </button>
+      {alreadyDone  ? (
+        <a
+          href={`/secured/consultation/${consultationId}`}
+          className="w-full block px-4 py-3 font-semibold rounded-xl shadow-md bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:scale-105 hover:shadow-lg text-center transition-all"
+        >
+          Voir l'analyse
+        </a>
+      ) : (
+        <button
+          onClick={onSelect}
+          className="w-full px-4 py-3 font-semibold rounded-xl shadow-md bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white hover:scale-105 hover:shadow-lg transition-all"
+        >
+          Consulter
+        </button>
+      )}
     </motion.div>
   );
 };

@@ -10,6 +10,20 @@ import Slide4SectionProcessing from './Slide4SectionProcessing';
 import Slide4SectionSelection from './Slide4SectionSelection';
 import { Slide4SectionMainProps } from './useSlide4Section';
 
+// Type local pour la prop alreadyDoneChoices
+interface DoneChoice {
+  _id: string;
+  userId: string;
+  consultationId: string;
+  choiceTitle: string;
+  choiceId: string | null;
+  frequence: string;
+  participants: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 const Slide4SectionMain: React.FC<Slide4SectionMainProps> = ({
   step,
   paymentLoading,
@@ -32,7 +46,12 @@ const Slide4SectionMain: React.FC<Slide4SectionMainProps> = ({
       <AnimatePresence mode="wait">
         {step === 'selection' && !paymentLoading && (
           <motion.div key="selection" variants={containerVariants} initial="hidden" animate="visible" exit="exit">
-            <Slide4SectionSelection onSelect={handleSelectConsultation} choices={choices} alreadyDoneChoices={alreadyDoneChoices} alreadyDoneConsultationIds={alreadyDoneConsultationIds} />
+            <Slide4SectionSelection
+              onSelect={handleSelectConsultation}
+              choices={choices}
+              alreadyDoneChoices={alreadyDoneChoices as DoneChoice[]}
+              alreadyDoneConsultationIds={alreadyDoneConsultationIds}
+            />
           </motion.div>
         )}
         {paymentLoading && <Slide4SectionProcessing />}

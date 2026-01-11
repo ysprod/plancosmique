@@ -569,3 +569,16 @@ export interface CategorieAdmin {
 } 
 
 export type RubriqueOrNone = Rubrique | null;
+
+export interface DoneChoice {
+    _id: string;
+    userId: string;
+    consultationId: string;
+    choiceTitle: string;
+    choiceId: string | null;
+    frequence: string;
+    participants: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  }
