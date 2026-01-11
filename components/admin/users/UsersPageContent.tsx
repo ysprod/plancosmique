@@ -10,6 +10,7 @@ import Pagination from '@/components/admin/users/Pagination';
 import EmptyState from '@/components/admin/users/EmptyState';
 import { AnimatePresence, motion } from 'framer-motion';
 import { RefreshCw } from 'lucide-react';
+import { User } from '@/lib/interfaces';
 
 export function UsersPageContent({
   controller
@@ -55,7 +56,7 @@ export function UsersPageContent({
     visible: { opacity: 1, transition: { duration: 0.15 } },
     exit: { opacity: 0, transition: { duration: 0.1 } }
   };
-
+console.log('Rendering UsersPageContent with users:', users);
   return (
     <div className="bg-gradient-to-br from-gray-50 to-gray-100">
       <DeleteUserModal
@@ -140,9 +141,9 @@ export function UsersPageContent({
                 animate="visible"
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
               >
-                {users.map((user: any) => (
+                {users.map((user: User) => (
                   <UserCard
-                    key={user.id}
+                    key={user._id}
                     user={user}
                     cardVariants={cardVariants}
                     setDeleteModal={setDeleteModal}

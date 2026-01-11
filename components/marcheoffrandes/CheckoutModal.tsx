@@ -181,7 +181,7 @@ export default function CheckoutModal({
 
       // ✅ CORRECTION : Préparation des données avec _id OU id
       const transactionData = {
-        userId: user?.id,
+        userId: user?._id,
         transactionId,
         paymentToken,
         status: "completed",

@@ -76,8 +76,8 @@ export function useUsersPageController() {
   }, [setDeleteModal]);
 
   const handleConfirmDelete = useCallback(() => {
-    if (deleteModal.user?.id) {
-      handleDeleteUser(deleteModal.user.id);
+    if (deleteModal.user?._id) {
+      handleDeleteUser(deleteModal.user._id);
     }
   }, [deleteModal.user, handleDeleteUser]);
 

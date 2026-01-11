@@ -26,7 +26,7 @@ export function useAdminUsersPage() {
   });
 
   const mapUserToUserData = (user: any): User => ({
-    id: user.id,
+    _id: user._id,
     email: user.email,
     nom: user.nom ?? user.lastName ?? '',
     prenom: user.prenom ?? user.firstName ?? '',

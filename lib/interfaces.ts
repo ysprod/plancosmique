@@ -369,14 +369,7 @@ export interface SpiritualitePractice {
     avatar?: string;
   };
 }
-
-export interface Domaine {
-  id: string;
-  titre: string;
-  description: string;
-  rubriques: Rubrique[];
-}
-
+ 
 export interface ConsultationConfig {
   id: string;
   titre: string;
@@ -409,7 +402,6 @@ export interface Payment {
 export interface User {
   createdAt: string | number | Date;
   _id?: string;
-  id: string;
   email: string;
   nom: string;
   prenom: string;
@@ -548,7 +540,6 @@ export interface Consultation {
   notes: string | null;
   createdAt: string;
   updatedAt: string;
-  id: string;
   clientName?: string;
   clientEmail?: string;
   completedAt?: string;
@@ -557,7 +548,6 @@ export interface Consultation {
 
 export interface CategorieAdmin {
   _id: string;
-  id: string;
   nom: string;
   description: string;
   rubriques: Rubrique[];
@@ -645,7 +635,7 @@ export interface CarteDuCiel {
 }
 
 export interface ProcessedUserData {
-  id: string;
+  _id?: string;
   name: string;
   birthDate: string;
   prenoms: string;

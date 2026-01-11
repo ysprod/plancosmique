@@ -64,7 +64,7 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
   }
 
   useEffect(() => {
-    if (user?.id) {
+    if (user?._id) {
       api.get(`/users/me`)
         .then(res => {
           setUserData(res.data);
@@ -80,7 +80,7 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
     } else {
        setUserData(null);
     }
-  }, [user?.id]);
+  }, [user?._id]);
 
 
     useEffect(() => {
@@ -159,7 +159,7 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
       console.error('[Wallet] ❌', err);
       setWalletOfferings([]);
     }
-  }, [user?.id]);
+  }, [user?._id]);
 
   useEffect(() => {
     fetchWalletOfferings();

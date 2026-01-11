@@ -48,7 +48,7 @@ export const EditCategoryCardPro = memo(function EditCategoryCardPro({
     if (!canSave) return;
     setBusy(true);
     try {
-      await onSave(cat.id, {
+      await onSave(cat._id, {
         nom: nom.trim(),
         description: description.trim(),
         rubriques: selectedRubriques,
@@ -56,7 +56,7 @@ export const EditCategoryCardPro = memo(function EditCategoryCardPro({
     } finally {
       setBusy(false);
     }
-  }, [canSave, cat.id, description, nom, onSave, selectedRubriques]);
+  }, [canSave, cat._id, description, nom, onSave, selectedRubriques]);
 
   return (
     <div>

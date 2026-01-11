@@ -8,7 +8,7 @@ import { User, CarteDuCielBase } from "@/lib/interfaces";
 const processUserData = (userData: User | null): ProcessedUserData | null => {
   if (!userData) return null;
   return {
-    id: userData.id,
+    _id: userData._id,
     name: `${userData.prenom || userData.username || ""} ${userData.nom || ""}`.trim(),
     birthDate: userData.dateNaissance
       ? formatDate(userData.dateNaissance)
