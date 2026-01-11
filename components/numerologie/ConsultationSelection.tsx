@@ -1,17 +1,17 @@
-import { ConsultationChoice } from '@/lib/interfaces';
+import { ConsultationChoice, DoneChoice } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import React from 'react';
 import ConsultationCard from '../vie-personnelle/ConsultationCard';
- 
+
 interface Props {
   onSelect: (choice: ConsultationChoice) => void;
   title?: string;
   choices: ConsultationChoice[];
+  alreadyDoneChoices?: Record<string, DoneChoice>; // optionnel, pour la logique future
 }
 
-const ConsultationSelection: React.FC<Props> = ({ onSelect, title, choices }) => (
+const ConsultationSelection: React.FC<Props> = ({ onSelect, title, choices, alreadyDoneChoices = {} }) => (
   <>
-   
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -23,8 +23,7 @@ const ConsultationSelection: React.FC<Props> = ({ onSelect, title, choices }) =>
           key={choice.id}
           choice={choice}
           onSelect={() => onSelect(choice)}
-          alreadyDone={false} // à remplacer par la vraie logique si disponible
-          consultationId={undefined} // à remplacer par la vraie logique si disponible
+          doneChoice={alreadyDoneChoices[choice.id]}
         />
       ))}
     </motion.div>

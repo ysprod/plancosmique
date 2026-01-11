@@ -1,17 +1,12 @@
-import { ConsultationChoice } from '@/lib/interfaces';
+import { ConsultationChoice, DoneChoice } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
- 
+
 const ConsultationCard: React.FC<{
   choice: ConsultationChoice;
   onSelect: () => void;
-  alreadyDone: boolean;
-  consultationId?: string;
-}> = ({ choice, onSelect, alreadyDone, consultationId }) => {
-  const router = useRouter();
-  //   console.log('choice:', choice );
-
-  // console.log('ConsultationCard rendered for choice:', choice._id, 'alreadyDone:', alreadyDone, 'consultationId:', consultationId);
+  doneChoice?: DoneChoice | null;
+}> = ({ choice, onSelect, doneChoice }) => {
+  const isDone = !!doneChoice
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
@@ -20,13 +15,15 @@ const ConsultationCard: React.FC<{
     >
       <h2 className="font-bold text-purple-700 text-lg mb-3">{choice.title}</h2>
       <p className="text-gray-600 text-sm leading-relaxed mb-4">{choice.description}</p>
-      {alreadyDone  ? (
-        <a
-          href={`/secured/consultation/${consultationId}`}
-          className="w-full block px-4 py-3 font-semibold rounded-xl shadow-md bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:scale-105 hover:shadow-lg text-center transition-all"
+      {isDone ? (
+        <button
+          onClick={() => {
+            window.location.href = `/secured/consultations/${doneChoice!.consultationId}`;
+          }}
+          className="w-full px-4 py-3 font-semibold rounded-xl shadow-md bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:scale-105 hover:shadow-lg text-center transition-all"
         >
           Voir l'analyse
-        </a>
+        </button>
       ) : (
         <button
           onClick={onSelect}

@@ -18,26 +18,16 @@ interface DoneChoice {
 
 interface Slide4SectionSelectionProps {
   onSelect: (choice: ConsultationChoice) => void;
-  title?: string;
   choices: ConsultationChoice[];
   alreadyDoneChoices: DoneChoice[];
-  alreadyDoneConsultationIds?: Record<string, string>;
 }
 
 const Slide4SectionSelection: FC<Slide4SectionSelectionProps> = ({
   onSelect,
-  title,
   choices,
   alreadyDoneChoices,
-  alreadyDoneConsultationIds
 }) => (
   <>
-    <div className="mb-4 p-2 bg-yellow-50 border border-yellow-300 rounded text-xs text-yellow-900">
-      <strong>Debug alreadyDoneChoices:</strong> {JSON.stringify(alreadyDoneChoices)}
-    </div>
-     <div className="mb-4 p-2 bg-yellow-50 border border-yellow-300 rounded text-xs text-yellow-900">
-      <strong>Debug alreadyDoneConsultationIds:</strong> {JSON.stringify(alreadyDoneConsultationIds)}
-    </div>
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -45,14 +35,13 @@ const Slide4SectionSelection: FC<Slide4SectionSelectionProps> = ({
       className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2"
     >
       {choices.map((choice, idx) => {
-        const isDone = alreadyDoneChoices.some(dc => dc.choiceId === choice._id);
+        const doneChoice = alreadyDoneChoices.find(dc => dc.choiceId === choice._id) || null;
         return (
           <ConsultationCard
             key={choice.id || idx}
             choice={choice}
             onSelect={() => onSelect(choice)}
-            alreadyDone={isDone}
-            consultationId={alreadyDoneConsultationIds?.[choice._id!]}
+            doneChoice={doneChoice}
           />
         );
       })}

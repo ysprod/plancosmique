@@ -29,7 +29,6 @@ export function useSlide4Section(rubrique: Rubrique) {
   const router = useRouter();
   const { user } = useAuth();
 
-  const [alreadyDoneConsultationIds, setAlreadyDoneConsultationIds] = useState<Record<string, string>>({});
   const [alreadyDoneChoices, setAlreadyDoneChoices] = useState<DoneChoice[]>([]);
   const [step, setStep] = useState<StepType>('selection');
   const [paymentLoading, setPaymentLoading] = useState(false);
@@ -41,9 +40,6 @@ export function useSlide4Section(rubrique: Rubrique) {
   const choicesFetchedRef = useRef(false);
   const [choices, setChoices] = useState<ConsultationChoice[]>([]);
   const [loading, setLoading] = useState(true);
-
-  console.log('alreadyDoneConsultationIds', alreadyDoneConsultationIds);
-  console.log('alreadyDoneChoices', alreadyDoneChoices);
 
   useEffect(() => {
     async function fetchUser() {
@@ -80,24 +76,14 @@ export function useSlide4Section(rubrique: Rubrique) {
       if (user?._id) {
         try {
           const res = await api.get(`/user-consultation-choices?userId=${user._id}`);
-          console.log('[AlreadyDoneChoices] ✅', res);
           if (Array.isArray(res.data)) {
             setAlreadyDoneChoices(res.data);
-            const map: Record<string, string> = {};
-            res.data.forEach((item: any) => {
-              if (item.choiceId && item.consultationId) {
-                map[item.choiceId] = item.consultationId;
-              }
-            });
-            setAlreadyDoneConsultationIds(map);
           } else {
             setAlreadyDoneChoices([]);
-            setAlreadyDoneConsultationIds({});
           }
         } catch (err) {
           console.error('[AlreadyDoneChoices] ❌', err);
           setAlreadyDoneChoices([]);
-          setAlreadyDoneConsultationIds({});
         }
       }
     }
@@ -197,7 +183,6 @@ export function useSlide4Section(rubrique: Rubrique) {
         alternatives: choice.offering.alternatives,
         choice,
       };
-      console.log('[Slide4] 🛰️ Création consultation avec payload:', payload);
       const consultationRes = await api.post('/consultations', payload);
       if (consultationRes.status !== 200 && consultationRes.status !== 201) {
         throw new Error(consultationRes.data?.message || 'Erreur lors de la création');
@@ -248,7 +233,6 @@ export function useSlide4Section(rubrique: Rubrique) {
     paymentLoading,
     choices,
     alreadyDoneChoices,
-    alreadyDoneConsultationIds,
     handleSelectConsultation,
     consultationId,
     consultation,
