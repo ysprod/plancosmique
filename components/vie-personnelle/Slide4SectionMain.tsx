@@ -8,6 +8,7 @@ import Slide4SectionGenereAnalyse from './Slide4SectionGenereAnalyse';
 import Slide4SectionLoadingOverlay from './Slide4SectionLoadingOverlay';
 import Slide4SectionProcessing from './Slide4SectionProcessing';
 import Slide4SectionSelection from './Slide4SectionSelection';
+import ConsultationForm from './ConsultationForm';
 import { Slide4SectionMainProps } from './useSlide4Section';
 
 const Slide4SectionMain: React.FC<Slide4SectionMainProps> = ({
@@ -23,7 +24,12 @@ const Slide4SectionMain: React.FC<Slide4SectionMainProps> = ({
   handleBack,
   apiError,
   showErrorToast,
-  handleCloseError
+  handleCloseError,
+  form,
+  errors,
+  handleChange,
+  handleSubmit,
+  resetSelection
 }) => (
   <div className="bg-gradient-to-br from-purple-50/80 via-pink-50/50 to-orange-50/80 dark:from-gray-950 dark:via-purple-950/10 dark:to-gray-900 relative overflow-hidden">
     <Slide4SectionBackground />
@@ -37,6 +43,16 @@ const Slide4SectionMain: React.FC<Slide4SectionMainProps> = ({
               alreadyDoneChoices={alreadyDoneChoices}
             />
           </motion.div>
+        )}
+        {step === 'form' && (
+          <ConsultationForm
+            form={form}
+            errors={errors}
+            handleChange={handleChange}
+            apiError={apiError}
+            handleSubmit={handleSubmit}
+            resetSelection={resetSelection || handleBack}
+          />
         )}
         {paymentLoading && <Slide4SectionProcessing />}
         {step === 'consulter' && consultationId && consultation && (

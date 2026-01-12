@@ -108,8 +108,6 @@ export default function HeaderContent() {
     { href: "/secured/wallet", label: "Mon Panier", icon: Wallet },
   ], [hasRole]);
 
-
-
   return (
     <>
       {/* Barre de progression de scroll */}

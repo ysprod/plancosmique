@@ -34,22 +34,13 @@ const ConsultationForm: React.FC<Props> = ({
           <Sparkles className="w-8 h-8 text-purple-600 flex-shrink-0" />
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-fuchsia-600">
-              Informations Requises
+              Informations Requises pour la personne tierce
             </h2>
 
           </div>
         </div>
 
-        <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-          <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-            <p className="text-blue-900 text-sm leading-relaxed">
-              <strong>Important :</strong> Assurez-vous que votre{' '}
-              <strong>heure de naissance</strong> est exacte pour une analyse astrologique précise.
-              Consultez votre acte de naissance si nécessaire.
-            </p>
-          </div>
-        </div>
+        
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
@@ -60,7 +51,7 @@ const ConsultationForm: React.FC<Props> = ({
             value={form.nom}
             onChange={handleChange}
             error={errors.nom}
-            placeholder="Votre nom de famille"
+            placeholder="Nom de famille"
           />
           <InputField
             label="Prénoms"
@@ -68,7 +59,7 @@ const ConsultationForm: React.FC<Props> = ({
             value={form.prenoms}
             onChange={handleChange}
             error={errors.prenoms}
-            placeholder="Tous vos prénoms"
+            placeholder="Prénoms"
           />
         </div> 
 

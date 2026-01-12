@@ -1,25 +1,20 @@
 "use client";
 import RubriquesOverviewPage from '@/app/admin/rubriques/overview/page';
-import { RubriquesGestionEditPanel } from '@/components/admin/rubriques/RubriquesGestionEditPanel';
+import { RubriquesEditorPanel } from '@/components/admin/rubriques/RubriquesEditorPanel';
 import { RubriquesGestionListPanel } from '@/components/admin/rubriques/RubriquesGestionListPanel';
 import { RubriquesHeader } from '@/components/admin/rubriques/RubriquesHeader';
 import { RubriquesLoader } from '@/components/admin/rubriques/RubriquesLoader';
 import { RubriquesTabs } from '@/components/admin/rubriques/RubriquesTabs';
 import { RubriquesToast } from '@/components/admin/rubriques/RubriquesToast';
 import { useAdminRubriquesPage } from '@/hooks/admin/useAdminRubriquesPage';
-import { useRubriquesGestionView } from '@/hooks/admin/useRubriquesGestionView';
-import { useState } from 'react';
 
 export default function RubriquesAdminPage() {
-  const [activeTab, setActiveTab] = useState<'gestion' | 'overview'>('gestion');
-  const { handleCreate, handleDelete, setToast, loading, saving, toast, rubriques,
-    offerings, offeringsLoading, handleSave,
-  } = useAdminRubriquesPage();
-
   const {
-    editingRubrique, gestionView, selectedRubrique, setEditingRubrique,
-    handleSelectRubrique, handleCreateRubrique, handleBackToList
-  } = useRubriquesGestionView();
+    loading, saving, toast, rubriques, offerings, offeringsLoading, activeTab,
+    editingRubrique, gestionView, selectedRubrique, setEditingRubrique, handleSave,
+    setActiveTab, handleSelectRubrique, handleCreateRubrique, handleBackToList,
+    handleCreate, handleDelete, setToast,
+  } = useAdminRubriquesPage();
 
   if (loading || offeringsLoading) {
     return <RubriquesLoader loading={loading} offeringsLoading={offeringsLoading} />;
@@ -47,24 +42,31 @@ export default function RubriquesAdminPage() {
             )}
 
             {gestionView === 'edit' && (
-              <RubriquesGestionEditPanel
-                editingRubrique={editingRubrique}
-                setEditingRubrique={setEditingRubrique}
-                onSave={() => {
-                  handleSave();
-                  handleBackToList();
-                }}
-                onCancel={handleBackToList}
-                isSaving={saving}
-                offerings={offerings}
-                onBack={handleBackToList}
-              />
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-3 flex flex-col">
+                  <button
+                    onClick={handleBackToList}
+                    className="mb-4 self-start px-3 py-2 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
+                  >
+                    ← Retour à la liste
+                  </button>
+                  <RubriquesEditorPanel
+                    editingRubrique={editingRubrique}
+                    setEditingRubrique={setEditingRubrique}
+                    onSave={() => {
+                      handleSave();
+                      handleBackToList();
+                    }}
+                    onCancel={handleBackToList}
+                    isSaving={saving}
+                    offerings={offerings}
+                  />
+                </div>
+              </div>
             )}
           </>
         )}
-        {activeTab === 'overview' && (
-          <RubriquesOverviewPage />
-        )}
+        {activeTab === 'overview' && (<RubriquesOverviewPage />)}
       </div>
       <RubriquesToast toast={toast} onClose={() => setToast(null)} />
     </div>

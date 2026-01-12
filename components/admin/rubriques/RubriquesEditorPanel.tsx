@@ -3,9 +3,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Package } from "lucide-react";
 import React from "react";
 
+import type { Rubrique } from "@/lib/interfaces";
+
 interface RubriquesEditorPanelProps {
-  editingRubrique: any; // Remplacer 'any' par le type correct si disponible
-  setEditingRubrique: (rubrique: any) => void;
+  editingRubrique: Rubrique | null;
+  setEditingRubrique: (rubrique: Rubrique | null) => void;
   onSave: () => void;
   onCancel: () => void;
   isSaving: boolean;

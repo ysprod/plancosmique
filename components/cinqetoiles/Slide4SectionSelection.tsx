@@ -25,7 +25,7 @@ export function Slide4SectionSelection({ loading, choices, handleSelect, contain
           ) : (
             choices.map((choice: any) => (
               <motion.div
-                key={choice.id}
+                key={choice._id}
                 variants={itemVariants}
                 whileHover={{ scale: 1.02, y: -4, boxShadow: '0 8px 24px rgba(168, 85, 247, 0.15)' }}
                 whileTap={{ scale: 0.98 }}

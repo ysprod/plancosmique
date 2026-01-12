@@ -13,6 +13,25 @@ export function useAdminRubriquesPage() {
   const [toast, setToast] = useState<any>(null);
   const [offerings, setOfferings] = useState<Offering[]>([]);
   const [offeringsLoading, setOfferingsLoading] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<'gestion' | 'overview'>('gestion');
+  const [gestionView, setGestionView] = useState<'list' | 'edit'>('list');
+
+  const handleSelectRubrique = (rub: Rubrique) => {
+    setSelectedRubrique(rub);
+    setEditingRubrique(rub);
+    setGestionView('edit');
+  };
+
+  const handleCreateRubrique = (handleCreate: () => void) => {
+    handleCreate();
+    setGestionView('edit');
+  };
+
+  const handleBackToList = () => {
+    setEditingRubrique(null);
+    setSelectedRubrique(null);
+    setGestionView('list');
+  };
 
   useEffect(() => {
     const fetchOfferings = async () => {
@@ -62,7 +81,7 @@ export function useAdminRubriquesPage() {
 
   const handleSave = useCallback(async () => {
     if (!editingRubrique) return;
-     setSaving(true);
+    setSaving(true);
     try {
       if (editingRubrique._id) {
         await api.put(`/rubriques/${editingRubrique._id}`, editingRubrique);
@@ -109,5 +128,12 @@ export function useAdminRubriquesPage() {
     handleCreate,
     handleSave,
     handleDelete,
+    gestionView,
+    setGestionView,
+    handleSelectRubrique,
+    handleCreateRubrique,
+    handleBackToList,
+    activeTab,
+    setActiveTab,
   };
 }

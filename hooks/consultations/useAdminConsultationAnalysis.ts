@@ -64,7 +64,7 @@ export function useAdminConsultationAnalysis() {
 
   const handleNotifyUser = useCallback(async (id: string) => {
     try {
-      const res = await api.post(`/consultations/${id}/notify-user`);
+      const res = await api.post(`/consultations/${consultationId}/notify-user`);
       if (res.status === 200 || res.status === 201) {
         showToast('📧 Notification envoyée avec succès !', 'success');
       } else {

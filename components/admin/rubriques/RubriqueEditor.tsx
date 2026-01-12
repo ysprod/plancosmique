@@ -3,26 +3,29 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Package, Plus, Save, X } from "lucide-react";
 import { memo, useCallback } from "react";
 import ConsultationChoiceCard from "./ConsultationChoiceCard";
+import type { Rubrique } from "@/lib/interfaces";
 
 const RubriqueEditor = memo(({
   rubrique,
-  onUpdate,
+   onUpdate,
   onSave,
   onCancel,
   isSaving,
   offerings
 }: {
-  rubrique: any;
-  onUpdate: (updated: any) => void;
+  rubrique: Rubrique;
+  onUpdate: (updated: Rubrique) => void;
   onSave: () => void;
   onCancel: () => void;
   isSaving: boolean;
   offerings: Offering[];
 }) => {
   const handleAddChoice = useCallback(() => {
-    const newChoice: any = {
+    const newChoice: ConsultationChoice = {
       title: "Nouveau choix",
       description: "",
+      frequence: undefined,
+      participants: undefined,
       offering: {
         alternatives: [
           { category: "animal", offeringId: "", quantity: 1 },

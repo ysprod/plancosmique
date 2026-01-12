@@ -22,9 +22,25 @@ export interface Slide4SectionMainProps {
   apiError: string | null;
   showErrorToast: boolean;
   handleCloseError: () => void;
+  // Props pour ConsultationForm (AVEC_TIERS)
+  form: any;
+  errors: any;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+  resetSelection: () => void;
 }
 
 export function useSlide4Section(rubrique: Rubrique) {
+  // Pour stocker le choix sélectionné nécessitant un formulaire AVEC_TIERS
+  const [pendingChoice, setPendingChoice] = useState<ConsultationChoice | null>(null);
+  const [formData, setFormData] = useState<any>({
+    nom: '',
+    prenoms: '',
+    dateNaissance: '',
+    villeNaissance: '',
+    heureNaissance: '',
+  });
+  const [formErrors, setFormErrors] = useState<any>({});
   const router = useRouter();
   const { user } = useAuth();
 
@@ -159,7 +175,6 @@ export function useSlide4Section(rubrique: Rubrique) {
   const handleSelectConsultation = useCallback(async (choice: ConsultationChoice) => {
     setApiError(null);
     setPaymentLoading(true);
-    // Vérifie si une analyse existe déjà pour ce choix
     if (alreadyDoneChoices.some(dc => dc.choiceId === choice._id)) {
       setApiError("Une analyse existe déjà pour ce choix de consultation. Vous ne pouvez effectuer cette analyse qu'une seule fois.");
       setPaymentLoading(false);
@@ -170,6 +185,13 @@ export function useSlide4Section(rubrique: Rubrique) {
       setPaymentLoading(false);
       return;
     }
+    if (choice.participants === 'AVEC_TIERS') {
+      setPendingChoice(choice);
+      setStep('form');
+      setPaymentLoading(false);
+      return;
+    }
+    // Cas normal (pas de formulaire tiers)
     try {
       const mappedFormData = mapFormDataToBackend(userData);
       const payload = {
@@ -212,7 +234,6 @@ export function useSlide4Section(rubrique: Rubrique) {
         status: raw.status || raw.statut || '',
       };
       setConsultation(consultationData);
-
       setStep('consulter');
       setPaymentLoading(false);
     } catch (err: any) {
@@ -222,6 +243,79 @@ export function useSlide4Section(rubrique: Rubrique) {
       setPaymentLoading(false);
     }
   }, [userData]);
+
+  // Gestion du formulaire AVEC_TIERS
+  const handleFormChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev: any) => ({ ...prev, [name]: value }));
+  }, []);
+
+  const handleFormSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    setApiError(null);
+    setPaymentLoading(true);
+    // Validation simple (à adapter selon besoins)
+    const errors: any = {};
+    ['nom','prenoms','dateNaissance','villeNaissance','heureNaissance'].forEach(field => {
+      if (!formData[field]) errors[field] = 'Champ requis';
+    });
+    setFormErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      setPaymentLoading(false);
+      return;
+    }
+    try {
+      if (!pendingChoice) throw new Error('Aucun choix sélectionné');
+      const payload = {
+        serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
+        type: rubrique?.typeconsultation,
+        title: pendingChoice.title,
+        formData,
+        description: pendingChoice.description,
+        status: 'PENDING',
+        alternatives: pendingChoice.offering.alternatives,
+        choice: pendingChoice,
+      };
+      const consultationRes = await api.post('/consultations', payload);
+      if (consultationRes.status !== 200 && consultationRes.status !== 201) {
+        throw new Error(consultationRes.data?.message || 'Erreur lors de la création');
+      }
+      const id = consultationRes.data?.id || consultationRes.data?.consultationId;
+      if (!id) {
+        throw new Error('ID de consultation manquant dans la réponse');
+      }
+      setConsultationId(id);
+      const response = await api.get(`/consultations/${id}`);
+      if (response.status !== 200) {
+        throw new Error('Consultation introuvable');
+      }
+      const raw = response.data?.consultation || response.data;
+      const alternatives: OfferingAlternative[] = (raw.alternatives || []).map((alt: any, idx: number) => ({
+        offeringId: alt.offeringId,
+        quantity: alt.quantity,
+        category: ['animal', 'vegetal', 'beverage'][idx] || 'animal',
+        name: alt.name || '',
+        price: alt.price || 0,
+        icon: alt.icon || '',
+      }));
+      const consultationData: ConsultationData = {
+        _id: raw._id || raw.id || raw.consultationId,
+        title: raw.title || raw.titre || '',
+        description: raw.description || '',
+        alternatives,
+        status: raw.status || raw.statut || '',
+      };
+      setConsultation(consultationData);
+      setStep('consulter');
+      setPaymentLoading(false);
+      setPendingChoice(null);
+    } catch (err: any) {
+      console.error('[Form AVEC_TIERS] ❌ Erreur:', err);
+      const errorMessage = err.response?.data?.message || err.response?.data?.error || err.message || 'Erreur lors de la création de la consultation';
+      setApiError(errorMessage);
+      setPaymentLoading(false);
+    }
+  }, [formData, pendingChoice, rubrique?.typeconsultation]);
 
   const handleCloseError = useCallback(() => {
     setApiError(null);
@@ -241,5 +335,11 @@ export function useSlide4Section(rubrique: Rubrique) {
     apiError,
     showErrorToast,
     handleCloseError,
+    // Props explicites pour ConsultationForm (AVEC_TIERS)
+    form: formData,
+    errors: formErrors,
+    handleChange: handleFormChange,
+    handleSubmit: handleFormSubmit,
+    resetSelection: handleBack,
   };
 }
