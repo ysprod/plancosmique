@@ -1,7 +1,7 @@
 "use client";
 import { Suspense } from "react";
-import LoadingScreen from '@/components/wallet/LoadingScreen';
 import WalletPageContent from '@/components/wallet/WalletPageContent';
+import LoadingScreen from '@/components/wallet/LoadingScreen';
 
 export default function SecuredWalletPage() {
   return (

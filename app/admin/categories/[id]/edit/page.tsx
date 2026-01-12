@@ -7,7 +7,7 @@ import { useEditCategoryPage } from "@/hooks/commons/useEditCategoryPage";
 export default function EditCategoryPage() {
   const {
     rubriques, rubriquesLoading, description, pageLoading, view, selectedRubriques,
-    nom, selectionSummary, rubriqueIds, selectedSet, busy, banner, goPreview,
+    banner, nom, selectionSummary, rubriqueIds, selectedSet, busy, goPreview,
     setNom, setDescription, toggleRubrique, goEdit, clearSelection, handleEdit,
   } = useEditCategoryPage();
 

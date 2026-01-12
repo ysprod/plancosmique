@@ -1,5 +1,4 @@
 import { CarteDuCielData, CinqPortes, ProcessedUserData, Rubrique, User } from "./interfaces";
- 
 
 export const formatDate = (date: string | Date) => {
   const d = typeof date === 'string' ? new Date(date) : date;
@@ -10,26 +9,20 @@ export const formatDate = (date: string | Date) => {
   });
 };
 
-export function mapFormDataToBackend(form: any) {
+export function mapFormDataToBackend(form: User | null): Record<string, any> {
   if (!form) {
     console.warn('mapFormDataToBackend: form is null or undefined');
     return {};
   }
   const result = {
-    firstName: form.prenoms || form.firstName || '',
-    lastName: form.nom || form.lastName || '',
+    firstName: form.prenoms || form.prenom || '',
+    lastName: form.nom || '',
     dateOfBirth: form.dateNaissance
       ? new Date(form.dateNaissance).toISOString()
       : (form.dateOfBirth ? new Date(form.dateOfBirth).toISOString() : ''),
-    timeOfBirth: form.heureNaissance || form.timeOfBirth || '',
-    countryOfBirth: form.paysNaissance || form.countryOfBirth || '',
-    cityOfBirth: form.villeNaissance || form.cityOfBirth || '',
-    gender: form.genre || form.gender || '',
-    phone: form.phone || form.numeroSend || '',
-    email: form.email || '',
-    country: form.country || form.paysNaissance || '',
-    question: form.question || '',
-    username: form.username || '',
+    timeOfBirth: form.heureNaissance || '',
+    countryOfBirth: form.paysNaissance || '',
+    cityOfBirth: form.villeNaissance || '',
     ...form
   };
   return result;
@@ -132,13 +125,11 @@ export function extractCinqPortes(carteDuCiel: CarteDuCielData | null): CinqPort
   };
 }
 
-
-
 export function processUserData(userData: User | null): ProcessedUserData | null {
   if (!userData) return null;
 
   return {
-    _id: userData._id, 
+    _id: userData._id,
     name: `${userData.prenom || userData.username || ""} ${userData.nom || ""}`.trim(),
     birthDate: userData.dateNaissance
       ? formatDate(userData.dateNaissance)

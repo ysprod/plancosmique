@@ -12,7 +12,6 @@ function generateFilename(sujet: Sujet): string {
       .replace(/\s+/g, '-')
       .toLowerCase()
       .substring(0, 40);
-
   const prenoms = sanitize(sujet.prenoms);
   const nom = sanitize(sujet.nom);
   const date = new Date().toISOString().split('T')[0];
@@ -159,6 +158,7 @@ export async function GET(
 
   } catch (error: any) {
     const duration = Date.now() - startTime;
+    
     console.error('[PDF] ❌ Erreur inattendue génération PDF:', {
       message: error.message,
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,

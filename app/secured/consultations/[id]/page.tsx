@@ -6,7 +6,7 @@ import CosmicLoader from '@/components/consultations/CosmicLoader';
 import useConsultationResultPage from '@/hooks/consultations/useConsultationResultPage';
 
 export default function ConsultationResultPage() {
-  const { loading, error, analyse, handleBack, handleDownloadPDF } = useConsultationResultPage();
+  const { analyse, loading, error, handleBack, handleDownloadPDF } = useConsultationResultPage();
 
   if (loading) { return (<CosmicLoader />); }
   if (error || !analyse) { return <ConsultationError error={error} onBack={handleBack} />; }

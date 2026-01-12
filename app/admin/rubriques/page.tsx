@@ -13,7 +13,7 @@ export default function RubriquesAdminPage() {
     loading, saving, toast, rubriques, offerings, offeringsLoading, activeTab,
     editingRubrique, gestionView, selectedRubrique, setEditingRubrique, handleSave,
     setActiveTab, handleSelectRubrique, handleCreateRubrique, handleBackToList,
-    handleCreate, handleDelete, setToast,
+    handleCreate, setToast, handleDelete,
   } = useAdminRubriquesPage();
 
   if (loading || offeringsLoading) {

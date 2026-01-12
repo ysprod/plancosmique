@@ -10,8 +10,8 @@ import { useAdminDashboardPage } from '@/hooks/admin/useAdminDashboardPage';
 import { AnimatePresence } from 'framer-motion';
 
 export default function AdminDashboard() {
-  const { stats, loading, error, lastUpdated,
-    isRefreshing, derivedStats, showRefreshBanner, handleRefresh,
+  const { stats, loading, error, lastUpdated, showRefreshBanner,
+    isRefreshing, derivedStats, handleRefresh,
   } = useAdminDashboardPage();
 
   if (loading) { return <LoadingState />; }

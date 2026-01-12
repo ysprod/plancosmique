@@ -6,7 +6,7 @@ import BooksListLoading from '@/components/livres/BooksListLoading';
 import { useBooks } from '@/hooks/livres/useBooks';
 
 export default function LivresPage() {
-  const { books, error, loading, handlePurchase, purchasingBookId } = useBooks();
+  const { loading, books, error, handlePurchase, purchasingBookId } = useBooks();
 
   if (loading) { return <BooksListLoading />; }
 

@@ -5,8 +5,8 @@ import { useNotificationsPage } from '@/hooks/notifications/useNotificationsPage
 export default function NotificationsPage() {
 
   const {
-    showSettings, unreadCount, filter, setFilter, markAllAsRead, setShowSettings,
-    isLoading, filteredNotifications, handleNotificationClick, handleDelete
+    isLoading, unreadCount, filter, setFilter, markAllAsRead, setShowSettings,
+    filteredNotifications, showSettings, handleNotificationClick, handleDelete
   } = useNotificationsPage();
 
   return (

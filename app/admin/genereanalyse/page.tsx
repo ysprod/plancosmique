@@ -6,7 +6,7 @@ import { GenereAnalyseSuccess } from '@/components/admin/genereanalyse/GenereAna
 import { useGenereAnalysePage } from '@/hooks/admin/useGenereAnalysePage';
 
 export default function GenereAnalysePage() {
-  const { step, error, analyseData, handleBack, handleRetry, } = useGenereAnalysePage();
+  const { step, error, analyseData, handleRetry, handleBack, } = useGenereAnalysePage();
 
   return (
     <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">

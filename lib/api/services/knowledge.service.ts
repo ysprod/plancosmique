@@ -1,10 +1,7 @@
 import apiClient from '../client';
 import type {
-  Knowledge,
-  KnowledgeListResponse,
-  CreateKnowledgeDto,
-  UpdateKnowledgeDto,
-  KnowledgeQueryParams,
+  Knowledge, KnowledgeListResponse, CreateKnowledgeDto,
+  UpdateKnowledgeDto, KnowledgeQueryParams,
 } from '@/lib/types/knowledge.types';
 
 export const knowledgeService = {

@@ -1,66 +1,70 @@
-import React from "react";
-import { Star } from "lucide-react";
+import { memo } from "react";
 import { motion } from "framer-motion";
-import SousRubriqueCard from "./SousRubriqueCard";
+import { ChevronRight } from "lucide-react";
 
-interface RubriqueCardProps {
-  rubrique: any;
-  isExpanded: boolean;
-  onToggle: () => void;
-  expandedSousRubrique: string | null;
-  setExpandedSousRubrique: (id: string | null) => void;
+function cleanText(s: any) {
+  return String(s ?? "").replace(/\s+/g, " ").trim();
+}
+function clamp(s: string, max = 140) {
+  const t = cleanText(s);
+  return t.length > max ? t.slice(0, max - 1) + "…" : t;
+}
+function getId(x: any): string {
+  return String(x?._id ?? x?.id ?? "");
 }
 
-const RubriqueCard: React.FC<RubriqueCardProps> = ({
-  rubrique,
-  isExpanded,
-  onToggle,
-  expandedSousRubrique,
-  setExpandedSousRubrique
-}) => {
-  return (
-    <div className="bg-white rounded-xl shadow-md border border-blue-100 overflow-hidden">
-      <button
-        onClick={onToggle}
-        className="w-full p-4 flex items-center justify-between hover:bg-blue-50 transition-colors"
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white">
-            <Star size={20} />
-          </div>
-          <div className="text-left">
-            <h3 className="text-xl font-bold text-gray-800">{rubrique.titre}</h3>
-            <p className="text-gray-600 text-sm">{rubrique.description}</p>
-            <p className="text-xs text-gray-500 mt-1">{Array.isArray(rubrique.sousRubriques) ? rubrique.sousRubriques.length : 0} sous-rubrique(s)</p>
-          </div>
-        </div>
-        <div className={`transform transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
-          <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      </button>
-
-      {isExpanded && Array.isArray(rubrique.sousRubriques) && rubrique.sousRubriques.length > 0 && (
-        <motion.div
-          key={`sousrubriques-${rubrique.id}`}
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          className="border-t border-gray-100 p-4 bg-gray-50 space-y-3"
-        >
-          {rubrique.sousRubriques.map((sousRubrique: any) => (
-            <SousRubriqueCard
-              key={sousRubrique.id}
-              sousRubrique={sousRubrique}
-              isExpanded={expandedSousRubrique === sousRubrique.id}
-              onToggle={() => setExpandedSousRubrique(expandedSousRubrique === sousRubrique.id ? null : sousRubrique.id)}
-            />
-          ))}
-        </motion.div>
-      )}
-    </div>
-  );
+const itemVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.18 } },
 };
 
-export default RubriqueCard;
+const RubriqueCard = memo(function RubriqueCard({
+  rubrique,
+  onOpen,
+}: {
+  rubrique: any;
+  onOpen: (rubriqueId: string) => void;
+}) {
+  const rid = getId(rubrique);
+  const count = Array.isArray(rubrique?.consultationChoices) ? rubrique.consultationChoices.length : 0;
+
+  return (
+    <motion.button
+      type="button"
+      variants={itemVariants}
+      onClick={() => onOpen(rid)}
+      aria-label={`Ouvrir la rubrique ${rubrique?.titre}`}
+      className={[
+        "group relative w-full overflow-hidden rounded-3xl border border-slate-200 bg-white/70 p-3 text-left shadow-sm backdrop-blur transition",
+        "hover:bg-white active:scale-[0.99]",
+        "dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:bg-zinc-900/50",
+      ].join(" ")}
+    >
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-600 via-indigo-600 to-emerald-500/70" />
+      <div className="pt-1">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <div className="truncate text-[14px] font-extrabold text-slate-900 dark:text-white">
+              {rubrique?.titre ?? "Rubrique"}
+            </div>
+            <div className="mt-0.5 line-clamp-2 text-[12px] text-slate-600 dark:text-zinc-300">
+              {rubrique?.description ? clamp(rubrique.description, 160) : "—"}
+            </div>
+          </div>
+
+          <div className="flex flex-col items-end gap-2">
+            <span className="inline-flex items-center rounded-full bg-slate-900 px-2 py-1 text-[10px] font-extrabold text-white dark:bg-white dark:text-zinc-900">
+              {count} choix
+            </span>
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-white">
+              <ChevronRight className="h-4 w-4" />
+            </span>
+          </div>
+        </div>
+      </div>
+    </motion.button>
+  );
+});
+
+export { RubriqueCard };
+

@@ -3,7 +3,7 @@ import { api } from '@/lib/api/client';
 import { getRubriqueById } from '@/lib/api/services/rubriques.service';
 import { mapFormDataToBackend } from '@/lib/functions';
 import { RUBRIQUE_ID, TYPE_CONSULTATION } from '@/components/analysehoroscope/constants';
-import { OfferingAlternative, WalletOffering } from '@/lib/interfaces';
+import { OfferingAlternative, User, WalletOffering } from '@/lib/interfaces';
 
 export type HoroscopeTabId = 'annuel' | 'mensuel';
 export type StepType = 'selection' | 'consulter' | 'processing' | 'genereanalyse';
@@ -58,6 +58,7 @@ export function useAnalyseHoroscopePage(user: any, params: URLSearchParams) {
                 if (!choice) {
                     throw new Error(`Aucune option trouvée pour "${tabId}"`);
                 }
+                const userdata = userRes.data as User;
                 const payload = {
                     serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
                     type: TYPE_CONSULTATION,
@@ -65,7 +66,7 @@ export function useAnalyseHoroscopePage(user: any, params: URLSearchParams) {
                     description: choice.description,
                     status: 'pending_payment',
                     alternatives: choice.offering.alternatives,
-                    formData: mapFormDataToBackend(userRes.data),
+                    formData: mapFormDataToBackend(userdata),
                 };
                 const { data } = await api.post('/consultations', payload);
                 const id = data?.id || data?.consultationId;

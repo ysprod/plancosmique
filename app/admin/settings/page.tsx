@@ -5,15 +5,17 @@ import { useSettingsView } from '@/hooks/commons/useSettingsView';
 import { Bell, CreditCard, Database, Lock, Settings } from 'lucide-react';
 
 export default function SettingsPage() {
+
   const {
-    activeTab, setActiveTab, isSaving, setIsSaving, logLevel, siteEmail, setSiteEmail,
-    saveSuccess, setSaveSuccess, showApiKey, setShowApiKey, setSitePhone, maintenanceMode,
-    siteName, setSiteName, setLogLevel, setEmailNotifications, setNewConsultationNotif,
+    activeTab, setActiveTab, isSaving, logLevel, siteEmail, setSiteEmail,
+    saveSuccess, setSaveSuccess, showApiKey, setShowApiKey, maintenanceMode,
+    siteName, setSiteName, setLogLevel, setNewConsultationNotif,
     sitePhone, setMaintenanceMode, emailNotifications, newConsultationNotif,
     twoFactorAuth, setTwoFactorAuth, passwordExpiry, setPasswordExpiry, maxUploadSize,
-    newUserNotif, setNewUserNotif, paymentMethods, setPaymentMethods, setMaxUploadSize,
+    newUserNotif, setNewUserNotif, paymentMethods, setMaxUploadSize,
     paymentNotif, setPaymentNotif, backupFrequency, setBackupFrequency,
     sessionTimeout, setSessionTimeout, setMoneyFusionApiKey, moneyFusionApiKey,
+    setEmailNotifications, setSitePhone, setIsSaving, setPaymentMethods,
   } = useSettingsView();
 
   const handleSave = async () => {

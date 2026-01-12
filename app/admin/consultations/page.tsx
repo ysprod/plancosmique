@@ -16,7 +16,6 @@ export default function ConsultationsPage() {
   } = useAdminConsultationsPage();
 
   if (loading) return <CosmicLoader />;
-
   if (error) { return <ConsultationsError error={error} onRetry={handleRefresh} />; }
 
   return (
@@ -45,7 +44,6 @@ export default function ConsultationsPage() {
           <ConsultationsEmptyState />
         )}
       </div>
-
       <AnimatePresence>
         {toastMessage && (
           <Toast message={toastMessage} onClose={handleToastClose} />

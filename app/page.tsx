@@ -20,9 +20,7 @@ export default function WelcomePage() {
           className="h-full w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent"
         />
       </motion.div>
-
       <WelcomeHeader />
-
       <div className="px-4 py-6 max-w-2xl mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 10 }}

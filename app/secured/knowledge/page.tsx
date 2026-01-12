@@ -27,11 +27,9 @@ export default function KnowledgePage() {
           <KnowledgeTabs activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
       </div>
-      
       <div className="container mx-auto px-4 py-6">
         <KnowledgeCategories selectedCategory={selectedCategory} onChange={handleCategoryChange} />
       </div>
-
       <div className="container mx-auto px-4 py-8">
         {isLoading ? (
           <KnowledgeLoadingList />

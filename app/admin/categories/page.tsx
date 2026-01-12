@@ -27,16 +27,12 @@ export default function AdminCategoriesPage() {
                     categoriesLoading={categoriesLoading}
                     rubriquesLoading={rubriquesLoading}
                 />
-
                 <AnimatePresence>
                     <Banner banner={banner} />
                 </AnimatePresence>
-
                 {categoriesError && <CategoriesErrorAlert message={categoriesError} />}
                 {rubriquesError && <CategoriesErrorAlert message={rubriquesError} />}
-
                 <CreateCategoryButton />
-
                 <CategoriesList
                     categories={categories}
                     rubriques={rubriques}

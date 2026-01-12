@@ -29,7 +29,6 @@ export default function SpiritualiteBlogPage() {
   } = useSpiritualiteBlogPage();
 
   if (loading) { return <SpiritualiteLoadingState />; }
-
   if (error) {
     return <SpiritualiteErrorState error={error} onRetry={handleRetry} />;
   }
@@ -49,6 +48,7 @@ export default function SpiritualiteBlogPage() {
           animate="visible"
         >
           <SpiritualiteHeader />
+
           <AnimatePresence mode="wait">
             {hasArticles ? (
               <motion.div

@@ -2,7 +2,7 @@
 import CinqPortesNotAvailableSection from '@/components/carteduciel/CinqPortesNotAvailableSection';
 import PorteCard from '@/components/carteduciel/PorteCard';
 import { useCinqPortes } from '@/hooks/carteduciel/useCinqPortes';
- import { memo } from 'react';
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { CarteDuCielData } from '@/lib/interfaces';
 
@@ -13,7 +13,6 @@ interface CinqPortesSectionProps {
 
 const CinqPortesSection = memo<CinqPortesSectionProps>(({ carteDuCiel, isPremium }) => {
   const { cinqPortes, portesArray } = useCinqPortes(carteDuCiel);
-
   if (!cinqPortes) { return <CinqPortesNotAvailableSection />; }
 
   return (
@@ -55,7 +54,6 @@ const CinqPortesSection = memo<CinqPortesSectionProps>(({ carteDuCiel, isPremium
           />
         ))}
       </div>
-
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

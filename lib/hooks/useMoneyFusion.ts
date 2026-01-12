@@ -8,8 +8,6 @@ import type {
     VerifyPaymentResult,
 } from '@/lib/types/moneyfusion.types';
 
-// ==================== TYPES ====================
-
 export interface UseMoneyFusionOptions {
     autoVerify?: boolean;
     onPaymentInitiated?: (token: string, url: string) => void;

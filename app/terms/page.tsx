@@ -22,7 +22,9 @@ export default function TermsPage() {
                     className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-2xl shadow-2xl p-6 sm:p-8 border border-gray-200 dark:border-gray-800"
                 >
                     <IntroAlert />
+
                     <TermsSectionsList sections={sections} />
+
                     <ContactInfo />
                     <ActionButtons />
                 </motion.div>

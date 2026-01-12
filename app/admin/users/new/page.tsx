@@ -6,7 +6,7 @@ import { useNewUserPage } from '@/hooks/admin/useNewUserPage';
 
 export default function NewUserPage() {
   const {
-    saving, toast, isFormValid, errors, formData, setToast,
+    formData, saving, toast, isFormValid, errors, setToast,
     handleChange, handleSubmit,
   } = useNewUserPage();
 

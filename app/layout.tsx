@@ -28,7 +28,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Mon Étoile - Votre Guide Spirituel Personnel | Voyance & Astrologie",
+    default: "Mon Étoile - Votre Guide Spirituel  | Voyance & Astrologie",
     template: "%s | Mon Étoile",
   },
   description:

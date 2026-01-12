@@ -16,7 +16,7 @@ const ProfilNonPremiumSection: React.FC<ProfilNonPremiumSectionProps> = ({ userd
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.5 }}
       >
-        <Slide4Section userdata={userdata!} />
+        <Slide4Section/>
       </motion.div>
     </AnimatePresence>
   </div>

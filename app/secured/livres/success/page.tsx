@@ -6,7 +6,7 @@ import BookSuccessMain from '@/components/livres/BookSuccessMain';
 import { useBookSuccess } from '@/hooks/livres/useBookSuccess';
 
 function BookSuccessContent() {
-  const { purchaseInfo, loading, error, handleDownload } = useBookSuccess();
+  const { error, purchaseInfo, loading, handleDownload } = useBookSuccess();
   if (loading) return <BookSuccessLoading />;
   if (error) return <BookSuccessError error={error} />;
   if (purchaseInfo) return <BookSuccessMain purchaseInfo={purchaseInfo} onDownload={handleDownload} />;

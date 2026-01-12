@@ -10,7 +10,6 @@ export default function MonProfilPage() {
   const { user, processedData, isLoading } = useMonProfil();
 
   if (isLoading) { return <LoadingState />; }
-
   if (!user || !processedData) { return <ErrorState />; }
 
   return (
@@ -18,7 +17,6 @@ export default function MonProfilPage() {
                    p-3 sm:p-6 space-y-4 sm:space-y-6">
       <div className="max-w-4xl mx-auto">
         <ProfileHeader userData={processedData} />
-
         <br /><br />
 
         <CinqPortesSection

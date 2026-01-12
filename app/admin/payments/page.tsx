@@ -18,7 +18,6 @@ export default function PaymentsPage() {
   } = useAdminPaymentsPage();
 
   if (loading) { return <AdminPaymentsLoader />; }
-
   if (error) {
     return <AdminPaymentsErrorAlert error={error} onRetry={handleRefresh} />;
   }
@@ -29,7 +28,6 @@ export default function PaymentsPage() {
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4">
         <PaymentsStats stats={stats} />
-
         <PaymentsFilters
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}

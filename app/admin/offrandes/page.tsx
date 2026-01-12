@@ -10,7 +10,7 @@ import { AnimatePresence } from 'framer-motion';
 export default function AdminOffrandes() {
     const {
         offerings, statsData, loading, saving, showAddModal, editingId, formData,
-        successMessage, errorMessage, setShowAddModal, setFormData, handleAdd,
+        successMessage, errorMessage, handleAdd, setShowAddModal, setFormData,
         setErrorMessage, fetchOfferings, handleConfirm, handleDelete, handleEdit,
     } = useAdminOffrandes();
 

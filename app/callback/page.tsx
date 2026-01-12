@@ -3,7 +3,7 @@ import { ActionButtons, BackgroundBlobs, CompletionBanner, SecurityNote, StatusC
 import AnalysisPreview from '@/components/callback/AnalysisPreview';
 import AnalysisProgressBar from '@/components/callback/AnalysisProgressBar';
 import LoadingState from '@/components/callback/LoadingState';
- import { usePaymentCallback } from '@/hooks/commons/usePaymentCallback';
+import { usePaymentCallback } from '@/hooks/commons/usePaymentCallback';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
 
@@ -12,10 +12,9 @@ const PaymentCallbackContent = () => {
   const token = searchParams.get('token');
 
   const {
-    isLoading, isProcessing, status, statusConfig, analysisStages,
-    isGeneratingAnalysis, analysisCompleted, analysisProgress,
-    currentStageIndex, currentStageMessage, consultationId,
-    downloadUrl, shouldAutoRedirect, autoRedirectCountdown,
+    isLoading, isProcessing, status, statusConfig, analysisStages, currentStageIndex,
+    isGeneratingAnalysis, analysisCompleted, analysisProgress, autoRedirectCountdown,
+    currentStageMessage, consultationId, downloadUrl, shouldAutoRedirect,
     handleViewConsultation, handleDownloadBook, handleRetry, handleGoHome,
   } = usePaymentCallback(token);
 
@@ -65,7 +64,7 @@ const PaymentCallbackContent = () => {
                 itemVariants={itemVariants}
               />
             )}
-            
+
           <StatusCard
             status={status}
             statusConfig={statusConfig}
@@ -77,6 +76,7 @@ const PaymentCallbackContent = () => {
             itemVariants={itemVariants}
             pulseVariants={pulseVariants}
           />
+
           <ActionButtons
             status={status}
             downloadUrl={downloadUrl}
@@ -87,6 +87,7 @@ const PaymentCallbackContent = () => {
             onGoHome={handleGoHome}
             itemVariants={itemVariants}
           />
+
           <SecurityNote itemVariants={itemVariants} />
         </motion.div>
       </AnimatePresence>

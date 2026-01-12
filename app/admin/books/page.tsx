@@ -53,7 +53,6 @@ export default function AdminBooksPage() {
           filteredCount={filteredAndSortedBooks.length}
         />
       )}
-
       {filteredAndSortedBooks.length === 0 ? (
         <NoBooksResult />
       ) : (
@@ -64,7 +63,6 @@ export default function AdminBooksPage() {
           onEdit={() => alert("Fonctionnalité de modification à implémenter")}
         />
       )}
-
       <BookAddModal
         show={showAddModal}
         onClose={closeAddModal}

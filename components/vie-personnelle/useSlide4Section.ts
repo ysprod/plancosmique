@@ -266,11 +266,13 @@ export function useSlide4Section(rubrique: Rubrique) {
     }
     try {
       if (!pendingChoice) throw new Error('Aucun choix sélectionné');
+       const mappedFormData = mapFormDataToBackend(userData);
       const payload = {
         serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
         type: rubrique?.typeconsultation,
         title: pendingChoice.title,
-        formData,
+        formData: mappedFormData,
+        tierce:formData,
         description: pendingChoice.description,
         status: 'PENDING',
         alternatives: pendingChoice.offering.alternatives,
