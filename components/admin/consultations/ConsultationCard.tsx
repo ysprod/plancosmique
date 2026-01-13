@@ -1,10 +1,12 @@
 import { useConsultationCard } from '@/hooks/consultations/useConsultationCard';
 import { motion } from 'framer-motion';
-import { Calendar, Eye, Mail, Sparkles, User } from 'lucide-react';
-import { memo } from 'react';
-import AstrologyData from './AstrologyData';
-import NumerologyData from './NumerologyData';
+import { memo, useMemo } from 'react';
+import CardActions from './CardActions';
+import CardHeader from './CardHeader';
+import ClientInfo from './ClientInfo';
+import ConsultationBadges from './ConsultationBadges';
 import StatusBadge from './StatusBadge';
+import { cardVariants, floatingParticle1Variants, floatingParticle2Variants, glowVariants, shimmerVariants } from './consultationCardVariants';
 
 interface ConsultationCardProps {
     consultation: any;
@@ -13,127 +15,121 @@ interface ConsultationCardProps {
     isNotifying: boolean;
 }
 
-const ConsultationCard = memo(({
-    consultation,
-    onGenerateAnalysis,
-    isGenerating
-}: ConsultationCardProps) => {
-    const { typeConfig, hasResultData, hasCarteDuCiel } = useConsultationCard(consultation);
+const ConsultationCard = memo(({ consultation, onGenerateAnalysis, isGenerating, isNotifying }: ConsultationCardProps) => {
+  console.log(consultation);
+  
+  
+    const { typeConfig, hasResultData, hasCarteDuCiel, hasTierce, isPaid } = useConsultationCard(consultation);
+  
+    const formattedDate = useMemo(() => {
+        return new Date(consultation.createdAt).toLocaleString('fr-FR', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }, [consultation.createdAt]);
+
+    const clientName = useMemo(() => {
+        const firstName = consultation.formData?.firstName || consultation.formData?.prenoms || '';
+        const lastName = consultation.formData?.lastName || consultation.formData?.nom || '';
+        return `${firstName} ${lastName}`.trim();
+    }, [consultation.formData?.firstName, consultation.formData?.lastName, consultation.formData?.prenoms, consultation.formData?.nom]);
+
+    const tierceName = useMemo(() => {
+        if (!consultation.tierce) return null;
+        return `${consultation.tierce.prenoms || ''} ${consultation.tierce.nom || ''}`.trim();
+    }, [consultation.tierce]);
+
+    const email = consultation.clientId?.email || null;
+    const phone = consultation.clientId?.phone || null;
+    const isCompleted = consultation.status === 'COMPLETED';
+    const isNotified = Boolean(consultation.analysisNotified);
+    const canGenerateAnalysis = isPaid && !isCompleted && !isGenerating;
+  
     return (
         <motion.div
             layout
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 
-               dark:border-gray-800 p-2.5 transition-shadow overflow-hidden relative"
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            className="relative bg-gradient-to-br from-white via-white to-gray-50/50
+                       dark:from-slate-900 dark:via-slate-900 dark:to-slate-800/50
+                       rounded-2xl border-2 border-gray-200/60 dark:border-slate-700/60
+                       p-4 shadow-lg hover:shadow-2xl hover:shadow-purple-500/10 dark:hover:shadow-purple-500/20
+                       transition-all duration-300 overflow-hidden group"
         >
+            {/* Animated gradient border */}
             <motion.div
+                variants={shimmerVariants}
+                animate="animate"
+                className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 
+                           transition-opacity duration-300 pointer-events-none"
+                style={{
+                    background: `linear-gradient(90deg, transparent, ${typeConfig.gradient.includes('purple') ? 'rgba(168, 85, 247, 0.1)' : 'rgba(99, 102, 241, 0.1)'}, transparent)`,
+                    backgroundSize: '200% 100%'
+                }}
+            />
+
+            {/* Top gradient bar with glow */}
+            <motion.div
+                variants={shimmerVariants}
+                animate="animate"
                 className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${typeConfig.gradient}`}
-                animate={{
-                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
-                }}
-                transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "linear"
-                }}
                 style={{ backgroundSize: '200% 200%' }}
             />
-            <div className="flex items-start justify-between mb-1.5 mt-1">
-                <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                    <span className="text-lg flex-shrink-0">{typeConfig.icon}</span>
-                    <div className="flex-1 min-w-0">
-                        <h3 className="text-xs font-bold text-gray-900 dark:text-gray-100 truncate">
-                            {typeConfig.text}
-                        </h3>
-                        <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate leading-tight">
-                            {consultation.title}
-                        </p>
-                    </div>
-                </div>
-                <StatusBadge status={consultation.status} />
-            </div>
+            <motion.div
+                variants={glowVariants}
+                animate="animate"
+                className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${typeConfig.gradient} blur-sm`}
+                style={{ backgroundSize: '200% 200%' }}
+            />
 
-            <div className="grid grid-cols-2 gap-1 mb-1.5 text-[10px]">
-                <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400 truncate">
-                    <User className="w-2.5 h-2.5 flex-shrink-0" />
-                    <span className="truncate font-medium">
-                        {consultation.formData?.prenoms} {consultation.formData?.nom}
-                    </span>
-                </div>
-                {consultation.clientId?.email && (
-                    <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400 truncate">
-                        <Mail className="w-2.5 h-2.5 flex-shrink-0" />
-                        <span className="truncate">{consultation.clientId.email}</span>
-                    </div>
-                )}
-            </div>
+            <CardHeader
+                typeConfig={typeConfig}
+                title={consultation.title}
+                status={consultation.status}
+                StatusBadgeComponent={StatusBadge}
+            />
 
-            <div className="flex gap-1 overflow-x-auto scrollbar-hide mb-2 pb-0.5">
-                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 flex-shrink-0 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800">
-                    <Calendar className="w-2 h-2" />
-                    {new Date(consultation.createdAt).toLocaleString('fr-FR', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    })}
-                </span>
-                {hasResultData && (
-                    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 flex-shrink-0 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-800">
-                        🔢 Numérologie
-                    </span>
-                )}
-                {hasCarteDuCiel && (
-                    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 flex-shrink-0 dark:bg-indigo-900/30 dark:text-indigo-400 dark:border-indigo-800">
-                        ⭐ Astrologie
-                    </span>
-                )}
-            </div>
+            <ClientInfo 
+                clientName={clientName} 
+                email={email} 
+                phone={phone}
+                tierceName={tierceName}
+                hasTierce={hasTierce}
+            />
 
-           
+            <ConsultationBadges
+                formattedDate={formattedDate}
+                hasResultData={hasResultData}
+                hasCarteDuCiel={hasCarteDuCiel}
+                isPaid={isPaid}
+            />
 
-            <div className="grid grid-cols-2 gap-1.5">
-                {consultation.status === 'COMPLETED' && (
-                    <a
-                        href={`/admin/consultations/${consultation.id}`}
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-1 px-2.5 py-1.5 
-                   bg-gradient-to-r from-purple-600 to-purple-700 text-white 
-                   text-[10px] rounded-lg font-semibold
-                   hover:from-purple-700 hover:to-purple-800 
-                   transition-all active:scale-95 shadow-sm hover:shadow-md"
-                    >
-                        <Eye className="w-3 h-3" />
-                        Voir
-                    </a>
-                )}
+            <CardActions
+                isCompleted={isCompleted}
+                isNotified={isNotified}
+                consultationId={consultation.id}
+                canGenerateAnalysis={canGenerateAnalysis}
+                onGenerateAnalysis={onGenerateAnalysis}
+                isGenerating={isGenerating}
+            />
 
-                {consultation.analysisNotified && (
-                    <span
-                        className="inline-flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-[10px] font-bold bg-gradient-to-r from-emerald-400 via-green-500 to-lime-400 text-white shadow-lg animate-pulse"
-                    >
-                        <Mail className="w-3 h-3" />
-                        Notifié
-                    </span>
-                )}
-
-                <button
-                    onClick={() => onGenerateAnalysis(consultation.id)}
-                    disabled={isGenerating || hasResultData}
-                    className="flex items-center justify-center gap-1 px-2.5 py-1.5 
-                   bg-gradient-to-r from-blue-600 to-blue-700 text-white 
-                   text-[10px] rounded-lg font-semibold
-                   hover:from-blue-700 hover:to-blue-800 
-                   transition-all active:scale-95 shadow-sm hover:shadow-md
-                   disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    <Sparkles className={`w-3 h-3 ${isGenerating ? 'animate-spin' : ''}`} />
-                    {isGenerating ? 'Génération...' : hasResultData ? 'Généré' : 'Générer'}
-                </button>
-            </div>
+            {/* Floating particles effect */}
+            <motion.div
+                variants={floatingParticle1Variants}
+                animate="animate"
+                className="absolute top-4 right-4 w-2 h-2 rounded-full bg-purple-400/30 blur-sm"
+            />
+            <motion.div
+                variants={floatingParticle2Variants}
+                animate="animate"
+                className="absolute bottom-4 left-4 w-2 h-2 rounded-full bg-fuchsia-400/30 blur-sm"
+            />
         </motion.div>
     );
 }, (prevProps, nextProps) => {
@@ -141,6 +137,11 @@ const ConsultationCard = memo(({
         prevProps.consultation.id === nextProps.consultation.id &&
         prevProps.consultation.status === nextProps.consultation.status &&
         prevProps.consultation.resultData === nextProps.consultation.resultData &&
+        prevProps.consultation.analysisNotified === nextProps.consultation.analysisNotified &&
+        prevProps.consultation.isPaid === nextProps.consultation.isPaid &&
+        prevProps.consultation.tierce === nextProps.consultation.tierce &&
+        prevProps.consultation.formData?.firstName === nextProps.consultation.formData?.firstName &&
+        prevProps.consultation.formData?.lastName === nextProps.consultation.formData?.lastName &&
         prevProps.isGenerating === nextProps.isGenerating &&
         prevProps.isNotifying === nextProps.isNotifying
     );

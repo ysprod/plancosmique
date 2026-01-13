@@ -45,25 +45,37 @@ const Slide4SectionMain: React.FC<Slide4SectionMainProps> = ({
           </motion.div>
         )}
         {step === 'form' && (
-          <ConsultationForm
-            form={form}
-            errors={errors}
-            handleChange={handleChange}
-            apiError={apiError}
-            handleSubmit={handleSubmit}
-            resetSelection={resetSelection || handleBack}
-          />
+          <motion.div key="form" variants={containerVariants} initial="hidden" animate="visible" exit="exit">
+            <ConsultationForm
+              form={form}
+              errors={errors}
+              handleChange={handleChange}
+              apiError={apiError}
+              handleSubmit={handleSubmit}
+              resetSelection={resetSelection || handleBack}
+            />
+          </motion.div>
         )}
-        {paymentLoading && <Slide4SectionProcessing />}
+        {step === 'processing' && paymentLoading && (
+          <motion.div key="processing">
+            <Slide4SectionProcessing />
+          </motion.div>
+        )}
         {step === 'consulter' && consultationId && consultation && (
-          <Slide4SectionConsulter
-            consultation={consultation}
-            walletOfferings={walletOfferings}
-            handleOfferingValidation={handleOfferingValidation}
-            handleBack={handleBack}
-          />
+          <motion.div key="consulter" variants={containerVariants} initial="hidden" animate="visible" exit="exit">
+            <Slide4SectionConsulter
+              consultation={consultation}
+              walletOfferings={walletOfferings}
+              handleOfferingValidation={handleOfferingValidation}
+              handleBack={handleBack}
+            />
+          </motion.div>
         )}
-        {step === 'genereanalyse' && consultationId && <Slide4SectionGenereAnalyse />}
+        {step === 'genereanalyse' && consultationId && (
+          <motion.div key="genereanalyse" variants={containerVariants} initial="hidden" animate="visible" exit="exit">
+            <Slide4SectionGenereAnalyse />
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
     <Slide4SectionErrorToast showErrorToast={showErrorToast} apiError={apiError} handleCloseError={handleCloseError} />

@@ -71,6 +71,13 @@ export default function HeaderContent() {
     setMobileMenuOpen(false);
   }, []);
 
+  const userBadge = useMemo(() => {
+    if (hasRole(Role.ADMIN) || hasRole(Role.SUPER_ADMIN)) {
+      return { text: 'Admin ⚡', label: 'Membre Admin' };
+    }
+    return { text: 'Premium ⭐', label: 'Membre Premium' };
+  }, [hasRole]);
+
   const navItems = useMemo(() => [
     ...(hasRole(Role.SUPER_ADMIN) ? [
       { href: "/admin", label: "Administration", icon: LayoutDashboard }
@@ -224,7 +231,7 @@ export default function HeaderContent() {
                       {user?.username || "Utilisateur"}
                     </p>
                     <p className="text-xs bg-gradient-to-r from-violet-600 to-fuchsia-600 text-transparent bg-clip-text font-black">
-                      Premium ⭐
+                      {userBadge.text}
                     </p>
                   </div>
 
@@ -263,7 +270,7 @@ export default function HeaderContent() {
                             <p className="text-sm font-bold text-gray-900 dark:text-white truncate max-w-[150px]">
                               {user?.username}
                             </p>
-                            <p className="text-xs text-violet-600 dark:text-violet-400 font-semibold">Membre Premium</p>
+                            <p className="text-xs text-violet-600 dark:text-violet-400 font-semibold">{userBadge.label}</p>
                           </div>
                         </div>
                         {user?.email && (
@@ -401,7 +408,7 @@ export default function HeaderContent() {
                         {user?.username || "Utilisateur"}
                       </p>
                       <p className="text-sm bg-gradient-to-r from-violet-600 to-fuchsia-600 text-transparent bg-clip-text font-bold">
-                        Membre Premium ⭐
+                        {userBadge.label} {userBadge.text.includes('⭐') ? '⭐' : '⚡'}
                       </p>
                       {user?.email && (
                         <p className="text-xs text-slate-600 dark:text-slate-400 truncate mt-0.5">{user.email}</p>

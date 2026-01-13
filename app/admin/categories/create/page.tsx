@@ -5,6 +5,8 @@ import CreateCategoryTitle from "@/components/admin/categories/create/CreateCate
 import { useCreateCategoryPage } from "@/hooks/commons/useCreateCategoryPage";
 import { useReducedMotion } from "framer-motion";
 
+export const dynamic = "force-dynamic";
+
 export default function CreateCategoryPage() {
   const reducedMotion = useReducedMotion();
   const {

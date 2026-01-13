@@ -38,10 +38,9 @@ export const ConsultationsList: React.FC<ConsultationsListProps> = ({
             <ConsultationCard
               consultation={consultation}
               onGenerateAnalysis={onGenerateAnalysis}
-              isGenerating={generatingIds.has(consultation.id)}
-              isNotifying={notifyingIds.has(consultation.id)}
+              isGenerating={generatingIds.has(consultation._id)}
+              isNotifying={notifyingIds.has(consultation._id)}
             />
-              {/* <AnalysisPreview analysis={consultation} /> */}
           </div>
         ))}
       </AnimatePresence>

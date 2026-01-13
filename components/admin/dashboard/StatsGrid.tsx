@@ -20,10 +20,10 @@ interface StatsGridProps {
 const StatsGrid = memo<StatsGridProps>(({ stats, derivedStats }) => (
   <motion.div
     variants={itemVariants}
-    className="grid grid-cols-2 lg:grid-cols-4 gap-3"
+    className="grid grid-cols-2 lg:grid-cols-4 gap-6 m-8"
   >
     <StatCard
-      title="Total Utilisateurs"
+      title="Utilisateurs"
       value={stats.users.total.toLocaleString()}
       icon={Users}
       color="blue"
@@ -43,7 +43,7 @@ const StatsGrid = memo<StatsGridProps>(({ stats, derivedStats }) => (
       }}
     />
     <StatCard
-      title="Paiements Réussis"
+      title="Paiements"
       value={stats.payments.completed.toLocaleString()}
       icon={CreditCard}
       color="purple"
@@ -53,7 +53,7 @@ const StatsGrid = memo<StatsGridProps>(({ stats, derivedStats }) => (
       }}
     />
     <StatCard
-      title="Revenu Total"
+      title="Revenu"
       value={`${stats.consultations.revenue.toLocaleString()} F`}
       icon={DollarSign}
       color="orange"

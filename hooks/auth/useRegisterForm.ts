@@ -19,8 +19,8 @@ const PASSWORD_MIN_LENGTH = 8;
 
 const GENDER_OPTIONS = [
   { value: '', label: 'Sélectionner' },
-  { value: 'Homme', label: 'Homme' },
-  { value: 'Femme', label: 'Femme' },
+  { value: 'male', label: 'Homme' },
+  { value: 'female', label: 'Femme' },
 ] as const;
 
 const calculatePasswordStrength = (password: string): number => {

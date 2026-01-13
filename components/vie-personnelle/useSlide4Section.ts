@@ -39,6 +39,7 @@ export function useSlide4Section(rubrique: Rubrique) {
     dateNaissance: '',
     villeNaissance: '',
     heureNaissance: '',
+    gender: '',
   });
   const [formErrors, setFormErrors] = useState<any>({});
   const router = useRouter();
@@ -254,9 +255,31 @@ export function useSlide4Section(rubrique: Rubrique) {
     e.preventDefault();
     setApiError(null);
     setPaymentLoading(true);
+
+    // Vérifications préalables
+    if (!formData) {
+      setApiError('Données du formulaire manquantes');
+      setPaymentLoading(false);
+      return;
+    }
+
+    if (!userData) {
+      setApiError('Chargement des données utilisateur en cours, veuillez patienter.');
+      setPaymentLoading(false);
+      return;
+    }
+
+    if (!pendingChoice) {
+      setApiError('Aucun choix sélectionné');
+      setPaymentLoading(false);
+      return;
+    }
+
+    console.log('Submitting form data:', formData);
+
     // Validation simple (à adapter selon besoins)
     const errors: any = {};
-    ['nom','prenoms','dateNaissance','villeNaissance','heureNaissance'].forEach(field => {
+    ['nom', 'prenoms', 'dateNaissance', 'villeNaissance', 'heureNaissance'].forEach(field => {
       if (!formData[field]) errors[field] = 'Champ requis';
     });
     setFormErrors(errors);
@@ -264,15 +287,15 @@ export function useSlide4Section(rubrique: Rubrique) {
       setPaymentLoading(false);
       return;
     }
+
     try {
-      if (!pendingChoice) throw new Error('Aucun choix sélectionné');
-       const mappedFormData = mapFormDataToBackend(userData);
+      const mappedFormData = mapFormDataToBackend(userData);
       const payload = {
         serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
         type: rubrique?.typeconsultation,
         title: pendingChoice.title,
         formData: mappedFormData,
-        tierce:formData,
+        tierce: formData,
         description: pendingChoice.description,
         status: 'PENDING',
         alternatives: pendingChoice.offering.alternatives,

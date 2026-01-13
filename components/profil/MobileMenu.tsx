@@ -2,12 +2,19 @@
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { User, LogOut } from "lucide-react";
+import { useAuth } from "@/lib/auth/AuthContext";
+import { Role } from "@/lib/interfaces";
 
 export default function MobileMenu({ mobileMenuOpen, user, handleLogout }: {
   mobileMenuOpen: boolean;
   user: any;
   handleLogout: () => void;
 }) {
+  const { hasRole } = useAuth();
+  const userBadge = (hasRole(Role.ADMIN) || hasRole(Role.SUPER_ADMIN)) 
+    ? "Membre Admin ⚡" 
+    : "Membre Premium ⭐";
+
   return (
     <AnimatePresence>
       {mobileMenuOpen && (
@@ -28,7 +35,7 @@ export default function MobileMenu({ mobileMenuOpen, user, handleLogout }: {
                   {user?.firstName || "Utilisateur"}
                 </p>
                 <p className="text-xs text-violet-600 font-medium">
-                  Membre Premium
+                  {userBadge}
                 </p>
               </div>
             </div>

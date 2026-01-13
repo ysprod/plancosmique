@@ -28,8 +28,6 @@ function ProtectedRouteComponent({
     if (isLoading) return;
     if (!isAuthenticated) {
       router.push(loginUrl);
-    } else {
-      console.warn('[ProtectedRoute] ✅ Authentifié');
     }
   }, [isAuthenticated, isLoading, router, loginUrl]);
 
