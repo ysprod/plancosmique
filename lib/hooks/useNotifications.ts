@@ -27,7 +27,7 @@ export function useNotifications(pollingInterval: number = 300000) {
   const markAsRead = useCallback(async (notificationId: string) => {
     try {
       await notificationsService.markAsRead(notificationId);
-      setNotifications(prev => prev.map(n => 
+      setNotifications(prev => prev.map(n =>
         n._id === notificationId ? { ...n, isRead: true } : n
       ));
       setUnreadCount(prev => Math.max(0, prev - 1));
@@ -75,7 +75,7 @@ export function useNotifications(pollingInterval: number = 300000) {
 
     // Utilisateur connecté, lancer le polling
     fetchNotifications();
-    
+
     if (pollingInterval > 0) {
       const interval = setInterval(fetchNotifications, pollingInterval);
       return () => clearInterval(interval);

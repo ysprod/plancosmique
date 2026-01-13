@@ -1,12 +1,9 @@
-import { useCallback, useEffect, useState, useMemo } from 'react';
 import { moneyFusionService } from '@/lib/api/services/moneyfusion.service';
 import type {
-    InitiatePaymentConfig,
-    InitiatePaymentResult,
-    PaymentState,
-    PaymentStatus,
-    VerifyPaymentResult,
+    InitiatePaymentConfig, InitiatePaymentResult, PaymentState,
+    PaymentStatus, VerifyPaymentResult,
 } from '@/lib/types/moneyfusion.types';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export interface UseMoneyFusionOptions {
     autoVerify?: boolean;

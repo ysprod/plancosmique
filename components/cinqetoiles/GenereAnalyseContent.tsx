@@ -82,7 +82,7 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
     <div className=" bg-gradient-to-br from-gray-50 via-white to-purple-50/30 \
                   dark:from-gray-950 dark:via-gray-900 dark:to-purple-950/10">
 
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <main className="max-w-3xl mx-auto ">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -113,7 +113,7 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
           </motion.div>
           <motion.div
             variants={itemVariants}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-3"
           >
             <div className="p-3 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 \
                           dark:from-green-900/20 dark:to-emerald-900/10 \
@@ -130,13 +130,9 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
               </p>
             </div>
           </motion.div>
-
-
-
-          {/* Footer léger */}
           <motion.div
             variants={itemVariants}
-            className="pt-6 border-t border-gray-100 dark:border-gray-700/50"
+            className="border-t border-gray-100 dark:border-gray-700/50"
           >
             <p className="text-xs text-center text-gray-500 dark:text-gray-400 \
                          flex items-center justify-center gap-1.5">

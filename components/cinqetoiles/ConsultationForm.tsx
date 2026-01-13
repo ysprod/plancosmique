@@ -1,5 +1,4 @@
 import InputField from '@/components/vie-personnelle/InputField';
-import { birthCountries } from '@/lib/birthCountries';
 import { motion } from 'framer-motion';
 import { AlertCircle, Info, Sparkles } from 'lucide-react';
 import React from 'react';
@@ -21,13 +20,12 @@ const ConsultationForm: React.FC<Props> = ({
   handleSubmit,
   resetSelection,
 }) => {
-  const countryOptions = React.useMemo(() => ['', ...birthCountries], []);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="mt-6 bg-white p-6 sm:p-8 rounded-3xl shadow-2xl border-2 border-purple-200 max-w-3xl mx-auto"
+      className="bg-white p-6 sm:p-8 rounded-3xl shadow-2xl border-2 border-purple-200 max-w-3xl mx-auto"
     >
       <div className="mb-8 pb-6 border-b-2 border-purple-100">
         <div className="flex items-start gap-3 mb-4">

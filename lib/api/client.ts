@@ -48,7 +48,8 @@ const apiClient: AxiosInstance = axios.create({
 apiClient.interceptors.request.use(
   async (requestConfig: InternalAxiosRequestConfig) => {
     // Ne pas ajouter de token pour les routes publiques
-    const publicRoutes = ['/auth/login', '/auth/register', '/services'];
+    const publicRoutes = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/logout', '/services'];
+
     const isPublicRoute = publicRoutes.some((route) =>
       requestConfig.url?.includes(route)
     );
@@ -60,13 +61,19 @@ apiClient.interceptors.request.use(
     const accessToken = getAccessToken();
 
     if (accessToken) {
-      // Vérifier si le token est proche de l'expiration
+      // Vérifier si le token est proche de l'expiration (mais pas pendant un refresh en cours)
       if (isTokenExpiringSoon(accessToken) && !isRefreshing) {
         try {
-          await refreshAccessToken();
-          const newToken = getAccessToken();
-          if (newToken) {
-            requestConfig.headers.Authorization = `Bearer ${newToken}`;
+          const refreshToken = getRefreshToken();
+          // Ne tenter le refresh que si on a un refresh token
+          if (refreshToken) {
+            await refreshAccessToken();
+            const newToken = getAccessToken();
+            if (newToken) {
+              requestConfig.headers.Authorization = `Bearer ${newToken}`;
+            }
+          } else {
+            requestConfig.headers.Authorization = `Bearer ${accessToken}`;
           }
         } catch (error) {
           console.error('Error refreshing token:', error);
@@ -97,6 +104,18 @@ apiClient.interceptors.response.use(
 
     // Erreur 401 - Token expiré ou invalide
     if (error.response?.status === 401 && !originalRequest._retry) {
+      // Vérifier si on a un refresh token avant de tenter le refresh
+      const refreshToken = getRefreshToken();
+
+      if (!refreshToken) {
+        // Pas de refresh token, rediriger vers login
+        clearAuth();
+        if (typeof window !== 'undefined' && !window.location.pathname.includes('/auth/login')) {
+          window.location.href = config.routes.login;
+        }
+        return Promise.reject(error);
+      }
+
       if (isRefreshing) {
         // Attendre que le refresh soit terminé
         return new Promise((resolve, reject) => {
@@ -124,7 +143,7 @@ apiClient.interceptors.response.use(
         clearAuth();
 
         // Rediriger vers la page de connexion
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && !window.location.pathname.includes('/auth/login')) {
           window.location.href = config.routes.login;
         }
 

@@ -1,3 +1,4 @@
+export type RubriqueOrNone = Rubrique | null;
 export type Category = 'animal' | 'vegetal' | 'beverage';
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';
 export type GenerationStep = 'loading' | 'fetching' | 'generating' | 'success' | 'error';
@@ -400,7 +401,6 @@ export interface Payment {
 }
 
 export interface User {
-  createdAt: string | number | Date;
   _id?: string;
   email: string;
   nom: string;
@@ -417,6 +417,7 @@ export interface User {
   heureNaissance?: string;
   password?: string;
   role?: Role;
+  createdAt: string | number | Date;
   customPermissions?: Permission[];
   dateOfBirth?: Date;
   address?: string;
@@ -444,7 +445,6 @@ export interface User {
   avatar?: string;
   updatedAt?: string | Date;
 }
-
 
 export interface SpiritualPractice {
   _id: string;
@@ -553,8 +553,6 @@ export interface CategorieAdmin {
   rubriques: Rubrique[];
 }
 
-export type RubriqueOrNone = Rubrique | null;
-
 export interface DoneChoice {
   _id: string;
   userId: string;
@@ -567,7 +565,6 @@ export interface DoneChoice {
   updatedAt: string;
   __v: number;
 }
-
 
 export enum Role {
   SUPER_ADMIN = 'SUPER_ADMIN',
@@ -607,8 +604,6 @@ export enum Permission {
   MANAGE_PERMISSIONS = 'MANAGE_PERMISSIONS',
   SYSTEM_CONFIG = 'SYSTEM_CONFIG'
 }
-
-
 
 export interface CarteDuCielData {
   sujet: {
@@ -654,8 +649,6 @@ export interface ProcessedUserData {
   emailVerified: boolean;
   carteDuCiel?: CarteDuCiel | CarteDuCielBase;
 }
-
-
 
 export interface CarteDuCielData {
   sujet: {

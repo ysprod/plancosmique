@@ -20,9 +20,7 @@ const PaymentCallbackContent = () => {
 
   const { containerVariants, itemVariants, pulseVariants } = useAnimationVariants();
 
-  if (isLoading) {
-    return <LoadingState />;
-  }
+  if (isLoading) { return <LoadingState />; }
 
   return (
     <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 flex items-center justify-center p-3 sm:p-4 relative overflow-hidden">

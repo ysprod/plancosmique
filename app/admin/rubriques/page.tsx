@@ -23,7 +23,9 @@ export default function RubriquesAdminPage() {
   return (
     <div className="bg-gradient-to-br from-slate-50 via-violet-50 to-purple-50 p-4">
       <div className="max-w-7xl mx-auto">
+
         <RubriquesTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+
         {activeTab === 'gestion' && (
           <>
             <RubriquesHeader
@@ -66,7 +68,9 @@ export default function RubriquesAdminPage() {
             )}
           </>
         )}
+
         {activeTab === 'overview' && (<RubriquesOverviewPage />)}
+
       </div>
       <RubriquesToast toast={toast} onClose={() => setToast(null)} />
     </div>

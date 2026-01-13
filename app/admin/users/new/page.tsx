@@ -6,8 +6,7 @@ import { useNewUserPage } from '@/hooks/admin/useNewUserPage';
 
 export default function NewUserPage() {
   const {
-    formData, saving, toast, isFormValid, errors, setToast,
-    handleChange, handleSubmit,
+    formData, saving, toast, isFormValid, errors, setToast, handleChange, handleSubmit,
   } = useNewUserPage();
 
   return (
@@ -16,6 +15,7 @@ export default function NewUserPage() {
         <NewUserHeader />
 
         <NewUserToast toast={toast} onClose={() => setToast(null)} />
+
         <NewUserForm
           formData={formData}
           errors={errors}

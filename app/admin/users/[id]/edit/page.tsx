@@ -15,8 +15,11 @@ export default function EditUserPage() {
   return (
     <div className="bg-gradient-to-br from-slate-50 to-violet-50 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
+
         <EditUserHeader />
+
         {success && <EditUserSuccessAlert />}
+
         {error && <EditUserErrorAlert error={error} onClose={() => setError(null)} />}
 
         <EditUserForm
@@ -26,6 +29,7 @@ export default function EditUserPage() {
           success={success}
           onSubmit={handleSubmit}
         />
+
       </div>
     </div>
   );

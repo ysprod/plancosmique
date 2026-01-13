@@ -23,9 +23,11 @@ export const authService = {
   /**
    * Connexion utilisateur
    */
-  login: async (data: LoginDto): Promise<AuthResponse> => {
+  login: async (data: LoginDto): Promise<AuthResponse> => {     
     const response = await api.post<AuthResponse>(endpoints.auth.login, data);
     const { accessToken, refreshToken, user } = response.data;
+
+    console.log('✅ Connexion réussie pour:', user.username || user.prenoms);
 
     // Stocker les tokens et l'utilisateur
     setAccessToken(accessToken);

@@ -167,7 +167,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             focus:text-white focus:rounded-2xl focus:shadow-2xl focus:font-bold focus:text-sm
             focus:outline-none focus:ring-4 focus:ring-violet-300 dark:focus:ring-violet-800"
         >
-          Aller au contenu principal
+          Aller au contenu principal.
         </a>
         <ThemeProvider
           attribute="class"

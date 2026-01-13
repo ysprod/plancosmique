@@ -35,7 +35,7 @@ export default function OffrandesGestionPanel({
         <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              {offerings.length} offrande{offerings.length > 1 ? 's' : ''} • Marché Spirituel
+              {offerings.length} offrande{offerings.length > 1 ? 's' : ''}  
             </p>
           </div>
           <div className="flex gap-2">

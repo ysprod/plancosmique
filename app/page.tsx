@@ -28,7 +28,7 @@ export default function WelcomePage() {
           transition={{ delay: 0.1 }}
           className="text-center text-sm sm:text-base text-gray-700 mb-5 px-2 leading-relaxed"
         >
-          Bienvenue dans ce temple virtuel, où chacun vient chercher une réponse aux trois grandes questions de l'existence :
+          Bienvenue dans ce temple, où chacun vient chercher une réponse aux trois grandes questions de l'existence :
         </motion.p>
         <WelcomeQuestions />
         <WelcomeIntro />

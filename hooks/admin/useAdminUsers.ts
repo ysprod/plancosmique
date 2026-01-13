@@ -57,7 +57,6 @@ export function useAdminUsers(options: UseAdminUsersOptions = {}) {
 
   useEffect(() => {
     fetchUsers();
-    // No abort logic
   }, [fetchUsers]);
 
   return { users, total, loading, error, refetch: fetchUsers };

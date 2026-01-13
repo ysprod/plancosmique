@@ -7,8 +7,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 export default function VoyancePage() {
   const {
-    name, birthDate, selectedCategory, setSelectedCategory, setName, setBirthDate,
-    question, isRevealing, prediction, setQuestion, handleReveal, handleReset
+    question, isRevealing, prediction, name, birthDate, selectedCategory,
+    setSelectedCategory, setName, setBirthDate, setQuestion, handleReveal, handleReset
   } = useVoyancePage();
 
   return (
