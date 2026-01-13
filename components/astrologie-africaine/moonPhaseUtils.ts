@@ -21,7 +21,7 @@ export const normalizeIllumination = (value: any): number => {
   if (isNaN(num) || !isFinite(num)) return 0;
   return Math.max(0, Math.min(100, Math.round(num)));
 };
-// Utilitaires partagés pour MoonPhaseWidget et DayCard
+ 
 export const getPhaseConfig = (phaseName: string) => {
   const PHASE_CONFIG = {
     nouvelle: { badge: "from-indigo-500 to-purple-600", ring: "ring-indigo-500/30", emoji: "🌑" },

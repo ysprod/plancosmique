@@ -17,12 +17,7 @@ interface CategoryClientViewProps {
 }
 
 const CategoryClientView: React.FC<CategoryClientViewProps> = ({ category }) => {
-
- 
-
-  const { rubriques, rubriqueCourante, setRubriqueCourante, ui,handleOpenRubriqueById } = useCategoryClientView(category);
-
- 
+  const { rubriques, rubriqueCourante, setRubriqueCourante, ui, handleOpenRubriqueById } = useCategoryClientView(category);
 
   return (
     <div className="bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">

@@ -52,4 +52,5 @@ export const StatusBanner = memo(({ hasSelection, isSufficient }: StatusBannerPr
     </motion.div>
   );
 });
+
 StatusBanner.displayName = "StatusBanner";

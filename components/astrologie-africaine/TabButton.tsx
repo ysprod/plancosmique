@@ -48,6 +48,7 @@ const TabButton = memo<TabButtonProps>(({ tab, isActive, onClick }) => (
     </div>
   </motion.button>
 ));
+
 TabButton.displayName = 'TabButton';
 
 export { TabButton };

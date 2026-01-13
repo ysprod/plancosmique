@@ -2,8 +2,9 @@ import React from "react";
 import { useCallback, useEffect, useMemo } from "react";
 import { Rubrique } from "@/lib/interfaces";
 export { useCategoryClientView } from "./useCategoryClientView";
-import { getRubriqueId, getRubriqueFromUrl, setRubriqueInUrl } from "@/components/categorie/categoryClientViewUtils";
+import { getRubriqueFromUrl, setRubriqueInUrl } from "@/components/categorie/categoryClientViewUtils";
 import { CategorieAdmin } from "@/lib/interfaces";
+import { getRubriqueId } from "@/lib/functions";
 
 export function useCategoryClientViewMain(category: CategorieAdmin) {
     const [rubriques, setRubriques] = React.useState<Rubrique[]>(category.rubriques || []);

@@ -4,7 +4,7 @@ import { NumerologieConsultationSection } from "../numerologie/NumerologieConsul
 import HoroscopeConsultationSection from "../vie-personnelle/HoroscopeConsultationSection";
 import Slide4Section from "../vie-personnelle/Slide4Section";
 import RubriqueHeader from "./RubriqueHeader";
-import { useRubriqueDerived } from "./useRubriqueDerived";
+import { useRubriqueDerived } from "../../hooks/commons/useRubriqueDerived";
 
 export function RubriqueView({ rubrique }: { rubrique: Rubrique }) {
   const derived = useRubriqueDerived(rubrique);

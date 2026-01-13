@@ -12,8 +12,8 @@ export default function WelcomeHeader() {
       <Image
         src="/logo.png"
         alt="Mon Étoile"
-        width={80}
-        height={80}
+        width={90}
+        height={90}
         className="mx-auto mb-2"
         priority
       />

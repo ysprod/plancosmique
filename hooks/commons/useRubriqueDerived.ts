@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { Rubrique } from "@/lib/interfaces";
-import { getBorderGradientFromId } from "./getBorderGradient";
+import { getBorderGradientFromId } from "../../components/categorie/getBorderGradient";
 
 import { useRubriqueUtils } from './useRubriqueUtils';
 export function useRubriqueDerived(rub: Rubrique) {

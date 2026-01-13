@@ -4,7 +4,7 @@ import React, { memo } from "react";
 import CategoryBackButton from "./CategoryBackButton";
 import CategoryDescription from "./CategoryDescription";
 import CategoryTitle from "./CategoryTitle";
-import { useCategoryHeader } from "./useCategoryHeader";
+import { useCategoryHeader } from "../../hooks/commons/useCategoryHeader";
 
 interface CategoryHeaderProps {
   category: CategorieAdmin;

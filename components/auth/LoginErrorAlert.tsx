@@ -14,6 +14,7 @@ const LoginErrorAlert = memo(({ message }: { message: string }) => (
     <p className="text-red-700 dark:text-red-300 text-xs leading-relaxed">{message}</p>
   </motion.div>
 ));
+
 LoginErrorAlert.displayName = 'LoginErrorAlert';
 
 export default LoginErrorAlert;

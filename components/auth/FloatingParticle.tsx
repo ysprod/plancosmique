@@ -36,4 +36,5 @@ const FloatingParticle = memo<FloatingParticleProps>(({ Icon, delay, x, y, color
 ), (prev, next) => prev.delay === next.delay);
 
 FloatingParticle.displayName = 'FloatingParticle';
+
 export default FloatingParticle;

@@ -92,14 +92,13 @@ export default function HeaderContent() {
         />
       </motion.div>
 
-      {/* Header Principal */}
       <motion.header
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, type: "spring", stiffness: 120 }}
         className={`fixed ${user ? 'top-1' : 'top-0'} left-0 right-0 z-40 transition-all duration-300 ${isScrolled
-            ? 'bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl shadow-lg shadow-violet-500/5 dark:shadow-violet-500/10 border-b border-violet-100/50 dark:border-slate-800'
-            : 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-md'
+          ? 'bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl shadow-lg shadow-violet-500/5 dark:shadow-violet-500/10 border-b border-violet-100/50 dark:border-slate-800'
+          : 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-md'
           }`}
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3">
@@ -271,7 +270,7 @@ export default function HeaderContent() {
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 truncate">{user.email}</p>
                         )}
                       </div>
-           
+
                       <div className="p-2">
                         <Link href="/secured/settings" onClick={() => setShowUserMenu(false)}>
                           <motion.button

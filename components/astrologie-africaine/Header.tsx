@@ -18,7 +18,6 @@ export const MONTH_NAMES = [
 export const Header = memo<HeaderProps>(({ year, month, onPrevMonth, onNextMonth, loading }) => {
   return (
     <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-purple-900/70 to-slate-950 p-3 sm:p-4 shadow-xl border border-white/5">
-      {/* Fond subtil */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-500/5 via-transparent to-transparent" />
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-3">

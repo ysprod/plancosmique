@@ -31,7 +31,7 @@ export default function WelcomeIntro() {
           vos talents, harmoniser vos relations, et avancer avec clarté sur votre chemin spirituel.
         </p>
         <p className="text-xs sm:text-sm text-gray-700 leading-snug">
-          Parce qu'il existe un Plan Cosmique qui organise votre vie, votre thème astral devient ici
+          Parce qu'il existe un plan cosmique qui organise votre vie, votre thème astral devient ici
           une boussole sacrée, une mémoire profonde et une lumière qui vous éclaire, inspire vos choix
           et guide vos décisions.
         </p>

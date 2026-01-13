@@ -1,7 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
+import { Compass, Eye, Star } from 'lucide-react';
 import Link from 'next/link';
-import { Eye, Compass, Star } from 'lucide-react';
 
 const QUESTIONS = [
   { q: "QUI SUIS-JE ?", icon: Eye },

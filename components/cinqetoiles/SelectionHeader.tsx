@@ -27,6 +27,7 @@ const SelectionHeader = memo(() => (
     </motion.p>
   </motion.div>
 ));
+
 SelectionHeader.displayName = 'SelectionHeader';
 
 export default SelectionHeader;

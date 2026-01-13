@@ -13,7 +13,7 @@ interface ActionButtonsProps {
   onGoHome: () => void;
   itemVariants: Variants;
 }
- 
+
 export function ActionButtons({
   status,
   downloadUrl,
@@ -55,7 +55,6 @@ export function ActionButtons({
           </motion.button>
         )}
 
-        {/* Bouton Réessayer (pour les échecs) */}
         {(status === 'failure' || status === 'error') && (
           <motion.button
             whileHover={{ scale: 1.02 }}
@@ -68,7 +67,6 @@ export function ActionButtons({
           </motion.button>
         )}
 
-        {/* Bouton Retour Profil (toujours visible) */}
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}

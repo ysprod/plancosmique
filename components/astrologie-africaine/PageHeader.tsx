@@ -16,6 +16,7 @@ const PageHeader = memo(() => (
     </p>
   </motion.div>
 ));
+
 PageHeader.displayName = 'PageHeader';
 
 export { PageHeader };

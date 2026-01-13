@@ -21,6 +21,7 @@ const LoadingState = memo(() => (
     </p>
   </motion.div>
 ));
+
 LoadingState.displayName = 'LoadingState';
 
 export default LoadingState;

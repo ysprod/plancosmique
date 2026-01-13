@@ -41,7 +41,6 @@ const MoonPhaseDetailModal = memo<DetailModalProps>(({ day, onClose }) => {
                 onClick={(e) => e.stopPropagation()}
                 className="bg-white rounded-2xl p-4 sm:p-5 max-w-sm w-full shadow-2xl"
             >
-                {/* Header compact */}
                 <div className="flex items-center justify-between mb-5">
                     <div className="flex items-center gap-2.5">
                         <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${phaseConfig.badge} flex items-center justify-center shadow-lg`}>
@@ -62,7 +61,6 @@ const MoonPhaseDetailModal = memo<DetailModalProps>(({ day, onClose }) => {
                         <X className="w-4 h-4 text-gray-600" />
                     </motion.button>
                 </div>
-                {/* SVG */}
                 <div className="flex justify-center mb-5">
                     <motion.span
                         initial={prefersReducedMotion ? {} : { scale: 0.7, rotate: -90 }}
@@ -72,7 +70,6 @@ const MoonPhaseDetailModal = memo<DetailModalProps>(({ day, onClose }) => {
                         className="w-28 h-28"
                     />
                 </div>
-                {/* Infos compactes */}
                 <div className="space-y-3">
                     <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-3 border border-purple-100">
                         <div className="flex justify-between items-center mb-1.5">
@@ -84,7 +81,6 @@ const MoonPhaseDetailModal = memo<DetailModalProps>(({ day, onClose }) => {
                             <span className="text-sm font-black text-gray-900">{day.illumination}%</span>
                         </div>
                     </div>
-                    {/* Barre de progression */}
                     <div>
                         <div className="flex justify-between text-[10px] text-gray-600 mb-1.5">
                             <span>🌑 Nouvelle</span>
@@ -99,7 +95,6 @@ const MoonPhaseDetailModal = memo<DetailModalProps>(({ day, onClose }) => {
                             />
                         </div>
                     </div>
-                    {/* Conseil */}
                     <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-3 border border-indigo-200">
                         <div className="flex items-center gap-1.5 mb-1.5">
                             <Info className="w-3.5 h-3.5 text-indigo-600" />
@@ -108,7 +103,6 @@ const MoonPhaseDetailModal = memo<DetailModalProps>(({ day, onClose }) => {
                         <p className="text-xs text-gray-700 leading-relaxed">{advice}</p>
                     </div>
                 </div>
-                {/* CTA */}
                 <motion.button
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}

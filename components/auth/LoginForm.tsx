@@ -1,15 +1,14 @@
 'use client';
+import { useLoginForm } from '@/hooks/auth/useLoginForm';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import { Loader2, Lock, User } from 'lucide-react';
 import React, { memo, useEffect } from 'react';
-import LoginLogoHeader from './LoginLogoHeader';
 import LoginErrorAlert from './LoginErrorAlert';
-import LoginInputField from './LoginInputField';
-import LoginTitle from './LoginTitle';
-import LoginRegisterLink from './LoginRegisterLink';
 import LoginFooter from './LoginFooter';
-import { useLoginForm } from '@/hooks/auth/useLoginForm';
+import LoginInputField from './LoginInputField';
+import LoginLogoHeader from './LoginLogoHeader';
+import LoginRegisterLink from './LoginRegisterLink';
+import LoginTitle from './LoginTitle';
 
 const LoginForm = () => {
   const {
@@ -34,10 +33,10 @@ const LoginForm = () => {
       const password = passwordInput.value;
       if (username || password) {
         handleChange({
-          target: { name: 'username', value: username } 
+          target: { name: 'username', value: username }
         } as React.ChangeEvent<HTMLInputElement>);
         handleChange({
-          target: { name: 'password', value: password } 
+          target: { name: 'password', value: password }
         } as React.ChangeEvent<HTMLInputElement>);
       }
     }
@@ -56,17 +55,9 @@ const LoginForm = () => {
         <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl 
                       rounded-3xl shadow-2xl p-6 sm:p-8 
                       border border-gray-200 dark:border-gray-800">
-          
-          {/* Logo cliquable vers accueil */}
           <LoginLogoHeader />
-
-          {/* Titre */}
           <LoginTitle />
-
-          {/* Erreur globale */}
           {error && <LoginErrorAlert message={error} />}
-
-          {/* Formulaire */}
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <LoginInputField
               label="Nom Utilisateur"
@@ -119,12 +110,8 @@ const LoginForm = () => {
               )}
             </motion.button>
           </form>
-
-          {/* Lien inscription */}
           <LoginRegisterLink />
         </div>
-
-        {/* Footer discret */}
         <LoginFooter />
       </motion.div>
     </div>

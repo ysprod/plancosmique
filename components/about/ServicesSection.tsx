@@ -52,7 +52,6 @@ export default function ServicesSection() {
             Un accompagnement sur mesure pour tous vos projets
           </p>
         </motion.div>
-
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
             <motion.div

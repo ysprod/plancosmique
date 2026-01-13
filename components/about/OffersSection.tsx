@@ -49,7 +49,7 @@ export default function OffersSection() {
   return (
     <section className="bg-gradient-to-b from-gray-50 to-white py-16 px-4 dark:from-gray-800 dark:to-gray-900 sm:py-24 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        {/* Header */}
+ 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -69,7 +69,7 @@ export default function OffersSection() {
           </h2>
         </motion.div>
 
-        {/* Offers Grid */}
+  
         <div className="grid gap-8 lg:grid-cols-3">
           {offers.map((offer, index) => (
             <motion.div

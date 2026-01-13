@@ -93,4 +93,5 @@ export const OfferingCard = memo(({ offering, isSelected, availableQuantity, onS
     </motion.button>
   );
 });
+
 OfferingCard.displayName = "OfferingCard";

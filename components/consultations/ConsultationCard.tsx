@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Calendar, CheckCircle, Clock, Download, Eye, MapPin, Rocket, Shield, Sparkles, User } from 'lucide-react';
 import React, { memo, useCallback } from 'react';
 import TypeIndicator from './TypeIndicator';
-import useConsultationData from './useConsultationData';
+import useConsultationData from '../../hooks/commons/useConsultationData';
 
 export interface ConsultationCardProps {
   consultation: Consultation;
@@ -426,4 +426,5 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
 });
 
 ConsultationCard.displayName = 'ConsultationCard';
+
 export default ConsultationCard;

@@ -34,7 +34,6 @@ export function StatusCard({
       whileHover={{ y: -5 }}
       transition={{ type: 'spring', stiffness: 300 }}
     >
-      {/* Header avec statut */}
       <div className={`bg-gradient-to-r ${statusConfig.gradient} p-5 sm:p-8 text-center relative overflow-hidden`}>
         <motion.div
           className="absolute inset-0 bg-white/20"
@@ -117,7 +116,7 @@ export function StatusCard({
                 Redirection automatique dans
               </p>
             </div>
-            
+
             <motion.div
               key={autoRedirectCountdown}
               initial={{ scale: 1.2 }}
@@ -127,7 +126,7 @@ export function StatusCard({
             >
               {autoRedirectCountdown}
             </motion.div>
-            
+
             <p className="text-purple-700 text-xs sm:text-sm">secondes...</p>
           </motion.div>
         )}

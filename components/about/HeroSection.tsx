@@ -49,7 +49,7 @@ export default function HeroSection() {
         animate="visible"
         className="relative z-10 mx-auto max-w-7xl"
       >
-        {/* Header */}
+ 
         <motion.div variants={itemVariants} className="mb-12 text-center">
           <motion.div
             className="mb-4 inline-block"

@@ -32,4 +32,5 @@ const LoadingRing = memo<LoadingRingProps>(({ delay, duration, size, color }) =>
 ), (prev, next) => prev.delay === next.delay);
 
 LoadingRing.displayName = 'LoadingRing';
+
 export default LoadingRing;

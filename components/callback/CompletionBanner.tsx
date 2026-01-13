@@ -1,7 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import { PartyPopper } from 'lucide-react';
- 
+
 export function CompletionBanner() {
   return (
     <motion.div
@@ -17,7 +17,6 @@ export function CompletionBanner() {
       className="mb-4 sm:mb-6"
     >
       <div className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 relative overflow-hidden">
-        {/* Gradient animé */}
         <motion.div
           className="absolute inset-0"
           animate={{
@@ -29,7 +28,7 @@ export function CompletionBanner() {
           }}
           transition={{ duration: 3, repeat: Infinity }}
         />
-        
+
         <div className="relative z-10 text-center">
           <motion.div
             animate={{ rotate: [0, 10, -10, 0] }}
@@ -37,11 +36,11 @@ export function CompletionBanner() {
           >
             <PartyPopper className="w-10 h-10 sm:w-12 sm:h-12 text-white mx-auto mb-3" />
           </motion.div>
-          
+
           <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2">
             🎊 Analyse Complétée !
           </h3>
-          
+
           <p className="text-white/90 text-sm sm:text-base">
             Votre thème astral complet est prêt à être consulté
           </p>

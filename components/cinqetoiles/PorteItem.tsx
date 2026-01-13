@@ -28,6 +28,7 @@ const PorteItem = memo(({ label, index }: { label: string; index: number }) => (
     </span>
   </motion.li>
 ));
+
 PorteItem.displayName = 'PorteItem';
 
 export default PorteItem;

@@ -7,10 +7,7 @@ export type PaymentStatus =
   | 'no paid'
   | 'already_used'
   | 'error';
-
-/**
- * Configuration d'affichage par statut
- */
+ 
 export interface StatusConfig {
   icon: LucideIcon;
   title: string;
