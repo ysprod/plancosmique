@@ -369,7 +369,7 @@ export interface SpiritualitePractice {
     avatar?: string;
   };
 }
- 
+
 export interface ConsultationConfig {
   id: string;
   titre: string;

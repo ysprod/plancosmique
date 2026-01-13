@@ -131,9 +131,7 @@ export function processUserData(userData: User | null): ProcessedUserData | null
   return {
     _id: userData._id,
     name: `${userData.prenom || userData.username || ""} ${userData.nom || ""}`.trim(),
-    birthDate: userData.dateNaissance
-      ? formatDate(userData.dateNaissance)
-      : "",
+    birthDate: userData.dateNaissance ? formatDate(userData.dateNaissance) : "",
     prenoms: userData.prenoms || userData.username || "",
     nom: userData.nom || "",
     email: userData.email,

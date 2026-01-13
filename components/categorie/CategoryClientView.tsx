@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import React, { memo } from "react";
 import CategoryClientMain from "./CategoryClientMain";
 import CategoryHeader from "./CategoryHeader";
-import CategoryNotSelected from "./CategoryNotSelected";
 
 const pageVariants = {
   initial: { opacity: 0, y: 10, filter: "blur(2px)" },
@@ -19,14 +18,11 @@ interface CategoryClientViewProps {
 
 const CategoryClientView: React.FC<CategoryClientViewProps> = ({ category }) => {
 
-  if (!category) { return <CategoryNotSelected />; }
+ 
 
-  const { rubriques, rubriqueCourante, setRubriqueCourante, ui } = useCategoryClientView(category);
+  const { rubriques, rubriqueCourante, setRubriqueCourante, ui,handleOpenRubriqueById } = useCategoryClientView(category);
 
-  const handleOpenRubriqueById = (id: string) => {
-    const rubrique = rubriques.find((r: any) => String(r._id) === String(id));
-    setRubriqueCourante(rubrique || null);
-  };
+ 
 
   return (
     <div className="bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">

@@ -14,10 +14,16 @@ export function useCategoryClientView(category: CategorieAdmin) {
     };
   }, [rubriques, rubriqueCourante]);
 
+   const handleOpenRubriqueById = (id: string) => {
+    const rubrique = rubriques.find((r: any) => String(r._id) === String(id));
+    setRubriqueCourante(rubrique || null);
+  };
+
   return {
     rubriques,
     rubriqueCourante,
     setRubriqueCourante,
-    ui,
+    ui,handleOpenRubriqueById
+
   };
 }
