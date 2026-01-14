@@ -26,6 +26,7 @@ export async function GET(
 
   try {
     const consultationId = params.id;
+    
     let backendData: BackendResponse;
     try {
       const response = await api.get<BackendResponse>(

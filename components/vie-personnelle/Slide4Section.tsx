@@ -1,4 +1,4 @@
-'use client";'
+'use client';
 import { Rubrique } from "@/lib/interfaces";
 import Slide4SectionMain from "./Slide4SectionMain";
 import { useSlide4Section } from "./useSlide4Section";

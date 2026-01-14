@@ -1,4 +1,3 @@
-"use client";
 import { getCategory } from "@/lib/api/services/categories.service";
 import { notFound } from "next/navigation";
 import CategoryClientViewWrapper from "@/components/categorie/CategoryClientViewWrapper";

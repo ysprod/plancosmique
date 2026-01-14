@@ -1,3 +1,5 @@
+'use client';
+
 import { NumerologieConsultationSection } from '@/components/numerologie/NumerologieConsultationSection';
 import Slide4Section from '@/components/vie-personnelle/Slide4Section';
 import { Rubrique } from '@/lib/interfaces';

@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Package, ChevronDown, Sparkles } from "lucide-react";
 import { useState, useMemo } from "react";

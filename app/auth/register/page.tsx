@@ -1,10 +1,5 @@
-"use client";
-import { RegisterForm } from '@/components/auth';
+import RegisterPageClient from '@/components/auth/RegisterPageClient';
 
 export default function RegisterPage() {
-  return (
-    <div className=" bg-gradient-to-br from-slate-60 via-white to-violet-50 flex items-center justify-center p-4">
-      <RegisterForm />
-    </div>
-  );
+  return <RegisterPageClient />;
 }

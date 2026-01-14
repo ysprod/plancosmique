@@ -1,14 +1,5 @@
-"use client";
-import AnalyseHoroscopePageUI from '@/components/analysehoroscope/AnalyseHoroscopePageUI';
-import { useAnalyseHoroscopePage } from '@/hooks/analysehoroscope/useAnalyseHoroscopePage';
-import { useAuth } from '@/lib/auth/AuthContext';
-import { useSearchParams } from 'next/navigation';
+import AnalyseHoroscopePageClient from '@/components/secured/analysehoroscope/AnalyseHoroscopePageClient';
 
-const AnalyseHoroscopePageComponent = () => {
-    const params = useSearchParams();
-    const { user } = useAuth();
-    const hook = useAnalyseHoroscopePage(user, params);
-    return <AnalyseHoroscopePageUI {...hook} />;
-};
-
-export default AnalyseHoroscopePageComponent;
+export default function AnalyseHoroscopePageComponent() {
+    return <AnalyseHoroscopePageClient />;
+}

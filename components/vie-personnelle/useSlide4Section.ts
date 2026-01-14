@@ -1,3 +1,5 @@
+'use client';
+
 import { api } from '@/lib/api/client';
 import { getRubriqueById } from '@/lib/api/services/rubriques.service';
 import { useAuth } from '@/lib/auth/AuthContext';

@@ -1,6 +1,5 @@
-"use client";
-import AdminConsultationAnalysisView from '@/components/admin/consultations/AdminConsultationAnalysisView';
+import ConsultationResultPageClient from '@/components/admin/consultations/ConsultationResultPageClient';
 
 export default function ConsultationResultPage() {
-  return <AdminConsultationAnalysisView />;
+  return <ConsultationResultPageClient />;
 }

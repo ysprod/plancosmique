@@ -1,10 +1,13 @@
-"use client";
 import { ConsultationSection } from "@/components/vie-personnelle/ConsultationSection";
 import { getRubrique } from "@/lib/api/services/rubriques.service";
-import { notFound, useParams } from "next/navigation";
+import { notFound } from "next/navigation";
 
-export default async function RubriquePage() {
-    const { id } = useParams() as { id?: string };
+interface PageProps {
+    params: { id: string };
+}
+
+export default async function RubriquePage({ params }: PageProps) {
+    const id = params?.id;
     if (!id) return notFound();
 
     const rubrique = await getRubrique(id);

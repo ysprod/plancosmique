@@ -1,3 +1,5 @@
+'use client';
+
 import { useCart } from '@/hooks/marcheoffrandes/useCart';
 import { useModals } from '@/hooks/marcheoffrandes/useModals';
 import { useOfferings } from '@/hooks/marcheoffrandes/useOfferings';
