@@ -19,27 +19,27 @@ export type TypeParticipants =
   | 'AVEC_TIERS'        // Utilisateur + une personne tierce
   | 'GROUPE';
 
-export type SigneZodiacal =
-  | 'Bélier' | 'Taureau' | 'Gémeaux' | 'Cancer'
-  | 'Lion' | 'Vierge' | 'Balance' | 'Scorpion'
-  | 'Sagittaire' | 'Capricorne' | 'Verseau' | 'Poissons';
+// export type SigneZodiacal =
+//   | 'Bélier' | 'Taureau' | 'Gémeaux' | 'Cancer'
+//   | 'Lion' | 'Vierge' | 'Balance' | 'Scorpion'
+//   | 'Sagittaire' | 'Capricorne' | 'Verseau' | 'Poissons';
 
-export type Planete =
-  | 'Soleil' | 'Lune' | 'Mercure' | 'Vénus' | 'Mars'
-  | 'Jupiter' | 'Saturne' | 'Uranus' | 'Neptune' | 'Pluton';
+// export type Planete =
+//   | 'Soleil' | 'Lune' | 'Mercure' | 'Vénus' | 'Mars'
+//   | 'Jupiter' | 'Saturne' | 'Uranus' | 'Neptune' | 'Pluton';
 
-export type PointAstrologique =
-  | 'Ascendant' | 'Milieu du Ciel' | 'Nœud Nord' | 'Nœud Sud'
-  | 'Lilith' | 'Chiron' | 'Vertex' | 'Part de Fortune';
+// export type PointAstrologique =
+//   | 'Ascendant' | 'Milieu du Ciel' | 'Nœud Nord' | 'Nœud Sud'
+//   | 'Lilith' | 'Chiron' | 'Vertex' | 'Part de Fortune';
 
-export type Asteroide = | 'Pallas' | 'Vesta' | 'Cérès' | 'Junon';
+// export type Asteroide = | 'Pallas' | 'Vesta' | 'Cérès' | 'Junon';
 
-export type StatutGeneration =
-  | 'pending' // En attente
-  | 'generating_chart' // Génération carte du ciel en cours
-  | 'generating_analysis' // Génération analyses en cours
-  | 'completed' // Terminé
-  | 'error'; // Erreur
+// export type StatutGeneration =
+//   | 'pending' // En attente
+//   | 'generating_chart' // Génération carte du ciel en cours
+//   | 'generating_analysis' // Génération analyses en cours
+//   | 'completed' // Terminé
+//   | 'error'; // Erreur
 
 export interface ConsultationData {
   _id: string;
