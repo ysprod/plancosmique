@@ -1,9 +1,12 @@
 import { ConsultationChoice, ConsultationType, Offering } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
-import { Loader2, Package, Plus, Save, X } from "lucide-react";
+import { Loader2, Save, X } from "lucide-react";
 import { memo, useCallback } from "react";
-import ConsultationChoiceCard from "./ConsultationChoiceCard";
+import ChoiceCreateView from "./ChoiceCreateView";
+import ChoicesListHeader from "./ChoicesListHeader";
+import ChoicesListView from "./ChoicesListView";
 import type { Rubrique } from "@/lib/interfaces";
+import { useChoiceEditorNavigation } from "./useChoiceEditorNavigation";
 
 const RubriqueEditor = memo(({
   rubrique,
@@ -20,25 +23,15 @@ const RubriqueEditor = memo(({
   isSaving: boolean;
   offerings: Offering[];
 }) => {
-  const handleAddChoice = useCallback(() => {
-    const newChoice: ConsultationChoice = {
-      title: "Nouveau choix",
-      description: "",
-      frequence: undefined,
-      participants: undefined,
-      offering: {
-        alternatives: [
-          { category: "animal", offeringId: "", quantity: 1 },
-          { category: "vegetal", offeringId: "", quantity: 1 },
-          { category: "beverage", offeringId: "", quantity: 1 }
-        ]
-      }
-    };
+  const { view, showList, showCreate } = useChoiceEditorNavigation();
+
+  const handleAddChoice = useCallback((newChoice: ConsultationChoice) => {
     onUpdate({
       ...rubrique,
       consultationChoices: [...rubrique.consultationChoices, newChoice]
     });
-  }, [rubrique, onUpdate]);
+    showList();
+  }, [rubrique, onUpdate, showList]);
 
   const handleUpdateChoice = useCallback((index: number, updated: ConsultationChoice) => {
     const newChoices = [...rubrique.consultationChoices];
@@ -103,42 +96,22 @@ const RubriqueEditor = memo(({
 
       {/* Choices */}
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
-            <Package className="w-5 h-5 text-violet-600" />
-            Choix de consultations ({rubrique.consultationChoices.length})
-          </h3>
-          <button
-            onClick={handleAddChoice}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r 
-                     from-violet-600 to-purple-600 text-white text-sm font-bold 
-                     hover:from-violet-700 hover:to-purple-700 transition-all shadow-lg"
-          >
-            <Plus className="w-4 h-4" />
-            Ajouter un choix
-          </button>
-        </div>
+        <ChoicesListHeader choicesCount={rubrique.consultationChoices.length} onAddChoice={showCreate} />
 
-        <div className="space-y-4">
-          <AnimatePresence>
-            {rubrique.consultationChoices.map((choice: any, index: any) => (
-              <ConsultationChoiceCard
-                key={index}
-                choice={choice}
-                index={index!}
-                onUpdate={(updated) => handleUpdateChoice(index!, updated)}
-                onDelete={() => handleDeleteChoice(index!)}
+        <div className="mt-4">
+          <AnimatePresence mode="wait">
+            {view === "list" ? (
+              <ChoicesListView
+                key="list"
+                choices={rubrique.consultationChoices}
+                onUpdateChoice={handleUpdateChoice}
+                onDeleteChoice={handleDeleteChoice}
                 offerings={offerings}
               />
-            ))}
+            ) : (
+              <ChoiceCreateView key="create" onSave={handleAddChoice} onCancel={showList} offerings={offerings} />
+            )}
           </AnimatePresence>
-
-          {rubrique.consultationChoices.length === 0 && (
-            <div className="text-center py-12 text-slate-400">
-              <Package className="w-12 h-12 mx-auto mb-3 opacity-50" />
-              <p className="text-sm">Aucun choix ajouté</p>
-            </div>
-          )}
         </div>
       </div>
 

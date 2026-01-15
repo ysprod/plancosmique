@@ -22,7 +22,7 @@ export function useAdminUsersPage() {
     status: statusFilter,
     role: roleFilter,
     page: currentPage,
-    limit: 8,
+    limit: 6,
   });
 
   const mapUserToUserData = (user: any): User => ({
@@ -94,7 +94,7 @@ export function useAdminUsersPage() {
     }
   }, [refetch]);
 
-  const totalPages = Math.ceil(total / 8);
+  const totalPages = Math.ceil(total / 6);
 
   const containerVariants = {
     hidden: { opacity: 0 },

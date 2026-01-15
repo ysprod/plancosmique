@@ -74,8 +74,7 @@ const CardActions = memo(({ isCompleted, isNotified, consultationId, canGenerate
                         className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
                     />
                     <Eye className="w-4 h-4 relative z-10" />
-                    <span className="relative z-10">Voir Détails</span>
-                    <Sparkles className="w-4 h-4 relative z-10" />
+                    <span className="relative z-10">Voir</span> 
                 </motion.a>
             )}
  

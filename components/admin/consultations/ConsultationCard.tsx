@@ -16,11 +16,11 @@ interface ConsultationCardProps {
 }
 
 const ConsultationCard = memo(({ consultation, onGenerateAnalysis, isGenerating, isNotifying }: ConsultationCardProps) => {
-  console.log(consultation);
-  
-  
+    console.log(consultation);
+
+
     const { typeConfig, hasResultData, hasCarteDuCiel, hasTierce, isPaid } = useConsultationCard(consultation);
-  
+
     const formattedDate = useMemo(() => {
         return new Date(consultation.createdAt).toLocaleString('fr-FR', {
             day: '2-digit',
@@ -47,7 +47,7 @@ const ConsultationCard = memo(({ consultation, onGenerateAnalysis, isGenerating,
     const isCompleted = consultation.status === 'COMPLETED';
     const isNotified = Boolean(consultation.analysisNotified);
     const canGenerateAnalysis = isPaid && !isCompleted && !isGenerating;
-  
+
     return (
         <motion.div
             layout
@@ -95,9 +95,9 @@ const ConsultationCard = memo(({ consultation, onGenerateAnalysis, isGenerating,
                 StatusBadgeComponent={StatusBadge}
             />
 
-            <ClientInfo 
-                clientName={clientName} 
-                email={email} 
+            <ClientInfo
+                clientName={clientName}
+                email={email}
                 phone={phone}
                 tierceName={tierceName}
                 hasTierce={hasTierce}
