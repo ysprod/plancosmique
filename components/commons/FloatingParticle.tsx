@@ -1,9 +1,5 @@
 import { memo } from 'react';
-import { motion } from 'framer-motion';
-
-// ============================================================
-// FLOATING PARTICLE COMPONENT
-// ============================================================
+import { motion } from 'framer-motion'; 
 
 interface FloatingParticleProps {
   delay: number;

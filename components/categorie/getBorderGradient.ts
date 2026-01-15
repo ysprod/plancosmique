@@ -1,4 +1,4 @@
-import { hashString } from './rubriqueUtils';
+import { hashString } from "@/lib/functions";
 
 export const borderGradients = [
   "from-red-500 via-orange-500 to-pink-500",

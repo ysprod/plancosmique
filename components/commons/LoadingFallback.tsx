@@ -2,11 +2,7 @@ import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import { FloatingParticle } from './FloatingParticle';
-import { OrbitingStar } from './OrbitingStar';
-
-// ============================================================
-// LOADING FALLBACK COMPONENT
-// ============================================================
+import { OrbitingStar } from './OrbitingStar'; 
 
 const LoadingFallbackComponent = () => {
   return (

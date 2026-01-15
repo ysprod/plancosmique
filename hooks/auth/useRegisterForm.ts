@@ -36,6 +36,10 @@ const validateForm = (formData: FormData): FormErrors => {
   const errors: FormErrors = {};
   if (!formData.username.trim()) {
     errors.username = 'Nom d\'utilisateur requis';
+  } else if (formData.username.length < 2) {
+    errors.username = 'Au moins 2 caractères requis';
+  } else if (/\s/.test(formData.username)) {
+    errors.username = 'Le nom d\'utilisateur ne peut pas contenir d\'espaces';
   }
   if (!formData.gender) {
     errors.gender = 'Genre requis';
@@ -79,6 +83,12 @@ export function useRegisterForm() {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
+      
+      // Pour le username, empêcher la saisie d'espaces
+      if (name === 'username' && /\s/.test(value)) {
+        return; // Bloquer la saisie si elle contient des espaces
+      }
+      
       if (name === 'password') {
         setPasswordStrength(calculatePasswordStrength(value));
       }

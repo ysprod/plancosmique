@@ -1,9 +1,5 @@
 import { memo } from 'react';
-import { motion } from 'framer-motion';
-
-// ============================================================
-// ORBITING STAR COMPONENT
-// ============================================================
+import { motion } from 'framer-motion'; 
 
 interface OrbitingStarProps {
   delay: number;

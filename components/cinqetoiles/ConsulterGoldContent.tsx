@@ -8,8 +8,6 @@ import { useConsulterGoldContent } from '@/hooks/cinqetoiles/useConsulterGoldCon
 import ConsulterGoldErrorToast from '@/components/cinqetoiles/ConsulterGoldErrorToast';
 import { WalletOffering } from '@/lib/interfaces';
 
-type StepType = 'offering' | 'processing' | 'analyse';
-
 interface ConsulterGoldContentProps {
     consultationId: string;
     walletOfferings: WalletOffering[];

@@ -1,10 +1,10 @@
 import { Loader2, Save, CheckCircle, X, Shield, Star, User as UserIcon, Phone, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { countries } from '@/components/auth/countries';
-import { User } from '@/lib/interfaces';
+ import { User } from '@/lib/interfaces';
 import { Role } from '@/lib/interfaces';
 import React from 'react';
+import { countries } from '@/components/auth/countries';
 
 interface EditUserFormProps {
   formData: Partial<User>;

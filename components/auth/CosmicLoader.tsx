@@ -290,4 +290,5 @@ const CosmicLoader = memo(() => (
 ));
 
 CosmicLoader.displayName = 'CosmicLoader';
+
 export default CosmicLoader;

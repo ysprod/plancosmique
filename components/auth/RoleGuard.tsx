@@ -67,7 +67,6 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
   return <>{children}</>;
 };
 
-
 const AccessDenied: React.FC<{ message: string; userRole?: Role }> = ({
   message, userRole, }) => {
   return (

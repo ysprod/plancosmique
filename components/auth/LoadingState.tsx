@@ -6,6 +6,7 @@ const cardVariants = {
   visible: { opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 250, damping: 22, mass: 0.8 } },
   exit: { opacity: 0, scale: 0.95, y: -10, transition: { duration: 0.15 } }
 };
+
 const iconPulse = {
   scale: [1, 1.08, 1],
   transition: { duration: 1, repeat: Infinity, ease: "easeInOut" }

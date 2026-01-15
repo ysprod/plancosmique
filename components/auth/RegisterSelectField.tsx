@@ -57,6 +57,7 @@ const RegisterSelectField = memo<SelectFieldProps>(({ label, name, value, onChan
     )}
   </div>
 ));
+
 RegisterSelectField.displayName = 'RegisterSelectField';
 
 export default RegisterSelectField;

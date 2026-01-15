@@ -21,8 +21,7 @@ const PorteCard = memo<PorteCardProps>(({
   index,
   isPremium
 }) => {
-  // Mémoriser le contenu pour éviter rerendus inutiles
-  const memoizedContent = useMemo(() => ({
+   const memoizedContent = useMemo(() => ({
     label, valeur, description, icon, gradient, isPremium
   }), [label, valeur, description, icon, gradient, isPremium]);
 

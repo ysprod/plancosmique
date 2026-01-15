@@ -34,6 +34,7 @@ const RegisterPasswordStrengthIndicator = memo<PasswordStrengthIndicatorProps>((
     </div>
   );
 });
+
 RegisterPasswordStrengthIndicator.displayName = 'RegisterPasswordStrengthIndicator';
 
 export default RegisterPasswordStrengthIndicator;

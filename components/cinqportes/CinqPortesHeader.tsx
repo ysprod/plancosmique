@@ -1,5 +1,4 @@
 'use client';
-
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
@@ -50,7 +49,6 @@ const CinqPortesHeader = memo<CinqPortesHeaderProps>(({ isPremium }) => {
         Explorez les 5 dimensions fondamentales de votre essence cosmique
       </motion.p>
       
-      {/* Badge Premium */}
       {isPremium && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}

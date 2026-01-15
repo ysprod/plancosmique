@@ -27,4 +27,5 @@ const ShieldOrbit = memo<ShieldOrbitProps>(({ radius, duration, reverse = false 
 ), (prev, next) => prev.radius === next.radius);
 
 ShieldOrbit.displayName = 'ShieldOrbit';
+
 export default ShieldOrbit;

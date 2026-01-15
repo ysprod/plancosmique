@@ -1,5 +1,4 @@
 'use client';
-
 import { AnimatePresence } from "framer-motion";
 import { AnimatedBackground } from "@/components/auth/AnimatedBackground";
 import { StarField } from "@/components/auth/StarField";

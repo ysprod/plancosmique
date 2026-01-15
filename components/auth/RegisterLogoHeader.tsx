@@ -26,6 +26,7 @@ const RegisterLogoHeader = memo(() => (
     </motion.div>
   </Link>
 ));
+
 RegisterLogoHeader.displayName = 'RegisterLogoHeader';
 
 export default RegisterLogoHeader;

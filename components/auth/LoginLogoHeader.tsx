@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { memo } from "react";
 
 const LoginLogoHeader = memo(() => (
-  <Link 
+  <Link
     href="/"
     className="block mb-6 group"
   >

@@ -28,6 +28,7 @@ const RegisterErrorMessage = memo<ErrorMessageProps>(({ error, onClose }) => (
     </button>
   </motion.div>
 ));
+
 RegisterErrorMessage.displayName = 'RegisterErrorMessage';
 
 export default RegisterErrorMessage;

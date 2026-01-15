@@ -15,7 +15,7 @@ const pageVariants = {
 export default function CategoryClientViewWrapper({ category }: { category: CategorieAdmin }) {
     const { rubriques, rubriqueCourante, setRubriqueCourante, ui, handleOpenRubriqueById } = useCategoryClientView(category);
     if (!category) return <CategoryNotSelected />;
-    
+
     return (
         <div className="bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
             <motion.div

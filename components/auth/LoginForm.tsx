@@ -24,7 +24,6 @@ const LoginForm = () => {
     isPending,
   } = useLoginForm();
 
-  // Synchronise le state avec les valeurs auto-remplies au montage
   useEffect(() => {
     const usernameInput = document.querySelector<HTMLInputElement>('input[name="username"]');
     const passwordInput = document.querySelector<HTMLInputElement>('input[name="password"]');

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { RubriqueView } from "./RubriqueView";
 import CategoryEmptyState from "./CategoryEmptyState";
 import CategoryRubriquesList from "./CategoryRubriquesList";
-import { Rubrique } from "@/lib/interfaces";
+import { Rubrique, RubriqueOrNone } from "@/lib/interfaces";
 
 interface CategoryClientMainProps {
     ui: {
@@ -11,8 +11,8 @@ interface CategoryClientMainProps {
         hasRubriques: boolean;
         rubriqueCount: number;
     };
-    rubriqueCourante: Rubrique | null;
-    rubriques: any[];
+    rubriqueCourante: RubriqueOrNone;
+    rubriques: Rubrique[];
     openRubriqueById: (id: string) => void;
     pageVariants: any;
 }

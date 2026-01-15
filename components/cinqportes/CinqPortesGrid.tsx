@@ -1,5 +1,4 @@
 'use client';
-
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 import PorteCard from '@/components/carteduciel/PorteCard';

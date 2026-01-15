@@ -12,23 +12,10 @@ import { useRegisterForm } from '@/hooks/auth/useRegisterForm';
 
 const RegisterForm: React.FC = () => {
   const {
-    showPassword,
-    setShowPassword,
-    showConfirmPassword,
-    setShowConfirmPassword,
-    error,
-    setError,
-    passwordStrength,
-    formData,
-    errors,
-    handleChange,
-    handleSubmit,
-    countryOptions,
-    passwordsMatch,
-    isSubmitDisabled,
-    isLoading,
-    isPending,
-    GENDER_OPTIONS,
+    showPassword, setShowPassword, showConfirmPassword, setShowConfirmPassword,
+    error, setError, passwordStrength, formData, errors,
+    handleChange, handleSubmit, countryOptions, passwordsMatch,
+    isSubmitDisabled, isLoading, isPending, GENDER_OPTIONS,
   } = useRegisterForm();
 
   return (
@@ -45,7 +32,6 @@ const RegisterForm: React.FC = () => {
                       rounded-3xl shadow-2xl p-6 sm:p-8 
                       border border-gray-200 dark:border-gray-800">
 
-          {/* Logo + Header */}
           <div className="text-center mb-6">
             <RegisterLogoHeader />
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
@@ -57,12 +43,10 @@ const RegisterForm: React.FC = () => {
             </p>
           </div>
 
-          {/* Erreur globale */}
           <AnimatePresence>
             {error && <RegisterErrorMessage error={error} onClose={() => setError(null)} />}
           </AnimatePresence>
 
-          {/* Formulaire */}
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <RegisterInputField
               label="Nom d'utilisateur"

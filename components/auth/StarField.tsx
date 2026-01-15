@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import React, { useMemo } from "react";
 
 const STARS_COUNT = 15;
+
 export const StarField = () => {
   const stars = useMemo(() =>
     Array.from({ length: STARS_COUNT }, (_, i) => ({
