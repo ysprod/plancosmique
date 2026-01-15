@@ -38,11 +38,7 @@ export const Header = memo<HeaderProps>(({ year, month, onPrevMonth, onNextMonth
                 <span>Phases cosmiques</span>
               </p>
             </div>
-          </div>
-          <div className="hidden sm:flex items-center gap-1.5 bg-white/5 rounded-full px-2.5 py-1 border border-white/10">
-            <Sparkles className="w-3 h-3 text-purple-300" />
-            <span className="text-[10px] font-medium text-purple-200">Mystique</span>
-          </div>
+          </div> 
         </div>
         <div className="flex items-center justify-between bg-black/20 backdrop-blur-sm rounded-lg p-1.5 border border-white/5">
           <motion.button

@@ -49,7 +49,6 @@ export const IncantationsContent = memo(() => (
       transition={{ duration: 0.5 }}
       className="relative bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 dark:from-pink-950/40 dark:via-purple-950/40 dark:to-indigo-950/40 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-pink-200/60 dark:border-pink-800/40 shadow-xl overflow-hidden"
     >
-      {/* Animated background orbs */}
       <motion.div
         animate={{
           x: [0, 30, 0],

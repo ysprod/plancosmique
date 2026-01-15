@@ -34,6 +34,7 @@ const IncantationCard = memo<IncantationCardProps>(({ incantation, index }) => (
     <p className="text-xs sm:text-sm text-gray-600">{incantation.purpose}</p>
   </motion.div>
 ));
+
 IncantationCard.displayName = 'IncantationCard';
 
 export { IncantationCard };

@@ -117,7 +117,6 @@ export default function ContactSection() {
             </motion.div>
           </motion.div>
 
-          {/* Contact Form */}
           <motion.form
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}

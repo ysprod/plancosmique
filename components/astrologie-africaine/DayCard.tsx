@@ -39,16 +39,13 @@ export const DayCard = memo<DayCardProps>(({ day, onClick }) => {
         w-10 h-10 sm:w-14 sm:h-14
       `}
     >
-      {/* Numéro */}
       <div className={`text-[11px] font-bold ${day.isToday ? 'text-yellow-600' : 'text-gray-900'}`}>
         {day.day}
       </div>
-      {/* SVG Lune */}
       <div 
         dangerouslySetInnerHTML={{ __html: day.svg }}
         className="w-6 h-6 sm:w-8 sm:h-8"
       />
-      {/* Badge phase spéciale */}
       {(day.isNew || day.isFull) && (
         <motion.div
           initial={{ scale: 0 }}
@@ -59,7 +56,6 @@ export const DayCard = memo<DayCardProps>(({ day, onClick }) => {
           <span className="text-[10px]">{phaseConfig.emoji}</span>
         </motion.div>
       )}
-      {/* Badge aujourd'hui */}
       {day.isToday && (
         <motion.div
           animate={prefersReducedMotion ? {} : { scale: [1, 1.06, 1] }}

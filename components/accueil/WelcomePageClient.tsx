@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import WelcomeHeader from '@/components/accueil/WelcomeHeader';
 import WelcomeQuestions from '@/components/accueil/WelcomeQuestions';

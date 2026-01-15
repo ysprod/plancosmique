@@ -37,7 +37,6 @@ const itemVariants = {
 export default function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-      {/* Background decorative elements */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-0 left-0 h-96 w-96 rounded-full bg-lime-400 blur-3xl" />
         <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-purple-400 blur-3xl" />
