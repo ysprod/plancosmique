@@ -16,24 +16,46 @@ interface DoneChoice {
   __v: number;
 }
 
+interface ChoiceWithCount {
+  _id: string;
+  title: string;
+  description: string;
+  frequence: string;
+  participants: string;
+  order?: number;
+  offering: any;
+  consultationCount?: number;
+  showButtons?: boolean;
+}
+
 interface Slide4SectionSelectionProps {
   onSelect: (choice: ConsultationChoice) => void;
   choices: ConsultationChoice[];
   alreadyDoneChoices: DoneChoice[];
+  choicesWithCount?: ChoiceWithCount[]; // Données enrichies du backend
 }
 
 const Slide4SectionSelection: FC<Slide4SectionSelectionProps> = ({
   onSelect,
   choices,
   alreadyDoneChoices,
+  choicesWithCount,
 }) => {
-  // Calculer le nombre de consultations par choix
+  // Fonction pour obtenir le compteur depuis le backend ou calculer manuellement
   const getChoiceCount = (choiceId?: string) => {
     if (!choiceId) return 0;
+    
+    // Si on a les données du backend, les utiliser
+    if (choicesWithCount) {
+      const choiceData = choicesWithCount.find(c => c._id === choiceId);
+      return choiceData?.consultationCount || 0;
+    }
+    
+    // Sinon calcul manuel (fallback)
     return alreadyDoneChoices.filter(dc => dc.choiceId === choiceId).length;
   };
 
-  // Handler pour voir l'historique (pour l'instant redirige vers la dernière consultation)
+  // Handler pour voir l'historique (redirige vers la dernière consultation)
   const handleViewHistory = (choiceId?: string) => {
     if (!choiceId) return;
     const lastDone = alreadyDoneChoices

@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@/lib/api/client';
-import { getRubriqueById } from '@/lib/api/services/rubriques.service';
+import { getRubriqueById, getRubriqueWithConsultationCount, ConsultationChoiceWithCount } from '@/lib/api/services/rubriques.service';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { mapFormDataToBackend } from '@/lib/functions';
 import { ConsultationChoice, ConsultationData, DoneChoice, OfferingAlternative, Rubrique, User, WalletOffering } from '@/lib/interfaces';
@@ -14,6 +14,7 @@ export interface Slide4SectionMainProps {
   step: StepType;
   paymentLoading: boolean;
   choices: ConsultationChoice[];
+  choicesWithCount: ConsultationChoiceWithCount[];
   alreadyDoneChoices: DoneChoice[];
   handleSelectConsultation: (choice: ConsultationChoice) => Promise<void>;
   consultationId: string | null;
@@ -57,6 +58,7 @@ export function useSlide4Section(rubrique: Rubrique) {
   const [userData, setUserData] = useState<User | null>(null);
   const choicesFetchedRef = useRef(false);
   const [choices, setChoices] = useState<ConsultationChoice[]>([]);
+  const [choicesWithCount, setChoicesWithCount] = useState<ConsultationChoiceWithCount[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -82,15 +84,38 @@ export function useSlide4Section(rubrique: Rubrique) {
     async function fetchChoicesAndDone() {
       if (choicesFetchedRef.current) return;
       choicesFetchedRef.current = true;
+      
       try {
-        const rubriqueData = await getRubriqueById(rubrique?._id || '');
-        const arr = rubriqueData.consultationChoices || [];
-        setChoices(arr);
+        if (user?._id && rubrique?._id) {
+          // Utiliser l'API optimisée qui retourne les choix avec compteurs
+          const rubriqueWithCount = await getRubriqueWithConsultationCount(rubrique._id, user._id);
+          
+          // Convertir en format ConsultationChoice pour compatibilité
+          const arr = rubriqueWithCount.consultationChoices.map(choice => ({
+            _id: choice._id,
+            title: choice.title,
+            description: choice.description,
+            frequence: choice.frequence as any,
+            participants: choice.participants as any,
+            offering: choice.offering,
+            order: choice.order
+          }));
+          
+          setChoices(arr);
+          setChoicesWithCount(rubriqueWithCount.consultationChoices);
+        } else if (rubrique?._id) {
+          // Fallback si pas d'utilisateur connecté
+          const rubriqueData = await getRubriqueById(rubrique._id);
+          const arr = rubriqueData.consultationChoices || [];
+          setChoices(arr);
+        }
       } catch (err) {
         console.error('[Choices] ❌', err);
       } finally {
         setLoading(false);
       }
+      
+      // Récupérer les consultations déjà faites pour compatibilité
       if (user?._id) {
         try {
           const res = await api.get(`/user-consultation-choices?userId=${user._id}`);
@@ -352,6 +377,7 @@ export function useSlide4Section(rubrique: Rubrique) {
     step,
     paymentLoading,
     choices,
+    choicesWithCount,
     alreadyDoneChoices,
     handleSelectConsultation,
     consultationId,

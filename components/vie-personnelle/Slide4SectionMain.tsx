@@ -15,6 +15,7 @@ const Slide4SectionMain: React.FC<Slide4SectionMainProps> = ({
   step,
   paymentLoading,
   choices,
+  choicesWithCount,
   alreadyDoneChoices,
   handleSelectConsultation,
   consultationId,
@@ -41,6 +42,7 @@ const Slide4SectionMain: React.FC<Slide4SectionMainProps> = ({
               onSelect={handleSelectConsultation}
               choices={choices}
               alreadyDoneChoices={alreadyDoneChoices}
+              choicesWithCount={choicesWithCount}
             />
           </motion.div>
         )}

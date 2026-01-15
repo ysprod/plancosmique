@@ -29,3 +29,35 @@ export async function reorderConsultationChoices(
   );
   return res.data;
 }
+
+export interface ConsultationChoiceWithCount {
+  _id: string;
+  title: string;
+  description: string;
+  frequence: string;
+  participants: string;
+  order?: number;
+  offering: any;
+  consultationCount: number;
+  showButtons: boolean;
+}
+
+export interface RubriqueWithCount {
+  _id: string;
+  titre: string;
+  description: string;
+  categorie: string;
+  typeconsultation: string;
+  consultationChoices: ConsultationChoiceWithCount[];
+}
+
+export async function getRubriqueWithConsultationCount(
+  rubriqueId: string,
+  userId: string
+): Promise<RubriqueWithCount> {
+  const res = await api.get<RubriqueWithCount>(
+    `/rubriques/${rubriqueId}/choices-with-count`,
+    { params: { userId } }
+  );
+  return res.data;
+}
