@@ -20,7 +20,7 @@ export default function LogoutPageClient() {
   })();
 
   return (
-    <div className=" bg-gradient-to-br from-slate-900 via-purple-900 to-violet-900 relative overflow-hidden flex items-center justify-center p-3 sm:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-violet-900 relative overflow-hidden flex items-center justify-center p-3 sm:p-6">
       <div className="absolute inset-0 overflow-hidden">
         <AnimatedBackground />
       </div>
