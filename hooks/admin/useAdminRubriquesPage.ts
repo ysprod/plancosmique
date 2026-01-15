@@ -92,6 +92,8 @@ export function useAdminRubriquesPage() {
       }
       await fetchRubriques();
       setEditingRubrique(null);
+      setSelectedRubrique(null);
+      setGestionView('list');
     } catch (error) {
       const err = error as any;
       setToast({ type: "error", message: err.response?.data?.message || "Erreur de sauvegarde" });

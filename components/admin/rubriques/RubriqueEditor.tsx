@@ -28,7 +28,7 @@ const RubriqueEditor = memo(({
   const handleAddChoice = useCallback((newChoice: ConsultationChoice) => {
     onUpdate({
       ...rubrique,
-      consultationChoices: [...rubrique.consultationChoices, newChoice]
+      consultationChoices: [newChoice, ...rubrique.consultationChoices]
     });
     showList();
   }, [rubrique, onUpdate, showList]);
