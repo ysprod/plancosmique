@@ -1,12 +1,13 @@
 import { ConsultationChoice, ConsultationType, Offering } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Save, X } from "lucide-react";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
 import ChoiceCreateView from "./ChoiceCreateView";
 import ChoicesListHeader from "./ChoicesListHeader";
 import ChoicesListView from "./ChoicesListView";
 import type { Rubrique } from "@/lib/interfaces";
 import { useChoiceEditorNavigation } from "./useChoiceEditorNavigation";
+import { reorderConsultationChoices } from "@/lib/api/services/rubriques.service";
 
 const RubriqueEditor = memo(({
   rubrique,
@@ -24,11 +25,21 @@ const RubriqueEditor = memo(({
   offerings: Offering[];
 }) => {
   const { view, showList, showCreate } = useChoiceEditorNavigation();
+  const [isReordering, setIsReordering] = useState(false);
 
   const handleAddChoice = useCallback((newChoice: ConsultationChoice) => {
+    // Assigner l'ordre 0 au nouveau choix (il sera en premier)
+    const choiceWithOrder = { ...newChoice, order: 0 };
+    
+    // Incrémenter l'ordre de tous les choix existants
+    const updatedChoices = rubrique.consultationChoices.map(choice => ({
+      ...choice,
+      order: (choice.order || 0) + 1
+    }));
+    
     onUpdate({
       ...rubrique,
-      consultationChoices: [newChoice, ...rubrique.consultationChoices]
+      consultationChoices: [choiceWithOrder, ...updatedChoices]
     });
     showList();
   }, [rubrique, onUpdate, showList]);
@@ -47,7 +58,7 @@ const RubriqueEditor = memo(({
     });
   }, [rubrique, onUpdate]);
 
-  const handleMoveChoice = useCallback((index: number, direction: 'up' | 'down') => {
+  const handleMoveChoice = useCallback(async (index: number, direction: 'up' | 'down') => {
     const newChoices = [...rubrique.consultationChoices];
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
     
@@ -56,7 +67,30 @@ const RubriqueEditor = memo(({
     // Échanger les positions
     [newChoices[index], newChoices[targetIndex]] = [newChoices[targetIndex], newChoices[index]];
     
+    // Mise à jour immédiate de l'UI (optimistic update)
     onUpdate({ ...rubrique, consultationChoices: newChoices });
+    
+    // Si la rubrique a un _id, persister l'ordre dans le backend
+    if (rubrique._id) {
+      setIsReordering(true);
+      try {
+        // Créer le payload avec les nouveaux ordres
+        const choicesOrder = newChoices.map((choice, idx) => ({
+          choiceId: choice._id || '',
+          order: idx
+        })).filter(c => c.choiceId); // Filtrer ceux sans _id
+        
+        if (choicesOrder.length > 0) {
+          await reorderConsultationChoices(rubrique._id, choicesOrder);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la réorganisation:', error);
+        // En cas d'erreur, on pourrait revenir à l'état précédent
+        // mais comme on a déjà mis à jour l'UI, on laisse tel quel
+      } finally {
+        setIsReordering(false);
+      }
+    }
   }, [rubrique, onUpdate]);
 
   return (
@@ -109,6 +143,14 @@ const RubriqueEditor = memo(({
       {/* Choices */}
       <div className="mb-6">
         <ChoicesListHeader choicesCount={rubrique.consultationChoices.length} onAddChoice={showCreate} />
+
+        {/* Indicateur de réorganisation */}
+        {isReordering && (
+          <div className="mb-3 px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg flex items-center gap-2 text-sm text-blue-700">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span>Réorganisation en cours...</span>
+          </div>
+        )}
 
         <div className="mt-4">
           <AnimatePresence mode="wait">

@@ -18,3 +18,14 @@ export async function getRubriqueById(id: string): Promise<Rubrique> {
   const res = await api.get<Rubrique>(`/rubriques/${id}`);
   return res.data;
 }
+
+export async function reorderConsultationChoices(
+  rubriqueId: string, 
+  choices: Array<{ choiceId: string; order: number }>
+): Promise<Rubrique> {
+  const res = await api.put<Rubrique>(
+    `/rubriques/${rubriqueId}/reorder-choices`,
+    { choices }
+  );
+  return res.data;
+}
