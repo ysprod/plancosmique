@@ -29,9 +29,6 @@ export function RubriquesGestionListPanel({ rubriques, selectedRubrique, onSelec
       ) : (
         <RubriquesEmptyState />
       )}
-      <div className="flex items-center justify-center mt-8">
-        <span className="text-slate-400">Sélectionnez une rubrique pour l'éditer ou créez-en une nouvelle.</span>
-      </div>
     </div>
   );
 }

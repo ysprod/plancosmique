@@ -1,20 +1,49 @@
+import { memo } from 'react';
 import StatCard from '@/components/admin/rubriques/overview/StatCard';
 import { motion } from 'framer-motion';
-import { Book, Calendar, Star, TrendingUp } from 'lucide-react';
+import { Book, Calendar, Star } from 'lucide-react';
 
-export function RubriquesOverviewStats({ stats }: { stats: any }) {
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: 'spring', stiffness: 200, damping: 20 },
+  },
+};
+
+export const RubriquesOverviewStats = memo(function RubriquesOverviewStats({ stats }: { stats: any }) {
   if (!stats) return null;
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1 }}
-      className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="flex justify-center items-center w-full mb-6 sm:mb-8"
     >
-      <StatCard icon={<Book />} label="Domaines" value={stats.totalDomaines} color="purple" />
-      <StatCard icon={<Star />} label="Rubriques" value={stats.totalRubriques} color="blue" />
-      <StatCard icon={<Calendar />} label="Consultations" value={stats.totalConsultations} color="fuchsia" />
-      <StatCard icon={<TrendingUp />} label="Cycliques" value={stats.consultationsCycliques} color="cyan" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 w-full max-w-4xl px-2 sm:px-4">
+        <motion.div variants={itemVariants}>
+          <StatCard icon={<Book className="w-4 h-4 sm:w-5 sm:h-5" />} label="Domaines" value={stats.totalDomaines || 0} color="purple" />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <StatCard icon={<Star className="w-4 h-4 sm:w-5 sm:h-5" />} label="Rubriques" value={stats.totalRubriques || 0} color="blue" />
+        </motion.div>
+        <motion.div variants={itemVariants} className="sm:col-span-2 lg:col-span-1">
+          <StatCard icon={<Calendar className="w-4 h-4 sm:w-5 sm:h-5" />} label="Consultations" value={stats.totalConsultations || 0} color="fuchsia" />
+        </motion.div>
+      </div>
     </motion.div>
   );
-}
+});

@@ -1,3 +1,4 @@
+"use client";
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 
@@ -29,6 +30,7 @@ const ActionButton = memo(({ icon: Icon, label, variant = 'outline' }: { icon: a
     <span className="relative z-10 hidden sm:inline">{label}</span>
   </motion.button>
 ));
+
 ActionButton.displayName = 'ActionButton';
 
 export default ActionButton;

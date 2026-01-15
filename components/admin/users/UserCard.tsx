@@ -28,14 +28,14 @@ export default function UserCard({ user, cardVariants, setDeleteModal }: UserCar
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-bold text-gray-900 truncate">{user.username}</h3>
-          <p className="text-xs text-gray-500 truncate flex items-center gap-1">
-            <Mail className="w-3 h-3 flex-shrink-0" />
-            {user.email}
-          </p>
         </div>
       </div>
 
       <div className="space-y-1 mb-2.5 pb-2.5 border-b border-gray-100">
+        <p className="text-xs text-gray-500 truncate flex items-center gap-1">
+          <Mail className="w-3 h-3 flex-shrink-0" />
+          {user.email}
+        </p>
         {user.phone && (
           <div className="flex items-center gap-1.5 text-xs text-gray-600">
             <Phone className="w-3 h-3 flex-shrink-0" />
@@ -61,6 +61,7 @@ export default function UserCard({ user, cardVariants, setDeleteModal }: UserCar
             timeStyle: 'long' 
           })}
         </div>
+       
       </div>
       {/* Métriques utilisateur */}
       <div className="grid grid-cols-3 gap-1.5 mb-2.5 pb-2.5 border-b border-gray-100">

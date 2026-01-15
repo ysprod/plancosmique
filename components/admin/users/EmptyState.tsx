@@ -46,6 +46,7 @@ const EmptyState = memo<EmptyStateProps>(({ hasFilters, onReset }) => (
     )}
   </motion.div>
 ));
+
 EmptyState.displayName = 'EmptyState';
 
 export default EmptyState;

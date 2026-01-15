@@ -106,7 +106,6 @@ const AnalysisSection = memo(({
         </motion.div>
     );
 }, (prevProps, nextProps) => {
-    // Custom comparison pour éviter re-renders
     return (
         prevProps.title === nextProps.title &&
         prevProps.content === nextProps.content &&
@@ -115,4 +114,5 @@ const AnalysisSection = memo(({
 });
 
 AnalysisSection.displayName = 'AnalysisSection';
+
 export default AnalysisSection;

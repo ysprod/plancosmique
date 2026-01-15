@@ -1,3 +1,4 @@
+"use client";
 import { AnimatePresence, motion } from "framer-motion";
 import FilterBar from '@/components/wallet/FilterBar';
 import LoadingScreen from '@/components/wallet/LoadingScreen';

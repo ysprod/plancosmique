@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { RefreshCw } from 'lucide-react';
-import UserCard from '@/components/users/UserCard';
+import UserCard from '@/components/admin/users/UserCard';
 import Pagination from '@/components/admin/users/Pagination';
 import EmptyState from '@/components/admin/users/EmptyState';
 import React from 'react';

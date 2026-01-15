@@ -63,6 +63,7 @@ const PageHeader = memo<PageHeaderProps>(({ total, isRefreshing, loading, onRefr
     </div>
   </div>
 ));
+
 PageHeader.displayName = 'PageHeader';
 
 export default PageHeader;

@@ -13,4 +13,5 @@ export const LiveBadge = memo<LiveBadgeProps>(() => (
     <span className="text-xs font-semibold">LIVE</span>
   </motion.div>
 ));
+
 LiveBadge.displayName = 'LiveBadge';

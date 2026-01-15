@@ -1,3 +1,4 @@
+"use client";
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 
@@ -30,6 +31,7 @@ const DateRangeButton = memo(({ range, isActive, onClick }: { range: DateRange, 
     <span className="relative z-10">{range.label}</span>
   </motion.button>
 ));
+
 DateRangeButton.displayName = 'DateRangeButton';
 
 export default DateRangeButton;

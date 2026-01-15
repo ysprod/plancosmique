@@ -1,17 +1,7 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-
-function cleanText(s: any) {
-  return String(s ?? "").replace(/\s+/g, " ").trim();
-}
-function clamp(s: string, max = 140) {
-  const t = cleanText(s);
-  return t.length > max ? t.slice(0, max - 1) + "…" : t;
-}
-function getId(x: any): string {
-  return String(x?._id ?? x?.id ?? "");
-}
+import { getId, cleanText, clamp } from "@/lib/functions";
 
 const itemVariants = {
   initial: { opacity: 0, y: 10 },

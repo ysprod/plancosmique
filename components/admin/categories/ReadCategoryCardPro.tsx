@@ -76,14 +76,6 @@ export const ReadCategoryCardPro = memo(function ReadCategoryCardPro({
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <motion.div
-                className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-emerald-500 to-lime-500 text-white shadow-sm"
-                whileHover={reducedMotion ? undefined : { scale: 1.03, rotate: 1 }}
-                transition={{ type: "spring", stiffness: 260, damping: 18 }}
-              >
-                <FolderTree className="h-5 w-5" />
-              </motion.div>
-
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <h3 className="truncate text-sm font-extrabold text-slate-900 dark:text-white">

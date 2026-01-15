@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { motion } from 'framer-motion';
-import UserCard from '@/components/users/UserCard';
+import UserCard from '@/components/admin/users/UserCard';
 import Pagination from '@/components/admin/users/Pagination';
 import EmptyState from '@/components/admin/users/EmptyState';
 import { User } from '@/lib/interfaces';

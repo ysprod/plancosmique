@@ -5,7 +5,6 @@ import LoadingSkeleton from '@/components/consultations/LoadingSkeleton';
 import PageHeader from '@/components/consultations/PageHeader';
 import Toast from '@/components/consultations/Toast';
 import { useAdminConsultationAnalysis } from '@/hooks/consultations/useAdminConsultationAnalysis';
-import AnalysisPreview from './AnalysisPreview';
 
 export default function AdminConsultationAnalysisView() {
     const {
@@ -48,7 +47,6 @@ export default function AdminConsultationAnalysisView() {
                     onNotifyUser={handleNotifyUser}
                     notifiedback={notified}
                 />
-                {/* <AnalysisPreview analysis={analyse} /> */}
             </motion.div>
             <AnimatePresence>
                 {toast && (

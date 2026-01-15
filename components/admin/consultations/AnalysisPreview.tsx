@@ -144,7 +144,6 @@ const AnalysisPreview = memo(({ analysis, consultation }: { analysis: any, consu
         </motion.div>
     );
 }, (prevProps, nextProps) => {
-    // Custom comparison
     return prevProps.analysis === nextProps.analysis && prevProps.consultation === nextProps.consultation;
 });
 

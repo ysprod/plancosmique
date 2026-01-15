@@ -26,7 +26,6 @@ const itemVariants = {
 const LoadingState = memo(() => {
   return (
     <div className="flex items-center justify-center min-h-[60vh] relative overflow-hidden bg-gradient-to-br from-gray-50 via-purple-50/30 to-indigo-50/30 dark:from-gray-900 dark:via-purple-950/20 dark:to-indigo-950/20">
-      {/* Animated background gradient */}
       <motion.div
         animate={{
           scale: [1, 1.2, 1],

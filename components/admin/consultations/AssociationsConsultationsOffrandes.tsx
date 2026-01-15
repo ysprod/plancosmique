@@ -19,10 +19,10 @@ const CATEGORIES: Array<{
   emoji: string;
   color: string;
 }> = [
-  { value: "animal", label: "Animaux", emoji: "🐓", color: "from-red-500 to-orange-500" },
-  { value: "vegetal", label: "Végétaux", emoji: "🌾", color: "from-green-500 to-emerald-500" },
-  { value: "beverage", label: "Boissons", emoji: "🥤", color: "from-blue-500 to-indigo-500" },
-];
+    { value: "animal", label: "Animaux", emoji: "🐓", color: "from-red-500 to-orange-500" },
+    { value: "vegetal", label: "Végétaux", emoji: "🌾", color: "from-green-500 to-emerald-500" },
+    { value: "beverage", label: "Boissons", emoji: "🥤", color: "from-blue-500 to-indigo-500" },
+  ];
 
 function getId(x: any): string | null {
   const raw = x?._id ?? x?.id;
@@ -215,7 +215,7 @@ function AssociationsConsultationsOffrandes() {
     for (const r of rubriques ?? []) {
       const id = getId(r);
       if (!id) continue;
-      const titre = safeText(r?.titre   ?? "Rubrique");
+      const titre = safeText(r?.titre ?? "Rubrique");
       const description = safeText(r?.description ?? "");
       const count = (consultationsByRubriqueId.get(id)?.length ?? 0);
 

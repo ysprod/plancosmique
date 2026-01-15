@@ -25,8 +25,7 @@ const itemVariants = {
 };
 
 const ReportsLoadingState = memo(() => (
-  <div className="flex items-center justify-center min-h-[220px] relative overflow-hidden bg-gradient-to-br from-blue-50 via-cyan-50/40 to-sky-50/40 dark:from-blue-950 dark:via-cyan-950/30 dark:to-sky-950/30 rounded-xl">
-    {/* Floating gradient orb */}
+  <div className="min-h-screen w-full h-full flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-blue-50 via-cyan-50/40 to-sky-50/40 dark:from-blue-950 dark:via-cyan-950/30 dark:to-sky-950/30 rounded-xl">
     <motion.div
       animate={{
         x: [0, 30, -30, 0],
@@ -48,7 +47,6 @@ const ReportsLoadingState = memo(() => (
       animate="visible"
       className="relative z-10 flex flex-col items-center justify-center px-4"
     >
-      {/* Icon container with trend animation */}
       <motion.div
         variants={itemVariants}
         className="relative mb-6"

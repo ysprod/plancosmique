@@ -138,6 +138,7 @@ const ActivitySection = memo<ActivitySectionProps>(({ stats, derivedStats }) => 
     </motion.div>
   );
 });
+
 ActivitySection.displayName = 'ActivitySection';
 
 export default ActivitySection;

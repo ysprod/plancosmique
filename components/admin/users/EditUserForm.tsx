@@ -28,7 +28,6 @@ export function EditUserForm({ formData, setFormData, saving, success, onSubmit 
           Informations de base
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Username */}
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-2">
               Nom d'utilisateur *

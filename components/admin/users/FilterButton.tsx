@@ -24,6 +24,7 @@ const FilterButton = memo<FilterButtonProps>(({ showFilters, hasActiveFilters, l
     {hasActiveFilters && <span className="w-2 h-2 bg-white rounded-full" />}
   </motion.button>
 ));
+
 FilterButton.displayName = 'FilterButton';
 
 export default FilterButton;

@@ -29,6 +29,7 @@ const RefreshBanner = memo<RefreshBannerProps>(({ loading, isRefreshing, hasUser
     </motion.div>
   );
 });
+
 RefreshBanner.displayName = 'RefreshBanner';
 
 export default RefreshBanner;

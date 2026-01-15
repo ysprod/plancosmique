@@ -25,5 +25,7 @@ const CustomTooltip = memo(({ active, payload, label }: any) => {
     </motion.div>
   );
 });
+
 CustomTooltip.displayName = 'CustomTooltip';
+
 export default CustomTooltip;

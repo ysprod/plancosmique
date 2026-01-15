@@ -49,6 +49,7 @@ const Pagination = memo<PaginationProps>(({ currentPage, totalPages, loading, on
     </motion.div>
   );
 });
+
 Pagination.displayName = 'Pagination';
 
 export default Pagination;

@@ -74,4 +74,5 @@ export const DetailsGrid = memo<DetailsGridProps>(({ stats, derivedStats }) => {
     </motion.div>
   );
 });
+
 DetailsGrid.displayName = 'DetailsGrid';

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { motion } from 'framer-motion';
-import { StatCard } from '@/components/admin/StatCard';
+import { StatCard } from '@/components/admin/commons/StatCard';
 import { Users, FileText, CreditCard, DollarSign } from 'lucide-react';
 
 const itemVariants = {

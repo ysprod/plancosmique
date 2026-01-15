@@ -148,3 +148,17 @@ export function processUserData(userData: User | null): ProcessedUserData | null
     carteDuCiel: userData.carteDuCiel
   };
 }
+
+
+export function cleanText(s: any) {
+  return String(s ?? "").replace(/\s+/g, " ").trim();
+}
+
+export function clamp(s: string, max = 140) {
+  const t = cleanText(s);
+  return t.length > max ? t.slice(0, max - 1) + "…" : t;
+}
+
+export function getId(x: any): string {
+  return String(x?._id ?? x?.id ?? "");
+}

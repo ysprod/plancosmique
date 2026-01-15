@@ -83,10 +83,7 @@ const PaymentsList: React.FC<PaymentsListProps> = ({
             >
                 <div className="flex items-start justify-between mb-2.5">
                     <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-1.5 mb-1">
-                            <Hash className="w-3 h-3 text-gray-400" />
-                            <p className="text-xs font-mono text-gray-500 truncate">{payment.reference}</p>
-                        </div>
+                        
                         <p className="text-lg font-bold text-gray-900">{payment.amount.toLocaleString()} F</p>
                     </div>
                 </div>

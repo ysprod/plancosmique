@@ -58,4 +58,5 @@ export const DetailCard = memo<DetailCardProps>(({
     />
   </motion.div>
 ));
+
 DetailCard.displayName = 'DetailCard';

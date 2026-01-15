@@ -29,4 +29,5 @@ export const ProgressBar = memo<ProgressBarProps>(({
     </div>
   </div>
 ));
+
 ProgressBar.displayName = 'ProgressBar';

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { DateRangeType } from '@/hooks/admin/useAdminReportsPage';
 import ActionButton from './ActionButton';
 import DateRangeButton from './DateRangeButton';
-import { useReportsHeaderAnimation } from './useReportsHeaderAnimation';
+import { useReportsHeaderAnimation } from '../../../hooks/admin/useReportsHeaderAnimation';
 
 interface DateRange {
   value: string;
@@ -16,10 +16,6 @@ interface ReportsHeaderProps {
   setDateRange: (v: DateRangeType) => void;
   DATE_RANGES: DateRange[];
 }
-
-// Animation variants déplacés dans useReportsHeaderAnimation
-
-
 
 const ReportsHeader = memo<ReportsHeaderProps>(({ dateRange, setDateRange, DATE_RANGES }) => {
   const handleDateRangeChange = useCallback((value: DateRangeType) => {
@@ -34,7 +30,6 @@ const ReportsHeader = memo<ReportsHeaderProps>(({ dateRange, setDateRange, DATE_
       animate="visible"
       className="flex flex-col items-center gap-6 text-center"
     >
-      {/* Hero Section */}
       <motion.div variants={itemVariants} className="relative">
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-3xl blur-2xl"
@@ -70,13 +65,11 @@ const ReportsHeader = memo<ReportsHeaderProps>(({ dateRange, setDateRange, DATE_
         </div>
       </motion.div>
 
-      {/* Action Buttons */}
       <motion.div variants={itemVariants} className="flex gap-3">
         <ActionButton icon={Filter} label="Filtrer" variant="outline" />
         <ActionButton icon={Download} label="Exporter" variant="primary" />
       </motion.div>
 
-      {/* Date Range Pills */}
       <motion.div
         variants={itemVariants}
         className="flex gap-2 overflow-x-auto pb-2 px-2 scrollbar-hide max-w-full"

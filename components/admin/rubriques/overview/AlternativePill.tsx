@@ -9,10 +9,10 @@ const CATEGORIES: Array<{
   emoji: string;
   color: string;
 }> = [
-  { value: "animal", label: "Animaux", emoji: "🐓", color: "from-red-500 to-orange-500" },
-  { value: "vegetal", label: "Végétaux", emoji: "🌾", color: "from-green-500 to-emerald-500" },
-  { value: "beverage", label: "Boissons", emoji: "🥤", color: "from-blue-500 to-indigo-500" },
-];
+    { value: "animal", label: "Animaux", emoji: "🐓", color: "from-red-500 to-orange-500" },
+    { value: "vegetal", label: "Végétaux", emoji: "🌾", color: "from-green-500 to-emerald-500" },
+    { value: "beverage", label: "Boissons", emoji: "🥤", color: "from-blue-500 to-indigo-500" },
+  ];
 
 const itemVariants = {
   initial: { opacity: 0, y: 10 },

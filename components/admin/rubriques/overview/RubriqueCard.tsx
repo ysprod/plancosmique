@@ -1,21 +1,11 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
-
-function cleanText(s: any) {
-  return String(s ?? "").replace(/\s+/g, " ").trim();
-}
-function clamp(s: string, max = 140) {
-  const t = cleanText(s);
-  return t.length > max ? t.slice(0, max - 1) + "…" : t;
-}
-function getId(x: any): string {
-  return String(x?._id ?? x?.id ?? "");
-}
+import { ChevronRight, Sparkles } from "lucide-react";
+import { clamp, getId } from "@/lib/functions";
 
 const itemVariants = {
-  initial: { opacity: 0, y: 10 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.18 } },
+  initial: { opacity: 0, y: 10, scale: 0.95 },
+  animate: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 300, damping: 25 } },
 };
 
 const RubriqueCard = memo(function RubriqueCard({
@@ -33,34 +23,63 @@ const RubriqueCard = memo(function RubriqueCard({
       type="button"
       variants={itemVariants}
       onClick={() => onOpen(rid)}
+      whileHover={{ y: -4, scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 20 }}
       aria-label={`Ouvrir la rubrique ${rubrique?.titre}`}
-      className={[
-        "group relative w-full overflow-hidden rounded-3xl border border-slate-200 bg-white/70 p-3 text-left shadow-sm backdrop-blur transition",
-        "hover:bg-white active:scale-[0.99]",
-        "dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:bg-zinc-900/50",
-      ].join(" ")}
+      className="group relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-200/80 bg-gradient-to-br from-white/90 to-slate-50/80 dark:from-zinc-900/90 dark:to-zinc-800/80 p-3 sm:p-4 text-left shadow-md hover:shadow-xl backdrop-blur-md dark:border-zinc-700/50 transition-all"
     >
-      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-600 via-indigo-600 to-emerald-500/70" />
-      <div className="pt-1">
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0">
-            <div className="truncate text-[14px] font-extrabold text-slate-900 dark:text-white">
-              {rubrique?.titre ?? "Rubrique"}
+      {/* Gradient top bar with animation */}
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-indigo-500 dark:from-violet-400 dark:via-fuchsia-400 dark:to-indigo-400">
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+          animate={{ x: ['-100%', '100%'] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+        />
+      </div>
+
+      {/* Glow effect on hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-fuchsia-500/10 to-transparent dark:from-violet-400/20 dark:via-fuchsia-400/20" />
+      </div>
+
+      <div className="relative pt-1 sm:pt-2">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex-1 min-w-0 space-y-1 sm:space-y-1.5">
+            <div className="flex items-center gap-2">
+              <motion.div
+                whileHover={{ rotate: [0, -10, 10, 0] }}
+                transition={{ duration: 0.4 }}
+                className="flex-shrink-0"
+              >
+                <Sparkles className="w-4 h-4 text-violet-600 dark:text-violet-400" />
+              </motion.div>
+              <h3 className="truncate text-sm sm:text-[15px] font-extrabold text-slate-900 dark:text-white">
+                {rubrique?.titre ?? "Rubrique"}
+              </h3>
             </div>
-            <div className="mt-0.5 line-clamp-2 text-[12px] text-slate-600 dark:text-zinc-300">
-              {rubrique?.description ? clamp(rubrique.description, 160) : "—"}
-            </div>
+            <p className="line-clamp-2 text-[11px] sm:text-[12px] leading-relaxed text-slate-600 dark:text-zinc-300">
+              {rubrique?.description ? clamp(rubrique.description, 120) : "—"}
+            </p>
           </div>
 
-          <div className="flex flex-col items-end gap-2">
-            <span className="inline-flex items-center rounded-full bg-slate-900 px-2 py-1 text-[10px] font-extrabold text-white dark:bg-white dark:text-zinc-900">
-              {count} choix
-            </span>
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-white">
-              <ChevronRight className="h-4 w-4" />
-            </span>
-          </div>
+         
         </div>
+         <div className="flex flex-col items-center gap-2">
+            <motion.span
+              whileHover={{ scale: 1.1 }}
+              className="inline-flex items-center rounded-full bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-100 px-2.5 py-1 text-[10px] sm:text-[11px] font-extrabold text-white dark:text-zinc-900 shadow-sm"
+            >
+              {count} choix 
+            </motion.span>
+            <motion.span
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              transition={{ type: 'spring', stiffness: 400 }}
+              className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-200 shadow-sm group-hover:border-violet-400 dark:group-hover:border-violet-600 transition-colors"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </motion.span>
+          </div>
       </div>
     </motion.button>
   );

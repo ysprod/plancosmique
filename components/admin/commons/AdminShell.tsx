@@ -1,5 +1,5 @@
 "use client";
-import { MobileNav } from '@/components/admin/MobileNav';
+import { MobileNav } from '@/components/admin/commons/MobileNav';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { RoleGuard } from '@/components/auth/RoleGuard';
 import { useAdminShellSidebar } from '@/hooks/admin/useAdminShellSidebar';

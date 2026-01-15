@@ -26,7 +26,6 @@ const CATEGORY_CONFIG: Record<OfferingCategory, { icon: string; label: string; c
     }
 };
 
-
 import type { Offering, OfferingAlternative } from "@/lib/interfaces";
 
 export const OfferingSelector = memo(({
@@ -77,7 +76,6 @@ export const OfferingSelector = memo(({
                     </div>
                 )}
             </div>
-
 
             <div className="relative">
                 <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />

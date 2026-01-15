@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { motion } from 'framer-motion';
-import UsersStats from '@/components/users/UsersStats';
+import UsersStats from '@/components/admin/users/UsersStats';
 
 interface StatsSectionProps {
   stats: any;

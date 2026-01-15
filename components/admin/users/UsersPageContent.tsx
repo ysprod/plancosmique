@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import DeleteUserModal from '@/components/users/DeleteUserModal';
+import DeleteUserModal from '@/components/admin/users/DeleteUserModal';
 import PageHeader from '@/components/admin/users/PageHeader';
 import RefreshBanner from '@/components/admin/users/RefreshBanner';
 import { BackgroundOrbs } from '@/components/admin/users/BackgroundOrbs';

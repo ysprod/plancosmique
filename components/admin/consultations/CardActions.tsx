@@ -95,14 +95,7 @@ const CardActions = memo(({ isCompleted, isNotified, consultationId, canGenerate
                         className="absolute inset-0 bg-white/20 rounded-xl"
                     />
                     <Mail className="w-4 h-4 relative z-10" />
-                    <span className="relative z-10">Client Notifié</span>
-                    <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-                        className="relative z-10"
-                    >
-                        <Sparkles className="w-4 h-4" />
-                    </motion.div>
+                    <span className="relative z-10">Client déjà notifié</span>
                 </motion.div>
             )}
         </div>

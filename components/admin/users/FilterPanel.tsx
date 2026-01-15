@@ -76,6 +76,7 @@ const FilterPanel = memo<FilterPanelProps>(({ statusFilter, roleFilter, loading,
     </AnimatePresence>
   </motion.div>
 ));
+
 FilterPanel.displayName = 'FilterPanel';
 
 export default FilterPanel;

@@ -26,4 +26,5 @@ export const DetailCardItem = memo<DetailCardItemProps>(({ item, index }) => (
     <span className="font-bold text-gray-900 text-sm">{item.value}</span>
   </div>
 ));
+
 DetailCardItem.displayName = 'DetailCardItem';

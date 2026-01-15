@@ -37,6 +37,7 @@ const SearchBar = memo<SearchBarProps>(({ searchQuery, loading, onSearch, onClea
     </AnimatePresence>
   </div>
 ));
+
 SearchBar.displayName = 'SearchBar';
 
 export default SearchBar;

@@ -37,7 +37,6 @@ const OffrandesAddModal: React.FC<OffrandesAddModalProps> = ({
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]" onClick={onClose} />
       <div className="w-full max-w-2xl bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border-2 border-violet-200 dark:border-violet-800 max-h-[90vh] overflow-y-auto relative z-[9999]" onClick={e => e.stopPropagation()}>
-        {/* Header */}
         <div className="bg-gradient-to-r from-violet-500 to-purple-500 px-6 py-5 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">

@@ -26,7 +26,6 @@ const itemVariants = {
 
 const UsersLoading = memo(() => (
   <div className="flex items-center justify-center min-h-[300px] relative overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/30 dark:from-gray-900 dark:via-blue-950/20 dark:to-indigo-950/20 rounded-xl">
-    {/* Animated background orbs */}
     <motion.div
       animate={{
         scale: [1, 1.15, 1],
