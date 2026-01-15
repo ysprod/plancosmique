@@ -26,27 +26,51 @@ const Slide4SectionSelection: FC<Slide4SectionSelectionProps> = ({
   onSelect,
   choices,
   alreadyDoneChoices,
-}) => (
-  <>
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.2 }}
-      className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2"
-    >
-      {choices.map((choice, idx) => {
-        const doneChoice = alreadyDoneChoices.find(dc => dc.choiceId === choice._id) || null;
-        return (
-          <ConsultationCard
-            key={choice._id || idx}
-            choice={choice}
-            onSelect={() => onSelect(choice)}
-            doneChoice={doneChoice}
-          />
-        );
-      })}
-    </motion.div>
-  </>
-);
+}) => {
+  // Calculer le nombre de consultations par choix
+  const getChoiceCount = (choiceId?: string) => {
+    if (!choiceId) return 0;
+    return alreadyDoneChoices.filter(dc => dc.choiceId === choiceId).length;
+  };
+
+  // Handler pour voir l'historique (pour l'instant redirige vers la dernière consultation)
+  const handleViewHistory = (choiceId?: string) => {
+    if (!choiceId) return;
+    const lastDone = alreadyDoneChoices
+      .filter(dc => dc.choiceId === choiceId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+    
+    if (lastDone) {
+      window.location.href = `/secured/consultations/${lastDone.consultationId}`;
+    }
+  };
+
+  return (
+    <>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2"
+      >
+        {choices.map((choice, idx) => {
+          const doneChoice = alreadyDoneChoices.find(dc => dc.choiceId === choice._id) || null;
+          const doneCount = getChoiceCount(choice._id);
+          
+          return (
+            <ConsultationCard
+              key={choice._id || idx}
+              choice={choice}
+              onSelect={() => onSelect(choice)}
+              doneChoice={doneChoice}
+              doneCount={doneCount}
+              onViewHistory={() => handleViewHistory(choice._id)}
+            />
+          );
+        })}
+      </motion.div>
+    </>
+  );
+};
 
 export default Slide4SectionSelection;
