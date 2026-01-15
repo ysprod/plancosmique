@@ -236,14 +236,25 @@ const ConsultationChoiceCard = memo(({
                         </select>
                     </div>
 
-                    <textarea
-                        value={choice.description}
-                        onChange={(e) => onUpdate({ ...choice, description: e.target.value })}
-                        placeholder="Description du choix"
-                        rows={2}
-                        className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 
-                     focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                    />
+                    <div className="space-y-1">
+                        <label htmlFor={`choice-desc-${index}`} className="text-xs font-semibold text-slate-700">
+                            Description du choix
+                        </label>
+                        <p className="text-[10px] text-slate-500">
+                            Décrivez ce choix de consultation en détail pour guider l'utilisateur
+                        </p>
+                        <textarea
+                            id={`choice-desc-${index}`}
+                            value={choice.description}
+                            onChange={(e) => onUpdate({ ...choice, description: e.target.value })}
+                            placeholder="Décrivez les détails et bénéfices de ce choix..."
+                            aria-label="Description du choix de consultation"
+                            title="Entrez une description détaillée du choix de consultation"
+                            rows={2}
+                            className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 
+                         focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                        />
+                    </div>
                 </div>
 
                 <div className="flex gap-1">

@@ -1,23 +1,10 @@
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import React from 'react';
-import { MissionDeVie, Position, Sujet } from '../interfaces';
+import { AnalyseData, Position } from '../interfaces';
 import PageFooter from './PageFooter';
 import PageHeader from './PageHeader';
 import PositionCard from './PositionCard';
 import { parseMarkdownContent, splitMarkdownIntoSections } from './analysis-pdf.utils';
-
-interface CarteDuCielBase {
-  sujet: Sujet;
-  positions: Position[];
-  aspectsTexte: string;
-}
-
-interface AnalyseData {
-  _id: string;
-  carteDuCiel: CarteDuCielBase;
-  missionDeVie: MissionDeVie;
-  dateGeneration: string;
-}
 
 interface AnalysisDocumentProps {
   analyse: AnalyseData;

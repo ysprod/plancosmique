@@ -54,10 +54,7 @@ const SIGNES_OPPOSES: Record<string, string> = {
   'Verseau': 'Lion',
   'Poissons': 'Vierge'
 };
-
-/**
- * Extrait les 5 Portes depuis les données carteDuCiel
- */
+ 
 export function extractCinqPortes(carteDuCiel: CarteDuCielData | null): CinqPortes | null {
   if (!carteDuCiel?.positions || carteDuCiel.positions.length === 0) {
     console.warn('[extractCinqPortes] Données carteDuCiel invalides');
