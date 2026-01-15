@@ -10,6 +10,7 @@ interface ChoicesListViewProps {
   choices: ConsultationChoice[];
   onUpdateChoice: (index: number, updated: ConsultationChoice) => void;
   onDeleteChoice: (index: number) => void;
+  onMoveChoice: (index: number, direction: 'up' | 'down') => void;
   offerings: Offering[];
 }
 
@@ -17,6 +18,7 @@ const ChoicesListView = memo(function ChoicesListView({
   choices,
   onUpdateChoice,
   onDeleteChoice,
+  onMoveChoice,
   offerings,
 }: ChoicesListViewProps) {
   if (choices.length === 0) {
@@ -38,6 +40,8 @@ const ChoicesListView = memo(function ChoicesListView({
             index={index}
             onUpdate={(updated) => onUpdateChoice(index, updated)}
             onDelete={() => onDeleteChoice(index)}
+            onMoveUp={index > 0 ? () => onMoveChoice(index, 'up') : undefined}
+            onMoveDown={index < choices.length - 1 ? () => onMoveChoice(index, 'down') : undefined}
             offerings={offerings}
           />
         ))}

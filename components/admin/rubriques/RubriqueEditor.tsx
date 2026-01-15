@@ -47,6 +47,18 @@ const RubriqueEditor = memo(({
     });
   }, [rubrique, onUpdate]);
 
+  const handleMoveChoice = useCallback((index: number, direction: 'up' | 'down') => {
+    const newChoices = [...rubrique.consultationChoices];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    
+    if (targetIndex < 0 || targetIndex >= newChoices.length) return;
+    
+    // Échanger les positions
+    [newChoices[index], newChoices[targetIndex]] = [newChoices[targetIndex], newChoices[index]];
+    
+    onUpdate({ ...rubrique, consultationChoices: newChoices });
+  }, [rubrique, onUpdate]);
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -106,6 +118,7 @@ const RubriqueEditor = memo(({
                 choices={rubrique.consultationChoices}
                 onUpdateChoice={handleUpdateChoice}
                 onDeleteChoice={handleDeleteChoice}
+                onMoveChoice={handleMoveChoice}
                 offerings={offerings}
               />
             ) : (

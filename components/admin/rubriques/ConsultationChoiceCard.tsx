@@ -1,6 +1,6 @@
 import { ConsultationChoice } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, ChevronUp, DollarSign, Package, Search, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronUp, DollarSign, Package, Search, Trash2, ArrowUp, ArrowDown } from "lucide-react";
 import { memo, useCallback, useMemo, useState } from "react";
 
 type OfferingCategory = "animal" | "vegetal" | "beverage";
@@ -156,12 +156,16 @@ const ConsultationChoiceCard = memo(({
     choice,
     onUpdate,
     onDelete,
+    onMoveUp,
+    onMoveDown,
     offerings,
     index
 }: {
     choice: ConsultationChoice;
     onUpdate: (updated: ConsultationChoice) => void;
     onDelete: () => void;
+    onMoveUp?: () => void;
+    onMoveDown?: () => void;
     offerings: Offering[];
     index: number;
 }) => {
@@ -191,6 +195,16 @@ const ConsultationChoiceCard = memo(({
             className="border-2 border-slate-200 rounded-xl p-4 bg-white shadow-md
                hover:shadow-lg transition-shadow"
         >
+            {/* Indicateur de position */}
+            <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-200">
+                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-violet-600 to-purple-600 text-white text-xs font-bold">
+                    {index + 1}
+                </span>
+                <span className="text-xs text-slate-500 font-medium">
+                    Position d'affichage
+                </span>
+            </div>
+
             {/* Header */}
             <div className="flex items-start gap-3 mb-3">
                 <div className="flex-1 space-y-2">
@@ -257,6 +271,25 @@ const ConsultationChoiceCard = memo(({
                 </div>
 
                 <div className="flex gap-1">
+                    {/* Boutons de réorganisation */}
+                    {onMoveUp && (
+                        <button
+                            onClick={onMoveUp}
+                            className="p-2 rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"
+                            title="Déplacer vers le haut"
+                        >
+                            <ArrowUp className="w-5 h-5" />
+                        </button>
+                    )}
+                    {onMoveDown && (
+                        <button
+                            onClick={onMoveDown}
+                            className="p-2 rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"
+                            title="Déplacer vers le bas"
+                        >
+                            <ArrowDown className="w-5 h-5" />
+                        </button>
+                    )}
                     <button
                         onClick={() => setIsExpanded(!isExpanded)}
                         className="p-2 rounded-lg hover:bg-violet-100 transition-colors"

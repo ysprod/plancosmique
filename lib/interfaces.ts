@@ -151,6 +151,7 @@ export interface ConsultationChoice {
   frequence?: 'UNE_FOIS_VIE' | 'ANNUELLE' | 'MENSUELLE' | 'QUOTIDIENNE' | 'LIBRE';
   participants?: 'SOLO' | 'AVEC_TIERS' | 'GROUPE';
   offering: ConsultationOffering;
+  order?: number;
 }
 
 export interface FormErrors {
