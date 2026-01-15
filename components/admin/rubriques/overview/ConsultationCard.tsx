@@ -14,6 +14,7 @@ const FREQUENCE_LABELS = {
 const PARTICIPANTS_LABELS = {
   SOLO: 'Solo (utilisateur seul)',
   AVEC_TIERS: 'Avec une personne tierce',
+  POUR_TIERS: 'Pour une personne tierce',
   GROUPE: 'En groupe (équipe)'
 };
 

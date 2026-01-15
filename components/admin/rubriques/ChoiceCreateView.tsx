@@ -115,6 +115,7 @@ const ChoiceCreateView = memo(function ChoiceCreateView({ onSave, onCancel, offe
               <option value="">-- Sélectionner --</option>
               <option value="SOLO">Solo</option>
               <option value="AVEC_TIERS">Avec une tierce personne</option>
+              <option value="POUR_TIERS">Pour une personne tierce</option>
               <option value="GROUPE">Groupe</option>
             </select>
           </div>

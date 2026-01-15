@@ -230,6 +230,7 @@ const ConsultationChoiceCard = memo(({
                             <option value="">--</option>
                             <option value="SOLO">Solo (utilisateur seul)</option>
                             <option value="AVEC_TIERS">Avec une personne tierce</option>
+                            <option value="POUR_TIERS">Pour une personne tierce</option>
                             <option value="GROUPE">En groupe (équipe)</option>
                         </select>
                     </div>

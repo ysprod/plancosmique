@@ -56,4 +56,5 @@ const FilterBar = ({ searchQuery, onSearchChange, filter, onFilterChange, sortOr
     </div>
   </div>
 );
+
 export default FilterBar;

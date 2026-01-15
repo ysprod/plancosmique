@@ -17,6 +17,7 @@ export type FrequenceConsultation =
 export type TypeParticipants =
   | 'SOLO'              // Uniquement l'utilisateur
   | 'AVEC_TIERS'        // Utilisateur + une personne tierce
+  | 'POUR_TIERS'        // Pour une personne tierce
   | 'GROUPE';
 
 export interface ConsultationData {
