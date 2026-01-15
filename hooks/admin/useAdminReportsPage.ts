@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { CalendarCheck, Coins, TrendingUp, Users } from 'lucide-react';
 import { api } from '@/lib/api/client';
 
 export type ReportType = 'overview' | 'consultations' | 'revenue' | 'users';
@@ -59,10 +60,10 @@ export function useAdminReportsPage() {
     if (!stats) return [];
     return [
       {
-        label: 'Total Consultations',
+        label: 'Consultations',
         value: stats.consultations.total,
         change: stats.activity.growth,
-        icon: null,
+        icon: React.createElement(CalendarCheck, { className: 'w-5 h-5' }),
         color: 'from-blue-500 to-blue-600',
         subLabel: `${stats.consultations.completed} complétées`
       },
@@ -70,7 +71,7 @@ export function useAdminReportsPage() {
         label: 'Revenus',
         value: `${stats.consultations.revenue.toLocaleString()}`,
         change: stats.activity.growth,
-        icon: null,
+        icon: React.createElement(Coins, { className: 'w-5 h-5' }),
         color: 'from-green-500 to-green-600',
         subLabel: `${stats.payments.completed} paiements`
       },
@@ -78,7 +79,7 @@ export function useAdminReportsPage() {
         label: 'Utilisateurs Actifs',
         value: stats.users.active,
         change: stats.activity.growth,
-        icon: null,
+        icon: React.createElement(Users, { className: 'w-5 h-5' }),
         color: 'from-purple-500 to-purple-600',
         subLabel: `${stats.users.total} au total`
       },
@@ -86,7 +87,7 @@ export function useAdminReportsPage() {
         label: 'Croissance',
         value: `${stats.activity.growth.toFixed(1)}%`,
         change: stats.activity.growth,
-        icon: null,
+        icon: React.createElement(TrendingUp, { className: 'w-5 h-5' }),
         color: 'from-orange-500 to-orange-600',
         subLabel: `${stats.activity.todayConsultations} aujourd'hui`
       },
