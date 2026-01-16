@@ -56,12 +56,11 @@ const OfferingCard: React.FC<OfferingCardProps> = memo(({ offering, isSelected, 
         <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 truncate">
           {offering.name || `${config.label} ${index + 1}`}
         </h4>
-        <div className="flex items-center gap-2 text-[11px] text-gray-600 dark:text-gray-400">
-          <span>Requis: <strong>{offering.quantity}</strong></span>
-          <span>•</span>
-          <span className={isSufficient ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
-            Dispo: <strong>{availableQuantity}</strong>
-          </span>
+        <div className="text-[11px] text-gray-600 dark:text-gray-400">
+          <div className="mb-0.5">Offrande(s) Requise(s) :  <strong>{offering.quantity}</strong></div>
+          <div className={isSufficient ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+            <strong>{availableQuantity}</strong> disponible(s) dans votre panier d'offrandes
+          </div>
         </div>
       </div>
     </motion.button>
