@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from "framer-motion";
 import { cx } from "./DisplayConsultationCard.utils";
 import { Sparkles, Globe, Target } from "lucide-react";

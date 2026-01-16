@@ -1,3 +1,4 @@
+'use client';
 import ContactSection from '@/components/about/ContactSection';
 import HeroSection from '@/components/about/HeroSection';
 import MissionsSection from '@/components/about/MissionsSection';

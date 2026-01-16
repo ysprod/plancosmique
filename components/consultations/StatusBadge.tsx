@@ -1,3 +1,5 @@
+'use client';
+
 import { CheckCircle, Clock, Loader2, AlertCircle } from 'lucide-react';
 import React from 'react';
 import { ConsultationStatus } from '@/lib/interfaces';

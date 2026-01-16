@@ -1,3 +1,5 @@
+'use client';
+
 export default function CinqPortesNotAvailableSection() {
   return (
     <section className="mb-6 px-3">

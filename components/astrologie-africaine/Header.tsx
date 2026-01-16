@@ -1,3 +1,5 @@
+'use client';
+
 import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Moon, Zap, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";

@@ -1,3 +1,4 @@
+'use client';
 import { NumerologyFormData } from '@/hooks/numerologie/useNumerologyForm';
 import { Calculator, Calendar, Loader2, Sparkles, User } from 'lucide-react';
 

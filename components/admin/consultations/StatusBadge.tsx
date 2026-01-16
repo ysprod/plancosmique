@@ -1,3 +1,5 @@
+'use client';
+
 import { memo, useMemo } from 'react';
 import { CheckCircle, Loader, Clock, XCircle, AlertCircle } from 'lucide-react';
 

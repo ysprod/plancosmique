@@ -1,3 +1,4 @@
+'use client';
 import BookSearchInput from './BookSearchInput';
 import BookFilterPanel from './BookFilterPanel';
 import BookFiltersPanelContent from './BookFiltersPanelContent';

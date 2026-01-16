@@ -1,3 +1,5 @@
+'use client';
+
 import { Settings } from 'lucide-react';
 import React from 'react';
 

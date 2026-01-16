@@ -1,3 +1,5 @@
+'use client';
+
 import VoyanceCategorySelector from '@/components/voyance/VoyanceCategorySelector';
 import VoyanceFormFields from '@/components/voyance/VoyanceFormFields';
 import { motion } from 'framer-motion';

@@ -1,3 +1,5 @@
+'use client';
+
 import ConsultationForm from '@/components/cinqetoiles/ConsultationForm';
 
 export function Slide4SectionForm({ form, errors, handleChange, apiError, handleSubmit, resetSelection }: any) {

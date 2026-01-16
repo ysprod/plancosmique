@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react'; 
 import { AnalyseData } from '@/lib/interfaces';
 import SubjectCard from '@/components/admin/genereanalyse/SubjectCard';

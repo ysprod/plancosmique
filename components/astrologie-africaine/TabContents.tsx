@@ -1,3 +1,5 @@
+'use client';
+
 import { CalendrierLunaireContent } from './CalendrierLunaireContent';
 import { IncantationsContent } from './IncantationsContent';
 import { RituelsContent } from './RituelsContent';

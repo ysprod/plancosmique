@@ -1,3 +1,5 @@
+'use client';
+
 import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Circle } from "lucide-react";

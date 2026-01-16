@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import InvalidRubriquesAlert from "@/components/admin/categories/create/InvalidRubriquesAlert";
 import Banner from "@/components/admin/categories/create/Banner";

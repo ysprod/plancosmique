@@ -1,3 +1,5 @@
+'use client';
+
 import React, { memo } from "react";
 
 export const SkeletonList = memo(function SkeletonList() {

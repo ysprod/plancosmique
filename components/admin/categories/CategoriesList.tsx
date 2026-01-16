@@ -1,3 +1,4 @@
+'use client';
 import { AnimatePresence, motion } from "framer-motion";
 import { EditCategoryCardPro } from "@/components/admin/categories/EditCategoryCardPro";
 import { ReadCategoryCardPro } from "@/components/admin/categories/ReadCategoryCardPro";

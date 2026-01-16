@@ -1,3 +1,5 @@
+'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronRight, CreditCard, Plus, ShoppingCart, X } from 'lucide-react';
 import React from 'react';
@@ -99,10 +101,6 @@ export const CartModal: React.FC<CartModalProps> = ({
                                                         <h3 className="font-bold text-gray-900 dark:text-white text-sm sm:text-base truncate">{item.name}</h3>
                                                         <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                                                             {item.price.toLocaleString()} F × {item.quantity}
-                                                        </p>
-                                                        {/* Debug ID */}
-                                                        <p className="text-[10px] text-gray-400 dark:text-gray-500 font-mono">
-                                                            ID: {itemId?.substring(0, 8)}...
                                                         </p>
                                                     </div>
                                                     <div className="flex items-center gap-2 flex-shrink-0">

@@ -1,3 +1,5 @@
+'use client';
+
 import { memo } from 'react';
 import { Heart, CircleDot } from 'lucide-react';
 import ExpandableSection from './ExpandableSection';

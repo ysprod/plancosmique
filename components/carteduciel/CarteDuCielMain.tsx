@@ -1,3 +1,5 @@
+'use client';
+
 import LoadingState from "@/components/carteduciel/LoadingState";
 import ErrorState from "@/components/carteduciel/ErrorState";
 import ProfileHeader from "@/components/carteduciel/ProfileHeader";

@@ -1,3 +1,4 @@
+'use client';
 import React, { memo } from "react";
 
 export const MiniPill = memo(function MiniPill({ children }: { children: React.ReactNode }) {

@@ -1,3 +1,5 @@
+'use client';
+
 import MarkdownContent from '@/components/consultations/MarkdownContent';
 import SubjectHeader from '@/components/consultations/SubjectHeader';
 import { AnalyseAstrologique } from '@/lib/interfaces';

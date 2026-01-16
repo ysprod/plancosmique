@@ -1,3 +1,5 @@
+'use client';
+
 import ContentWrapper from '@/components/spiritualite/ContentWrapper';
 import FeaturedArticle from '@/components/spiritualite/FeaturedArticle';
 import ArticlesGrid from '@/components/spiritualite/ArticlesGrid';

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, CheckCircle2 } from "lucide-react";

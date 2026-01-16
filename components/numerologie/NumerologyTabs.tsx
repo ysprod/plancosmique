@@ -1,3 +1,4 @@
+'use client';
 import { motion } from 'framer-motion';
 import { Calculator } from 'lucide-react';
 import { SacredNumber } from '@/hooks/numerologie/useSacredNumbers';

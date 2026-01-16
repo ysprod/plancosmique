@@ -1,3 +1,4 @@
+'use client';
 import React, { memo, useCallback, useMemo, useState } from "react";
 import { Pencil, Save, X } from "lucide-react";
 import { Rubrique } from "@/lib/interfaces";

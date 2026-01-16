@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { Sparkles, Filter } from 'lucide-react';
 import { ConsultationType, ConsultationStatus } from '@/lib/interfaces';

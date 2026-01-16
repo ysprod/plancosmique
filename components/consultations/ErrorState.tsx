@@ -1,4 +1,6 @@
+'use client';
 import { memo } from 'react';
+
 import { motion } from 'framer-motion';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
 

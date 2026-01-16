@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { Calendar, Star, Sparkles, Check } from 'lucide-react';
 import { memo } from 'react';

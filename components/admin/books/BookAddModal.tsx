@@ -1,3 +1,4 @@
+'use client';
 import BookAddModalHeader from './BookAddModalHeader';
 import BookAddModalStep1 from './BookAddModalStep1';
 import BookAddModalStep2 from './BookAddModalStep2';

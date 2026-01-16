@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { Bell, X } from 'lucide-react';
 import { memo, useEffect } from 'react';

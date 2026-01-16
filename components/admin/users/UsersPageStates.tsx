@@ -1,3 +1,5 @@
+'use client';
+
 import UsersErrorState from "@/components/admin/users/UsersErrorState";
 import UsersLoading from "@/components/admin/users/UsersLoading";
 

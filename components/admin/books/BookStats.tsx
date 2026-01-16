@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { BookOpen, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';

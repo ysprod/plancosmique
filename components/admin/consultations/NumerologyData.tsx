@@ -1,3 +1,5 @@
+'use client';
+
 import { memo } from 'react';
 import { Star, TrendingUp, Globe, Sun, Calendar, Moon, BookOpen, Lightbulb } from 'lucide-react';
 import ExpandableSection from './ExpandableSection';

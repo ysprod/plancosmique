@@ -1,3 +1,5 @@
+'use client';
+
 import { Stats } from './types';
 import StatsCard from './StatsCard';
 import { ShoppingBag, Sparkles, TrendingUp } from 'lucide-react'; 

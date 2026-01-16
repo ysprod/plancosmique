@@ -1,3 +1,4 @@
+'use client';
 import { SortField, SortOrder } from '@/hooks/books/useAdminBooks';
 import { motion } from 'framer-motion';
 import { ChevronDown, Filter } from 'lucide-react';

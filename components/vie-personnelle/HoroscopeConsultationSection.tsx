@@ -1,3 +1,5 @@
+'use client';
+
 import { memo } from 'react';
 import HoroscopeForm from '@/components/horoscope/HoroscopeForm';
 import HoroscopeList from '@/components/horoscope/HoroscopeList';

@@ -298,7 +298,7 @@ export default function CheckoutModal({
                     Finaliser l'achat
                   </h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Mode simulation activé
+                    Mode Premium activé
                   </p>
                 </div>
               </div>
@@ -326,7 +326,7 @@ export default function CheckoutModal({
                        flex items-center gap-1.5"
             >
               <Sparkles className="w-3 h-3" />
-              <span>Mode Simulation</span>
+              <span>Mode Premium</span>
             </motion.div>
           </div>
 
@@ -405,7 +405,7 @@ export default function CheckoutModal({
                          disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <CreditCard className="w-5 h-5" />
-                <span>Simuler le paiement ({cart.length} item{cart.length > 1 ? 's' : ''})</span>
+                <span>Effectuer le paiement ({cart.length} item{cart.length > 1 ? 's' : ''})</span>
               </motion.button>
             </div>
           )}

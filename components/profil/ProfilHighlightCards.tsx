@@ -1,3 +1,4 @@
+'use client';
 import { motion } from "framer-motion";
 import HighlightCard from "@/components/profil/HighlightCard";
 

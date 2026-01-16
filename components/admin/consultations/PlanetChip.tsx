@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from "framer-motion";
 import { memo } from "react";
 import { PLANET_GRADIENTS, SIGN_COLORS, cx } from "./DisplayConsultationCard.utils";

@@ -1,3 +1,5 @@
+'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import { CheckCircle, AlertCircle, X } from 'lucide-react';
 import React from 'react';

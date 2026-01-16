@@ -1,3 +1,5 @@
+'use client';
+
 import { AnimatePresence } from 'framer-motion';
 import { CalendrierLunaireContent, IncantationsContent, RituelsContent } from './TabContents';
 import { TabId } from '@/hooks/astrologie-africaine/useAstrologieAfricainePage';

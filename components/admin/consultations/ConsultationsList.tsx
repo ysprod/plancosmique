@@ -1,3 +1,5 @@
+'use client';
+
 import { AnimatePresence } from 'framer-motion';
 import StatusBadge from './StatusBadge';
 import ConsultationCard from './ConsultationCard';

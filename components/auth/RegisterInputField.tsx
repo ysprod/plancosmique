@@ -1,3 +1,5 @@
+'use client';
+
 import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Check, AlertCircle } from "lucide-react";

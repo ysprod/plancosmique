@@ -1,3 +1,5 @@
+'use client';
+
 import { ConsultationConfig } from "@/lib/interfaces";
 import React, { useState } from "react";
 

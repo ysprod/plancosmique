@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import React, { memo } from 'react';
 import type { Tab } from '@/hooks/astrologie-africaine/useAstrologieAfricainePage';

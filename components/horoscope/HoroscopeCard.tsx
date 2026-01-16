@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from "framer-motion";
 import { CheckCircle2, Clock, Calendar, Sparkles } from "lucide-react";
 import { memo } from "react";

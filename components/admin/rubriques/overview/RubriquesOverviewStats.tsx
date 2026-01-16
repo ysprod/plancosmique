@@ -1,3 +1,5 @@
+'use client';
+
 import { memo } from 'react';
 import StatCard from '@/components/admin/rubriques/overview/StatCard';
 import { motion } from 'framer-motion';

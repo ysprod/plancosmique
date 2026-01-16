@@ -1,3 +1,5 @@
+'use client';
+
 import { Position } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import { memo } from 'react';

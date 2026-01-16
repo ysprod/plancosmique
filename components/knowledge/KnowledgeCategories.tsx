@@ -1,3 +1,5 @@
+'use client';
+
 import { Filter } from 'lucide-react';
 import type { KnowledgeCategory } from '@/lib/types/knowledge.types';
 

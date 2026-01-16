@@ -1,3 +1,4 @@
+'use client';
 import CategoryCard from "@/components/profil/CategoryCard";
 
 export interface CategoryType {

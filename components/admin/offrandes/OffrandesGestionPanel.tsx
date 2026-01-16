@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import OffrandesList from './OffrandesList';
 import { OffrandesGestionPanelHeader } from './OffrandesGestionPanelHeader';

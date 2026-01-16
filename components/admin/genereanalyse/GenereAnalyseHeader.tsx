@@ -1,3 +1,5 @@
+'use client';
+
 import { ArrowLeft, Download, Share2 } from 'lucide-react';
 import React from 'react';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { containerVariants } from '@/lib/animation.constants';
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";

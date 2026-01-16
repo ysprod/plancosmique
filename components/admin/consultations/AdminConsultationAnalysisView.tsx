@@ -1,3 +1,5 @@
+'use client';
+
 import DisplayConsultationCard from '@/components/admin/consultations/DisplayConsultationCard';
 import ErrorState from '@/components/consultations/ErrorState';
 import LoadingSkeleton from '@/components/consultations/LoadingSkeleton';

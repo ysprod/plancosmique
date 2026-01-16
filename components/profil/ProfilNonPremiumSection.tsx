@@ -1,3 +1,4 @@
+'use client';
 import { AnimatePresence, motion } from "framer-motion";
 import Slide4Section from "@/app/secured/cinqetoiles/Slide4Section";
 import { User } from "@/lib/interfaces";

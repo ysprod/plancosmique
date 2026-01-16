@@ -1,3 +1,4 @@
+'use client';
 import { Compass, Award, Target, Heart, Drama, Hash } from 'lucide-react';
 import { NumerologyResult } from '@/hooks/numerologie/useNumerologyCalculator';
 

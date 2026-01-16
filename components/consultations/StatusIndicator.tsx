@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { CheckCircle, Zap, Shield, Clock } from 'lucide-react';
 import React, { memo } from 'react';

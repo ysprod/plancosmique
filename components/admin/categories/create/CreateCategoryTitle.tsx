@@ -1,3 +1,5 @@
+'use client';
+
 import { Tags } from "lucide-react";
 import React from "react";
 

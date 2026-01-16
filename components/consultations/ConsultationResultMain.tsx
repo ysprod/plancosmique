@@ -1,3 +1,5 @@
+'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertCircle, ArrowLeft, Download, Star } from 'lucide-react';
 import CosmicLoader from './CosmicLoader';

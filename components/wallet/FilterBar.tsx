@@ -1,3 +1,5 @@
+'use client';
+
 import { Search, RefreshCw } from "lucide-react";
 import { TransactionFilter, SortOrder } from '@/components/wallet/types';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { CreditCard, RefreshCw } from 'lucide-react';
 import React from 'react';
 

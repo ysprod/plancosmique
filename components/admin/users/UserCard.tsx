@@ -1,3 +1,5 @@
+'use client';
+
 import { User } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import { Ban, Calendar, CheckCircle, Edit, Globe, Mail, Phone, Shield, Star, Trash2, User as UserIcon } from 'lucide-react';

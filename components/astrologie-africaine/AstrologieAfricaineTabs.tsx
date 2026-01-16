@@ -1,3 +1,5 @@
+'use client';
+
 import { Tab, TabId } from '@/hooks/astrologie-africaine/useAstrologieAfricainePage';
 import { TabButton } from './TabButton';
 import React from 'react';

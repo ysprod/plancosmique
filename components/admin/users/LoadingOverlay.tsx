@@ -1,3 +1,5 @@
+'use client';
+
 import { memo, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { RefreshCw } from 'lucide-react';

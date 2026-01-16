@@ -1,3 +1,5 @@
+'use client';
+
 import { ConsultationChoice, DoneChoice } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import { History } from 'lucide-react';

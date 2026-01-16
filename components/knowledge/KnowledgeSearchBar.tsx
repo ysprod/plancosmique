@@ -1,3 +1,4 @@
+'use client';
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import React from 'react';

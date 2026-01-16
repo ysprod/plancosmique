@@ -1,3 +1,5 @@
+'use client';
+
 import TransactionCard from './TransactionCard';
 import { motion } from 'framer-motion';
 import { ShoppingBag } from 'lucide-react';

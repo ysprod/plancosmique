@@ -1,3 +1,5 @@
+'use client';
+
 import { Layers, ArrowLeft } from "lucide-react";
 import React from "react";
 

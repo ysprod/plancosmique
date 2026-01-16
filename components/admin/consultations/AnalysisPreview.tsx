@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, Clock, ChevronDown, Sparkle, TrendingUp, Sparkles, User } from "lucide-react";
 import { memo, useState, useMemo, useCallback } from "react";

@@ -1,3 +1,5 @@
+'use client';
+
 import { Suspense } from 'react';
 import { LoadingFallback } from '@/components/commons/ErrorBoundary';
 import HeaderContent from '@/components/commons/HeaderContent';

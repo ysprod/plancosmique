@@ -1,3 +1,5 @@
+'use client';
+
 import type { CategorieAdmin } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { memo } from "react";

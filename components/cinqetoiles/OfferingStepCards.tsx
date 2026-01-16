@@ -1,3 +1,5 @@
+'use client';
+
 import { memo } from "react";
 import { CATEGORY_CONFIG } from "./OfferingStep";
 import type { Category } from "./OfferingStep";

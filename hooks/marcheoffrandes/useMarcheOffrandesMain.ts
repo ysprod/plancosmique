@@ -1,5 +1,3 @@
-'use client';
-
 import { useCart } from '@/hooks/marcheoffrandes/useCart';
 import { useModals } from '@/hooks/marcheoffrandes/useModals';
 import { useOfferings } from '@/hooks/marcheoffrandes/useOfferings';
@@ -13,20 +11,23 @@ export function useMarcheOffrandesMain() {
   const [selectedCategory, setSelectedCategory] = useState<Category>('all');
   const filteredOfferings = useMemo(
     () => selectedCategory === 'all'
-      ? offerings
-      : offerings.filter(o => o.category === selectedCategory),
+      ? offerings : offerings.filter(o => o.category === selectedCategory),
     [selectedCategory, offerings]
   );
+
   const handleProceedToCheckout = useCallback(() => {
     if (cart.length === 0) return;
     openCheckout();
   }, [cart.length, openCheckout, cart]);
+
   const handleResetCategory = useCallback(() => {
     setSelectedCategory('all');
   }, []);
+
   const handleRetry = useCallback(() => {
     window.location.reload();
   }, []);
+
   return {
     cart, cartTotal, cartCount, addToCart, removeFromCart, updateQuantity, clearCart,
     showCart, showCheckout, openCart, closeCart, openCheckout, closeCheckout, backToCart,

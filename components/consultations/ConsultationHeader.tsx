@@ -1,3 +1,5 @@
+'use client';
+
 import { ArrowLeft, Download, Star } from 'lucide-react';
 
 interface ConsultationHeaderProps {

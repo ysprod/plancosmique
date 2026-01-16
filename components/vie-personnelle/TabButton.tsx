@@ -1,3 +1,5 @@
+'use client';
+
 import React, { memo } from "react";
 import { CATEGORY_CONFIG } from "./OfferingStep.utils";
 

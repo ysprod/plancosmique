@@ -1,3 +1,5 @@
+'use client';
+
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Sparkles } from 'lucide-react';

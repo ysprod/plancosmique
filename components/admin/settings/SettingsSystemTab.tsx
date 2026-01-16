@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Database, AlertCircle } from 'lucide-react';
 

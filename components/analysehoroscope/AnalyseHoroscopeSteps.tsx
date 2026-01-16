@@ -1,3 +1,5 @@
+'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import PaymentProcessing from '@/components/vie-personnelle/PaymentProcessing';
 import OfferingStep from '@/components/vie-personnelle/OfferingStep';

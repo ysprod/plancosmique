@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { Shield, Lock, Sparkles, Star, Zap } from 'lucide-react';
 import React, { memo } from 'react';

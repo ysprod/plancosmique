@@ -1,3 +1,5 @@
+'use client';
+
 import React, { memo } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Sparkles, Star } from 'lucide-react';

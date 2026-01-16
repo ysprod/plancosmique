@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { Eye, Loader2, Mail, Sparkles, Wand2 } from 'lucide-react';
 import React from 'react';

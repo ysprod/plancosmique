@@ -1,3 +1,5 @@
+'use client';
+
 import SpiritualiteLoading from '@/components/spiritualite/SpiritualiteLoading';
 import SpiritualiteError from '@/components/spiritualite/SpiritualiteError';
 

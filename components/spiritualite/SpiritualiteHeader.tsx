@@ -1,3 +1,5 @@
+'use client';
+
 import ContentWrapper from '@/components/spiritualite/ContentWrapper';
 
 export default function SpiritualiteHeader() {

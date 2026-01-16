@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Crown, Settings, LogOut } from 'lucide-react';
 import Link from 'next/link';

@@ -1,3 +1,4 @@
+'use client';
 import { BookOpen } from 'lucide-react';
 
 export default function KnowledgeEmpty({ searchQuery }: { searchQuery: string }) {

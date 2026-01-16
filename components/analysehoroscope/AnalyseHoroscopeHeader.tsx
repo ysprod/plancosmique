@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { containerVariants } from '@/lib/animation.constants';
 import { itemVariants } from './constants';

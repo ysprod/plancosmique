@@ -1,3 +1,5 @@
+'use client';
+
 import TabButton from "./TabButton";
 import type { Category } from "./useOfferingStepState";
 

@@ -1,3 +1,4 @@
+'use client';
 import { CartModal, CategoryFilters, CheckoutModal, FloatingCart, Header, Hero, InfoBox } from '@/components/marcheoffrandes';
 import EmptyState from '@/components/marcheoffrandes/EmptyState';
 import ErrorState from '@/components/marcheoffrandes/ErrorState';

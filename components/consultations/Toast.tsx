@@ -1,3 +1,5 @@
+'use client';
+
 import { memo, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, AlertCircle, Bell, X } from 'lucide-react';

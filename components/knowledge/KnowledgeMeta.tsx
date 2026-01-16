@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Calendar, Eye, User } from 'lucide-react';
 import type { Knowledge } from '@/lib/types/knowledge.types';

@@ -1,3 +1,5 @@
+'use client';
+
 import { Slide4SectionBackButton } from '@/components/cinqetoiles/Slide4SectionBackButton';
 import { Slide4SectionForm } from '@/components/cinqetoiles/Slide4SectionForm';
 import { Slide4SectionGold } from '@/components/cinqetoiles/Slide4SectionGold';

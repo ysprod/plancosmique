@@ -1,3 +1,5 @@
+'use client';
+
 import { memo, useMemo } from 'react';
 import { ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from 'lucide-react';
 import { motion } from 'framer-motion';

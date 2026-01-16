@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { Calendar, Clock, User, Eye, Heart, MessageCircle, ArrowRight, Star, TrendingUp } from 'lucide-react';
 import Link from 'next/link';

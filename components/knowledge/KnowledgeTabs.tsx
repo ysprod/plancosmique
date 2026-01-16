@@ -1,3 +1,4 @@
+'use client';
 import { BookOpen, TrendingUp, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 

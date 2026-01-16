@@ -1,3 +1,5 @@
+'use client';
+
 import { ConsultationChoice } from '@/lib/interfaces';
 import { FC } from 'react';
 import { motion } from 'framer-motion';

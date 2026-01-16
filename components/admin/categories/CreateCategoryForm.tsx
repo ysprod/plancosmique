@@ -1,3 +1,4 @@
+'use client';
 import { RubriquesPickerPro } from "@/components/admin/categories/RubriquesPickerPro";
 import { ArrowLeft, Plus, Tags } from "lucide-react";
 

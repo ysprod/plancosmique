@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, Moon, X, Menu } from 'lucide-react';
 import NotificationBell from '@/components/commons/NotificationBell';

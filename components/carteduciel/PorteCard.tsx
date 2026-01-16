@@ -1,3 +1,5 @@
+'use client';
+
 import { memo, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';

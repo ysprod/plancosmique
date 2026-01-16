@@ -1,3 +1,5 @@
+'use client';
+
 import { Calendar, Clock, MapPin, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { memo } from 'react';

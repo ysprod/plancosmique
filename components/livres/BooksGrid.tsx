@@ -1,3 +1,4 @@
+'use client';
 import { Book } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import { BookOpen, ShoppingCart } from 'lucide-react';

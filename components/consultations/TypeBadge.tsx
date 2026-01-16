@@ -1,3 +1,5 @@
+'use client';
+
 import { Sparkles, User, Star, TrendingUp, Calendar } from 'lucide-react';
 import React from 'react';
 import { ConsultationType } from '@/lib/interfaces';

@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import AnimatedStar from '@/components/notfound/AnimatedStar';
 import BackgroundOrbs from '@/components/notfound/BackgroundOrbs';

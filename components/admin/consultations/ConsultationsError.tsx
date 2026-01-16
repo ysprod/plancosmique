@@ -1,3 +1,5 @@
+'use client';
+
 interface ConsultationsErrorProps {
   error: string;
   onRetry: () => void;

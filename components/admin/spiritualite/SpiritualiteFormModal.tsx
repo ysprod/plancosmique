@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from "framer-motion";
 import { AlertTriangle, BookOpen, ChevronDown, ChevronUp, Eye, EyeOff, Lightbulb, List, Loader, Package, Save, Sparkles, Target, X } from "lucide-react";
 import React from "react";

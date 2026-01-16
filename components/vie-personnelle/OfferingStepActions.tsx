@@ -1,3 +1,5 @@
+'use client';
+
 import { ChevronRight, ShoppingBag, ArrowRight } from "lucide-react";
 
 interface OfferingStepActionsProps {

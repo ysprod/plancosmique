@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from "framer-motion";
 import { Award, Calendar, Clock, MapPin, Phone, User } from "lucide-react";
 import { memo } from "react";

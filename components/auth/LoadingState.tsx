@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from "framer-motion";
 import { LogOut, Sparkles, Shield, Zap, Star } from "lucide-react";
 

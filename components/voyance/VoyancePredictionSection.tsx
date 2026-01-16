@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import VoyancePredictionCard from '@/components/voyance/VoyancePredictionCard';

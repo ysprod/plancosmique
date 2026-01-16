@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { Eye, Download, Hash, Repeat } from 'lucide-react';
 import { formatDate } from '@/lib/functions';

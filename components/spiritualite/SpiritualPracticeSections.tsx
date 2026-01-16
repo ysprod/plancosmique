@@ -1,3 +1,5 @@
+'use client';
+
 import { BookOpen, Sparkle, Flame, Feather, AlertCircle, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 

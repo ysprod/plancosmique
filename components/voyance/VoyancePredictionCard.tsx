@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { Moon, Sparkles } from 'lucide-react';
 import { categories } from './voyanceData';

@@ -1,3 +1,5 @@
+'use client';
+
 import { useConsultationCard } from '@/hooks/consultations/useConsultationCard';
 import { motion } from 'framer-motion';
 import { memo, useMemo } from 'react';

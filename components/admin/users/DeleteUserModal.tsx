@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, AlertTriangle, Loader2, Trash2 } from 'lucide-react';
 import { User } from '@/lib/interfaces';
