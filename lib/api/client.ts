@@ -31,7 +31,7 @@ const processQueue = (error: Error | null, token: string | null = null) => {
 };
 
 /**
- * Instance Axios configurée
+ * Instance Axios configurée avec optimisation du cache
  */
 const cleanBaseURL = config.api.baseURL.replace(/\/+$/, '');
 const apiClient: AxiosInstance = axios.create({
@@ -39,6 +39,7 @@ const apiClient: AxiosInstance = axios.create({
   timeout: config.api.timeout,
   headers: {
     'Content-Type': 'application/json',
+    'Cache-Control': 'no-cache', // Évite les problèmes de cache navigateur
   },
 });
 

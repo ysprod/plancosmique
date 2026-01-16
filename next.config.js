@@ -19,7 +19,7 @@ const nextConfig = {
   // Compression automatique
   compress: true,
   
-  // Headers de cache pour les assets statiques
+  // Headers de cache optimisés pour les assets statiques
   async headers() {
     return [
       {
