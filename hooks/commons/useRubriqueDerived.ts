@@ -3,16 +3,37 @@ import type { Rubrique } from "@/lib/interfaces";
 import { getBorderGradientFromId } from "../../components/categorie/getBorderGradient";
 
 import { useRubriqueUtils } from './useRubriqueUtils';
+
+/**
+ * Hook optimisé pour dériver les propriétés d'une rubrique
+ * Utilise useMemo pour éviter les recalculs inutiles
+ */
 export function useRubriqueDerived(rub: Rubrique) {
   const { clampText, getStableRubriqueId } = useRubriqueUtils();
-  return useMemo(() => {
-    const id = getStableRubriqueId(rub);
-    const title = typeof rub.titre === "string" ? rub.titre.trim() : "Rubrique";
-    const desc = rub.description ? clampText(rub.description, 140) : "—";
-    const borderClass = getBorderGradientFromId(id);
-    const choicesCount = Array.isArray((rub as any)?.consultationChoices)
+  
+  // Mémoïser les valeurs individuelles pour éviter les recalculs
+  const id = useMemo(() => getStableRubriqueId(rub), [rub._id, getStableRubriqueId]);
+  const title = useMemo(() => 
+    typeof rub.titre === "string" ? rub.titre.trim() : "Rubrique", 
+    [rub.titre]
+  );
+  const desc = useMemo(() => 
+    rub.description ? clampText(rub.description, 140) : "—", 
+    [rub.description, clampText]
+  );
+  const borderClass = useMemo(() => getBorderGradientFromId(id), [id]);
+  const choicesCount = useMemo(() => 
+    Array.isArray((rub as any)?.consultationChoices)
       ? (rub as any).consultationChoices.length
-      : undefined;
-    return { id, title, desc, borderClass, choicesCount };
-  }, [rub._id, rub.titre, rub.description, (rub as any)?.consultationChoices]);
+      : undefined,
+    [(rub as any)?.consultationChoices]
+  );
+  
+  return useMemo(() => ({
+    id,
+    title,
+    desc,
+    borderClass,
+    choicesCount
+  }), [id, title, desc, borderClass, choicesCount]);
 }

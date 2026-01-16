@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import HoroscopeForm from '@/components/horoscope/HoroscopeForm';
 import HoroscopeList from '@/components/horoscope/HoroscopeList';
 import HoroscopeListLoading from '@/components/horoscope/HoroscopeListLoading';
@@ -7,7 +8,11 @@ import useHoroscopePage from '@/hooks/horoscope/useHoroscopePage';
 import { Tab } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 
-function HoroscopeConsultationSection() {
+/**
+ * Composant optimisé avec React.memo
+ * Pas de props donc ne se re-rendra que lors des changements internes
+ */
+const HoroscopeConsultationSection = memo(function HoroscopeConsultationSection() {
   const {
     loadingUser, activeTab, result, error, loadingHoroscopes, filteredHoroscopes,
     tabs, handleRedirect, handleTabChange, handleHoroscopeClick
@@ -39,6 +44,6 @@ function HoroscopeConsultationSection() {
       </div>
     </div>
   );
-}
+});
 
 export default HoroscopeConsultationSection;
