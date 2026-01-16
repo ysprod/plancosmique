@@ -248,32 +248,3 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
 });
-
-  event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        // Mettre en cache les réponses valides
-        if (response.status === 200) {
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return response;
-      })
-      .catch(() => {
-        // Si la requête échoue, utiliser le cache
-        return caches.match(event.request).then((cachedResponse) => {
-          return cachedResponse || new Response('Offline - Service indisponible', {
-            status: 503,
-            statusText: 'Service Unavailable',
-            headers: new Headers({
-              'Content-Type': 'text/plain'
-            })
-          });
-        });
-      })
-  );
-});
-
-

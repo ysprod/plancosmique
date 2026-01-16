@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from "framer-motion";
 import React, { useMemo } from "react";
 
@@ -17,7 +19,7 @@ export const StarField = () => {
   );
 
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden" suppressHydrationWarning>
       {stars.map((star) => (
         <motion.div
           key={star.id}
@@ -25,6 +27,7 @@ export const StarField = () => {
           style={star.style}
           animate={{ opacity: [0, 0.8, 0], scale: [0, 1.2, 0] }}
           transition={{ duration: 2.5, repeat: Infinity, delay: star.delay, ease: "easeInOut" }}
+          suppressHydrationWarning
         />
       ))}
     </div>

@@ -8,7 +8,7 @@ export const endpoints = {
     login: '/auth/login',
     refresh: '/auth/refresh',
     me: '/auth/me',
-    logout: '/auth/logout',
+    logout: '/auth/logout', // Backend likely doesn't have this endpoint; handled client-side only
   },
 
   // Users

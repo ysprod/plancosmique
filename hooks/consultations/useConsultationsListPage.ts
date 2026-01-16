@@ -1,5 +1,1 @@
-import { useConsultationsListPage as useConsultationsListPageBase } from '@/hooks/commons/useConsultationsListPage';
-
-export default function useConsultationsListPage() {
-  return useConsultationsListPageBase();
-}
+export { useConsultationsListPage as default } from '@/hooks/commons/useConsultationsListPage';

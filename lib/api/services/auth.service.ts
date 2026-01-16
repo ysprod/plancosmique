@@ -51,18 +51,13 @@ export const authService = {
   },
 
   /**
-   * Déconnexion utilisateur
+   * Déconnexion utilisateur (client-side only - no backend endpoint)
    */
   logout: async (): Promise<void> => {
-    try {
-      await api.post(endpoints.auth.logout);
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
-      clearAuth();
-      if (typeof window !== 'undefined') {
-        document.cookie = 'monetoile_access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      }
+    // Clear client-side auth state (no backend call needed)
+    clearAuth();
+    if (typeof window !== 'undefined') {
+      document.cookie = 'monetoile_access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     }
   },
 };

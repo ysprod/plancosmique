@@ -1,22 +1,28 @@
+'use client';
 import ConsultationCard from '@/components/consultations/ConsultationCard';
-import NumerologyConsultationCard from '@/components/consultations/NumerologyConsultationCard';
 import ConsultationsEmpty from '@/components/consultations/ConsultationsEmpty';
 import ConsultationsError from '@/components/consultations/ConsultationsError';
 import ConsultationsFilters from '@/components/consultations/ConsultationsFilters';
 import ConsultationsHeader from '@/components/consultations/ConsultationsHeader';
+import NumerologyConsultationCard from '@/components/consultations/NumerologyConsultationCard';
+import useConsultationsListPage from '@/hooks/consultations/useConsultationsListPage';
 import ConsultationsListLoading from './ConsultationsListLoading';
-import { useConsultationsListMain } from '@/hooks/consultations/useConsultationsListMain';
 
 export default function ConsultationsListMain() {
   const {
     consultations, filteredConsultations, loading, searchQuery, error,
     setSearchQuery, setTypeFilter, setStatusFilter,
     handleView, handleDownload
-  } = useConsultationsListMain();
+  } = useConsultationsListPage();
+
+  console.log('Rendered ConsultationsListMain with', {
+    consultations: consultations,
+    filteredConsultations: filteredConsultations, 
+  });
 
   if (loading) {
     return <ConsultationsListLoading />;
-  } 
+  }
 
   return (
     <div className="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 py-8 px-4">

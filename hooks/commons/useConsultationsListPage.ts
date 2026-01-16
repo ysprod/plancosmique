@@ -38,7 +38,9 @@ export function useConsultationsListPage() {
         throw new Error('Erreur lors du chargement des consultations');
       }
       const data = response.data;
-      const filtered = (data.consultations || []).filter((c: any) => c.type !== 'HOROSCOPE');
+      const filtered = (data.consultations || []).filter((c: any) => 
+        c.type !== 'HOROSCOPE' && c.analysisNotified === true
+      );
       setConsultations(filtered);
       setLoading(false);
     } catch (err: any) {
