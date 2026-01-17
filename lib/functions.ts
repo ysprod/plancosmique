@@ -54,7 +54,7 @@ const SIGNES_OPPOSES: Record<string, string> = {
   'Verseau': 'Lion',
   'Poissons': 'Vierge'
 };
- 
+
 export function extractCinqPortes(carteDuCiel: CarteDuCielData | null): CinqPortes | null {
   if (!carteDuCiel?.positions || carteDuCiel.positions.length === 0) {
     console.warn('[extractCinqPortes] Données carteDuCiel invalides');
@@ -149,7 +149,6 @@ export function processUserData(userData: User | null): ProcessedUserData | null
   };
 }
 
-
 export function cleanText(s: any) {
   return String(s ?? "").replace(/\s+/g, " ").trim();
 }
@@ -170,15 +169,13 @@ export function hashString(input: string): number {
     h = Math.imul(h, 16777619);
   }
   return h >>> 0;
-} 
-
+}
 
 export function clampText(s: string, max = 120) {
   if (!s) return "";
   const x = typeof s === "string" ? s.replace(/\s+/g, " ").trim() : "";
   return x.length > max ? x.slice(0, max - 1) + "…" : x;
 }
- 
 
 export function getStableRubriqueId(r: Rubrique): string {
   const anyRub: any = r as any;

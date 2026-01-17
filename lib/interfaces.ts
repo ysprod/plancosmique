@@ -87,8 +87,8 @@ export interface Section {
 }
 
 export interface AnalyseAstrologique {
-  analysisNotified: boolean;
   _id: string;
+  analysisNotified: boolean;
   userId: string;
   consultationId: string;
   carteDuCiel: CarteDuCielBase;
@@ -148,8 +148,8 @@ export interface ConsultationChoice {
   _id?: string;
   title: string;
   description: string;
-  frequence?: 'UNE_FOIS_VIE' | 'ANNUELLE' | 'MENSUELLE' | 'QUOTIDIENNE' | 'LIBRE';
-  participants?: 'SOLO' | 'AVEC_TIERS' | 'GROUPE';
+  frequence?: FrequenceConsultation;
+  participants?: TypeParticipants;
   offering: ConsultationOffering;
   order?: number;
 }
