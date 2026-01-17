@@ -38,6 +38,10 @@ const inter = Inter({
 export const metadata: Metadata = getRootMetadata();
 export const viewport = rootViewport;
 
+// Force le rendu dynamique pour toutes les pages
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const bodyClasses = `${inter.className} antialiased bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-50
     selection:bg-violet-500/20 dark:selection:bg-violet-400/30 selection:text-violet-900 dark:selection:text-violet-100`;
