@@ -506,6 +506,8 @@ export interface Consultation {
   completedDate?: Date;
   paymentId?: string;
   isPaid: boolean;
+  /** Indique si l'analyse a été notifiée à l'utilisateur */
+  analysisNotified?: boolean;
   rating?: number;
   review?: string;
   metadata?: Record<string, any>;
