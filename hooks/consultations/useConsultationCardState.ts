@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import type { TabKey } from "./DisplayConsultationCard.types";
+import type { TabKey } from "../../components/admin/consultations/DisplayConsultationCard.types";
 
 interface UseConsultationCardStateProps {
   notifiedback: boolean;

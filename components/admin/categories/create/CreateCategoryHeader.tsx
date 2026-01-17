@@ -1,5 +1,4 @@
 'use client';
-
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ViewSwitcher from "@/components/admin/categories/create/ViewSwitcher";

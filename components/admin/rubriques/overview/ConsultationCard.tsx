@@ -1,5 +1,4 @@
 'use client';
-
 import { ConsultationConfig } from "@/lib/interfaces";
 import { Briefcase, Clock, User, Users } from "lucide-react";
 import React, { useState } from "react";

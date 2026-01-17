@@ -1,5 +1,4 @@
 'use client';
-
 import { CATEGORIES_OFFRANDES } from '@/lib/constants';
 import React from 'react';
 

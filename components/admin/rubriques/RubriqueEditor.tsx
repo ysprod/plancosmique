@@ -1,5 +1,4 @@
 'use client';
-
 import { ConsultationChoice, ConsultationType, Offering } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Save, X } from "lucide-react";
@@ -8,7 +7,7 @@ import ChoiceCreateView from "./ChoiceCreateView";
 import ChoicesListHeader from "./ChoicesListHeader";
 import ChoicesListView from "./ChoicesListView";
 import type { Rubrique } from "@/lib/interfaces";
-import { useChoiceEditorNavigation } from "./useChoiceEditorNavigation";
+import { useChoiceEditorNavigation } from "../../../hooks/admin/useChoiceEditorNavigation";
 import { reorderConsultationChoices } from "@/lib/api/services/rubriques.service";
 
 const RubriqueEditor = memo(({

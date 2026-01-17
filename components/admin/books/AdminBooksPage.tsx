@@ -33,6 +33,7 @@ export default function AdminBooksPage() {
       />
 
       <AdminBooksErrorAlert error={error} onClose={() => setError(null)} />
+
       <BookStats stats={stats} />
 
       {books.length > 0 && (
@@ -63,6 +64,7 @@ export default function AdminBooksPage() {
           onEdit={() => alert("Fonctionnalité de modification à implémenter")}
         />
       )}
+
       <BookAddModal
         show={showAddModal}
         onClose={closeAddModal}
@@ -76,6 +78,7 @@ export default function AdminBooksPage() {
         handleAddBook={handleAddBook}
         categories={categories}
       />
+
       <BookDeleteModal
         show={!!deleteConfirm}
         onClose={() => setDeleteConfirm(null)}

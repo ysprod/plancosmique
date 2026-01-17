@@ -68,7 +68,6 @@ export default function OffersSection() {
             Complètes
           </h2>
         </motion.div>
-
   
         <div className="grid gap-8 lg:grid-cols-3">
           {offers.map((offer, index) => (

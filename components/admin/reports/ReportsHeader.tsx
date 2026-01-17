@@ -1,5 +1,4 @@
 'use client';
-
 import { memo, useCallback } from 'react';
 import { Filter, Download, BarChart3, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';

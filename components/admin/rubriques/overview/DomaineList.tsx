@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import DomaineCard from '@/components/admin/rubriques/overview/DomaineCard';
 

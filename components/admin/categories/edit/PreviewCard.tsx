@@ -41,7 +41,6 @@ const PreviewCard = React.memo(function PreviewCard({
           <div className="text-[11px] font-bold text-slate-700 dark:text-zinc-200">Nom</div>
           <div className="text-sm font-extrabold text-slate-900 dark:text-white">{nom.trim() || "—"}</div>
         </div>
-
         <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-zinc-800 dark:bg-zinc-950">
           <div className="text-[11px] font-bold text-slate-700 dark:text-zinc-200">Description</div>
           <div className="text-[12px] text-slate-700 dark:text-zinc-200">{description.trim() || "—"}</div>

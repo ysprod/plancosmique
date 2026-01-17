@@ -1,13 +1,7 @@
 'use client';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  Activity,
-  LogOut,
-  Menu,
-  Sparkles,
-  X
-} from 'lucide-react';
+import { Activity, LogOut, Menu, Sparkles, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
@@ -26,7 +20,7 @@ export function MobileNav() {
 
   const handleLogout = useCallback(async () => {
     if (isLoggingOut) return;
-    
+
     if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
       setIsLoggingOut(true);
       try {
@@ -43,18 +37,18 @@ export function MobileNav() {
   // Animation variants
   const menuVariants = {
     hidden: { x: '100%', opacity: 0 },
-    visible: { 
-      x: 0, 
+    visible: {
+      x: 0,
       opacity: 1,
-      transition: { 
-        type: 'spring', 
-        damping: 25, 
+      transition: {
+        type: 'spring',
+        damping: 25,
         stiffness: 200,
         staggerChildren: 0.05
       }
     },
-    exit: { 
-      x: '100%', 
+    exit: {
+      x: '100%',
       opacity: 0,
       transition: { duration: 0.3, ease: 'easeInOut' }
     }
@@ -62,8 +56,8 @@ export function MobileNav() {
 
   const itemVariants = {
     hidden: { x: 20, opacity: 0 },
-    visible: { 
-      x: 0, 
+    visible: {
+      x: 0,
       opacity: 1,
       transition: { duration: 0.3, ease: 'easeOut' }
     }
@@ -71,7 +65,6 @@ export function MobileNav() {
 
   return (
     <>
-      {/* Bouton Menu Mobile - Optimisé */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
@@ -129,7 +122,7 @@ export function MobileNav() {
             >
               <div className="flex flex-col h-full">
                 {/* Header avec Logo */}
-                <motion.div 
+                <motion.div
                   variants={itemVariants}
                   className="px-6 pt-10 pb-4 bg-gradient-to-r from-amber-50 to-orange-50 
                              border-b border-gray-200"
@@ -142,7 +135,7 @@ export function MobileNav() {
                     >
                       <span className="text-white font-bold text-xl">M</span>
                       <motion.div
-                        animate={{ 
+                        animate={{
                           scale: [1, 1.2, 1],
                           opacity: [0.5, 1, 0.5]
                         }}
@@ -159,7 +152,7 @@ export function MobileNav() {
                     </div>
                   </div>
 
-                  
+
                 </motion.div>
 
                 {/* Navigation */}
@@ -167,7 +160,7 @@ export function MobileNav() {
                   {navItems.map((item, index) => {
                     const Icon = item.icon;
                     const isActive = pathname === item.href;
-                    
+
                     return (
                       <motion.div
                         key={item.href}
@@ -183,21 +176,19 @@ export function MobileNav() {
                             whileHover={{ x: 4 }}
                             whileTap={{ scale: 0.98 }}
                             className={`flex items-center gap-3 px-4 py-3 rounded-lg 
-                                       transition-all duration-200 ${
-                              isActive
+                                       transition-all duration-200 ${isActive
                                 ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/30'
                                 : 'text-gray-700 hover:bg-gray-100'
-                            }`}
+                              }`}
                           >
-                            <div className={`p-1.5 rounded-md ${
-                              isActive 
-                                ? 'bg-white/20' 
-                                : 'bg-gray-100 group-hover:bg-gray-200'
-                            } transition-colors`}>
+                            <div className={`p-1.5 rounded-md ${isActive
+                              ? 'bg-white/20'
+                              : 'bg-gray-100 group-hover:bg-gray-200'
+                              } transition-colors`}>
                               <Icon className="w-4 h-4" />
                             </div>
                             <span className="font-medium text-sm">{item.label}</span>
-                            
+
                             {/* Badge "Active" */}
                             <AnimatePresence>
                               {isActive && (
@@ -219,7 +210,7 @@ export function MobileNav() {
                 </nav>
 
                 {/* Logout Button */}
-                <motion.div 
+                <motion.div
                   variants={itemVariants}
                   className="px-6 py-4 border-t border-gray-200 bg-gray-50"
                 >
@@ -250,7 +241,7 @@ export function MobileNav() {
                   </motion.button>
                 </motion.div>
 
-               
+
               </div>
             </motion.div>
           </>

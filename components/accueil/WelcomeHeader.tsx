@@ -12,9 +12,9 @@ export default function WelcomeHeader() {
       <Image
         src="/logo.png"
         alt="Mon Étoile"
-        width={90}
-        height={90}
-        className="mx-auto mb-2"
+        width={80}
+        height={80}
+        className="mx-auto mb-4"
         priority
       />
       <h1 className="text-3xl sm:text-4xl font-black text-black">MON ÉTOILE</h1>

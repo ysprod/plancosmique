@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { ArrowLeft, Check, X } from "lucide-react";
 import { memo, useState } from "react";
@@ -148,4 +147,5 @@ const ChoiceCreateView = memo(function ChoiceCreateView({ onSave, onCancel, offe
 });
 
 ChoiceCreateView.displayName = "ChoiceCreateView";
+
 export default ChoiceCreateView;

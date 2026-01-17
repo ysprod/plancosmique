@@ -1,5 +1,4 @@
 "use client";
-
 import { Edit, Mail } from "lucide-react";
 import { memo } from "react";
 import ActionButton from "./ActionButton";
@@ -35,4 +34,5 @@ const ConsultationCardActions = memo(function ConsultationCardActions({
 });
 
 ConsultationCardActions.displayName = "ConsultationCardActions";
+
 export default ConsultationCardActions;

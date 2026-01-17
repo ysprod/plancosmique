@@ -1,8 +1,8 @@
 "use client";
-import { CategorieAdmin } from "@/lib/interfaces";
 import { rubriqueLabel } from "@/lib/functions";
+import { CategorieAdmin } from "@/lib/interfaces";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Check, Copy, FolderTree, Pencil, Trash2 } from "lucide-react";
+import { Check, Copy, Pencil, Trash2 } from "lucide-react";
 import { memo, useCallback, useMemo, useState } from "react";
 import { MiniPill } from "./MiniPill";
 
@@ -37,7 +37,6 @@ export const ReadCategoryCardPro = memo(function ReadCategoryCardPro({
     return { list, names, visible, remaining, count: list.length };
   }, [cat?.rubriques]);
 
-  // Utilise le router pour naviguer vers la page d'édition
   const router = require('next/navigation').useRouter();
   const handleEdit = useCallback(() => {
     if (!catId) return;

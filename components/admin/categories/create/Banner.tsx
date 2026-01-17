@@ -14,6 +14,7 @@ const viewVariants: Variants = {
 
 export default function Banner({ banner }: { banner: Banner }) {
   if (!banner) return null;
+  
   return (
     <motion.div
       variants={viewVariants}

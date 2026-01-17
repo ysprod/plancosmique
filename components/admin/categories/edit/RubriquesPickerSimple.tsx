@@ -5,6 +5,7 @@ import { Trash2 } from "lucide-react";
 import React from "react";
 import RubriquesChips from "./RubriquesChips";
 import RubriquesGrid from "./RubriquesGrid";
+import RubriquesPickerLoading from "./RubriquesPickerLoading";
 
 const RubriquesPickerSimple = React.memo(function RubriquesPickerSimple({
   rubriques,
@@ -27,11 +28,7 @@ const RubriquesPickerSimple = React.memo(function RubriquesPickerSimple({
   const { normalized, chips } = useRubriquesPickerSimple(rubriques, selectedIds);
 
   if (loading) {
-    return (
-      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-[11px] text-slate-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300">
-        Chargement des rubriques…
-      </div>
-    );
+    return <RubriquesPickerLoading />;
   }
 
   return (

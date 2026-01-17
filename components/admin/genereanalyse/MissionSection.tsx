@@ -1,25 +1,16 @@
-'use client';
+"use client";
+import { motion } from "framer-motion";
+import { memo } from "react";
+import CollapsibleSection from "./CollapsibleSection";
+import { MissionDeVie } from "@/lib/interfaces";
+import { useMarkdownParser } from "@/hooks/admin/genereanalyse/useMarkdownParser";
 
-import { motion } from 'framer-motion';
-import { memo, useMemo } from 'react';
-import CollapsibleSection from './CollapsibleSection';
-import { MissionDeVie } from '@/lib/interfaces'; 
+interface MissionSectionProps {
+  missionDeVie: MissionDeVie;
+}
 
-const parseMarkdownToSections = (markdown: string) => {
-  const sections = markdown.split('\n## ').filter(Boolean);
-  return sections.map(section => {
-    const lines = section.split('\n');
-    const title = lines[0].replace(/^#+\s*/, '').replace(/^🌌\s*/, '');
-    const content = lines.slice(1).join('\n').trim();
-    return { title, content };
-  });
-};
-
-const MissionSection = memo(({ missionDeVie }: { missionDeVie: MissionDeVie }) => {
-  const sections = useMemo(
-    () => parseMarkdownToSections(missionDeVie.contenu),
-    [missionDeVie.contenu]
-  );
+const MissionSection = memo(({ missionDeVie }: MissionSectionProps) => {
+  const sections = useMarkdownParser(missionDeVie.contenu);
 
   return (
     <motion.div
@@ -45,6 +36,6 @@ const MissionSection = memo(({ missionDeVie }: { missionDeVie: MissionDeVie }) =
   );
 });
 
-MissionSection.displayName = 'MissionSection';
+MissionSection.displayName = "MissionSection";
 
 export default MissionSection;

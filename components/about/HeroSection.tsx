@@ -97,7 +97,6 @@ export default function HeroSection() {
           <div className="absolute inset-0 bg-gradient-to-t from-purple-900/80 via-transparent to-transparent" />
         </motion.div>
 
-        {/* Stats */}
         <motion.div
           variants={itemVariants}
           className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:gap-6"

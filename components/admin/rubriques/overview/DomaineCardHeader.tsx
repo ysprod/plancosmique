@@ -1,5 +1,4 @@
 'use client';
-
 import { memo } from 'react';
 import { Book, Sparkles, ArrowLeft } from 'lucide-react';
 

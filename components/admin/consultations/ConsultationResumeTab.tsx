@@ -1,9 +1,8 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { Brain, Compass, Crown } from "lucide-react";
 import { memo } from "react";
-import { cx } from "./DisplayConsultationCard.utils";
+import { cx } from "@/lib/functions";
 
 const tabVariants = {
   initial: { opacity: 0, y: 8 },
@@ -67,4 +66,5 @@ const ConsultationResumeTab = memo(function ConsultationResumeTab({ firstMission
 });
 
 ConsultationResumeTab.displayName = "ConsultationResumeTab";
+
 export default ConsultationResumeTab;

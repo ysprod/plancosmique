@@ -1,5 +1,4 @@
 'use client';
-
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { ChevronRight, Sparkles } from "lucide-react";
@@ -88,4 +87,3 @@ const RubriqueCard = memo(function RubriqueCard({
 });
 
 export { RubriqueCard };
-

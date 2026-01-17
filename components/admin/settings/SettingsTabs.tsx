@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 
 interface Tab {
@@ -18,7 +17,6 @@ interface SettingsTabsProps<T extends TabId = string> {
 export default function SettingsTabs<T extends TabId = string>({ tabs, activeTab, setActiveTab }: SettingsTabsProps<T>) {
   return (
     <>
-      {/* Mobile select */}
       <div className="lg:hidden">
         <select
           value={activeTab}
@@ -30,7 +28,6 @@ export default function SettingsTabs<T extends TabId = string>({ tabs, activeTab
           ))}
         </select>
       </div>
-      {/* Desktop tabs */}
       <div className="hidden lg:block bg-white rounded-lg border border-gray-200 p-2">
         {tabs.map(tab => {
           const Icon = tab.icon;

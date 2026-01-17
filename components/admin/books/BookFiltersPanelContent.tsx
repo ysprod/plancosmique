@@ -1,7 +1,6 @@
 'use client';
-import React from 'react';
-import { motion } from 'framer-motion';
 import { SortField, SortOrder } from '@/hooks/books/useAdminBooks';
+import { motion } from 'framer-motion';
 
 interface BookFiltersPanelContentProps {
     showFilters: boolean;
@@ -14,7 +13,6 @@ interface BookFiltersPanelContentProps {
     sortOrder: SortOrder;
     setSortOrder: (v: SortOrder) => void;
     categories: string[];
-    filteredCount: number;
     setSearchQuery: (v: string) => void;
 }
 
@@ -29,7 +27,6 @@ export default function BookFiltersPanelContent({
     sortOrder,
     setSortOrder,
     categories,
-    filteredCount,
     setSearchQuery
 }: BookFiltersPanelContentProps) {
     return (

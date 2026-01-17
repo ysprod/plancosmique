@@ -1,5 +1,4 @@
 "use client";
-
 import { AnimatePresence } from "framer-motion";
 import { Package } from "lucide-react";
 import { memo } from "react";
@@ -51,4 +50,5 @@ const ChoicesListView = memo(function ChoicesListView({
 });
 
 ChoicesListView.displayName = "ChoicesListView";
+
 export default ChoicesListView;

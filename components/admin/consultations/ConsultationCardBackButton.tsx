@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -29,4 +28,5 @@ const ConsultationCardBackButton = memo(function ConsultationCardBackButton() {
 });
 
 ConsultationCardBackButton.displayName = "ConsultationCardBackButton";
+
 export default ConsultationCardBackButton;

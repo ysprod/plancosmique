@@ -36,7 +36,6 @@ const SuccessCard = React.memo(function SuccessCard({
         >
           <ArrowLeft className="h-4 w-4" /> Retour à la liste
         </button>
-
         <button
           onClick={onGoList}
           className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-extrabold text-white shadow-sm bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700"

@@ -9,14 +9,14 @@ import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persist
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Cache pendant 5 minutes par défaut
-      gcTime: 1000 * 60 * 5,
+      // ⚠️ CACHE DÉSACTIVÉ POUR LE DÉVELOPPEMENT
+      gcTime: 0,
       
-      // Garder les données en cache pendant 10 minutes
-      staleTime: 1000 * 60 * 10,
+      // ⚠️ CACHE DÉSACTIVÉ POUR LE DÉVELOPPEMENT
+      staleTime: 0,
       
       // Refetch en arrière-plan quand la fenêtre reprend le focus
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
       
       // Retry 2 fois en cas d'erreur
       retry: 2,
@@ -36,9 +36,10 @@ export const queryClient = new QueryClient({
 });
 
 /**
- * Persisteur pour sauvegarder le cache dans localStorage
- * Limite à 10MB pour éviter de saturer le stockage
+ * ⚠️ PERSISTANCE DÉSACTIVÉE POUR LE DÉVELOPPEMENT
+ * Décommenter ce bloc pour réactiver le cache localStorage
  */
+/*
 if (typeof window !== 'undefined') {
   const persister = createSyncStoragePersister({
     storage: window.localStorage,
@@ -53,6 +54,7 @@ if (typeof window !== 'undefined') {
     buster: 'v1', // Incrémenter pour invalider tout le cache
   });
 }
+*/
 
 /**
  * Préfixes de clés pour les différentes catégories de données

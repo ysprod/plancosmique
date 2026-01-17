@@ -1,8 +1,6 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { memo, type ReactNode } from "react";
-
 import { cardVariants } from "./DisplayConsultationCard.constants";
 import { cx } from "@/lib/functions";
 
@@ -32,9 +30,7 @@ const ConsultationCardContainer = memo(function ConsultationCardContainer({
                 )}
             >
                 {children}
-            </motion.article>
-
-            
+            </motion.article>            
         </div>
     );
 });

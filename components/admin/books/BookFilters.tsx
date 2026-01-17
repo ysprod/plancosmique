@@ -1,9 +1,9 @@
 'use client';
-import BookSearchInput from './BookSearchInput';
+import { SortField, SortOrder } from '@/hooks/books/useAdminBooks';
+import { AnimatePresence, motion } from 'framer-motion';
 import BookFilterPanel from './BookFilterPanel';
 import BookFiltersPanelContent from './BookFiltersPanelContent';
-import { motion, AnimatePresence } from 'framer-motion';
-import { SortField, SortOrder } from '@/hooks/books/useAdminBooks';
+import BookSearchInput from './BookSearchInput';
 
 interface BookFiltersProps {
   searchQuery: string;
@@ -45,18 +45,6 @@ export const BookFilters: React.FC<BookFiltersProps> = ({
         <BookFilterPanel
           showFilters={showFilters}
           setShowFilters={setShowFilters}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          statusFilter={statusFilter}
-          setStatusFilter={setStatusFilter}
-          sortField={sortField}
-          setSortField={setSortField}
-          sortOrder={sortOrder}
-          setSortOrder={setSortOrder}
-          categories={categories}
-          filteredCount={filteredCount}
-          setSearchQuery={setSearchQuery}
-          searchQuery={searchQuery}
         />
       </div>
       <AnimatePresence>
@@ -72,7 +60,6 @@ export const BookFilters: React.FC<BookFiltersProps> = ({
             sortOrder={sortOrder}
             setSortOrder={setSortOrder}
             categories={categories}
-            filteredCount={filteredCount}
             setSearchQuery={setSearchQuery}
           />
         )}

@@ -1,5 +1,4 @@
 'use client';
-
 import { RubriquesList } from './RubriquesList';
 import { RubriquesEmptyState } from './RubriquesEmptyState';
 import { Rubrique } from '@/lib/interfaces';

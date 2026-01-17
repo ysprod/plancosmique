@@ -1,5 +1,4 @@
 'use client';
-
 import DisplayConsultationCard from '@/components/admin/consultations/DisplayConsultationCard';
 import ErrorState from '@/components/consultations/ErrorState';
 import LoadingSkeleton from '@/components/consultations/LoadingSkeleton';
@@ -13,9 +12,7 @@ export default function AdminConsultationAnalysisView() {
         setToast, handleBack, handleModifyAnalysis, handleNotifyUser,
     } = useAdminConsultationAnalysis();
 
-    if (loading) {
-        return <LoadingSkeleton />;
-    }
+    if (loading) { return <LoadingSkeleton />; }
 
     if (error || !analyse) {
         return <ErrorState error={error || 'Analyse introuvable'} onRetry={handleBack} />;

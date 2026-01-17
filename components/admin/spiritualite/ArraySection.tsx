@@ -1,5 +1,4 @@
 'use client';
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Plus, Trash2, ChevronUp, ChevronDown } from "lucide-react";

@@ -1,56 +1,177 @@
-'use client';
+"use client";
+import { cx } from "@/lib/functions";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { memo, useCallback, useMemo } from "react";
+import { colorClasses, navItems } from "./AdminNavConfig";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
-import { navItems, colorClasses } from './AdminNavConfig';
+type Props = { pathname: string; onNav?: () => void; isMobile?: boolean };
 
-export const AdminSidebarNav = React.memo(function AdminSidebarNav({ pathname, onNav, isMobile }: { pathname: string, onNav?: () => void, isMobile?: boolean }) {
-  return (
-    <ul className="space-y-1">
-      {navItems.map((item, index) => {
-        // Pour la racine /admin, égalité stricte. Pour les autres, startsWith
-        const isRoot = item.href === '/admin';
-        const isActive = isRoot ? pathname === item.href : pathname.startsWith(item.href);
+const liVariants = {
+  initial: { opacity: 0, y: 6 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.14 } },
+};
+
+const activeBarTransition = { type: "spring", stiffness: 520, damping: 38, mass: 0.6 };
+
+function computeIsActive(pathname: string, href: string) {
+  const isRoot = href === "/admin";
+  return isRoot ? pathname === href : pathname.startsWith(href);
+}
+
+export const AdminSidebarNav = memo(function AdminSidebarNav({ pathname, onNav, isMobile }: Props) {
+  const reduce = useReducedMotion();
+
+  const activeHref = useMemo(() => {
+    for (const item of navItems) {
+      if (computeIsActive(pathname, item.href)) return item.href;
+    }
+    return "";
+  }, [pathname]);
+
+  const itemsVM = useMemo(
+    () =>
+      navItems.map((item) => {
+        const isActive = item.href === activeHref;
         const Icon = item.icon;
         const colorClass = colorClasses[item.color as keyof typeof colorClasses];
-        return isMobile ? (
-          <li key={item.href}>
-            <Link href={item.href} onClick={onNav}>
-              <div className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-semibold text-sm transition-colors relative ${isActive ? colorClass : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800'}`}>
-                {isActive && (
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-violet-500 to-purple-600 rounded-r" />
-                )}
-                <Icon className={`w-5 h-5 ${isActive ? '' : 'text-gray-500 dark:text-gray-400'}`} />
-                <span>{item.label}</span>
-              </div>
-            </Link>
-          </li>
-        ) : (
-          <motion.li
-            key={item.href}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.03 }}
-          >
-            <Link href={item.href}>
-              <motion.div
-                whileHover={{ x: 4 }}
-                whileTap={{ scale: 0.98 }}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 relative overflow-hidden group ${isActive ? colorClass : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800'}`}
-              >
-                {isActive && (
-                  <motion.div layoutId="activeTab" className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-violet-500 to-purple-600 rounded-r" transition={{ type: 'spring', stiffness: 400, damping: 30 }} />
-                )}
-                <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? '' : 'text-gray-500 dark:text-gray-400'}`} />
-                <span className="flex-1">{item.label}</span>
-                {isActive && <ChevronRight className="w-4 h-4" />}
-              </motion.div>
-            </Link>
-          </motion.li>
-        );
-      })}
-    </ul>
+        return { ...item, isActive, Icon, colorClass };
+      }),
+    [activeHref]
   );
-});
+
+  const handleNav = useCallback(() => {
+    onNav?.();
+  }, [onNav]);
+
+  return (
+    <nav aria-label="Navigation admin" className="w-full">
+      <ul
+        className={cx(
+          "flex w-full flex-col items-start justify-start gap-1",
+          "max-w-sm"
+        )}
+      >
+        {itemsVM.map((item, index) => {
+          const { href, label, isActive, Icon, colorClass } = item;
+
+          const base = cx(
+            "relative w-full",
+            "rounded-2xl",
+            "outline-none"
+          );
+
+          const pill = cx(
+            "group relative flex w-full items-center justify-start gap-2",
+            "px-1 py-1", // tap target mobile
+            "rounded-xl",
+            "text-sm font-extrabold",
+            "transition-[background,transform,color,box-shadow] duration-200",
+            "focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-300 dark:focus-visible:ring-violet-900/40",
+            !isActive &&
+            "text-slate-700 hover:bg-slate-100 active:scale-[0.99] dark:text-zinc-200 dark:hover:bg-zinc-900/60",
+            isActive && cx(colorClass, "shadow-sm")
+          );
+
+          const whileHover = reduce ? undefined : (isActive ? { scale: 1.01 } : { scale: 1.02 });
+          const whileTap = reduce ? undefined : { scale: 0.99 };
+
+          return (
+            <motion.li
+              key={href}
+              variants={liVariants}
+              initial="initial"
+              animate="animate"
+              transition={{ delay: reduce ? 0 : index * 0.02 }}
+              className={base}
+            >
+              <Link href={href} onClick={isMobile ? handleNav : undefined} aria-current={isActive ? "page" : undefined}>
+                <motion.div whileHover={whileHover} whileTap={whileTap} className={pill}>
+                  {/* Active glow (ultra léger, pas de blur énorme) */}
+                  <AnimatePresence>
+                    {isActive && !reduce && (
+                      <motion.div
+                        key="glow"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="pointer-events-none absolute inset-0 rounded-2xl"
+                        style={{
+                          boxShadow:
+                            "0 0 0 1px rgba(139,92,246,.22), 0 10px 30px rgba(99,102,241,.18)",
+                        }}
+                      />
+                    )}
+                  </AnimatePresence>
+
+                  {/* Barre active “shared layout” à gauche */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="admin-active-bar"
+                      transition={activeBarTransition}
+                      className="absolute left-0 top-2 bottom-2 w-1.5 rounded-full bg-gradient-to-b from-violet-500 to-indigo-600"
+                    />
+                  )}
+
+                  {/* Icône */}
+                  <div
+                    className={cx(
+                      "flex h-9 w-9 items-center justify-center rounded-2xl",
+                      isActive
+                        ? "bg-white/15"
+                        : "bg-slate-100 dark:bg-zinc-900"
+                    )}
+                  >
+                    <Icon
+                      className={cx(
+                        "h-5 w-5",
+                        isActive ? "text-white" : "text-slate-500 dark:text-zinc-400"
+                      )}
+                    />
+                  </div>
+
+                  {/* Label centré */}
+                  <span className="truncate">{label}</span>
+
+                  {/* Indicateur de sélection (chevron) */}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.span
+                        key="chev"
+                        initial={{ opacity: 0, x: -6 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -6 }}
+                        transition={{ duration: 0.14 }}
+                        className="absolute right-3"
+                      >
+                        <ChevronRight className={cx("h-4 w-4", isActive ? "text-white/90" : "text-slate-400")} />
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Underline active (soulignement centré) */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="admin-active-underline"
+                      transition={activeBarTransition}
+                      className="absolute bottom-1 left-1/2 h-[2px] w-16 -translate-x-1/2 rounded-full bg-white/70"
+                    />
+                  )}
+                </motion.div>
+              </Link>
+            </motion.li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+},
+  // comparator anti-rerender : rerender uniquement si pathname/isMobile/onNav changent
+  (prev, next) =>
+    prev.pathname === next.pathname &&
+    prev.isMobile === next.isMobile &&
+    prev.onNav === next.onNav
+);
+
+AdminSidebarNav.displayName = "AdminSidebarNav";

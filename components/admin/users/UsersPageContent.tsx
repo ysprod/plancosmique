@@ -1,5 +1,4 @@
 'use client';
-
 import { memo } from 'react';
 import DeleteUserModal from '@/components/admin/users/DeleteUserModal';
 import PageHeader from '@/components/admin/users/PageHeader';

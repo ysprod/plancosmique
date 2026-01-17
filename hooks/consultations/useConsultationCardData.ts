@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { extractFirstMissionLine, parseMissionText } from "./missionParser";
+import { extractFirstMissionLine, parseMissionText } from "../../components/admin/consultations/missionParser";
 import { useConsultationCardStars } from "./useConsultationCardStars";
 
 interface ConsultationDerivedData {

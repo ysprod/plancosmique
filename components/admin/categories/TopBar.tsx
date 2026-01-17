@@ -15,6 +15,7 @@ export default function TopBar({ counts, reducedMotion }: { counts: { catCount: 
               <h1 className="text-lg font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-2xl">
                 Catégories
               </h1>
+              
               <p className="mt-0.5 text-[11px] text-slate-600 dark:text-zinc-300">
                 <span className="font-semibold">{counts.catCount}</span> catégorie(s) •{" "}
                 <span className="font-semibold">{counts.rubCount}</span> rubrique(s)

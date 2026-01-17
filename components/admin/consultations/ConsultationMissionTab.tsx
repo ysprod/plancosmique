@@ -1,9 +1,8 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { Target } from "lucide-react";
 import { memo } from "react";
-import { cx } from "./DisplayConsultationCard.utils";
+import { cx } from "@/lib/functions";
 import type { MissionBlock } from "./missionParser";
 
 const tabVariants = {
@@ -78,4 +77,5 @@ const ConsultationMissionTab = memo(function ConsultationMissionTab({
 });
 
 ConsultationMissionTab.displayName = "ConsultationMissionTab";
+
 export default ConsultationMissionTab;

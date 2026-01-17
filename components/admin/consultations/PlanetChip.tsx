@@ -1,8 +1,8 @@
 'use client';
-
 import { motion } from "framer-motion";
 import { memo } from "react";
-import { PLANET_GRADIENTS, SIGN_COLORS, cx } from "./DisplayConsultationCard.utils";
+import { PLANET_GRADIENTS, SIGN_COLORS} from "./DisplayConsultationCard.utils";
+import { cx } from "@/lib/functions";
 
 const PlanetChip = memo(({ planete, signe, maison, retrograde }: any) => {
   const gradient = PLANET_GRADIENTS[planete] || "from-gray-400 to-gray-600";
@@ -36,4 +36,5 @@ const PlanetChip = memo(({ planete, signe, maison, retrograde }: any) => {
   );
 });
 PlanetChip.displayName = "PlanetChip";
+
 export default PlanetChip;

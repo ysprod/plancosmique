@@ -1,5 +1,4 @@
 'use client';
-
 import { memo } from 'react';
 import { Gift } from 'lucide-react';
 import ExpandableSection from './ExpandableSection';

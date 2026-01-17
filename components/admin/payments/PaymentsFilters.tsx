@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import { Filter, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';

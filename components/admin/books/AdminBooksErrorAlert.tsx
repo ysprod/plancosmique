@@ -18,6 +18,7 @@ export const AdminBooksErrorAlert: React.FC<AdminBooksErrorAlertProps> = ({ erro
       >
         <div className="flex items-center justify-between">
           <p className="text-red-700 font-semibold">{error}</p>
+          
           <button onClick={onClose} className="text-red-500 hover:text-red-700">
             ×
           </button>

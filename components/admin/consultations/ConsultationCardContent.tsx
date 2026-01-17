@@ -1,5 +1,4 @@
 "use client";
-
 import { memo } from "react";
 import ConsultationCardActions from "./ConsultationCardActions";
 import ConsultationCardHeader from "./ConsultationCardHeader";
@@ -53,7 +52,6 @@ const ConsultationCardContent = memo(function ConsultationCardContent({
         <>
             <ConsultationCardHeader nomComplet={nomComplet} retrogradeCount={retrogradeCount} isNotified={isNotified} />
 
-            {/* User Info */}
             <ConsultationCardUserInfo
                 dateNaissance={dateNaissance}
                 heureNaissance={heureNaissance}
@@ -61,10 +59,8 @@ const ConsultationCardContent = memo(function ConsultationCardContent({
                 mostFrequentSign={mostFrequentSign}
             />
 
-            {/* Actions */}
             <ConsultationCardActions isNotified={isNotified} onNotify={handleNotify} onModify={handleModify} />
 
-            {/* Tabs */}
             <ConsultationCardTabsContainer
                 tab={tab}
                 setTab={setTab}

@@ -20,6 +20,7 @@ const SuccessCard = React.memo(function SuccessCard({
         <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-emerald-600 to-lime-600 text-white shadow-sm">
           <Check className={cx("h-5 w-5", !reducedMotion && "animate-bounce")} />
         </div>
+        
         <div>
           <h2 className="text-sm font-extrabold text-emerald-900 dark:text-emerald-100">Catégorie créée</h2>
           <p className="text-[11px] text-emerald-800 dark:text-emerald-200">

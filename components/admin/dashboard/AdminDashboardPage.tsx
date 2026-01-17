@@ -47,6 +47,7 @@ export default function AdminDashboardPage() {
         <ActivitySection stats={stats} derivedStats={derivedStats} />
 
         <StatsGrid stats={stats} derivedStats={derivedStats} />
+        
         <DetailsGrid stats={stats} derivedStats={derivedStats} />
       </div>
     </div>

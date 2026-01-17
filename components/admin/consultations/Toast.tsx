@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { Bell, X } from 'lucide-react';
 import { memo, useEffect } from 'react';
@@ -36,6 +35,7 @@ const Toast = memo(({ message, onClose }: ToastProps) => {
     </motion.div>
   );
 });
+
 Toast.displayName = 'Toast';
 
 export default Toast;

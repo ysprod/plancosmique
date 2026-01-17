@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { memo } from "react";
@@ -29,4 +28,5 @@ const ChoicesListHeader = memo(function ChoicesListHeader({ choicesCount, onAddC
 });
 
 ChoicesListHeader.displayName = "ChoicesListHeader";
+
 export default ChoicesListHeader;

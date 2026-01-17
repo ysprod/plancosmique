@@ -1,12 +1,10 @@
 'use client';
-
-import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, Clock, ChevronDown, Sparkle, TrendingUp, Sparkles, User } from "lucide-react";
-import { memo, useState, useMemo, useCallback } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { BookOpen, ChevronDown, Clock, Sparkle, Sparkles, TrendingUp, User } from "lucide-react";
+import { memo, useCallback, useMemo, useState } from "react";
 import AnalysisSection from "./AnalysisSection";
-import NumerologyData from "./NumerologyData";
 import AstrologyData from "./AstrologyData";
-
+import NumerologyData from "./NumerologyData";
 
 const AnalysisPreview = memo(({ analysis, consultation }: { analysis: any, consultation?: any }) => {
     const [isMainExpanded, setIsMainExpanded] = useState(true);
@@ -23,11 +21,9 @@ const AnalysisPreview = memo(({ analysis, consultation }: { analysis: any, consu
         };
     }, [analysis]);
 
-    // Derived booleans memoized
     const hasResultData = useMemo(() => !!consultation && typeof consultation === 'object' && 'resultData' in consultation && !!consultation.resultData, [consultation]);
     const hasCarteDuCiel = useMemo(() => !!consultation && typeof consultation === 'object' && 'formData' in consultation && !!consultation.formData, [consultation]);
 
-    // Toggle handler mémorisé
     const handleMainToggle = useCallback(() => {
         setIsMainExpanded(prev => !prev);
     }, []);
@@ -42,7 +38,6 @@ const AnalysisPreview = memo(({ analysis, consultation }: { analysis: any, consu
             transition={{ delay: 0.2 }}
             className="mt-2"
         >
-            {/* Main expandable header */}
             <motion.button
                 whileHover={{ scale: 1.005 }}
                 whileTap={{ scale: 0.995 }}
@@ -91,7 +86,6 @@ const AnalysisPreview = memo(({ analysis, consultation }: { analysis: any, consu
                 </div>
             </motion.button>
 
-            {/* Expandable sections */}
             <AnimatePresence mode="wait">
                 {isMainExpanded && (
                     <motion.div
@@ -101,7 +95,6 @@ const AnalysisPreview = memo(({ analysis, consultation }: { analysis: any, consu
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
                         className="space-y-1 overflow-hidden"
                     >
-                        {/* Mission de Vie */}
                         {analysisData.missionDeVie?.contenu && (
                             <AnalysisSection
                                 title="🎯 Mission de Vie"
@@ -111,8 +104,7 @@ const AnalysisPreview = memo(({ analysis, consultation }: { analysis: any, consu
                                 index={0}
                             />
                         )}
-
-                        {/* Positions Planétaires */}
+                    
                         {analysisData.positions.length > 0 && (
                             <AnalysisSection
                                 title={`⭐ Positions Planétaires (${analysisData.positions.length})`}
@@ -125,7 +117,6 @@ const AnalysisPreview = memo(({ analysis, consultation }: { analysis: any, consu
                             />
                         )}
 
-                        {/* Aspects */}
                         {analysisData.aspects && (
                             <AnalysisSection
                                 title="🔗 Aspects Astrologiques"

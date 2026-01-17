@@ -1,10 +1,10 @@
 'use client';
-
 import { motion } from "framer-motion";
-import { cx } from "./DisplayConsultationCard.utils";
+
 import { Sparkles, Globe, Target } from "lucide-react";
 import type { TabKey } from "./DisplayConsultationCard.types";
 import React from "react";
+import { cx } from "@/lib/functions";
 
 interface TabsProps {
   tab: TabKey;

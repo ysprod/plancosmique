@@ -1,7 +1,7 @@
 export type RubriqueOrNone = Rubrique | null;
 export type Category = 'animal' | 'vegetal' | 'beverage';
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';
-export type GenerationStep = 'loading' | 'fetching' | 'generating' | 'success' | 'error';
+export type GenerationStep = 'loading' | 'fetching' | 'success' | 'error';
 export type TransactionFilter = "all" | "simulation" | "real";
 export type SortOrder = "newest" | "oldest" | "amount_high" | "amount_low";
 export type OfferingCategory = "animal" | "vegetal" | "beverage";

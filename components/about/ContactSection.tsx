@@ -68,7 +68,6 @@ export default function ContactSection() {
         </motion.div>
 
         <div className="grid gap-8 lg:grid-cols-2">
-
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}

@@ -27,6 +27,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             handleLogout={handleLogout}
             isLoggingOut={isLoggingOut}
           />
+          
           <AnimatePresence>
             <AdminShellMobileSidebar
               user={user}

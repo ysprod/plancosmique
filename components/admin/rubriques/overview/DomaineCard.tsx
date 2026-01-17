@@ -76,6 +76,7 @@ export default function DomaineCardPremium({ domaine }: { domaine: any; }) {
               <ChoiceDetailView choice={currentChoice} />
             </motion.div>
           )}
+          
         </AnimatePresence>
       </div>
     </div>

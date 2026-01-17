@@ -3,6 +3,7 @@ import React from "react";
 import { Plus } from "lucide-react";
 
 export default function CreateCategoryButton() {
+  
   return (
     <div className="mb-4 flex justify-end">
       <a

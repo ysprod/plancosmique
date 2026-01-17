@@ -4,6 +4,7 @@ import { Rubrique } from "@/lib/interfaces";
 import RubriquesPickerHeader from "./RubriquesPickerHeader";
 import RubriquesPickerChips from "./RubriquesPickerChips";
 import RubriquesPickerGrid from "./RubriquesPickerGrid";
+import RubriquesPickerLoading from "./RubriquesPickerLoading";
 import { useRubriquesPickerSimple } from "@/hooks/rubriques/useRubriquesPickerSimple";
 
 const RubriquesPickerSimple = React.memo(function RubriquesPickerSimple({
@@ -26,11 +27,7 @@ const RubriquesPickerSimple = React.memo(function RubriquesPickerSimple({
   const { normalized, chips } = useRubriquesPickerSimple(rubriques, selectedIds);
 
   if (loading) {
-    return (
-      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-[11px] text-slate-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300">
-        Chargement des rubriques…
-      </div>
-    );
+    return <RubriquesPickerLoading />;
   }
 
   return (

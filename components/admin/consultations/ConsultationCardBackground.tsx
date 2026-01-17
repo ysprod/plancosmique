@@ -1,8 +1,7 @@
 "use client";
-
 import { motion, useReducedMotion } from "framer-motion";
 import { memo } from "react";
-import type { Star } from "./useConsultationCardStars";
+import type { Star } from "../../../hooks/consultations/useConsultationCardStars";
 
 interface ConsultationCardBackgroundProps {
   stars: Star[];
@@ -15,7 +14,6 @@ const ConsultationCardBackground = memo(function ConsultationCardBackground({ st
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {!reduceMotion && (
         <>
-          {/* Ambient blobs */}
           <motion.div
             className="absolute -right-24 -top-24 h-64 w-64 rounded-full bg-gradient-to-br from-violet-500/10 to-fuchsia-500/5 blur-3xl"
             animate={{ x: [0, 18, 0], y: [0, -18, 0] }}
@@ -44,4 +42,5 @@ const ConsultationCardBackground = memo(function ConsultationCardBackground({ st
 });
 
 ConsultationCardBackground.displayName = "ConsultationCardBackground";
+
 export default ConsultationCardBackground;

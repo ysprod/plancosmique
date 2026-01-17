@@ -1,5 +1,4 @@
 'use client';
-
 import { DomaineList } from './DomaineList';
 
 export function RubriquesOverviewDomaines({

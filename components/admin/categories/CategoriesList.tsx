@@ -99,9 +99,11 @@ const CategoriesList: React.FC<CategoriesListProps> = ({
                     >
                         ← Précédent
                     </button>
+
                     <span className="px-3 py-1 text-sm font-medium text-slate-700 dark:text-zinc-200">
                         {page} / {totalPages}
                     </span>
+                    
                     <button
                         className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-200 font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-200 dark:hover:bg-zinc-700 transition-colors"
                         onClick={() => setPage(p => Math.min(totalPages, p + 1))}

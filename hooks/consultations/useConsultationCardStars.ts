@@ -1,7 +1,5 @@
 import { useMemo } from "react";
-
-/* ----------------------------- Deterministic stars ----------------------------- */
-
+ 
 function mulberry32(seed: number) {
   return function () {
     let t = (seed += 0x6d2b79f5);

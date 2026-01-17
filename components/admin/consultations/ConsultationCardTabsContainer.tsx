@@ -1,5 +1,4 @@
 "use client";
-
 import { AnimatePresence } from "framer-motion";
 import { memo } from "react";
 import ConsultationCarteTab from "./ConsultationCarteTab";
@@ -41,8 +40,7 @@ const ConsultationCardTabsContainer = memo(function ConsultationCardTabsContaine
         <Tabs tab={tab} setTab={setTab} />
       </div>
 
-      {/* Tab content */}
-      <div className="relative z-10 mx-auto mt-4 w-full">
+       <div className="relative z-10 mx-auto mt-4 w-full">
         <AnimatePresence mode="wait">
           {tab === "resume" && <ConsultationResumeTab firstMissionLine={firstMissionLine} />}
 
@@ -65,4 +63,5 @@ const ConsultationCardTabsContainer = memo(function ConsultationCardTabsContaine
 });
 
 ConsultationCardTabsContainer.displayName = "ConsultationCardTabsContainer";
+
 export default ConsultationCardTabsContainer;

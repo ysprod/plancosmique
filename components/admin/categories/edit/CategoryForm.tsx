@@ -1,5 +1,4 @@
 'use client';
-
 import React from "react";
 import { Eye } from "lucide-react";
 import RubriquesPickerSimple from "./RubriquesPickerSimple";

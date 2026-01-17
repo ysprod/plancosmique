@@ -1,10 +1,9 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { Sparkles, User } from "lucide-react";
 import { memo } from "react";
 import ConsultationCardBackButton from "./ConsultationCardBackButton";
-import { cx } from "./DisplayConsultationCard.utils";
+import { cx } from "@/lib/functions";
 
 interface ConsultationCardHeaderProps {
   nomComplet: string;
@@ -90,4 +89,5 @@ const ConsultationCardHeader = memo(function ConsultationCardHeader({
 });
 
 ConsultationCardHeader.displayName = "ConsultationCardHeader";
+
 export default ConsultationCardHeader;

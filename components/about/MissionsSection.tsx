@@ -95,7 +95,6 @@ export default function MissionsSection() {
           </p>
         </motion.div>
 
-        {/* Cards Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"

@@ -25,7 +25,4 @@ export const SIGN_COLORS = {
   "Verseau": "bg-cyan-100 text-cyan-800 border-cyan-200",
   "Poissons": "bg-violet-100 text-violet-800 border-violet-200",
 } as Record<string, string>;
-
-export function cx(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
+ 

@@ -29,6 +29,7 @@ export const AdminBooksHeader: React.FC<AdminBooksHeaderProps> = ({
           Gérez votre catalogue de {booksCount} livre{booksCount > 1 ? "s" : ""} PDF
         </p>
       </div>
+      
       <div className="flex gap-3 flex-wrap">
         <motion.button
           whileHover={{ scale: 1.05 }}

@@ -7,8 +7,8 @@ import ConsultationCardBorder from "./ConsultationCardBorder";
 import ConsultationCardContainer from "./ConsultationCardContainer";
 import ConsultationCardContent from "./ConsultationCardContent";
 import { consultationCardMemoComparator } from "./consultationCardMemoComparator";
-import { useConsultationCardData } from "./useConsultationCardData";
-import { useConsultationCardState } from "./useConsultationCardState";
+import { useConsultationCardData } from "../../../hooks/consultations/useConsultationCardData";
+import { useConsultationCardState } from "../../../hooks/consultations/useConsultationCardState";
 
 interface ConsultationCardProps {
   consultation: AnalyseAstrologique;
@@ -59,6 +59,7 @@ const DisplayConsultationCard = memo(
         />
 
         <ConsultationCardBorder />
+        
       </ConsultationCardContainer>
     );
   },

@@ -1,5 +1,4 @@
 'use client';
-
 import React, { memo } from 'react';
 
 export interface DetailItem {
@@ -25,6 +24,7 @@ export const DetailCardItem = memo<DetailCardItemProps>(({ item, index }) => (
       </div>
       {item.label}
     </span>
+    
     <span className="font-bold text-gray-900 text-sm">{item.value}</span>
   </div>
 ));

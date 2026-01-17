@@ -1,13 +1,18 @@
-'use client';
+"use client";
+import { Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { memo } from "react";
+import { CarteDuCielBase } from "@/lib/interfaces";
+import SubjectInfoLine from "./SubjectInfoLine";
+import SubjectLocation from "./SubjectLocation";
 
-import { Calendar, Clock, MapPin, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { memo } from 'react';
-import { CarteDuCielBase } from '@/lib/interfaces';
+type CarteDuCielSubjet = CarteDuCielBase["sujet"];
 
-type CarteDuCielSubjet = CarteDuCielBase['sujet'];
+interface SubjectCardProps {
+  sujet: CarteDuCielSubjet;
+}
 
-const SubjectCard = memo(({ sujet }: { sujet: CarteDuCielSubjet }) => (
+const SubjectCard = memo(({ sujet }: SubjectCardProps) => (
   <motion.div
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
@@ -18,30 +23,17 @@ const SubjectCard = memo(({ sujet }: { sujet: CarteDuCielSubjet }) => (
         <h2 className="text-xl font-bold mb-1">
           {sujet.nom} {sujet.prenoms}
         </h2>
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs opacity-90">
-          <div className="flex items-center gap-1">
-            <Calendar className="w-3 h-3" />
-            {new Date(sujet.dateNaissance).toLocaleDateString('fr-FR', {
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric'
-            })}
-          </div>
-          <div className="flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            {sujet.heureNaissance}
-          </div>
-        </div>
+        <SubjectInfoLine
+          dateNaissance={sujet.dateNaissance}
+          heureNaissance={sujet.heureNaissance}
+        />
       </div>
       <Sparkles className="w-8 h-8 opacity-80" />
     </div>
-    <div className="flex items-center gap-1 text-xs opacity-90">
-      <MapPin className="w-3 h-3" />
-      {sujet.lieuNaissance}
-    </div>
+    <SubjectLocation lieuNaissance={sujet.lieuNaissance} />
   </motion.div>
 ));
 
-SubjectCard.displayName = 'SubjectCard';
+SubjectCard.displayName = "SubjectCard";
 
 export default SubjectCard;

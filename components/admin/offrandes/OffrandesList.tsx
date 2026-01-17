@@ -1,5 +1,4 @@
 'use client';
-
 import { Offering } from '@/lib/interfaces';
 import React from 'react';
 

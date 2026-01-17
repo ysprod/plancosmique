@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { CheckCircle, Clock, Shield, Users } from 'lucide-react';
 

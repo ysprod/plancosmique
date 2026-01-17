@@ -1,11 +1,9 @@
 'use client';
-
 import { AnimatePresence } from 'framer-motion';
-import StatusBadge from './StatusBadge';
+import React from 'react';
 import ConsultationCard from './ConsultationCard';
 import PaginationControls from './PaginationControls';
-import React from 'react';
-import AnalysisPreview from './AnalysisPreview';
+import StatusBadge from './StatusBadge';
 
 interface ConsultationsListProps {
   consultations: any[];

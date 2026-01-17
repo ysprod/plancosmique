@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { Calendar, Clock, MapPin, Target } from "lucide-react";
 import { memo } from "react";
@@ -54,4 +53,5 @@ const ConsultationCardUserInfo = memo(function ConsultationCardUserInfo({
 });
 
 ConsultationCardUserInfo.displayName = "ConsultationCardUserInfo";
+
 export default ConsultationCardUserInfo;

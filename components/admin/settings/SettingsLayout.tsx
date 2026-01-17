@@ -1,5 +1,4 @@
 'use client';
-
 import React from "react";
 import SettingsHeader from "./SettingsHeader";
 import SettingsSaveButton from "./SettingsSaveButton";

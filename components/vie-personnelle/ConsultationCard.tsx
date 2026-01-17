@@ -1,12 +1,11 @@
 'use client';
 
+import ConsultationButton from '@/components/consultations/ConsultationButton';
+import { useConsultationChoiceStatus } from '@/hooks/consultations/useConsultationChoiceStatus';
+import { useAuth } from '@/lib/auth/AuthContext';
 import { ConsultationChoice, DoneChoice } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import { History } from 'lucide-react';
-import { useAuth } from '@/lib/auth/AuthContext';
-import { useConsultationChoiceStatus } from '@/hooks/consultations/useConsultationChoiceStatus';
-import { ConsultationButtonStatus } from '@/lib/types/consultation-status.types';
-import ConsultationButton from '@/components/consultations/ConsultationButton';
 
 const ConsultationCard: React.FC<{
   choice: ConsultationChoice;
@@ -25,7 +24,7 @@ const ConsultationCard: React.FC<{
     <motion.div
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      className="p-6 bg-white shadow-lg rounded-2xl border-2 border-purple-200 hover:border-purple-400 transition-all"
+      className="p-6 bg-white shadow-lg rounded-2xl border-2 border-purple-200 hover:border-purple-400 transition-all text-center"
     >
       <h2 className="font-bold text-purple-700 text-lg mb-3">{choice.title}</h2>
       <p className="text-gray-600 text-sm leading-relaxed mb-4">{choice.description}</p>

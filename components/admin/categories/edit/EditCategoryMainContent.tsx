@@ -1,5 +1,4 @@
 'use client';
-
 import React from "react";
 import Banner from "@/components/admin/categories/edit/Banner";
 import CategoryViewSwitcher from "@/components/admin/categories/edit/CategoryViewSwitcher";

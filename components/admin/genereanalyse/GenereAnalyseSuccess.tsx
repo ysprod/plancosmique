@@ -1,6 +1,5 @@
 'use client';
-
-import React from 'react'; 
+import React from 'react';
 import { AnalyseData } from '@/lib/interfaces';
 import SubjectCard from '@/components/admin/genereanalyse/SubjectCard';
 import SkyChartSection from '@/components/admin/genereanalyse/SkyChartSection';

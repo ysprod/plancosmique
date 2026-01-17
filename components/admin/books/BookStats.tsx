@@ -29,6 +29,7 @@ export const BookStats: React.FC<BookStatsProps> = ({ stats }) => (
         <BookOpen className="w-10 h-10 text-indigo-600 opacity-20" />
       </div>
     </motion.div>
+
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}

@@ -1,5 +1,4 @@
 'use client';
-
 import React, { memo, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Users, FileText, CreditCard, CheckCircle, TrendingUp, Clock, DollarSign, AlertCircle } from 'lucide-react';

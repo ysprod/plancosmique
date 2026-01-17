@@ -1,5 +1,4 @@
 'use client';
-
 import React from "react";
 import { Check, X } from "lucide-react";
 import { Rubrique } from "@/lib/interfaces";
@@ -18,6 +17,7 @@ const RubriquesPickerChips: React.FC<RubriquesPickerChipsProps> = ({ chips, onRe
       </div>
     );
   }
+  
   return (
     <div className="mb-3 flex flex-wrap gap-1.5">
       {chips.map((r: Rubrique) => {

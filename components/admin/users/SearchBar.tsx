@@ -1,5 +1,4 @@
 'use client';
-
 import { memo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search, X } from 'lucide-react';

@@ -94,6 +94,7 @@ export function CreateCategoryForm({
           />
 
           <div className="flex items-center justify-between gap-2">
+            
             <div className="text-[11px] text-slate-600 dark:text-zinc-300">
               {selectedRubriques.length === 0 ? (
                 "Aucune rubrique sélectionnée."

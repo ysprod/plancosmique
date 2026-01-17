@@ -48,7 +48,6 @@ const RubriquesOverviewPageClient = memo(function RubriquesOverviewPageClient() 
         </motion.div>
 
         <RubriquesOverviewStats stats={stats} />
-
         <RubriquesOverviewDomaines domaines={domaines} />
       </div>
     </motion.div>

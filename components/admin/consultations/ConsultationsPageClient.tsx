@@ -16,6 +16,7 @@ export default function ConsultationsPageClient() {
   } = useAdminConsultationsPage();
 
   if (loading) return <CosmicLoader />;
+
   if (error) { return <ConsultationsError error={error} onRetry={handleRefresh} />; }
 
   return (

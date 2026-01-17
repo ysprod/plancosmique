@@ -1,5 +1,4 @@
 'use client';
-
 import RubriqueEditor from "@/components/admin/rubriques/RubriqueEditor";
 import { AnimatePresence, motion } from "framer-motion";
 import { Package } from "lucide-react";

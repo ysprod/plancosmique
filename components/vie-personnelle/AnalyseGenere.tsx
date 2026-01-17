@@ -94,7 +94,7 @@ export default function AnalyseGenere() {
   const router = useRouter();
 
   const handleBack = useCallback(() => {
-    router.push('/secured/consultations');
+    router.push('/secured/profil');
   }, [router]);
 
   return (
@@ -203,7 +203,7 @@ export default function AnalyseGenere() {
                        hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors
                        active:scale-[0.98]"
             >
-              Retour aux consultations
+              Retour à l'accueil
             </button>
            
           </motion.div>

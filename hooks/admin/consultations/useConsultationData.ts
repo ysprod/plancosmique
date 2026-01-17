@@ -19,7 +19,7 @@ const useConsultationData = (consultation: AnalyseAstrologique) => {
     const mostFrequentSign = Object.entries(dominantSign)
       .sort(([,a], [,b]) => (b as number) - (a as number))[0]?.[0] || "Inconnu";
     return {
-      id: c?._id || c?.consultationId,
+      id: c?.consultationId || c?._id,
       nomComplet,
       dateNaissance: sujet?.dateNaissance ? formatDate(sujet.dateNaissance) : "—",
       heureNaissance: sujet?.heureNaissance || "—",

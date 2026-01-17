@@ -1,5 +1,4 @@
 'use client';
-
 import { User } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import { Ban, Calendar, CheckCircle, Edit, Globe, Mail, Phone, Shield, Star, Trash2, User as UserIcon } from 'lucide-react';
@@ -58,19 +57,19 @@ export default function UserCard({ user, cardVariants, setDeleteModal }: UserCar
         )}
         <div className="flex items-center gap-1.5 text-xs text-gray-600">
           <Calendar className="w-3 h-3 flex-shrink-0" />
-          {new Date(user.createdAt).toLocaleString('fr-FR', { 
-            dateStyle: 'long', 
-            timeStyle: 'long' 
+          {new Date(user.createdAt).toLocaleString('fr-FR', {
+            dateStyle: 'long',
+            timeStyle: 'long'
           })}
         </div>
-       
+
       </div>
       {/* Métriques utilisateur */}
       <div className="grid grid-cols-3 gap-1.5 mb-2.5 pb-2.5 border-b border-gray-100">
         <div className="text-center">
           <p className="text-xs text-gray-500">Consultations</p>
           <p className="text-sm font-bold text-gray-900">{user.totalConsultations}</p>
-        </div> 
+        </div>
       </div>
       {/* Badges compacts */}
       <div className="flex flex-wrap items-center gap-1.5 mb-3">

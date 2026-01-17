@@ -12,6 +12,7 @@ const bannerVariants: Variants = {
 
 export const Banner = ({ banner }: { banner: BannerState }) => {
   if (!banner) return null;
+  
   const style =
     banner.type === "success"
       ? "border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/40 dark:bg-emerald-900/20 dark:text-emerald-100"

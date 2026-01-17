@@ -29,6 +29,7 @@ export default function ReloadButtons({
         <RefreshCw className={categoriesLoading ? "h-4 w-4 animate-spin" : "h-4 w-4"} />
         Catégories
       </button>
+      
       <button
         onClick={fetchRubriques}
         aria-label="Recharger les rubriques"

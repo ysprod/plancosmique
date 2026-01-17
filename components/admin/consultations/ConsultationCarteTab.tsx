@@ -1,10 +1,9 @@
 "use client";
-
 import { AnimatePresence, motion } from "framer-motion";
 import { Plane, ScrollText, Telescope } from "lucide-react";
 import { memo, useState } from "react";
-import { cx } from "./DisplayConsultationCard.utils";
 import PlanetChip from "./PlanetChip";
+import { cx } from "@/lib/functions";
 
 const tabVariants = {
   initial: { opacity: 0, y: 8 },
@@ -101,4 +100,5 @@ const ConsultationCarteTab = memo(function ConsultationCarteTab({
 });
 
 ConsultationCarteTab.displayName = "ConsultationCarteTab";
+
 export default ConsultationCarteTab;

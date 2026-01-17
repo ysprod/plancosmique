@@ -1,41 +1,14 @@
 'use client';
-import { SortField, SortOrder } from '@/hooks/books/useAdminBooks';
 import { motion } from 'framer-motion';
 import { ChevronDown, Filter } from 'lucide-react';
 
 interface BookFilterPanelProps {
   showFilters: boolean;
   setShowFilters: (v: boolean) => void;
-  selectedCategory: string;
-  setSelectedCategory: (v: string) => void;
-  statusFilter: 'all' | 'active' | 'inactive';
-  setStatusFilter: (v: 'all' | 'active' | 'inactive') => void;
-  sortField: SortField;
-  setSortField: (v: SortField) => void;
-  sortOrder: SortOrder;
-  setSortOrder: (v: SortOrder) => void;
-  categories: string[];
-  filteredCount: number;
-  setSearchQuery: (v: string) => void;
-  searchQuery: string;
 }
 
-export default function BookFilterPanel({
-  showFilters,
-  setShowFilters,
-  selectedCategory,
-  setSelectedCategory,
-  statusFilter,
-  setStatusFilter,
-  sortField,
-  setSortField,
-  sortOrder,
-  setSortOrder,
-  categories,
-  filteredCount,
-  setSearchQuery,
-  searchQuery
-}: BookFilterPanelProps) {
+export default function BookFilterPanel({ showFilters, setShowFilters }: BookFilterPanelProps) {
+
   return (
     <motion.button
       whileHover={{ scale: 1.05 }}

@@ -1,5 +1,4 @@
 'use client';
-
 import { motion, AnimatePresence } from 'framer-motion';
 import { Flame, Loader, Sparkles, List, Target, Lightbulb, Clock, ChevronUp, ChevronDown, Edit, Trash2 } from 'lucide-react';
 import type { Practice } from '@/hooks/spiritualite/useSpiritualitePage';

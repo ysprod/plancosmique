@@ -18,6 +18,7 @@ export default function PaymentsPageClient() {
   } = useAdminPaymentsPage();
 
   if (loading) { return <AdminPaymentsLoader />; }
+
   if (error) {
     return <AdminPaymentsErrorAlert error={error} onRetry={handleRefresh} />;
   }

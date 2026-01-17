@@ -1,9 +1,8 @@
 'use client';
-
-import React from 'react';
 import { motion } from 'framer-motion';
+import { AlertCircle, Calendar, CheckCircle, Clock, CreditCard, Eye, Smartphone, User, XCircle } from 'lucide-react';
 import Link from 'next/link';
-import { Hash, User, Smartphone, Calendar, CreditCard, Eye, CheckCircle, Clock, XCircle, AlertCircle } from 'lucide-react';
+import React from 'react';
 
 interface Payment {
     id: string;

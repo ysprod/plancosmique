@@ -11,7 +11,7 @@ import { useAdminReportsPage } from '@/hooks/admin/useAdminReportsPage';
 export default function ReportsPageClient() {
   const {
     setSelectedReport, setDateRange, selectedReport, dateRange, stats,
-    error, metrics, chartData, loading, chartConfig,
+    chartConfig, error, metrics, chartData, loading,
   } = useAdminReportsPage();
 
   if (loading) return <ReportsLoadingState />;

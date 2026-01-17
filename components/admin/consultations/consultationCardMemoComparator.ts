@@ -11,10 +11,8 @@ export function consultationCardMemoComparator(prev: ConsultationCardProps, next
   const p: any = prev.consultation;
   const n: any = next.consultation;
 
-  // identity shortcut
   if (p === n && prev.notifiedback === next.notifiedback) return true;
 
-  // champs critiques backend
   const sameId = String(p?._id ?? "") === String(n?._id ?? "");
   const sameNotified = Boolean(p?.analysisNotified) === Boolean(n?.analysisNotified);
   const sameNotificationStatus = prev.notifiedback === next.notifiedback;
