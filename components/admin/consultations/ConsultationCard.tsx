@@ -18,9 +18,6 @@ interface ConsultationCardProps {
 }
 
 const ConsultationCard = memo(({ consultation, onGenerateAnalysis, isGenerating, isNotifying }: ConsultationCardProps) => {
-    console.log(consultation);
-
-
     const { typeConfig, hasResultData, hasCarteDuCiel, hasTierce, isPaid } = useConsultationCard(consultation);
 
     const formattedDate = useMemo(() => {

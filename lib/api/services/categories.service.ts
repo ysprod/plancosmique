@@ -5,6 +5,7 @@ export async function getCategory(id: string): Promise<CategorieAdmin> {
   const res = await api.get<CategorieAdmin>(`/categories/${id}`);
   return res.data;
 }
+
 export async function getCategories(): Promise<CategorieAdmin[]> {
   const res = await api.get<CategorieAdmin[]>('/categories');
   return res.data;

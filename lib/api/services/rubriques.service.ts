@@ -20,7 +20,7 @@ export async function getRubriqueById(id: string): Promise<Rubrique> {
 }
 
 export async function reorderConsultationChoices(
-  rubriqueId: string, 
+  rubriqueId: string,
   choices: Array<{ choiceId: string; order: number }>
 ): Promise<Rubrique> {
   const res = await api.put<Rubrique>(

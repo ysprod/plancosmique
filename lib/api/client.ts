@@ -1,5 +1,9 @@
 import axios, {
-  AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+  InternalAxiosRequestConfig,
 } from 'axios';
 import { config } from '../config';
 import {
@@ -12,26 +16,51 @@ import {
   isTokenExpiringSoon,
 } from '../utils/token.utils';
 
+// Types pour la gestion du refresh
+interface QueueItem {
+  resolve: (value?: string) => void;
+  reject: (reason?: Error) => void;
+}
+
+// State global pour le refresh de token
 let isRefreshing = false;
-let failedQueue: Array<{
-  resolve: (value?: any) => void;
-  reject: (reason?: any) => void;
-}> = [];
+let failedQueue: QueueItem[] = [];
 
-const processQueue = (error: Error | null, token: string | null = null) => {
-  failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
+// Routes publiques qui ne nécessitent pas d'authentification
+const PUBLIC_ROUTES = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/logout', '/services'] as const;
+
+/**
+ * Traite la file d'attente des requêtes en attente du refresh
+ * @param error - Erreur éventuelle lors du refresh
+ * @param token - Nouveau token d'accès
+ */
+const processQueue = (error: Error | null, token: string | null = null): void => {
+  failedQueue.forEach(({ resolve, reject }) => {
+    error ? reject(error) : resolve(token || undefined);
   });
-
   failedQueue = [];
 };
 
 /**
- * Instance Axios configurée avec optimisation du cache
+ * Vérifie si une URL est une route publique
+ * @param url - URL à vérifier
+ */
+const isPublicRoute = (url?: string): boolean => {
+  if (!url) return false;
+  return PUBLIC_ROUTES.some(route => url.includes(route));
+};
+
+/**
+ * Redirige vers la page de login si nécessaire
+ */
+const redirectToLogin = (): void => {
+  if (typeof window !== 'undefined' && !window.location.pathname.includes('/auth/login')) {
+    window.location.href = config.routes.login;
+  }
+};
+
+/**
+ * Instance Axios optimisée avec gestion avancée du cache et des tokens
  */
 const cleanBaseURL = config.api.baseURL.replace(/\/+$/, '');
 const apiClient: AxiosInstance = axios.create({
@@ -39,98 +68,81 @@ const apiClient: AxiosInstance = axios.create({
   timeout: config.api.timeout,
   headers: {
     'Content-Type': 'application/json',
-    'Cache-Control': 'no-cache', // Évite les problèmes de cache navigateur
+    'Cache-Control': 'no-cache',
   },
+  // Optimisations supplémentaires
+  validateStatus: (status) => status >= 200 && status < 300,
+  maxRedirects: 5,
 });
 
 /**
- * Intercepteur de requête - Ajoute le token JWT
+ * Intercepteur de requête optimisé - Ajoute le token JWT et gère le refresh proactif
  */
 apiClient.interceptors.request.use(
   async (requestConfig: InternalAxiosRequestConfig) => {
-    // Ne pas ajouter de token pour les routes publiques
-    const publicRoutes = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/logout', '/services'];
-
-    const isPublicRoute = publicRoutes.some((route) =>
-      requestConfig.url?.includes(route)
-    );
-
-    if (isPublicRoute) {
+    // Routes publiques : pas d'authentification nécessaire
+    if (isPublicRoute(requestConfig.url)) {
       return requestConfig;
     }
 
     const accessToken = getAccessToken();
+    if (!accessToken) {
+      return requestConfig;
+    }
 
-    if (accessToken) {
-      // Vérifier si le token est proche de l'expiration (mais pas pendant un refresh en cours)
-      if (isTokenExpiringSoon(accessToken) && !isRefreshing) {
-        try {
-          const refreshToken = getRefreshToken();
-          // Ne tenter le refresh que si on a un refresh token
-          if (refreshToken) {
-            await refreshAccessToken();
-            const newToken = getAccessToken();
-            if (newToken) {
-              requestConfig.headers.Authorization = `Bearer ${newToken}`;
-            }
-          } else {
-            requestConfig.headers.Authorization = `Bearer ${accessToken}`;
-          }
-        } catch (error) {
-          console.error('Error refreshing token:', error);
-          // Continuer avec l'ancien token
-          requestConfig.headers.Authorization = `Bearer ${accessToken}`;
-        }
-      } else {
-        requestConfig.headers.Authorization = `Bearer ${accessToken}`;
+    // Refresh proactif si le token expire bientôt
+    if (isTokenExpiringSoon(accessToken) && !isRefreshing && getRefreshToken()) {
+      try {
+        const newToken = await refreshAccessToken();
+        requestConfig.headers.Authorization = `Bearer ${newToken}`;
+        return requestConfig;
+      } catch (error) {
+        console.error('Proactive token refresh failed:', error);
+        // Continuer avec l'ancien token
       }
     }
 
+    requestConfig.headers.Authorization = `Bearer ${accessToken}`;
     return requestConfig;
   },
-  (error: AxiosError) => {
-    return Promise.reject(error);
-  }
+  (error: AxiosError) => Promise.reject(error)
 );
 
 /**
- * Intercepteur de réponse - Gère les erreurs et le refresh automatique
+ * Intercepteur de réponse optimisé - Gestion intelligente des erreurs et refresh automatique
  */
 apiClient.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response;
-  },
+  (response: AxiosResponse) => response,
   async (error: AxiosError) => {
-    const originalRequest: any = error.config;
+    const originalRequest: InternalAxiosRequestConfig & { _retry?: boolean } = error.config!;
 
-    // Erreur 401 - Token expiré ou invalide
+    // Erreur 401 : Token expiré ou invalide
     if (error.response?.status === 401 && !originalRequest._retry) {
-      // Vérifier si on a un refresh token avant de tenter le refresh
       const refreshToken = getRefreshToken();
 
+      // Pas de refresh token disponible
       if (!refreshToken) {
-        // Pas de refresh token, rediriger vers login
         clearAuth();
-        if (typeof window !== 'undefined' && !window.location.pathname.includes('/auth/login')) {
-          window.location.href = config.routes.login;
-        }
+        redirectToLogin();
         return Promise.reject(error);
       }
 
+      // Si un refresh est déjà en cours, mettre en file d'attente
       if (isRefreshing) {
-        // Attendre que le refresh soit terminé
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        })
-          .then((token) => {
-            originalRequest.headers.Authorization = `Bearer ${token}`;
-            return apiClient(originalRequest);
-          })
-          .catch((err) => {
-            return Promise.reject(err);
+        return new Promise<AxiosResponse>((resolve, reject) => {
+          failedQueue.push({
+            resolve: (token?: string) => {
+              if (token) {
+                originalRequest.headers.Authorization = `Bearer ${token}`;
+                resolve(apiClient(originalRequest));
+              }
+            },
+            reject,
           });
+        });
       }
 
+      // Marquer comme déjà tenté et lancer le refresh
       originalRequest._retry = true;
       isRefreshing = true;
 
@@ -142,21 +154,21 @@ apiClient.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError as Error, null);
         clearAuth();
-
-        // Rediriger vers la page de connexion
-        if (typeof window !== 'undefined' && !window.location.pathname.includes('/auth/login')) {
-          window.location.href = config.routes.login;
-        }
-
+        redirectToLogin();
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }
     }
 
-    // Erreur 403 - Permission refusée
+    // Erreur 403 : Permission refusée
     if (error.response?.status === 403) {
       console.error('Permission denied:', error.response.data);
+    }
+
+    // Erreur réseau ou timeout
+    if (!error.response) {
+      console.error('Network error or timeout:', error.message);
     }
 
     return Promise.reject(error);
@@ -164,7 +176,9 @@ apiClient.interceptors.response.use(
 );
 
 /**
- * Rafraîchit le token d'accès
+ * Rafraîchit le token d'accès de manière optimisée
+ * @returns Le nouveau token d'accès
+ * @throws Error si le refresh échoue
  */
 export const refreshAccessToken = async (): Promise<string> => {
   const refreshToken = getRefreshToken();
@@ -179,13 +193,14 @@ export const refreshAccessToken = async (): Promise<string> => {
   }
 
   try {
-    const response = await axios.post(
+    const response = await axios.post<{ accessToken: string; refreshToken?: string }>(
       `${cleanBaseURL}/api/${config.api.apiVersion}/auth/refresh`,
       {},
       {
         headers: {
           Authorization: `Bearer ${refreshToken}`,
         },
+        timeout: 10000, // 10s timeout pour le refresh
       }
     );
 
@@ -204,30 +219,36 @@ export const refreshAccessToken = async (): Promise<string> => {
 };
 
 /**
- * Méthodes HTTP simplifiées
+ * API client avec méthodes HTTP typées et optimisées
  */
 export const api = {
+  /**
+   * Requête GET
+   */
   get: <T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> =>
     apiClient.get<T>(url, config),
 
-  post: <T = any>(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> => apiClient.post<T>(url, data, config),
+  /**
+   * Requête POST
+   */
+  post: <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> =>
+    apiClient.post<T>(url, data, config),
 
-  put: <T = any>(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> => apiClient.put<T>(url, data, config),
+  /**
+   * Requête PUT
+   */
+  put: <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> =>
+    apiClient.put<T>(url, data, config),
 
-  patch: <T = any>(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> => apiClient.patch<T>(url, data, config),
+  /**
+   * Requête PATCH
+   */
+  patch: <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> =>
+    apiClient.patch<T>(url, data, config),
 
+  /**
+   * Requête DELETE
+   */
   delete: <T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> =>
     apiClient.delete<T>(url, config),
 };

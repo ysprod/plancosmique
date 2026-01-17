@@ -20,7 +20,7 @@ export default function WelcomePageClient() {
         />
       </motion.div>
       <WelcomeHeader />
-      <div className="px-4 py-6 max-w-2xl mx-auto">
+      <div className="px-4 py-6 max-w-4xl mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

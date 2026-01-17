@@ -23,11 +23,9 @@ export const authService = {
   /**
    * Connexion utilisateur
    */
-  login: async (data: LoginDto): Promise<AuthResponse> => {     
+  login: async (data: LoginDto): Promise<AuthResponse> => {
     const response = await api.post<AuthResponse>(endpoints.auth.login, data);
     const { accessToken, refreshToken, user } = response.data;
-
-    console.log('✅ Connexion réussie pour:', user.username || user.prenoms);
 
     // Stocker les tokens et l'utilisateur
     setAccessToken(accessToken);
@@ -54,7 +52,6 @@ export const authService = {
    * Déconnexion utilisateur (client-side only - no backend endpoint)
    */
   logout: async (): Promise<void> => {
-    // Clear client-side auth state (no backend call needed)
     clearAuth();
     if (typeof window !== 'undefined') {
       document.cookie = 'monetoile_access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';

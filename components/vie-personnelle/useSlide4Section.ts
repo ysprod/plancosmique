@@ -301,9 +301,7 @@ export function useSlide4Section(rubrique: Rubrique) {
       setPaymentLoading(false);
       return;
     }
-
-    console.log('Submitting form data:', formData);
-
+ 
     // Validation simple (à adapter selon besoins)
     const errors: any = {};
     ['nom', 'prenoms', 'dateNaissance', 'villeNaissance', 'heureNaissance'].forEach(field => {

@@ -13,12 +13,7 @@ export default function ConsultationsListMain() {
     consultations, filteredConsultations, loading, searchQuery, error,
     setSearchQuery, setTypeFilter, setStatusFilter,
     handleView, handleDownload
-  } = useConsultationsListPage();
-
-  console.log('Rendered ConsultationsListMain with', {
-    consultations: consultations,
-    filteredConsultations: filteredConsultations, 
-  });
+  } = useConsultationsListPage();  
 
   if (loading) {
     return <ConsultationsListLoading />;

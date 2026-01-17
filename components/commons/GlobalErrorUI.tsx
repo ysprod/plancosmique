@@ -25,7 +25,7 @@ export default function GlobalErrorUI({ error, reset, isGlobalError = false }: G
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-purple-950 to-indigo-950 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen w-full bg-gradient-to-br from-gray-950 via-purple-950 to-indigo-950 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background animated elements */}
       <div className="absolute inset-0 overflow-hidden">
         {[...Array(20)].map((_, i) => (
