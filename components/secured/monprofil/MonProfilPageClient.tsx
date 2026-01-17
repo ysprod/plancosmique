@@ -3,7 +3,7 @@ import ErrorState from "@/components/carteduciel/ErrorState";
 import LoadingState from "@/components/carteduciel/LoadingState";
 import ProfileHeader from "@/components/carteduciel/ProfileHeader";
 import SkyChart from "@/components/carteduciel/SkyChart";
-import CinqPortesSection from "@/app/secured/monprofil/CinqPortesSection";
+import CinqPortesSection from "@/components/profil/CinqPortesSection";
 import { useMonProfil } from '@/hooks/carteduciel/useMonProfil';
 
 export default function MonProfilPageClient() {
