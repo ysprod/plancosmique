@@ -419,7 +419,7 @@ function PromptSelectionModal({
         {/* Footer */}
         <div className="flex items-center justify-between p-6 border-t border-gray-200 bg-gray-50">
           <Link
-            href="/admin/prompts/create"
+            href={`/admin/prompts/create?returnTo=consultations-choices&choiceId=${selectedChoice?._id}&choiceTitle=${encodeURIComponent(selectedChoice?.title || '')}`}
             className="inline-flex items-center gap-2 px-4 py-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors text-sm"
           >
             <Plus className="w-4 h-4" />

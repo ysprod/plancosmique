@@ -1,9 +1,16 @@
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { promptService } from '@/lib/api/services/prompt.service';
+import { api } from '@/lib/api/client';
 import { CreatePromptDto, Prompt, UpdatePromptDto } from '@/lib/types/prompt.types';
 
-export function usePromptForm(initialData?: Prompt) {
+interface UsePromptFormOptions {
+  initialData?: Prompt;
+  choiceId?: string;
+  returnTo?: string;
+}
+
+export function usePromptForm({ initialData, choiceId, returnTo }: UsePromptFormOptions = {}) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -81,19 +88,43 @@ export function usePromptForm(initialData?: Prompt) {
       setError(null);
 
       if (initialData?._id) {
+        // Update existing prompt
         await promptService.update(initialData._id, formData as UpdatePromptDto);
+        if (returnTo === 'consultations-choices') {
+          router.push('/admin/consultations/choices');
+        } else {
+          router.push('/admin/prompts');
+        }
       } else {
-        await promptService.create(formData);
-      }
+        // Create new prompt
+        const newPrompt = await promptService.create(formData);
+        
+        // Si on a un choiceId, assigner automatiquement le prompt
+        if (choiceId && newPrompt?._id) {
+          try {
+            await api.patch(`/consultation-choices/${choiceId}/prompt`, {
+              promptId: newPrompt._id
+            });
+          } catch (assignError) {
+            console.error('Erreur assignation prompt:', assignError);
+            // Continue quand même, le prompt est créé
+          }
+        }
 
-      router.push('/admin/prompts');
+        // Redirection selon le contexte
+        if (returnTo === 'consultations-choices') {
+          router.push('/admin/consultations/choices');
+        } else {
+          router.push('/admin/prompts');
+        }
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Erreur lors de la sauvegarde');
       throw err;
     } finally {
       setLoading(false);
     }
-  }, [formData, initialData, router]);
+  }, [formData, initialData, router, choiceId, returnTo]);
 
   return {
     formData,

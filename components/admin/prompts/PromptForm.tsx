@@ -8,9 +8,11 @@ import { useRouter } from 'next/navigation';
 
 interface PromptFormProps {
   initialData?: Prompt;
+  choiceId?: string;
+  returnTo?: string;
 }
 
-export default function PromptForm({ initialData }: PromptFormProps) {
+export default function PromptForm({ initialData, choiceId, returnTo }: PromptFormProps) {
   const router = useRouter();
   const {
     formData,
@@ -23,7 +25,7 @@ export default function PromptForm({ initialData }: PromptFormProps) {
     addVariable,
     removeVariable,
     handleSubmit
-  } = usePromptForm(initialData);
+  } = usePromptForm({ initialData, choiceId, returnTo });
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
