@@ -20,6 +20,22 @@ const ConsultationCard: React.FC<{
   const isDone = !!doneChoice;
   const isRepeatable = choice.frequence && choice.frequence !== 'UNE_FOIS_VIE';
   
+  if (loading) {
+    return (
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className="p-6 bg-white shadow-lg rounded-2xl border-2 border-purple-200 hover:border-purple-400 transition-all text-center"
+      >
+        <h2 className="font-bold text-purple-700 text-lg mb-3">{choice.title}</h2>
+        <p className="text-gray-600 text-sm leading-relaxed mb-4">{choice.description}</p>
+        <div className="w-full px-4 py-3 bg-gray-200 rounded-xl animate-pulse">
+          <span className="text-gray-500">Chargement...</span>
+        </div>
+      </motion.div>
+    );
+  }
+  
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
@@ -30,11 +46,7 @@ const ConsultationCard: React.FC<{
       <p className="text-gray-600 text-sm leading-relaxed mb-4">{choice.description}</p>
       
       {/* Affichage du bouton avec les 3 états gérés automatiquement */}
-      {loading ? (
-        <div className="w-full px-4 py-3 bg-gray-200 rounded-xl animate-pulse">
-          <span className="text-gray-500">Chargement...</span>
-        </div>
-      ) : status ? (
+      {status ? (
         <div className="space-y-2">
           <ConsultationButton
             status={status.buttonStatus}

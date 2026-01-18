@@ -4,6 +4,7 @@ import CreatePromptPage from '@/components/admin/prompts/CreatePromptPage';
 
 export default function Page() {
     const searchParams = useSearchParams();
+    
     const choiceId = searchParams?.get('choiceId');
     const returnTo = searchParams?.get('returnTo');
 

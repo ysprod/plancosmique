@@ -21,14 +21,13 @@ function generateFilename(sujet: Sujet): string {
 export async function GET(
   request: Request, { params }: { params: { id: string } }
 ) {
-  
+
   const startTime = Date.now();
 
   try {
     const consultationId = params.id;
-    
     let backendData: BackendResponse;
-    
+
     try {
       const response = await api.get<BackendResponse>(
         `/consultations/analysis/${consultationId}`,
@@ -161,7 +160,7 @@ export async function GET(
 
   } catch (error: any) {
     const duration = Date.now() - startTime;
-    
+
     console.error('[PDF] ❌ Erreur inattendue génération PDF:', {
       message: error.message,
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,

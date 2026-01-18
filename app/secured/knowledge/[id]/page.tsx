@@ -7,4 +7,3 @@ interface PageProps {
 export default function KnowledgeDetailPage({ params }: PageProps) {
   return <KnowledgeDetailPageClient id={params.id} />;
 }
-

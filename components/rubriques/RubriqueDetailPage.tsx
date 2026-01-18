@@ -5,11 +5,11 @@ import type { Rubrique } from "@/lib/interfaces";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
-interface RubriquePageClientProps {
+interface RubriqueDetailPageProps {
   rubrique: Rubrique;
 }
 
-export default function RubriquePageClient({ rubrique }: RubriquePageClientProps) {
+export default function RubriqueDetailPage({ rubrique }: RubriqueDetailPageProps) {
   const router = useRouter();
 
   return (

@@ -3,4 +3,3 @@ import NotificationsPageClient from '@/components/secured/notifications/Notifica
 export default function NotificationsPage() {
   return <NotificationsPageClient />;
 }
-

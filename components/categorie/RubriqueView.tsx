@@ -33,7 +33,7 @@ export const RubriqueView = memo<RubriqueViewProps>(function RubriqueView({ rubr
 
   return (
     <div className="relative mx-auto max-w-4xl">
-      <RubriqueHeader title={derived.title} description={derived.desc} />
+      <RubriqueHeader rubrique={rubrique} />
       <div className="max-w-8xl mx-auto">
         <Suspense fallback={<LoadingFallback />}>
           {ConsultationContent}
