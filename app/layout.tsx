@@ -37,7 +37,6 @@ const inter = Inter({
 
 export const metadata: Metadata = getRootMetadata();
 export const viewport = rootViewport;
-
 // Force le rendu dynamique pour toutes les pages
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;

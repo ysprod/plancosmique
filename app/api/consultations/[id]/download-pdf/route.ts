@@ -28,6 +28,7 @@ export async function GET(
     const consultationId = params.id;
     
     let backendData: BackendResponse;
+    
     try {
       const response = await api.get<BackendResponse>(
         `/consultations/analysis/${consultationId}`,

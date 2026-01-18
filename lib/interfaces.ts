@@ -1,3 +1,6 @@
+import { Grade } from './types/grade.types';
+import { UserType } from './types/user-profile.types';
+
 export type RubriqueOrNone = Rubrique | null;
 export type Category = 'animal' | 'vegetal' | 'beverage';
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';
@@ -425,6 +428,19 @@ export interface User {
   consultationsCount?: number;
   avatar?: string;
   updatedAt?: string | Date;
+  
+  // Système de grades initiatiques (compatible backend)
+  grade?: Grade | null;
+  consultationsCompleted?: number;
+  rituelsCompleted?: number;
+  booksRead?: number;
+  lastGradeUpdate?: Date | string;
+  
+  // Système de profils utilisateurs (compatible backend)
+  userType?: UserType;
+  subscriptionStartDate?: Date | string;
+  subscriptionEndDate?: Date | string;
+  premiumRubriqueId?: string; // Pour Premium
 }
 
 export interface SpiritualPractice {
@@ -531,9 +547,17 @@ export interface Consultation {
 
 export interface CategorieAdmin {
   _id: string;
-  nom: string;
+  nom?: string;
+  titre?: string;
   description: string;
-  rubriques: Rubrique[];
+  rubriques?: Rubrique[];
+  consultationChoices?: ConsultationChoice[];
+  categorie?: string;
+  typeconsultation?: string;
+  categorieId?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
 }
 
 export interface DoneChoice {

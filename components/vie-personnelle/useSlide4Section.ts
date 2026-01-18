@@ -203,11 +203,6 @@ export function useSlide4Section(rubrique: Rubrique) {
   const handleSelectConsultation = useCallback(async (choice: ConsultationChoice) => {
     setApiError(null);
     setPaymentLoading(true);
-    if (alreadyDoneChoices.some(dc => dc.choiceId === choice._id)) {
-      setApiError("Une analyse existe déjà pour ce choix de consultation. Vous ne pouvez effectuer cette analyse qu'une seule fois.");
-      setPaymentLoading(false);
-      return;
-    }
     if (!userData) {
       setApiError("Chargement des données utilisateur en cours, veuillez patienter.");
       setPaymentLoading(false);

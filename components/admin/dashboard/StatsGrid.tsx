@@ -1,16 +1,21 @@
 'use client';
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { StatCard } from '@/components/admin/commons/StatCard';
 import { Users, FileText, CreditCard, DollarSign } from 'lucide-react';
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: (custom: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: 'easeOut' }
-  }
+    scale: 1,
+    transition: { 
+      duration: 0.5,
+      delay: custom * 0.1,
+      ease: [0.25, 0.46, 0.45, 0.94]
+    }
+  })
 };
 
 interface StatsGridProps {
@@ -18,53 +23,66 @@ interface StatsGridProps {
   derivedStats: any;
 }
 
-const StatsGrid = memo<StatsGridProps>(({ stats, derivedStats }) => (
-  <motion.div
-    variants={itemVariants}
-    className="grid grid-cols-2 lg:grid-cols-4 gap-6 m-8"
-  >
-    <StatCard
-      title="Utilisateurs"
-      value={stats.users.total.toLocaleString()}
-      icon={Users}
-      color="blue"
-      trend={{
+const StatsGrid = memo<StatsGridProps>(({ stats, derivedStats }) => {
+  const statsData = useMemo(() => [
+    {
+      title: "Utilisateurs",
+      value: stats.users.total.toLocaleString('fr-FR'),
+      icon: Users,
+      color: "blue" as const,
+      trend: {
         value: parseFloat(derivedStats?.userGrowthRate || '0'),
         isPositive: stats.users.new > 0
-      }}
-    />
-    <StatCard
-      title="Consultations"
-      value={stats.consultations.total.toLocaleString()}
-      icon={FileText}
-      color="green"
-      trend={{
+      }
+    },
+    {
+      title: "Consultations",
+      value: stats.consultations.total.toLocaleString('fr-FR'),
+      icon: FileText,
+      color: "green" as const,
+      trend: {
         value: parseFloat(derivedStats?.consultationSuccessRate || '0'),
         isPositive: stats.consultations.completed > stats.consultations.pending
-      }}
-    />
-    <StatCard
-      title="Paiements"
-      value={stats.payments.completed.toLocaleString()}
-      icon={CreditCard}
-      color="purple"
-      trend={{
+      }
+    },
+    {
+      title: "Paiements",
+      value: stats.payments.completed.toLocaleString('fr-FR'),
+      icon: CreditCard,
+      color: "purple" as const,
+      trend: {
         value: parseFloat(derivedStats?.paymentSuccessRate || '0'),
         isPositive: stats.payments.completed > stats.payments.failed
-      }}
-    />
-    <StatCard
-      title="Revenu"
-      value={`${stats.consultations.revenue.toLocaleString()} F`}
-      icon={DollarSign}
-      color="orange"
-      trend={{
+      }
+    },
+    {
+      title: "Revenu",
+      value: `${stats.consultations.revenue.toLocaleString('fr-FR')} F`,
+      icon: DollarSign,
+      color: "orange" as const,
+      trend: {
         value: 23.1,
         isPositive: true
-      }}
-    />
-  </motion.div>
-));
+      }
+    }
+  ], [stats, derivedStats]);
+
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      {statsData.map((stat, index) => (
+        <motion.div
+          key={stat.title}
+          custom={index}
+          variants={itemVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <StatCard {...stat} />
+        </motion.div>
+      ))}
+    </div>
+  );
+});
 
 StatsGrid.displayName = 'StatsGrid';
 

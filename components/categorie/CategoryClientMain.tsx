@@ -40,7 +40,7 @@ const CategoryClientMain: React.FC<CategoryClientMainProps> = ({ ui, rubriqueCou
                 exit="exit"
                 className="mt-3"
             >
-                <CategoryEmptyState variants={pageVariants} />
+                <CategoryEmptyState />
             </motion.div>
         ) : (
             <motion.div

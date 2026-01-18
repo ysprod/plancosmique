@@ -3,3 +3,4 @@ import KnowledgePageClient from '@/components/secured/knowledge/KnowledgePageCli
 export default function KnowledgePage() {
   return <KnowledgePageClient />;
 }
+

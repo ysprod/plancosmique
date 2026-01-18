@@ -18,10 +18,10 @@ export const EditCategoryCardPro = memo(function EditCategoryCardPro({
   onCancel: () => void;
   onSave: (id: string, patch: Partial<CategorieAdmin>) => void;
 }) {
-  const [nom, setNom] = useState(cat.nom);
+  const [nom, setNom] = useState(cat.nom || cat.titre || '');
   const [description, setDescription] = useState(cat.description);
   const [selectedIds, setSelectedIds] = useState<string[]>(
-    () => cat.rubriques
+    () => (cat.rubriques || [])
       .map((r) => r._id)
       .filter((id): id is string => !!id)
   );

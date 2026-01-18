@@ -1,6 +1,7 @@
 'use client';
+import { memo } from 'react';
 import { motion } from 'framer-motion';
-import { LucideIcon } from 'lucide-react';
+import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react';
 
 interface StatCardProps {
   title: string;
@@ -15,43 +16,106 @@ interface StatCardProps {
 }
 
 const colorClasses = {
-  blue: 'from-blue-500 to-blue-600',
-  green: 'from-green-500 to-green-600',
-  orange: 'from-orange-500 to-orange-600',
-  purple: 'from-purple-500 to-purple-600',
-  red: 'from-red-500 to-red-600',
+  blue: {
+    gradient: 'from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700',
+    bg: 'bg-blue-50 dark:bg-blue-950/30',
+    border: 'border-blue-100 dark:border-blue-900/30',
+    shadow: 'shadow-blue-100 dark:shadow-blue-900/20'
+  },
+  green: {
+    gradient: 'from-green-500 to-green-600 dark:from-green-600 dark:to-green-700',
+    bg: 'bg-green-50 dark:bg-green-950/30',
+    border: 'border-green-100 dark:border-green-900/30',
+    shadow: 'shadow-green-100 dark:shadow-green-900/20'
+  },
+  orange: {
+    gradient: 'from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700',
+    bg: 'bg-orange-50 dark:bg-orange-950/30',
+    border: 'border-orange-100 dark:border-orange-900/30',
+    shadow: 'shadow-orange-100 dark:shadow-orange-900/20'
+  },
+  purple: {
+    gradient: 'from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700',
+    bg: 'bg-purple-50 dark:bg-purple-950/30',
+    border: 'border-purple-100 dark:border-purple-900/30',
+    shadow: 'shadow-purple-100 dark:shadow-purple-900/20'
+  },
+  red: {
+    gradient: 'from-red-500 to-red-600 dark:from-red-600 dark:to-red-700',
+    bg: 'bg-red-50 dark:bg-red-950/30',
+    border: 'border-red-100 dark:border-red-900/30',
+    shadow: 'shadow-red-100 dark:shadow-red-900/20'
+  }
 };
 
-export function StatCard({ title, value, icon: Icon, trend, color, onClick }: StatCardProps) {
+export const StatCard = memo<StatCardProps>(({ title, value, icon: Icon, trend, color, onClick }) => {
+  const colors = colorClasses[color];
+
   return (
     <motion.div
-      whileHover={{ scale: 1.02 }}
+      whileHover={{ scale: 1.02, y: -2 }}
       whileTap={{ scale: 0.98 }}
-      className={`bg-white rounded-xl shadow-sm border border-gray-100 p-6 cursor-pointer 
-                  transition-shadow hover:shadow-md ${onClick ? 'cursor-pointer' : ''}`}
+      className={`
+        relative overflow-hidden rounded-2xl p-4 sm:p-5
+        bg-white dark:bg-slate-900/50
+        backdrop-blur-sm
+        border ${colors.border}
+        shadow-lg ${colors.shadow}
+        hover:shadow-xl transition-all duration-300
+        ${onClick ? 'cursor-pointer' : ''}
+      `}
       onClick={onClick}
     >
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <p className="text-sm text-gray-600 font-medium mb-1">{title}</p>
-          <p className="text-3xl font-bold text-gray-900 mb-2">{value}</p>
+      {/* Subtle gradient overlay */}
+      <div className={`absolute inset-0 opacity-5 dark:opacity-10 bg-gradient-to-br ${colors.gradient}`} />
+      
+      <div className="relative flex items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400 mb-1 truncate">
+            {title}
+          </p>
+          <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2 truncate">
+            {value}
+          </p>
 
           {trend && (
-            <div className="flex items-center gap-1">
-              <span className={`text-sm font-medium ${trend.isPositive ? 'text-green-600' : 'text-red-600'
-                }`}>
-                {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%
+            <div className="flex items-center gap-1.5">
+              {trend.isPositive ? (
+                <TrendingUp className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
+              ) : (
+                <TrendingDown className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
+              )}
+              <span className={`text-xs sm:text-sm font-semibold ${
+                trend.isPositive 
+                  ? 'text-green-600 dark:text-green-400' 
+                  : 'text-red-600 dark:text-red-400'
+              }`}>
+                {Math.abs(trend.value).toFixed(1)}%
               </span>
-              <span className="text-xs text-gray-500">vs hier</span>
+              <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-500">
+                vs hier
+              </span>
             </div>
           )}
         </div>
 
-        <div className={`p-3 rounded-lg bg-gradient-to-br ${colorClasses[color]} 
-                        shadow-sm`}>
-          <Icon className="w-6 h-6 text-white" />
-        </div>
+        <motion.div 
+          className={`flex-shrink-0 p-2.5 sm:p-3 rounded-xl bg-gradient-to-br ${colors.gradient} shadow-lg`}
+          whileHover={{ rotate: 5 }}
+          transition={{ type: "spring", stiffness: 400 }}
+        >
+          <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+        </motion.div>
       </div>
     </motion.div>
   );
-}
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.value === nextProps.value &&
+    prevProps.title === nextProps.title &&
+    prevProps.trend?.value === nextProps.trend?.value &&
+    prevProps.trend?.isPositive === nextProps.trend?.isPositive
+  );
+});
+
+StatCard.displayName = 'StatCard';

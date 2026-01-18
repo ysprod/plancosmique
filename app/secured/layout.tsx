@@ -18,7 +18,6 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
         <SecuredHeader>
           <SecuredHeaderSuspense />
         </SecuredHeader>
-
         <SecuredMainSuspense>
           <SecuredMain>
             {children}

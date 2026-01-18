@@ -60,6 +60,25 @@ export const endpoints = {
     markAllAsRead: '/notifications/read-all',
     preferences: '/notifications/preferences',
   },
+
+  // Grades
+  grades: {
+    info: '/grades/info',
+    myProgress: '/grades/progress',
+    incrementConsultations: '/grades/increment-consultations',
+    incrementRituels: '/grades/increment-rituels',
+    incrementBooks: '/grades/increment-books',
+    welcomeMessage: '/grades/welcome-message',
+  },
+
+  // User Access (Profils)
+  userAccess: {
+    mySubscription: '/user-access/subscription-info',
+    checkAccess: (rubriqueId: string) => `/user-access/check-access/${rubriqueId}`,
+    activatePremium: '/user-access/activate-premium',
+    activateIntegral: '/user-access/activate-integral',
+    cancelSubscription: '/user-access/cancel-subscription',
+  },
 };
 
 export default endpoints;

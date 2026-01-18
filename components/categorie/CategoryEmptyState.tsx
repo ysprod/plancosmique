@@ -2,14 +2,18 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-interface CategoryEmptyStateProps {
-  variants: any;
-}
+const pageVariants = {
+    initial: { opacity: 0, y: 10, filter: "blur(2px)" },
+    animate: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.22 } },
+    exit: { opacity: 0, y: -8, filter: "blur(2px)", transition: { duration: 0.18 } },
+} as const;
 
-const CategoryEmptyState: React.FC<CategoryEmptyStateProps> = ({ variants }) => (
+ 
+
+const CategoryEmptyState: React.FC = () => (
   <motion.div
     key="empty"
-    variants={variants}
+    variants={pageVariants}
     initial="initial"
     animate="animate"
     exit="exit"

@@ -1,5 +1,5 @@
 "use client";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useActivityItems } from "@/hooks/admin/useActivityItems";
 import { activityCardVariants } from "./activity/animations";
@@ -16,22 +16,30 @@ const ActivitySection = memo<ActivitySectionProps>(({ stats, derivedStats }) => 
   const activityItems = useActivityItems(stats, derivedStats);
 
   return (
-    <motion.div
+    <motion.section
       variants={activityCardVariants}
       initial="hidden"
       animate="visible"
-      className="bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 rounded-xl p-4 sm:p-6 text-white shadow-xl relative overflow-hidden"
+      className="relative rounded-2xl p-4 sm:p-6 text-white shadow-2xl overflow-hidden
+        bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700
+        dark:from-blue-600 dark:via-blue-700 dark:to-blue-900
+        border border-blue-400/20 dark:border-blue-500/20"
     >
       <ActivityBackground />
-      <div className="relative z-10">
+      <div className="relative z-10 space-y-4">
         <ActivityHeader />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
           {activityItems.map((item, index) => (
-            <ActivityCardItem key={index} item={item} index={index} />
+            <ActivityCardItem key={`${item.label}-${index}`} item={item} index={index} />
           ))}
         </div>
       </div>
-    </motion.div>
+    </motion.section>
+  );
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.stats === nextProps.stats &&
+    prevProps.derivedStats === nextProps.derivedStats
   );
 });
 

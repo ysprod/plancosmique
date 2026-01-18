@@ -1,5 +1,4 @@
 'use client';
-
 import GlobalErrorUI from '@/components/commons/GlobalErrorUI';
 
 export default function AdminError({

@@ -1,5 +1,4 @@
 'use client';
-
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import type { LoginDto, RegisterDto, Permission } from '@/lib/types/auth.types';
@@ -175,7 +174,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (user.role === Role.SUPER_ADMIN) return true;
 
     const permissionArray = Array.isArray(permissions) ? permissions : [permissions];
-    
+
     // Vérification dans les permissions personnalisées
     return user.customPermissions
       ? permissionArray.some(perm => user.customPermissions?.includes(perm))

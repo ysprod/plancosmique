@@ -14,7 +14,7 @@ const SecuredMain = memo<SecuredMainProps>(({ children }) => {
         id="main-content"
         role="main"
         aria-label="Espace sécurisé"
-        className="mx-auto w-full max-w-6xl px-3 pb-[calc(16px+env(safe-area-inset-bottom))] pt-3 sm:px-4 sm:pt-5"
+        className="mx-auto w-full px-4 pb-[calc(16px+env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pt-6"
       >
         {children}
       </main>

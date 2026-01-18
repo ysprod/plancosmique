@@ -1,17 +1,38 @@
 'use client';
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 import WelcomeHeader from '@/components/accueil/WelcomeHeader';
 import WelcomeQuestions from '@/components/accueil/WelcomeQuestions';
 import WelcomeIntro from '@/components/accueil/WelcomeIntro';
 
-export default function WelcomePageClient() {
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5, ease: 'easeOut' }
+  }
+};
+
+function WelcomePageClient() {
   return (
-    <div className="bg-white">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-indigo-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-8 sm:py-12">
       <motion.div
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 0.8 }}
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500 z-50 origin-left"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 z-50 origin-left"
       >
         <motion.div
           animate={{ x: ["-100%", "100%"] }}
@@ -19,19 +40,39 @@ export default function WelcomePageClient() {
           className="h-full w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent"
         />
       </motion.div>
-      <WelcomeHeader />
-      <div className="px-4 py-6 max-w-4xl mx-auto">
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-center text-sm sm:text-base text-gray-700 mb-5 px-2 leading-relaxed"
+      
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="w-full max-w-4xl mx-auto px-3 sm:px-6"
+      >
+        <motion.div variants={itemVariants}>
+          <WelcomeHeader />
+        </motion.div>
+        
+        <motion.div 
+          variants={itemVariants}
+          className="backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xl border border-purple-100/50 dark:border-slate-700/50 space-y-4 sm:space-y-6"
         >
-          Bienvenue dans ce temple, où chacun vient chercher une réponse aux trois grandes questions de l'existence :
-        </motion.p>
-        <WelcomeQuestions />
-        <WelcomeIntro />
-      </div>
+          <motion.p
+            variants={itemVariants}
+            className="text-center text-xs sm:text-sm text-gray-700 dark:text-slate-300 px-2 leading-relaxed"
+          >
+            Bienvenue dans ce temple, où chacun vient chercher une réponse aux trois grandes questions de l'existence :
+          </motion.p>
+          
+          <motion.div variants={itemVariants}>
+            <WelcomeQuestions />
+          </motion.div>
+          
+          <motion.div variants={itemVariants}>
+            <WelcomeIntro />
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }
+
+export default memo(WelcomePageClient);
