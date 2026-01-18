@@ -3,7 +3,12 @@ import { getUserChoicesStatus, ConsultationChoiceStatusDto } from '@/lib/api/ser
 import { useAuth } from '@/lib/auth/AuthContext';
 import type { ConsultationChoice, Rubrique } from '@/lib/interfaces';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+interface EnrichedChoice {
+    choice: ConsultationChoice;
+    status: ConsultationChoiceStatusDto;
+}
 
 export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
     const router = useRouter();
@@ -76,21 +81,23 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
         fetchChoicesAndStatuses();
     }, [user?._id, rubrique?.consultationChoices]);
 
-
-    const getEnrichedChoice = (choice: ConsultationChoice) => {
-        const status = choiceStatuses.get(choice._id || '');
-        
-        return {
-            choice,
-            status: status || {
-                choiceId: choice._id || '',
-                choiceTitle: choice.title,
-                buttonStatus: 'CONSULTER' as const,
-                hasActiveConsultation: false,
-                consultationId: null,
-            },
-        };
-    };
+    // Enrichir les choix avec leurs statuts
+    const enrichedChoices = useMemo<EnrichedChoice[]>(() => {
+        return choices.map(choice => {
+            const status = choiceStatuses.get(choice._id || '');
+            
+            return {
+                choice,
+                status: status || {
+                    choiceId: choice._id || '',
+                    choiceTitle: choice.title,
+                    buttonStatus: 'CONSULTER' as const,
+                    hasActiveConsultation: false,
+                    consultationId: null,
+                },
+            };
+        });
+    }, [choices, choiceStatuses]);
 
     const handleSelectConsultation = useCallback(
         async (choice: ConsultationChoice) => {
@@ -130,12 +137,10 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
 
 
     return {
-        choices,
-        choiceStatuses,
+        enrichedChoices,
         loading,
         apiError,
         creatingConsultation,
         handleSelectConsultation,
-        getEnrichedChoice,
     };
 }

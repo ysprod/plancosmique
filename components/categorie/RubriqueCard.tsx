@@ -180,7 +180,7 @@ export const RubriqueCard = memo(
               )}
             >
               <TrendingUp className="w-3.5 h-3.5" />
-              <span>{derived.choicesCount} consultation{derived.choicesCount > 1 ? 's' : ''}</span>
+              <span>Decouvrir</span>
             </motion.div>
           )}
 

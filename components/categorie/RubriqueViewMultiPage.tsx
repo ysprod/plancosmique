@@ -16,8 +16,8 @@ interface RubriqueViewMultiPageProps {
 export const RubriqueViewMultiPage = memo<RubriqueViewMultiPageProps>(
   function RubriqueViewMultiPage({ rubrique, categoryId }) {
     const {
-      choices, loading, apiError,
-      creatingConsultation, handleSelectConsultation, getEnrichedChoice
+      enrichedChoices, loading, apiError, creatingConsultation,
+      handleSelectConsultation
     } = useRubriqueSelection(rubrique, categoryId);
 
     if (loading || creatingConsultation) {
@@ -48,17 +48,14 @@ export const RubriqueViewMultiPage = memo<RubriqueViewMultiPageProps>(
             transition={{ delay: 0.2 }}
             className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2"
           >
-            {choices.map((choice, idx) => {
-              const enriched = getEnrichedChoice(choice);
-              return (
-                <RubriqueConsultationCard
-                  key={choice._id || idx}
-                  choice={enriched.choice}
-                  status={enriched.status}
-                  onSelect={() => handleSelectConsultation(choice)}
-                />
-              );
-            })}
+            {enrichedChoices.map((enriched, idx) => (
+              <RubriqueConsultationCard
+                key={enriched.choice._id || idx}
+                choice={enriched.choice}
+                status={enriched.status}
+                onSelect={() => handleSelectConsultation(enriched.choice)}
+              />
+            ))}
           </motion.div>
         </div>
       </div>
