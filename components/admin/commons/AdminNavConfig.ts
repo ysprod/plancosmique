@@ -22,6 +22,7 @@ export const navItems = [
   { href: '/admin/categories', label: 'Catégories', icon: FileText, color: 'teal' },
   { href: '/admin/rubriques', label: 'Rubriques', icon: FileText, color: 'pink' },
   { href: '/admin/spiritualite', label: 'Spiritualité', icon: Flame, color: 'orange' },
+  { href: '/admin/prompts', label: 'Prompts', icon: Sparkles, color: 'cyan' },
   { href: '/admin/settings', label: 'Paramètres', icon: Settings, color: 'gray' },
 ];
 

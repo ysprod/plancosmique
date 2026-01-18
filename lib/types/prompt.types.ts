@@ -1,0 +1,41 @@
+export interface PromptSection {
+  title: string;
+  content: string;
+  guidelines?: string[];
+}
+
+export interface PromptStructure {
+  introduction?: string;
+  sections: PromptSection[];
+  synthesis?: string;
+  conclusion?: string;
+}
+
+export interface Prompt {
+  _id: string;
+  title: string;
+  description?: string;
+  role: string;
+  objective: string;
+  styleAndTone?: string[];
+  structure: PromptStructure;
+  variables?: Record<string, string>;
+  tags?: string[];
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreatePromptDto {
+  title: string;
+  description?: string;
+  role: string;
+  objective: string;
+  styleAndTone?: string[];
+  structure: PromptStructure;
+  variables?: Record<string, string>;
+  tags?: string[];
+  isActive?: boolean;
+}
+
+export interface UpdatePromptDto extends Partial<CreatePromptDto> {}
