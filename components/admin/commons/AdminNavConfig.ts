@@ -15,6 +15,7 @@ export const navItems = [
   { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard, color: 'amber' },
   { href: '/admin/users', label: 'Utilisateurs', icon: Users, color: 'blue' },
   { href: '/admin/consultations', label: 'Consultations', icon: FileText, color: 'green' },
+  { href: '/admin/consultations/choices', label: 'Choix & Prompts', icon: Sparkles, color: 'cyan' },
   { href: '/admin/payments', label: 'Paiements', icon: CreditCard, color: 'purple' },
   { href: '/admin/reports', label: 'Rapports', icon: BarChart3, color: 'emerald' },
   { href: '/admin/books', label: 'Livres', icon: BookOpen, color: 'indigo' },
@@ -22,7 +23,6 @@ export const navItems = [
   { href: '/admin/categories', label: 'Catégories', icon: FileText, color: 'teal' },
   { href: '/admin/rubriques', label: 'Rubriques', icon: FileText, color: 'pink' },
   { href: '/admin/spiritualite', label: 'Spiritualité', icon: Flame, color: 'orange' },
-  { href: '/admin/prompts', label: 'Prompts', icon: Sparkles, color: 'cyan' },
   { href: '/admin/settings', label: 'Paramètres', icon: Settings, color: 'gray' },
 ];
 
