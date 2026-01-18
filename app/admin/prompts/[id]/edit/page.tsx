@@ -1,12 +1,14 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import PromptForm from '@/components/admin/prompts/PromptForm';
 import { promptService } from '@/lib/api/services/prompt.service';
 import { Prompt } from '@/lib/types/prompt.types';
 
 export default function EditPromptPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
+  const returnTo = searchParams?.get('returnTo');
   const [prompt, setPrompt] = useState<Prompt | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +50,7 @@ export default function EditPromptPage() {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      <PromptForm initialData={prompt} />
+      <PromptForm initialData={prompt} returnTo={returnTo || undefined} />
     </div>
   );
 }
