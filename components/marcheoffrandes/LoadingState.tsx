@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 
 const LoadingState = () => (
@@ -15,6 +14,7 @@ const LoadingState = () => (
     >
       🌀
     </motion.span>
+    
     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
       Chargement des offrandes...
     </p>

@@ -1,5 +1,4 @@
 'use client';
-
 import { Offering } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 import { OfferingCard } from './OfferingCard';

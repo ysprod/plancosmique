@@ -24,7 +24,6 @@ export const RubriqueView = memo<RubriqueViewProps>(function RubriqueView({ rubr
 
   const isHoroscope = consultationType === 'HOROSCOPE';
 
-  // Sélection du composant approprié
   const ConsultationContent = useMemo(() => {
     if (isHoroscope) {
       return <HoroscopeConsultationSection />;

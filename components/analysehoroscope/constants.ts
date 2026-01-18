@@ -25,5 +25,7 @@ export const itemVariants: Variants = {
 };
 
 export const ANIMATION_DURATION = 0.4;
+
 export const RUBRIQUE_ID = '694e393df5e46df83664b4c5';
+
 export const TYPE_CONSULTATION = 'HOROSCOPE';

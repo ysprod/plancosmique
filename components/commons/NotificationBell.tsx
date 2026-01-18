@@ -24,16 +24,15 @@ const notificationColors = {
 export default function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { 
-    notifications, 
-    unreadCount, 
-    isLoading, 
-    markAsRead, 
+  const {
+    notifications,
+    unreadCount,
+    isLoading,
+    markAsRead,
     markAllAsRead,
-    deleteNotification 
+    deleteNotification
   } = useNotifications();
 
-  // Fermer le dropdown quand on clique dehors
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -82,7 +81,7 @@ export default function NotificationBell() {
         aria-label="Notifications"
       >
         <Bell className="w-6 h-6 text-violet-600" />
-        
+
         {/* Badge de compteur */}
         {unreadCount > 0 && (
           <motion.span
@@ -142,9 +141,8 @@ export default function NotificationBell() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
                       onClick={() => handleNotificationClick(notification)}
-                      className={`p-4 cursor-pointer transition-all duration-200 hover:bg-white/5 ${
-                        !notification.isRead ? 'bg-white/5' : ''
-                      }`}
+                      className={`p-4 cursor-pointer transition-all duration-200 hover:bg-white/5 ${!notification.isRead ? 'bg-white/5' : ''
+                        }`}
                     >
                       <div className="flex items-start gap-3">
                         {/* Icône */}
@@ -155,12 +153,11 @@ export default function NotificationBell() {
                         {/* Contenu */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-2">
-                            <h4 className={`text-sm font-medium ${
-                              notification.isRead ? 'text-gray-300' : 'text-white'
-                            }`}>
+                            <h4 className={`text-sm font-medium ${notification.isRead ? 'text-gray-300' : 'text-white'
+                              }`}>
                               {notification.title}
                             </h4>
-                            
+
                             <div className="flex items-center gap-1 flex-shrink-0">
                               {!notification.isRead && (
                                 <div className="w-2 h-2 rounded-full bg-purple-500"></div>
@@ -174,11 +171,11 @@ export default function NotificationBell() {
                               </button>
                             </div>
                           </div>
-                          
+
                           <p className="text-xs text-gray-400 mt-1 line-clamp-2">
                             {notification.message}
                           </p>
-                          
+
                           <p className="text-xs text-gray-500 mt-2">
                             {new Date(notification.createdAt).toLocaleDateString('fr-FR', {
                               day: 'numeric',

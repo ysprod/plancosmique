@@ -1,5 +1,4 @@
 'use client';
-
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 
@@ -62,5 +61,7 @@ const InfoCard = memo<InfoCardProps>(({ icon: Icon, label, value, color }) => (
     />
   </motion.div>
 ));
+
 InfoCard.displayName = 'InfoCard';
+
 export default InfoCard;

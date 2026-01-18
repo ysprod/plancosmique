@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Plus } from 'lucide-react';
@@ -45,6 +44,7 @@ export const OfferingCard: React.FC<OfferingCardProps> = ({ offering, onAddToCar
                 <p className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
                     {offering.price.toLocaleString()} F
                 </p>
+                
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                     ≈ ${offering.priceUSD.toFixed(1)} USD
                 </p>

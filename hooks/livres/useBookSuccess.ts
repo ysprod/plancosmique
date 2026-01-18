@@ -11,8 +11,8 @@ export interface PurchaseInfo {
 
 export function useBookSuccess() {
   const searchParams = useSearchParams();
-  const bookId = searchParams.get('book_id');
-  const phone = searchParams.get('phone');
+  const bookId = searchParams?.get('book_id') || null;
+  const phone = searchParams?.get('phone') || null;
   const [purchaseInfo, setPurchaseInfo] = useState<PurchaseInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -77,6 +77,7 @@ export const MoonPhaseExplanation = memo(() => {
               <span className="text-indigo-600 dark:text-indigo-400 font-semibold">~7,4 jours</span>
             </li>
           </ul>
+          
           <div className="mt-3 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 italic text-center">
             💡 Les durées sont approximatives et peuvent varier légèrement
           </div>

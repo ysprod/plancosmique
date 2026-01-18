@@ -1,5 +1,4 @@
 'use client';
-
 import { AnimatePresence } from 'framer-motion';
 import ErrorToast from '@/components/vie-personnelle/ErrorToast';
 

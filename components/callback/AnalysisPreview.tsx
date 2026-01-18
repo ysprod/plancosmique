@@ -1,5 +1,4 @@
 'use client';
-
 import { motion, Variants } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 

@@ -32,6 +32,7 @@ const CategoryClientView: React.FC<CategoryClientViewProps> = ({ category }) => 
           rubriqueCourante={rubriqueCourante}
           closeRubrique={() => setRubriqueCourante(null)}
         />
+        
         <CategoryClientMain
           ui={ui}
           rubriqueCourante={rubriqueCourante}

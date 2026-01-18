@@ -90,6 +90,7 @@ const SkyChart = memo(({ carteDuCiel }: { carteDuCiel?: CarteDuCiel | CarteDuCie
             <PositionCard key={index} position={position} index={index} />
           ))}
         </div>
+        
         {otherPositions.length > 0 && (
           <>
             <button

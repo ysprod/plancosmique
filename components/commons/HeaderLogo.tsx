@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
@@ -61,7 +60,6 @@ export function HeaderLogo() {
         </p>
       </div>
 
-      {/* Logo mobile simplifié */}
       <div className="sm:hidden">
         <h1 className="text-base font-black bg-gradient-to-r from-violet-600 to-fuchsia-600 text-transparent bg-clip-text">
           Mon Étoile

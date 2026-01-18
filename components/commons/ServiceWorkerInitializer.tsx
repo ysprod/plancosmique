@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { registerServiceWorker, getCacheSize, formatBytes } from '@/lib/cache/serviceWorker.utils';
 

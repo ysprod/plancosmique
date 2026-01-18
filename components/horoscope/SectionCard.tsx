@@ -1,5 +1,4 @@
 'use client';
-
 import React, { memo } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
@@ -62,5 +61,7 @@ const SectionCard = memo<SectionCardProps>(({ icon: Icon, title, content, colors
     </motion.div>
   );
 });
+
 SectionCard.displayName = 'SectionCard';
+
 export default SectionCard;

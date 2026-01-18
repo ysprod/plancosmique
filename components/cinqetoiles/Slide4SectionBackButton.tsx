@@ -1,5 +1,4 @@
 'use client';
-
 import BackButton from '@/components/cinqetoiles/BackButton';
 import { motion } from 'framer-motion';
 

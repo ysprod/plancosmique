@@ -1,5 +1,4 @@
 'use client';
-
 import { MoonPhaseWidget } from '@/components/astrologie-africaine/MoonPhaseWidget';
 import { motion } from 'framer-motion';
 import { memo } from 'react';

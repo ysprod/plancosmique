@@ -13,8 +13,7 @@ export function BackgroundBlobs() {
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
         className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-purple-300/30 to-pink-300/30 rounded-full blur-3xl"
         style={{ willChange: 'transform, opacity' }}
-      />
-      
+      />      
       <motion.div
         animate={{
           scale: [1.2, 1, 1.2],

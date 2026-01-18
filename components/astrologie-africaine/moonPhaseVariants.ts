@@ -11,7 +11,7 @@ export const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.01 }
+    transition: { staggerChildren: 0.02 }
   }
 };
 

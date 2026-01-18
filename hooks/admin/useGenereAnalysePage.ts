@@ -6,7 +6,7 @@ import { AnalyseAstrologique, GenerationStep } from '@/lib/interfaces';
 export function useGenereAnalysePage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const consultationId = searchParams.get('id');
+  const consultationId = searchParams?.get('id') || null;
   
   const [step, setStep] = useState<GenerationStep>('loading');
   const [analyseData, setAnalyseData] = useState<AnalyseAstrologique | null>(null);

@@ -39,9 +39,7 @@ function ProtectedRouteComponent({
     );
   }
 
-  if (!isAuthenticated) {
-    return null;
-  }
+  if (!isAuthenticated) { return null; }
 
   return <>{children}</>;
 }

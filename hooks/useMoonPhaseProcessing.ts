@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { normalizeIllumination } from "./moonPhaseUtils";
+import { normalizeIllumination } from "@/components/astrologie-africaine/moonPhaseUtils";
 import type { MoonPhaseDay, MonthData } from "./useMoonPhaseData";
 
 export function useMoonPhaseProcessing(monthData: MonthData | null) {

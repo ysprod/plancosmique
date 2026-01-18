@@ -1,5 +1,4 @@
 'use client';
-
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
@@ -29,4 +28,5 @@ const AnimatedStar = memo<AnimatedStarProps>(({ index, top, left, delay, duratio
 ));
 
 AnimatedStar.displayName = 'AnimatedStar';
+
 export default AnimatedStar;

@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { Leaf, LucideIcon, Package, Sparkles, Wine } from 'lucide-react';
 import React from 'react';

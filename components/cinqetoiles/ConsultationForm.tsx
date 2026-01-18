@@ -1,5 +1,4 @@
 'use client';
-
 import InputField from '@/components/vie-personnelle/InputField';
 import { motion } from 'framer-motion';
 import { AlertCircle, Info, Sparkles } from 'lucide-react';

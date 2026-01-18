@@ -4,7 +4,7 @@ import { Info, X } from "lucide-react";
 import { memo } from "react";
 import { getAdvice, getPhaseConfig } from "./moonPhaseUtils";
 import { modalVariants } from "./moonPhaseVariants";
-import type { MoonPhaseDay } from "./useMoonPhaseData";
+import type { MoonPhaseDay } from "@/hooks/useMoonPhaseData";
 
 interface DetailModalProps {
   day: MoonPhaseDay | null;

@@ -152,7 +152,6 @@ const RegisterForm: React.FC = () => {
             </motion.button>
           </form>
 
-          {/* Footer */}
           <div className="mt-6 space-y-4">
             <div className="text-center">
               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -174,7 +173,6 @@ const RegisterForm: React.FC = () => {
           </div>
         </div>
 
-        {/* Footer discret */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

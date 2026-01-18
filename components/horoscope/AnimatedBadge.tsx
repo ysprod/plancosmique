@@ -1,5 +1,4 @@
 'use client';
-
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 
@@ -29,5 +28,7 @@ const AnimatedBadge = memo<{ text: string; color: string }>(({ text, color }) =>
     <span className="relative z-10">{text}</span>
   </motion.span>
 ));
+
 AnimatedBadge.displayName = 'AnimatedBadge';
+
 export default AnimatedBadge;

@@ -1,10 +1,10 @@
 'use client';
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp } from 'lucide-react';
-import { STAT_COLORS, formatNumber } from './statsUtils';
+import { STAT_COLORS } from './statsUtils';
 import type { StatCardProps } from './statsTypes';
+import { formatNumber } from '@/lib/functions';
 
 export const StatCard: React.FC<StatCardProps> = ({ value, label, icon, loading, color }) => {
   const colors = STAT_COLORS[color];
@@ -32,12 +32,10 @@ export const StatCard: React.FC<StatCardProps> = ({ value, label, icon, loading,
         )}
       </span>
 
-      {/* Label */}
       <span className="text-sm font-semibold text-gray-600 mt-2 uppercase tracking-wide">
         {label}
       </span>
 
-      {/* Trend indicator (optional) */}
       {!loading && value !== null && value > 0 && (
         <div className="flex items-center gap-1 mt-2 text-green-600 text-xs">
           <TrendingUp className="w-3 h-3" />

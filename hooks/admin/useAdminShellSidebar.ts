@@ -2,7 +2,7 @@ import { usePathname } from 'next/navigation';
 import { useAdminShell } from './useAdminShell';
 
 export function useAdminShellSidebar() {
-  const pathname = usePathname();
+  const pathname = usePathname() || '/admin';
   const {
     user,
     isLoggingOut,

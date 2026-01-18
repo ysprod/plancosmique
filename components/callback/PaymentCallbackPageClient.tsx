@@ -9,8 +9,7 @@ import { useSearchParams } from 'next/navigation';
 
 export default function PaymentCallbackPageClient() {
   const searchParams = useSearchParams();
-  const token = searchParams.get('token');
-
+  const token = searchParams?.get('token') || null;
   const {
     isLoading, isProcessing, status, statusConfig, analysisStages, currentStageIndex,
     isGeneratingAnalysis, analysisCompleted, analysisProgress, autoRedirectCountdown,

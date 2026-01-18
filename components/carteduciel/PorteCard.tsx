@@ -1,5 +1,4 @@
 'use client';
-
 import { memo, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
@@ -45,7 +44,6 @@ const PorteCard = memo<PorteCardProps>(({
       }}
       className="relative group h-full"
     >
-      {/* Glow Background */}
       <motion.div
         className={`
           absolute -inset-0.5 rounded-xl sm:rounded-2xl
@@ -65,7 +63,6 @@ const PorteCard = memo<PorteCardProps>(({
         }}
       />
 
-      {/* Main Card */}
       <div className={`
         relative h-full overflow-hidden rounded-xl sm:rounded-2xl
         backdrop-blur-xl
@@ -79,7 +76,6 @@ const PorteCard = memo<PorteCardProps>(({
         group-hover:shadow-xl group-hover:shadow-purple-500/20
       `}>
         
-        {/* Animated Gradient Overlay on Hover */}
         <motion.div
           className={`
             absolute inset-0 opacity-0 group-hover:opacity-15
@@ -88,10 +84,8 @@ const PorteCard = memo<PorteCardProps>(({
           `}
         />
 
-        {/* Content Container */}
         <div className="relative z-10 flex flex-col h-full gap-3">
           
-          {/* Header: Label & Icon */}
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1 min-w-0">
               <motion.p 
@@ -117,7 +111,6 @@ const PorteCard = memo<PorteCardProps>(({
               </motion.h3>
             </div>
 
-            {/* Animated Icon */}
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -134,10 +127,8 @@ const PorteCard = memo<PorteCardProps>(({
             </motion.div>
           </div>
 
-          {/* Spacer */}
           <div className="flex-grow" />
 
-          {/* Description */}
           <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -147,7 +138,6 @@ const PorteCard = memo<PorteCardProps>(({
             {memoizedContent.description}
           </motion.p>
 
-          {/* Premium Badge */}
           {memoizedContent.isPremium && (
             <motion.div
               initial={{ opacity: 0, x: -10 }}
@@ -172,7 +162,6 @@ const PorteCard = memo<PorteCardProps>(({
           )}
         </div>
 
-        {/* Shimmer Effect on Hover */}
         <motion.div
           className="absolute inset-0 opacity-0 group-hover:opacity-100"
           animate={{

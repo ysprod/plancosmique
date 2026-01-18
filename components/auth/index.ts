@@ -3,7 +3,6 @@ export * from './RegisterForm';
 export * from './ProtectedRoute';
 export * from './RoleGuard';
 export * from './PermissionGuard';
-
 export { default as LoginForm } from './LoginForm';
 export { default as RegisterForm } from './RegisterForm';
 export { default as ProtectedRoute } from './ProtectedRoute';

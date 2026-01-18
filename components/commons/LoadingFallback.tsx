@@ -1,5 +1,4 @@
 'use client';
-
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
@@ -40,7 +39,6 @@ const LoadingFallbackComponent = () => {
         }}
       />
 
-      {/* Floating Particles */}
       <FloatingParticle delay={0} x="10%" y="20%" />
       <FloatingParticle delay={0.5} x="90%" y="30%" />
       <FloatingParticle delay={1} x="20%" y="70%" />
@@ -48,7 +46,6 @@ const LoadingFallbackComponent = () => {
       <FloatingParticle delay={2} x="50%" y="15%" />
       <FloatingParticle delay={2.5} x="40%" y="85%" />
 
-      {/* Main Loading Content */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -60,7 +57,6 @@ const LoadingFallbackComponent = () => {
         }}
         className="relative z-10 text-center max-w-md"
       >
-        {/* Central Loading Spinner */}
         <div className="relative mx-auto mb-6 sm:mb-8 w-32 h-32 sm:w-40 sm:h-40">
           {/* Glowing Center Icon */}
           <motion.div

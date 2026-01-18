@@ -1,5 +1,4 @@
 'use client';
-
 import CosmicLoader from '@/components/analysehoroscope/CosmicLoader';
 import { AnalyseHoroscopeHeader } from '@/components/analysehoroscope/AnalyseHoroscopeHeader';
 import { AnalyseHoroscopeSteps } from '@/components/analysehoroscope/AnalyseHoroscopeSteps';

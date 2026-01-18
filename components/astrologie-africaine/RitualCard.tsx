@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import React, { memo } from 'react';
 
@@ -36,6 +35,7 @@ const RitualCard = memo<RitualCardProps>(({ ritual, index }) => (
     <p className="text-xs sm:text-sm text-gray-600">{ritual.goal}</p>
   </motion.div>
 ));
+
 RitualCard.displayName = 'RitualCard';
 
 export { RitualCard };

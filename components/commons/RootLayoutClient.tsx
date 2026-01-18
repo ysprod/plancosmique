@@ -85,7 +85,6 @@ export default function HeaderContent() {
     { href: "/secured/consultations", label: "Mes Consultations", icon: FileText },
   ], [hasRole]);
 
-
   return (
     <>
       <motion.div

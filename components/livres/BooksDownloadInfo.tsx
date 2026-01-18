@@ -13,6 +13,7 @@ const BooksDownloadInfo = () => (
     <h3 className="text-xl font-bold text-gray-900 mb-2">
       Téléchargement instantané
     </h3>
+    
     <p className="text-gray-700">
       Après paiement, vous recevrez un lien de téléchargement direct pour votre livre PDF.
       Vous pourrez le télécharger et le conserver à vie sur tous vos appareils.

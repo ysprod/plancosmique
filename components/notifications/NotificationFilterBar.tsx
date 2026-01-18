@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import { Filter } from 'lucide-react';
 import { filterOptions } from '@/hooks/notifications/useNotificationFilter';

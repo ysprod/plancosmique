@@ -1,5 +1,4 @@
 'use client';
-
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, Moon, X, Menu } from 'lucide-react';
 import NotificationBell from '@/components/commons/NotificationBell';
@@ -21,7 +20,6 @@ export function MobileHeaderActions({
 }: MobileHeaderActionsProps) {
   return (
     <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
-      {/* Theme Toggle Mobile */}
       {mounted && (
         <motion.button
           onClick={toggleTheme}

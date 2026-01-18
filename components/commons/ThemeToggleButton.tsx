@@ -1,5 +1,4 @@
 'use client';
-
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, Moon } from 'lucide-react';
 
@@ -48,7 +47,6 @@ export function ThemeToggleButton({ theme, toggleTheme, mounted }: ThemeToggleBu
         )}
       </AnimatePresence>
 
-      {/* Glow effect */}
       <motion.div
         animate={{
           scale: [1, 1.5, 1],

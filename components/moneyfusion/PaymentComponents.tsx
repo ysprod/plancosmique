@@ -18,7 +18,6 @@ export interface PaymentButtonProps {
   /** Montant du paiement */
   amount: number;
   
-  /** Fonction appelée au clic */
   onClick: () => void;
   
   /** État de chargement */

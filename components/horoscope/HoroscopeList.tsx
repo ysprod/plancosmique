@@ -1,5 +1,4 @@
 'use client';
-
 import { AnimatePresence, motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import HoroscopeCard from '@/components/horoscope/HoroscopeCard';

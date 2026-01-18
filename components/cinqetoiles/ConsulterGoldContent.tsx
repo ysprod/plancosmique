@@ -15,6 +15,7 @@ interface ConsulterGoldContentProps {
 }
 
 const ANIMATION_DURATION = 0.2;
+
 const fadeSlideVariants = {
     hidden: { opacity: 0, y: 15, scale: 0.985 },
     visible: {

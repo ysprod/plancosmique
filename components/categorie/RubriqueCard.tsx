@@ -23,7 +23,7 @@ const borderGradients = [
   "from-rose-500 via-fuchsia-500 to-purple-500",
   "from-amber-500 via-yellow-500 to-orange-500",
 ] as const;
- 
+
 function getBorderGradientFromId(id: string): (typeof borderGradients)[number] {
   const h = hashString(id);
   return borderGradients[h % borderGradients.length];
@@ -43,8 +43,7 @@ export const RubriqueCard = memo(
       const desc = rub.description ? clampText(rub.description, 140) : "—";
       const borderClass = getBorderGradientFromId(id);
       const choicesCount = Array.isArray((rub as any)?.consultationChoices)
-        ? (rub as any).consultationChoices.length
-        : undefined;
+        ? (rub as any).consultationChoices.length : undefined;
       return { id, title, desc, borderClass, choicesCount };
     }, [rub._id, rub.titre, rub.description, (rub as any)?.consultationChoices]);
 

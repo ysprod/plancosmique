@@ -82,11 +82,13 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 <p className="text-sm font-mono text-red-800 dark:text-red-300 break-all">
                   {this.state.error.message}
                 </p>
+
                 {this.state.error.stack && (
                   <pre className="text-xs mt-2 text-red-700 dark:text-red-400 whitespace-pre-wrap">
                     {this.state.error.stack}
                   </pre>
                 )}
+                
               </motion.div>
             )}
 

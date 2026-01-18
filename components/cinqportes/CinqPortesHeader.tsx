@@ -39,7 +39,6 @@ const CinqPortesHeader = memo<CinqPortesHeaderProps>(({ isPremium }) => {
         </motion.div>
       </div>
       
-      {/* Sous-titre */}
       <motion.p 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

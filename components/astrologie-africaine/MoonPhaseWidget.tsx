@@ -6,9 +6,9 @@ import { Header } from "./Header";
 import { MoonDaysGrid } from "./MoonDaysGrid";
 import { MoonPhaseExplanation } from "./MoonPhaseExplanation";
 import { MoonPhaseLegend } from "./MoonPhaseLegend";
-import type { MoonPhaseDay } from "./useMoonPhaseData";
-import { useMoonPhaseData } from "./useMoonPhaseData";
-import { useMoonPhaseProcessing } from "./useMoonPhaseProcessing";
+import { MoonPhaseDay, useMoonPhaseData } from "@/hooks/useMoonPhaseData";
+import { useMoonPhaseProcessing } from "@/hooks/useMoonPhaseProcessing";
+ 
 
 export function MoonPhaseWidget() {
   const [selectedDay, setSelectedDay] = useState<MoonPhaseDay | null>(null);

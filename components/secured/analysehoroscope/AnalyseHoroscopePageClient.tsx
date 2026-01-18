@@ -7,6 +7,6 @@ import { useSearchParams } from 'next/navigation';
 export default function AnalyseHoroscopePageClient() {
     const params = useSearchParams();
     const { user } = useAuth();
-    const hook = useAnalyseHoroscopePage(user, params);
+    const hook = useAnalyseHoroscopePage(user, params || new URLSearchParams());
     return <AnalyseHoroscopePageUI {...hook} />;
 }

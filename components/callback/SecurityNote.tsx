@@ -4,7 +4,7 @@ import { motion, type Variants } from 'framer-motion';
 interface SecurityNoteProps {
   itemVariants: Variants;
 }
- 
+
 export function SecurityNote({ itemVariants }: SecurityNoteProps) {
   return (
     <motion.div
@@ -18,8 +18,7 @@ export function SecurityNote({ itemVariants }: SecurityNoteProps) {
           target="_blank"
           rel="noopener noreferrer"
           className="text-purple-600 hover:underline font-semibold transition-colors"
-        >
-          MoneyFusion
+        > MoneyFusion
         </a>
       </p>
     </motion.div>

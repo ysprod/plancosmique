@@ -1,5 +1,4 @@
 'use client';
-
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Moon, Sun } from 'lucide-react';
@@ -76,4 +75,5 @@ const IconGroup = memo(() => (
 ));
 
 IconGroup.displayName = 'IconGroup';
+
 export default IconGroup;

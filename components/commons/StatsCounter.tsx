@@ -1,18 +1,15 @@
 'use client';
-
 import React from 'react';
 import { Users, Eye } from 'lucide-react';
 import { StatCard } from './StatCard';
 import { ErrorMessage } from './StatsErrorMessage';
 import { LoadingSkeleton } from './StatsLoadingSkeleton';
-import { useStatsData } from './useStatsData';
+import { useStatsData } from '@/hooks/useStatsData';
 
 const StatsCounter: React.FC = () => {
   const { stats, loading, error, fetchStats } = useStatsData();
 
-  if (loading && !stats) {
-    return <LoadingSkeleton />;
-  }
+  if (loading && !stats) { return <LoadingSkeleton />; }
 
   return (
     <div className="w-full">

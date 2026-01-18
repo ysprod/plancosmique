@@ -8,7 +8,7 @@ import { ThemeToggleButton } from './ThemeToggleButton';
 import { UserMenu } from './UserMenu';
 import { MobileHeaderActions } from './MobileHeaderActions';
 import { MobileMenu } from './MobileMenu';
-import { useHeaderState } from './useHeaderState';
+import { useHeaderState } from '../../hooks/useHeaderState';
 
 export default function HeaderContent() {
   const {
@@ -82,7 +82,6 @@ export default function HeaderContent() {
         handleLogout={handleLogout}
       />
 
-      {/* Spacer pour éviter que le contenu soit caché sous le header */}
       <div className={user ? "h-[60px] sm:h-[68px]" : "h-[56px] sm:h-[64px]"} />
     </>
   );

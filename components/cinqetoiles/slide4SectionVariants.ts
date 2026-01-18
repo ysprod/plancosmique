@@ -32,3 +32,4 @@ export const fadeVariants = {
     transition: { duration: 0.2 }
   }
 };
+ 

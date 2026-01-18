@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useThrottle } from "./moonPhaseUtils";
+import { useThrottle } from "@/components/astrologie-africaine/moonPhaseUtils";
 
 export interface MoonPhaseDay {
   day: number;

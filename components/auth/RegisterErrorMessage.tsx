@@ -20,6 +20,7 @@ const RegisterErrorMessage = memo<ErrorMessageProps>(({ error, onClose }) => (
     <p className="flex-1 text-red-700 dark:text-red-300 text-xs leading-relaxed whitespace-pre-line">
       {error}
     </p>
+    
     <button
       onClick={onClose}
       className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 

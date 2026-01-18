@@ -42,7 +42,6 @@ export function ActionButtons({
           </motion.button>
         )}
 
-        {/* Bouton Voir Consultation */}
         {status === 'paid' && consultationId && !downloadUrl && (
           <motion.button
             whileHover={{ scale: 1.02 }}

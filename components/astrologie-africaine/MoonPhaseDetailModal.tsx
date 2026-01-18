@@ -61,6 +61,7 @@ const MoonPhaseDetailModal = memo<DetailModalProps>(({ day, onClose }) => {
                         <X className="w-4 h-4 text-gray-600" />
                     </motion.button>
                 </div>
+                
                 <div className="flex justify-center mb-5">
                     <motion.span
                         initial={prefersReducedMotion ? {} : { scale: 0.7, rotate: -90 }}

@@ -5,7 +5,7 @@ export function setRubriqueInUrl(rubriqueId: string | null) {
         else url.searchParams.delete("rubrique");
         window.history.pushState({}, "", url.toString());
     } catch {
-        // noop
+       
     }
 }
 

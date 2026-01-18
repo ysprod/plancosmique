@@ -142,7 +142,6 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
             </p>
           </motion.div>
 
-          {/* Bouton principal */}
           <motion.div
             variants={itemVariants}
             className="pt-6"

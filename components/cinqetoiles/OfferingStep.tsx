@@ -125,7 +125,6 @@ export default function OfferingStep({
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-2xl mx-auto px-4 py-4 space-y-3 pb-32">
 
-          {/* Status banner */}
           <AnimatePresence mode="wait">
             <StatusBanner
               hasSelection={!!selectedOffering}
@@ -174,7 +173,6 @@ export default function OfferingStep({
                     shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
         <div className="max-w-2xl mx-auto px-4 py-3 space-y-2">
 
-          {/* Boutons principaux */}
           <div className="flex gap-2">
             <button
               onClick={onBack}

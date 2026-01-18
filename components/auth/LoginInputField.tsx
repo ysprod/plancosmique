@@ -1,5 +1,4 @@
 'use client';
-
 import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
@@ -89,6 +88,7 @@ const LoginInputField = memo<InputFieldProps>(({
     </div>
   );
 });
+
 LoginInputField.displayName = 'LoginInputField';
 
 export default LoginInputField;

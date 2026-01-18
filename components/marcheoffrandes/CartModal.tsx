@@ -1,5 +1,4 @@
 'use client';
-
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronRight, CreditCard, Plus, ShoppingCart, X } from 'lucide-react';
 import React from 'react';

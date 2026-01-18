@@ -1,6 +1,5 @@
 'use client';
-import { BookOpen, TrendingUp, Clock } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { BookOpen, Clock, TrendingUp } from 'lucide-react';
 
 export default function KnowledgeTabs({ activeTab, setActiveTab }: { activeTab: 'all' | 'popular' | 'recent'; setActiveTab: (tab: 'all' | 'popular' | 'recent') => void }) {
   const tabs = [

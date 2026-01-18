@@ -55,7 +55,9 @@ const LoginForm = () => {
                       rounded-3xl shadow-2xl p-6 sm:p-8 
                       border border-gray-200 dark:border-gray-800">
           <LoginLogoHeader />
+
           <LoginTitle />
+          
           {error && <LoginErrorAlert message={error} />}
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <LoginInputField

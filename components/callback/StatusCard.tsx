@@ -90,7 +90,6 @@ export function StatusCard({
           </motion.div>
         )}
 
-        {/* Banner de traitement */}
         {isProcessing && !isGeneratingAnalysis && (
           <motion.div
             variants={itemVariants}
@@ -103,7 +102,6 @@ export function StatusCard({
           </motion.div>
         )}
 
-        {/* Compte à rebours de redirection */}
         {shouldAutoRedirect && analysisCompleted && autoRedirectCountdown > 0 && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}

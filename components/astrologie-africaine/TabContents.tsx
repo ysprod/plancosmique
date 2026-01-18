@@ -1,5 +1,4 @@
 'use client';
-
 import { CalendrierLunaireContent } from './CalendrierLunaireContent';
 import { IncantationsContent } from './IncantationsContent';
 import { RituelsContent } from './RituelsContent';
@@ -23,5 +22,3 @@ export const INCANTATIONS_DATA = [
 ];
 
 export { CalendrierLunaireContent, IncantationsContent, RituelsContent };
-
-

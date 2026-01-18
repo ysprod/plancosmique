@@ -2,8 +2,9 @@
 import { motion } from "framer-motion";
 import { memo } from "react";
 import { DayCard } from "./DayCard";
+import { MoonPhaseDay } from "@/hooks/useMoonPhaseData";
 import { containerVariants } from "./moonPhaseVariants";
-import type { MoonPhaseDay } from "./useMoonPhaseData";
+ 
 
 interface MoonDaysGridProps {
   moonDays: MoonPhaseDay[];

@@ -10,6 +10,7 @@ export const useThrottle = <T extends any[]>(callback: (...args: T) => void, del
     }
   }, [callback, delay]);
 };
+
 export const getAdvice = (illumination: number) => {
   if (illumination < 25) return "Période d'introspection. Temps idéal pour planifier et méditer.";
   if (illumination < 75) return "Énergie croissante. Poussez vos projets vers l'avant.";

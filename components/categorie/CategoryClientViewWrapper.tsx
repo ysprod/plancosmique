@@ -29,6 +29,7 @@ export default function CategoryClientViewWrapper({ category }: { category: Cate
                     rubriqueCourante={rubriqueCourante}
                     closeRubrique={() => setRubriqueCourante(null)}
                 />
+                
                 <CategoryClientMain
                     ui={ui}
                     rubriqueCourante={rubriqueCourante}

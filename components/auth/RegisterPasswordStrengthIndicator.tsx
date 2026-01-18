@@ -1,5 +1,4 @@
 'use client';
-
 import React, { memo } from "react";
 
 const PASSWORD_STRENGTH_CONFIG = {

@@ -1,5 +1,4 @@
 'use client';
-
 import NotificationHeader from '@/components/notifications/NotificationHeader';
 import NotificationFilterBar from '@/components/notifications/NotificationFilterBar';
 import NotificationList from '@/components/notifications/NotificationList';

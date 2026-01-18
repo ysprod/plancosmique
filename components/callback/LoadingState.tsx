@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import React from 'react';
@@ -22,6 +21,7 @@ const LoadingState: React.FC = () => (
       <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
         Vérification du paiement
       </h2>
+      
       <p className="text-gray-600 text-sm md:text-base px-4">
         Veuillez patienter pendant que nous vérifions votre transaction...
       </p>

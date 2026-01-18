@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { Calendar } from 'lucide-react';
 import { memo } from 'react';
@@ -51,7 +50,6 @@ export const RituelsContent = memo(() => (
       transition={{ duration: 0.5 }}
       className="relative bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 dark:from-purple-950/40 dark:via-pink-950/40 dark:to-rose-950/40 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-purple-200/60 dark:border-purple-800/40 shadow-xl overflow-hidden"
     >
-      {/* Animated background orb */}
       <motion.div
         animate={{
           scale: [1, 1.2, 1],
@@ -117,4 +115,4 @@ export const RituelsContent = memo(() => (
   </motion.div>
 ));
 
-RituelsContent.displayName = 'RituelsContent';
+RituelsContent.displayName = 'RituelsContent'

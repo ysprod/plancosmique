@@ -26,6 +26,7 @@ const CinqPortesGrid = memo<CinqPortesGridProps>(({ portesArray, isPremium }) =>
       animate="visible"
       className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-6"
     >
+    
       {portesArray.map((porte, index) => (
         <motion.div 
           key={porte.label} 
@@ -43,6 +44,7 @@ const CinqPortesGrid = memo<CinqPortesGridProps>(({ portesArray, isPremium }) =>
           />
         </motion.div>
       ))}
+
     </motion.div>
   );
 }, (prevProps, nextProps) => {

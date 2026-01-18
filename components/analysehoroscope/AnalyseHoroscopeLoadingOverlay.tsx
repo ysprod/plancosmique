@@ -1,5 +1,4 @@
 'use client';
-
 import { AnimatePresence } from 'framer-motion';
 import LoadingOverlay from '@/components/vie-personnelle/LoadingOverlay';
 

@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { Shield, Lock, Sparkles, Star, Zap } from 'lucide-react';
 import React, { memo } from 'react';
@@ -88,7 +87,6 @@ const CosmicLoader = memo(() => (
       />
     </div>
 
-    {/* Floating Particles */}
     <FloatingParticle Icon={Star} delay={0} x="15%" y="20%" color="text-violet-400" />
     <FloatingParticle Icon={Sparkles} delay={1} x="85%" y="25%" color="text-purple-400" />
     <FloatingParticle Icon={Zap} delay={2} x="20%" y="75%" color="text-indigo-400" />
@@ -96,7 +94,6 @@ const CosmicLoader = memo(() => (
     <FloatingParticle Icon={Sparkles} delay={0.5} x="10%" y="50%" color="text-purple-300" />
     <FloatingParticle Icon={Zap} delay={2.5} x="90%" y="45%" color="text-indigo-300" />
 
-    {/* Main Content */}
     <motion.div
       variants={containerVariants}
       initial="hidden"

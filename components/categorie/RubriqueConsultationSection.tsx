@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from "framer-motion";
 import React from "react";
 import { ConsultationSection } from "@/components/vie-personnelle/ConsultationSection";

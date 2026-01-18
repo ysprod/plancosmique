@@ -1,5 +1,4 @@
 'use client';
-
 import ConsultationCard from '@/components/cinqetoiles/ConsultationCard';
 import LoadingState from '@/components/cinqetoiles/LoadingState';
 import SelectionHeader from '@/components/cinqetoiles/SelectionHeader';

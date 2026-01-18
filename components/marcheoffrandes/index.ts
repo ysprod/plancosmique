@@ -1,4 +1,3 @@
-// Export all components
 export { OfferingCard } from './OfferingCard';
 export { FloatingCart } from './FloatingCart';
 export { CategoryFilters } from './CategoryFilters';
@@ -7,6 +6,5 @@ export { InfoBox } from './InfoBox';
 export { CartModal } from './CartModal';
 export { default as CheckoutModal } from './CheckoutModal';
 export { Header } from './Header';
-
 export * from './types';
 export * from './animations';

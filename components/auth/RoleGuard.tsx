@@ -76,12 +76,14 @@ const AccessDenied: React.FC<{ message: string; userRole?: Role }> = ({
         <h2 className="text-2xl font-bold text-slate-900 mb-2">
           Accès refusé
         </h2>
+
         <p className="text-slate-600 mb-4">{message}</p>
         {userRole && (
           <p className="text-sm text-slate-500">
             Votre rôle actuel : <span className="font-semibold">{userRole}</span>
           </p>
         )}
+        
         <button
           onClick={() => window.history.back()}
           className="mt-6 px-6 py-3 bg-slate-200 text-slate-700 rounded-xl font-semibold hover:bg-slate-300 transition-colors"

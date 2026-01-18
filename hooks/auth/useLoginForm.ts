@@ -37,7 +37,7 @@ export function useLoginForm() {
   const [isPending, startTransition] = useTransition();
 
   const returnTo = useMemo(() => {
-    const param = searchParams.get('returnTo');
+    const param = searchParams?.get('returnTo');
     if (!param || !param.startsWith('/')) return '/secured/profil';
     return param;
   }, [searchParams]);

@@ -1,5 +1,4 @@
 'use client';
-
 import React, { memo } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Sparkles, Star } from 'lucide-react';
@@ -94,5 +93,7 @@ const ZodiacSymbol = memo<{ symbol: string }>(({ symbol }) => {
     </motion.div>
   );
 });
+
 ZodiacSymbol.displayName = 'ZodiacSymbol';
+
 export default ZodiacSymbol;

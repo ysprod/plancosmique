@@ -1,8 +1,7 @@
 'use client';
-
-import React, { memo } from "react";
 import { motion } from "framer-motion";
-import { Moon, Zap, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Moon, Zap } from "lucide-react";
+import { memo } from "react";
 
 interface HeaderProps {
   year: number;

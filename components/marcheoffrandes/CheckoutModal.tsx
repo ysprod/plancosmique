@@ -3,13 +3,7 @@ import { api } from "@/lib/api/client";
 import { useAuth } from "@/lib/hooks";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  X,
-  ShoppingCart,
-  CreditCard,
-  Sparkles,
-  CheckCircle2,
-  Loader2,
-  AlertCircle,
+  X, ShoppingCart, CreditCard, Sparkles, CheckCircle2, Loader2, AlertCircle,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";

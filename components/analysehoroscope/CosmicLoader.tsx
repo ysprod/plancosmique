@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from "framer-motion";
 import { Sparkles, Star, Zap, Moon } from "lucide-react";
 import { memo } from "react";
@@ -8,7 +7,7 @@ import FloatingParticle from "./FloatingParticle";
 import CosmicBackgroundOrbs from "./CosmicBackgroundOrbs";
 import CosmicCenterIcon from "./CosmicCenterIcon";
 import CosmicLoadingText from "./CosmicLoadingText";
-import { useCosmicLoaderVariants } from "./useCosmicLoaderVariants";
+import { useCosmicLoaderVariants } from "../../hooks/useCosmicLoaderVariants";
 
 const CosmicLoader = memo(() => {
     const loaderVariants = useCosmicLoaderVariants();

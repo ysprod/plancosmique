@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { PartyPopper } from 'lucide-react';
 
 export function CompletionBanner() {
+  
   return (
     <motion.div
       initial={{ scale: 0, rotate: -180 }}

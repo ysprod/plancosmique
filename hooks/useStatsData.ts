@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { api } from '@/lib/api/client';
-import type { Stats } from './statsTypes';
+import type { Stats } from '@/components/commons/statsTypes';
 
 export function useStatsData() {
   const [stats, setStats] = useState<Stats | null>(null);

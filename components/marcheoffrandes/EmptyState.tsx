@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 
 const EmptyState = ({ onReset }: { onReset: () => void }) => (

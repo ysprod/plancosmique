@@ -1,5 +1,4 @@
 'use client';
-
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 
@@ -58,4 +57,5 @@ const BackgroundOrbs = memo(() => (
 ));
 
 BackgroundOrbs.displayName = 'BackgroundOrbs';
+
 export default BackgroundOrbs;

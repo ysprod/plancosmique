@@ -1,5 +1,4 @@
 'use client';
-
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Crown, ChevronDown, Settings, LogOut } from 'lucide-react';
 import Link from 'next/link';
@@ -31,7 +30,6 @@ export function UserMenu({ user, userBadge, showUserMenu, setShowUserMenu, handl
                           flex items-center justify-center shadow-lg">
             <User className="w-5 h-5 text-white" />
           </div>
-          {/* Badge Premium */}
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
@@ -58,7 +56,6 @@ export function UserMenu({ user, userBadge, showUserMenu, setShowUserMenu, handl
         </motion.div>
       </motion.button>
 
-      {/* Dropdown Menu */}
       <AnimatePresence>
         {showUserMenu && (
           <motion.div
@@ -69,7 +66,6 @@ export function UserMenu({ user, userBadge, showUserMenu, setShowUserMenu, handl
             className="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl 
                        shadow-2xl border-2 border-violet-100 dark:border-violet-800 overflow-hidden z-50"
           >
-            {/* Header du menu */}
             <div className="px-4 py-3 bg-gradient-to-br from-violet-50 to-fuchsia-50 
                           dark:from-violet-950/30 dark:to-fuchsia-950/30 
                           border-b border-violet-100 dark:border-violet-800">
@@ -91,7 +87,6 @@ export function UserMenu({ user, userBadge, showUserMenu, setShowUserMenu, handl
               )}
             </div>
 
-            {/* Menu Items */}
             <div className="p-2">
               <Link href="/secured/settings" onClick={() => setShowUserMenu(false)}>
                 <motion.button
