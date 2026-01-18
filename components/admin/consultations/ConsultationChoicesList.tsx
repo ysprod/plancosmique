@@ -203,7 +203,7 @@ function ConsultationChoiceCard({
           <div className="flex gap-2">
             {!hasPrompt ? (
               <Link
-                href={`/admin/prompts/create?returnTo=consultations-choices&choiceId=${choice._id}&choiceTitle=${encodeURIComponent(choice.title)}`}
+                href={`/admin/prompts/create?returnTo=consultations-choices&choiceId=${choice._id}`}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
               >
                 <Plus className="w-4 h-4" />
