@@ -11,8 +11,16 @@ import { ConsultationChoice } from '@/lib/interfaces';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { useMultipleConsultationChoicesStatus } from '@/hooks/consultations/useConsultationChoiceStatus';
 import ConsultationButton from '@/components/consultations/ConsultationButton';
-import { ConsultationButtonStatus } from '@/lib/types/consultation-status.types';
 import { Loader2 } from 'lucide-react';
+
+interface ConsultationChoicesGridProps {
+  /** Liste des choix de consultation à afficher */
+  choices: ConsultationChoice[];
+  /** Callback pour gérer la sélection d'un choix */
+  onSelectChoice: (choice: ConsultationChoice) => void;
+  /** Titre de la section (optionnel) */
+  title?: string;
+}
 
 interface ConsultationChoicesGridProps {
   /** Liste des choix de consultation à afficher */
@@ -90,13 +98,13 @@ export default function ConsultationChoicesGrid({
                 <ConsultationButton
                   status={choiceStatus.buttonStatus}
                   choiceId={choice._id || ''}
-                  consultationId={choiceStatus.consultationId}
+                  consultationId={choiceStatus.consultationId || undefined}
                   onConsult={() => onSelectChoice(choice)}
                 />
               ) : (
                 // Fallback si le statut n'est pas disponible
                 <ConsultationButton
-                  status={ConsultationButtonStatus.CONSULTER}
+                  status={'CONSULTER'}
                   choiceId={choice._id || ''}
                   onConsult={() => onSelectChoice(choice)}
                 />

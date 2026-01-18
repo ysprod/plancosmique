@@ -7,13 +7,12 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import {
-  getConsultationChoiceStatus,
-  getAllConsultationChoicesStatus
+  getChoiceStatus,
+  getUserChoicesStatus
 } from '@/lib/api/services/consultation-status.service';
 import type {
-  ConsultationChoiceStatus,
-  ConsultationButtonStatus
-} from '@/lib/types/consultation-status.types';
+  ConsultationChoiceStatusDto
+} from '@/lib/api/services/consultation-status.service';
 
 /**
  * Hook pour récupérer le statut d'un choix de consultation spécifique
@@ -22,7 +21,7 @@ import type {
  * @returns Statut, état de chargement, erreur et fonction de rafraîchissement
  */
 export function useConsultationChoiceStatus(userId: string | undefined, choiceId: string | undefined) {
-  const [status, setStatus] = useState<ConsultationChoiceStatus | null>(null);
+  const [status, setStatus] = useState<ConsultationChoiceStatusDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,7 +34,7 @@ export function useConsultationChoiceStatus(userId: string | undefined, choiceId
     try {
       setLoading(true);
       setError(null);
-      const data = await getConsultationChoiceStatus(userId, choiceId);
+      const data = await getChoiceStatus(userId, choiceId);
       setStatus(data);
     } catch (err: any) {
       console.error('Error fetching consultation choice status:', err);
@@ -67,7 +66,7 @@ export function useMultipleConsultationChoicesStatus(
   userId: string | undefined,
   choiceIds?: string[]
 ) {
-  const [statuses, setStatuses] = useState<ConsultationChoiceStatus[]>([]);
+  const [statuses, setStatuses] = useState<ConsultationChoiceStatusDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -80,7 +79,7 @@ export function useMultipleConsultationChoicesStatus(
     try {
       setLoading(true);
       setError(null);
-      const data = await getAllConsultationChoicesStatus(userId, choiceIds);
+      const data = await getUserChoicesStatus(userId, choiceIds);
       setStatuses(data.choices);
     } catch (err: any) {
       console.error('Error fetching multiple consultation choices status:', err);
@@ -99,7 +98,7 @@ export function useMultipleConsultationChoicesStatus(
    * @param choiceId - ID du choix
    * @returns Le statut du choix ou undefined
    */
-  const getStatusByChoiceId = useCallback((choiceId: string): ConsultationChoiceStatus | undefined => {
+  const getStatusByChoiceId = useCallback((choiceId: string): ConsultationChoiceStatusDto | undefined => {
     return statuses.find(s => s.choiceId === choiceId);
   }, [statuses]);
 
@@ -108,7 +107,7 @@ export function useMultipleConsultationChoicesStatus(
    * @param choiceId - ID du choix
    * @returns Le statut du bouton ou undefined
    */
-  const getButtonStatus = useCallback((choiceId: string): ConsultationButtonStatus | undefined => {
+  const getButtonStatus = useCallback((choiceId: string): 'CONSULTER' | 'RÉPONSE EN ATTENTE' | 'VOIR L\'ANALYSE' | undefined => {
     const status = getStatusByChoiceId(choiceId);
     return status?.buttonStatus;
   }, [getStatusByChoiceId]);

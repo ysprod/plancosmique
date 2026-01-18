@@ -1,50 +1,24 @@
 'use client';
-import { ConsultationChoice, DoneChoice } from '@/lib/interfaces';
+import { ConsultationChoice } from '@/lib/interfaces';
+import { ConsultationChoiceStatusDto } from '@/lib/api/services/consultation-status.service';
 import { motion } from 'framer-motion';
 import { CheckCircle, Clock, Eye } from 'lucide-react';
-import { useMemo } from 'react';
 
 interface RubriqueConsultationCardProps {
   choice: ConsultationChoice;
-  consultationCount: number;
-  showButtons: boolean;
-  doneChoices: DoneChoice[];
+  status: ConsultationChoiceStatusDto;
   onSelect: () => void;
 }
 
-type ButtonStatus = 'consult' | 'pending' | 'view';
-
 export default function RubriqueConsultationCard({
   choice,
-  consultationCount,
-  showButtons,
-  doneChoices,
+  status,
   onSelect,
 }: RubriqueConsultationCardProps) {
   
-  // Déterminer le statut du bouton
-  const buttonStatus = useMemo((): ButtonStatus => {
-    if (consultationCount === 0) {
-      return 'consult'; // Aucune consultation effectuée
-    }
-    
-    // Trouver la dernière consultation pour ce choix
-    const lastConsultation = doneChoices
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
-    
-    if (!lastConsultation) {
-      return 'consult';
-    }
-    
-    // Ici on devrait vérifier le statut de la consultation
-    // Pour l'instant, on suppose que si showButtons est false, c'est que l'analyse est prête
-    // Sinon, elle est en attente
-    return showButtons ? 'pending' : 'view';
-  }, [consultationCount, doneChoices, showButtons]);
-
   const renderButton = () => {
-    switch (buttonStatus) {
-      case 'consult':
+    switch (status.buttonStatus) {
+      case 'CONSULTER':
         return (
           <button
             onClick={onSelect}
@@ -54,7 +28,7 @@ export default function RubriqueConsultationCard({
           </button>
         );
       
-      case 'pending':
+      case 'RÉPONSE EN ATTENTE':
         return (
           <button
             disabled
@@ -65,15 +39,12 @@ export default function RubriqueConsultationCard({
           </button>
         );
       
-      case 'view':
-        const lastConsultation = doneChoices
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
-        
+      case "VOIR L'ANALYSE":
         return (
           <button
             onClick={() => {
-              if (lastConsultation?.consultationId) {
-                window.location.href = `/secured/consultations/${lastConsultation.consultationId}`;
+              if (status.consultationId) {
+                window.location.href = `/secured/consultations/${status.consultationId}`;
               }
             }}
             className="w-full px-4 py-3 font-semibold rounded-xl shadow-md bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:scale-105 hover:shadow-lg transition-all flex items-center justify-center gap-2"
@@ -94,11 +65,11 @@ export default function RubriqueConsultationCard({
       <h2 className="font-bold text-purple-700 text-lg mb-3">{choice.title}</h2>
       <p className="text-gray-600 text-sm leading-relaxed mb-4">{choice.description}</p>
       
-      {/* Indicateur du nombre de consultations effectuées */}
-      {consultationCount > 0 && (
+      {/* Indicateur de consultation active */}
+      {status.hasActiveConsultation && (
         <div className="mb-4 flex items-center justify-center gap-2 text-xs text-slate-500">
           <CheckCircle className="w-4 h-4" />
-          <span>{consultationCount} consultation{consultationCount > 1 ? 's' : ''} effectuée{consultationCount > 1 ? 's' : ''}</span>
+          <span>Consultation active</span>
         </div>
       )}
       

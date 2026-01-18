@@ -51,7 +51,7 @@ const ConsultationCard: React.FC<{
           <ConsultationButton
             status={status.buttonStatus}
             choiceId={choice._id || ''}
-            consultationId={status.consultationId}
+            consultationId={status.consultationId || undefined}
             onConsult={onSelect}
           />
           

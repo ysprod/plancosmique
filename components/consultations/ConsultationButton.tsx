@@ -8,12 +8,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Eye, Clock, Sparkles } from 'lucide-react';
-import { ConsultationButtonStatus } from '@/lib/types/consultation-status.types';
 import { useRouter } from 'next/navigation';
 
 interface ConsultationButtonProps {
   /** Statut du bouton (détermine le label et le comportement) */
-  status: ConsultationButtonStatus;
+  status: 'CONSULTER' | 'RÉPONSE EN ATTENTE' | 'VOIR L\'ANALYSE';
   /** ID du choix de consultation */
   choiceId: string;
   /** ID de la consultation (requis pour VOIR_ANALYSE) */
@@ -47,18 +46,18 @@ export default function ConsultationButton({
 
   const handleClick = () => {
     switch (status) {
-      case ConsultationButtonStatus.CONSULTER:
+      case 'CONSULTER':
         // Appeler le callback ou rediriger vers la page de consultation
         if (onConsult) {
           onConsult();
         }
         break;
 
-      case ConsultationButtonStatus.REPONSE_EN_ATTENTE:
+      case 'RÉPONSE EN ATTENTE':
         // Bouton désactivé, ne rien faire
         break;
 
-      case ConsultationButtonStatus.VOIR_ANALYSE:
+      case 'VOIR L\'ANALYSE':
         // Rediriger vers la page d'analyse
         if (consultationId) {
           router.push(`/secured/consultations/${consultationId}`);
@@ -69,7 +68,7 @@ export default function ConsultationButton({
 
   const getButtonConfig = () => {
     switch (status) {
-      case ConsultationButtonStatus.CONSULTER:
+      case 'CONSULTER':
         return {
           icon: <Sparkles className="w-5 h-5" />,
           label: 'Consulter',
@@ -79,7 +78,7 @@ export default function ConsultationButton({
           animate: true
         };
 
-      case ConsultationButtonStatus.REPONSE_EN_ATTENTE:
+      case 'RÉPONSE EN ATTENTE':
         return {
           icon: <Clock className="w-5 h-5 animate-pulse" />,
           label: 'Réponse en attente',
@@ -89,7 +88,7 @@ export default function ConsultationButton({
           animate: false
         };
 
-      case ConsultationButtonStatus.VOIR_ANALYSE:
+      case 'VOIR L\'ANALYSE':
         return {
           icon: <Eye className="w-5 h-5" />,
           label: "Voir l'analyse",
