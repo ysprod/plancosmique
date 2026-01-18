@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { promptService } from '@/lib/api/services/prompt.service';
-import { Prompt } from '@/lib/types/prompt.types';
+import { Prompt, PromptWithUsage } from '@/lib/types/prompt.types';
 
 export function usePrompts() {
-  const [prompts, setPrompts] = useState<Prompt[]>([]);
+  const [prompts, setPrompts] = useState<PromptWithUsage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

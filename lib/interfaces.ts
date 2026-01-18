@@ -152,6 +152,7 @@ export interface ConsultationChoice {
   participants?: TypeParticipants;
   offering: ConsultationOffering;
   order?: number;
+  promptId?: string;
 }
 
 export interface FormErrors {

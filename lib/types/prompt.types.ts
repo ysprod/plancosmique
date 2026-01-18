@@ -26,6 +26,15 @@ export interface Prompt {
   updatedAt: string;
 }
 
+export interface PromptWithUsage extends Prompt {
+  usageCount?: number;
+  consultationChoices?: Array<{
+    _id: string;
+    title: string;
+    rubriqueTitle?: string;
+  }>;
+}
+
 export interface CreatePromptDto {
   title: string;
   description?: string;

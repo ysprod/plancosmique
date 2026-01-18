@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Edit, Trash2, Power, Search, Tag, Clock } from 'lucide-react';
+import { Plus, Edit, Trash2, Power, Search, Tag, Clock, Link2, AlertCircle } from 'lucide-react';
 import { usePrompts } from '@/hooks/admin/usePrompts';
-import { Prompt } from '@/lib/types/prompt.types';
+import { PromptWithUsage } from '@/lib/types/prompt.types';
 import Link from 'next/link';
 
 export default function PromptsList() {
@@ -58,7 +58,12 @@ export default function PromptsList() {
     <div className="space-y-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-2xl font-bold text-gray-900">Gestion des Prompts</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Gestion des Prompts</h1>
+          <p className="text-sm text-gray-600 mt-1">
+            {prompts.length} prompt{prompts.length > 1 ? 's' : ''} • {prompts.filter(p => p.isActive).length} actif{prompts.filter(p => p.isActive).length > 1 ? 's' : ''}
+          </p>
+        </div>
         <Link
           href="/admin/prompts/create"
           className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
@@ -107,6 +112,42 @@ export default function PromptsList() {
 
                 {prompt.description && (
                   <p className="text-gray-600 text-sm mb-3">{prompt.description}</p>
+                )}
+
+                {/* Usage Info */}
+                {prompt.consultationChoices && prompt.consultationChoices.length > 0 && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+                    <div className="flex items-start gap-2">
+                      <Link2 className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-blue-900 mb-1">
+                          Utilisé par {prompt.consultationChoices.length} consultation{prompt.consultationChoices.length > 1 ? 's' : ''}
+                        </p>
+                        <div className="space-y-1">
+                          {prompt.consultationChoices.map((choice) => (
+                            <div key={choice._id} className="text-xs text-blue-700">
+                              • {choice.title}
+                              {choice.rubriqueTitle && (
+                                <span className="text-blue-600"> ({choice.rubriqueTitle})</span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* No usage warning */}
+                {(!prompt.consultationChoices || prompt.consultationChoices.length === 0) && prompt.isActive && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-3">
+                    <div className="flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 text-amber-600" />
+                      <p className="text-xs text-amber-800">
+                        Ce prompt est actif mais n'est associé à aucune consultation
+                      </p>
+                    </div>
+                  </div>
                 )}
 
                 <div className="flex flex-wrap gap-2 mb-3">
