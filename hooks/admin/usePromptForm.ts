@@ -29,7 +29,8 @@ export function usePromptForm({ initialData, choiceId, returnTo }: UsePromptForm
     },
     variables: initialData?.variables || {},
     tags: initialData?.tags || [],
-    isActive: initialData?.isActive ?? true
+    isActive: initialData?.isActive ?? true,
+    choiceId: initialData?.choiceId || choiceId || '' // Prendre depuis initialData ou le param
   });
 
   const updateField = useCallback((field: keyof CreatePromptDto, value: any) => {

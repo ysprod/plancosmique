@@ -22,6 +22,7 @@ export interface Prompt {
   variables?: Record<string, string>;
   tags?: string[];
   isActive: boolean;
+  choiceId: string; // ID du choix de consultation (relation 1:1 obligatoire)
   createdAt: string;
   updatedAt: string;
 }
@@ -45,6 +46,7 @@ export interface CreatePromptDto {
   variables?: Record<string, string>;
   tags?: string[];
   isActive?: boolean;
+  choiceId: string; // Obligatoire lors de la création
 }
 
 export interface UpdatePromptDto extends Partial<CreatePromptDto> {}

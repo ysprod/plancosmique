@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 interface PromptFormProps {
   initialData?: Prompt;
-  choiceId?: string;
+  choiceId: string;
   returnTo?: string;
 }
 

@@ -50,7 +50,11 @@ export default function EditPromptPage() {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      <PromptForm initialData={prompt} returnTo={returnTo || undefined} />
+      <PromptForm 
+        initialData={prompt} 
+        choiceId={prompt.choiceId || ''} 
+        returnTo={returnTo || undefined} 
+      />
     </div>
   );
 }
