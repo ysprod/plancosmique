@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api/client';
 import { Offering } from '@/lib/interfaces';
 
@@ -31,6 +32,7 @@ export interface OfferingFormData {
 }
 
 export function useAdminOffrandes() {
+  const router = useRouter();
   const [statsLoading, setStatsLoading] = useState(true);
   const [statsError, setStatsError] = useState<string | null>(null);
   const [offerings, setOfferings] = useState<Offering[]>([]);
@@ -89,9 +91,7 @@ export function useAdminOffrandes() {
   };
 
   const handleEdit = (offering: Offering) => {
-    setEditingId(offering.id);
-    setFormData({ ...offering });
-    setShowAddModal(true);
+    router.push(`/admin/offrandes/${offering.id}/edit`);
   };
 
   const handleConfirm = async () => {

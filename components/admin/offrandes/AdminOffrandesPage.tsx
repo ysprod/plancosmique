@@ -1,20 +1,26 @@
 "use client";
-import OffrandesAddModal from '@/components/admin/offrandes/OffrandesAddModal';
+// import OffrandesAddModal from '@/components/admin/offrandes/OffrandesAddModal';
 import OffrandesGestionPanel from '@/components/admin/offrandes/OffrandesGestionPanel';
 import OffrandesStats from '@/components/admin/offrandes/OffrandesStats';
 import OffrandesTabs from '@/components/admin/offrandes/OffrandesTabs';
 import { useAdminOffrandes } from '@/hooks/admin/useAdminOffrandes';
+import { useRouter } from 'next/navigation';
 import useAdminOffrandesTabs from '@/hooks/admin/useAdminOffrandesTabs';
 import { AnimatePresence } from 'framer-motion';
 
 export default function AdminOffrandesPage() {
     const {
-        offerings, statsData, loading, saving, showAddModal, editingId, formData,
-        successMessage, errorMessage, handleAdd, setShowAddModal, setFormData,
+        offerings, statsData, loading, saving, /*showAddModal, editingId, formData,*/
+        successMessage, errorMessage, /*handleAdd,*/ setShowAddModal, setFormData,
         setErrorMessage, fetchOfferings, handleConfirm, handleDelete, handleEdit,
     } = useAdminOffrandes();
-
     const { activeTab, setActiveTab } = useAdminOffrandesTabs();
+    const router = useRouter();
+
+    // Nouvelle fonction pour rediriger vers la page de création
+    const handleAdd = () => {
+        router.push('/admin/offrandes/new');
+    };
 
     return (
         <div className="dark:bg-gray-950 p-4 sm:p-6">
@@ -46,20 +52,7 @@ export default function AdminOffrandesPage() {
                         {statsData && (<OffrandesStats statsData={statsData} />)}
                     </div>
                 )}
-                <AnimatePresence>
-                    {showAddModal && (
-                        <OffrandesAddModal
-                            show={showAddModal}
-                            onClose={() => setShowAddModal(false)}
-                            onConfirm={handleConfirm}
-                            formData={formData}
-                            setFormData={setFormData}
-                            editingId={editingId}
-                            saving={saving}
-                            errorMessage={errorMessage}
-                        />
-                    )}
-                </AnimatePresence>
+                {/* Plus de modal d'ajout ici, la redirection est gérée par handleAdd */}
             </div>
         </div>
     );
