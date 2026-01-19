@@ -30,9 +30,10 @@ export default function OffrandeCreatePage() {
   const [error, setError] = useState<string | null>(null);
 
   const priceUSD = useMemo(() => {
-    if (!formData.price) return 0;
-    return Math.round((formData.price || 0) / 563.5);
-  }, [formData.price]);
+    if (!formData?.price) return 0;
+    // 2 chiffres après la virgule, taux 563.90
+    return Number(((formData.price || 0) / 563.90).toFixed(2));
+  }, [formData?.price]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value, type } = e.target;

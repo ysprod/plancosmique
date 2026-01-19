@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api/client';
 import { Offering } from '@/lib/interfaces';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 
 export interface StatsData {
   byCategory: Array<{ category: string; revenue: number; quantitySold: number }>;
@@ -33,23 +33,11 @@ export interface OfferingFormData {
 
 export function useAdminOffrandes() {
   const router = useRouter();
-  const [statsLoading, setStatsLoading] = useState(true);
   const [statsError, setStatsError] = useState<string | null>(null);
   const [offerings, setOfferings] = useState<Offering[]>([]);
   const [statsData, setStatsData] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState<OfferingFormData>({
-    id: '',
-    name: '',
-    category: '',
-    price: 0,
-    priceUSD: 0,
-    icon: '',
-    description: '',
-  });
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -71,51 +59,16 @@ export function useAdminOffrandes() {
     }
   }, []);
 
-
   useEffect(() => {
     fetchOfferings();
   }, [fetchOfferings]);
 
-  const handleAdd = () => {
-    setEditingId(null);
-    setFormData({
-      id: '',
-      name: '',
-      category: '',
-      price: 0,
-      priceUSD: 0,
-      icon: '',
-      description: '',
-    });
-    setShowAddModal(true);
-  };
-
   const handleEdit = (offering: Offering) => {
-    router.push(`/admin/offrandes/${offering.id}/edit`);
+    router.push(`/admin/offrandes/${offering._id}/edit`);
   };
 
-  const handleConfirm = async () => {
-    if (!formData.name || !formData.category || !formData.price || !formData.icon || !formData.description) {
-      setErrorMessage('Veuillez remplir tous les champs obligatoires');
-      return;
-    }
-    setSaving(true);
-    try {
-      let res;
-      if (editingId) {
-        res = await api.put(`/offerings/${editingId}`, formData);
-      } else {
-        res = await api.post('/offerings', formData);
-      }
-      if (!res || (res.status < 200 || res.status >= 300)) throw new Error('Erreur API');
-      setSuccessMessage(editingId ? 'Offrande modifiée' : 'Offrande ajoutée');
-      setShowAddModal(false);
-      fetchOfferings();
-    } catch (e: any) {
-      setErrorMessage('Erreur lors de la sauvegarde');
-    } finally {
-      setSaving(false);
-    }
+  const handleAdd = () => {
+    router.push('/admin/offrandes/new');
   };
 
   const handleDelete = async (id: string) => {
@@ -132,30 +85,11 @@ export function useAdminOffrandes() {
     }
   };
 
-  useEffect(() => {
-    if (!showAddModal) {
-      setErrorMessage(null);
-      setSuccessMessage(null);
-    }
-  }, [showAddModal]);
-
-  useEffect(() => {
-    if (formData.price) {
-      setFormData((prev) => ({ ...prev, priceUSD: Math.round(formData.price / 563.5) }));
-    }
-  }, [formData.price]);
-
   return {
     offerings,
     statsData,
     loading,
     saving,
-    showAddModal,
-    setShowAddModal,
-    editingId,
-    setEditingId,
-    formData,
-    setFormData,
     successMessage,
     setSuccessMessage,
     errorMessage,
@@ -163,7 +97,7 @@ export function useAdminOffrandes() {
     fetchOfferings,
     handleAdd,
     handleEdit,
-    handleConfirm,
     handleDelete,
+    statsError,
   };
 }
