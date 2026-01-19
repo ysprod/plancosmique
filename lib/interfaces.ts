@@ -1,3 +1,4 @@
+import { ConsultationChoiceStatusDto } from './api/services/consultation-status.service';
 import { Grade } from './types/grade.types';
 import { UserType } from './types/user-profile.types';
 
@@ -551,7 +552,7 @@ export interface CategorieAdmin {
   titre?: string;
   description: string;
   rubriques?: Rubrique[];
-  consultationChoices?: ConsultationChoice[];
+  consultationChoices?: EnrichedChoice[];
   categorie?: string;
   typeconsultation?: string;
   categorieId?: string;
@@ -704,4 +705,9 @@ export interface CinqPortes {
     icon: string;
     gradient: string;
   };
+}
+
+export interface EnrichedChoice {
+    choice: ConsultationChoice;
+    status: ConsultationChoiceStatusDto;
 }

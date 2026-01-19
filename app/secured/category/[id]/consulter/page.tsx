@@ -1,20 +1,38 @@
+"use client";
 import CategoryConsulterClient from "@/components/categorie/CategoryConsulterClient";
 import { getCategory } from "@/lib/api/services/categories.service";
-import { notFound } from "next/navigation";
- 
-interface PageProps {
-    params: { id: string };
-    searchParams: { consultationId?: string };
-}
+import { useParams, useSearchParams, notFound } from "next/navigation";
+import { useEffect, useState } from "react";
+import type { CategorieAdmin } from "@/lib/interfaces";
 
-export default async function CategoryConsulterPage({ params, searchParams }: PageProps) {
-    const id = params?.id;
-    const consultationId = searchParams?.consultationId;
+export default function CategoryConsulterPage() {
+    const params = useParams();
+    const searchParams = useSearchParams();
+    const [category, setCategory] = useState<CategorieAdmin | null>(null);
+    const [loading, setLoading] = useState(true);
     
-    if (!id) return notFound();
-    if (!consultationId) return notFound();
+    const id = params?.id as string;
+    const consultationId = searchParams?.get('consultationId');
     
-    const category = await getCategory(id);
+    useEffect(() => {
+        if (!id || !consultationId) {
+            setLoading(false);
+            return;
+        }
+        
+        getCategory(id)
+            .then(cat => {
+                setCategory(cat);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error('Error loading category:', err);
+                setLoading(false);
+            });
+    }, [id, consultationId]);
+    
+    if (!id || !consultationId) return notFound();
+    if (loading) return <div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div></div>;
     if (!category || !category._id) return notFound();
     
     return <CategoryConsulterClient category={category} consultationId={consultationId} />;

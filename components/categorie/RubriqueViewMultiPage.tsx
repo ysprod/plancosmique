@@ -51,8 +51,7 @@ export const RubriqueViewMultiPage = memo<RubriqueViewMultiPageProps>(
             {enrichedChoices.map((enriched, idx) => (
               <RubriqueConsultationCard
                 key={enriched.choice._id || idx}
-                choice={enriched.choice}
-                status={enriched.status}
+                enrichedChoice={enriched}
                 onSelect={() => handleSelectConsultation(enriched.choice)}
               />
             ))}

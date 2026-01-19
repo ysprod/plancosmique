@@ -1,20 +1,38 @@
+"use client";
 import { getCategory } from "@/lib/api/services/categories.service";
-import { notFound } from "next/navigation";
+import { useParams, useSearchParams, notFound } from "next/navigation";
+import { useEffect, useState } from "react";
 import CategoryGenereAnalyseClient from "@/components/categorie/CategoryGenereAnalyseClient";
+import type { CategorieAdmin } from "@/lib/interfaces";
 
-interface PageProps {
-    params: { id: string };
-    searchParams: { consultationId?: string };
-}
-
-export default async function CategoryGenereAnalysePage({ params, searchParams }: PageProps) {
-    const id = params?.id;
-    const consultationId = searchParams?.consultationId;
+export default function CategoryGenereAnalysePage() {
+    const params = useParams();
+    const searchParams = useSearchParams();
+    const [category, setCategory] = useState<CategorieAdmin | null>(null);
+    const [loading, setLoading] = useState(true);
     
-    if (!id) return notFound();
-    if (!consultationId) return notFound();
+    const id = params?.id as string;
+    const consultationId = searchParams?.get('consultationId');
     
-    const category = await getCategory(id);
+    useEffect(() => {
+        if (!id || !consultationId) {
+            setLoading(false);
+            return;
+        }
+        
+        getCategory(id)
+            .then(cat => {
+                setCategory(cat);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error('Error loading category:', err);
+                setLoading(false);
+            });
+    }, [id, consultationId]);
+    
+    if (!id || !consultationId) return notFound();
+    if (loading) return <div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div></div>;
     if (!category || !category._id) return notFound();
     
     return <CategoryGenereAnalyseClient category={category} consultationId={consultationId} />;

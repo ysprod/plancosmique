@@ -1,14 +1,10 @@
 import { api } from '@/lib/api/client';
 import { getUserChoicesStatus, ConsultationChoiceStatusDto } from '@/lib/api/services/consultation-status.service';
 import { useAuth } from '@/lib/auth/AuthContext';
-import type { ConsultationChoice, Rubrique } from '@/lib/interfaces';
+import type { ConsultationChoice, EnrichedChoice, Rubrique } from '@/lib/interfaces';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-interface EnrichedChoice {
-    choice: ConsultationChoice;
-    status: ConsultationChoiceStatusDto;
-}
 
 export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
     const router = useRouter();
@@ -18,29 +14,9 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
     const [choiceStatuses, setChoiceStatuses] = useState<Map<string, ConsultationChoiceStatusDto>>(new Map());
     const [loading, setLoading] = useState(true);
     const [apiError, setApiError] = useState<string | null>(null);
-    const [userData, setUserData] = useState<any>(null);
     const [creatingConsultation, setCreatingConsultation] = useState(false);
     const choicesFetchedRef = useRef(false);
 
-    // Charger les données utilisateur
-    useEffect(() => {
-        async function fetchUser() {
-            if (user?._id) {
-                try {
-                    const res = await api.get(`/users/me`);
-                    setUserData(res.data);
-                } catch (err) {
-                    console.error('Erreur chargement utilisateur:', err);
-                    setUserData(null);
-                }
-            } else {
-                setUserData(null);
-            }
-        }
-        fetchUser();
-    }, [user?._id]);
-
-    // Charger les choix et leurs statuts
     useEffect(() => {
         async function fetchChoicesAndStatuses() {
             if (choicesFetchedRef.current) return;
@@ -48,7 +24,7 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
 
             try {
                 setLoading(true);
-                
+
                 // Récupérer les choix de la rubrique
                 if (rubrique?.consultationChoices) {
                     setChoices(rubrique.consultationChoices);
@@ -56,16 +32,16 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
                     // Si l'utilisateur est connecté, récupérer les statuts
                     if (user?._id) {
                         const choiceIds = rubrique.consultationChoices.map(c => c._id).filter(Boolean) as string[];
-                        
+
                         if (choiceIds.length > 0) {
                             const statusResponse = await getUserChoicesStatus(user._id, choiceIds);
-                            
+
                             // Convertir en Map pour accès rapide
                             const statusMap = new Map<string, ConsultationChoiceStatusDto>();
                             statusResponse.choices.forEach(status => {
                                 statusMap.set(status.choiceId, status);
                             });
-                            
+
                             setChoiceStatuses(statusMap);
                             console.log('✅ Loaded statuses for', choiceIds.length, 'choices');
                         }
@@ -85,7 +61,7 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
     const enrichedChoices = useMemo<EnrichedChoice[]>(() => {
         return choices.map(choice => {
             const status = choiceStatuses.get(choice._id || '');
-            
+
             return {
                 choice,
                 status: status || {
@@ -104,11 +80,6 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
             setApiError(null);
             setCreatingConsultation(true);
 
-            if (!userData) {
-                setApiError("Chargement des données utilisateur en cours, veuillez patienter.");
-                setCreatingConsultation(false);
-                return;
-            }
 
             // Store the selected choice and rubrique in sessionStorage
             sessionStorage.setItem("selectedChoiceId", choice._id || "");
@@ -132,7 +103,7 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
             setCreatingConsultation(false);
             router.push(`/secured/category/${categoryId}/form`);
         },
-        [categoryId, rubrique._id, router, userData]
+        [categoryId, rubrique._id, router]
     );
 
 

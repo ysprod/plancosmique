@@ -1,23 +1,25 @@
 'use client';
-import { ConsultationChoice } from '@/lib/interfaces';
+import { ConsultationChoice, EnrichedChoice } from '@/lib/interfaces';
 import { ConsultationChoiceStatusDto } from '@/lib/api/services/consultation-status.service';
 import { motion } from 'framer-motion';
 import { CheckCircle, Clock, Eye } from 'lucide-react';
 
 interface RubriqueConsultationCardProps {
-  choice: ConsultationChoice;
-  status: ConsultationChoiceStatusDto;
+    enrichedChoice: EnrichedChoice;
+//   choice: ConsultationChoice;
+//   status: ConsultationChoiceStatusDto;
   onSelect: () => void;
 }
 
 export default function RubriqueConsultationCard({
-  choice,
-  status,
+//   choice,
+//   status,
+enrichedChoice,
   onSelect,
 }: RubriqueConsultationCardProps) {
   
   const renderButton = () => {
-    switch (status.buttonStatus) {
+    switch (enrichedChoice.status.buttonStatus) {
       case 'CONSULTER':
         return (
           <button
@@ -43,8 +45,8 @@ export default function RubriqueConsultationCard({
         return (
           <button
             onClick={() => {
-              if (status.consultationId) {
-                window.location.href = `/secured/consultations/${status.consultationId}`;
+              if (enrichedChoice.status.consultationId) {
+                window.location.href = `/secured/consultations/${enrichedChoice.status.consultationId}`;
               }
             }}
             className="w-full px-4 py-3 font-semibold rounded-xl shadow-md bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:scale-105 hover:shadow-lg transition-all flex items-center justify-center gap-2"
@@ -62,11 +64,11 @@ export default function RubriqueConsultationCard({
       whileTap={{ scale: 0.98 }}
       className="p-6 bg-white shadow-lg rounded-2xl border-2 border-purple-200 hover:border-purple-400 transition-all text-center"
     >
-      <h2 className="font-bold text-purple-700 text-lg mb-3">{choice.title}</h2>
-      <p className="text-gray-600 text-sm leading-relaxed mb-4">{choice.description}</p>
+      <h2 className="font-bold text-purple-700 text-lg mb-3">{enrichedChoice.choice.title}</h2>
+      <p className="text-gray-600 text-sm leading-relaxed mb-4">{enrichedChoice.choice.description}</p>
       
       {/* Indicateur de consultation active */}
-      {status.hasActiveConsultation && (
+      {enrichedChoice.status.hasActiveConsultation && (
         <div className="mb-4 flex items-center justify-center gap-2 text-xs text-slate-500">
           <CheckCircle className="w-4 h-4" />
           <span>Consultation active</span>

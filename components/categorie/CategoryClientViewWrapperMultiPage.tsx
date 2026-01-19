@@ -9,6 +9,7 @@ import { RubriqueViewMultiPage } from "./RubriqueViewMultiPage";
 
 export default function CategoryClientViewWrapperMultiPage({ category }: { category: CategorieAdmin }) {
     const { rubriques, rubriqueCourante, setRubriqueCourante, ui, handleOpenRubriqueById } = useCategoryClientView(category);
+console.log("CategoryClientViewWrapperMultiPage rendered with category:", category);
 
     if (!category) return <CategoryNotSelected />;
 
