@@ -1,13 +1,18 @@
 'use client';
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import AnalyseGenere from './AnalyseGenere';
 
-const Slide4SectionGenereAnalyse: React.FC = () => (
-  <motion.div key="genereanalyse" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}>
-    <AnalyseGenere />
-  </motion.div>
+interface Slide4SectionGenereAnalyseProps {
+  consultation?: any;
+  choix?: any;
+}
+
+const Slide4SectionGenereAnalyse: React.FC<Slide4SectionGenereAnalyseProps> = ({ consultation, choix }) => (
+  <AnalyseGenere
+    consultation={consultation}
+    choix={choix}
+  />
 );
 
 export default Slide4SectionGenereAnalyse;

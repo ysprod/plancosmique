@@ -31,8 +31,25 @@ export function useAnalysisPolling({
                 const response = await api.get(`/consultations/${consultationId}`);
                 const consultationData = response.data?.consultation || response.data;
 
-                if (consultationData?.statut === 'REPONDU') {
-                    console.log('✅ Analysis complete, redirecting...');
+                console.log('🔍 Polling consultation status:', {
+                    id: consultationId,
+                    status: consultationData?.status,
+                    statut: consultationData?.statut,
+                    analysisNotified: consultationData?.analysisNotified,
+                    hasAnalyse: !!consultationData?.analyse,
+                    hasResult: !!consultationData?.result
+                });
+
+                // Vérifier si l'analyse est disponible
+                const isAnalysisReady = 
+                    consultationData?.analysisNotified === true ||
+                    consultationData?.statut === 'REPONDU' ||
+                    consultationData?.status === 'COMPLETED' ||
+                    (consultationData?.analyse && Object.keys(consultationData.analyse).length > 0) ||
+                    (consultationData?.result && Object.keys(consultationData.result).length > 0);
+
+                if (isAnalysisReady) {
+                    console.log('✅ Analysis ready, redirecting to consultation...');
                     setAnalysisComplete(true);
 
                     // Redirect after a short delay to show success message

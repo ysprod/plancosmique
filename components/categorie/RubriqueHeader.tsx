@@ -34,7 +34,7 @@ const RubriqueHeader: React.FC<RubriqueHeaderProps> = memo(({ rubrique }) => {
       <div className="flex flex-col items-center justify-center gap-2 w-full">
         <div className="flex items-center justify-center gap-2 w-full">
           <motion.h1
-            className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center text-slate-900 dark:text-white px-1 py-0.5 rounded select-none bg-gradient-to-r from-violet-600/10 via-indigo-500/10 to-amber-500/10 dark:from-violet-400/10 dark:to-indigo-400/10 shadow-sm"
+            className="text-xl xs:text-2xl sm:text-2xl md:text-2xl font-extrabold tracking-tight text-center text-slate-900 dark:text-white px-1 py-0.5 rounded select-none bg-gradient-to-r from-violet-600/10 via-indigo-500/10 to-amber-500/10 dark:from-violet-400/10 dark:to-indigo-400/10 shadow-sm"
             initial={{ filter: "blur(10px)" }}
             animate={{ filter: "blur(0px)" }}
             transition={{ duration: 0.4 }}

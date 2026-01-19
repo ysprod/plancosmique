@@ -1,6 +1,6 @@
 "use client";
 import CategoryClientViewWrapperMultiPage from "@/components/categorie/CategoryClientViewWrapperMultiPage";
-import { CategoryLoadingSpinner } from "@/components/categorie/CategoryLoadingSpinner";
+import CategoryLoadingSpinner from "@/components/categorie/CategoryLoadingSpinner";
 import { useCategory } from "@/hooks/categorie/useCategory";
 import { useParams, notFound } from "next/navigation";
 

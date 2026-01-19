@@ -47,7 +47,7 @@ const CategoryStepNavigation = memo<CategoryStepNavigationProps>(function Catego
     },
     {
       id: 'genereanalyse',
-      label: 'Analyse',
+      label: 'Félicitations',
       href: consultationId ? `/secured/category/${categoryId}/genereanalyse?consultationId=${consultationId}` : '#',
       completed: false,
       current: currentStep === 'genereanalyse'
