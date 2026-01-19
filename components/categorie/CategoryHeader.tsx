@@ -13,7 +13,6 @@ interface CategoryHeaderProps {
   closeRubrique: () => void;
 }
 
-// Animation variants memoized outside component to prevent recreation
 const containerVariants = {
   hidden: { opacity: 0, scale: 0.98 },
   visible: {
@@ -63,7 +62,7 @@ const CategoryHeader: React.FC<CategoryHeaderProps> = memo(({
   );
 
   const contentClasses = useMemo(
-    () => "relative z-10 w-full max-w-3xl mx-auto flex flex-col items-center gap-3 sm:gap-4",
+    () => "relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center gap-3 sm:gap-4",
     []
   );
 
@@ -74,19 +73,7 @@ const CategoryHeader: React.FC<CategoryHeaderProps> = memo(({
       animate="visible"
       variants={containerVariants}
     >
-      {/* Animated gradient orbs - optimized for both themes */}
-      <motion.div
-        className="pointer-events-none absolute -top-24 -right-16 sm:-top-32 sm:-right-24 h-48 w-48 sm:h-64 sm:w-64 rounded-full bg-gradient-to-br from-purple-500/20 via-indigo-500/15 to-transparent dark:from-purple-400/15 dark:via-indigo-400/10 blur-3xl"
-        animate={{
-          scale: [1, 1.15, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
+
       <motion.div
         className="pointer-events-none absolute -bottom-24 -left-16 sm:-bottom-32 sm:-left-24 h-48 w-48 sm:h-64 sm:w-64 rounded-full bg-gradient-to-tr from-pink-500/20 via-rose-500/15 to-transparent dark:from-pink-400/15 dark:via-rose-400/10 blur-3xl"
         animate={{

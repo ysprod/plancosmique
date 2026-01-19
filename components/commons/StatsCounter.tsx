@@ -13,7 +13,7 @@ const StatsCounter: React.FC = () => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col sm:flex-row gap-6 items-center justify-center py-6">
+      <div className="flex flex-row gap-3 items-center justify-center py-4">
         <StatCard
           value={stats?.subscribers ?? null}
           label="Abonnés"

@@ -18,8 +18,8 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.5, ease: 'easeOut' }
   }
@@ -27,7 +27,7 @@ const itemVariants = {
 
 function WelcomePageClient() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-indigo-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-8 sm:py-12">
+    <div className="flex items-center justify-center bg-gradient-to-br from-purple-50 via-indigo-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-8 sm:py-12">
       <motion.div
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
@@ -40,7 +40,7 @@ function WelcomePageClient() {
           className="h-full w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent"
         />
       </motion.div>
-      
+
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -50,25 +50,19 @@ function WelcomePageClient() {
         <motion.div variants={itemVariants}>
           <WelcomeHeader />
         </motion.div>
-        
-        <motion.div 
+        <motion.p
           variants={itemVariants}
-          className="backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xl border border-purple-100/50 dark:border-slate-700/50 space-y-4 sm:space-y-6"
+          className="text-center mb-4 text-xs sm:text-sm text-gray-700 dark:text-slate-300 px-2 leading-relaxed"
         >
-          <motion.p
-            variants={itemVariants}
-            className="text-center text-xs sm:text-sm text-gray-700 dark:text-slate-300 px-2 leading-relaxed"
-          >
-            Bienvenue dans ce temple, où chacun vient chercher une réponse aux trois grandes questions de l'existence :
-          </motion.p>
-          
-          <motion.div variants={itemVariants}>
-            <WelcomeQuestions />
-          </motion.div>
-          
-          <motion.div variants={itemVariants}>
-            <WelcomeIntro />
-          </motion.div>
+          Bienvenue dans ce temple, où chacun vient chercher une réponse aux trois grandes questions de l'existence :
+        </motion.p>
+
+        <motion.div variants={itemVariants} className="mb-6">
+          <WelcomeQuestions />
+        </motion.div>
+
+        <motion.div variants={itemVariants}>
+          <WelcomeIntro />
         </motion.div>
       </motion.div>
     </div>

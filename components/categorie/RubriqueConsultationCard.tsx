@@ -1,8 +1,10 @@
 'use client';
-import { ConsultationChoice, EnrichedChoice } from '@/lib/interfaces';
-import { ConsultationChoiceStatusDto } from '@/lib/api/services/consultation-status.service';
+import { EnrichedChoice } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
-import { CheckCircle, Clock, Eye, Sparkles } from 'lucide-react';
+import { memo, useMemo } from 'react';
+import { ConsultationButton } from './ConsultationButton';
+import { ConsultationCardHeader } from './ConsultationCardHeader';
+import { ConsultationStatusBadge } from './ConsultationStatusBadge';
 
 interface RubriqueConsultationCardProps {
   enrichedChoice: EnrichedChoice;
@@ -10,120 +12,72 @@ interface RubriqueConsultationCardProps {
   index?: number;
 }
 
-export default function RubriqueConsultationCard({
-  enrichedChoice,
-  onSelect,
-  index = 0,
-}: RubriqueConsultationCardProps) {
-  
-  const renderButton = () => {
-    switch (enrichedChoice.status.buttonStatus) {
-      case 'CONSULTER':
-        return (
-          <motion.button
-            onClick={onSelect}
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.97 }}
-            className="w-full px-4 py-2.5 sm:py-3 font-semibold rounded-xl shadow-md bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white hover:shadow-xl transition-shadow text-sm sm:text-base flex items-center justify-center gap-2"
-          >
-            <Sparkles className="w-4 h-4" />
-            <span>Consulter</span>
-          </motion.button>
-        );
-      
-      case 'RÉPONSE EN ATTENTE':
-        return (
-          <button
-            disabled
-            className="w-full px-4 py-2.5 sm:py-3 font-semibold rounded-xl shadow-md bg-gradient-to-r from-amber-500 to-orange-500 text-white opacity-75 cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
-          >
-            <Clock className="w-4 h-4 animate-pulse" />
-            <span>En attente</span>
-          </button>
-        );
-      
-      case "VOIR L'ANALYSE":
-        return (
-          <motion.button
-            onClick={() => {
-              if (enrichedChoice.status.consultationId) {
-                window.location.href = `/secured/consultations/${enrichedChoice.status.consultationId}`;
-              }
-            }}
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.97 }}
-            className="w-full px-4 py-2.5 sm:py-3 font-semibold rounded-xl shadow-md bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:shadow-xl transition-shadow text-sm sm:text-base flex items-center justify-center gap-2"
-          >
-            <Eye className="w-4 h-4" />
-            <span>Voir l'analyse</span>
-          </motion.button>
-        );
-    }
-  };
+const cardVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  hover: { y: -6, scale: 1.01 }
+};
 
-  return (
-    <motion.div
-      whileHover="hover"
-      initial="initial"
-      animate="animate"
-      variants={{
-        initial: { opacity: 0 },
-        animate: { opacity: 1 },
-        hover: { y: -4 }
-      }}
-      transition={{ duration: 0.2 }}
-      className="group relative h-full flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-slate-900 shadow-lg hover:shadow-2xl transition-shadow border border-purple-100 dark:border-purple-900 hover:border-purple-300 dark:hover:border-purple-700"
-    >
-      {/* Gradient background hover effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-transparent to-indigo-50/50 dark:from-purple-950/20 dark:to-indigo-950/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      
-      {/* Content */}
-      <div className="relative flex-1 flex flex-col p-4 sm:p-5">
-        {/* Title */}
-        <h3 className="font-bold text-purple-800 dark:text-purple-300 text-base sm:text-lg leading-tight mb-2 sm:mb-3 line-clamp-3">
-          {enrichedChoice.choice.title}
-        </h3>
-        
-        {/* Description */}
-        <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm leading-relaxed mb-4 flex-1 line-clamp-4">
-          {enrichedChoice.choice.description}
-        </p>
-        
-        {/* Status badge */}
-        {enrichedChoice.status.hasActiveConsultation && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.3, type: "spring" }}
-            className="mb-3 inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-800 self-start"
-          >
-            <CheckCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-            <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">Active</span>
-          </motion.div>
-        )}
-        
-        {/* Button */}
-        <div className="mt-auto">
-          {renderButton()}
+const RubriqueConsultationCard = memo<RubriqueConsultationCardProps>(
+  function RubriqueConsultationCard({ enrichedChoice, onSelect, index = 0 }) {
+    const { choice, status } = enrichedChoice;
+    const shimmerDelay = useMemo(() => index * 0.15, [index]);
+
+    return (
+      <motion.article
+        variants={cardVariants}
+        initial="initial"
+        animate="animate"
+        whileHover="hover"
+        transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+        className="
+          group relative h-full
+          flex flex-col items-center
+          overflow-hidden rounded-xl
+          bg-white dark:bg-gray-800/50
+          shadow-sm hover:shadow-xl
+          border border-purple-100 dark:border-purple-800/50
+          backdrop-blur-sm
+          transition-all duration-300
+        "
+      >
+        <div className="
+          absolute inset-0 
+          bg-gradient-to-br from-purple-50 via-transparent to-fuchsia-50 
+          dark:from-purple-950/10 dark:via-transparent dark:to-fuchsia-950/10 
+          opacity-0 group-hover:opacity-100 
+          transition-opacity duration-500
+        " />
+        <div className="relative z-10 flex-1 flex flex-col items-center w-full p-4 sm:p-5">
+          <ConsultationCardHeader title={choice.title} description={choice.description} />
+          <ConsultationStatusBadge hasActiveConsultation={status.hasActiveConsultation} />
+
+          <div className="mt-auto w-full">
+            <ConsultationButton
+              status={status.buttonStatus}
+              consultationId={status.consultationId}
+              onConsult={onSelect}
+            />
+          </div>
         </div>
-      </div>
-      
-      {/* Shimmer effect */}
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 overflow-hidden">
-        <motion.div
-          className="h-full w-1/3 bg-gradient-to-r from-transparent via-purple-500 to-transparent"
-          animate={{
-            x: ['-100%', '400%'],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            repeatDelay: 5,
-            delay: index * 0.2,
-            ease: "easeInOut",
-          }}
-        />
-      </div>
-    </motion.div>
-  );
-}
+
+        {/* Effet shimmer subtil */}
+        <div className="absolute bottom-0 left-0 right-0 h-px overflow-hidden opacity-60">
+          <motion.div
+            className="h-full w-1/4 bg-gradient-to-r from-transparent via-purple-400 dark:via-purple-500 to-transparent blur-sm"
+            animate={{ x: ['-100%', '500%'] }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              repeatDelay: 6,
+              delay: shimmerDelay,
+              ease: 'linear',
+            }}
+          />
+        </div>
+      </motion.article>
+    );
+  }
+);
+
+export default RubriqueConsultationCard;

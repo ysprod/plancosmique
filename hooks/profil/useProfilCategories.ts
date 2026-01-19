@@ -4,7 +4,7 @@ import { CategoryType } from "@/components/profil/ProfilCategories";
 export const useProfilCategories = () => [
   {
     id: "astrologie",
-    title: "ASTROLOGIE",    
+    title: "ASTROLOGIE",
     icon: Star,
     color: "from-purple-600 to-pink-600",
     gradient: "from-purple-500/10 to-pink-500/10",
@@ -15,7 +15,7 @@ export const useProfilCategories = () => [
   },
   {
     id: "numerologie",
-    title: "NUMÉROLOGIE",    
+    title: "NUMÉROLOGIE",
     icon: Hash,
     color: "from-indigo-600 to-purple-600",
     gradient: "from-indigo-500/10 to-purple-500/10",
@@ -26,7 +26,7 @@ export const useProfilCategories = () => [
   },
   {
     id: "spiritualite",
-    title: "TESTAMENT DE LA CONNAISSANCE",    
+    title: "TESTAMENT DE LA CONNAISSANCE",
     icon: Flame,
     color: "from-orange-600 to-red-600",
     gradient: "from-orange-500/10 to-red-500/10",
@@ -37,10 +37,10 @@ export const useProfilCategories = () => [
   },
   {
     id: "invocations",
-    title: "RITUELS MAGIQUES",    
+    title: "RITUELS MAGIQUES",
     icon: Sparkles,
-    color: "from-amber-600 to-yellow-600",
-    gradient: "from-amber-500/10 to-yellow-500/10",
+    color: "from-green-600 to-emerald-600",
+    gradient: "from-green-500/10 to-emerald-500/10",
     badge: "Puissant",
     badgeColor: "bg-amber-500",
     description: "Pratiques ésotériques pour manifester tes intentions",
@@ -48,7 +48,7 @@ export const useProfilCategories = () => [
   },
   {
     id: "marche",
-    title: "MARCHÉ DES OFFRANDES",    
+    title: "MARCHÉ DES OFFRANDES",
     icon: ShoppingCart,
     color: "from-green-600 to-emerald-600",
     gradient: "from-green-500/10 to-emerald-500/10",
@@ -59,7 +59,7 @@ export const useProfilCategories = () => [
   },
   {
     id: "librairie",
-    title: "LIBRAIRIE ÉSOTÉRIQUE",    
+    title: "LIBRAIRIE ÉSOTÉRIQUE",
     icon: BookOpen,
     color: "from-blue-600 to-cyan-600",
     gradient: "from-blue-500/10 to-cyan-500/10",

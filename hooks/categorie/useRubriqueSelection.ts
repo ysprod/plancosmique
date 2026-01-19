@@ -1,116 +1,121 @@
-import { api } from '@/lib/api/client';
-import { getUserChoicesStatus, ConsultationChoiceStatusDto } from '@/lib/api/services/consultation-status.service';
-import { useAuth } from '@/lib/auth/AuthContext';
 import type { ConsultationChoice, EnrichedChoice, Rubrique } from '@/lib/interfaces';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useAuth } from '@/lib/auth/AuthContext';
+import { api } from '@/lib/api/client';
+import { mapFormDataToBackend } from '@/lib/functions';
 
+const extractEnrichedChoices = (consultationChoices: any[]): EnrichedChoice[] => {
+    return consultationChoices.map((item: any) => {
+        return item as EnrichedChoice;
+    });
+};
 
 export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
     const router = useRouter();
     const { user } = useAuth();
-
-    const [choices, setChoices] = useState<ConsultationChoice[]>([]);
-    const [choiceStatuses, setChoiceStatuses] = useState<Map<string, ConsultationChoiceStatusDto>>(new Map());
-    const [loading, setLoading] = useState(true);
-    const [apiError, setApiError] = useState<string | null>(null);
     const [creatingConsultation, setCreatingConsultation] = useState(false);
-    const choicesFetchedRef = useRef(false);
 
-    useEffect(() => {
-        async function fetchChoicesAndStatuses() {
-            if (choicesFetchedRef.current) return;
-            choicesFetchedRef.current = true;
+    const enrichedChoices = useMemo(() => {
+        return rubrique.consultationChoices ? extractEnrichedChoices(rubrique.consultationChoices) : [];
+    }, [rubrique.consultationChoices]);
 
-            try {
-                setLoading(true);
+    const sortedChoices = useMemo(() =>
+        [...enrichedChoices].sort((a, b) => (a.choice.order ?? 999) - (b.choice.order ?? 999)),
+        [enrichedChoices]
+    );
 
-                // Récupérer les choix de la rubrique
-                if (rubrique?.consultationChoices) {
-                    setChoices(rubrique.consultationChoices);
-
-                    // Si l'utilisateur est connecté, récupérer les statuts
-                    if (user?._id) {
-                        const choiceIds = rubrique.consultationChoices.map(c => c._id).filter(Boolean) as string[];
-
-                        if (choiceIds.length > 0) {
-                            const statusResponse = await getUserChoicesStatus(user._id, choiceIds);
-
-                            // Convertir en Map pour accès rapide
-                            const statusMap = new Map<string, ConsultationChoiceStatusDto>();
-                            statusResponse.choices.forEach(status => {
-                                statusMap.set(status.choiceId, status);
-                            });
-
-                            setChoiceStatuses(statusMap);
-                            console.log('✅ Loaded statuses for', choiceIds.length, 'choices');
-                        }
-                    }
-                }
-            } catch (err) {
-                console.error('[Choices] ❌', err);
-                setApiError('Erreur lors du chargement des choix');
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchChoicesAndStatuses();
-    }, [user?._id, rubrique?.consultationChoices]);
-
-    // Enrichir les choix avec leurs statuts
-    const enrichedChoices = useMemo<EnrichedChoice[]>(() => {
-        return choices.map(choice => {
-            const status = choiceStatuses.get(choice._id || '');
-
-            return {
-                choice,
-                status: status || {
-                    choiceId: choice._id || '',
-                    choiceTitle: choice.title,
-                    buttonStatus: 'CONSULTER' as const,
-                    hasActiveConsultation: false,
-                    consultationId: null,
-                },
-            };
-        });
-    }, [choices, choiceStatuses]);
+    const stats = useMemo(() => {
+        const total = sortedChoices.length;
+        const consulted = sortedChoices.filter(c => c.status.buttonStatus !== 'CONSULTER').length;
+        const pending = sortedChoices.filter(c => c.status.buttonStatus === 'RÉPONSE EN ATTENTE').length;
+        const completed = sortedChoices.filter(c => c.status.buttonStatus === "VOIR L'ANALYSE").length;
+        return { total, consulted, pending, completed };
+    }, [sortedChoices]);
 
     const handleSelectConsultation = useCallback(
         async (choice: ConsultationChoice) => {
-            setApiError(null);
             setCreatingConsultation(true);
 
+            const enrichedChoice = enrichedChoices.find(
+                ec => (ec.choice._id) === (choice._id)
+            );
 
-            // Store the selected choice and rubrique in sessionStorage
+            if (enrichedChoice?.status?.consultationId) {
+                alert('📋 Consultation existante détectée, redirection directe...');
+                setCreatingConsultation(false);
+                router.push(`/secured/category/${categoryId}/consulter?consultationId=${enrichedChoice.status.consultationId}`);
+                return;
+            }
+
             sessionStorage.setItem("selectedChoiceId", choice._id || "");
             sessionStorage.setItem("categoryId", categoryId);
             sessionStorage.setItem("rubriqueId", rubrique._id || "");
 
-            console.log('👉 Selected choice:', choice.title);
-            console.log('🔍 Participants:', choice.participants);
-            console.log('💾 Stored in sessionStorage:', { selectedChoiceId: choice._id, categoryId, rubriqueId: rubrique._id });
+            const participants = choice.participants;
 
-            // Check if this choice requires a form (AVEC_TIERS)
-            if (choice.participants === 'AVEC_TIERS') {
-                console.log('📝 Requires form, navigating to form page...');
+            if (participants === 'SOLO') {
+                console.log('⚡ Consultation SOLO détectée, création automatique...');
+
+                if (!user) {
+                    console.error('❌ Utilisateur non connecté');
+                    setCreatingConsultation(false);
+                    return;
+                }
+
+                try {
+                    const mappedFormData = mapFormDataToBackend(user);
+
+                    const payload = {
+                        serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
+                        type: rubrique.typeconsultation,
+                        title: choice.title || 'Consultation',
+                        formData: mappedFormData,
+                        description: choice.description || '',
+                        status: 'PENDING',
+                        alternatives: choice.offering?.alternatives || [],
+                        choice: choice,
+                    };
+
+                    console.log('📤 Création consultation SOLO avec payload:', payload);
+
+                    const response = await api.post('/consultations', payload);
+                    const id = response.data?.id || response.data?.consultationId || response.data?._id;
+
+                    if (id) {
+                        console.log('✅ Consultation SOLO créée avec ID:', id);
+                        sessionStorage.removeItem('selectedChoiceId');
+                        router.push(`/secured/category/${categoryId}/consulter?consultationId=${id}`);
+                    } else {
+                        throw new Error('ID de consultation manquant dans la réponse');
+                    }
+                } catch (error: any) {
+                    console.error('❌ Erreur création consultation SOLO:', error);
+                    setCreatingConsultation(false);
+                    // En cas d'erreur, fallback vers le formulaire
+                    router.push(`/secured/category/${categoryId}/form`);
+                }
+            } else if (participants === 'AVEC_TIERS') {
+                // Pour AVEC_TIERS : afficher le formulaire pour collecter les données de la tierce personne
+                console.log('📝 Consultation AVEC_TIERS détectée, affichage du formulaire...');
                 setCreatingConsultation(false);
                 router.push(`/secured/category/${categoryId}/form`);
-                return;
+            } else {
+                // Fallback : rediriger vers le formulaire qui gérera le cas
+                console.log('❓ Type de consultation inconnu, redirection vers formulaire...');
+                setCreatingConsultation(false);
+                router.push(`/secured/category/${categoryId}/form`);
             }
-
-            // If no form needed, navigate directly to form which will handle the consultation creation
-            console.log('⚡ No form required, navigating to form page for automatic creation...');
-            setCreatingConsultation(false);
-            router.push(`/secured/category/${categoryId}/form`);
         },
-        [categoryId, rubrique._id, router]
+        [categoryId, rubrique._id, rubrique.typeconsultation, router, enrichedChoices, user]
     );
-
 
     return {
         enrichedChoices,
-        loading,
-        apiError,
+        sortedChoices,
+        stats,
+        loading: false,
+        apiError: null,
         creatingConsultation,
         handleSelectConsultation,
     };
