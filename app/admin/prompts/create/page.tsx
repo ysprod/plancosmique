@@ -1,17 +1,10 @@
-'use client';
+"use client";
 import { useSearchParams } from 'next/navigation';
-import CreatePromptPage from '@/components/admin/prompts/CreatePromptPage';
+import CreatePromptPageClient from '@/components/admin/prompts/CreatePromptPageClient';
 
 export default function Page() {
     const searchParams = useSearchParams();
-    
     const choiceId = searchParams?.get('choiceId');
     const returnTo = searchParams?.get('returnTo');
-
-    return (
-        <CreatePromptPage
-            choiceId={choiceId!}
-            returnTo={returnTo!}
-        />
-    );
+    return <CreatePromptPageClient choiceId={choiceId!} returnTo={returnTo!} />;
 }

@@ -33,7 +33,9 @@ export default function CategoryConsulterPage() {
     }, [id, consultationId]);
 
     if (!id || !consultationId) return notFound();
+
     if (loading) return <CategoryLoadingSpinner />;
+    
     if (!category || !category._id) return notFound();
 
     return <CategoryConsulterClient category={category} consultationId={consultationId} />;

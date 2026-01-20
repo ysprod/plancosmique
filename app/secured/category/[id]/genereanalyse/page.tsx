@@ -9,12 +9,12 @@ export default function CategoryGenereAnalysePage() {
     const searchParams = useSearchParams();
     const id = params?.id as string;
     const consultationId = searchParams?.get('consultationId');
-   
+
     const { category, loading } = useCategory(id);
 
-    if (!id|| !consultationId) return notFound();
+    if (!id || !consultationId) return notFound();
     if (loading) return <CategoryLoadingSpinner />;
     if (!category || !category._id) return notFound();
-   
+
     return <CategoryGenereAnalyseClient category={category} consultationId={consultationId} />;
 }

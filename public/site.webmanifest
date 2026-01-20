@@ -1,7 +1,7 @@
 {
   "name": "Mon Étoile - Plateforme Spirituelle",
   "short_name": "Mon Étoile",
-  "description": "Votre guide spirituel personnalisé. Consultations de voyance, analyses astrologiques, numérologie et guidance spirituelle.",
+  "description": "Votre guide spirituel. Consultations de voyance, analyses astrologiques, numérologie et guidance spirituelle.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

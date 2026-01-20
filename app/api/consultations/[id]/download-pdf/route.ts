@@ -100,7 +100,7 @@ export async function GET(
       return NextResponse.json(
         {
           success: false,
-          error: 'Erreur lors de la récupération de l\'analyse',
+          error: 'Erreur lors de la récupération de l\'analyse.',
           code: 'API_ERROR',
           details: process.env.NODE_ENV === 'development' ? err.message : undefined
         },

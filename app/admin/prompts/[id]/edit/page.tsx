@@ -1,4 +1,4 @@
-import EditPromptPage from '@/components/admin/prompts/EditPromptPage';
+import EditPromptPageClient from '@/components/admin/prompts/EditPromptPageClient';
 
 interface PageProps {
     params: { id: string };
@@ -7,7 +7,7 @@ interface PageProps {
 
 export default function Page({ params, searchParams }: PageProps) {
     return (
-        <EditPromptPage
+        <EditPromptPageClient
             promptId={params.id}
             returnTo={searchParams?.returnTo}
         />
