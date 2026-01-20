@@ -11,6 +11,7 @@ import { NumerologyLifeCycles } from "./numerologie/NumerologyLifeCycles";
 import { NumerologySynthesis } from "./numerologie/NumerologySynthesis";
 import { NumerologyTheme } from "./numerologie/NumerologyTheme";
 import { NumerologyWisdom } from "./numerologie/NumerologyWisdom";
+import { NumerologyAnalysisSection } from "./choices/numerologie/NumerologyAnalysisSection";
 
 interface ConsultationCardContentProps {
     derived: any;
@@ -49,14 +50,13 @@ const ConsultationCardContent = memo(function ConsultationCardContent(props: Con
             <ConsultationCardActions isNotified={isNotified} onNotify={handleNotify} onModify={handleModify} />
 
             {derived.type === 'numerologie' ? (
-                <section className="my-4 p-4 rounded-xl bg-gradient-to-r from-purple-100 to-indigo-100 dark:from-zinc-800 dark:to-zinc-900">
-                    <h3 className="font-bold text-lg mb-4 text-purple-800 dark:text-purple-300 text-center">Analyse Numérologique</h3>
-                    <NumerologyTheme themeDeNaissance={derived.themeDeNaissance} />
-                    <NumerologyCycles cyclesEnMouvement={derived.cyclesEnMouvement} />
-                    <NumerologySynthesis syntheseEtTiming={props.syntheseEtTiming} />
-                    <NumerologyLifeCycles cyclesDeVieGrands={props.cyclesDeVieGrands} />
-                    <NumerologyWisdom sagesseAfricaine={props.sagesseAfricaine} />
-                </section>
+                <NumerologyAnalysisSection
+                  themeDeNaissance={derived.themeDeNaissance}
+                  cyclesEnMouvement={derived.cyclesEnMouvement}
+                  syntheseEtTiming={props.syntheseEtTiming}
+                  cyclesDeVieGrands={props.cyclesDeVieGrands}
+                  sagesseAfricaine={props.sagesseAfricaine}
+                />
             ) : (
                 <ConsultationCardTabsContainer
                     tab={tab}

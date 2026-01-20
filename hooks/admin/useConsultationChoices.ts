@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api/client';
 import { ConsultationChoice } from '@/lib/interfaces';
 import { Prompt } from '@/lib/types/prompt.types';
+import { useConsultationChoicesFilter } from './useConsultationChoicesFilter';
 
 export interface ConsultationChoiceWithPrompt extends ConsultationChoice {
   prompt?: Prompt;
@@ -39,11 +40,36 @@ export function useConsultationChoices() {
     fetchChoices();
   }, [fetchChoices]);
 
+  const handleDeletePrompt = async (choice: any) => {
+    if (!confirm(`Êtes-vous sûr de vouloir retirer le prompt de "${choice.title}" ?`)) {
+      return;
+    }
+    try {
+      await assignPrompt(choice._id, null);
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+
+    const [search, setSearch] = useState('');
+  
+    const filteredChoices = useConsultationChoicesFilter(choices, search);
+    const choicesWithPrompt = filteredChoices.filter(c => c.promptId);
+    const choicesWithoutPrompt = filteredChoices.filter(c => !c.promptId);
+
   return {
     choices,
     loading,
     error,
     refetch: fetchChoices,
-    assignPrompt
+    assignPrompt,
+    handleDeletePrompt,
+    filteredChoices,
+    choicesWithPrompt,
+    choicesWithoutPrompt,
+    search,
+    setSearch,
+
   };
 }
