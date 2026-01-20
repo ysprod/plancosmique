@@ -63,8 +63,10 @@ export function useAdminConsultationAnalysis() {
   }, [router]);
 
   const handleNotifyUser = useCallback(async (id: string) => {
+    // Always use the correct consultationId from the loaded analyse (astrology or numerology)
+    const notifyId = (analyse && (analyse.consultationId || analyse._id)) || consultationId;
     try {
-      const res = await api.post(`/consultations/${consultationId}/notify-user`);
+      const res = await api.post(`/consultations/${notifyId}/notify-user`);
       if (res.status === 200 || res.status === 201) {
         showToast('📧 Notification envoyée avec succès !', 'success');
       } else {
@@ -73,7 +75,7 @@ export function useAdminConsultationAnalysis() {
     } catch (err: any) {
       showToast('❌ Erreur lors de l\'envoi', 'error');
     }
-  }, [showToast]);
+  }, [showToast, analyse, consultationId]);
 
   return {
     analyse,

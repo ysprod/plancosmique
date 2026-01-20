@@ -19,14 +19,13 @@ export default function AdminConsultationAnalysisView() {
     }
 
     return (
-        <div className="w-full">
+        <div>
             <DisplayConsultationCard
                 consultation={analyse}
                 onModifyAnalysis={handleModifyAnalysis}
                 onNotifyUser={handleNotifyUser}
                 notifiedback={notified}
             />
-
             <AnimatePresence>
                 {toast && (
                     <Toast

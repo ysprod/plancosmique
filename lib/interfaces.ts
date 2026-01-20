@@ -91,6 +91,13 @@ export interface Section {
 }
 
 export interface AnalyseAstrologique {
+  syntheseEtTiming: undefined;
+  cyclesDeVieGrands: undefined;
+  sagesseAfricaine: undefined;
+  themeDeNaissance: any;
+  cyclesEnMouvement: any;
+  analyseNumerologique: any;
+  sujet: {};
   _id: string;
   analysisNotified: boolean;
   userId: string;
