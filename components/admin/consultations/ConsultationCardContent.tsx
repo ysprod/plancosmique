@@ -1,5 +1,4 @@
 "use client";
-
 import { useConsultationCardData } from "@/hooks/consultations/useConsultationCardData";
 import { memo } from "react";
 import ConsultationCardActions from "./ConsultationCardActions";
@@ -27,9 +26,6 @@ interface ConsultationCardContentProps {
 
 const ConsultationCardContent = memo(function ConsultationCardContent(props: ConsultationCardContentProps) {
     const { isNotified, handleNotify, handleModify, tab, setTab, derived, } = props;
-
-    const isNumerology = derived.type === 'numerologie';
-
     const cardData = derived.type === 'numerologie'
         ? {
             stars: [],
@@ -43,7 +39,6 @@ const ConsultationCardContent = memo(function ConsultationCardContent(props: Con
     return (
         <>
             <ConsultationCardHeader nomComplet={derived.nomComplet} retrogradeCount={derived?.retrogradeCount ?? 0} isNotified={isNotified} />
-
             <ConsultationCardUserInfo
                 dateNaissance={derived.dateNaissance}
                 heureNaissance={derived.heureNaissance}
@@ -53,8 +48,7 @@ const ConsultationCardContent = memo(function ConsultationCardContent(props: Con
 
             <ConsultationCardActions isNotified={isNotified} onNotify={handleNotify} onModify={handleModify} />
 
-            {/* Numerology summary (modular version) */}
-            {isNumerology ? (
+            {derived.type === 'numerologie' ? (
                 <section className="my-4 p-4 rounded-xl bg-gradient-to-r from-purple-100 to-indigo-100 dark:from-zinc-800 dark:to-zinc-900">
                     <h3 className="font-bold text-lg mb-4 text-purple-800 dark:text-purple-300 text-center">Analyse Numérologique</h3>
                     <NumerologyTheme themeDeNaissance={derived.themeDeNaissance} />

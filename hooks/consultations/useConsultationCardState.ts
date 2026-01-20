@@ -30,9 +30,8 @@ export function useConsultationCardState({
   }, [consultationId, onModifyAnalysis]);
 
   const handleNotify = useCallback(() => {
-    if (!consultationId || isNotified) return;
-    setNotifiedLocal(true); // optimiste
-    onNotifyUser(consultationId);
+    setNotifiedLocal(true); 
+    onNotifyUser(consultationId!);
   }, [consultationId, isNotified, onNotifyUser]);
 
   return {
