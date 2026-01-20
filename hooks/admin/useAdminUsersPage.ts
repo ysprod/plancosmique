@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import api from '@/lib/api/client';
 import { useAdminUsers } from '@/hooks/admin/useAdminUsers';
 import { User } from '@/lib/interfaces';
@@ -52,16 +52,44 @@ export function useAdminUsersPage() {
   });
 
   const users: User[] = useMemo(() => (apiUsers ? apiUsers.map(mapUserToUserData) : []), [apiUsers]);
-  const stats = useMemo(() => {
-    if (!users) return null;
-    return {
-      total: users.length,
-      active: users.filter(u => u.isActive).length,
-      inactive: users.filter(u => !u.isActive).length,
-      admins: users.filter(u => u.role === 'ADMIN').length,
-      verified: users.filter(u => u.emailVerified).length,
-    };
-  }, [users]);
+
+  // Nouvelle logique : stats globales (non paginées)
+  const [globalStats, setGlobalStats] = useState<{
+    total: number;
+    active: number;
+    inactive: number;
+    admins: number;
+    verified: number;
+  } | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [statsError, setStatsError] = useState<string | null>(null);
+
+  const fetchGlobalStats = useCallback(async () => {
+    setStatsLoading(true);
+    setStatsError(null);
+    try {
+      const res = await api.get('/admin/stats');
+      // On suppose que res.data.users contient les stats globales
+      setGlobalStats({
+        total: res.data.users.total,
+        active: res.data.users.active,
+        inactive: res.data.users.inactive,
+        admins: res.data.users.admins ?? res.data.users.admin ?? 0,
+        verified: res.data.users.verified ?? 0,
+      });
+    } catch (err: any) {
+      setStatsError(err?.response?.data?.message || err?.message || 'Erreur stats globales');
+    } finally {
+      setStatsLoading(false);
+    }
+  }, []);
+
+  // Chargement au montage et lors du refresh
+  useEffect(() => {
+    fetchGlobalStats();
+  }, [fetchGlobalStats]);
+
+  const stats = globalStats;
 
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);

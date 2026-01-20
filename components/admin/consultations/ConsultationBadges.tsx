@@ -5,76 +5,53 @@ import { memo } from 'react';
 
 interface ConsultationBadgesProps {
     formattedDate: string;
-    hasResultData: boolean;
-    hasCarteDuCiel: boolean;
     isPaid?: boolean;
 }
 
-const ConsultationBadges = memo(({ formattedDate, hasResultData, hasCarteDuCiel, isPaid }: ConsultationBadgesProps) => {
-    return (
-        <div className="flex flex-wrap justify-center gap-2 mb-4">
-            <motion.span
-                whileHover={{ scale: 1.05 }}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-bold
-                          bg-gradient-to-r from-blue-500 to-cyan-500 text-white
-                          shadow-md shadow-blue-500/30"
-            >
-                <Calendar className="w-3 h-3" />
-                {formattedDate}
-            </motion.span>
+const badgeBase =
+    'inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-bold shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
 
-            {hasResultData && (
+const ConsultationBadges = memo(
+    ({ formattedDate, isPaid }: ConsultationBadgesProps) => {
+        return (
+            <div className="flex flex-wrap justify-center items-center gap-2 mb-2 w-full">
                 <motion.span
-                    whileHover={{ scale: 1.05 }}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.1 }}
-                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-bold
-                              bg-gradient-to-r from-emerald-500 to-teal-500 text-white
-                              shadow-md shadow-emerald-500/30"
+                    whileHover={{ scale: 1.07 }}
+                    tabIndex={0}
+                    aria-label="Date de la consultation"
+                    className={
+                        badgeBase +
+                        ' bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-blue-500/30 dark:from-blue-700 dark:to-cyan-700 dark:shadow-blue-900/30'
+                    }
                 >
-                    🔢 Numérologie
+                    <Calendar className="w-3 h-3" />
+                    {formattedDate}
                 </motion.span>
-            )}
 
-            {hasCarteDuCiel && (
-                <motion.span
-                    whileHover={{ scale: 1.05 }}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-bold
-                              bg-gradient-to-r from-indigo-500 to-purple-500 text-white
-                              shadow-md shadow-indigo-500/30"
-                >
-                    ⭐ Astrologie
-                </motion.span>
-            )}
-
-            {isPaid && (
-                <motion.span
-                    whileHover={{ scale: 1.05 }}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.3 }}
-                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-bold
-                              bg-gradient-to-r from-green-500 to-emerald-500 text-white
-                              shadow-md shadow-green-500/30"
-                >
-                    <Check className="w-3 h-3" />
-                    Payé
-                </motion.span>
-            )}
-        </div>
-    );
-}, (prev, next) => {
-    return (
+                {isPaid && (
+                    <motion.span
+                        whileHover={{ scale: 1.07 }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.15 }}
+                        tabIndex={0}
+                        aria-label="Consultation payée"
+                        className={
+                            badgeBase +
+                            ' bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-green-500/30 dark:from-green-700 dark:to-emerald-700 dark:shadow-green-900/30'
+                        }
+                    >
+                        <Check className="w-3 h-3" />
+                        Payé
+                    </motion.span>
+                )}
+            </div>
+        );
+    },
+    (prev, next) =>
         prev.formattedDate === next.formattedDate &&
-        prev.hasResultData === next.hasResultData &&
-        prev.hasCarteDuCiel === next.hasCarteDuCiel &&
         prev.isPaid === next.isPaid
-    );
-});
+);
 
 ConsultationBadges.displayName = 'ConsultationBadges';
 

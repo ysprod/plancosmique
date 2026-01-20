@@ -52,24 +52,16 @@ export const UsersPageContent = memo(function UsersPageContent({
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-blue-50/40 dark:from-gray-900 dark:via-purple-950/30 dark:to-blue-950/40 overflow-hidden">
       <BackgroundOrbs />
-      
-      <DeleteUserModal
-        show={deleteModal.show}
-        user={deleteModal.user}
-        isDeleting={isDeleting}
-        deleteSuccess={deleteSuccess}
-        onClose={handleCloseModal}
-        onDelete={handleConfirmDelete}
-        modalVariants={modalVariants}
-      />
-      
+
+
+
       <PageHeader
         total={total}
         isRefreshing={isRefreshing}
         loading={loading}
         onRefresh={handleRefresh}
       />
-      
+
       <div className="relative max-w-7xl mx-auto px-3 sm:px-4 py-4 space-y-4">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -110,7 +102,7 @@ export const UsersPageContent = memo(function UsersPageContent({
           className="relative"
         >
           <LoadingOverlay loading={loading} users={users} />
-          
+
           <UsersGrid
             hasUsers={hasUsers}
             users={users}
@@ -126,6 +118,18 @@ export const UsersPageContent = memo(function UsersPageContent({
           />
         </motion.div>
       </div>
+
+
+      <DeleteUserModal
+        show={deleteModal.show}
+        user={deleteModal.user}
+        isDeleting={isDeleting}
+        deleteSuccess={deleteSuccess}
+        onClose={handleCloseModal}
+        onDelete={handleConfirmDelete}
+        modalVariants={modalVariants}
+      />
+
     </div>
   );
 });

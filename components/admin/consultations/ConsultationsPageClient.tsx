@@ -11,8 +11,8 @@ import { AnimatePresence } from "framer-motion";
 export default function ConsultationsPageClient() {
   const {
     consultations, total, loading, error, isRefreshing, toastMessage, totalPages,
-    generatingIds, notifyingIds, currentPage, handlePageChange,
-    handleToastClose, handleRefresh, handleGenerateAnalysis,
+    generatingIds, currentPage, handlePageChange, handleToastClose,
+    handleRefresh, handleGenerateAnalysis,
   } = useAdminConsultationsPage();
 
   if (loading) return <CosmicLoader />;
@@ -33,7 +33,6 @@ export default function ConsultationsPageClient() {
           <ConsultationsList
             consultations={consultations}
             generatingIds={generatingIds}
-            notifyingIds={notifyingIds}
             onGenerateAnalysis={handleGenerateAnalysis}
             currentPage={currentPage}
             totalPages={totalPages}

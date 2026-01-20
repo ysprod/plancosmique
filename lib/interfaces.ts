@@ -233,6 +233,7 @@ export interface ConsultationFormData {
   heureNaissance: string;
   numeroSend?: string;
   email?: string;
+  phone?: string;
 }
 
 export interface ResultData {

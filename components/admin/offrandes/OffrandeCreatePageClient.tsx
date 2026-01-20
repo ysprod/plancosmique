@@ -15,8 +15,7 @@ export default function OffrandeCreatePageClient() {
     handleCancel,
   } = useOfferingForm();
 
-  return (
-    <AnimatedGradientBackground>
+  return ( 
       <div className="min-h-screen flex items-center justify-center relative z-10 animate-fade-in">
         <OfferingForm
           formData={formData}
@@ -28,7 +27,6 @@ export default function OffrandeCreatePageClient() {
           onSubmit={handleSubmit}
           onCancel={handleCancel}
         />
-      </div>
-    </AnimatedGradientBackground>
+      </div>   
   );
 }

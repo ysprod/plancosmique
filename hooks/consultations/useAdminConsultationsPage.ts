@@ -5,7 +5,7 @@ import { api } from '@/lib/api/client';
 export type ConsultationStatus = 'all' | 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR';
 export type ConsultationType = 'all' | 'SPIRITUALITE' | 'TAROT' | 'ASTROLOGIE' | 'NUMEROLOGIE';
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 10;
 
 export function useAdminConsultationsPage() {
   const [searchQuery, setSearchQuery] = useState('');

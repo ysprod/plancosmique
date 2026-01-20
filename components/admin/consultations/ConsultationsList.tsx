@@ -3,12 +3,11 @@ import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 import ConsultationCard from './ConsultationCard';
 import PaginationControls from './PaginationControls';
-import StatusBadge from './StatusBadge';
+import { Consultation } from '@/lib/interfaces';
 
 interface ConsultationsListProps {
-  consultations: any[];
+  consultations: Consultation[];
   generatingIds: Set<string>;
-  notifyingIds: Set<string>;
   onGenerateAnalysis: (id: string) => void;
   currentPage: number;
   totalPages: number;
@@ -20,35 +19,32 @@ interface ConsultationsListProps {
 export const ConsultationsList: React.FC<ConsultationsListProps> = ({
   consultations,
   generatingIds,
-  notifyingIds,
   loading,
   currentPage,
   totalPages,
   total,
-  onPageChange, onGenerateAnalysis, 
+  onPageChange, onGenerateAnalysis,
 }) => {
   return (
     <>
-      <AnimatePresence mode="popLayout">
-        {consultations.map((consultation: any) => (
-          <div key={consultation.id} className="relative">
-            <div className="absolute top-2 right-2 z-10">
-              <StatusBadge status={consultation.status} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+        <AnimatePresence mode="popLayout">
+          {consultations.map((consultation: Consultation) => (
+            <div key={consultation.id} className="relative flex justify-center">
+              <ConsultationCard
+                consultation={consultation}
+                onGenerateAnalysis={onGenerateAnalysis}
+                isGenerating={generatingIds.has(consultation._id)}
+              />
             </div>
-            <ConsultationCard
-              consultation={consultation}
-              onGenerateAnalysis={onGenerateAnalysis}
-              isGenerating={generatingIds.has(consultation._id)}
-              isNotifying={notifyingIds.has(consultation._id)}
-            />
-          </div>
-        ))}
-      </AnimatePresence>
+          ))}
+        </AnimatePresence>
+      </div>
       <PaginationControls
         currentPage={currentPage}
         totalPages={totalPages}
         total={total}
-        itemsPerPage={5}
+        itemsPerPage={10}
         onPageChange={onPageChange}
         loading={loading}
       />
