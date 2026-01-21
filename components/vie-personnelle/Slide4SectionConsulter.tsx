@@ -24,6 +24,7 @@ const Slide4SectionConsulter: React.FC<Slide4SectionConsulterProps> = ({
       walletOfferings={walletOfferings}
       onNext={handleOfferingValidation}
       onBack={handleBack}
+      consultationTitle={consultation?.title || ''}
     />
   </motion.div>
 );

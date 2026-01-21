@@ -6,6 +6,7 @@ import { SpiritualiteErrorState, SpiritualiteLoadingState } from '@/components/s
 import SpiritualiteHeader from '@/components/spiritualite/SpiritualiteHeader';
 import { useSpiritualiteBlogPage } from '@/hooks/commons/useSpiritualiteBlogPage';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
+import { useSpiritualiteBlogController } from '@/components/spiritualite/useSpiritualiteBlogController';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -26,9 +27,9 @@ export default function SpiritualiteBlogPageClient() {
   const {
     setSearchQuery, setSelectedCategory, handleRetry, loading, error,
     featuredArticle, regularArticles, hasArticles,
-  } = useSpiritualiteBlogPage();
+  } = useSpiritualiteBlogController();
 
-  if (loading) { return <SpiritualiteLoadingState />; }
+  //  if (loading) { return <SpiritualiteLoadingState />; }
   if (error) {
     return <SpiritualiteErrorState error={error} onRetry={handleRetry} />;
   }

@@ -14,6 +14,7 @@ interface OfferingStepProps {
   walletOfferings: WalletOffering[];
   onNext: (selected: OfferingAlternative) => void;
   onBack: () => void;
+  consultationTitle: string;
 }
 
 export default function OfferingStep({
@@ -21,6 +22,7 @@ export default function OfferingStep({
   walletOfferings,
   onNext,
   onBack,
+  consultationTitle,
 }: OfferingStepProps) {
   const state = useOfferingStepState(requiredOfferings, walletOfferings, onNext);
   return (
@@ -28,6 +30,13 @@ export default function OfferingStep({
                   dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900 
                   flex flex-col">
       <OfferingStepHeader />
+      {consultationTitle && (
+        <div className="w-full flex justify-center items-center mt-2 mb-1">
+          <h2 className="text-lg sm:text-xl font-bold text-purple-700 dark:text-purple-200 text-center truncate max-w-xl animate-fade-in">
+            {consultationTitle}
+          </h2>
+        </div>
+      )}
       <div className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center justify-center gap-3 mb-3">
@@ -82,7 +91,6 @@ export default function OfferingStep({
         onBack={onBack}
         onNext={state.handleNext}
         canProceed={state.canProceed}
-        handleGoToMarket={state.handleGoToMarket}
       />
     </div>
   );

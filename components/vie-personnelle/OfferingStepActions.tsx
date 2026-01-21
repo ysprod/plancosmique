@@ -1,15 +1,31 @@
 'use client';
-
 import { ChevronRight, ShoppingBag, ArrowRight } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useCallback } from "react";
 
 interface OfferingStepActionsProps {
   onBack: () => void;
   onNext: () => void;
   canProceed: boolean;
-  handleGoToMarket: () => void;
+  consultationId?: string;
+  categoryId?: string;
 }
 
-export default function OfferingStepActions({ onBack, onNext, canProceed, handleGoToMarket }: OfferingStepActionsProps) {
+export default function OfferingStepActions({ onBack, onNext, canProceed, consultationId, categoryId }: OfferingStepActionsProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const effectiveConsultationId = consultationId || searchParams!.get('consultationId') || undefined;
+  const effectiveCategoryId = categoryId || searchParams!.get('categoryId') || (typeof window !== 'undefined' ? window.location.pathname.split('/')[3] : undefined);
+
+  const handleGoToMarket = useCallback(() => {
+    const params = new URLSearchParams();
+    if (effectiveConsultationId) params.set('consultationId', effectiveConsultationId);
+    if (effectiveCategoryId) params.set('categoryId', effectiveCategoryId);
+    const url = `/secured/wallet${params.toString() ? `?${params.toString()}` : ''}`;
+    router.push(url);
+  }, [router, effectiveConsultationId, effectiveCategoryId]);
+
   return (
     <div className="sticky bottom-0 z-40 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
       <div className="max-w-2xl mx-auto px-4 py-3 space-y-2">

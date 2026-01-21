@@ -15,12 +15,12 @@ const CategoryContextBanner = memo<CategoryContextBannerProps>(function Category
   choixDescription
 }) {
   const containerClasses = useMemo(
-    () => "relative isolate mb-4 sm:mb-6 overflow-hidden rounded-2xl border border-purple-200/50 dark:border-purple-800/30 bg-gradient-to-br from-purple-50/80 via-indigo-50/60 to-pink-50/80 dark:from-purple-950/40 dark:via-indigo-950/30 dark:to-pink-950/40 backdrop-blur-xl",
+    () => "relative isolate mb-4 sm:mb-6 overflow-hidden rounded-2xl border border-purple-200/50 dark:border-purple-800/30 bg-gradient-to-br from-purple-50/80 via-indigo-50/60 to-pink-50/80 dark:from-purple-950/40 dark:via-indigo-950/30 dark:to-pink-950/40 backdrop-blur-xl flex flex-col items-center justify-center text-center",
     []
   );
 
   const contentClasses = useMemo(
-    () => "relative z-10 px-4 py-3 sm:px-6 sm:py-4",
+    () => "relative z-10 px-4 py-3 sm:px-6 sm:py-4 w-full flex flex-col items-center justify-center text-center",
     []
   );
 
@@ -49,7 +49,7 @@ const CategoryContextBanner = memo<CategoryContextBannerProps>(function Category
         {/* Rubrique info */}
         {rubriqueTitre && (
           <motion.div
-            className="flex items-center gap-2 mb-2"
+            className="flex flex-col sm:flex-row items-center justify-center gap-2 mb-2"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
@@ -58,7 +58,7 @@ const CategoryContextBanner = memo<CategoryContextBannerProps>(function Category
             <span className="text-xs sm:text-sm font-medium text-purple-900/70 dark:text-purple-100/70">
               Rubrique :
             </span>
-            <span className="text-xs sm:text-sm font-semibold text-purple-950 dark:text-purple-50 truncate">
+            <span className="text-xs sm:text-sm font-semibold text-purple-950 dark:text-purple-50 truncate max-w-xs">
               {rubriqueTitre}
             </span>
           </motion.div>
@@ -71,24 +71,20 @@ const CategoryContextBanner = memo<CategoryContextBannerProps>(function Category
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <div className="flex items-start gap-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
               <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs sm:text-sm font-medium text-indigo-900/70 dark:text-indigo-100/70">
-                    Consultation :
-                  </span>
-                  <span className="text-xs sm:text-sm font-semibold text-indigo-950 dark:text-indigo-50 truncate">
-                    {choixTitre}
-                  </span>
-                </div>
-                {choixDescription && (
-                  <p className="text-xs text-gray-700 dark:text-gray-300 line-clamp-2 leading-relaxed">
-                    {choixDescription}
-                  </p>
-                )}
-              </div>
+              <span className="text-xs sm:text-sm font-medium text-indigo-900/70 dark:text-indigo-100/70">
+                Consultation :
+              </span>
+              <span className="text-xs sm:text-sm font-semibold text-indigo-950 dark:text-indigo-50 truncate max-w-xs">
+                {choixTitre}
+              </span>
             </div>
+            {choixDescription && (
+              <p className="text-xs text-gray-700 dark:text-gray-300 line-clamp-2 leading-relaxed mt-1 max-w-md mx-auto">
+                {choixDescription}
+              </p>
+            )}
           </motion.div>
         )}
 

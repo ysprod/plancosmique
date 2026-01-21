@@ -6,6 +6,7 @@ import ProfilHighlightCards from "@/components/profil/ProfilHighlightCards";
 import ProfilNonPremiumSection from "@/components/profil/ProfilNonPremiumSection";
 import TopProgressBar from "@/components/profil/TopProgressBar";
 import { useProfilUser } from "@/hooks/commons/useProfilUser";
+import { InitiatiqueBadge } from "@/components/profil/InitiatiqueBadge";
 
 export default function ProfilPageClient() {
   const { userdata, loading } = useProfilUser();
@@ -16,6 +17,10 @@ export default function ProfilPageClient() {
       <TopProgressBar />
 
       <div className="relative z-10 px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 max-w-7xl mx-auto">
+        {/* Badge initiatique affiché en haut de la page */}
+        <div className="flex justify-center mb-6">
+          <InitiatiqueBadge grade={userdata?.grade} />
+        </div>
         {userdata?.premium && (
           <>
             <ProfilHighlightCards/>

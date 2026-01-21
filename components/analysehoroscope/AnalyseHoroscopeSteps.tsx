@@ -43,6 +43,7 @@ const AnalyseHoroscopeSteps = ({
         walletOfferings={walletOfferings}
         onNext={handleOfferingValidation}
         onBack={handleBack}
+        consultationTitle={consultation.title}
       />
     )}
     {step === 'genereanalyse' && <AnalyseGenere />}

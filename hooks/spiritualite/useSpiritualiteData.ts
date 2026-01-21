@@ -2,7 +2,15 @@ import { useEffect, useState } from 'react';
 import { api } from '@/lib/api/client';
 import { SpiritualPractice } from '@/lib/interfaces';
 
-export function useSpiritualiteData(categories: { id: string; label: string; icon: any }[]) {
+export function useSpiritualiteData() {
+ const categories = [
+      { id: 'all', label: 'Tous les articles', icon: null },
+      { id: 'meditation', label: 'Méditation', icon: null },
+      { id: 'rituel', label: 'Rituels', icon: null },
+      { id: 'energie', label: 'Énergie', icon: null },
+      { id: 'sagesse', label: 'Sagesse', icon: null }
+    ];
+ 
   const [practices, setPractices] = useState<SpiritualPractice[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

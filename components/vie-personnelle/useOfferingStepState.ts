@@ -62,11 +62,7 @@ export function useOfferingStepState(requiredOfferings: OfferingAlternative[], w
       onNext(selectedOffering);
     }
   }, [selectedOffering, canProceed, onNext]);
-
-  const handleGoToMarket = useCallback(() => {
-    router.push('/secured/marcheoffrandes');
-  }, [router]);
-
+ 
   const currentOfferings = offeringsByCategory[activeTab as Category];
 
   return {
@@ -82,8 +78,7 @@ export function useOfferingStepState(requiredOfferings: OfferingAlternative[], w
     canProceed,
     handleTabChange,
     handleSelect,
-    handleNext,
-    handleGoToMarket,
+    handleNext, 
     currentOfferings
   };
 }

@@ -9,8 +9,14 @@ import WalletStats from '@/components/wallet/WalletStats';
 import WalletTabs from '@/components/wallet/WalletTabs';
 import SuccessBanner from "@/components/wallet/SuccessBanner";
 import { useWalletPage } from '@/components/wallet/useWalletPage';
+import { useSearchParams } from "next/navigation";
 
 export default function WalletPageContent() {
+  const searchParams = useSearchParams();
+  const consultationId = searchParams!.get('consultationId') || undefined;
+  const categoryId = searchParams!.get('categoryId') || undefined;
+  const toConsultation = !!consultationId;
+
   const {
     isLoading,
     isRefreshing,
@@ -71,7 +77,7 @@ export default function WalletPageContent() {
             <UnusedOfferingsList unusedOfferings={unusedOfferings} isLoadingUnused={isLoadingUnused} unusedError={unusedError} />
           </div>
         )}
-        <WalletActions />
+        <WalletActions toConsultation={toConsultation} consultationId={consultationId} categoryId={categoryId} />
       </div>
     </div>
   );

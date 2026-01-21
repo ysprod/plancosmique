@@ -1,7 +1,9 @@
 import { CarteDuCielData, CinqPortes, ProcessedUserData, Rubrique, User } from "./interfaces";
 
-export const formatDate = (date: string | Date) => {
+export const formatDate = (date: string | Date | undefined | null) => {
+  if (!date) return '';
   const d = typeof date === 'string' ? new Date(date) : date;
+  if (!d || isNaN((d as Date).getTime?.() ?? NaN)) return '';
   return d.toLocaleDateString('fr-FR', {
     day: 'numeric',
     month: 'long',
