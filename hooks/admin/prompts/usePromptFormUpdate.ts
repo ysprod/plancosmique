@@ -9,7 +9,7 @@ interface UsePromptFormOptions {
   returnTo?: string;
 }
 
-export function usePromptForm({ initialData, choiceId, returnTo }: UsePromptFormOptions = {}) {
+export function usePromptFormUpdate({ initialData, choiceId, returnTo }: UsePromptFormOptions = {}) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -90,11 +90,7 @@ export function usePromptForm({ initialData, choiceId, returnTo }: UsePromptForm
         setError('Le prompt doit contenir au moins une section.');
         throw new Error('Le prompt doit contenir au moins une section.');
       }
-      if (initialData?._id) {
-        await promptService.update(initialData._id, formData);
-      } else {
-        await promptService.create(formData);
-      }
+      await promptService.create(formData);
       if (returnTo === 'consultations-choices') {
         router.push('/admin/consultations/choices');
       } else {

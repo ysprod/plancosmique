@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '@/lib/api/client';
 import { ConsultationChoice } from '@/lib/interfaces';
 import { Prompt } from '@/lib/types/prompt.types';
 import { useConsultationChoicesFilter } from './useConsultationChoicesFilter';
+import { promptService } from '@/lib/api/services/prompt.service';
 
 export interface ConsultationChoiceWithPrompt extends ConsultationChoice {
   prompt?: Prompt;
@@ -13,11 +14,12 @@ export function useConsultationChoices() {
   const [choices, setChoices] = useState<ConsultationChoiceWithPrompt[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
 
   const fetchChoices = useCallback(async () => {
+    setLoading(true);
+    setError(null);
     try {
-      setLoading(true);
-      setError(null);
       const response = await api.get('/consultation-choices/with-prompts');
       setChoices(response.data);
     } catch (err: any) {
@@ -38,25 +40,26 @@ export function useConsultationChoices() {
 
   useEffect(() => {
     fetchChoices();
-  }, [fetchChoices]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const handleDeletePrompt = async (choice: any) => {
+  const handleDeletePrompt = useCallback(async (choice: any) => {
     if (!confirm(`Êtes-vous sûr de vouloir retirer le prompt de "${choice.title}" ?`)) {
       return;
     }
     try {
-      await assignPrompt(choice._id, null);
+      if (choice.promptId) {
+        await promptService.delete(choice.promptId);
+      }
+      await fetchChoices();
     } catch (err: any) {
       alert(err.message);
     }
-  };
+  }, [assignPrompt]);
 
-
-    const [search, setSearch] = useState('');
-  
-    const filteredChoices = useConsultationChoicesFilter(choices, search);
-    const choicesWithPrompt = filteredChoices.filter(c => c.promptId);
-    const choicesWithoutPrompt = filteredChoices.filter(c => !c.promptId);
+  const filteredChoices = useConsultationChoicesFilter(choices, search);
+  const choicesWithPrompt = useMemo(() => filteredChoices.filter(c => c.promptId), [filteredChoices]);
+  const choicesWithoutPrompt = useMemo(() => filteredChoices.filter(c => !c.promptId), [filteredChoices]);
 
   return {
     choices,
@@ -70,6 +73,5 @@ export function useConsultationChoices() {
     choicesWithoutPrompt,
     search,
     setSearch,
-
   };
 }

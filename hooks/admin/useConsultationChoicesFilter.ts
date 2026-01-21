@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-export function useConsultationChoicesFilter(choices: any[], search: string) {
+export function useConsultationChoicesFilter(choices: any[], search?: string|null) {
   return useMemo(() => {
     if (!search) return choices;
     const lower = search.toLowerCase();
