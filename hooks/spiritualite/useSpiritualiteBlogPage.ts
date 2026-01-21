@@ -14,7 +14,7 @@ export function useSpiritualiteBlogPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'recent' | 'popular' | 'trending'>('recent');
-  const { practices, loading, error, setError } = useSpiritualiteData(categories);
+  const { practices, loading, error, setError } = useSpiritualiteData();
   const filteredPractices = useSpiritualiteFilter(practices, searchQuery, selectedCategory, sortBy);
 
   return {

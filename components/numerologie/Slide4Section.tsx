@@ -326,6 +326,7 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
                         walletOfferings={walletOfferings}
                         onNext={handleOfferingValidation}
                         onBack={handleBack}
+                        consultationTitle={consultation.title}
                       />
                     </motion.div>
                   </AnimatePresence>
