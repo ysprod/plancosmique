@@ -112,7 +112,6 @@ export default function OffersSection() {
                 ))}
               </ul>
 
-              {/* Bottom decoration */}
               <div
                 className={`absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r ${offer.gradient}`}
               />

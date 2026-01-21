@@ -4,9 +4,9 @@
 
 export const CACHE_CONFIG = {
   // Versions
-  SERVICE_WORKER_VERSION: 'monetoile-v3',
-  INDEXEDDB_VERSION: 3,
-  REACT_QUERY_BUSTER: 'v2',
+  SERVICE_WORKER_VERSION: 'monetoile-v4',
+  INDEXEDDB_VERSION: 4,
+  REACT_QUERY_BUSTER: 'v3',
 
   // Durées de cache (en millisecondes)
   DURATIONS: {

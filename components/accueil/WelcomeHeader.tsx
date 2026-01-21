@@ -20,12 +20,12 @@ function WelcomeHeader() {
           alt="Mon Étoile"
           width={80}
           height={80}
-          className="mx-auto mb-3 sm:mb-4 drop-shadow-2xl"
+          className="mx-auto mb-2 sm:mb-3 drop-shadow-2xl"
           priority
         />
       </motion.div>
 
-      <h1 className="text-3xl sm:text-5xl font-black bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 dark:from-purple-400 dark:via-indigo-400 dark:to-pink-400 bg-clip-text text-transparent">
+      <h1 className="text-2xl sm:text-4xl font-black bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 dark:from-purple-400 dark:via-indigo-400 dark:to-pink-400 bg-clip-text text-transparent">
         MON ÉTOILE
       </h1>
     </motion.div>

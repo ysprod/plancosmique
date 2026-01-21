@@ -16,7 +16,6 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
       scope: '/',
     });
 
-    console.log('✅ Service Worker enregistré avec succès', registration);
 
     // Vérifier les mises à jour toutes les heures
     setInterval(() => {

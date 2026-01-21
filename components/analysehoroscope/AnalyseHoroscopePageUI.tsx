@@ -1,43 +1,18 @@
 'use client';
-import CosmicLoader from '@/components/analysehoroscope/CosmicLoader';
-import { AnalyseHoroscopeHeader } from '@/components/analysehoroscope/AnalyseHoroscopeHeader';
-import { AnalyseHoroscopeSteps } from '@/components/analysehoroscope/AnalyseHoroscopeSteps';
 import { AnalyseHoroscopeErrorToast } from '@/components/analysehoroscope/AnalyseHoroscopeErrorToast';
+import { AnalyseHoroscopeHeader } from '@/components/analysehoroscope/AnalyseHoroscopeHeader';
 import { AnalyseHoroscopeLoadingOverlay } from '@/components/analysehoroscope/AnalyseHoroscopeLoadingOverlay';
-import { useAnalyseHoroscopePageUI } from '@/hooks/analysehoroscope/useAnalyseHoroscopePageUI';
-import { OfferingAlternative, WalletOffering } from '@/lib/interfaces';
-import { StepType } from '@/hooks/analysehoroscope/useAnalyseHoroscopePage';
+import { AnalyseHoroscopeSteps } from '@/components/analysehoroscope/AnalyseHoroscopeSteps';
+import CosmicLoader from '@/components/analysehoroscope/CosmicLoader';
+import { useAnalyseHoroscopePage } from '@/hooks/analysehoroscope/useAnalyseHoroscopePage';
 
-interface AnalyseHoroscopePageUIProps {
-    step: StepType;
-    loading: boolean;
-    paymentLoading: boolean;
-    error: string | null;
-    consultation: any;
-    walletOfferings: WalletOffering[];
-    handleOfferingValidation: (selected: OfferingAlternative) => void;
-    handleCloseError: () => void;
-}
+const AnalyseHoroscopePageUI = () => {
+    const {
+        step, loading, paymentLoading, error, consultation, walletOfferings,
+        handleOfferingValidation, handleCloseError, handleBack,
+    } = useAnalyseHoroscopePage();
 
-const AnalyseHoroscopePageUI = ({
-    step,
-    loading,
-    paymentLoading,
-    error,
-    consultation,
-    walletOfferings,
-    handleOfferingValidation,
-    handleCloseError,
-}: AnalyseHoroscopePageUIProps) => {
-    const { handleBack } = useAnalyseHoroscopePageUI();
-
-    if (loading) {
-        return (
-            <div className="flex items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50">
-                <CosmicLoader />
-            </div>
-        );
-    }
+    if (loading) { return (<CosmicLoader />); }
 
     return (
         <div className="bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 py-4 px-3">

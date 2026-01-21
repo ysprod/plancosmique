@@ -13,8 +13,8 @@ function WelcomeIntro() {
       className="backdrop-blur-xl bg-gradient-to-br from-purple-100/80 via-indigo-100/80 to-pink-100/80 dark:from-purple-900/30 dark:via-indigo-900/30 dark:to-pink-900/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-purple-200/50 dark:border-purple-700/50 shadow-2xl relative overflow-hidden"
     >
       <motion.div
-        animate={{ 
-          rotate: [0, 10, -10, 0], 
+        animate={{
+          rotate: [0, 10, -10, 0],
           scale: [1, 1.2, 1],
           opacity: [0.3, 0.5, 0.3]
         }}
@@ -23,10 +23,10 @@ function WelcomeIntro() {
       >
         <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400 dark:text-purple-300" />
       </motion.div>
-      
+
       <motion.div
-        animate={{ 
-          rotate: [0, -10, 10, 0], 
+        animate={{
+          rotate: [0, -10, 10, 0],
           scale: [1, 1.15, 1],
           opacity: [0.2, 0.4, 0.2]
         }}
@@ -35,9 +35,9 @@ function WelcomeIntro() {
       >
         <Star className="w-7 h-7 sm:w-10 sm:h-10 text-indigo-400 dark:text-indigo-300" />
       </motion.div>
-      
+
       <div className="relative z-10 text-center space-y-2.5 sm:space-y-3">
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -47,8 +47,8 @@ function WelcomeIntro() {
           notre guidance vous aide à mieux vous connaître, comprendre votre mission de vie, révéler
           vos talents, harmoniser vos relations, et avancer avec clarté sur votre chemin spirituel.
         </motion.p>
-        
-        <motion.p 
+
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
@@ -58,8 +58,8 @@ function WelcomeIntro() {
           une boussole sacrée, une mémoire profonde et une lumière qui vous éclaire, inspire vos choix
           et guide vos décisions.
         </motion.p>
-        
-        <motion.p 
+
+        <motion.p
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, type: "spring" }}
@@ -67,7 +67,7 @@ function WelcomeIntro() {
         >
           Votre naissance a un but.<br />Découvrez ce que votre âme est venue accomplir.
         </motion.p>
-        
+
         <Link href="/secured/profil" className="block">
           <motion.button
             whileHover={{ scale: 1.03, y: -2 }}

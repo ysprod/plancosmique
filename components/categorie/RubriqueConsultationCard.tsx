@@ -23,6 +23,20 @@ const RubriqueConsultationCard = memo<RubriqueConsultationCardProps>(
     const { choice, status } = enrichedChoice;
     const shimmerDelay = useMemo(() => index * 0.15, [index]);
 
+    // Fallback frontend stricte selon la logique métier
+    let fallbackButtonStatus: 'CONSULTER' | 'RÉPONSE EN ATTENTE' | "VOIR L'ANALYSE" = 'CONSULTER';
+    // On suppose que status contient potentiellement isPaid et analysisNotified (sinon, on reste sur 'CONSULTER')
+    const isPaid = (status as any).isPaid;
+    const analysisNotified = (status as any).analysisNotified;
+
+    if (!status.consultationId || isPaid === false) {
+      fallbackButtonStatus = 'CONSULTER';
+    } else if (isPaid === true && analysisNotified !== true) {
+      fallbackButtonStatus = 'RÉPONSE EN ATTENTE';
+    } else if (analysisNotified === true) {
+      fallbackButtonStatus = "VOIR L'ANALYSE";
+    }
+
     return (
       <motion.article
         variants={cardVariants}
@@ -54,7 +68,7 @@ const RubriqueConsultationCard = memo<RubriqueConsultationCardProps>(
 
           <div className="mt-auto w-full">
             <ConsultationButton
-              status={status.buttonStatus}
+              status={fallbackButtonStatus}
               consultationId={status.consultationId}
               onConsult={onSelect}
             />

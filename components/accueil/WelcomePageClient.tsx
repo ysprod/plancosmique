@@ -57,7 +57,7 @@ function WelcomePageClient() {
           Bienvenue dans ce temple, où chacun vient chercher une réponse aux trois grandes questions de l'existence :
         </motion.p>
 
-        <motion.div variants={itemVariants} className="mb-6">
+        <motion.div variants={itemVariants} className="mb-2">
           <WelcomeQuestions />
         </motion.div>
 

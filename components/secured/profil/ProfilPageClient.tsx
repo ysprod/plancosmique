@@ -51,10 +51,10 @@ export default function ProfilPageClient() {
         {userdata && <ProfilWelcomeMessage user={userdata} />}
         {/* Félicitations grade */}
         {userdata && <ProfilGradeCongrats user={userdata} />}
-        {/* Progression vers le prochain grade */}
-        {userdata && <ProfilProgressTable user={userdata} />}
         {/* Bannière type de profil */}
         {userdata && <ProfilUserTypeBanner user={userdata} />}
+        {/* Progression vers le prochain grade */}
+        {userdata && <ProfilProgressTable user={userdata} />}
         {userdata?.premium && (
           <>
             <ProfilHighlightCards />

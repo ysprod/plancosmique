@@ -48,14 +48,42 @@ export const DayCard = memo<DayCardProps>(({ day, onClick }) => {
         className="w-6 h-6 sm:w-8 sm:h-8"
       />
       {(day.isNew || day.isFull) && (
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.1 }}
-          className={`absolute -top-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${phaseConfig.badge} flex items-center justify-center shadow-md border border-white/40`}
-        >
-          <span className="text-[10px]">{phaseConfig.emoji}</span>
-        </motion.div>
+        <>
+          {/* Halo cosmique animé */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{
+              opacity: [0.7, 0.9, 0.7],
+              scale: [1, 1.25, 1],
+              boxShadow: [
+                '0 0 0px 0px #fff0',
+                `0 0 16px 8px ${day.isFull ? '#ffe066' : '#a5b4fc'}`,
+                '0 0 0px 0px #fff0'
+              ]
+            }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute -top-2.5 -right-2.5 w-10 h-10 rounded-full pointer-events-none z-10"
+            style={{
+              background: day.isFull
+                ? 'radial-gradient(circle, #fffbe6 0%, #ffe06644 60%, transparent 100%)'
+                : 'radial-gradient(circle, #e0e7ff 0%, #a5b4fc44 60%, transparent 100%)'
+            }}
+          />
+          {/* Badge lunaire */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className={`absolute -top-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${phaseConfig.badge} flex items-center justify-center shadow-md border border-white/40 z-20 animate-glow`}
+            style={{
+              boxShadow: day.isFull
+                ? '0 0 12px 4px #ffe06699, 0 0 32px 8px #fffbe699'
+                : '0 0 12px 4px #a5b4fc99, 0 0 32px 8px #e0e7ff99'
+            }}
+          >
+            <span className="text-[13px] animate-pulse drop-shadow-lg">{phaseConfig.emoji}</span>
+          </motion.div>
+        </>
       )}
       {day.isToday && (
         <motion.div

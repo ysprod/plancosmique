@@ -2,12 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
-  Handshake,
-  Users,
-  TrendingUp,
-  Building,
-  GraduationCap,
-  MessageSquare,
+  Handshake, Users, TrendingUp, Building, GraduationCap, MessageSquare,
 } from 'lucide-react';
 
 const missions = [
@@ -76,7 +71,7 @@ export default function MissionsSection() {
   return (
     <section className="py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
- 
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -130,7 +125,6 @@ export default function MissionsSection() {
                 {mission.description}
               </p>
 
-              {/* Bottom accent */}
               <div
                 className={`absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r ${mission.gradient} transition-all duration-500 group-hover:w-full`}
               />

@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { RUBRIQUE_ID, TYPE_CONSULTATION } from '@/components/analysehoroscope/constants';
 import { api } from '@/lib/api/client';
 import { getRubriqueById } from '@/lib/api/services/rubriques.service';
+import { useAuth } from '@/lib/auth/AuthContext';
 import { mapFormDataToBackend } from '@/lib/functions';
-import { RUBRIQUE_ID, TYPE_CONSULTATION } from '@/components/analysehoroscope/constants';
 import { OfferingAlternative, User, WalletOffering } from '@/lib/interfaces';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export type HoroscopeTabId = 'annuel' | 'mensuel';
 export type StepType = 'selection' | 'consulter' | 'processing' | 'genereanalyse';
@@ -16,7 +18,10 @@ interface Consultation {
     status: string;
 }
 
-export function useAnalyseHoroscopePage(user: any, params: URLSearchParams) {
+export function useAnalyseHoroscopePage() {
+    const { user } = useAuth();
+    const router = useRouter();
+    const params = useSearchParams();
     const consultationCreationLock = useRef(false);
     const [step, setStep] = useState<StepType>('selection');
     const [loading, setLoading] = useState(true);
@@ -25,7 +30,10 @@ export function useAnalyseHoroscopePage(user: any, params: URLSearchParams) {
     const [consultationId, setConsultationId] = useState<string | null>(null);
     const [consultation, setConsultation] = useState<Consultation | null>(null);
     const [walletOfferings, setWalletOfferings] = useState<WalletOffering[]>([]);
-    const tabId = useMemo(() => params.get('tab') as HoroscopeTabId | null, [params]);
+    const tabId = useMemo(() => {
+        if (!params) return 'annuel';
+        return (params.get('tab') as HoroscopeTabId) || 'annuel';
+    }, [params]);
 
     useEffect(() => {
         if (!user?._id || !tabId) return;
@@ -64,7 +72,7 @@ export function useAnalyseHoroscopePage(user: any, params: URLSearchParams) {
                     type: TYPE_CONSULTATION,
                     title: choice.title,
                     description: choice.description,
-                    status: 'pending_payment',
+                    status: 'PENDING',
                     alternatives: choice.offering.alternatives,
                     formData: mapFormDataToBackend(userdata),
                 };
@@ -107,7 +115,7 @@ export function useAnalyseHoroscopePage(user: any, params: URLSearchParams) {
                     }],
                 });
                 await api.patch(`/consultations/${consultationId}`, {
-                    status: 'paid',
+                    isPaid: true,
                     paymentMethod: 'wallet_offerings',
                 });
                 setStep('genereanalyse');
@@ -122,6 +130,8 @@ export function useAnalyseHoroscopePage(user: any, params: URLSearchParams) {
     );
 
     const handleCloseError = useCallback(() => setError(null), []);
+    const handleBack = useCallback(() => router.back(), [router]);
+
     return {
         step,
         setStep,
@@ -133,5 +143,6 @@ export function useAnalyseHoroscopePage(user: any, params: URLSearchParams) {
         walletOfferings,
         handleOfferingValidation,
         handleCloseError,
+        handleBack,
     };
 }
