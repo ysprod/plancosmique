@@ -58,7 +58,7 @@ export const removeRefreshToken = (): void => {
 /**
  * Stocke les données utilisateur
  */
-export const setUser = (user: any): void => {
+export const setUser = (user: User): void => {
   if (typeof window !== 'undefined') {
     localStorage.setItem(config.auth.userKey, JSON.stringify(user));
   }

@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Package } from "lucide-react";
 import React from "react";
 
-import type { Rubrique } from "@/lib/interfaces";
+import type { Offering, Rubrique } from "@/lib/interfaces";
 
 interface RubriquesEditorPanelProps {
   editingRubrique: Rubrique | null;
@@ -12,7 +12,7 @@ interface RubriquesEditorPanelProps {
   onSave: () => void;
   onCancel: () => void;
   isSaving: boolean;
-  offerings: any[];
+  offerings: Offering[];
 }
 
 export function RubriquesEditorPanel({ editingRubrique, setEditingRubrique, onSave, onCancel, isSaving, offerings }: RubriquesEditorPanelProps) {

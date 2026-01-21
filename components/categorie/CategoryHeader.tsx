@@ -1,5 +1,5 @@
 'use client';
-import type { CategorieAdmin } from "@/lib/interfaces";
+import type { CategorieAdmin, RubriqueOrNone } from "@/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { memo, useMemo } from "react";
 import CategoryBackButton from "./CategoryBackButton";
@@ -9,7 +9,7 @@ import { useCategoryHeader } from "@/hooks/commons/useCategoryHeader";
 
 interface CategoryHeaderProps {
   category: CategorieAdmin;
-  rubriqueCourante: any;
+  rubriqueCourante: RubriqueOrNone;
   closeRubrique: () => void;
 }
 

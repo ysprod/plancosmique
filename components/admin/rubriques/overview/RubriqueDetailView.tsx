@@ -3,6 +3,7 @@ import { memo } from 'react';
 import { motion } from 'framer-motion';
 import ChoiceCard from './ChoiceCard';
 import { getId, clamp } from '@/lib/functions';
+import { Rubrique } from '@/lib/interfaces';
 
 const listVariants = {
   initial: {},
@@ -10,7 +11,7 @@ const listVariants = {
 };
 
 interface RubriqueDetailViewProps {
-  rubrique: any;
+  rubrique: Rubrique;
   choices: any[];
   onOpenChoice: (choiceId: string) => void;
 }

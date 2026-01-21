@@ -2,7 +2,7 @@
 import { memo, useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import type { CategorieAdmin, User } from '@/lib/interfaces';
+import type { CategorieAdmin, Rubrique, User } from '@/lib/interfaces';
 import CategoryStepNavigation from './CategoryStepNavigation';
 import CategoryContextBanner from './CategoryContextBanner';
 import ConsultationForm from '../vie-personnelle/ConsultationForm';
@@ -35,7 +35,7 @@ const CategoryFormClient = memo<CategoryFormClientProps>(function CategoryFormCl
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
   const [showErrorToast, setShowErrorToast] = useState(false);
-  const [contextInfo, setContextInfo] = useState<{ rubrique?: any; choix?: any }>({});
+  const [contextInfo, setContextInfo] = useState<{ rubrique?: Rubrique; choix?: any }>({});
   const [needsForm, setNeedsForm] = useState(true);
   const [userData, setUserData] = useState<User | null>(null);
   

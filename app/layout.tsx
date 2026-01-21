@@ -52,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <RootSchemaScript />
       </head>
       <body className={bodyClasses} suppressHydrationWarning>
+       
         <RootSkipLink />
 
         <ThemeProvider

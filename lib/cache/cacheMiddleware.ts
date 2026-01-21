@@ -3,7 +3,7 @@
  * À utiliser dans les route handlers (app/api/...)
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 /**
  * Ajoute les headers de cache optimisés pour les API routes

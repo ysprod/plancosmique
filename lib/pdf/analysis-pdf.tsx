@@ -137,7 +137,7 @@ export const AnalysisDocument: React.FC<AnalysisDocumentProps> = ({ analyse }) =
         </View>
 
         <View style={{ position: 'absolute', bottom: 20, left: 30, right: 30, textAlign: 'center', fontSize: 8, color: '#9ca3af', borderTop: '1 solid #e5e7eb', paddingTop: 8 }}>
-          <Text>Analyse générée par Mon Etoile - Intelligence Astrologique</Text>
+          <Text>Mon Etoile - Intelligence Astrologique</Text>
           <Text>© {new Date().getFullYear()} Mon Etoile. Tous droits réservés.</Text>
         </View>
       </Page>

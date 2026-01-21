@@ -9,7 +9,7 @@ const processUserData = (userData: User | null): ProcessedUserData | null => {
   if (!userData) return null;
   return {
     _id: userData._id,
-    name: `${userData.prenom || userData.username || ""} ${userData.nom || ""}`.trim(),
+    name: `${userData.prenoms || userData.username || ""} ${userData.nom || ""}`.trim(),
     birthDate: userData.dateNaissance
       ? formatDate(userData.dateNaissance)
       : "",

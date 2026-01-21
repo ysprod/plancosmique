@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import { motion } from 'framer-motion';
 import AnalyseGenere from './AnalyseGenere';
 
 interface Slide4SectionGenereAnalyseProps {

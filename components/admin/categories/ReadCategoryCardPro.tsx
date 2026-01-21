@@ -1,13 +1,13 @@
 "use client";
 import { rubriqueLabel } from "@/lib/functions";
-import { CategorieAdmin } from "@/lib/interfaces";
+import { CategorieAdmin, Rubrique } from "@/lib/interfaces";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Check, Copy, Pencil, Trash2 } from "lucide-react";
 import { memo, useCallback, useMemo, useState } from "react";
 import { MiniPill } from "./MiniPill";
 
-function getCategoryId(cat: any): string {
-  return String(cat?._id ?? cat?.id ?? "");
+function getCategoryId(cat: CategorieAdmin): string {
+  return String(cat?._id ?? "");
 }
 
 const cardVariants = {
@@ -180,8 +180,8 @@ export const ReadCategoryCardPro = memo(function ReadCategoryCardPro({
             </div>
           ) : (
             <div className="flex flex-wrap gap-1.5">
-              {rubriquesMeta.visible.map((r: any, idx: number) => {
-                const rid = String(r?._id ?? r?.id ?? idx);
+              {rubriquesMeta.visible.map((r: Rubrique, idx: number) => {
+                const rid = String(r?._id  ?? idx);
                 const label = rubriqueLabel(r) || "—";
                 return <MiniPill key={`${rid}-${idx}`}>{label}</MiniPill>;
               })}

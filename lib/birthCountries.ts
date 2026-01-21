@@ -1,4 +1,3 @@
-// Liste des pays pour le champ pays de naissance
 export const birthCountries = [
   'Côte d’Ivoire',
   'Afghanistan', 'Afrique du Sud', 'Albanie', 'Algérie', 'Allemagne', 'Andorre', 'Angola', 'Antigua-et-Barbuda', 'Arabie saoudite', 'Argentine', 'Arménie', 'Australie', 'Autriche', 'Azerbaïdjan',

@@ -7,11 +7,8 @@ import { NextResponse } from 'next/server';
 
 function generateFilename(sujet: Sujet): string {
   const sanitize = (str: string) =>
-    str.trim()
-      .replace(/[^a-zA-Z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .toLowerCase()
-      .substring(0, 40);
+    str.trim().replace(/[^a-zA-Z0-9\s-]/g, '')
+      .replace(/\s+/g, '-').toLowerCase().substring(0, 40);
   const prenoms = sanitize(sujet.prenoms);
   const nom = sanitize(sujet.nom);
   const date = new Date().toISOString().split('T')[0];

@@ -52,9 +52,7 @@ export const UsersPageContent = memo(function UsersPageContent({
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-blue-50/40 dark:from-gray-900 dark:via-purple-950/30 dark:to-blue-950/40 overflow-hidden">
       <BackgroundOrbs />
-
-
-
+      
       <PageHeader
         total={total}
         isRefreshing={isRefreshing}

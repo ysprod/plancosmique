@@ -6,8 +6,7 @@ export async function getRubrique(id: string): Promise<Rubrique & { consultation
     const rubrique = await getRubriqueById(id);
     if (!rubrique) return null;
     return {
-      ...rubrique,
-      consultations: rubrique.consultationChoices || []
+      ...rubrique, consultations: rubrique.consultationChoices || []
     };
   } catch {
     return null;

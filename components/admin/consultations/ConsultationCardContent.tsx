@@ -1,17 +1,12 @@
 "use client";
 import { useConsultationCardData } from "@/hooks/consultations/useConsultationCardData";
 import { memo } from "react";
+import { NumerologyAnalysisSection } from "./choices/numerologie/NumerologyAnalysisSection";
 import ConsultationCardActions from "./ConsultationCardActions";
 import ConsultationCardHeader from "./ConsultationCardHeader";
 import ConsultationCardTabsContainer from "./ConsultationCardTabsContainer";
 import ConsultationCardUserInfo from "./ConsultationCardUserInfo";
 import type { TabKey } from "./DisplayConsultationCard.types";
-import { NumerologyCycles } from "./numerologie/NumerologyCycles";
-import { NumerologyLifeCycles } from "./numerologie/NumerologyLifeCycles";
-import { NumerologySynthesis } from "./numerologie/NumerologySynthesis";
-import { NumerologyTheme } from "./numerologie/NumerologyTheme";
-import { NumerologyWisdom } from "./numerologie/NumerologyWisdom";
-import { NumerologyAnalysisSection } from "./choices/numerologie/NumerologyAnalysisSection";
 
 interface ConsultationCardContentProps {
     derived: any;

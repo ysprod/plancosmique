@@ -23,7 +23,6 @@
  * ```
  */
 
-import axios, { AxiosError } from 'axios';
 import type {
   InitiatePaymentConfig,
   InitiatePaymentResult,
@@ -36,6 +35,7 @@ import type {
   VerifyPaymentResult,
 } from '@/lib/types/moneyfusion.types';
 import { MONEYFUSION_ERROR_MESSAGES } from '@/lib/types/moneyfusion.types';
+import axios, { AxiosError } from 'axios';
 
 // ==================== CONFIGURATION ====================
 
@@ -430,10 +430,8 @@ export { MoneyFusionService };
 /**
  * Export des types
  */
-export type {
-  InitiatePaymentConfig,
-  InitiatePaymentResult,
-  VerifyPaymentResult,
-  MoneyFusionConfig,
-  MoneyFusionError,
-};
+  export type {
+    InitiatePaymentConfig,
+    InitiatePaymentResult, MoneyFusionConfig,
+    MoneyFusionError, VerifyPaymentResult
+  };

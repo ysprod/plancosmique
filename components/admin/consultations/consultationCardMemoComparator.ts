@@ -8,8 +8,8 @@ interface ConsultationCardProps {
 }
 
 export function consultationCardMemoComparator(prev: ConsultationCardProps, next: ConsultationCardProps): boolean {
-  const p: any = prev.consultation;
-  const n: any = next.consultation;
+  const p: AnalyseAstrologique = prev.consultation;
+  const n: AnalyseAstrologique = next.consultation;
 
   if (p === n && prev.notifiedback === next.notifiedback) return true;
 

@@ -4,17 +4,17 @@ import { EditCategoryCardPro } from "@/components/admin/categories/EditCategoryC
 import { ReadCategoryCardPro } from "@/components/admin/categories/ReadCategoryCardPro";
 import { SkeletonList } from "@/components/admin/categories/SkeletonList";
 import React, { useState, useMemo } from "react";
-import { Rubrique } from "@/lib/interfaces";
+import { CategorieAdmin, Rubrique } from "@/lib/interfaces";
 
 interface CategoriesListProps {
-    categories: any[];
+    categories: CategorieAdmin[];
     rubriques: Rubrique[];
     categoriesLoading: boolean;
     rubriquesLoading: boolean;
     editingId: string | null;
     startEdit: (id: string) => void;
     stopEdit: () => void;
-    saveEdit: (id: string, patch: any) => void;
+    saveEdit: (id: string, patch: Partial<CategorieAdmin>) => void;
     handleDeleteCategory: (id: string) => void;
 }
 
@@ -58,7 +58,7 @@ const CategoriesList: React.FC<CategoriesListProps> = ({
                     const actualIndex = (page - 1) * perPage + index;
                     return (
                         <motion.div
-                            key={cat.id}
+                            key={cat._id}
                             initial="initial"
                             animate="animate"
                             exit="exit"
@@ -69,7 +69,7 @@ const CategoriesList: React.FC<CategoriesListProps> = ({
                                 {getCategoryIcon(actualIndex)}
                             </div>
                             <div className="pl-12">
-                                {editingId === cat.id ? (
+                                {editingId === cat._id ? (
                                     <EditCategoryCardPro
                                         cat={cat}
                                         rubriques={rubriques ?? []}

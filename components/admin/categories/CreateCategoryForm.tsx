@@ -1,5 +1,6 @@
 'use client';
 import { RubriquesPickerPro } from "@/components/admin/categories/RubriquesPickerPro";
+import { Rubrique } from "@/lib/interfaces";
 import { ArrowLeft, Plus, Tags } from "lucide-react";
 
 interface CreateCategoryFormProps {
@@ -8,16 +9,16 @@ interface CreateCategoryFormProps {
   description: string;
   setDescription: (v: string) => void;
   rubriqueIds: string[];
-  rubriques: any[];
+  rubriques: Rubrique[];
   rubriquesLoading: boolean;
   busy: boolean;
   banner: { type: "success" | "error"; message: string } | null;
   canCreate: boolean;
-  selectedRubriques: any[];
+  selectedRubriques: Rubrique[];
   handleCreate: () => void;
   toggleRubrique: (id: string) => void;
   goBack: () => void;
-  rubriqueLabel: (r: any) => string;
+  rubriqueLabel: (r: Rubrique) => string;
 }
 
 export function CreateCategoryForm({

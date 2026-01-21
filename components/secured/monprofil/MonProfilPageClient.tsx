@@ -95,7 +95,7 @@ HeaderSection.displayName = 'HeaderSection';
 export default function MonProfilPageClient() {
   const { user, processedData, isLoading } = useMonProfil();
 
-  const userName = useMemo(() => user?.prenom || 'Voyageur', [user?.prenom]);
+  const userName = useMemo(() => user?.prenoms || 'Voyageur', [user?.prenoms]);
   const isPremium = useMemo(() => !!user?.premium, [user?.premium]);
   
   const carteDuCielData = useMemo(() => {

@@ -5,9 +5,10 @@ import { AdminSidebarHeader } from "./AdminSidebarHeader";
 import { AdminSidebarNav } from "./AdminSidebarNav";
 import { AdminLogoutButton } from "./AdminLogoutButton";
 import React from "react";
+import { User } from "@/lib/interfaces";
 
 interface AdminShellMobileSidebarProps {
-  user: any;
+  user: User | null;
   isLoggingOut: boolean;
   showMobileSidebar: boolean;
   setShowMobileSidebar: (show: boolean) => void;

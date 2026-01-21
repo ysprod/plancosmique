@@ -10,16 +10,17 @@ import { CATEGORIES_OFFRANDES } from '@/lib/constants';
 import GestionPanelContainer from './gestion/GestionPanelContainer';
 import GestionEmptyState from './gestion/GestionEmptyState';
 import { useGestionPanel } from './gestion/useGestionPanel';
+import { Offering } from '@/lib/interfaces';
 
 interface OffrandesGestionPanelProps {
-  offerings: any[];
+  offerings: Offering[];
   loading: boolean;
   successMessage: string | null;
   errorMessage: string | null;
   setErrorMessage: (msg: string | null) => void;
   fetchOfferings: () => void;
   handleAdd: () => void;
-  handleEdit: (offering: any) => void;
+  handleEdit: (offering: Offering) => void;
   handleDelete: (id: string) => void;
 }
 

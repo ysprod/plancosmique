@@ -16,8 +16,9 @@ export function mapFormDataToBackend(form: User | null): Record<string, any> {
     console.warn('mapFormDataToBackend: form is null or undefined');
     return {};
   }
+
   const result = {
-    firstName: form.prenoms || form.prenom || '',
+    firstName: form.prenoms || '',
     lastName: form.nom || '',
     dateOfBirth: form.dateNaissance
       ? new Date(form.dateNaissance).toISOString()
@@ -129,7 +130,7 @@ export function processUserData(userData: User | null): ProcessedUserData | null
 
   return {
     _id: userData._id,
-    name: `${userData.prenom || userData.username || ""} ${userData.nom || ""}`.trim(),
+    name: `${userData.prenoms || userData.username || ""} ${userData.nom || ""}`.trim(),
     birthDate: userData.dateNaissance ? formatDate(userData.dateNaissance) : "",
     prenoms: userData.prenoms || userData.username || "",
     nom: userData.nom || "",

@@ -65,7 +65,6 @@ export async function POST(request: NextRequest) {
                 message: 'Paiement déjà traité',
             });
         } else if (code_statut === 3) {
-            // Paiement en attente
             return NextResponse.json({
                 success: true,
                 message: 'Paiement en attente',

@@ -2,13 +2,14 @@
 import React from "react";
 import { Eye } from "lucide-react";
 import RubriquesPickerSimple from "./RubriquesPickerSimple";
+import { Rubrique } from "@/lib/interfaces";
 
 interface CategoryFormProps {
     nom: string;
     setNom: (v: string) => void;
     description: string;
     setDescription: (v: string) => void;
-    rubriques: any[];
+    rubriques: Rubrique[];
     rubriqueIds: string[];
     selectedSet: Set<string>;
     rubriquesLoading: boolean;

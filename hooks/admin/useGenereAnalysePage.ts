@@ -22,7 +22,7 @@ export function useGenereAnalysePage() {
 
     const loadAnalysis = async () => {
       try {
-        setStep('fetching');
+        setStep('loading');
         console.log('Fetching analysis for consultation ID:', consultationId);
         const response = await api.get(`/consultations/analysis/${consultationId}`);
         console.log('Response:', response);

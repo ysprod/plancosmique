@@ -5,7 +5,7 @@ import { UserType } from './types/user-profile.types';
 export type RubriqueOrNone = Rubrique | null;
 export type Category = 'animal' | 'vegetal' | 'beverage';
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm';
-export type GenerationStep = 'loading' | 'fetching' | 'success' | 'error';
+export type GenerationStep = 'loading' | 'success' | 'error';
 export type TransactionFilter = "all" | "simulation" | "real";
 export type SortOrder = "newest" | "oldest" | "amount_high" | "amount_low";
 export type OfferingCategory = "animal" | "vegetal" | "beverage";
@@ -21,7 +21,7 @@ export type FrequenceConsultation =
 export type TypeParticipants =
   | 'SOLO'              // Uniquement l'utilisateur
   | 'AVEC_TIERS'        // Utilisateur + une personne tierce
-  | 'POUR_TIERS'        
+  | 'POUR_TIERS'
   | 'GROUPE';
 
 export interface ConsultationData {
@@ -397,13 +397,12 @@ export interface User {
   _id?: string;
   email: string;
   nom: string;
-  prenom: string;
+  prenoms: string;
   username: string;
   gender: 'male' | 'female';
   country: string;
   phone: string;
   carteDuCiel?: any;
-  prenoms?: string;
   dateNaissance?: Date;
   paysNaissance?: string;
   villeNaissance?: string;
@@ -437,14 +436,12 @@ export interface User {
   consultationsCount?: number;
   avatar?: string;
   updatedAt?: string | Date;
-  
   // Système de grades initiatiques (compatible backend)
   grade?: Grade | null;
   consultationsCompleted?: number;
   rituelsCompleted?: number;
   booksRead?: number;
   lastGradeUpdate?: Date | string;
-  
   // Système de profils utilisateurs (compatible backend)
   userType?: UserType;
   subscriptionStartDate?: Date | string;
@@ -716,6 +713,6 @@ export interface CinqPortes {
 }
 
 export interface EnrichedChoice {
-    choice: ConsultationChoice;
-    status: ConsultationChoiceStatusDto;
+  choice: ConsultationChoice;
+  status: ConsultationChoiceStatusDto;
 }

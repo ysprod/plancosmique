@@ -15,7 +15,7 @@ export function getRootMetadata() {
       locale: "fr_FR",
       url: "/",
       siteName: "Mon Étoile",
-      title: "Mon Étoile ✨ Votre Destinée Révélée | Voyance & Astrologie Authentique",
+      title: "Mon Étoile ✨ Votre Destinée Révélée",
       description:
         "🔮 Consultations spirituelles professionnelles • Analyses astrologiques détaillées • Guidance authentique • Révélez votre potentiel cosmique avec nos experts certifiés.",
       images: [

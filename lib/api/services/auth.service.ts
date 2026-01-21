@@ -27,7 +27,6 @@ export const authService = {
     const response = await api.post<AuthResponse>(endpoints.auth.login, data);
     const { accessToken, refreshToken, user } = response.data;
 
-    // Stocker les tokens et l'utilisateur
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
     setUser(user);

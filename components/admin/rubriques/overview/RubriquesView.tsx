@@ -3,6 +3,7 @@ import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { RubriqueCard } from './RubriqueCard';
 import { getId } from '@/lib/functions';
+import { Rubrique } from '@/lib/interfaces';
 
 const listVariants = {
   initial: {},
@@ -10,7 +11,7 @@ const listVariants = {
 };
 
 interface RubriquesViewProps {
-  rubriques: any[];
+  rubriques: Rubrique[];
   onOpenRubrique: (rubriqueId: string) => void;
 }
 
@@ -30,7 +31,7 @@ export const RubriquesView = memo(function RubriquesView({ rubriques, onOpenRubr
       animate="animate" 
       className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"
     >
-      {rubriques.map((r: any) => (
+      {rubriques.map((r: Rubrique) => (
         <RubriqueCard key={getId(r)} rubrique={r} onOpen={onOpenRubrique} />
       ))}
     </motion.div>

@@ -1,4 +1,5 @@
 'use client';
+import { Rubrique } from "@/lib/interfaces";
 import RubriquesPickerSimple from "./RubriquesPickerSimple";
 import { Eye } from "lucide-react";
 import React from "react";
@@ -8,7 +9,7 @@ interface CreateCategoryFormProps {
   setNom: (v: string) => void;
   description: string;
   setDescription: (v: string) => void;
-  rubriques: any[];
+  rubriques: Rubrique[];
   rubriqueIds: string[];
   selectedSet: any;
   rubriquesLoading: boolean;

@@ -46,7 +46,7 @@ export interface CreatePromptDto {
   variables?: Record<string, string>;
   tags?: string[];
   isActive?: boolean;
-  choiceId: string; // Obligatoire lors de la création
+  choiceId: string;
 }
 
-export interface UpdatePromptDto extends Partial<CreatePromptDto> {}
+export interface UpdatePromptDto extends Partial<CreatePromptDto> { }
