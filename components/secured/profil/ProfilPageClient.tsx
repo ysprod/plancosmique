@@ -8,14 +8,18 @@ import TopProgressBar from "@/components/profil/TopProgressBar";
 import { useProfilUser } from "@/hooks/commons/useProfilUser";
 import { InitiatiqueBadge } from "@/components/profil/InitiatiqueBadge";
 import { ProfilWelcomeMessage, ProfilGradeCongrats, ProfilProgressTable, ProfilUserTypeBanner } from "@/components/profil/ProfilAutomatedSections";
+import { useGradeToast, GradeToast } from "@/components/profil/useGradeToast";
 
 export default function ProfilPageClient() {
   const { userdata, loading } = useProfilUser();
+  const { show, level, close } = useGradeToast(userdata);
 
   return (
     <div>
       <AnimatedBackground />
       <TopProgressBar />
+
+      <GradeToast show={show} level={level} close={close} />
 
       <div className="relative z-10 px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 max-w-7xl mx-auto">
         {/* Badge initiatique affiché en haut de la page */}
