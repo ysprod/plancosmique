@@ -7,6 +7,7 @@ import ProfilNonPremiumSection from "@/components/profil/ProfilNonPremiumSection
 import TopProgressBar from "@/components/profil/TopProgressBar";
 import { useProfilUser } from "@/hooks/commons/useProfilUser";
 import { InitiatiqueBadge } from "@/components/profil/InitiatiqueBadge";
+import { ProfilWelcomeMessage, ProfilGradeCongrats, ProfilProgressTable, ProfilUserTypeBanner } from "@/components/profil/ProfilAutomatedSections";
 
 export default function ProfilPageClient() {
   const { userdata, loading } = useProfilUser();
@@ -21,6 +22,14 @@ export default function ProfilPageClient() {
         <div className="flex justify-center mb-6">
           <InitiatiqueBadge grade={userdata?.grade} />
         </div>
+        {/* Message d’accueil */}
+        {userdata && <ProfilWelcomeMessage user={userdata} />}
+        {/* Félicitations grade */}
+        {userdata && <ProfilGradeCongrats user={userdata} />}
+        {/* Progression vers le prochain grade */}
+        {userdata && <ProfilProgressTable user={userdata} />}
+        {/* Bannière type de profil */}
+        {userdata && <ProfilUserTypeBanner user={userdata} />}
         {userdata?.premium && (
           <>
             <ProfilHighlightCards/>
