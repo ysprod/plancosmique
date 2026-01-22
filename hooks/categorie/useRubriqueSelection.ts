@@ -17,11 +17,17 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
     const [creatingConsultation, setCreatingConsultation] = useState(false);
 
     const enrichedChoices = useMemo(() => {
-        return rubrique.consultationChoices ? extractEnrichedChoices(rubrique.consultationChoices) : [];
-    }, [rubrique.consultationChoices]);
+        if (!rubrique || !rubrique.consultationChoices) return [];
+        return extractEnrichedChoices(rubrique.consultationChoices);
+    }, [rubrique && rubrique.consultationChoices]);
 
     const sortedChoices = useMemo(() =>
-        [...enrichedChoices].sort((a, b) => (a.choice.order ?? 999) - (b.choice.order ?? 999)),
+        [...enrichedChoices].sort((a, b) => {
+            // Defensive: avoid undefined .choice
+            const aOrder = a && a.choice && typeof a.choice.order === 'number' ? a.choice.order : 999;
+            const bOrder = b && b.choice && typeof b.choice.order === 'number' ? b.choice.order : 999;
+            return aOrder - bOrder;
+        }),
         [enrichedChoices]
     );
 

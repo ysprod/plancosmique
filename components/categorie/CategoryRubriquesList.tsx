@@ -1,7 +1,7 @@
 "use client";
-import React, { memo } from "react";
+import type { CategorieAdmin } from "@/lib/interfaces";
 import { motion } from "framer-motion";
-import type { CategorieAdmin, Rubrique } from "@/lib/interfaces";
+import React, { memo } from "react";
 import { RubriqueCard } from "./RubriqueCard";
 
 const listVariants = {
@@ -11,20 +11,11 @@ const listVariants = {
 
 interface CategoryRubriquesListProps {
   category?: CategorieAdmin;
-  rubriques?: Rubrique[];
-  onOpen: (id: string) => void;
+  onOpen: (id: string, consultationId: string) => void;
 }
 
-const CategoryRubriquesList: React.FC<CategoryRubriquesListProps> = ({ category, rubriques, onOpen }) => {
-  const rubriquesList = rubriques || category?.rubriques || [];
-  
-  if (rubriquesList.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-gray-400 text-lg">Aucune rubrique disponible pour cette catégorie.</p>
-      </div>
-    );
-  }
+const CategoryRubriquesList: React.FC<CategoryRubriquesListProps> = ({ category, onOpen }) => {
+  const rubriquesList =   category?.rubriques || [];
 
   return (
     <motion.ul

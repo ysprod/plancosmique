@@ -1,4 +1,5 @@
 'use client';
+import { ConsultationChoice } from '@/lib/interfaces';
 import { motion } from 'framer-motion';
 import { Sparkles, Clock, Eye, LucideIcon } from 'lucide-react';
 import { memo } from 'react';
@@ -6,8 +7,7 @@ import { memo } from 'react';
 type ButtonStatus = 'CONSULTER' | 'RÉPONSE EN ATTENTE' | "VOIR L'ANALYSE";
 
 interface ConsultationButtonProps {
-  status: ButtonStatus;
-  consultationId?: string | null;
+  enrichedChoice: ConsultationChoice;
   onConsult: () => void;
 }
 
@@ -40,16 +40,17 @@ const BUTTON_CONFIGS: Record<ButtonStatus, ButtonConfig> = {
 };
 
 export const ConsultationButton = memo<ConsultationButtonProps>(
-  function ConsultationButton({ status, consultationId, onConsult }) {
-    const config = BUTTON_CONFIGS[status];
+  function ConsultationButton({ enrichedChoice, onConsult }) {
+    console.log('ConsultationButton rendered with enrichedChoice:', enrichedChoice);
+    const config = BUTTON_CONFIGS[enrichedChoice.buttonStatus];
     const Icon = config.icon;
-    const isPending = status === 'RÉPONSE EN ATTENTE';
-    const isViewAnalysis = status === "VOIR L'ANALYSE";
+    const isPending = enrichedChoice.buttonStatus === 'RÉPONSE EN ATTENTE';
+    const isViewAnalysis = enrichedChoice.buttonStatus === "VOIR L'ANALYSE";
 
     const handleClick = () => {
       if (isPending) return;
-      if (isViewAnalysis && consultationId) {
-        window.location.href = `/secured/consultations/${consultationId}`;
+      if (isViewAnalysis) {
+        window.location.href = `/secured/consultations/${enrichedChoice.consultationId}`;
       } else {
         onConsult();
       }

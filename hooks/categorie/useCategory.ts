@@ -1,32 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { getCategory } from '@/lib/api/services/categories.service';
 import type { CategorieAdmin } from '@/lib/interfaces';
 
-export function useCategory(id: string | null) {
+export function useCategory(id: string) {
   const [category, setCategory] = useState<CategorieAdmin | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!!id);
   const [error, setError] = useState<string | null>(null);
+  const stableId = useMemo(() => id, [id]);
 
   useEffect(() => {
-    if (!id) {
+    if (!stableId) {
+      setCategory(null);
       setLoading(false);
+      setError(null);
       return;
     }
-
     setLoading(true);
     setError(null);
-
-    getCategory(id)
-      .then(cat => {
+    (async () => {
+      try {
+        const cat = await getCategory(stableId);
         setCategory(cat);
-        setLoading(false);
-      })
-      .catch(err => {
+        setError(null);
+      } catch (err: any) {
+        setCategory(null);
+        setError(err?.message || 'Erreur lors du chargement de la catégorie');
         console.error('Error loading category:', err);
-        setError(err.message || 'Erreur lors du chargement de la catégorie');
+      } finally {
         setLoading(false);
-      });
-  }, [id]);
+      }
+    })();
+  }, [stableId]);
 
   return { category, loading, error };
 }

@@ -164,6 +164,12 @@ export interface ConsultationChoice {
   offering: ConsultationOffering;
   order?: number;
   promptId?: string;
+  choiceId: string;
+  choiceTitle: string;
+  buttonStatus: 'CONSULTER' | 'RÉPONSE EN ATTENTE' | "VOIR L'ANALYSE";
+  hasActiveConsultation: boolean;
+  consultationId: string | null;
+  consultationCount?: number;
 }
 
 export interface FormErrors {
@@ -183,12 +189,13 @@ export interface FormData {
 }
 
 export interface Rubrique {
-  typeconsultation: any;
+  typeconsultation?: any;
+    id?: string;
   _id?: string;
-  titre: string;
-  type: ConsultationType;
-  description: string;
-  categorie: string;
+  titre?: string;
+  type?: ConsultationType;
+  description?: string;
+  categorie?: string;
   consultationChoices: ConsultationChoice[];
   createdAt?: string;
   updatedAt?: string;
@@ -553,6 +560,7 @@ export interface Consultation {
 
 export interface CategorieAdmin {
   _id: string;
+  id?: string;
   nom?: string;
   titre?: string;
   description: string;
@@ -713,6 +721,7 @@ export interface CinqPortes {
 }
 
 export interface EnrichedChoice {
+  consultationCount: undefined;
   choice: ConsultationChoice;
   status: ConsultationChoiceStatusDto;
 }

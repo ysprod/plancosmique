@@ -23,6 +23,14 @@ const ChoiceCreateView = memo(function ChoiceCreateView({ onSave, onCancel, offe
         { category: "beverage", offeringId: "", quantity: 1 },
       ],
     },
+    order: 0,
+    promptId: "",
+    choiceId: "",
+    choiceTitle: "",
+    buttonStatus: 'CONSULTER',
+    hasActiveConsultation: false,
+    consultationId: null,
+    consultationCount: 0,
   });
 
   const handleSave = () => {

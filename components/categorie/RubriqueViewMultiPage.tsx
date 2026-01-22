@@ -1,48 +1,158 @@
 "use client";
-import { useRubriqueSelection } from "@/hooks/categorie/useRubriqueSelection";
-import type { Rubrique } from "@/lib/interfaces";
-import { memo } from "react";
+import { useAuth } from "@/hooks/lib/useAuth";
+import { api } from "@/lib/api/client";
+import { mapFormDataToBackend } from "@/lib/functions";
+import type { ConsultationChoice, EnrichedChoice, Rubrique } from "@/lib/interfaces";
+import { useRouter } from "next/navigation";
+import { memo, useCallback, useMemo, useState } from "react";
 import { RubriqueConsultationGrid } from "./RubriqueConsultationGrid";
-import RubriqueErrorDisplay from "./RubriqueErrorDisplay";
 import RubriqueHeader from "./RubriqueHeader";
-import RubriqueLoadingState from "./RubriqueLoadingState";
 
 interface RubriqueViewMultiPageProps {
   rubrique: Rubrique;
   categoryId: string;
 }
 
+const extractEnrichedChoices = (consultationChoices: any[]): EnrichedChoice[] => {
+  return consultationChoices.map((item: any) => {
+    return item as EnrichedChoice;
+  });
+};
+
 export const RubriqueViewMultiPage = memo<RubriqueViewMultiPageProps>(
   function RubriqueViewMultiPage({ rubrique, categoryId }) {
-    const {
-      loading, apiError, creatingConsultation, sortedChoices, handleSelectConsultation,
-    } = useRubriqueSelection(rubrique, categoryId);
 
-    if (loading || creatingConsultation) {
-      return (
-        <div className="relative mx-auto max-w-4xl">
-          <RubriqueHeader rubrique={rubrique} />
-          <RubriqueLoadingState isCreating={creatingConsultation} />
-        </div>
-      );
-    }
 
-    if (apiError) {
-      return (
-        <div className="relative mx-auto max-w-4xl">
-          <RubriqueHeader rubrique={rubrique} />
-          <RubriqueErrorDisplay error={apiError} />
-        </div>
-      );
-    }
+
+    const router = useRouter();
+    const { user } = useAuth();
+ 
+
+    const enrichedChoices = useMemo(() => {
+      if (!rubrique || !rubrique.consultationChoices) return [];
+      return extractEnrichedChoices(rubrique.consultationChoices);
+    }, [rubrique && rubrique.consultationChoices]);
+
+    const sortedChoices = useMemo(() =>
+      [...enrichedChoices].sort((a, b) => {
+        // Defensive: avoid undefined .choice
+        const aOrder = a && a.choice && typeof a.choice.order === 'number' ? a.choice.order : 999;
+        const bOrder = b && b.choice && typeof b.choice.order === 'number' ? b.choice.order : 999;
+        return aOrder - bOrder;
+      }),
+      [enrichedChoices]
+    );
+
+    const stats = useMemo(() => {
+      const total = sortedChoices.length;
+      const consulted = sortedChoices.filter(c => c.status.buttonStatus !== 'CONSULTER').length;
+      const pending = sortedChoices.filter(c => c.status.buttonStatus === 'RÉPONSE EN ATTENTE').length;
+      const completed = sortedChoices.filter(c => c.status.buttonStatus === "VOIR L'ANALYSE").length;
+      return { total, consulted, pending, completed };
+    }, [sortedChoices]);
+
+    const handleSelectConsultation = useCallback(
+      async (choice: ConsultationChoice) => {
+
+
+        const enrichedChoice = enrichedChoices.find(
+          ec => (ec.choice._id) === (choice._id)
+        );
+
+        if (enrichedChoice?.status?.consultationId) {
+          alert('📋 Consultation existante détectée, redirection directe...');
+       
+          router.push(`/secured/category/${categoryId}/consulter?consultationId=${enrichedChoice.status.consultationId}`);
+          return;
+        }
+
+        sessionStorage.setItem("selectedChoiceId", choice._id || "");
+        sessionStorage.setItem("categoryId", categoryId);
+        sessionStorage.setItem("rubriqueId", rubrique._id || "");
+
+        const participants = choice.participants;
+
+        if (participants === 'SOLO') {
+          console.log('⚡ Consultation SOLO détectée, création automatique...');
+
+          if (!user) {
+            console.error('❌ Utilisateur non connecté');
+       
+            return;
+          }
+
+          try {
+            const mappedFormData = mapFormDataToBackend(user);
+
+            const payload = {
+              serviceId: process.env.NEXT_PUBLIC_SERVICE_ID,
+              type: rubrique.typeconsultation,
+              title: choice.title || 'Consultation',
+              formData: mappedFormData,
+              description: choice.description || '',
+              status: 'PENDING',
+              alternatives: choice.offering?.alternatives || [],
+              choice: choice,
+            };
+
+            console.log('📤 Création consultation SOLO avec payload:', payload);
+
+            const response = await api.post('/consultations', payload);
+            const id = response.data?.id || response.data?.consultationId || response.data?._id;
+
+            if (id) {
+              console.log('✅ Consultation SOLO créée avec ID:', id);
+              sessionStorage.removeItem('selectedChoiceId');
+              router.push(`/secured/category/${categoryId}/consulter?consultationId=${id}`);
+            } else {
+              throw new Error('ID de consultation manquant dans la réponse');
+            }
+          } catch (error: any) {
+            console.error('❌ Erreur création consultation SOLO:', error);
+         
+            // En cas d'erreur, fallback vers le formulaire
+            router.push(`/secured/category/${categoryId}/form`);
+          }
+        } else if (participants === 'AVEC_TIERS') {
+          // Pour AVEC_TIERS : afficher le formulaire pour collecter les données de la tierce personne
+          console.log('📝 Consultation AVEC_TIERS détectée, affichage du formulaire...');
+    
+          router.push(`/secured/category/${categoryId}/form`);
+        } else {
+          // Fallback : rediriger vers le formulaire qui gérera le cas
+          console.log('❓ Type de consultation inconnu, redirection vers formulaire...');
+      
+          router.push(`/secured/category/${categoryId}/form`);
+        }
+      },
+      [categoryId, rubrique._id, rubrique.typeconsultation, router, enrichedChoices, user]
+    );
+
+    // if (loading || creatingConsultation) {
+    //   return (
+    //     <div className="relative mx-auto max-w-4xl">
+    //       <RubriqueHeader rubrique={rubrique} />
+    //       <RubriqueLoadingState isCreating={creatingConsultation} />
+    //     </div>
+    //   );
+    // }
+
+    // if (apiError) {
+    //   return (
+    //     <div className="relative mx-auto max-w-4xl">
+    //       <RubriqueHeader rubrique={rubrique} />
+    //       <RubriqueErrorDisplay error={apiError} />
+    //     </div>
+    //   );
+    // }
 
     return (
       <div className="relative mx-auto max-w-8xl px-3 sm:px-4 lg:px-6">
         <RubriqueHeader rubrique={rubrique} />
-        <RubriqueConsultationGrid
+        {/* <RubriqueConsultationGrid
           sortedChoices={sortedChoices}
           onSelectConsultation={handleSelectConsultation}
-        />
+        /> */}
       </div>
     );
   }

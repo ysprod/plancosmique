@@ -98,7 +98,14 @@ export function useSlide4Section(rubrique: Rubrique) {
             frequence: choice.frequence as any,
             participants: choice.participants as any,
             offering: choice.offering,
-            order: choice.order
+            order: choice.order,
+            promptId: '',
+            choiceId: choice._id || '',
+            choiceTitle: choice.title || '',
+            buttonStatus: 'CONSULTER' as 'CONSULTER',
+            hasActiveConsultation: false,
+            consultationId: null,
+            consultationCount: choice.consultationCount ?? 0,
           }));
           
           setChoices(arr);

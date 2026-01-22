@@ -13,10 +13,10 @@ const itemVariants = {
     scale: 1,
     transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
   },
-  hover: { 
-    scale: 1.02, 
+  hover: {
+    scale: 1.02,
     y: -4,
-    transition: { duration: 0.2, ease: "easeOut" } 
+    transition: { duration: 0.2, ease: "easeOut" }
   },
   tap: { scale: 0.98 },
 } as const;
@@ -34,31 +34,31 @@ const glowVariants = {
 };
 
 const gradients = [
-  { 
+  {
     border: "from-pink-500/60 via-rose-500/60 to-red-500/60",
     bg: "from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/30",
     accent: "from-pink-600 to-rose-600",
     glow: "bg-pink-500/20 dark:bg-pink-500/10"
   },
-  { 
+  {
     border: "from-violet-500/60 via-purple-500/60 to-indigo-500/60",
     bg: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30",
     accent: "from-violet-600 to-purple-600",
     glow: "bg-violet-500/20 dark:bg-violet-500/10"
   },
-  { 
+  {
     border: "from-cyan-500/60 via-teal-500/60 to-emerald-500/60",
     bg: "from-cyan-50 to-teal-50 dark:from-cyan-950/30 dark:to-teal-950/30",
     accent: "from-cyan-600 to-teal-600",
     glow: "bg-cyan-500/20 dark:bg-cyan-500/10"
   },
-  { 
+  {
     border: "from-fuchsia-500/60 via-purple-500/60 to-violet-500/60",
     bg: "from-fuchsia-50 to-purple-50 dark:from-fuchsia-950/30 dark:to-purple-950/30",
     accent: "from-fuchsia-600 to-purple-600",
     glow: "bg-fuchsia-500/20 dark:bg-fuchsia-500/10"
   },
-  { 
+  {
     border: "from-amber-500/60 via-orange-500/60 to-yellow-500/60",
     bg: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30",
     accent: "from-amber-600 to-orange-600",
@@ -77,21 +77,22 @@ export const RubriqueCard = memo(
     onOpen,
   }: {
     rub: Rubrique;
-    onOpen: (id: string) => void;
+    onOpen: (id: string, consultationId: string) => void;
   }) {
     const derived = useMemo(() => {
       const id = getStableRubriqueId(rub);
       const title = typeof rub.titre === "string" ? rub.titre.trim() : "Rubrique";
       const desc = rub.description ? clampText(rub.description, 120) : "";
       const theme = getGradientFromId(id);
+      const categorie = rub.categorieId;
       const choicesCount = Array.isArray((rub as any)?.consultationChoices)
         ? (rub as any).consultationChoices.length : 0;
-      return { id, title, desc, theme, choicesCount };
+      return { id, title, desc, theme, choicesCount, categorie };
     }, [rub._id, rub.titre, rub.description, (rub as any)?.consultationChoices]);
 
     const handleClick = useCallback(() => {
-      onOpen(derived.id);
-    }, [derived.id, onOpen]);
+      onOpen(derived.categorie, derived.id);
+    }, [derived.id, derived.categorie, onOpen]);
 
     return (
       <motion.div
@@ -167,22 +168,20 @@ export const RubriqueCard = memo(
             </p>
           )}
 
-          {/* Badge */}
-          {derived.choicesCount > 0 && (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: "spring" }}
-              className={cx(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold",
-                "bg-gradient-to-r text-white shadow-md",
-                derived.theme.accent
-              )}
-            >
-              <TrendingUp className="w-3.5 h-3.5" />
-              <span>Decouvrir</span>
-            </motion.div>
-          )}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring" }}
+            className={cx(
+              "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold",
+              "bg-gradient-to-r text-white shadow-md",
+              derived.theme.accent
+            )}
+          >
+            <TrendingUp className="w-3.5 h-3.5" />
+            <span>Decouvrir</span>
+          </motion.div>
+
 
           {/* CTA shimmer */}
           <div className="absolute bottom-0 left-0 right-0 h-1 overflow-hidden">

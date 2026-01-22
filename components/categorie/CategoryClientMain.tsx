@@ -14,7 +14,7 @@ interface CategoryClientMainProps {
     };
     rubriqueCourante: RubriqueOrNone;
     rubriques: Rubrique[];
-    openRubriqueById: (id: string) => void;
+    openRubriqueById: (id: string, consultationId: string) => void;
     pageVariants: any;
 }
 
@@ -51,7 +51,7 @@ const CategoryClientMain: React.FC<CategoryClientMainProps> = ({ ui, rubriqueCou
                 exit="exit"
                 className="mt-3"
             >
-                <CategoryRubriquesList rubriques={rubriques} onOpen={openRubriqueById} />
+                <CategoryRubriquesList   onOpen={openRubriqueById} />
             </motion.div>
         )}
     </AnimatePresence>

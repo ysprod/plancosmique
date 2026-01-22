@@ -27,7 +27,7 @@ const itemVariants = {
 
 function WelcomePageClient() {
   return (
-    <div className="flex items-center justify-center bg-gradient-to-br from-purple-50 via-indigo-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-8 sm:py-12">
+    <div className="flex items-center justify-center bg-gradient-to-br from-purple-50 via-indigo-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-6 sm:py-8">
       <motion.div
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
