@@ -67,6 +67,7 @@ const CategoryFormClient = memo<CategoryFormClientProps>(function CategoryFormCl
           )}
         </motion.div>
       </div>
+
       <Slide4SectionErrorToast
         showErrorToast={showErrorToast}
         apiError={apiError}

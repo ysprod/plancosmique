@@ -1,11 +1,8 @@
 "use client";
 import CategoryFormClient from "@/components/categorie/CategoryFormClient";
-import { getCategory } from "@/lib/api/services/categories.service";
-import { useParams, notFound } from "next/navigation";
-import { useEffect, useState } from "react";
-import type { CategorieAdmin } from "@/lib/interfaces";
 import CategoryLoadingSpinner from "@/components/categorie/CategoryLoadingSpinner";
 import { useCategory } from "@/hooks/categorie/useCategory";
+import { notFound, useParams } from "next/navigation";
 
 export default function CategoryFormPage() {
     const params = useParams();
