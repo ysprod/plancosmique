@@ -7,7 +7,6 @@ import { Consultation } from '@/lib/interfaces';
 
 interface ConsultationsListProps {
   consultations: Consultation[];
-  generatingIds: Set<string>;
   onGenerateAnalysis: (id: string) => void;
   currentPage: number;
   totalPages: number;
@@ -17,12 +16,7 @@ interface ConsultationsListProps {
 }
 
 export const ConsultationsList: React.FC<ConsultationsListProps> = ({
-  consultations,
-  generatingIds,
-  loading,
-  currentPage,
-  totalPages,
-  total,
+  consultations, loading, currentPage, totalPages, total,
   onPageChange, onGenerateAnalysis,
 }) => {
   return (
@@ -34,7 +28,6 @@ export const ConsultationsList: React.FC<ConsultationsListProps> = ({
               <ConsultationCard
                 consultation={consultation}
                 onGenerateAnalysis={onGenerateAnalysis}
-                isGenerating={generatingIds.has(consultation._id)}
               />
             </div>
           ))}

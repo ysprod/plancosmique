@@ -1,13 +1,13 @@
 'use client';
-import { memo } from 'react';
-import { motion } from 'framer-motion';
-import type { CategorieAdmin } from '@/lib/interfaces';
-import CategoryStepNavigation from './CategoryStepNavigation';
-import CategoryContextBanner from './CategoryContextBanner';
-import ConsultationForm from '../vie-personnelle/ConsultationForm';
-import Slide4SectionLoadingOverlay from '../vie-personnelle/Slide4SectionLoadingOverlay';
-import Slide4SectionErrorToast from '../vie-personnelle/Slide4SectionErrorToast';
 import { useCategoryFormClient } from '@/hooks/categorie/useCategoryFormClient';
+import type { CategorieAdmin } from '@/lib/interfaces';
+import { motion } from 'framer-motion';
+import { memo } from 'react';
+import ConsultationForm from '../vie-personnelle/ConsultationForm';
+import Slide4SectionErrorToast from '../vie-personnelle/Slide4SectionErrorToast';
+import Slide4SectionLoadingOverlay from '../vie-personnelle/Slide4SectionLoadingOverlay';
+import CategoryContextBanner from './CategoryContextBanner';
+import CategoryStepNavigation from './CategoryStepNavigation';
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -29,6 +29,7 @@ const CategoryFormClient = memo<CategoryFormClientProps>(function CategoryFormCl
   const {
     contextInfo, needsForm, loading, form, errors, apiError, showErrorToast,
     handleChange, handleSubmit, handleReset, handleCloseError,
+    selectedChoiceId, userData, selectedChoice
   } = useCategoryFormClient(category);
 
   return (
@@ -50,10 +51,10 @@ const CategoryFormClient = memo<CategoryFormClientProps>(function CategoryFormCl
           </div>
           <CategoryContextBanner
             rubriqueTitre={contextInfo.rubrique?.titre}
-            choixTitre={contextInfo.choix?.titre}
+            choixTitre={contextInfo.choix?.title}
             choixDescription={contextInfo.choix?.description}
           />
-          {needsForm && !loading && (
+          {needsForm && !loading && selectedChoiceId && userData && selectedChoice && (
             <motion.div className="mt-6">
               <ConsultationForm
                 form={form}

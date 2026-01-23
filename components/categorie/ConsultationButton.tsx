@@ -41,14 +41,19 @@ const BUTTON_CONFIGS: Record<ButtonStatus, ButtonConfig> = {
 
 export const ConsultationButton = memo<ConsultationButtonProps>(
   function ConsultationButton({ enrichedChoice, onConsult }) {
-    console.log('ConsultationButton rendered with enrichedChoice:', enrichedChoice);
     const config = BUTTON_CONFIGS[enrichedChoice.buttonStatus];
     const Icon = config.icon;
     const isPending = enrichedChoice.buttonStatus === 'RÉPONSE EN ATTENTE';
     const isViewAnalysis = enrichedChoice.buttonStatus === "VOIR L'ANALYSE";
+    const isRepeatable = enrichedChoice.frequence !== 'UNE_FOIS_VIE';
 
     const handleClick = () => {
       if (isPending) return;
+      // Si consultation répétable, toujours lancer une nouvelle consultation
+      if (isRepeatable) {
+        onConsult();
+        return;
+      }
       if (isViewAnalysis) {
         window.location.href = `/secured/consultations/${enrichedChoice.consultationId}`;
       } else {
@@ -65,29 +70,45 @@ export const ConsultationButton = memo<ConsultationButtonProps>(
       bg-gradient-to-r ${config.gradient}
     `;
 
-    if (!config.hoverEffect) {
+
+    // Si consultation répétable, afficher les deux boutons : Consulter et Historique
+    if (isRepeatable) {
       return (
-        <button
-          disabled
-          className={`${baseClasses} opacity-70 cursor-not-allowed shadow-sm`}
+        <div className="w-full flex items-end gap-2">
+          <motion.button
+            onClick={handleClick}
+            whileHover={{ scale: 1.02, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            className={`${baseClasses} shadow-md hover:shadow-lg`}
+          >
+            <Icon className="w-4 h-4" />
+            <span>Consulter</span>
+          </motion.button>
+          <button
+            type="button"
+            className="w-full px-3 py-2 sm:px-4 sm:py-2.5 font-semibold rounded-lg text-white text-sm flex items-center justify-center gap-2 transition-all duration-300 bg-gradient-to-r from-amber-500 to-orange-500 shadow-md hover:shadow-lg"
+            onClick={() => {
+              window.location.href = `/secured/consultations/history/${enrichedChoice.consultationId}`;
+            }}
+          >
+            Historique ({enrichedChoice.consultationCount ?? 0})
+          </button>
+        </div>
+      );
+    } else {
+      return (
+        <motion.button
+          onClick={handleClick}
+          whileHover={{ scale: 1.02, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+          className={`${baseClasses} shadow-md hover:shadow-lg`}
         >
-          <Icon className="w-4 h-4 animate-pulse" />
+          <Icon className="w-4 h-4" />
           <span>{config.label}</span>
-        </button>
+        </motion.button>
       );
     }
-
-    return (
-      <motion.button
-        onClick={handleClick}
-        whileHover={{ scale: 1.02, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
-        whileTap={{ scale: 0.98 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-        className={`${baseClasses} shadow-md hover:shadow-lg`}
-      >
-        <Icon className="w-4 h-4" />
-        <span>{config.label}</span>
-      </motion.button>
-    );
   }
 );

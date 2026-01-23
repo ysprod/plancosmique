@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useAdminConsultations } from '@/hooks/consultations/useAdminConsultations';
 import { api } from '@/lib/api/client';
+import { useRouter } from 'next/navigation';
 
 export type ConsultationStatus = 'all' | 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR';
 export type ConsultationType = 'all' | 'SPIRITUALITE' | 'TAROT' | 'ASTROLOGIE' | 'NUMEROLOGIE';
@@ -8,11 +9,11 @@ export type ConsultationType = 'all' | 'SPIRITUALITE' | 'TAROT' | 'ASTROLOGIE' |
 const ITEMS_PER_PAGE = 10;
 
 export function useAdminConsultationsPage() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<ConsultationStatus>('all');
+  const [statusFilter, setStatusFilter] = useState<ConsultationStatus>('PENDING');
   const [typeFilter, setTypeFilter] = useState<ConsultationType>('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const [generatingIds, setGeneratingIds] = useState<Set<string>>(new Set());
   const [notifyingIds, setNotifyingIds] = useState<Set<string>>(new Set());
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -39,23 +40,8 @@ export function useAdminConsultationsPage() {
   }, []);
 
   const handleGenerateAnalysis = useCallback(async (id: string) => {
-    setGeneratingIds(prev => new Set(prev).add(id));
-    try {
-      const res = await api.post(`/consultations/${id}/generate-analysis`);
-      if (res.status === 200 || res.status === 201) {
-        await refetch();
-        setToastMessage('✨ Analyse générée avec succès !');
-      }
-    } catch (err) {
-      setToastMessage('❌ Erreur lors de la génération');
-    } finally {
-      setGeneratingIds(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(id);
-        return newSet;
-      });
-    }
-  }, [refetch]);
+    router.push(`/admin/consultations/${id}`);
+  }, [router]);
 
   const handleToastClose = useCallback(() => {
     setToastMessage(null);
@@ -70,8 +56,6 @@ export function useAdminConsultationsPage() {
     setTypeFilter,
     currentPage,
     setCurrentPage,
-    generatingIds,
-    setGeneratingIds,
     notifyingIds,
     setNotifyingIds,
     toastMessage,

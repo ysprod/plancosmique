@@ -513,7 +513,7 @@ export enum ConsultationStatus {
   PENDING = 'pending',
   PROCESSING = 'processing',
   AWAITING_PAYMENT = 'awaiting_payment',
-  COMPLETED = 'completed',
+  COMPLETED = 'COMPLETED',
   CANCELLED = 'cancelled',
   REFUNDED = 'refunded',
   FAILED = 'failed',

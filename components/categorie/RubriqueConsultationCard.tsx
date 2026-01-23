@@ -9,14 +9,12 @@ interface RubriqueConsultationCardProps {
   onSelect: () => void;
 }
 
-
 const cardVariants = {
   initial: { opacity: 0, y: 16, scale: 0.98 },
   animate: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' },
   hover: { y: -4, scale: 1.015, boxShadow: '0 6px 24px 0 rgba(120, 51, 255, 0.10)' },
   tap: { scale: 0.98 },
 };
-
 
 const RubriqueConsultationCard = memo<RubriqueConsultationCardProps>(
   function RubriqueConsultationCard({ enrichedChoice, onSelect }) {
@@ -32,7 +30,6 @@ const RubriqueConsultationCard = memo<RubriqueConsultationCardProps>(
         aria-label={enrichedChoice.title}
         className="group relative h-full flex flex-col items-center overflow-hidden rounded-2xl bg-white/90 dark:bg-zinc-900/80 shadow-sm hover:shadow-xl border border-purple-100 dark:border-purple-900/60 backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 transition-all duration-300 max-w-xs sm:max-w-sm md:max-w-xs mx-auto"
       >
-        {/* Animated background gradient */}
         <motion.div
           layoutId={`rubrique-bg-${enrichedChoice.choiceId}`}
           className="absolute inset-0 bg-gradient-to-br from-purple-50 via-transparent to-fuchsia-50 dark:from-purple-950/20 dark:via-transparent dark:to-fuchsia-950/20 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-500 pointer-events-none"
@@ -51,7 +48,7 @@ const RubriqueConsultationCard = memo<RubriqueConsultationCardProps>(
               <span className="px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-900 text-[10px] sm:text-xs text-amber-700 dark:text-amber-200 font-medium shadow-sm">{`Consultations : ${enrichedChoice.consultationCount}`}</span>
             )}
           </div>
-          <div className="mt-auto w-full flex items-end">
+          <div className="mt-auto w-full flex items-end gap-2">
             <ConsultationButton
               enrichedChoice={enrichedChoice}
               onConsult={onSelect}

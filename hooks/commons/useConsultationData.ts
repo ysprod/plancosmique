@@ -19,7 +19,7 @@ const useConsultationData = (consultation: Consultation) => {
       completedDate: consultation.completedDate ? formatDate(consultation.completedDate) : null,
       isProcessing: consultation.status === 'processing',
       isFailed: consultation.status === 'failed',
-      isCompleted: consultation.status === 'completed',
+      isCompleted: consultation.status === 'COMPLETED',
     };
   }, [consultation]);
 };

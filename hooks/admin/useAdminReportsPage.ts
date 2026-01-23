@@ -141,6 +141,6 @@ export function useAdminReportsPage() {
     dateRange, setDateRange,
     selectedReport, setSelectedReport,
     stats, loading, error,
-    metrics, chartData, chartConfig
+    metrics, chartData, chartConfig,
   };
 }

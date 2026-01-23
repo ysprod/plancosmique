@@ -10,7 +10,6 @@ export function useCategoryClientViewWrapper(categorie: CategorieAdmin) {
     const description = useMemo(() => cleanText(categorie.description), [categorie.description]);
 
     const handleOpenRubriqueById = (id: string, consultationId: string) => {
-        // Mise en cache de la catégorie dans sessionStorage avant navigation
         try {
             sessionStorage.setItem('currentCategory', JSON.stringify(categorie));
         } catch (e) {

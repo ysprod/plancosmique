@@ -29,9 +29,7 @@ export function useAdminConsultations(options: UseAdminConsultationsOptions = {}
         limit: String(options.limit || 18),
       });
 
-      const response = await api.get(`/admin/consultations?${params}`, {
-        timeout: 10000,
-      });
+      const response = await api.get(`/admin/consultations?${params}`);
 
       setConsultations(response.data.consultations || []);
       setTotal(response.data.total || 0);

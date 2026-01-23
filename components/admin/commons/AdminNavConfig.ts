@@ -17,7 +17,6 @@ export const navItems = [
   { href: '/admin/consultations', label: 'Consultations', icon: FileText, color: 'green' },
   { href: '/admin/consultations/choices', label: 'Choix & Prompts', icon: Sparkles, color: 'cyan' },
   { href: '/admin/payments', label: 'Paiements', icon: CreditCard, color: 'purple' },
-  { href: '/admin/reports', label: 'Rapports', icon: BarChart3, color: 'emerald' },
   { href: '/admin/books', label: 'Livres', icon: BookOpen, color: 'indigo' },
   { href: '/admin/offrandes', label: 'Offrandes', icon: Shield, color: 'violet' },
   { href: '/admin/categories', label: 'Catégories', icon: FileText, color: 'teal' },

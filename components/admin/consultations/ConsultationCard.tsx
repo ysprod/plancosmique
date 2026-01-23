@@ -16,10 +16,9 @@ import { Consultation } from '@/lib/interfaces';
 interface ConsultationCardProps {
     consultation: Consultation;
     onGenerateAnalysis: (id: string) => void;
-    isGenerating: boolean;
 }
 
-const ConsultationCard = memo(({ consultation, onGenerateAnalysis, isGenerating }: ConsultationCardProps) => {
+const ConsultationCard = memo(({ consultation, onGenerateAnalysis }: ConsultationCardProps) => {
     const { typeConfig, hasTierce, isPaid } = useConsultationCard(consultation);
     const { formattedDate, clientName, tierceName } = useConsultationCardDisplay(consultation);
     const email = consultation.clientId?.email || consultation.formData?.email || null;
@@ -29,7 +28,6 @@ const ConsultationCard = memo(({ consultation, onGenerateAnalysis, isGenerating 
 
     const isCompleted = consultation.status?.toLowerCase() === 'completed';
     const isNotified = Boolean(consultation.analysisNotified);
-    const canGenerateAnalysis = isPaid && !isCompleted && !isGenerating;
 
     return (
         <motion.div
@@ -64,7 +62,6 @@ const ConsultationCard = memo(({ consultation, onGenerateAnalysis, isGenerating 
                     status={consultation.status}
                     StatusBadgeComponent={StatusBadge}
                 />
-
                 <ClientInfo
                     clientName={clientName}
                     email={email}
@@ -77,14 +74,11 @@ const ConsultationCard = memo(({ consultation, onGenerateAnalysis, isGenerating 
                     formattedDate={formattedDate}
                     isPaid={isPaid}
                 />
-
                 <CardActions
                     isCompleted={isCompleted}
                     isNotified={isNotified}
                     consultationId={consultation.id}
-                    canGenerateAnalysis={canGenerateAnalysis}
                     onGenerateAnalysis={onGenerateAnalysis}
-                    isGenerating={isGenerating}
                 />
             </div>
 
@@ -94,20 +88,9 @@ const ConsultationCard = memo(({ consultation, onGenerateAnalysis, isGenerating 
 }, (prevProps, nextProps) => {
     const c1 = prevProps.consultation;
     const c2 = nextProps.consultation;
-    const formDataEqual = (
-        c1.formData?.prenoms === c2.formData?.prenoms &&
-        c1.formData?.nom === c2.formData?.nom
-    );
-    return (
-        c1.id === c2.id &&
-        c1.status === c2.status &&
-        c1.resultData === c2.resultData &&
-        c1.analysisNotified === c2.analysisNotified &&
-        c1.isPaid === c2.isPaid &&
-        formDataEqual &&
-        prevProps.isGenerating === nextProps.isGenerating
-    );
+    return (c1.id === c2.id);
 });
+
 ConsultationCard.displayName = 'ConsultationCard';
 
 export default ConsultationCard;

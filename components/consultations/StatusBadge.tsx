@@ -5,7 +5,7 @@ import React from 'react';
 import { ConsultationStatus } from '@/lib/interfaces';
 
 const STATUS_CONFIG: Record<ConsultationStatus, { label: string; color: string; icon: typeof CheckCircle }> = {
-  completed: { label: 'Complète', color: 'bg-green-100 text-green-800', icon: CheckCircle },
+  COMPLETED: { label: 'Complète', color: 'bg-green-100 text-green-800', icon: CheckCircle },
   processing: { label: 'En cours', color: 'bg-blue-100 text-blue-800', icon: Loader2 },
   pending: { label: 'En attente', color: 'bg-gray-100 text-gray-800', icon: Clock },
   failed: { label: 'Erreur', color: 'bg-red-100 text-red-800', icon: AlertCircle },

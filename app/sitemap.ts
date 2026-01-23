@@ -25,7 +25,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/admin',
     '/admin/users',
     '/admin/consultations',
-    '/admin/reports',
     '/admin/offrandes',
     '/admin/prompts',
     '/admin/settings',

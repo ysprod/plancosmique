@@ -9,22 +9,20 @@ interface CategoryBodyChoixProps {
 }
 
 export const CategoryBodyChoix = React.memo(function CategoryBodyChoix({
-    rubriqueCourante,  handleSelectConsultation,
+    rubriqueCourante, handleSelectConsultation,
 }: CategoryBodyChoixProps) {
     return (
-        <div className="w-full animate-fade-in">
-            <div className="mx-auto w-full max-w-3xl px-2 sm:px-3 flex flex-col items-center justify-center">
-                <RubriqueHeader rubrique={rubriqueCourante} />
-                
-                <div className="grid gap-4 sm:gap-5 lg:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
-                    {rubriqueCourante.consultationChoices.map((choice, idx) => (
-                        <RubriqueConsultationCard
-                            key={idx}
-                            enrichedChoice={choice}
-                            onSelect={() => handleSelectConsultation(choice)}
-                        />
-                    ))}
-                </div>
+        <div className="w-full animate-fade-in mx-auto flex flex-col items-center justify-center">
+            <RubriqueHeader rubrique={rubriqueCourante} />
+
+            <div className="grid gap-4 sm:gap-5 lg:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
+                {rubriqueCourante.consultationChoices.map((choice, idx) => (
+                    <RubriqueConsultationCard
+                        key={idx}
+                        enrichedChoice={choice}
+                        onSelect={() => handleSelectConsultation(choice)}
+                    />
+                ))}
             </div>
         </div>
     );

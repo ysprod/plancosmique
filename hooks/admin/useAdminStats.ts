@@ -29,30 +29,30 @@ interface AdminStats {
 }
 
 export function useAdminStats() {
-  const [stats, setStats] = useState<AdminStats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [dashboardStats, setDashboardStats] = useState<AdminStats | null>(null);
+  const [dashboardLoading, setDashboardLoading] = useState(true);
+  const [dashboardError, setDashboardError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
-  const fetchStats = useCallback(async () => {
+  const fetchDashboardStats = useCallback(async () => {
     try {
-      setLoading(true);
-      setError(null);
+      setDashboardLoading(true);
+      setDashboardError(null);
 
       const response = await api.get('/admin/stats');
 
-      setStats(response.data);
+      setDashboardStats(response.data);
       setLastUpdated(new Date().toISOString());
     } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'Erreur inconnue');
+      setDashboardError(err.response?.data?.message || err.message || 'Erreur inconnue');
     } finally {
-      setLoading(false);
+      setDashboardLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchStats();
-  }, [fetchStats]);
+    fetchDashboardStats();
+  }, [fetchDashboardStats]);
 
-  return { stats, loading, error, refetch: fetchStats, lastUpdated };
+  return { stats: dashboardStats, loading: dashboardLoading, error: dashboardError, refetch: fetchDashboardStats, lastUpdated };
 }

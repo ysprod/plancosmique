@@ -3,3 +3,5 @@ import AdminConsultationAnalysisView from '@/components/admin/consultations/Admi
 export default function ConsultationResultPage() {
   return <AdminConsultationAnalysisView />;
 }
+
+export const dynamic = 'force-dynamic';

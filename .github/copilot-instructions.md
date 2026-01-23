@@ -208,11 +208,6 @@ NEXT_PUBLIC_SERVICE_ID=
    ```
 
 ### Add a new admin page
-1. Create `app/admin/reports/page.tsx`
-2. Add to `components/admin/AdminNavConfig.ts`:
-   ```ts
-   { label: 'Rapports', href: '/admin/reports', icon: FileText }
-   ```
 3. Page is automatically wrapped in `AdminShell` (sidebar + auth guards)
 
 Keep changes focused and test auth flows when modifying `middleware.ts`, `AuthContext`, or API client interceptors.

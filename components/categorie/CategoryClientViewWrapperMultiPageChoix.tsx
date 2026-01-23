@@ -13,19 +13,17 @@ const CategoryClientViewWrapperMultiPageChoix = memo(
         if (loading) { return <CategoryConsultationLoading />; }
 
         return (
-            <main className="flex flex-col items-center justify-center px-2 py-4 sm:px-4 sm:py-8 bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-300"        >
+            <div className="w-full flex flex-col items-center justify-center bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-300">
                 <CategoryHeaderChoix
                     category={category}
                     stats={stats}
                     onBack={handleBack}
                 />
-                <section className="mt-2 w-full max-w-3xl flex flex-col items-center justify-center">
-                    <CategoryBodyChoix
-                        rubriqueCourante={rubriqueCourante!}
-                        handleSelectConsultation={handleSelectConsultation}
-                    />
-                </section>
-            </main>
+                <CategoryBodyChoix
+                    rubriqueCourante={rubriqueCourante!}
+                    handleSelectConsultation={handleSelectConsultation}
+                />
+            </div>
         );
     });
 

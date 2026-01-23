@@ -1,35 +1,24 @@
 'use client';
 import { motion } from 'framer-motion';
-import { Eye, Loader2, Mail, Sparkles, Wand2 } from 'lucide-react';
-import React from 'react';
-import { memo, useCallback } from 'react';
+import { Eye, Mail, Sparkles, Wand2 } from 'lucide-react';
+import { memo } from 'react';
 
 interface CardActionsProps {
     isCompleted: boolean;
     isNotified: boolean;
     consultationId: string;
-    canGenerateAnalysis?: boolean;
-    onGenerateAnalysis?: (id: string) => void;
-    isGenerating?: boolean;
+    onGenerateAnalysis: (id: string) => void;
 }
 
-const CardActions = memo(({ isCompleted, isNotified, consultationId, canGenerateAnalysis, onGenerateAnalysis, isGenerating }: CardActionsProps) => {
-   const [engeneration, setEngeneration] = React.useState(false);
-    const handleGenerateClick = useCallback(() => {
-        if (onGenerateAnalysis) {
-            onGenerateAnalysis(consultationId);
-            setEngeneration(true);
-        }
-    }, [onGenerateAnalysis, consultationId]);
+const CardActions = memo(({ isCompleted, isNotified, consultationId, onGenerateAnalysis }: CardActionsProps) => {
 
     return (
         <div className="flex flex-col items-center gap-2">
-            {canGenerateAnalysis && onGenerateAnalysis && (
+            {!isCompleted && (
                 <motion.button
-                    onClick={handleGenerateClick}
-                    disabled={isGenerating}
-                    whileHover={{ scale: isGenerating ? 1 : 1.03, y: isGenerating ? 0 : -2 }}
-                    whileTap={{ scale: isGenerating ? 1 : 0.97 }}
+                    onClick={() => onGenerateAnalysis(consultationId)}
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    whileTap={{ scale: 0.97 }}
                     className="flex items-center justify-center gap-2 px-4 py-2.5 w-full max-w-xs
                               bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 
                               text-white text-xs rounded-xl font-bold
@@ -37,23 +26,16 @@ const CardActions = memo(({ isCompleted, isNotified, consultationId, canGenerate
                               transition-all duration-300 relative overflow-hidden
                               disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    {engeneration ? (
-                        <>
-                            <Loader2 className="w-4 h-4 animate-spin relative z-10" />
-                            <span className="relative z-10">Analyse en cours de génération. Patientez svp!</span>
-                        </>
-                    ) : (
-                        <>
-                            <motion.div
-                                animate={{ x: ['-100%', '100%'] }}
-                                transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                            />
-                            <Wand2 className="w-4 h-4 relative z-10" />
-                            <span className="relative z-10">Générer Analyse</span>
-                            <Sparkles className="w-4 h-4 relative z-10" />
-                        </>
-                    )}
+                    <>
+                        <motion.div
+                            animate={{ x: ['-100%', '100%'] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                        />
+                        <Wand2 className="w-4 h-4 relative z-10" />
+                        <span className="relative z-10">Générer Analyse</span>
+                        <Sparkles className="w-4 h-4 relative z-10" />
+                    </>
                 </motion.button>
             )}
 
@@ -75,10 +57,10 @@ const CardActions = memo(({ isCompleted, isNotified, consultationId, canGenerate
                         className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
                     />
                     <Eye className="w-4 h-4 relative z-10" />
-                    <span className="relative z-10">Voir</span> 
+                    <span className="relative z-10">Voir</span>
                 </motion.a>
             )}
- 
+
             {isNotified && (
                 <motion.div
                     initial={{ opacity: 0, scale: 0 }}
