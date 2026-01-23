@@ -2,7 +2,7 @@
 import { cx } from '@/lib/functions';
 import type { Consultation } from '@/lib/interfaces';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Calendar, CheckCircle, Clock, Download, Eye, MapPin, Rocket, Shield, Sparkles, User } from 'lucide-react';
+import { Calendar, CheckCircle, Clock, Download, Eye, MapPin, Rocket, Shield, Sparkles, User, Share2 } from 'lucide-react';
 import React, { memo, useCallback } from 'react';
 import TypeIndicator from './TypeIndicator';
 import useConsultationData from '../../hooks/commons/useConsultationData';
@@ -31,6 +31,22 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
   const handleDownload = useCallback(() => {
     onDownload(consultation._id);
   }, [consultation._id, onDownload]);
+
+  // Handler de partage réseaux sociaux
+  const handleShare = useCallback(() => {
+    const url = window.location.origin + '/secured/consultations/' + consultation._id;
+    const shareData = {
+      title: consultation.title,
+      text: 'Découvrez mon analyse sur Mon Étoile !',
+      url,
+    };
+    if (navigator.share) {
+      navigator.share(shareData).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(url);
+      alert('Lien copié dans le presse-papier !');
+    }
+  }, [consultation._id, consultation.title]);
 
   // Variants d'animation
   const cardVariants = {
@@ -318,6 +334,21 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
               <Download className="relative h-4 w-4 text-white" />
               <span className="relative text-sm font-extrabold text-white">
                 PDF
+              </span>
+            </motion.button>
+            <motion.button
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              onClick={handleShare}
+              type="button"
+              className="group relative flex items-center justify-center gap-3 rounded-2xl px-4 py-3"
+            >
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 shadow-lg group-hover:from-blue-600 group-hover:to-cyan-600 transition-all" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Share2 className="relative h-4 w-4 text-white" />
+              <span className="relative text-sm font-extrabold text-white">
+                Partager
               </span>
             </motion.button>
           </div>

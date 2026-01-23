@@ -10,10 +10,9 @@ import ConsultationsListLoading from './ConsultationsListLoading';
 
 export default function ConsultationsListMain() {
   const {
-    consultations, filteredConsultations, loading, searchQuery, error,
-    setSearchQuery, setTypeFilter, setStatusFilter,
-    handleView, handleDownload
-  } = useConsultationsListPage();  
+    consultations, filteredConsultations, loading, searchQuery, error, setTypeFilter,
+    setSearchQuery, setStatusFilter, handleView, handleDownload
+  } = useConsultationsListPage();
 
   if (loading) {
     return <ConsultationsListLoading />;
