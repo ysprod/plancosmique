@@ -14,7 +14,6 @@ const GRADE_LABELS: Record<Grade | "NEOPHYTE", string> = {
   MAITRE_DE_SOI: "Maître de Soi",
 };
 
-// Palette de couleurs par grade
 const GRADE_COLORS: Record<Grade | "NEOPHYTE", { main: string; glow: string; text: string }> = {
   NEOPHYTE:      { main: '#a3a3a3', glow: '#d4d4d8', text: '#27272a' },
   ASPIRANT:      { main: '#a78bfa', glow: '#c4b5fd', text: '#4c1d95' },
@@ -38,37 +37,38 @@ export function InitiatiqueBadge({ grade }: { grade: Grade | null | undefined })
     label = GRADE_LABELS[grade] || getGradeName(grade);
     color = GRADE_COLORS[grade] || GRADE_COLORS.NEOPHYTE;
   }
-  // Calcul taille dynamique selon label
-  const minWidth = Math.max(120, label.length * 13);
-  const svgSize = Math.max(64, minWidth + 32);
+  // Taille adaptée au label
+  const minWidth = Math.max(90, label.length * 12);
+  const svgSize = Math.max(64, minWidth + 24);
   const center = svgSize / 2;
-  const radius = (svgSize / 2) - 10;
+  const radius = (svgSize / 2) - 8;
   return (
     <span
       className="inline-flex items-center justify-center"
       title={`Grade initiatique : ${label}`}
     >
       <span className="relative flex items-center justify-center">
-        {/* SVG roue dentée cosmique, couleur dynamique */}
+        {/* SVG roue dentée raffinée */}
         <svg
           width={svgSize}
           height={svgSize}
           viewBox={`0 0 ${svgSize} ${svgSize}`}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="drop-shadow-lg animate-spin-slow"
-          style={{ filter: `drop-shadow(0 0 10px ${color.glow})` }}
+          className="drop-shadow-md"
+          style={{ filter: `drop-shadow(0 0 8px ${color.glow})` }}
         >
           <g>
-            <circle cx={center} cy={center} r={radius} fill={color.main} fillOpacity="0.18" />
+            {/* Cercle principal */}
+            <circle cx={center} cy={center} r={radius - 4} fill={`url(#badge-gradient-${label})`} stroke={color.main} strokeWidth="2.5" />
+            {/* Dents fines */}
             <g>
-              {/* 12 dents */}
-              {[...Array(12)].map((_, i) => {
-                const angle = (i * 30) * (Math.PI / 180);
-                const x1 = center + Math.cos(angle) * radius;
-                const y1 = center + Math.sin(angle) * radius;
-                const x2 = center + Math.cos(angle) * (radius + 12);
-                const y2 = center + Math.sin(angle) * (radius + 12);
+              {[...Array(18)].map((_, i) => {
+                const angle = (i * 20) * (Math.PI / 180);
+                const x1 = center + Math.cos(angle) * (radius - 2);
+                const y1 = center + Math.sin(angle) * (radius - 2);
+                const x2 = center + Math.cos(angle) * (radius + 6);
+                const y2 = center + Math.sin(angle) * (radius + 6);
                 return (
                   <line
                     key={i}
@@ -77,13 +77,13 @@ export function InitiatiqueBadge({ grade }: { grade: Grade | null | undefined })
                     x2={x2}
                     y2={y2}
                     stroke={color.main}
-                    strokeWidth="4"
+                    strokeWidth="1.5"
                     strokeLinecap="round"
+                    opacity="0.7"
                   />
                 );
               })}
             </g>
-            <circle cx={center} cy={center} r={radius - 8} fill={`url(#badge-gradient-${label})`} stroke={color.main} strokeWidth="2" />
             <defs>
               <radialGradient id={`badge-gradient-${label}`} cx="0.5" cy="0.5" r="0.5" fx="0.5" fy="0.5">
                 <stop offset="0%" stopColor="#fff" />
@@ -92,10 +92,10 @@ export function InitiatiqueBadge({ grade }: { grade: Grade | null | undefined })
             </defs>
           </g>
         </svg>
-        {/* Label centré, taille dynamique */}
+        {/* Label centré, typo élégante */}
         <span
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-base font-bold text-center pointer-events-none select-none drop-shadow-md"
-          style={{ color: color.text, minWidth: minWidth, maxWidth: svgSize - 24 }}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-base font-semibold text-center pointer-events-none select-none drop-shadow-sm tracking-wide"
+          style={{ color: color.text, minWidth: minWidth, maxWidth: svgSize - 16, letterSpacing: 1 }}
         >
           {label}
         </span>

@@ -29,7 +29,10 @@ export function useAdminConsultations(options: UseAdminConsultationsOptions = {}
         limit: String(options.limit || 18),
       });
 
-      const response = await api.get(`/admin/consultations?${params}`);
+      const response = await api.get(`/admin/consultations?${params}`, {
+        headers: { 'Cache-Control': 'no-cache' }, 
+        timeout: 10000,
+      });
 
       setConsultations(response.data.consultations || []);
       setTotal(response.data.total || 0);

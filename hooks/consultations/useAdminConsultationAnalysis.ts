@@ -41,7 +41,7 @@ export function useAdminConsultationAnalysis() {
         console.error('[loadAnalysis] Consultation introuvable', consultationRes);
         throw new Error('Consultation introuvable');
       }
-      const consultation:  Consultation = consultationRes.data.consultation;
+      const consultation: Consultation = consultationRes.data.consultation;
       console.log('[loadAnalysis] consultation', consultation);
       // 2. Si la consultation n'est pas terminée, générer l'analyse
       if (consultation.status !== 'COMPLETED') {

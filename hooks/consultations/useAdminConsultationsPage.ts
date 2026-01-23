@@ -11,7 +11,7 @@ const ITEMS_PER_PAGE = 10;
 export function useAdminConsultationsPage() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<ConsultationStatus>('PENDING');
+  const [statusFilter, setStatusFilter] = useState<ConsultationStatus>('all');
   const [typeFilter, setTypeFilter] = useState<ConsultationType>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [notifyingIds, setNotifyingIds] = useState<Set<string>>(new Set());
