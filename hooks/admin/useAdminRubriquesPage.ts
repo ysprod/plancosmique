@@ -82,12 +82,42 @@ export function useAdminRubriquesPage() {
   const handleSave = useCallback(async () => {
     if (!editingRubrique) return;
     setSaving(true);
+    // Mapping pour respecter le DTO backend
+    const mappedRubrique = {
+      ...editingRubrique,
+   
+      consultationChoices: (editingRubrique.consultationChoices || []).map(choice => {
+        let offering = choice.offering;
+        // S'assurer que offering est bien un objet avec alternatives tableau
+        if (!offering || typeof offering !== 'object' || !Array.isArray(offering.alternatives)) {
+          offering = { alternatives: [] };
+        } else {
+          offering = {
+            alternatives: offering.alternatives.map((alt: any) => ({
+              category: alt.category,
+              offeringId: alt.offeringId,
+              quantity: alt.quantity ?? 1,
+            }))
+          };
+        }
+        return {
+          promptId: choice.promptId||undefined,
+          title: choice.title,
+          description: choice.description,
+          frequence: choice.frequence,
+          participants: choice.participants,
+          order: choice.order,
+          offering,       
+        };
+      })
+    };
+    console.log('Mapped Rubrique to save:', mappedRubrique);
     try {
       if (editingRubrique._id) {
-        await api.put(`/rubriques/${editingRubrique._id}`, editingRubrique);
+        await api.put(`/rubriques/${editingRubrique._id}`, mappedRubrique);
         setToast({ type: "success", message: "Rubrique mise à jour" });
       } else {
-        await api.post("/rubriques", editingRubrique);
+        await api.post("/rubriques", mappedRubrique);
         setToast({ type: "success", message: "Rubrique créée" });
       }
       await fetchRubriques();

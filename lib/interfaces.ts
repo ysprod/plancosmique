@@ -189,6 +189,7 @@ export interface FormData {
 }
 
 export interface Rubrique {
+  promptId?: any;
   typeconsultation?: any;
     id?: string;
   _id?: string;
