@@ -257,6 +257,8 @@ export interface ResultData {
   timestamp: string;
   carteDuCiel: CarteDuCiel;
   missionDeVie: MissionDeVie;
+  horoscope?: any;
+  analyse?: any;
   metadata: {
     processingTime: number;
     tokensUsed: number;

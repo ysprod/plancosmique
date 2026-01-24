@@ -10,7 +10,7 @@ import ConsultationsListLoading from './ConsultationsListLoading';
 
 export default function ConsultationsListMain() {
   const {
-    consultations, filteredConsultations, loading, searchQuery, error, setTypeFilter,
+    consultations, loading, searchQuery, error, setTypeFilter,
     setSearchQuery, setStatusFilter, handleView, handleDownload
   } = useConsultationsListPage();
 
@@ -21,10 +21,10 @@ export default function ConsultationsListMain() {
   return (
     <div className="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        <ConsultationsHeader consultationsCount={consultations.length} filteredCount={filteredConsultations.length} />
+        <ConsultationsHeader consultationsCount={consultations.length} filteredCount={consultations.length} />
         <ConsultationsFilters searchQuery={searchQuery} setSearchQuery={setSearchQuery} consultationsLength={consultations.length} />
         <ConsultationsError error={error} />
-        {filteredConsultations.length === 0 ? (
+        {consultations.length === 0 ? (
           <ConsultationsEmpty
             consultationsLength={consultations.length}
             setSearchQuery={setSearchQuery}
@@ -33,7 +33,7 @@ export default function ConsultationsListMain() {
           />
         ) : (
           <div className="grid gap-6">
-            {filteredConsultations.map((consultation, index) => (
+            {consultations.map((consultation, index) => (
               (consultation.type === 'nombres-personnels' || consultation.type === 'cycles-personnels') ? (
                 <NumerologyConsultationCard
                   key={consultation._id}

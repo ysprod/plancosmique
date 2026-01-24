@@ -1,5 +1,3 @@
-'use client';
-
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api/client';
@@ -8,7 +6,6 @@ import { Consultation, ConsultationType, ConsultationStatus } from '@/lib/interf
 export function useConsultationsListPage() {
   const router = useRouter();
   const [consultations, setConsultations] = useState<Consultation[]>([]);
-  const [filteredConsultations, setFilteredConsultations] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,11 +16,6 @@ export function useConsultationsListPage() {
     loadConsultations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    filterConsultations();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [consultations, searchQuery, typeFilter, statusFilter]);
 
   const loadConsultations = async () => {
     try {
@@ -38,8 +30,8 @@ export function useConsultationsListPage() {
         throw new Error('Erreur lors du chargement des consultations');
       }
       const data = response.data;
-      const filtered = (data.consultations || []).filter((c: any) => 
-        c.type !== 'HOROSCOPE' && c.analysisNotified === true
+      const filtered = (data.consultations || []).filter((c: any) =>
+        c.analysisNotified === true
       );
       setConsultations(filtered);
       setLoading(false);
@@ -51,29 +43,6 @@ export function useConsultationsListPage() {
       }
       setLoading(false);
     }
-  };
-
-  const filterConsultations = () => {
-    if (!Array.isArray(consultations)) {
-      setFilteredConsultations([]);
-      return;
-    }
-    let filtered = [...consultations];
-    if (searchQuery) {
-      filtered = filtered.filter(c =>
-        c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (c.formData?.prenoms && c.formData.prenoms.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (c.formData?.nom && c.formData.nom.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        c.description.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-    if (typeFilter !== 'ALL') {
-      filtered = filtered.filter(c => c.type === typeFilter);
-    }
-    if (statusFilter !== 'ALL') {
-      filtered = filtered.filter(c => c.status === statusFilter);
-    }
-    setFilteredConsultations(filtered);
   };
 
   const handleView = (id: string) => {
@@ -91,7 +60,6 @@ export function useConsultationsListPage() {
 
   return {
     consultations,
-    filteredConsultations,
     loading,
     error,
     searchQuery,

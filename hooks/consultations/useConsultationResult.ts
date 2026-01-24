@@ -10,28 +10,30 @@ export function useConsultationResult() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [consultation, setConsultation] = useState<any | null>(null);
   const [analyse, setAnalyse] = useState<AnalyseAstrologique | null>(null);
 
   useEffect(() => {
     if (!consultationId) return;
-    const loadAnalysis = async () => {
+    const loadConsultation = async () => {
       try {
-        const response = await api.get(`/consultations/analysis/${consultationId}`);
-        if (response.status !== 200) throw new Error('Analyse non trouvée');
-         const data = response.data;
+        const response = await api.get(`/consultations/${consultationId}`);
+        if (response.status !== 200) throw new Error('Consultation non trouvée');
+        const data = response.data;
+        console.log('Consultation data loaded:', data.consultation);
+        setConsultation(data.consultation);
         if (data.analyse) {
           setAnalyse(data.analyse);
-          setLoading(false);
         } else {
-          setError('Analyse non disponible');
-          setLoading(false);
+          setAnalyse(null);
         }
+        setLoading(false);
       } catch (err) {
-        setError('Impossible de récupérer votre analyse');
+        setError('Impossible de récupérer la consultation');
         setLoading(false);
       }
     };
-    loadAnalysis();
+    loadConsultation();
   }, [consultationId]);
 
   const handleBack = useCallback(() => {
@@ -43,5 +45,5 @@ export function useConsultationResult() {
     window.open(url, '_blank');
   }, [consultationId]);
 
-  return { loading, error, analyse, handleBack, handleDownloadPDF };
+  return { loading, error, consultation, analyse, handleBack, handleDownloadPDF };
 }
