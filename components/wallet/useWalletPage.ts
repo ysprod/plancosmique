@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "@/lib/api/client";
 import { SortOrder, Stats, Transaction, TransactionFilter } from "./types";
- 
+
 export function useWalletPage() {
   const router = useRouter();
   const { user } = useAuth();
@@ -55,7 +55,13 @@ export function useWalletPage() {
         setIsLoading(false);
         return;
       }
-      const response = await api.get(`/wallet/transactions?userId=${user._id}`);
+      const response = await api.get(`/wallet/transactions?userId=${user._id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+          "Pragma": "no-cache",
+        },
+      });
       if (response.status === 200) {
         const txData = response.data.transactions || response.data || [];
         setTransactions(Array.isArray(txData) ? txData : []);

@@ -11,9 +11,11 @@ export default function MobileMenu({ mobileMenuOpen, user, handleLogout }: {
   handleLogout: () => void;
 }) {
   const { hasRole } = useAuth();
-  const userBadge = (hasRole(Role.ADMIN) || hasRole(Role.SUPER_ADMIN)) 
-    ? "Membre Admin ⚡" 
-    : "Membre Premium ⭐";
+  const userBadge = user?.grade
+    ? `Grade: ${user.grade}`
+    : (hasRole(Role.ADMIN) || hasRole(Role.SUPER_ADMIN))
+      ? "Membre Admin ⚡"
+      : "Membre Premium ⭐";
 
   return (
     <AnimatePresence>

@@ -126,7 +126,7 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
                           dark:from-blue-900/20 dark:to-cyan-900/10 \
                           border border-blue-100 dark:border-blue-800/30">
               <p className="text-xs font-medium text-blue-800 dark:text-blue-300">
-                ✓ Rapport généré
+                ✓ Rapport établi avec succès
               </p>
             </div>
           </motion.div>

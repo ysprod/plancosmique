@@ -24,12 +24,12 @@ const CinqPortesSection = memo<CinqPortesSectionProps>(({ carteDuCiel, isPremium
   if (!cinqPortes) { return <CinqPortesNotAvailableSection />; }
 
   return (
-    <section className="w-full py-8 px-4 sm:px-6">
+    <section className="w-full mx-auto py-8 px-4 sm:px-6">
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-6xl mx-auto flex flex-col items-center justify-center"
+        className="flex flex-col items-center justify-center"
       >
         <CinqPortesHeader isPremium={isPremium} />
 

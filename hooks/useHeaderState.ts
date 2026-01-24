@@ -85,13 +85,16 @@ export function useHeaderState() {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   }, [theme, setTheme]);
 
-  // Badge utilisateur basé sur le rôle
+  // Badge utilisateur basé sur le grade réel si présent
   const userBadge = useMemo(() => {
+    if (user?.grade) {
+      return { text: user.grade, label: `Grade: ${user.grade}` };
+    }
     if (hasRole(Role.ADMIN) || hasRole(Role.SUPER_ADMIN)) {
       return { text: 'Admin ⚡', label: 'Membre Admin' };
     }
     return { text: 'Premium ⭐', label: 'Membre Premium' };
-  }, [hasRole]);
+  }, [user?.grade, hasRole]);
 
   // Menu items avec mémoïsation
   const navItems = useMemo(() => [

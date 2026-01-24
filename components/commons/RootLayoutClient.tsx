@@ -72,11 +72,15 @@ export default function HeaderContent() {
   }, []);
 
   const userBadge = useMemo(() => {
+    if (user?.grade) {
+      // Affiche le grade réel de l'utilisateur
+      return { text: user.grade, label: `Grade: ${user.grade}` };
+    }
     if (hasRole(Role.ADMIN) || hasRole(Role.SUPER_ADMIN)) {
       return { text: 'Admin ⚡', label: 'Membre Admin' };
     }
     return { text: 'Premium ⭐', label: 'Membre Premium' };
-  }, [hasRole]);
+  }, [user?.grade, hasRole]);
 
   const navItems = useMemo(() => [
     ...(hasRole(Role.SUPER_ADMIN) ? [

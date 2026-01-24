@@ -18,7 +18,7 @@ export const CategoryHeaderChoix = React.memo(function CategoryHeaderChoix({
 }: CategoryHeaderChoixProps) {
     const reduceMotion = useReducedMotion();
     return (
-        <section className="w-full max-w-2xl mx-auto flex flex-col items-center justify-center text-center gap-2 sm:gap-4">
+        <section className="w-full mx-auto flex flex-col items-center justify-center text-center gap-2 sm:gap-4">
             <AnimatePresence mode="wait">
                 <motion.div
                     variants={itemVariants}

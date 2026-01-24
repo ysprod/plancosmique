@@ -28,7 +28,7 @@ const RubriqueHeader: React.FC<RubriqueHeaderProps> = memo(({ rubrique }) => {
       initial="initial"
       animate="animate"
       exit="exit"
-      className="relative flex flex-col items-center justify-center w-full mb-6 sm:mb-8 lg:mb-10 px-4 sm:px-6 lg:px-8"
+      className="relative flex flex-col items-center justify-center mb-6 sm:mb-8 lg:mb-10 px-4 sm:px-6 lg:px-8"
       layoutId="rubrique-header"
     >
       <div className="flex flex-col items-center justify-center gap-2 w-full">
@@ -46,17 +46,6 @@ const RubriqueHeader: React.FC<RubriqueHeaderProps> = memo(({ rubrique }) => {
           </motion.h1>
 
         </div>
-        {derived.desc && (
-          <motion.p
-            className="text-base xs:text-base sm:text-base leading-relaxed text-center text-slate-600/90 dark:text-zinc-300/90 max-w-2xl"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
-          >
-            {derived.desc}
-          </motion.p>
-        )}
       </div>
     </motion.div>
   );
