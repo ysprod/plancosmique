@@ -38,7 +38,7 @@ export function useAdminConsultationAnalysis() {
         console.error('[loadAnalysis] Consultation introuvable', consultationRes);
         throw new Error('Consultation introuvable');
       }
-      const consultation: Consultation = consultationRes.data.consultation;
+      let consultation: Consultation = consultationRes.data.consultation;
       if (consultation.status !== 'COMPLETED') {
         const genRes = await api.post(`/consultations/${consultationId}/generate-analysis`);
         console.log('[loadAnalysis] Génération analyse pour consultation non complétée', genRes);
@@ -46,6 +46,7 @@ export function useAdminConsultationAnalysis() {
           console.error('[loadAnalysis] Erreur génération analyse', genRes);
           throw new Error('Erreur lors de la génération de l\'analyse');
         }
+        consultation = genRes.data.consultation;
       }
       setConsultation(consultation);
       setNotified(consultation.analysisNotified === true);
