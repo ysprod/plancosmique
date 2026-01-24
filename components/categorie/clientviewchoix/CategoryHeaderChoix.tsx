@@ -7,13 +7,11 @@ import React from "react";
 
 interface CategoryHeaderChoixProps {
     category: { nom?: string; description?: string };
-    stats?: { total: number; completed: number; pending: number };
     onBack: () => void;
 }
 
 export const CategoryHeaderChoix = React.memo(function CategoryHeaderChoix({
     category,
-    stats,
     onBack,
 }: CategoryHeaderChoixProps) {
     const reduceMotion = useReducedMotion();
@@ -26,15 +24,6 @@ export const CategoryHeaderChoix = React.memo(function CategoryHeaderChoix({
                 >
                     <CategoryTitle title={category.nom!} />
                     <CategoryDescription description={category.description!} />
-                    {stats && (
-                        <div className="mx-auto inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/70 px-3 py-1.5 text-[12px] font-extrabold text-slate-700 shadow-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-200 animate-fade-in">
-                            <span>{stats.total} choix</span>
-                            <span className="h-1 w-1 rounded-full bg-slate-300 dark:bg-zinc-700" />
-                            <span className="text-emerald-700 dark:text-emerald-300">{stats.completed} terminés</span>
-                            <span className="h-1 w-1 rounded-full bg-slate-300 dark:bg-zinc-700" />
-                            <span className="text-amber-700 dark:text-amber-300">{stats.pending} en attente</span>
-                        </div>
-                    )}
                 </motion.div>
             </AnimatePresence>
             <motion.button

@@ -65,26 +65,9 @@ const NumerologyConsultationCardClient: React.FC<NumerologyConsultationCardClien
   };
 
   return (
-    <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all max-w-2xl mx-auto">
+    <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all max-w-6xl mx-auto">
       <h3 className="text-xl font-bold text-white mb-2">{consultation.titre || consultation.title || 'Analyse Numérologique'}</h3>
       <div className="mb-2 text-purple-200 text-sm">{consultation.description}</div>
-      <div className="mb-4 text-xs text-purple-300">Créé le {formatDate(consultation.createdAt)}</div>
-
-      {/* Alternatives */}
-      {Array.isArray(consultation.alternatives) && consultation.alternatives.length > 0 && (
-        <div className="mb-4">
-          <div className="font-semibold text-amber-400 mb-1">Offrandes associées :</div>
-          <ul className="list-disc ml-6 text-white text-sm">
-            {consultation.alternatives.map((alt, i) => (
-              <li key={i}>
-                <span className="mr-2">{alt.icon || ''}</span>
-                {alt.name} <span className="text-xs text-purple-200">x{alt.quantity}</span>
-                {alt.description && <span className="ml-2 text-xs text-slate-400">{alt.description}</span>}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
 
       {/* Analyse markdown */}
       <button
@@ -98,7 +81,7 @@ const NumerologyConsultationCardClient: React.FC<NumerologyConsultationCardClien
       </button>
       {open && (
         <div className="rounded-3xl bg-slate-50 p-4 dark:bg-zinc-900/60 mb-4">
-        
+
           <div className="space-y-2">
             {blocks.map((b) => {
               if (b.type === 'spacer') return <div key={b.key} className="h-2" />;
@@ -114,6 +97,22 @@ const NumerologyConsultationCardClient: React.FC<NumerologyConsultationCardClien
               return <p key={b.key} className="text-sm leading-relaxed text-slate-700 dark:text-zinc-200">{b.text}</p>;
             })}
           </div>
+        </div>
+      )}
+
+      {/* Alternatives */}
+      {Array.isArray(consultation.alternatives) && consultation.alternatives.length > 0 && (
+        <div className="w-full max-w-6xl  rounded-3xl bg-amber-500/10 p-4 mb-4">
+          <div className="font-semibold text-amber-400 mb-1">Offrandes associées :</div>
+          <ul className="list-disc ml-6 text-white text-sm">
+            {consultation.alternatives.map((alt, i) => (
+              <li key={i}>
+                <span className="mr-2">{alt.icon || ''}</span>
+                {alt.name} <span className="text-xs text-purple-200">x{alt.quantity}</span>
+                {alt.description && <span className="ml-2 text-xs text-slate-400">{alt.description}</span>}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 

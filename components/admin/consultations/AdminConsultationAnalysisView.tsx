@@ -8,20 +8,20 @@ import { AnimatePresence } from 'framer-motion';
 
 export default function AdminConsultationAnalysisView() {
     const {
-        analyse, loading, notified, error, toast,
+        consultation, loading, notified, error, toast,
         setToast, handleBack, handleModifyAnalysis, handleNotifyUser,
     } = useAdminConsultationAnalysis();
 
     if (loading) { return <LoadingSkeleton />; }
 
-    if (error || !analyse) {
+    if (error || !consultation) {
         return <ErrorState error={error || 'Analyse introuvable'} onRetry={handleBack} />;
     }
 
     return (
         <div>
             <DisplayConsultationCard
-                consultation={analyse}
+                consultation={consultation}
                 onModifyAnalysis={handleModifyAnalysis}
                 onNotifyUser={handleNotifyUser}
                 notifiedback={notified}

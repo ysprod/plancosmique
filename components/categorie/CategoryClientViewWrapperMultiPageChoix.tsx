@@ -8,7 +8,7 @@ import { useCategoryClientViewChoix } from "./clientviewchoix/useCategoryClientV
 
 const CategoryClientViewWrapperMultiPageChoix = memo(
     function CategoryClientViewWrapperMultiPageChoix({ category, }: { category: CategorieAdmin; }) {
-        const { stats, rubriqueCourante, loading, handleSelectConsultation, handleBack, } = useCategoryClientViewChoix({ category });
+        const { rubriqueCourante, loading, handleSelectConsultation, handleBack, } = useCategoryClientViewChoix({ category });
 
         if (loading) { return <CategoryConsultationLoading />; }
 
@@ -16,7 +16,6 @@ const CategoryClientViewWrapperMultiPageChoix = memo(
             <div className="w-full flex flex-col items-center justify-center bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-300">
                 <CategoryHeaderChoix
                     category={category}
-                    stats={stats}
                     onBack={handleBack}
                 />
                 <CategoryBodyChoix

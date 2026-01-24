@@ -1,16 +1,15 @@
 "use client";
-import { memo, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { useNavigation } from '@/hooks/analysegenere/useNavigation';
 import type { Consultation } from '@/lib/interfaces';
+import { motion } from 'framer-motion';
+import { memo, useMemo } from 'react';
 import ConsultationSummary from '../categorie/ConsultationSummary';
-import SuccessIcon from './analysegenere/SuccessIcon';
-import TimelineBadge from './analysegenere/TimelineBadge';
-import MasterAssignmentNotice from './analysegenere/MasterAssignmentNotice';
+import BackButton from './analysegenere/BackButton';
 import ConfidentialityNotice from './analysegenere/ConfidentialityNotice';
+import MasterAssignmentNotice from './analysegenere/MasterAssignmentNotice';
 import ProcessSteps from './analysegenere/ProcessSteps';
 import ThankYouMessage from './analysegenere/ThankYouMessage';
-import BackButton from './analysegenere/BackButton';
-import { useNavigation } from '@/hooks/analysegenere/useNavigation';
+import TimelineBadge from './analysegenere/TimelineBadge';
 
 interface AnalyseGenereProps {
   consultation?: Partial<Consultation>;
@@ -44,7 +43,6 @@ const itemVariants = {
 const AnalyseGenere = memo<AnalyseGenereProps>(({ consultation, choix }) => {
   const { navigateToProfil } = useNavigation();
 
-  // Memoize consultation title for accessibility
   const consultationTitle = useMemo(() => 
     consultation?.title || choix?.title || 'Votre consultation',
     [consultation?.title, choix?.title]
@@ -63,15 +61,7 @@ const AnalyseGenere = memo<AnalyseGenereProps>(({ consultation, choix }) => {
         animate="visible"
       >
         <div className="space-y-4 sm:space-y-5">
-          {/* Success Icon */}
-          <motion.div 
-            variants={itemVariants}
-            className="flex justify-center"
-          >
-            <SuccessIcon />
-          </motion.div>
-
-          {/* Title Section */}
+          
           <motion.div
             variants={itemVariants}
             className="text-center space-y-2 sm:space-y-2.5"

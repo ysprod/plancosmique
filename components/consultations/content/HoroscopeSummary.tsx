@@ -1,7 +1,7 @@
 export default function HoroscopeSummary({ horoscope }: { horoscope: any }) {
   if (!horoscope) return null;
   return (
-    <div className="grid md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6">
       <div className="space-y-4">
         <h3 className="text-xl font-bold text-fuchsia-700">Prévisions générales</h3>
         <p>{horoscope.generalForecast}</p>

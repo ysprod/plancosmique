@@ -1,15 +1,15 @@
-import type { AnalyseAstrologique } from "@/lib/interfaces";
+import type { AnalyseAstrologique, Consultation } from "@/lib/interfaces";
 
 interface ConsultationCardProps {
-  consultation: AnalyseAstrologique;
+  consultation: Consultation;
   onModifyAnalysis: (id: string) => void;
   onNotifyUser: (id: string) => void;
   notifiedback: boolean;
 }
 
 export function consultationCardMemoComparator(prev: ConsultationCardProps, next: ConsultationCardProps): boolean {
-  const p: AnalyseAstrologique = prev.consultation;
-  const n: AnalyseAstrologique = next.consultation;
+  const p: Consultation = prev.consultation;
+  const n: Consultation = next.consultation;
 
   if (p === n && prev.notifiedback === next.notifiedback) return true;
 

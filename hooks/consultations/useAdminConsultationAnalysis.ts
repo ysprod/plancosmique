@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
 import { api } from '@/lib/api/client';
-import { AnalyseAstrologique, Consultation } from '@/lib/interfaces';
+import { Consultation } from '@/lib/interfaces';
+import { useParams, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 
 export interface ToastState {
   message: string;
@@ -13,7 +13,7 @@ export function useAdminConsultationAnalysis() {
   const router = useRouter();
   const consultationId = params?.id as string;
 
-  const [analyse, setAnalyse] = useState<AnalyseAstrologique | null>(null);
+  const [consultation, setConsultation] = useState<Consultation | null>(null);
   const [loading, setLoading] = useState(true);
   const [notified, setNotified] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,45 +33,24 @@ export function useAdminConsultationAnalysis() {
     try {
       setLoading(true);
       setError(null);
-      // 1. Charger la consultation
-      console.log('[loadAnalysis] GET /consultations/' + consultationId);
       const consultationRes = await api.get(`/consultations/${consultationId}`);
-      console.log('[loadAnalysis] consultationRes', consultationRes);
       if (consultationRes.status !== 200 || !consultationRes.data) {
         console.error('[loadAnalysis] Consultation introuvable', consultationRes);
         throw new Error('Consultation introuvable');
       }
       const consultation: Consultation = consultationRes.data.consultation;
-      console.log('[loadAnalysis] consultation', consultation);
-      // 2. Si la consultation n'est pas terminée, générer l'analyse
       if (consultation.status !== 'COMPLETED') {
-        console.log('[loadAnalysis] Consultation pas terminée, POST /consultations/' + consultationId + '/generate-analysis');
         const genRes = await api.post(`/consultations/${consultationId}/generate-analysis`);
-        console.log('[loadAnalysis] genRes', genRes);
+        console.log('[loadAnalysis] Génération analyse pour consultation non complétée', genRes);
         if (genRes.status !== 200 && genRes.status !== 201) {
           console.error('[loadAnalysis] Erreur génération analyse', genRes);
           throw new Error('Erreur lors de la génération de l\'analyse');
         }
       }
-      // 3. Charger l'analyse
-      console.log('[loadAnalysis] GET /consultations/analysis/' + consultationId);
-      const response = await api.get(`/consultations/analysis/${consultationId}`);
-      console.log('[loadAnalysis] analysis response', response);
-      if (response.status !== 200) {
-        console.error('[loadAnalysis] Analyse non trouvée', response);
-        throw new Error('Analyse non trouvée');
-      }
-      const data = response.data;
-      if (data?.analyse) {
-        setAnalyse(data.analyse);
-        setNotified(data.analyse.analysisNotified === true);
-        console.log('[loadAnalysis] Analyse chargée', data.analyse);
-      } else {
-        console.error('[loadAnalysis] Analyse non disponible', data);
-        throw new Error('Analyse non disponible');
-      }
+      setConsultation(consultation);
+      setNotified(consultation.analysisNotified === true);
     } catch (err: any) {
-      setError(err.message || 'Impossible de récupérer l\'analyse');
+      setError(err.message || 'Impossible de récupérer la consultation');
       console.error('[loadAnalysis] catch', err);
     } finally {
       setLoading(false);
@@ -93,7 +72,7 @@ export function useAdminConsultationAnalysis() {
 
   const handleNotifyUser = useCallback(async (id: string) => {
     // Always use the correct consultationId from the loaded analyse (astrology or numerology)
-    const notifyId = (analyse && (analyse.consultationId || analyse._id)) || consultationId;
+    const notifyId = (consultation && (consultation.consultationId || consultation._id)) || consultationId;
     try {
       const res = await api.post(`/consultations/${notifyId}/notify-user`);
       if (res.status === 200 || res.status === 201) {
@@ -104,10 +83,10 @@ export function useAdminConsultationAnalysis() {
     } catch (err: any) {
       showToast('❌ Erreur lors de l\'envoi', 'error');
     }
-  }, [showToast, analyse, consultationId]);
+  }, [showToast, consultation, consultationId]);
 
   return {
-    analyse,
+    consultation,
     loading,
     notified,
     error,

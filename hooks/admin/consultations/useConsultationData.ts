@@ -1,9 +1,9 @@
 import { formatDate } from "@/lib/functions";
-import { AnalyseAstrologique } from "@/lib/interfaces";
+import { AnalyseAstrologique, Consultation } from "@/lib/interfaces";
 import { useMemo } from "react";
 
 
-const useConsultationData = (consultation: AnalyseAstrologique) => {
+const useConsultationData = (consultation: Consultation) => {
   return useMemo(() => {
     // Detect numerology analysis by presence of numerology fields
     const isNumerology = !!(

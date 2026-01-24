@@ -44,7 +44,6 @@ const RubriqueHeader: React.FC<RubriqueHeaderProps> = memo(({ rubrique }) => {
               {derived.title}
             </span>
           </motion.h1>
-
         </div>
       </div>
     </motion.div>

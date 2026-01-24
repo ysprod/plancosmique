@@ -1,13 +1,13 @@
 "use client";
 import useConsultationData from "@/hooks/admin/consultations/useConsultationData";
 import { useConsultationCardState } from "@/hooks/consultations/useConsultationCardState";
-import type { AnalyseAstrologique } from "@/lib/interfaces";
+import type { AnalyseAstrologique, Consultation } from "@/lib/interfaces";
 import { memo } from "react";
 import ConsultationCardContent from "./ConsultationCardContent";
 import { consultationCardMemoComparator } from "./consultationCardMemoComparator";
 
 interface ConsultationCardProps {
-  consultation: AnalyseAstrologique;
+  consultation: Consultation;
   onModifyAnalysis: (id: string) => void;
   onNotifyUser: (id: string) => void;
   notifiedback: boolean;

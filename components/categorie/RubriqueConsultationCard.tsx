@@ -37,17 +37,6 @@ const RubriqueConsultationCard = memo<RubriqueConsultationCardProps>(
         <div className="relative z-10 flex-1 flex flex-col items-center w-full p-3 sm:p-4 gap-1">
           <h2 className="text-base sm:text-lg font-bold text-cosmic-indigo dark:text-white mb-0.5 text-center  w-full" title={enrichedChoice.title}>{enrichedChoice.title}</h2>
           <p className="text-xs sm:text-sm text-slate-700 dark:text-zinc-300 mb-1 text-center whitespace-pre-line min-h-[2.5em]">{enrichedChoice.description}</p>
-          <div className="flex flex-wrap gap-1.5 justify-center mb-1">
-            {enrichedChoice.frequence && (
-              <span className="px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900 text-[10px] sm:text-xs text-indigo-700 dark:text-indigo-200 font-medium tracking-wide uppercase shadow-sm">{enrichedChoice.frequence.replace(/_/g, ' ')}</span>
-            )}
-            {enrichedChoice.participants && (
-              <span className="px-2 py-0.5 rounded bg-fuchsia-100 dark:bg-fuchsia-900 text-[10px] sm:text-xs text-fuchsia-700 dark:text-fuchsia-200 font-medium tracking-wide uppercase shadow-sm">{enrichedChoice.participants.replace(/_/g, ' ')}</span>
-            )}
-            {enrichedChoice.consultationCount !== undefined && (
-              <span className="px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-900 text-[10px] sm:text-xs text-amber-700 dark:text-amber-200 font-medium shadow-sm">{`Consultations : ${enrichedChoice.consultationCount}`}</span>
-            )}
-          </div>
           <div className="mt-auto w-full flex items-end gap-2">
             <ConsultationButton
               enrichedChoice={enrichedChoice}

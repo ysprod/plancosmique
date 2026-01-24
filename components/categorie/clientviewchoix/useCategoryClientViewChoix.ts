@@ -23,21 +23,12 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
         refetch: () => Promise<void>;
     };
 
-    // Index O(1) pour trouver un enrichedChoice par choiceId
     const enrichedByChoiceId = useMemo(() => {
         const map = new Map<string, ConsultationChoice>();
         for (const ec of rubriqueCourante?.consultationChoices! ?? []) {
             map.set(ec._id ?? "", ec);
         }
         return map;
-    }, [rubriqueCourante?.consultationChoices]);
-
-    const stats = useMemo(() => {
-        const total = rubriqueCourante?.consultationChoices.length || 0;
-        const consulted = rubriqueCourante?.consultationChoices.filter((c) => c?.buttonStatus !== "CONSULTER").length || 0;
-        const pending = rubriqueCourante?.consultationChoices.filter((c) => c?.buttonStatus === "RÉPONSE EN ATTENTE").length || 0;
-        const completed = rubriqueCourante?.consultationChoices.filter((c) => c?.buttonStatus === "VOIR L'ANALYSE").length || 0;
-        return { total, consulted, pending, completed };
     }, [rubriqueCourante?.consultationChoices]);
 
     const handleSelectConsultation = useCallback(
@@ -102,14 +93,7 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
     };
 
     return {
-        enrichedByChoiceId,
-        stats,
-        handleSelectConsultation,
-        handleBack,
-        rubriqueCourante,
-        loading,
-        error,
-        reduceMotion,
-        consultationId,
+        enrichedByChoiceId, handleSelectConsultation, handleBack,
+        rubriqueCourante, loading, error, reduceMotion, consultationId,
     };
 }
