@@ -82,15 +82,25 @@ export function useAdminConsultationAnalysis() {
       const payload = consultationRes?.data;
       const base: Consultation | null = payload?.consultation ?? payload ?? null;
       if (!base) throw new Error("Consultation introuvable");
+      let finalConsultation = base;
       if (base.status !== "COMPLETED") {
-        router.push(`/admin/consultations/${id}/generate`);
-        return;
+        // Générer l'analyse directement ici
+        try {
+          const generatedRes = await api.post(`/consultations/${consultationId}/generate-analysis`);
+          console.log("Analyse générée:", generatedRes);
+          // Recharger la consultation après génération
+         // const generatedRes = await api.get(`/consultations/${id}`);
+          finalConsultation = generatedRes?.data?.consultation ?? generatedRes?.data ?? null;
+          if (!finalConsultation) throw new Error("Consultation générée introuvable");
+        } catch (err: any) {
+          throw new Error("Erreur lors de la génération de l'analyse");
+        }
       }
       if (reqSeqRef.current !== mySeq) return;
       setState((s) => {
         const next: AdminAnalysisState = {
           ...s,
-          consultation: base,
+          consultation: finalConsultation,
           loading: false,
           error: null,
         };
