@@ -25,6 +25,7 @@ export default function AdminConsultationAnalysisView() {
                 onModifyAnalysis={handleModifyAnalysis}
                 onNotifyUser={handleNotifyUser}
                 notifiedback={notified}
+                onBack={handleBack}
             />
             <AnimatePresence>
                 {toast && (

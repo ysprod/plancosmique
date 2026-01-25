@@ -114,7 +114,14 @@ export const IncantationsContent = memo(() => (
           transition={{ delay: 0.3 }}
           className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-200 dark:border-gray-700 mb-4 sm:mb-6"
         >
-          <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+          <p
+            className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed select-none"
+            style={{ userSelect: 'none' }}
+            onCopy={e => e.preventDefault()}
+            onCut={e => e.preventDefault()}
+            onPaste={e => e.preventDefault()}
+            onContextMenu={e => e.preventDefault()}
+          >
             Les invocations sont des <span className="font-bold text-pink-600 dark:text-pink-400">appels sacrés</span> aux forces spirituelles et aux divinités.
             Prononcez ces paroles avec <span className="font-semibold">respect et intention</span> pour établir une connexion divine
             et manifester vos désirs dans le monde physique.

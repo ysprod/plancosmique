@@ -18,7 +18,14 @@ export default function SpiritualPracticeSections({ practice, expandedSections, 
     >
       {/* Introduction */}
       <section>
-        <p className="text-lg text-slate-700 leading-relaxed italic border-l-4 border-purple-500 pl-6">
+        <p
+          className="text-lg text-slate-700 leading-relaxed italic border-l-4 border-purple-500 pl-6 select-none"
+          style={{ userSelect: 'none' }}
+          onCopy={e => e.preventDefault()}
+          onCut={e => e.preventDefault()}
+          onPaste={e => e.preventDefault()}
+          onContextMenu={e => e.preventDefault()}
+        >
           {practice.introduction}
         </p>
       </section>
@@ -59,7 +66,16 @@ export default function SpiritualPracticeSections({ practice, expandedSections, 
         <AnimatePresence>
           {expandedSections['guide'] && (
             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="mt-4 p-6 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-slate-700 leading-relaxed whitespace-pre-wrap">{practice.detailedGuide}</p>
+              <p
+                className="text-slate-700 leading-relaxed whitespace-pre-wrap select-none"
+                style={{ userSelect: 'none' }}
+                onCopy={e => e.preventDefault()}
+                onCut={e => e.preventDefault()}
+                onPaste={e => e.preventDefault()}
+                onContextMenu={e => e.preventDefault()}
+              >
+                {practice.detailedGuide}
+              </p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -78,8 +94,17 @@ export default function SpiritualPracticeSections({ practice, expandedSections, 
             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
               {practice.benefits.map((benefit: string, idx: number) => (
                 <motion.div key={idx} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: idx * 0.05 }} className="p-4 bg-green-50 rounded-lg border border-green-200 flex items-start gap-3">
-                  <span className="text-green-600 font-bold text-lg">✓</span>
-                  <p className="text-slate-700 text-sm">{benefit}</p>
+                  <span className="text-green-600 font-bold text-lg"></span>
+                  <p
+                    className="text-slate-700 text-sm select-none"
+                    style={{ userSelect: 'none' }}
+                    onCopy={e => e.preventDefault()}
+                    onCut={e => e.preventDefault()}
+                    onPaste={e => e.preventDefault()}
+                    onContextMenu={e => e.preventDefault()}
+                  >
+                    {benefit}
+                  </p>
                 </motion.div>
               ))}
             </motion.div>
@@ -101,7 +126,16 @@ export default function SpiritualPracticeSections({ practice, expandedSections, 
               {practice.practicalSteps.map((step: string, idx: number) => (
                 <motion.div key={idx} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.05 }} className="flex gap-4 p-4 bg-orange-50 rounded-lg border border-orange-200">
                   <span className="font-bold text-orange-600 bg-orange-100 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">{idx + 1}</span>
-                  <p className="text-slate-700">{step}</p>
+                  <p
+                    className="text-slate-700 select-none"
+                    style={{ userSelect: 'none' }}
+                    onCopy={e => e.preventDefault()}
+                    onCut={e => e.preventDefault()}
+                    onPaste={e => e.preventDefault()}
+                    onContextMenu={e => e.preventDefault()}
+                  >
+                    {step}
+                  </p>
                 </motion.div>
               ))}
             </motion.div>

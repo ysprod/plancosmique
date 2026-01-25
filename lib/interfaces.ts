@@ -142,6 +142,8 @@ export interface WalletOffering {
 }
 
 export interface ConsultationOffering {
+  isFree?: boolean;
+  price?: number;
   alternatives: OfferingAlternative[];
 }
 
@@ -152,6 +154,7 @@ export interface OfferingAlternative {
 }
 
 export interface ConsultationOffering {
+  price?: number;
   alternatives: OfferingAlternative[];
 }
 

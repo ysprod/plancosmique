@@ -155,56 +155,9 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
           backgroundSize: "200% 200%",
         }}
       />
-      
-      {/* Contre-bordure pour effet de profondeur */}
-      <div className="absolute -inset-px rounded-3xl bg-gradient-to-br from-white/20 to-transparent" />
-      <div className="relative z-10">
-        <div className="flex flex-col items-end gap-2">          
+       <div className="flex flex-col items-end gap-2">          
             <TypeIndicator type={consultation.type} />
           </div>
-        {/* Header avec badges */}
-        <div className="flex items-start justify-between gap-4 mb-4">
-
-          <div className="flex min-w-0 flex-1 items-center gap-3">
-            <motion.div
-              whileHover={{ rotate: 15, scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="relative flex-shrink-0"
-            >
-              <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 shadow-lg shadow-violet-500/30">
-                <Sparkles className="h-6 w-6 text-white" />
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-              <motion.div
-                className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-500 shadow-sm"
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 180, 360]
-                }}
-                transition={{ 
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <span className="text-[10px] font-black text-white">
-                  {index + 1}
-                </span>
-              </motion.div>
-            </motion.div>
-            
-            <div className="min-w-0 flex-1">
-              <h3 className="truncate text-lg font-black tracking-tight text-slate-900 dark:text-white">
-                {consultation.title}
-              </h3>
-              <p className="mt-1 line-clamp-2 text-sm text-slate-600/90 dark:text-zinc-300/90">
-                {consultation.description}
-              </p>
-            </div>
-          </div>         
-          
-        </div>
-
         {/* Informations personnelles */}
         <div className="mb-4 rounded-2xl bg-gradient-to-br from-slate-50/80 to-white/80 p-4 backdrop-blur-sm dark:from-zinc-800/50 dark:to-zinc-900/50">
           <div className="flex items-center gap-3 mb-3">
@@ -263,6 +216,53 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
             </div>
           </div>
         </div>
+      {/* Contre-bordure pour effet de profondeur */}
+      <div className="absolute -inset-px rounded-3xl bg-gradient-to-br from-white/20 to-transparent" />
+      <div className="relative z-10">
+       
+        {/* Header avec badges */}
+        <div className="flex items-start justify-between gap-4 mb-4">
+
+          <div className="flex min-w-0 flex-1 items-center gap-3">
+            <motion.div
+              whileHover={{ rotate: 15, scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="relative flex-shrink-0"
+            >
+              <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 shadow-lg shadow-violet-500/30">
+                <Sparkles className="h-6 w-6 text-white" />
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <motion.div
+                className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-500 shadow-sm"
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  rotate: [0, 180, 360]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <span className="text-[10px] font-black text-white">
+                  {index + 1}
+                </span>
+              </motion.div>
+            </motion.div>
+            
+            <div className="min-w-0 flex-1">
+              <h3 className="truncate text-lg font-black tracking-tight text-slate-900 dark:text-white">
+                {consultation.title}
+              </h3>
+              <p className="mt-1 line-clamp-2 text-sm text-slate-600/90 dark:text-zinc-300/90">
+                {consultation.description}
+              </p>
+            </div>
+          </div>         
+          
+        </div>
+
 
         {/* Métadonnées */}
         {derived.completedDate && (
@@ -335,22 +335,7 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
               <span className="relative text-sm font-extrabold text-white">
                 PDF
               </span>
-            </motion.button>
-            <motion.button
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-              onClick={handleShare}
-              type="button"
-              className="group relative flex items-center justify-center gap-3 rounded-2xl px-4 py-3"
-            >
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 shadow-lg group-hover:from-blue-600 group-hover:to-cyan-600 transition-all" />
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <Share2 className="relative h-4 w-4 text-white" />
-              <span className="relative text-sm font-extrabold text-white">
-                Partager
-              </span>
-            </motion.button>
+            </motion.button>            
           </div>
         ) : (
           <div className="space-y-3">
