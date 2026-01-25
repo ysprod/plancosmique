@@ -7,33 +7,20 @@ import { HeaderNavigation } from './HeaderNavigation';
 import { ThemeToggleButton } from './ThemeToggleButton';
 import { UserMenu } from './UserMenu';
 import { MobileHeaderActions } from './MobileHeaderActions';
-import { MobileMenu } from './MobileMenu';
+import MobileMenu from './MobileMenu';
 import { useHeaderState } from '../../hooks/useHeaderState';
 
 export default function HeaderContent() {
   const {
-    user,
-    theme,
-    mounted,
-    mobileMenuOpen,
-    setMobileMenuOpen,
-    isScrolled,
-    showUserMenu,
-    setShowUserMenu,
-    scrollY,
-    progressWidth,
-    handleLogout,
-    closeMobileMenu,
-    toggleTheme,
-    userBadge,
-    navItems,
+    user, theme, mounted, mobileMenuOpen, isScrolled, showUserMenu,
+    scrollY, userBadge, navItems, progressWidth, setMobileMenuOpen,
+    setShowUserMenu, handleLogout, closeMobileMenu, toggleTheme,
   } = useHeaderState();
 
   return (
     <>
       <ScrollProgressBar scrollY={scrollY} progressWidth={progressWidth} />
 
-      {/* Header Principal */}
       <motion.header
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -46,14 +33,11 @@ export default function HeaderContent() {
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3">
           <div className="flex items-center justify-between gap-2 sm:gap-4">
             <HeaderLogo />
-
             <HeaderNavigation navItems={navItems} />
-
-            {/* Actions Desktop */}
             <div className="hidden lg:flex items-center gap-2">
               <ThemeToggleButton theme={theme} toggleTheme={toggleTheme} mounted={mounted} />
               <NotificationBell />
-              <UserMenu 
+              <UserMenu
                 user={user}
                 userBadge={userBadge}
                 showUserMenu={showUserMenu}

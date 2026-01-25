@@ -65,16 +65,21 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
                         status: "PENDING",
                         alternatives: choice.offering?.alternatives || [],
                         choice,
+                        rubriqueId: rubriqueCourante?._id || "",
                     };
+                    console.log('[handleSelectConsultation] Payload envoyé:', payload);
                     const response = await api.post("/consultations", payload);
+                    console.log('[handleSelectConsultation] Réponse API:', response);
                     const id = response.data?.id || response.data?.consultationId || response.data?._id;
                     if (id) {
                         sessionStorage.removeItem("selectedChoiceId");
                         router.push(`/secured/category/${category._id}/consulter?consultationId=${id}`);
                         return;
                     }
+                    console.log('[handleSelectConsultation] Pas d\'ID de consultation dans la réponse:', response.data);
                     router.push(`/secured/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`);
-                } catch {
+                } catch (e) {
+                    console.error('[handleSelectConsultation] Erreur lors de la création de la consultation:', e);
                     router.push(`/secured/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`);
                 }
                 return;

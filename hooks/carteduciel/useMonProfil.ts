@@ -25,7 +25,7 @@ export function useMonProfil() {
     } else {
       setIsLoadingUser(false);
     }
-  }, [user?._id]);
+  }, [user?._id]); 
 
   const processedData = useMemo(() => processUserData(userData), [userData]);
   const isLoading = authLoading || isLoadingUser;

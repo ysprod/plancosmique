@@ -46,7 +46,7 @@ export function ProfilProgressTable({ user }: { user: User }) {
   const next = progress.progressToNextGrade;
   if (!next) return null;
   return (
-    <div className="mb-6 flex flex-col items-center">
+    <div className="flex flex-col items-center">
       <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-xl shadow p-4">
         <h3 className="text-center text-sm font-bold text-purple-700 dark:text-purple-200 mb-2">Progression vers le prochain grade</h3>
         <div className="flex flex-col gap-2">
@@ -90,7 +90,7 @@ export function ProfilUserTypeBanner({ user }: { user: User }) {
     if (user.subscriptionEndDate) desc += `\nFin : ${new Date(user.subscriptionEndDate).toLocaleDateString('fr-FR')}`;
   }
   return (
-    <div className="mb-6 flex flex-col items-center">
+    <div className="flex flex-col items-center">
       <div className="w-full max-w-md bg-gradient-to-r from-indigo-200 via-purple-100 to-pink-100 dark:from-gray-900/80 dark:to-purple-900/60 rounded-xl shadow p-4 animate-fade-in">
         <div className="text-center text-base font-bold text-indigo-800 dark:text-indigo-200 mb-1">{label}</div>
         <div className="text-center text-xs text-gray-700 dark:text-gray-300 whitespace-pre-line">{desc}</div>

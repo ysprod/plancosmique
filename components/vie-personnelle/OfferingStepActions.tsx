@@ -22,7 +22,7 @@ export default function OfferingStepActions({ onBack, onNext, canProceed, consul
     const params = new URLSearchParams();
     if (effectiveConsultationId) params.set('consultationId', effectiveConsultationId);
     if (effectiveCategoryId) params.set('categoryId', effectiveCategoryId);
-    const url = `/secured/wallet${params.toString() ? `?${params.toString()}` : ''}`;
+    const url = `/secured/marcheoffrandes${params.toString() ? `?${params.toString()}` : ''}`;
     router.push(url);
   }, [router, effectiveConsultationId, effectiveCategoryId]);
 

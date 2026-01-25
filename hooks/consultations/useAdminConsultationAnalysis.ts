@@ -1,100 +1,177 @@
-import { api } from '@/lib/api/client';
-import { Consultation } from '@/lib/interfaces';
-import { useParams, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+
+import { api } from "@/lib/api/client";
+import type { Consultation } from "@/lib/interfaces";
+import { useParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export interface ToastState {
   message: string;
-  type: 'success' | 'error' | 'info';
+  type: "success" | "error" | "info";
 }
+
+type AdminAnalysisState = {
+  consultation: Consultation | null;
+  loading: boolean;
+  error: string | null;
+  toast: ToastState | null;
+};
+
+
+const initialState: AdminAnalysisState = {
+  consultation: null,
+  loading: true,
+  error: null,
+  toast: null,
+};
+
+
+function getConsultationIdFromParams(params: unknown): string | null {
+  const raw = (params as any)?.id;
+  if (!raw) return null;
+  return Array.isArray(raw) ? String(raw[0] ?? "") : String(raw);
+}
+
 
 export function useAdminConsultationAnalysis() {
   const params = useParams();
   const router = useRouter();
-  const consultationId = params?.id as string;
+  const consultationId = useMemo(() => getConsultationIdFromParams(params), [params]);
+  const [state, setState] = useState<AdminAnalysisState>(initialState);
+  const reqSeqRef = useRef(0);
+  const abortRef = useRef<AbortController | null>(null);
+  const toastTimerRef = useRef<number | null>(null);
 
-  const [consultation, setConsultation] = useState<Consultation | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [notified, setNotified] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [toast, setToast] = useState<ToastState | null>(null);
-
-  const showToast = useCallback((message: string, type: 'success' | 'error' | 'info' = 'info') => {
-    setToast({ message, type });
+  // Toast helpers
+  const setToast = useCallback((toast: ToastState | null) => {
+    if (toastTimerRef.current) {
+      window.clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = null;
+    }
+    setState((s) => (s.toast === toast ? s : { ...s, toast }));
+    if (toast) {
+      toastTimerRef.current = window.setTimeout(() => {
+        setState((s) => (s.toast ? { ...s, toast: null } : s));
+        toastTimerRef.current = null;
+      }, 2500);
+    }
   }, []);
+  const showToast = useCallback((message: string, type: ToastState["type"] = "info") => {
+    setToast({ message, type });
+  }, [setToast]);
 
+  // Memo for notified
+  const notified = useMemo(() => state.consultation?.analysisNotified === true, [state.consultation]);
+
+  // Main loader
   const loadAnalysis = useCallback(async () => {
-    if (!consultationId) {
-      setError('ID de consultation manquant');
-      setLoading(false);
-      console.error('[loadAnalysis] consultationId manquant');
+    const id = consultationId;
+    if (!id) {
+      setState((s) => {
+        const next: AdminAnalysisState = { ...s, loading: false, error: "ID de consultation manquant" };
+        return shallowEqualState(s, next) ? s : next;
+      });
       return;
     }
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+    const mySeq = ++reqSeqRef.current;
+    setState((s) => (s.loading && s.error === null ? s : { ...s, loading: true, error: null }));
     try {
-      setLoading(true);
-      setError(null);
-      const consultationRes = await api.get(`/consultations/${consultationId}`);
-      if (consultationRes.status !== 200 || !consultationRes.data) {
-        console.error('[loadAnalysis] Consultation introuvable', consultationRes);
-        throw new Error('Consultation introuvable');
+      const consultationRes = await api.get(`/consultations/${id}`, { signal: controller.signal } as any);
+      const payload = consultationRes?.data;
+      const base: Consultation | null = payload?.consultation ?? payload ?? null;
+      if (!base) throw new Error("Consultation introuvable");
+      if (base.status !== "COMPLETED") {
+        router.push(`/admin/consultations/${id}/generate`);
+        return;
       }
-      let consultation: Consultation = consultationRes.data.consultation;
-      if (consultation.status !== 'COMPLETED') {
-        const genRes = await api.post(`/consultations/${consultationId}/generate-analysis`);
-        console.log('[loadAnalysis] Génération analyse pour consultation non complétée', genRes);
-        if (genRes.status !== 200 && genRes.status !== 201) {
-          console.error('[loadAnalysis] Erreur génération analyse', genRes);
-          throw new Error('Erreur lors de la génération de l\'analyse');
-        }
-        consultation = genRes.data.consultation;
-      }
-      setConsultation(consultation);
-      setNotified(consultation.analysisNotified === true);
+      if (reqSeqRef.current !== mySeq) return;
+      setState((s) => {
+        const next: AdminAnalysisState = {
+          ...s,
+          consultation: base,
+          loading: false,
+          error: null,
+        };
+        return shallowEqualState(s, next) ? s : next;
+      });
     } catch (err: any) {
-      setError(err.message || 'Impossible de récupérer la consultation');
-      console.error('[loadAnalysis] catch', err);
-    } finally {
-      setLoading(false);
-      console.log('[loadAnalysis] FINISHED');
+      if (err?.name === "CanceledError" || err?.name === "AbortError") return;
+      if (reqSeqRef.current !== mySeq) return;
+      setState((s) => {
+        const next: AdminAnalysisState = {
+          ...s,
+          loading: false,
+          error: err?.message || "Impossible de récupérer la consultation",
+        };
+        return shallowEqualState(s, next) ? s : next;
+      });
     }
-  }, [consultationId]);
+  }, [consultationId, router]);
 
   useEffect(() => {
     loadAnalysis();
+    return () => {
+      abortRef.current?.abort();
+      if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    };
   }, [loadAnalysis]);
 
+  // Navigation handlers
   const handleBack = useCallback(() => {
-    router.push('/admin/consultations/');
+    router.push("/admin/consultations/");
   }, [router]);
 
   const handleModifyAnalysis = useCallback((id: string) => {
     router.push(`/admin/genereanalyse?id=${id}`);
   }, [router]);
-
-  const handleNotifyUser = useCallback(async (id: string) => {
-    // Always use the correct consultationId from the loaded analyse (astrology or numerology)
-    const notifyId = (consultation && (consultation.consultationId || consultation._id)) || consultationId;
+  
+  const handleNotifyUser = useCallback(async (_id?: string) => {
+    const loaded = state.consultation;
+    const notifyId = (loaded && (loaded.consultationId || loaded._id)) || consultationId;
+    if (!notifyId) {
+      showToast("❌ ID de consultation manquant", "error");
+      return;
+    }
     try {
       const res = await api.post(`/consultations/${notifyId}/notify-user`);
       if (res.status === 200 || res.status === 201) {
-        showToast('📧 Notification envoyée avec succès !', 'success');
+        showToast("📧 Notification envoyée avec succès !", "success");
+        setState((s) => {
+          if (!s.consultation) return s;
+          if (s.consultation.analysisNotified === true) return s;
+          return { ...s, consultation: { ...s.consultation, analysisNotified: true } as Consultation };
+        });
       } else {
-        throw new Error('Échec de l\'envoi');
+        showToast("❌ Erreur lors de l'envoi", "error");
       }
-    } catch (err: any) {
-      showToast('❌ Erreur lors de l\'envoi', 'error');
+    } catch {
+      showToast("❌ Erreur lors de l'envoi", "error");
     }
-  }, [showToast, consultation, consultationId]);
+  }, [consultationId, showToast, state.consultation]);
 
   return {
-    consultation,
-    loading,
+    consultation: state.consultation,
+    loading: state.loading,
     notified,
-    error,
-    toast,
+    error: state.error,
+    toast: state.toast,
     setToast,
+    showToast,
+    reload: loadAnalysis,
     handleBack,
     handleModifyAnalysis,
     handleNotifyUser,
   };
+}
+
+/** shallow equality sur le state pour éviter setState inutiles */
+function shallowEqualState(a: AdminAnalysisState, b: AdminAnalysisState) {
+  return (
+    a.loading === b.loading &&
+    a.error === b.error &&
+    a.toast === b.toast &&
+    a.consultation === b.consultation
+  );
 }

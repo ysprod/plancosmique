@@ -1,19 +1,14 @@
 "use client";
-
-import React, { memo, useMemo } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-
 import { useHoroscopeSummary } from "@/hooks/consultations/useHoroscopeSummary";
 import { cx } from "@/lib/functions";
 import type { Consultation } from "@/lib/interfaces";
-
-import AlternativesList from "./content/AlternativesList";
-import ConsultationDescription from "./content/ConsultationDescription";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ArrowLeft, Download } from "lucide-react";
+import React, { memo, useMemo } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import ConsultationHeader from "./content/ConsultationHeader";
 import HoroscopeSummary from "./content/HoroscopeSummary";
-import { Hash, Sparkles } from "lucide-react";
 
 type Kind = "numerology" | "astrology" | "horoscope_fallback";
 
@@ -33,10 +28,7 @@ function getKindFromType(typeRaw: any): Kind {
   return "horoscope_fallback";
 }
 
-/** Centralise la récupération du markdown (ton backend peut varier) */
 function extractMarkdown(c: any): string | null {
-  // Tu avais .texte, mais ton payload montre souvent directement une string (analyse.analyse).
-  // On supporte les 2 sans casser :
   const v =
     c?.analyse?.analyse?.texte ??
     c?.resultData?.analyse?.texte ??
@@ -47,8 +39,6 @@ function extractMarkdown(c: any): string | null {
   const s = typeof v === "string" ? v.trim() : "";
   return s ? s : null;
 }
-
-/* ------------------------------ Animations légères ------------------------------ */
 
 const shellVariants = {
   initial: { opacity: 0, y: 10, filter: "blur(2px)" },
@@ -63,10 +53,9 @@ const cardVariants = {
 
 const ShellCard = memo(function ShellCard({
   children,
-  badge,
 }: {
   children: React.ReactNode;
-  badge?: React.ReactNode;
+
 }) {
   return (
     <motion.section
@@ -89,13 +78,6 @@ const ShellCard = memo(function ShellCard({
           )}
         >
           <div className="h-1 w-full bg-gradient-to-r from-violet-600 via-fuchsia-600 to-emerald-500/70" />
-
-          {badge && (
-            <div className="px-4 pt-4 sm:px-6 sm:pt-5">
-              <div className="mx-auto flex w-full items-center justify-center">{badge}</div>
-            </div>
-          )}
-
           <div className="p-3 sm:p-5">{children}</div>
         </div>
       </div>
@@ -108,9 +90,7 @@ const MarkdownCard = memo(function MarkdownCard({ markdown }: { markdown: string
     <div
       className={cx(
         "mx-auto w-full max-w-2xl",
-        "rounded-3xl border p-4 sm:p-5",
-        "border-slate-200/70 bg-white/70",
-        "dark:border-zinc-800/70 dark:bg-zinc-900/40"
+        "dark:border-zinc-800/70 dark:bg-zinc-900/40 mb-4"
       )}
     >
       <article className="prose prose-sm max-w-none text-left dark:prose-invert">
@@ -122,58 +102,50 @@ const MarkdownCard = memo(function MarkdownCard({ markdown }: { markdown: string
 
 export interface ConsultationContentProps {
   consultation: Consultation;
+  onBack: () => void;
+  onDownloadPDF: () => void;
 }
 
-const ConsultationContent = memo(function ConsultationContent({ consultation }: ConsultationContentProps) {
+function ConsultationContent({ consultation, onBack, onDownloadPDF }: ConsultationContentProps) {
   const reduceMotion = useReducedMotion();
-
   const kind = useMemo(() => getKindFromType((consultation as any)?.type), [consultation]);
-
-  // ✅ Markdown résolu UNE seule fois, de manière uniforme
   const markdown = useMemo(() => extractMarkdown(consultation as any), [consultation]);
 
-  // ✅ Horoscope summary uniquement si fallback (coût évité sinon)
   const horoscope = kind === "horoscope_fallback" ? useHoroscopeSummary(consultation) : null;
 
-  const badge = useMemo(() => {
-    if (kind === "numerology") {
-      return (
-        <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/60 px-3 py-1 text-[11px] font-extrabold text-slate-700 dark:border-zinc-800 dark:bg-zinc-950/40 dark:text-zinc-200">
-          <Hash className="h-3.5 w-3.5 text-fuchsia-600 dark:text-fuchsia-300" />
-          Numérologie • Analyse
-        </span>
-      );
-    }
-    if (kind === "astrology") {
-      return (
-        <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/60 px-3 py-1 text-[11px] font-extrabold text-slate-700 dark:border-zinc-800 dark:bg-zinc-950/40 dark:text-zinc-200">
-          <Sparkles className="h-3.5 w-3.5 text-violet-600 dark:text-violet-300" />
-          Astrologie • Analyse
-        </span>
-      );
-    }
-    return (
-      <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/60 px-3 py-1 text-[11px] font-extrabold text-slate-700 dark:border-zinc-800 dark:bg-zinc-950/40 dark:text-zinc-200">
-        <Sparkles className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-300" />
-        Horoscope • Résumé
-      </span>
-    );
-  }, [kind]);
-
   return (
-    <ShellCard badge={badge}>
-      {/* Header toujours centré */}
+    <ShellCard>
+      <div className="flex items-center justify-between gap-3 sm:gap-4">
+        <motion.button
+          type="button"
+          onClick={onBack}
+          whileHover={{ scale: 1.06, x: -2 }}
+          whileTap={{ scale: 0.97, x: -1 }}
+          className="group flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 rounded-xl font-semibold text-sm sm:text-base bg-gradient-to-r from-slate-900/80 to-slate-700/80 text-white/90 hover:text-white shadow-md hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/70 transition-all backdrop-blur-md border border-white/10 dark:border-zinc-800/40"
+        >
+          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 group-hover:-translate-x-1 transition-transform" />
+          <span className="hidden sm:inline font-semibold">Retour</span>
+        </motion.button>
+
+        <motion.button
+          type="button"
+          onClick={onDownloadPDF}
+          whileHover={{ scale: 1.07, rotate: 1 }}
+          whileTap={{ scale: 0.96, rotate: -1 }}
+          className="group flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 rounded-xl font-semibold text-sm sm:text-base bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 text-white shadow-md hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-400/70 transition-all backdrop-blur-md border border-white/10 dark:border-zinc-800/40"
+        >
+          <Download className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
+          <span className="hidden sm:inline">PDF</span>
+        </motion.button>
+      </div>
+
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center justify-center text-center">
         <ConsultationHeader
           titre={(consultation as any).titre}
           title={(consultation as any).title}
-          dateNaissance={(consultation as any).dateNaissance}
-         // prenoms={(consultation as any).prenoms}
-         // nom={(consultation as any).nom}
         />
       </div>
 
-      {/* Corps — switch ultra simple */}
       <div className="mt-4">
         <AnimatePresence mode="wait">
           {/* 1) Si on a du markdown (numérologie / astrologie / horoscope texte) => on l’affiche */}
@@ -204,32 +176,10 @@ const ConsultationContent = memo(function ConsultationContent({ consultation }: 
           )}
         </AnimatePresence>
       </div>
-
-      {/* Description + alternatives centrées */}
-      <div className="mx-auto mt-4 w-full max-w-2xl space-y-3">
-        <ConsultationDescription description={(consultation as any).description} />
-        <AlternativesList alternatives={(consultation as any).alternatives || []} />
-      </div>
     </ShellCard>
   );
-},
-// Comparator robuste : évite rerender si le parent recrée l’objet sans changement réel
-(prev, next) => {
-  const p: any = prev.consultation;
-  const n: any = next.consultation;
-
-  if (p === n) return true;
-
-  const pid = String(p?._id ?? p?.id ?? p?.consultationId ?? "");
-  const nid = String(n?._id ?? n?.id ?? n?.consultationId ?? "");
-  if (pid && nid && pid !== nid) return false;
-
-  const pupd = String(p?.updatedAt ?? p?.dateGeneration ?? "");
-  const nupd = String(n?.updatedAt ?? n?.dateGeneration ?? "");
-  if (!pupd || !nupd) return false;
-
-  return pupd === nupd;
-});
+}
 
 ConsultationContent.displayName = "ConsultationContent";
+
 export default ConsultationContent;

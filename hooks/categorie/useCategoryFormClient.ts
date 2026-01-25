@@ -183,6 +183,7 @@ export function useCategoryFormClient(category: CategorieAdmin) {
                 status: 'PENDING',
                 alternatives: selectedChoice.offering?.alternatives || [],
                 choice: selectedChoice,
+                rubriqueId: rubriqueCourante?._id || '',
             };
             const response = await api.post('/consultations', payload);
             const id = response.data?.id || response.data?.consultationId || response.data?._id;
@@ -198,7 +199,7 @@ export function useCategoryFormClient(category: CategorieAdmin) {
         } finally {
             setLoading(false);
         }
-    }, [form, validateForm, category, userData, router, selectedChoice]);
+    }, [form, validateForm, category, userData, router, selectedChoice, rubriqueCourante?._id]);
 
     const handleReset = useCallback(() => {
         router.push(`/secured/category/${category._id}/selection`);

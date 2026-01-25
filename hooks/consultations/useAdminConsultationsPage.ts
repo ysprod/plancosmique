@@ -1,12 +1,21 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAdminConsultations } from '@/hooks/consultations/useAdminConsultations';
 import { api } from '@/lib/api/client';
 import { useRouter } from 'next/navigation';
+import { Consultation } from '@/lib/interfaces';
 
 export type ConsultationStatus = 'all' | 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR';
 export type ConsultationType = 'all' | 'SPIRITUALITE' | 'TAROT' | 'ASTROLOGIE' | 'NUMEROLOGIE';
 
 const ITEMS_PER_PAGE = 10;
+
+interface UseAdminConsultationsOptions {
+  search?: string;
+  status?: string;
+  type?: string;
+  page?: number;
+  limit?: number;
+}
 
 export function useAdminConsultationsPage() {
   const router = useRouter();
@@ -18,21 +27,83 @@ export function useAdminConsultationsPage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const { consultations, total, loading, error, refetch } = useAdminConsultations({
+  // const { consultations, total, loading, error, refetch } = useAdminConsultations({
+  //   search: searchQuery,
+  //   status: statusFilter,
+  //   type: typeFilter,
+  //   page: currentPage,
+  //   limit: ITEMS_PER_PAGE,
+  // });
+  const options = {
     search: searchQuery,
     status: statusFilter,
     type: typeFilter,
-    page: currentPage,
+    page: currentPage,  
     limit: ITEMS_PER_PAGE,
-  });
+  };
+
+
+  const [consultations, setConsultations] = useState<Consultation[]>([]);
+    const [total, setTotal] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+  
+    const fetchConsultations = useCallback(async () => {
+      try {
+        setLoading(true);
+        setError(null);
+  
+        const params = new URLSearchParams({
+          search: options.search || '',
+          status: options.status || 'all',
+          type: options.type || 'all',
+          page: String(options.page || 1),
+          limit: String(options.limit || 18),
+        });
+  
+        const response = await api.get(`/admin/consultations?${params}`, {
+          headers: { 'Cache-Control': 'no-cache' }, 
+          timeout: 10000,
+        });
+  
+        setConsultations(response.data.consultations || []);
+        setTotal(response.data.total || 0);
+      } catch (err: any) {
+        console.error('Erreur lors du chargement des consultations:', err);
+  
+        let errorMessage = 'Erreur inconnue';
+  
+        if (err.response) {
+          errorMessage = err.response.data?.message ||
+            `Erreur ${err.response.status}`;
+        } else if (err.request) {
+          errorMessage = 'Erreur de connexion au serveur';
+        } else {
+          errorMessage = err.message;
+        }
+  
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    }, [options.search, options.status, options.type, options.page, options.limit]);
+  
+    useEffect(() => {
+      fetchConsultations();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fetchConsultations]);
+
+
+
+
 
   const totalPages = useMemo(() => Math.ceil(total / ITEMS_PER_PAGE), [total]);
 
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
-    await refetch();
+    await fetchConsultations();
     setTimeout(() => setIsRefreshing(false), 500);
-  }, [refetch]);
+  }, [fetchConsultations]);
 
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
@@ -64,7 +135,7 @@ export function useAdminConsultationsPage() {
     total,
     loading,
     error,
-    refetch,
+    fetchConsultations,
     isRefreshing,
     setIsRefreshing,
     totalPages,

@@ -22,7 +22,7 @@ const ProfilHighlightCards = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8"
+      className="flex flex-col gap-3 sm:gap-4 mb-6 sm:mb-8"
     >
       {highlightCards.map((card, index) => (
         <HighlightCard key={card.id} card={card} index={index} />

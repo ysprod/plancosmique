@@ -118,7 +118,7 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
         }
 
         await api.patch(`/consultations/${consultationId}`, {
-          status: 'paid',
+          status: 'PENDING',
           paymentMethod: 'wallet_offerings',
         });
         setStep('genereanalyse');

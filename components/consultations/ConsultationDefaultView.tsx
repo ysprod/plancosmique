@@ -16,7 +16,6 @@ export default function ConsultationDefaultView({ consultation }: { consultation
       <ConsultationHeader
         titre={consultation.titre}
         title={consultation.title}
-        dateNaissance={consultation.dateNaissance}
       />
       <div className="my-4 w-full">
         <ConsultationDescription description={consultation.description} />

@@ -1,71 +1,45 @@
 "use client";
 import StatsCounter from "@/components/commons/StatsCounter";
 import AnimatedBackground from "@/components/profil/AnimatedBackground";
-import ProfilCategories from "@/components/profil/ProfilCategories";
-import ProfilHighlightCards from "@/components/profil/ProfilHighlightCards";
-import ProfilNonPremiumSection from "@/components/profil/ProfilNonPremiumSection";
 import TopProgressBar from "@/components/profil/TopProgressBar";
+import { useGradeToast } from "@/components/profil/useGradeToast";
 import { useProfilUser } from "@/hooks/commons/useProfilUser";
-import { useAutoGrade } from "@/hooks/commons/useAutoGrade";
-import { InitiatiqueBadge } from "@/components/profil/InitiatiqueBadge";
-import { GradeMessageDisplay } from "./GradeMessageDisplay";
-import { ProfilWelcomeMessage, ProfilGradeCongrats, ProfilProgressTable, ProfilUserTypeBanner } from "@/components/profil/ProfilAutomatedSections";
-import { useGradeToast, GradeToast } from "@/components/profil/useGradeToast";
+import { cx } from "@/lib/functions";
+import NonPremiumSection from "./NonPremiumSection";
+import PremiumSection from "./PremiumSection";
 
 export default function ProfilPageClient() {
   const { userdata, loading } = useProfilUser();
   const { show, level, close } = useGradeToast(userdata);
-  const { triggerAutoGrade, loading: autoGradeLoading, error: autoGradeError } = useAutoGrade(userdata?._id, () => window.location.reload());
+
+  const isPremium = Boolean(userdata?.premium);
 
   return (
-    <div>
-      <AnimatedBackground />
-      <TopProgressBar />
-
-      <GradeToast show={show} level={level} close={close} />
-
-      {/* Bouton d’automatisation du grade (admin/demo)
-      {userdata?._id && (
-        <div className="flex justify-center mb-4">
-          <button
-            onClick={triggerAutoGrade}
-            className="px-4 py-2 rounded bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold shadow hover:scale-105 transition"
-            disabled={autoGradeLoading}
-          >
-            {autoGradeLoading ? 'Mise à jour du grade...' : 'Automatiser le grade (démo)'}
-          </button>
-          {autoGradeError && <span className="ml-4 text-red-600 text-sm">{autoGradeError}</span>}
-        </div>
-      )} */}
-
-      <div className="relative z-10 px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 max-w-7xl mx-auto">
-        {/* Badge initiatique affiché en haut de la page */}
-        <div className="flex justify-center mb-2">
-          <InitiatiqueBadge grade={userdata?.grade} />
-        </div>
-        {/* Message de grade */}
-        {userdata?.grade && (
-          <GradeMessageDisplay grade={userdata.grade} />
-        )}
-        {/* Message d’accueil */}
-        {userdata && <ProfilWelcomeMessage user={userdata} />}
-        {/* Félicitations grade */}
-        {userdata && <ProfilGradeCongrats user={userdata} />}
-        {/* Bannière type de profil */}
-        {userdata && <ProfilUserTypeBanner user={userdata} />}
-        {/* Progression vers le prochain grade */}
-        {userdata && <ProfilProgressTable user={userdata} />}
-        {userdata?.premium && (
-          <>
-            <ProfilHighlightCards />
-            <ProfilCategories />
-          </>
-        )}
-        {!userdata?.premium && !loading && <ProfilNonPremiumSection userdata={userdata} />}
+    <main
+      className={cx(
+        "relative w-full",
+        "bg-gradient-to-br from-white via-gray-50 to-gray-100",
+        "dark:from-gray-950 dark:via-gray-900 dark:to-gray-950",
+        "transition-colors duration-300"
+      )}
+    >
+      <div className="pointer-events-none absolute inset-0">
+        <AnimatedBackground />
       </div>
 
-      <StatsCounter />
-      <div className="h-16 sm:h-20" />
-    </div>
+      <div className="relative z-10 w-full mx-auto max-w-8xl px-3 py-4 sm:px-4 sm:py-6 lg:px-6 lg:py-8">
+        <div className="mx-auto flex w-full flex-col items-center justify-center text-center">
+          <TopProgressBar />
+          {isPremium && (
+            <PremiumSection user={userdata} showToast={show} toastLevel={level} onCloseToast={close} />
+          )}
+          {!isPremium && !loading && <NonPremiumSection userdata={userdata} showToast={show} toastLevel={level} onCloseToast={close} />}
+          <div className="mt-6 w-full">
+            <StatsCounter />
+          </div>
+          <div className="h-16 sm:h-20" />
+        </div>
+      </div>
+    </main>
   );
 }

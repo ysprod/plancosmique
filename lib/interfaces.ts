@@ -535,6 +535,7 @@ export interface Consultation {
     email: string;
   };
   consultantId?: string;
+  rubriqueId: string;
   serviceType: ConsultationType;
   results?: Record<string, any>;
   status: ConsultationStatus;

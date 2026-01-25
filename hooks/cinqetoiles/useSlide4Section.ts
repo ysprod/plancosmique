@@ -202,7 +202,8 @@ export function useSlide4Section() {
           formData: form,
           status: 'COMPLETED',
           alternatives: selected.offering.alternatives,
-          visible: false
+          visible: false,
+          rubriqueId: RUBRIQUE_ID,
         };
         const consultationRes = await api.post('/consultations', payload);
         if (consultationRes.status !== 200 && consultationRes.status !== 201) {

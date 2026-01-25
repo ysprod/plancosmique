@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import ClientProviders from "../components/commons/ClientProviders";
+import ServiceWorkerRegister from "../components/commons/ServiceWorkerRegister";
 import RootMain from "@/components/root/RootMain";
 import RootHeadMeta from "@/components/root/RootHeadMeta";
 import { RootThemeScript } from "@/components/root/RootThemeScript";
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {children}
             </RootMain>
           </ClientProviders>
+          <ServiceWorkerRegister />
         </ThemeProvider>
 
         <RootPortals />

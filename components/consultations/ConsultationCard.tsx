@@ -7,6 +7,17 @@ import React, { memo, useCallback } from 'react';
 import TypeIndicator from './TypeIndicator';
 import useConsultationData from '../../hooks/commons/useConsultationData';
 
+
+function normalizeType(v: any) {
+  return String(v ?? "").trim().toLowerCase().replace(/_/g, "-");
+}
+
+function isNumerologyType(t: any) {
+  const x = normalizeType(t);
+  return x === "nombres-personnels" || x === "cycles-personnels" || x === "numerologie";
+}
+
+
 export interface ConsultationCardProps {
   consultation: Consultation;
   index: number;
@@ -22,7 +33,7 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
 }) => {
   const reduceMotion = useReducedMotion();
   const derived = useConsultationData(consultation);
-  
+    const numerology = isNumerologyType(consultation?.type);
   // Handlers mémoisés
   const handleView = useCallback(() => {
     onView(consultation._id);
@@ -155,9 +166,9 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
           backgroundSize: "200% 200%",
         }}
       />
-       <div className="flex flex-col items-end gap-2">          
-            <TypeIndicator type={consultation.type} />
-          </div>
+      <div className="flex flex-col items-center gap-2 mb-2">
+        <TypeIndicator type={consultation.type} />
+      </div>
         {/* Informations personnelles */}
         <div className="mb-4 rounded-2xl bg-gradient-to-br from-slate-50/80 to-white/80 p-4 backdrop-blur-sm dark:from-zinc-800/50 dark:to-zinc-900/50">
           <div className="flex items-center gap-3 mb-3">
@@ -252,10 +263,10 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
             </motion.div>
             
             <div className="min-w-0 flex-1">
-              <h3 className="truncate text-lg font-black tracking-tight text-slate-900 dark:text-white">
+              <h3 className="text-lg font-black tracking-tight text-slate-900 dark:text-white">
                 {consultation.title}
               </h3>
-              <p className="mt-1 line-clamp-2 text-sm text-slate-600/90 dark:text-zinc-300/90">
+              <p className="mt-1 text-sm text-slate-600/90 dark:text-zinc-300/90">
                 {consultation.description}
               </p>
             </div>

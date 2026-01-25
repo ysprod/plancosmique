@@ -1,7 +1,6 @@
 "use client";
-import { memo, useMemo } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Star, Moon } from "lucide-react";
 import ErrorState from "@/components/carteduciel/ErrorState";
 import LoadingState from "@/components/carteduciel/LoadingState";
 import ProfileHeader from "@/components/carteduciel/ProfileHeader";
@@ -9,155 +8,121 @@ import SkyChart from "@/components/carteduciel/SkyChart";
 import CinqPortesSection from "@/components/profil/CinqPortesSection";
 import UserProgressSection from "@/components/profil/UserProgressSection";
 import { useMonProfil } from '@/hooks/carteduciel/useMonProfil';
+import { useConsultationsByRubrique } from '@/hooks/consultations/useConsultationsByRubrique';
+import RubriqueConsultationsList from './RubriqueConsultationsList';
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
+      staggerChildren: 0.08,
+      delayChildren: 0.12
     }
   }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 32, scale: 0.98 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }
+    scale: 1,
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] }
   }
 };
 
-const HeaderSection = memo<{ userName: string }>(({ userName }) => (
-  <motion.div
-    variants={itemVariants}
-    className="relative overflow-hidden rounded-3xl p-6 sm:p-8 mb-6
-      bg-gradient-to-br from-purple-600/20 via-indigo-600/20 to-pink-600/20
-      dark:from-purple-900/30 dark:via-indigo-900/30 dark:to-pink-900/30
-      backdrop-blur-xl
-      border border-purple-500/20 dark:border-purple-400/20
-      shadow-2xl shadow-purple-500/10"
-  >
-    {/* Animated background stars */}
-    <div className="absolute inset-0 overflow-hidden">
-      {[...Array(3)].map((_, i) => (
-        <motion.div
-          key={i}
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3],
-            rotate: 360
-          }}
-          transition={{
-            duration: 3 + i,
-            repeat: Infinity,
-            delay: i * 0.5
-          }}
-          className="absolute"
-          style={{
-            left: `${20 + i * 30}%`,
-            top: `${20 + i * 20}%`
-          }}
-        >
-          <Star className="w-4 h-4 text-purple-400/30" />
-        </motion.div>
-      ))}
-    </div>
-
-    <div className="relative flex items-center justify-between gap-4">
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-2">
-          <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400 dark:text-purple-300" />
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 dark:from-purple-300 dark:via-pink-300 dark:to-indigo-300 bg-clip-text text-transparent truncate">
-            Mon Profil
-          </h1>
-        </div>
-        <p className="text-sm sm:text-base text-slate-300 dark:text-slate-400">
-          Bienvenue, <span className="font-semibold text-purple-300 dark:text-purple-400">{userName}</span>
-        </p>
-      </div>
-      
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="flex-shrink-0"
-      >
-        <Moon className="w-8 h-8 sm:w-10 sm:h-10 text-purple-400/50 dark:text-purple-300/50" />
-      </motion.div>
-    </div>
-  </motion.div>
-));
-
-HeaderSection.displayName = 'HeaderSection';
-
 export default function MonProfilPageClient() {
   const { user, processedData, isLoading } = useMonProfil();
+  // Only memoize where needed for perf
+  const userName = user?.prenoms || 'Voyageur';
+  const isPremium = !!user?.premium;
+  const carteDuCielData = processedData?.carteDuCiel && 'carteDuCiel' in processedData.carteDuCiel
+    ? processedData.carteDuCiel.carteDuCiel
+    : null;
 
-  const userName = useMemo(() => user?.prenoms || 'Voyageur', [user?.prenoms]);
-  const isPremium = useMemo(() => !!user?.premium, [user?.premium]);
-  
-  const carteDuCielData = useMemo(() => {
-    if (!processedData?.carteDuCiel) return null;
-    return 'carteDuCiel' in processedData.carteDuCiel
-      ? processedData.carteDuCiel.carteDuCiel
-      : null;
-  }, [processedData?.carteDuCiel]);
+
+  const {
+    consultations,
+    loading: loadingConsultations,
+    error: errorConsultations
+  } = useConsultationsByRubrique('694acf59bd12675f59e7a7f2');
 
   if (isLoading) return <LoadingState />;
   if (!user || !processedData) return <ErrorState />;
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-950 via-purple-950 to-indigo-950 dark:from-black dark:via-purple-950/50 dark:to-indigo-950/50">
-      <div className="relative w-full max-w-7xl">
-        {/* Animated background effects */}
+    <div className="flex flex-col items-center justify-center">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="w-full max-w-md sm:max-w-2xl md:max-w-3xl lg:max-w-5xl px-2 sm:px-4 py-4 sm:py-8 flex flex-col items-center"
+      >
         <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.2, 0.1]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-pink-500/10 blur-3xl pointer-events-none"
-        />
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="relative z-10 w-full px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 space-y-4 sm:space-y-6"
+          variants={itemVariants}
+          className="w-full flex flex-col items-center gap-4 sm:gap-6"
         >
-          <HeaderSection userName={userName} />
-
-          <motion.div variants={itemVariants} className="grid gap-4 sm:gap-6">
-            <div className="bg-slate-900/50 dark:bg-slate-950/50 backdrop-blur-xl rounded-2xl border border-slate-800/50 dark:border-slate-700/30 shadow-2xl overflow-hidden">
+          <motion.div
+            variants={itemVariants}
+            className="w-full flex justify-center"
+          >
+            <div className="w-full max-w-xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg rounded-2xl border border-cosmic-purple/20 dark:border-cosmic-pink/20 shadow-xl overflow-hidden animate-fade-in">
               <ProfileHeader userData={processedData} />
             </div>
+          </motion.div>
 
-            <div className="bg-slate-900/50 dark:bg-slate-950/50 backdrop-blur-xl rounded-2xl border border-slate-800/50 dark:border-slate-700/30 shadow-2xl p-4 sm:p-6">
+          <motion.div
+            variants={itemVariants}
+            className="w-full flex justify-center"
+          >
+            <div className="w-full max-w-xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-lg rounded-2xl border border-cosmic-indigo/20 dark:border-cosmic-purple/20 shadow-lg p-3 sm:p-5 animate-fade-in">
               <UserProgressSection
                 userName={userName}
                 showWelcomeMessage={false}
               />
             </div>
+          </motion.div>
 
-            <div className="bg-slate-900/50 dark:bg-slate-950/50 backdrop-blur-xl rounded-2xl border border-slate-800/50 dark:border-slate-700/30 shadow-2xl p-4 sm:p-6">
+          <motion.div
+            variants={itemVariants}
+            className="w-full flex justify-center"
+          >
+            <div className="w-full max-w-xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-lg rounded-2xl border border-cosmic-pink/20 dark:border-cosmic-indigo/20 shadow-lg p-3 sm:p-5 animate-fade-in">
               <CinqPortesSection
                 carteDuCiel={carteDuCielData}
                 isPremium={isPremium}
               />
             </div>
+          </motion.div>
 
-            <div className="bg-slate-900/50 dark:bg-slate-950/50 backdrop-blur-xl rounded-2xl border border-slate-800/50 dark:border-slate-700/30 shadow-2xl overflow-hidden">
+          <motion.div
+            variants={itemVariants}
+            className="w-full flex justify-center"
+          >
+            <div className="w-full max-w-xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg rounded-2xl border border-cosmic-purple/20 dark:border-cosmic-pink/20 shadow-xl overflow-hidden animate-fade-in">
               <SkyChart carteDuCiel={processedData.carteDuCiel} />
             </div>
           </motion.div>
+
+          {/* Section consultations rubrique */}
+          <motion.div
+            variants={itemVariants}
+            className="w-full flex justify-center"
+          >
+            <div className="w-full max-w-xl bg-gradient-to-r from-cosmic-purple/10 via-cosmic-indigo/10 to-cosmic-pink/10 dark:from-cosmic-indigo/20 dark:to-cosmic-pink/20 rounded-2xl border border-cosmic-purple/10 dark:border-cosmic-pink/10 shadow p-3 sm:p-5 animate-fade-in mt-2">
+              <div className="font-bold text-cosmic-indigo dark:text-cosmic-pink mb-2 text-center text-base sm:text-lg">Consultations de la rubrique</div>
+              {loadingConsultations ? (
+                <div className="text-center text-xs text-gray-400 py-4">Chargement des consultations...</div>
+              ) : errorConsultations ? (
+                <div className="text-center text-xs text-red-400 py-4">{errorConsultations}</div>
+              ) : (
+                <RubriqueConsultationsList consultations={consultations || []} />
+              )}
+            </div>
+          </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 }
