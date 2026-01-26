@@ -1,22 +1,21 @@
 import { useState } from "react";
-import { AnalyseAstrologique } from "@/lib/interfaces";
+import { AnalyseAstrologique, Consultation } from "@/lib/interfaces";
 
 interface UseAnalyseFormEditorProps {
-  analyseData: AnalyseAstrologique;
-  onSave: (data: AnalyseAstrologique) => Promise<void>;
+  analyseData: Consultation;
+  onSave: (data: Consultation) => Promise<void>;
 }
-
 export function useAnalyseFormEditor({ analyseData, onSave }: UseAnalyseFormEditorProps) {
-  const [formData, setFormData] = useState<AnalyseAstrologique>(analyseData);
+  const [formData, setFormData] = useState<Consultation>(analyseData);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleChange = (field: keyof AnalyseAstrologique, value: any) => {
+  const handleChange = (field: keyof Consultation, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error for this field
-    if (errors[field]) {
+    if (errors[field as string]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
-        delete newErrors[field];
+        delete newErrors[field as string];
         return newErrors;
       });
     }

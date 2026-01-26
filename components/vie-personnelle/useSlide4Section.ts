@@ -158,7 +158,7 @@ export function useSlide4Section(rubrique: Rubrique) {
           throw new Error(consumeRes.data?.message || 'Erreur consommation');
         }
         await api.patch(`/consultations/${consultationId}`, {
-          status: 'paid',
+          status: 'PENDING',
           paymentMethod: 'wallet_offerings',
         });
         setStep('genereanalyse');

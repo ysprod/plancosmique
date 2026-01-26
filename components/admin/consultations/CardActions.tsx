@@ -13,7 +13,7 @@ interface CardActionsProps {
 const CardActions = memo(({ isCompleted, isNotified, consultationId, onGenerateAnalysis }: CardActionsProps) => {
 
     return (
-        <div className="flex flex-col items-center gap-2">
+        <div className="w-full flex flex-row items-center gap-2">
             {!isCompleted && (
                 <motion.button
                     onClick={() => onGenerateAnalysis(consultationId)}

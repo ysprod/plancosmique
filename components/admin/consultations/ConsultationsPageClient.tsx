@@ -12,15 +12,14 @@ import { AnimatePresence } from "framer-motion";
 export default function ConsultationsPageClient() {
   const {
     consultations, total, loading, error, isRefreshing, toastMessage, totalPages,
-    currentPage, handlePageChange, handleToastClose, handleRefresh, handleGenerateAnalysis,
-    statusFilter, setStatusFilter
+    currentPage, statusFilter, handlePageChange, handleToastClose, handleRefresh,
+    handleGenerateAnalysis, setStatusFilter
   } = useAdminConsultationsPage();
 
   const tabs = useMemo(() => [
     { key: 'all', label: 'Toutes' },
     { key: 'COMPLETED', label: 'Terminées' },
     { key: 'PENDING', label: 'En attente' },
-    { key: 'GENERATING', label: 'En cours' },
     { key: 'ERROR', label: 'Erreur' },
   ], []);
 

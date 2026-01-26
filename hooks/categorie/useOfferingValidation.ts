@@ -50,9 +50,8 @@ export function useOfferingValidation({
                 throw new Error(consumeRes.data?.message || 'Erreur lors de la consommation');
             }
 
-            // Update consultation status to paid
             await api.patch(`/consultations/${consultationId}`, {
-                status: 'paid',
+                status: 'PENDING',
                 paymentMethod: 'wallet_offerings'
             });
 

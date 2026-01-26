@@ -1,15 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { api } from '@/lib/api/client';
-import { AnalyseAstrologique, GenerationStep } from '@/lib/interfaces';
+import { Consultation, GenerationStep } from '@/lib/interfaces';
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 export function useGenereAnalysePage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const consultationId = searchParams?.get('id') || null;
-  
   const [step, setStep] = useState<GenerationStep>('loading');
-  const [analyseData, setAnalyseData] = useState<AnalyseAstrologique | null>(null);
+  const [consultation, setConsultation] = useState<Consultation | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -20,46 +19,37 @@ export function useGenereAnalysePage() {
       return;
     }
 
-    const loadAnalysis = async () => {
+    const loadConsultation = async () => {
       try {
         setStep('loading');
-        console.log('Fetching analysis for consultation ID:', consultationId);
-        const response = await api.get(`/consultations/analysis/${consultationId}`);
-        console.log('Response:', response);
+        const response = await api.get(`/consultations/${consultationId}`);
         if (response.status !== 200) {
-          throw new Error('Analyse non trouvée');
+          throw new Error('Consultation non trouvée');
         }
-        const data = response.data;
-        if (data.analyse) {
-          setAnalyseData(data.analyse);
-          setStep('success');
-        } else {
-          setError('Analyse non disponible');
-          setStep('error');
-        }
+        const consultationObj = response.data.consultation ?? response.data;
+        setConsultation(consultationObj);
+        setStep('success');
       } catch (err: any) {
-        setError(err.response?.data?.message || err.message || 'Impossible de récupérer l\'analyse');
+        setError(err.response?.data?.message || err.message || 'Impossible de récupérer la consultation');
         setStep('error');
       }
     };
 
-    loadAnalysis();
+    loadConsultation();
   }, [consultationId, searchParams]);
 
-  const saveAnalysis = async (data: AnalyseAstrologique) => {
+  const saveAnalysis = async (data: Consultation) => {
     if (!consultationId) {
       throw new Error('ID consultation manquant');
     }
-
     setIsSaving(true);
     try {
-      const res = await api.put(`/consultations/${consultationId}/analysis`, data);
+      const res = await api.put(`/consultations/${consultationId}`, data);
       if (res.status !== 200) {
         throw new Error(res.data?.message || 'Erreur de sauvegarde');
       }
-      setAnalyseData(res.data?.analyse || data);
-      // Retourner à la liste après succès
-      router.push('/admin/consultations');
+      setConsultation((prev: any) => ({ ...prev, analyse: res.data?.consultation || data }));
+      router.push(`/admin/consultations/${consultationId}`);
     } catch (err: any) {
       throw new Error(err.response?.data?.message || err.message || 'Erreur de sauvegarde');
     } finally {
@@ -76,17 +66,11 @@ export function useGenereAnalysePage() {
   }, [consultationId]);
 
   const handleBack = useCallback(() => {
-    router.push('/admin/consultations');
+    router.push(`/admin/consultations/${consultationId}`);
   }, [router]);
 
   return {
-    step,
-    analyseData,
-    error,
-    isSaving,
-    handleRetry,
-    handleBack,
-    saveAnalysis,
-    setStep,
+    step, consultation, error, isSaving,
+    handleRetry, handleBack, saveAnalysis, setStep,
   };
 }

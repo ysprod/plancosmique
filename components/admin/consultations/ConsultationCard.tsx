@@ -19,9 +19,8 @@ interface ConsultationCardProps {
 }
 
 const ConsultationCard = memo(({ consultation, onGenerateAnalysis }: ConsultationCardProps) => {
-    const { typeConfig, hasTierce, isPaid } = useConsultationCard(consultation);
+    const { typeConfig, hasTierce } = useConsultationCard(consultation);
     const { formattedDate, clientName, tierceName } = useConsultationCardDisplay(consultation);
-    const email = consultation.clientId?.email || consultation.formData?.email || null;
     const phone = (consultation.clientId && 'phone' in consultation.clientId)
         ? (consultation.clientId as any).phone
         : (consultation.formData?.numeroSend || null);
@@ -64,7 +63,6 @@ const ConsultationCard = memo(({ consultation, onGenerateAnalysis }: Consultatio
                 />
                 <ClientInfo
                     clientName={clientName}
-                    email={email}
                     phone={phone}
                     tierceName={tierceName}
                     hasTierce={hasTierce}
@@ -72,8 +70,8 @@ const ConsultationCard = memo(({ consultation, onGenerateAnalysis }: Consultatio
 
                 <ConsultationBadges
                     formattedDate={formattedDate}
-                    isPaid={isPaid}
                 />
+
                 <CardActions
                     isCompleted={isCompleted}
                     isNotified={isNotified}

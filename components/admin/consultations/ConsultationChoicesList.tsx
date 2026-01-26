@@ -17,7 +17,10 @@ const MemoSansPromptTab = React.memo(SansPromptTab);
 const MemoAvecPromptTab = React.memo(AvecPromptTab);
 
 export default function ConsultationChoicesList() {
-  const { loading, error, choicesWithPrompt, choicesWithoutPrompt, search, setSearch, handleDeletePrompt, } = useConsultationChoices();
+  const {
+    loading, error, choicesWithPrompt, choicesWithoutPrompt, search,
+    setSearch, handleDeletePrompt,
+  } = useConsultationChoices();
 
   const { tab, setTab } = useConsultationChoicesTabs('sans');
 
@@ -47,7 +50,7 @@ export default function ConsultationChoicesList() {
   }
 
   return (
-    <div className="space-y-6 flex flex-col items-center justify-center w-full">
+    <div className="w-full space-y-6 flex flex-col items-center justify-center">
       <MemoConsultationChoicesHeader {...headerProps} />
       <MemoConsultationChoicesSearch {...searchProps} />
       <MemoConsultationChoicesTabs {...tabsProps} />

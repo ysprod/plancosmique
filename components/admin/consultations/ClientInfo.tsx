@@ -5,13 +5,12 @@ import { memo } from 'react';
 
 interface ClientInfoProps {
     clientName: string;
-    email: string | null;
     phone?: string | null;
     tierceName?: string | null;
     hasTierce?: boolean;
 }
 
-const ClientInfo = memo(({ clientName, email, phone, tierceName, hasTierce }: ClientInfoProps) => {
+const ClientInfo = memo(({ clientName, phone, tierceName, hasTierce }: ClientInfoProps) => {
     return (
         <div className="flex flex-col items-center gap-2 mb-3">
             <motion.div
@@ -44,22 +43,6 @@ const ClientInfo = memo(({ clientName, email, phone, tierceName, hasTierce }: Cl
                 </motion.div>
             )}
 
-            {email && (
-                <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center justify-center gap-2 px-3 py-2 rounded-xl
-                              bg-gradient-to-r from-blue-50 to-cyan-50
-                              dark:from-blue-950/30 dark:to-cyan-950/30
-                              border border-blue-200/50 dark:border-blue-800/50
-                              w-full max-w-xs"
-                >
-                    <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-                    <span className="text-xs text-gray-700 dark:text-gray-300 truncate">
-                        {email}
-                    </span>
-                </motion.div>
-            )}
-
             {phone && (
                 <motion.div
                     whileHover={{ scale: 1.02 }}
@@ -79,7 +62,6 @@ const ClientInfo = memo(({ clientName, email, phone, tierceName, hasTierce }: Cl
     );
 }, (prev, next) => {
     return prev.clientName === next.clientName && 
-           prev.email === next.email && 
            prev.phone === next.phone &&
            prev.tierceName === next.tierceName &&
            prev.hasTierce === next.hasTierce;

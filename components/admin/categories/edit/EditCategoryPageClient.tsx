@@ -12,47 +12,45 @@ export default function EditCategoryPageClient() {
   } = useEditCategoryPage();
 
   return (
-    <div className="bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
-      <div className="mx-auto max-w-2xl px-3 py-6 sm:px-4 sm:py-10">
+    <div className="w-full mx-auto  px-3 py-6 sm:px-4 sm:py-10 bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
 
-        <Header view={view} onBack={() => window.history.back()} />
+      <Header view={view} onBack={() => window.history.back()} />
 
-        <Title selectionSummary={selectionSummary} />
+      <Title selectionSummary={selectionSummary} />
 
-        <MainContent
-          banner={banner}
-          view={view}
-          pageLoading={pageLoading}
-          formProps={{
-            nom,
-            setNom,
-            description,
-            setDescription,
-            rubriques: rubriques ?? [],
-            rubriqueIds,
-            selectedSet,
-            rubriquesLoading,
-            toggleRubrique,
-            clearSelection,
-            goPreview,
-            selectionSummary,
-          }}
-          previewProps={{
-            nom,
-            description,
-            selectedRubriques,
-            busy,
-            onBack: goEdit,
-            onConfirm: handleEdit,
-          }}
-          successProps={{
-            nom,
-            onGoList: () => window.history.back(),
-            onEditAnother: goEdit,
-            reducedMotion: false,
-          }}
-        />
-      </div>
+      <MainContent
+        banner={banner}
+        view={view}
+        pageLoading={pageLoading}
+        formProps={{
+          nom,
+          setNom,
+          description,
+          setDescription,
+          rubriques: rubriques ?? [],
+          rubriqueIds,
+          selectedSet,
+          rubriquesLoading,
+          toggleRubrique,
+          clearSelection,
+          goPreview,
+          selectionSummary,
+        }}
+        previewProps={{
+          nom,
+          description,
+          selectedRubriques,
+          busy,
+          onBack: goEdit,
+          onConfirm: handleEdit,
+        }}
+        successProps={{
+          nom,
+          onGoList: () => window.history.back(),
+          onEditAnother: goEdit,
+          reducedMotion: false,
+        }}
+      />
     </div>
   );
 }
