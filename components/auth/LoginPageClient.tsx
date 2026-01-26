@@ -3,8 +3,6 @@ import { LoginForm } from '@/components/auth';
 
 export default function LoginPageClient() {
   return (
-    <div className=" bg-gradient-to-br from-slate-60 via-white to-violet-50 flex items-center justify-center p-4">
-      <LoginForm />
-    </div>
+    <LoginForm />
   );
 }

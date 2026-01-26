@@ -1,5 +1,4 @@
 'use client';
-import { AnimatePresence } from "framer-motion";
 import { AnimatedBackground } from "@/components/auth/AnimatedBackground";
 import { StarField } from "@/components/auth/StarField";
 import { LoadingState } from "@/components/auth/LoadingState";
@@ -26,9 +25,7 @@ export default function LogoutPageClient() {
       </div>
       <StarField />
       <div className="relative z-10 w-full max-w-sm sm:max-w-md">
-        <AnimatePresence mode="wait">
-          {renderContent}
-        </AnimatePresence>
+        {renderContent}
         <SecurityBadge />
       </div>
     </div>

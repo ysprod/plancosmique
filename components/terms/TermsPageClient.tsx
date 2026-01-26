@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 
 export default function TermsPageClient() {
     const sections = useTermsSections(List, Link);
+    
     return (
         <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
             <Header />

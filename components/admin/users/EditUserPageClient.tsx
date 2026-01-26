@@ -13,24 +13,21 @@ export default function EditUserPageClient() {
   if (loading) { return <EditUserLoading />; }
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 to-violet-50 p-4 sm:p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto bg-gradient-to-br from-slate-50 to-violet-50 p-4 sm:p-6">
 
-        <EditUserHeader />
+      <EditUserHeader />
 
-        {success && <EditUserSuccessAlert />}
+      {success && <EditUserSuccessAlert />}
 
-        {error && <EditUserErrorAlert error={error} onClose={() => setError(null)} />}
+      {error && <EditUserErrorAlert error={error} onClose={() => setError(null)} />}
 
-        <EditUserForm
-          formData={formData}
-          setFormData={setFormData}
-          saving={saving}
-          success={success}
-          onSubmit={handleSubmit}
-        />
-
-      </div>
+      <EditUserForm
+        formData={formData}
+        setFormData={setFormData}
+        saving={saving}
+        success={success}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }

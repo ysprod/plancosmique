@@ -12,6 +12,7 @@ export default function EditOffrandePageClient() {
 
     if (loading) return <EditOffrandeLoading />;
     if (error) return <EditOffrandeError error={error} onRetry={fetchData} />;
+    
     if (!formData) return null;
 
     return (

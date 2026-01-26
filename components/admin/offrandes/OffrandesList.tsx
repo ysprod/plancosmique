@@ -19,7 +19,7 @@ interface OffrandesListProps {
 const OffrandesList: React.FC<OffrandesListProps> = ({ offerings, CATEGORIES, onEdit, onDelete }) => {
   if (!offerings || offerings.length === 0) return null;
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {offerings.map((offering, index) => {
         const category = CATEGORIES.find(c => c.value === offering.category);
         return (

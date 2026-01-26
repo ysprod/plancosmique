@@ -84,7 +84,6 @@ export default function PaymentCallbackPageClient() {
             onGoHome={handleGoHome}
             itemVariants={itemVariants}
           />
-
           <SecurityNote itemVariants={itemVariants} />
         </motion.div>
       </AnimatePresence>

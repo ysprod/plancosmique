@@ -14,6 +14,7 @@ const Loader = memo(() => (
           </svg>
         </div>
       </div>
+      
       <span className="text-sm sm:text-base font-semibold text-center text-purple-700 dark:text-purple-200 mt-2 animate-fade-in">Chargement cosmique...</span>
     </div>
     <style>{`

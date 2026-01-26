@@ -59,7 +59,6 @@ export async function POST(request: NextRequest) {
                 message: 'Webhook traité avec succès',
             });
         } else if (code_statut === 2) {
-            // Paiement déjà traité
             return NextResponse.json({
                 success: true,
                 message: 'Paiement déjà traité',

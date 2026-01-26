@@ -7,23 +7,11 @@ import LoadingState from '@/components/admin/dashboard/LoadingState';
 import RefreshBanner from '@/components/admin/dashboard/RefreshBanner';
 import StatsGrid from '@/components/admin/dashboard/StatsGrid';
 import { useAdminDashboardPage } from '@/hooks/admin/useAdminDashboardPage';
-import { AnimatePresence, motion } from 'framer-motion';
 import ReportsActivity from '../reports/ReportsActivity';
 import ReportsChart from '../reports/ReportsChart';
 import ReportsHeader from '../reports/ReportsHeader';
 import ReportsMetricsGrid from '../reports/ReportsMetricsGrid';
 import ReportsTabs from '../reports/ReportsTabs';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
-};
 
 export default function AdminDashboardPage() {
   const {
@@ -52,25 +40,20 @@ export default function AdminDashboardPage() {
         loading={loading}
         onRefresh={handleRefresh}
       />
-      <motion.div
+      <div
         className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
       >
-        <AnimatePresence mode="wait">
-          {showRefreshBanner && (
-            <RefreshBanner
-              isRefreshing={isRefreshing}
-              loading={loading}
-              show={showRefreshBanner}
-            />
-          )}
-        </AnimatePresence>
+        {showRefreshBanner && (
+          <RefreshBanner
+            isRefreshing={isRefreshing}
+            loading={loading}
+            show={showRefreshBanner}
+          />
+        )}
         <ActivitySection stats={stats} derivedStats={derivedStats} />
         <StatsGrid stats={stats} derivedStats={derivedStats} />
         <DetailsGrid stats={stats} derivedStats={derivedStats} />
-      </motion.div>
+      </div>
 
       <div className="space-y-4 sm:space-y-6 p-3 sm:p-4 md:p-6 max-w-7xl mx-auto">
         <ReportsHeader dateRange={dateRange} setDateRange={setDateRange} DATE_RANGES={require('@/hooks/admin/useAdminReportsPage').DATE_RANGES} />

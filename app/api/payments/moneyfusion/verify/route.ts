@@ -16,7 +16,6 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // URL de vérification MoneyFusion (endpoint public de notification)
         const verifyUrl = `https://www.pay.moneyfusion.net/paiementNotif/${token}`;
         const response = await axios.get(
             verifyUrl,

@@ -4,13 +4,15 @@ import { Save, X } from "lucide-react";
 interface FormActionsProps {
     onCancel: () => void;
     isSaving: boolean;
+    onSave: () => void;
 }
 
-export default function FormActions({ onCancel, isSaving }: FormActionsProps) {
+export default function FormActions({ onCancel, isSaving, onSave }: FormActionsProps) {
     return (
         <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <button
-                type="submit"
+                type="button"
+                onClick={onSave}
                 disabled={isSaving}
                 className="flex-1 h-12 px-6 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
             >
