@@ -9,15 +9,13 @@ interface ConsulterContentProps {
     walletOfferings: WalletOffering[];
     contextInfo: { rubrique?: any; choix?: any };
     onOfferingValidation: (alternative: OfferingAlternative) => Promise<void>;
-    onBack: () => void;
 }
 
 const ConsulterContent = memo<ConsulterContentProps>(function ConsulterContent({
     consultation,
     walletOfferings,
     contextInfo,
-    onOfferingValidation,
-    onBack
+    onOfferingValidation 
 }) {
     return (
         <motion.div
@@ -42,7 +40,6 @@ const ConsulterContent = memo<ConsulterContentProps>(function ConsulterContent({
                         consultation={consultation}
                         walletOfferings={walletOfferings}
                         handleOfferingValidation={onOfferingValidation}
-                        handleBack={onBack}
                     />
                 </motion.div>
             )}

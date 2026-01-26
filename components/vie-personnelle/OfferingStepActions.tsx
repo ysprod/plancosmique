@@ -4,14 +4,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback } from "react";
 
 interface OfferingStepActionsProps {
-  onBack: () => void;
   onNext: () => void;
   canProceed: boolean;
   consultationId?: string;
   categoryId?: string;
 }
 
-export default function OfferingStepActions({ onBack, onNext, canProceed, consultationId, categoryId }: OfferingStepActionsProps) {
+export default function OfferingStepActions({ onNext, canProceed, consultationId, categoryId }: OfferingStepActionsProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -28,14 +27,8 @@ export default function OfferingStepActions({ onBack, onNext, canProceed, consul
 
   return (
     <div className="sticky bottom-0 z-40 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
-      <div className="max-w-2xl mx-auto px-4 py-3 space-y-2">
+      <div className="w-full max-w-2xl mx-auto px-4 py-3 space-y-2">
         <div className="flex gap-2">
-          <button
-            onClick={onBack}
-            className="px-4 h-11 rounded-xl border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-all active:scale-[0.98]"
-          >
-            Retour
-          </button>
           <button
             onClick={onNext}
             disabled={!canProceed}

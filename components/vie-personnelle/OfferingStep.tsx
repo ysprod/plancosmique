@@ -13,7 +13,6 @@ interface OfferingStepProps {
   requiredOfferings: OfferingAlternative[];
   walletOfferings: WalletOffering[];
   onNext: (selected: OfferingAlternative) => void;
-  onBack: () => void;
   consultationTitle: string;
 }
 
@@ -21,7 +20,6 @@ export default function OfferingStep({
   requiredOfferings,
   walletOfferings,
   onNext,
-  onBack,
   consultationTitle,
 }: OfferingStepProps) {
   const state = useOfferingStepState(requiredOfferings, walletOfferings, onNext);
@@ -32,7 +30,7 @@ export default function OfferingStep({
       <OfferingStepHeader />
       {consultationTitle && (
         <div className="w-full flex justify-center items-center mt-2 mb-1">
-          <h2 className="text-lg sm:text-xl font-bold text-purple-700 dark:text-purple-200 text-center truncate max-w-xl animate-fade-in">
+          <h2 className="text-lg sm:text-xl font-bold">
             {consultationTitle}
           </h2>
         </div>
@@ -88,7 +86,6 @@ export default function OfferingStep({
         </div>
       </div>
       <OfferingStepActions
-        onBack={onBack}
         onNext={state.handleNext}
         canProceed={state.canProceed}
       />

@@ -23,14 +23,15 @@ const containerVariants = {
 
 interface CategoryFormClientProps {
   category: CategorieAdmin;
+  consultationId: string;
 }
 
-const CategoryFormClient = memo<CategoryFormClientProps>(function CategoryFormClient({ category }) {
+const CategoryFormClient = memo<CategoryFormClientProps>(function CategoryFormClient({ category, consultationId }) {
   const {
     contextInfo, needsForm, loading, form, errors, apiError, showErrorToast,
     handleChange, handleSubmit, handleReset, handleCloseError,
     selectedChoiceId, userData, selectedChoice
-  } = useCategoryFormClient(category);
+  } = useCategoryFormClient(category, consultationId);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-6 sm:py-8">

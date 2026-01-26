@@ -11,8 +11,8 @@ export default function CategoryGenereAnalysePage() {
     const consultationId = searchParams?.get('consultationId');
 
     const { category, loading } = useCategory(id);
-
     if (!id || !consultationId) return notFound();
+    
     if (loading) return <CategoryLoadingSpinner />;
     if (!category || !category._id) return notFound();
 

@@ -71,7 +71,6 @@ const Slide4SectionMain: React.FC<Slide4SectionMainProps> = ({
               consultation={consultation}
               walletOfferings={walletOfferings}
               handleOfferingValidation={handleOfferingValidation}
-              handleBack={handleBack}
             />
           </motion.div>
         )}

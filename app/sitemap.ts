@@ -15,7 +15,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/secured/spiritualite', priority: 0.6, changefreq: 'monthly' },
     { path: '/secured/notifications', priority: 0.5, changefreq: 'weekly' },
     { path: '/secured/monprofil', priority: 0.7, changefreq: 'monthly' },
-    { path: '/secured/analysehoroscope', priority: 0.7, changefreq: 'monthly' },
     { path: '/secured/carteduciel', priority: 0.7, changefreq: 'monthly' },
     { path: '/secured/cinqportes', priority: 0.7, changefreq: 'monthly' },
     { path: '/secured/voyance', priority: 0.7, changefreq: 'monthly' },

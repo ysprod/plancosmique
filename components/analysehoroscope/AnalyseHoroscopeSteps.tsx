@@ -42,7 +42,7 @@ const AnalyseHoroscopeSteps = ({
         requiredOfferings={consultation.alternatives}
         walletOfferings={walletOfferings}
         onNext={handleOfferingValidation}
-        onBack={handleBack}
+
         consultationTitle={consultation.title}
       />
     )}

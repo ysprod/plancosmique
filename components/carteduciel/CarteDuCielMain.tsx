@@ -21,7 +21,7 @@ const CarteDuCielMain = ({ user, processedData, isLoading }: CarteDuCielMainProp
   }
   
   return (
-    <main className=" bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950 p-3 sm:p-6 space-y-4 sm:space-y-6">
+    <main className="min-h-screen bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950 p-3 sm:p-6 space-y-4 sm:space-y-6">
       <div className="max-w-4xl mx-auto">
         <ProfileHeader userData={processedData} />
         <SkyChart carteDuCiel={processedData.carteDuCiel} />

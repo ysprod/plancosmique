@@ -1,15 +1,15 @@
 'use client';
-import { memo, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import type { CategorieAdmin } from '@/lib/interfaces';
 import { useConsultationData } from '@/hooks/categorie/useConsultationData';
 import { useOfferingValidation } from '@/hooks/categorie/useOfferingValidation';
-import CategoryStepNavigation from './CategoryStepNavigation';
-import ConsulterHeader from './ConsulterHeader';
-import ConsulterContent from './ConsulterContent';
-import ConsulterLoadingState from './ConsulterLoadingState';
-import Slide4SectionLoadingOverlay from '../vie-personnelle/Slide4SectionLoadingOverlay';
+import type { CategorieAdmin } from '@/lib/interfaces';
+import { useRouter } from 'next/navigation';
+import { memo, useCallback } from 'react';
 import Slide4SectionErrorToast from '../vie-personnelle/Slide4SectionErrorToast';
+import Slide4SectionLoadingOverlay from '../vie-personnelle/Slide4SectionLoadingOverlay';
+import CategoryStepNavigation from './CategoryStepNavigation';
+import ConsulterContent from './ConsulterContent';
+import ConsulterHeader from './ConsulterHeader';
+import ConsulterLoadingState from './ConsulterLoadingState';
 
 interface CategoryConsulterClientProps {
   category: CategorieAdmin;
@@ -29,11 +29,7 @@ const CategoryConsulterClient = memo<CategoryConsulterClientProps>(function Cate
   const {
     loading: validationLoading, error: validationError, showError,
     handleValidation, clearError
-  } = useOfferingValidation({ consultationId, categoryId: category._id, });
-
-  const handleBack = useCallback(() => {
-    router.push(`/secured/category/${category._id}/form`);
-  }, [category._id, router]);
+  } = useOfferingValidation({ consultationId, categoryId: category._id, }); 
 
   const isLoading = dataLoading || validationLoading;
   const currentError = validationError || dataError;
@@ -57,7 +53,6 @@ const CategoryConsulterClient = memo<CategoryConsulterClientProps>(function Cate
             walletOfferings={walletOfferings}
             contextInfo={contextInfo}
             onOfferingValidation={handleValidation}
-            onBack={handleBack}
           />
         ) : null}
       </div>
@@ -67,6 +62,7 @@ const CategoryConsulterClient = memo<CategoryConsulterClientProps>(function Cate
         apiError={currentError}
         handleCloseError={clearError}
       />
+
       <Slide4SectionLoadingOverlay
         paymentLoading={isLoading}
         step="consulter"

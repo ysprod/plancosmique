@@ -324,8 +324,7 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
                       <OfferingStep
                         requiredOfferings={consultation.alternatives as any}
                         walletOfferings={walletOfferings}
-                        onNext={handleOfferingValidation}
-                        onBack={handleBack}
+                        onNext={handleOfferingValidation}        
                         consultationTitle={consultation.title}
                       />
                     </motion.div>
