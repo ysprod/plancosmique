@@ -2,7 +2,7 @@
 // Gère la mise en cache agressive pour maximiser les performances
 // Version cache - Incrémenter pour forcer le rafraîchissement
 
-const CACHE_VERSION = 'monetoile-v19';
+const CACHE_VERSION = 'monetoile-v20';
 const CACHE_STATIC = `${CACHE_VERSION}-static`;
 const CACHE_DYNAMIC = `${CACHE_VERSION}-dynamic`;
 const CACHE_IMAGES = `${CACHE_VERSION}-images`;
@@ -20,15 +20,15 @@ const CACHE_DURATIONS = {
   static: 365 * 24 * 60 * 60 * 1000, // 1 an pour les assets statiques
   images: 30 * 24 * 60 * 60 * 1000,  // 30 jours pour les images
   api: 5 * 60 * 1000,                // 5 minutes pour les API
-  dynamic: 0,      // 24h pour les pages dynamiques 24 * 60 * 60 * 1000
+  dynamic:  1000,      // 24h pour les pages dynamiques  24 * 60 * 60 * 1000
 };
 
 // Taille maximale du cache (en nombre d'entrées)
 const MAX_CACHE_SIZE = {
-  static: 50,
-  images: 100,
+  static: 500,
+  images: 1000,
   api: 50,
-  dynamic: 30,
+  dynamic: 300,
 };
 
 // Installation du Service Worker

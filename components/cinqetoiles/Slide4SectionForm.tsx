@@ -9,7 +9,7 @@ export function Slide4SectionForm({ form, errors, handleChange, apiError, handle
       handleChange={handleChange}
       apiError={apiError}
       handleSubmit={handleSubmit}
-      resetSelection={resetSelection}
+      step="consultation"
     />
   );
 }

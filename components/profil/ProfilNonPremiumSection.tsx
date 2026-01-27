@@ -1,7 +1,6 @@
 'use client';
-import { AnimatePresence, motion } from "framer-motion";
-import Slide4Section from "@/components/profil/cinqetoiles/Slide4Section";
 import { User } from "@/lib/interfaces";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface ProfilNonPremiumSectionProps {
   userdata?: User;
@@ -17,7 +16,7 @@ const ProfilNonPremiumSection: React.FC<ProfilNonPremiumSectionProps> = ({ userd
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.5 }}
       >
-        <Slide4Section/>
+       
       </motion.div>
     </AnimatePresence>
   </div>

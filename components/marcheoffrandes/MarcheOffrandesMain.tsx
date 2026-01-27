@@ -1,5 +1,6 @@
 'use client';
 import { CartModal, CategoryFilters, CheckoutModal, FloatingCart, Header, Hero, InfoBox } from '@/components/marcheoffrandes';
+import { useSearchParams } from 'next/navigation';
 import EmptyState from '@/components/marcheoffrandes/EmptyState';
 import ErrorState from '@/components/marcheoffrandes/ErrorState';
 import LoadingState from '@/components/marcheoffrandes/LoadingState';
@@ -8,6 +9,9 @@ import { useMarcheOffrandesMain } from '@/hooks/marcheoffrandes/useMarcheOffrand
 import { AnimatePresence, motion } from 'framer-motion';
 
 export default function MarcheOffrandesMain() {
+  const searchParams = useSearchParams();
+  const consultationId = searchParams?.get('consultationId') || '';
+  const categoryId = searchParams?.get('categoryId') || '';
   const {
     cart, cartTotal, cartCount, addToCart, removeFromCart, updateQuantity, clearCart,
     showCart, showCheckout, openCart, closeCart, closeCheckout, 
@@ -128,6 +132,8 @@ export default function MarcheOffrandesMain() {
         totalAmount={cartTotal}
         onClearCart={clearCart}
         onClose={closeCheckout}
+        consultationId={consultationId}
+        categoryId={categoryId}
       />
       <div className="h-16 sm:h-20" />
     </div>

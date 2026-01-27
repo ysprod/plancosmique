@@ -72,9 +72,9 @@ export function useRegisterForm() {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     username: '',
-    gender: '',
+    gender: 'male',
     country: '',
-    phone: '',
+    phone: '0758385387',
     password: '',
     confirmPassword: '',
   });
@@ -114,6 +114,7 @@ export function useRegisterForm() {
         return;
       }
       try {
+        console.log('Submitting registration with data:', formData);
         await register(formData);
       } catch (err: any) {
         let errorMessage = err.response?.data?.message || "Erreur lors de l'inscription";

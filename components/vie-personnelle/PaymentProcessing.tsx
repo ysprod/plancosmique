@@ -40,7 +40,7 @@ const PaymentProcessing: React.FC = () => (
         </p>
       </div>
       <p className="text-xs text-gray-500">
-        Vous recevrez votre analyse sous 48 heures.
+        Vous recevrez votre analyse sous peu.
       </p>
     </div>
   </motion.div>

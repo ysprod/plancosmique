@@ -10,7 +10,7 @@ const PremiumSection = memo(function PremiumSection({ user, showToast, toastLeve
       <div className="mx-auto flex flex-col md:flex-row items-start justify-center gap-6 md:gap-8">
         {/* ProfileHero à gauche */}
         <div className="w-full md:w-1/2 flex-shrink-0">
-          <ProfileHero user={user} showToast={showToast} toastLevel={toastLevel} onCloseToast={onCloseToast} />
+          <ProfileHero user={user} />
         </div>
         {/* ProfilHighlightCards à droite */}
         <div className="w-full md:w-1/2 flex-shrink-0">

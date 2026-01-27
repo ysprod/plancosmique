@@ -22,6 +22,8 @@ interface CheckoutModalProps {
   }>;
   totalAmount: number;
   onClearCart: () => void;
+  consultationId?: string;
+  categoryId?: string;
 }
 
 type SimulationStep = "idle" | "processing" | "validating" | "saving" | "success";
@@ -136,6 +138,8 @@ export default function CheckoutModal({
   cart,
   totalAmount,
   onClearCart,
+  consultationId,
+  categoryId,
 }: CheckoutModalProps) {
   const router = useRouter();
   const { user } = useAuth();
@@ -230,7 +234,12 @@ export default function CheckoutModal({
 
       // Nettoyage et redirection
       onClearCart();
-      router.push("/secured/wallet");
+      let walletUrl = "/secured/wallet";
+      const params = [];
+      if (consultationId) params.push(`consultationId=${encodeURIComponent(consultationId)}`);
+      if (categoryId) params.push(`categoryId=${encodeURIComponent(categoryId)}`);
+      if (params.length > 0) walletUrl += `?${params.join("&")}`;
+      router.push(walletUrl);
     } catch (err: any) {
       console.error("❌ [CheckoutModal] Erreur simulation:", err);
       setError(err.message || "Une erreur est survenue lors de la simulation");

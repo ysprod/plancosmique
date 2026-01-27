@@ -4,13 +4,15 @@ import { motion } from 'framer-motion';
 import { AlertCircle, Info, Sparkles } from 'lucide-react';
 import React from 'react';
 
+import { useRouter } from 'next/navigation';
+
 interface Props {
   form: any;
   errors: any;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   apiError: string | null;
   handleSubmit: (e: React.FormEvent) => void;
-  resetSelection: () => void;
+  step: string;
 }
 
 const ConsultationForm: React.FC<Props> = ({
@@ -19,8 +21,12 @@ const ConsultationForm: React.FC<Props> = ({
   handleChange,
   apiError,
   handleSubmit,
-  resetSelection,
+  step,
 }) => {
+  const router = useRouter();
+  const handleReset = (() => router.back());
+  const isProcessing = step === "traitement";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -69,7 +75,7 @@ const ConsultationForm: React.FC<Props> = ({
             error={errors.prenoms}
             placeholder="Tous vos prénoms"
           />
-        </div> 
+        </div>
 
         <InputField
           label="Date de naissance"
@@ -81,7 +87,7 @@ const ConsultationForm: React.FC<Props> = ({
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-         
+
           <InputField
             label="Ville de naissance"
             name="villeNaissance"
@@ -117,16 +123,25 @@ const ConsultationForm: React.FC<Props> = ({
         <div className="space-y-3 pt-4">
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full py-4 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all text-lg"
+            disabled={step !== "form"}
+            aria-busy={isProcessing}
+            whileHover={{ scale: step === "form" ? 1.02 : 1 }}
+            whileTap={{ scale: step === "form" ? 0.98 : 1 }}
+            className={`w-full py-4 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all text-lg ${step !== "form" ? "opacity-60 cursor-not-allowed" : ""}`}
           >
-            Valider et Continuer
+            {isProcessing ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg className="animate-spin w-5 h-5 text-white" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="4" fill="none"/></svg>
+                Traitement…
+              </span>
+            ) : (
+              "Valider et Continuer"
+            )}
           </motion.button>
 
           <button
             type="button"
-            onClick={resetSelection}
+            onClick={handleReset}
             className="w-full py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors"
           >
             Annuler

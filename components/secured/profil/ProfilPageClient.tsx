@@ -17,7 +17,7 @@ export default function ProfilPageClient() {
   return (
     <main
       className={cx(
-        "relative w-full",
+        "w-full mx-auto max-w-8xl px-3 py-4 sm:px-4 sm:py-6 lg:px-6 lg:py-8",
         "bg-gradient-to-br from-white via-gray-50 to-gray-100",
         "dark:from-gray-950 dark:via-gray-900 dark:to-gray-950",
         "transition-colors duration-300"
@@ -26,19 +26,16 @@ export default function ProfilPageClient() {
       <div className="pointer-events-none absolute inset-0">
         <AnimatedBackground />
       </div>
-
-      <div className="relative z-10 w-full mx-auto max-w-8xl px-3 py-4 sm:px-4 sm:py-6 lg:px-6 lg:py-8">
-        <div className="mx-auto flex w-full flex-col items-center justify-center text-center">
-          <TopProgressBar />
-          {isPremium && (
-            <PremiumSection user={userdata} showToast={show} toastLevel={level} onCloseToast={close} />
-          )}
-          {!isPremium && !loading && <NonPremiumSection userdata={userdata} showToast={show} toastLevel={level} onCloseToast={close} />}
-          <div className="mt-6 w-full">
-            <StatsCounter />
-          </div>
-          <div className="h-16 sm:h-20" />
+      <div className="mx-auto flex w-full flex-col items-center justify-center text-center">
+        <TopProgressBar />
+        {isPremium && (
+          <PremiumSection user={userdata} showToast={show} toastLevel={level} onCloseToast={close} />
+        )}
+        {!isPremium && !loading && <NonPremiumSection userdata={userdata} showToast={show} toastLevel={level} onCloseToast={close} />}
+        <div className="mt-6 w-full">
+          <StatsCounter />
         </div>
+        <div className="h-16 sm:h-20" />
       </div>
     </main>
   );

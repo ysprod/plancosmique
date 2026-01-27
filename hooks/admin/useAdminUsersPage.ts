@@ -42,7 +42,7 @@ export function useAdminUsersPage() {
     rating: user.rating ?? 0,
     credits: user.credits ?? 0,
     country: user.country ?? '',
-    gender: user.gender === 'M' || user.gender === 'F' || user.gender === 'Other' ? user.gender : 'Other',
+    gender: user.gender ?? 'male',
     premium: user.premium || false,
     role: user.role,
     avatar: user.avatar ?? '',

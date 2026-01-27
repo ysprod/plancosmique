@@ -18,7 +18,7 @@ const GRADE_LABELS: Record<Grade | "NEOPHYTE", string> = {
 
 const GRADE_COLORS: Record<Grade | "NEOPHYTE", { main: string; glow: string; text: string }> = {
   NEOPHYTE:      { main: "#a3a3a3", glow: "#d4d4d8", text: "#e5e7eb" },
-  ASPIRANT:      { main: "#a78bfa", glow: "#c4b5fd", text: "#4c1d95" },
+  ASPIRANT:      { main: "#a78bfa", glow: "#c4b5fd", text: "#ebf74b" },
   CONTEMPLATEUR: { main: "#38bdf8", glow: "#7dd3fc", text: "#0369a1" },
   CONSCIENT:     { main: "#34d399", glow: "#6ee7b7", text: "#065f46" },
   INTEGRATEUR:   { main: "#fbbf24", glow: "#fde68a", text: "#92400e" },
@@ -50,20 +50,23 @@ export const InitiatiqueBadge = memo(function InitiatiqueBadge({
     const label = GRADE_LABELS[g] || getGradeName(g as Grade) || "Néophyte";
     const color = GRADE_COLORS[g] || GRADE_COLORS.NEOPHYTE;
 
-    // taille auto (compact mais lisible)
-    const minWidth = Math.max(96, label.length * 11);
-    const size = Math.max(78, minWidth + 28);
-    const fontSize = clamp(label.length > 14 ? 12 : 13, 12, 14);
+    // Taille auto (compact + lisible)
+    const minWidth = Math.max(92, label.length * 10.5);
+    const size = Math.max(74, minWidth + 22);
+    const fontSize = clamp(label.length > 15 ? 12 : 13, 12, 14);
 
-    const id = hashStr(`init_badge_${label}_${color.main}_${color.glow}`);
+    const id = hashStr(`sigil_${label}_${color.main}_${color.glow}`);
 
-    return { label, color, size, minWidth, fontSize, id };
+    return { label, color, minWidth, size, fontSize, id };
   }, [g]);
 
   const s = vm.size;
-  const r = 0.22 * s; // rayon arrondi du carré
-  const pad = Math.max(10, Math.floor(s * 0.10));
-  const inner = s - pad * 2;
+  const c = s / 2;
+
+  // rayons
+  const rOuter = c - 3;
+  const rRing = rOuter - 7;
+  const rCore = rRing - 9;
 
   return (
     <span
@@ -78,148 +81,105 @@ export const InitiatiqueBadge = memo(function InitiatiqueBadge({
           viewBox={`0 0 ${s} ${s}`}
           xmlns="http://www.w3.org/2000/svg"
           className="block"
-          style={{
-            filter: `drop-shadow(0 0 10px ${vm.color.glow}66) drop-shadow(0 16px 34px rgba(0,0,0,.18))`,
-          }}
           aria-hidden="true"
+          style={{
+            filter: `drop-shadow(0 0 10px ${vm.color.glow}66) drop-shadow(0 18px 36px rgba(0,0,0,.18))`,
+          }}
         >
           <defs>
-            {/* Fond “glass” light/dark */}
-            <linearGradient id={`bg_${vm.id}`} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="rgba(255,255,255,0.92)" />
-              <stop offset="55%" stopColor="rgba(255,255,255,0.78)" />
-              <stop offset="100%" stopColor="rgba(255,255,255,0.88)" />
-            </linearGradient>
-
-            {/* Vagues dégradées (inspirées de l’icône) */}
-            <linearGradient id={`wave1_${vm.id}`} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#ffcc66" />
-              <stop offset="45%" stopColor="#ff7a59" />
-              <stop offset="100%" stopColor="#ff4da6" />
-            </linearGradient>
-
-            <linearGradient id={`wave2_${vm.id}`} x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0%" stopColor="#3b82f6" />
-              <stop offset="55%" stopColor="#6d28d9" />
-              <stop offset="100%" stopColor="#ec4899" />
-            </linearGradient>
-
-            <radialGradient id={`shine_${vm.id}`} cx="35%" cy="22%" r="70%">
+            {/* Métal (or/argent) adaptatif selon grade */}
+            <linearGradient id={`metal_${vm.id}`} x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stopColor="rgba(255,255,255,0.95)" />
-              <stop offset="45%" stopColor="rgba(255,255,255,0.35)" />
+              <stop offset="18%" stopColor="rgba(255,255,255,0.55)" />
+              <stop offset="45%" stopColor={vm.color.main} stopOpacity="0.55" />
+              <stop offset="70%" stopColor="rgba(0,0,0,0.08)" />
+              <stop offset="100%" stopColor="rgba(255,255,255,0.60)" />
+            </linearGradient>
+
+            {/* Centre cosmique */}
+            <radialGradient id={`core_${vm.id}`} cx="35%" cy="30%" r="75%">
+              <stop offset="0%" stopColor="rgba(255,255,255,0.92)" />
+              <stop offset="30%" stopColor={vm.color.main} stopOpacity="0.85" />
+              <stop offset="100%" stopColor="rgba(10,12,20,1)" />
+            </radialGradient>
+
+            {/* Halo intérieur */}
+            <radialGradient id={`halo_${vm.id}`} cx="50%" cy="50%" r="65%">
+              <stop offset="0%" stopColor={vm.color.glow} stopOpacity="0.35" />
+              <stop offset="70%" stopColor={vm.color.glow} stopOpacity="0.08" />
+              <stop offset="100%" stopColor={vm.color.glow} stopOpacity="0" />
+            </radialGradient>
+
+            {/* Reflet glossy */}
+            <radialGradient id={`shine_${vm.id}`} cx="42%" cy="26%" r="60%">
+              <stop offset="0%" stopColor="rgba(255,255,255,0.85)" />
+              <stop offset="55%" stopColor="rgba(255,255,255,0.18)" />
               <stop offset="100%" stopColor="rgba(255,255,255,0)" />
             </radialGradient>
-
-            {/* Teinte liée au grade (accent subtil) */}
-            <radialGradient id={`accent_${vm.id}`} cx="60%" cy="60%" r="70%">
-              <stop offset="0%" stopColor={`${vm.color.main}`} stopOpacity="0.35" />
-              <stop offset="70%" stopColor={`${vm.color.main}`} stopOpacity="0.06" />
-              <stop offset="100%" stopColor={`${vm.color.main}`} stopOpacity="0" />
-            </radialGradient>
-
-            {/* Bord interne (anneau) */}
-            <linearGradient id={`ring_${vm.id}`} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="rgba(255,255,255,0.75)" />
-              <stop offset="50%" stopColor="rgba(0,0,0,0.05)" />
-              <stop offset="100%" stopColor="rgba(255,255,255,0.25)" />
-            </linearGradient>
           </defs>
 
-          {/* Carte arrondie */}
-          <rect x="0" y="0" width={s} height={s} rx={r} fill={`url(#bg_${vm.id})`} />
-          {/* Ombre interne légère (premium) */}
-          <rect
-            x="1"
-            y="1"
-            width={s - 2}
-            height={s - 2}
-            rx={r - 1}
-            fill="transparent"
-            stroke="rgba(0,0,0,0.08)"
+          {/* Aura douce */}
+          <circle cx={c} cy={c} r={rOuter} fill={`url(#halo_${vm.id})`} />
+
+          {/* Anneau externe métallisé */}
+          <circle cx={c} cy={c} r={rOuter - 1} fill="rgba(255,255,255,0.00)" stroke={`url(#metal_${vm.id})`} strokeWidth="4.5" />
+          <circle cx={c} cy={c} r={rRing} fill="rgba(255,255,255,0.00)" stroke="rgba(255,255,255,0.22)" strokeWidth="1.6" />
+
+          {/* Centre */}
+          <circle cx={c} cy={c} r={rCore} fill={`url(#core_${vm.id})`} />
+
+          {/* “Sigil” (marque initiatique) : un swoosh + un anneau brisé */}
+          <path
+            d={`
+              M ${c - rCore * 0.35} ${c - rCore * 0.05}
+              C ${c - rCore * 0.10} ${c - rCore * 0.55}, ${c + rCore * 0.55} ${c - rCore * 0.35}, ${c + rCore * 0.32} ${c + rCore * 0.12}
+              C ${c + rCore * 0.18} ${c + rCore * 0.45}, ${c - rCore * 0.18} ${c + rCore * 0.40}, ${c - rCore * 0.30} ${c + rCore * 0.18}
+            `}
+            fill="none"
+            stroke="rgba(255,255,255,0.82)"
+            strokeWidth={Math.max(2.2, s * 0.03)}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.95"
           />
 
-          {/* Zone interne */}
-          <g transform={`translate(${pad} ${pad})`}>
-            <rect
-              x="0"
-              y="0"
-              width={inner}
-              height={inner}
-              rx={Math.max(14, Math.floor(inner * 0.20))}
-              fill="rgba(255,255,255,0.00)"
-            />
+          <path
+            d={`
+              M ${c} ${c - rCore * 0.62}
+              A ${rCore * 0.62} ${rCore * 0.62} 0 1 1 ${c - 0.01} ${c - rCore * 0.62}
+            `}
+            fill="none"
+            stroke="rgba(255,255,255,0.35)"
+            strokeWidth={Math.max(1.4, s * 0.018)}
+            strokeDasharray={`${Math.max(6, s * 0.08)} ${Math.max(10, s * 0.12)}`}
+            strokeLinecap="round"
+            opacity="0.9"
+          />
 
-            {/* Vague chaude (haut/gauche) */}
-            <path
-              d={`
-                M ${inner * 0.05} ${inner * 0.35}
-                C ${inner * 0.20} ${inner * 0.05}, ${inner * 0.55} ${inner * 0.02}, ${inner * 0.78} ${inner * 0.12}
-                C ${inner * 0.98} ${inner * 0.22}, ${inner * 0.95} ${inner * 0.55}, ${inner * 0.65} ${inner * 0.62}
-                C ${inner * 0.40} ${inner * 0.69}, ${inner * 0.18} ${inner * 0.55}, ${inner * 0.05} ${inner * 0.35}
-                Z
-              `}
-              fill={`url(#wave1_${vm.id})`}
-              opacity="0.95"
-            />
+          {/* Reflet */}
+          <ellipse
+            cx={c}
+            cy={c - rCore * 0.28}
+            rx={rCore * 0.95}
+            ry={rCore * 0.62}
+            fill={`url(#shine_${vm.id})`}
+            opacity="0.9"
+          />
 
-            {/* Vague froide (droite/bas) */}
-            <path
-              d={`
-                M ${inner * 0.35} ${inner * 0.65}
-                C ${inner * 0.55} ${inner * 0.45}, ${inner * 0.85} ${inner * 0.38}, ${inner * 0.98} ${inner * 0.52}
-                C ${inner * 1.06} ${inner * 0.64}, ${inner * 0.92} ${inner * 0.88}, ${inner * 0.62} ${inner * 0.92}
-                C ${inner * 0.40} ${inner * 0.95}, ${inner * 0.20} ${inner * 0.82}, ${inner * 0.35} ${inner * 0.65}
-                Z
-              `}
-              fill={`url(#wave2_${vm.id})`}
-              opacity="0.92"
-            />
-
-            {/* Accent grade */}
-            <rect
-              x="0"
-              y="0"
-              width={inner}
-              height={inner}
-              rx={Math.max(14, Math.floor(inner * 0.20))}
-              fill={`url(#accent_${vm.id})`}
-            />
-
-            {/* Shine */}
-            <ellipse
-              cx={inner * 0.46}
-              cy={inner * 0.20}
-              rx={inner * 0.55}
-              ry={inner * 0.32}
-              fill={`url(#shine_${vm.id})`}
-              opacity="0.9"
-            />
-
-            {/* Anneau interne */}
-            <rect
-              x="3"
-              y="3"
-              width={inner - 6}
-              height={inner - 6}
-              rx={Math.max(12, Math.floor(inner * 0.18))}
-              fill="transparent"
-              stroke={`url(#ring_${vm.id})`}
-              strokeWidth="2"
-              opacity="0.9"
-            />
-          </g>
+          {/* Fine bordure interne */}
+          <circle cx={c} cy={c} r={rCore - 2} fill="none" stroke="rgba(255,255,255,0.16)" strokeWidth="1.2" />
         </svg>
 
-        {/* Label centré (comme avant) */}
+        {/* Label centré */}
         <span
           className="pointer-events-none select-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center font-extrabold tracking-wide"
           style={{
             color: vm.color.text,
             minWidth: vm.minWidth,
-            maxWidth: s - 18,
+            maxWidth: s - 16,
             fontSize: vm.fontSize,
             lineHeight: "16px",
-            textShadow: "0 1px 0 rgba(255,255,255,.35), 0 12px 28px rgba(0,0,0,.22)",
+            textShadow: "0 1px 0 rgba(255,255,255,.25), 0 14px 30px rgba(0,0,0,.25)",
           }}
         >
           {vm.label}

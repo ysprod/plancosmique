@@ -50,6 +50,7 @@ export default function MonProfilPageClient() {
 
   if (isLoading) return <LoadingState />;
   if (!user || !processedData) return <ErrorState />;
+  console.log('Rendered MonProfilPageClient with user:', consultations);
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -111,7 +112,7 @@ export default function MonProfilPageClient() {
             className="w-full flex justify-center"
           >
             <div className="w-full max-w-xl bg-gradient-to-r from-cosmic-purple/10 via-cosmic-indigo/10 to-cosmic-pink/10 dark:from-cosmic-indigo/20 dark:to-cosmic-pink/20 rounded-2xl border border-cosmic-purple/10 dark:border-cosmic-pink/10 shadow p-3 sm:p-5 animate-fade-in mt-2">
-              <div className="font-bold text-cosmic-indigo dark:text-cosmic-pink mb-2 text-center text-base sm:text-lg">Consultations de la rubrique</div>
+              <div className="font-bold text-cosmic-indigo dark:text-cosmic-pink mb-2 text-center text-base sm:text-lg">Les 5 Portes de votre Étoile</div>
               {loadingConsultations ? (
                 <div className="text-center text-xs text-gray-400 py-4">Chargement des consultations...</div>
               ) : errorConsultations ? (

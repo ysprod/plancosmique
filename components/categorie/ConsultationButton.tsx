@@ -73,8 +73,9 @@ export const ConsultationButton = memo<ConsultationButtonProps>(
 
     // Si consultation répétable, afficher les deux boutons : Consulter et Historique
     if (isRepeatable) {
+      const showHistory = enrichedChoice.consultationCount! > 0;
       return (
-        <div className="w-full flex items-end gap-2">
+        <div className={showHistory ? "w-full flex items-end gap-2" : "w-full"}>
           <motion.button
             onClick={handleClick}
             whileHover={{ scale: 1.02, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
@@ -85,15 +86,17 @@ export const ConsultationButton = memo<ConsultationButtonProps>(
             <Icon className="w-4 h-4" />
             <span>Consulter</span>
           </motion.button>
-          <button
-            type="button"
-            className="w-full px-3 py-2 sm:px-4 sm:py-2.5 font-semibold rounded-lg text-white text-sm flex items-center justify-center gap-2 transition-all duration-300 bg-gradient-to-r from-amber-500 to-orange-500 shadow-md hover:shadow-lg"
-            onClick={() => {
-              window.location.href = `/secured/consultations/history/${enrichedChoice.consultationId}`;
-            }}
-          >
-            Historique ({enrichedChoice.consultationCount ?? 0})
-          </button>
+          {showHistory && (
+            <button
+              type="button"
+              className="w-full px-3 py-2 sm:px-4 sm:py-2.5 font-semibold rounded-lg text-white text-sm flex items-center justify-center gap-2 transition-all duration-300 bg-gradient-to-r from-amber-500 to-orange-500 shadow-md hover:shadow-lg"
+              onClick={() => {
+                window.location.href = `/secured/consultations/history/${enrichedChoice.consultationId}`;
+              }}
+            >
+              Historique ({enrichedChoice.consultationCount})
+            </button>
+          )}
         </div>
       );
     } else {

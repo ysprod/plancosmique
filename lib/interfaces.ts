@@ -182,13 +182,10 @@ export interface FormErrors {
 export interface FormData {
   nom: string;
   prenoms: string;
-  genre: string;
   dateNaissance: string;
   paysNaissance: string;
   villeNaissance: string;
   heureNaissance: string;
-  numeroSend?: string;
-  email?: string;
 }
 
 export interface Rubrique {
