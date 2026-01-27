@@ -21,7 +21,7 @@ export function useSlide4Section() {
     getRubriqueById('694acf59bd12675f59e7a7f2')
       .then(rubrique => {
         const arr = (rubrique.consultationChoices || [])
-          .filter((choice: any) => typeof choice.title === 'string' && !choice.title.toLowerCase().includes('5 portes'))
+          .filter((choice: any) => typeof choice.title === 'string' && !choice.title.toLowerCase().includes('5 portes')&& !choice.title.toLowerCase().includes('la '))
           .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
         setChoices(arr);
       })
