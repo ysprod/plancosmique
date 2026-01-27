@@ -1,33 +1,17 @@
 "use client";
-
-import React, { memo, useCallback, useMemo } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useSearchParams } from "next/navigation";
-
 import FilterBar from "@/components/wallet/FilterBar";
 import LoadingScreen from "@/components/wallet/LoadingScreen";
+import SuccessBanner from "@/components/wallet/SuccessBanner";
 import TransactionsList from "@/components/wallet/TransactionsList";
 import UnusedOfferingsList from "@/components/wallet/UnusedOfferingsList";
+import { useWalletPage } from "@/components/wallet/useWalletPage";
 import WalletActions from "@/components/wallet/WalletActions";
 import WalletStats from "@/components/wallet/WalletStats";
 import WalletTabs from "@/components/wallet/WalletTabs";
-import SuccessBanner from "@/components/wallet/SuccessBanner";
-import { useWalletPage } from "@/components/wallet/useWalletPage";
-
-function cx(...c: Array<string | false | undefined | null>) {
-  return c.filter(Boolean).join(" ");
-}
-
-const pageVariants = {
-  initial: { opacity: 0, y: 10, filter: "blur(2px)" },
-  animate: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.18 } },
-};
-
-const cardVariants = {
-  initial: { opacity: 0, y: 8, scale: 0.995 },
-  animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.14 } },
-  exit: { opacity: 0, y: 8, scale: 0.995, transition: { duration: 0.12 } },
-};
+import { cx } from "@/lib/functions";
+import { useReducedMotion } from "framer-motion";
+import { useSearchParams } from "next/navigation";
+import { memo, useCallback, useMemo } from "react"; 
 
 const Header = memo(function Header() {
   return (
@@ -151,10 +135,7 @@ export default function WalletPageContent() {
   if (isLoading) return <LoadingScreen />;
 
   return (
-    <motion.main
-      variants={pageVariants}
-      initial="initial"
-      animate="animate"
+    <main
       className={cx(
         "min-h-[80vh] w-full",
         "px-3 py-4 sm:px-4 sm:py-6 lg:px-6",
@@ -164,13 +145,13 @@ export default function WalletPageContent() {
     >
       <div className="mx-auto w-full max-w-4xl space-y-4 sm:space-y-6">
         {/* Success banner centré */}
-        <AnimatePresence mode="wait">
-          {showSuccessBanner && (
-            <motion.div key="banner" variants={cardVariants} initial="initial" animate="animate" exit="exit">
-              <SuccessBanner onDismiss={dismissBanner} />
-            </motion.div>
-          )}
-        </AnimatePresence>
+
+        {showSuccessBanner && (
+          <div key="banner">
+            <SuccessBanner onDismiss={dismissBanner} />
+          </div>
+        )}
+
 
         {/* Header */}
         <Header />
@@ -181,51 +162,40 @@ export default function WalletPageContent() {
         </div>
 
         {/* Content */}
-        <AnimatePresence mode="wait">
-          {activeTab === "transactions" ? (
-            <motion.section
-              key="transactions"
-              variants={cardVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className={cx(
-                "mx-auto w-full",
-                "rounded-[28px] border p-3 sm:p-5",
-                "border-slate-200/70 bg-white/75 shadow-xl shadow-black/5 backdrop-blur",
-                "dark:border-zinc-800/70 dark:bg-zinc-950/45 dark:shadow-black/35"
-              )}
-            >
-              <TransactionsTab
-                stats={stats}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                filter={filter}
-                setFilter={setFilter}
-                sortOrder={sortOrder}
-                setSortOrder={setSortOrder}
-                onRefresh={onRefresh}
-                isRefreshing={isRefreshing}
-                filteredTransactions={filteredTransactions}
-              />
-            </motion.section>
-          ) : (
-            <motion.section
-              key="unused"
-              variants={cardVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className="w-full"
-            >
-              <UnusedTab
-                unusedOfferings={unusedOfferings}
-                isLoadingUnused={isLoadingUnused}
-                unusedError={unusedError}
-              />
-            </motion.section>
-          )}
-        </AnimatePresence>
+
+        {activeTab === "transactions" ? (
+          <section
+            key="transactions"
+            className={cx(
+              "mx-auto w-full",
+              "rounded-[28px] border p-3 sm:p-5",
+              "border-slate-200/70 bg-white/75 shadow-xl shadow-black/5 backdrop-blur",
+              "dark:border-zinc-800/70 dark:bg-zinc-950/45 dark:shadow-black/35"
+            )}
+          >
+            <TransactionsTab
+              stats={stats}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              filter={filter}
+              setFilter={setFilter}
+              sortOrder={sortOrder}
+              setSortOrder={setSortOrder}
+              onRefresh={onRefresh}
+              isRefreshing={isRefreshing}
+              filteredTransactions={filteredTransactions}
+            />
+          </section>
+        ) : (
+          <section key="unused" className="w-full"          >
+            <UnusedTab
+              unusedOfferings={unusedOfferings}
+              isLoadingUnused={isLoadingUnused}
+              unusedError={unusedError}
+            />
+          </section>
+        )}
+
 
         {/* Actions (toujours en bas, centré) */}
         <div className="mx-auto flex w-full justify-center">
@@ -236,15 +206,10 @@ export default function WalletPageContent() {
           />
         </div>
 
-        {/* Fine accent line (léger) */}
         {!reduceMotion && (
-          <motion.div
-            className="mx-auto h-[2px] w-28 rounded-full bg-gradient-to-r from-violet-600 via-fuchsia-600 to-emerald-500/80"
-            animate={{ opacity: [0.55, 1, 0.55] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-          />
+          <div className="mx-auto h-[2px] w-28 rounded-full bg-gradient-to-r from-violet-600 via-fuchsia-600 to-emerald-500/80" />
         )}
       </div>
-    </motion.main>
+    </main>
   );
 }

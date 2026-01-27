@@ -52,10 +52,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <RootThemeScript />
         <RootSchemaScript />
       </head>
-      <body className={bodyClasses} suppressHydrationWarning>
-       
-        <RootSkipLink />
 
+      <body className={bodyClasses} suppressHydrationWarning>
+        <RootSkipLink />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -71,7 +70,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </ClientProviders>
           <ServiceWorkerRegister />
         </ThemeProvider>
-
         <RootPortals />
       </body>
     </html>

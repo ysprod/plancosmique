@@ -72,9 +72,9 @@ export function useRegisterForm() {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     username: '',
-    gender: 'male',
+    gender: '',
     country: '',
-    phone: '0758385387',
+    phone: '',
     password: '',
     confirmPassword: '',
   });

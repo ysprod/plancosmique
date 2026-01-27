@@ -86,7 +86,7 @@ const RegisterForm: React.FC = () => {
               value={formData.phone}
               onChange={handleChange}
               error={errors.phone}
-              placeholder="07XXXXXXXX"
+              placeholder="XXXXXXXXXX"
               icon={<Phone className="w-4 h-4" />}
             />
 

@@ -30,7 +30,7 @@ const ArticlesGrid = ({ articles, formatDate, setSearchQuery, setSelectedCategor
           whileHover={{ y: -8 }}
           className="group"
         >
-          <Link href={`/spiritualite/${practice._id}`}>
+          <Link href={`/spiritualite/${practice.id}`}>
             <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 h-full flex flex-col cursor-pointer">
               {/* Image Header */}
               <div className="relative h-40 sm:h-48 bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 overflow-hidden">

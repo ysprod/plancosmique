@@ -142,11 +142,6 @@ export default function NumerologyResultClient({ consultation }: Props) {
     [analyse.sagessAfricaine]
   );
 
-  const hasOfferings = useMemo(
-    () => Boolean(consultation.alternatives?.length),
-    [consultation.alternatives]
-  );
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-pink-900 py-6 px-3 sm:py-12 sm:px-4">
       <motion.div

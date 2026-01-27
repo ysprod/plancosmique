@@ -1,12 +1,11 @@
 'use client';
 import AnimatedBackground from '@/components/spiritualite/AnimatedBackground';
 import SpiritualiteArticlesSection from '@/components/spiritualite/SpiritualiteArticlesSection';
-import SpiritualiteNoResultsSection from '@/components/spiritualite/SpiritualiteNoResultsSection';
-import { SpiritualiteErrorState, SpiritualiteLoadingState } from '@/components/spiritualite/SpiritualitePageStates';
 import SpiritualiteHeader from '@/components/spiritualite/SpiritualiteHeader';
-import { useSpiritualiteBlogPage } from '@/hooks/commons/useSpiritualiteBlogPage';
-import { AnimatePresence, motion, Variants } from 'framer-motion';
+import SpiritualiteNoResultsSection from '@/components/spiritualite/SpiritualiteNoResultsSection';
+import { SpiritualiteErrorState } from '@/components/spiritualite/SpiritualitePageStates';
 import { useSpiritualiteBlogController } from '@/components/spiritualite/useSpiritualiteBlogController';
+import { AnimatePresence, motion, Variants } from 'framer-motion';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -25,11 +24,10 @@ const containerVariants: Variants = {
 
 export default function SpiritualiteBlogPageClient() {
   const {
-    setSearchQuery, setSelectedCategory, handleRetry, loading, error,
+    setSearchQuery, setSelectedCategory, handleRetry, error,
     featuredArticle, regularArticles, hasArticles,
   } = useSpiritualiteBlogController();
 
-  //  if (loading) { return <SpiritualiteLoadingState />; }
   if (error) {
     return <SpiritualiteErrorState error={error} onRetry={handleRetry} />;
   }

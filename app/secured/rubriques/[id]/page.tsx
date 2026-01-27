@@ -8,6 +8,7 @@ interface PageProps {
 export default async function RubriquePage({ params }: PageProps) {
     const id = params?.id;
     if (!id) return notFound();
+    
     const rubrique = await getRubrique(id);
     if (!rubrique) return notFound();
 
