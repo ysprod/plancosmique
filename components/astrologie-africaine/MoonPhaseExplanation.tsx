@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { memo } from "react";
+import { MoonPhaseCalendarTable } from "./MoonPhaseCalendarTable";
 
 export const MoonPhaseExplanation = memo(() => {
   return (
@@ -41,47 +42,7 @@ export const MoonPhaseExplanation = memo(() => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 rounded-xl p-3 border border-indigo-100 dark:border-indigo-800/30">
-          <h5 className="font-bold text-gray-900 dark:text-white mb-2 text-sm">Durée approximative de chaque phase :</h5>
-          <ul className="space-y-1.5 text-xs sm:text-sm">
-            <li className="flex justify-between items-center">
-              <span>🌑 <b className="text-gray-900 dark:text-white">Nouvelle Lune</b></span>
-              <span className="text-indigo-600 dark:text-indigo-400 font-semibold">1-2 jours</span>
-            </li>
-            <li className="flex justify-between items-center">
-              <span>🌒 <b className="text-gray-900 dark:text-white">Lune croissante</b></span>
-              <span className="text-indigo-600 dark:text-indigo-400 font-semibold">~7,4 jours</span>
-            </li>
-            <li className="flex justify-between items-center">
-              <span>🌓 <b className="text-gray-900 dark:text-white">Premier quartier</b></span>
-              <span className="text-indigo-600 dark:text-indigo-400 font-semibold">1 jour</span>
-            </li>
-            <li className="flex justify-between items-center">
-              <span>🌔 <b className="text-gray-900 dark:text-white">Gibbeuse croissante</b></span>
-              <span className="text-indigo-600 dark:text-indigo-400 font-semibold">~7,4 jours</span>
-            </li>
-            <li className="flex justify-between items-center">
-              <span>🌕 <b className="text-gray-900 dark:text-white">Pleine Lune</b></span>
-              <span className="text-indigo-600 dark:text-indigo-400 font-semibold">1 jour</span>
-            </li>
-            <li className="flex justify-between items-center">
-              <span>🌖 <b className="text-gray-900 dark:text-white">Gibbeuse décroissante</b></span>
-              <span className="text-indigo-600 dark:text-indigo-400 font-semibold">~7,4 jours</span>
-            </li>
-            <li className="flex justify-between items-center">
-              <span>🌗 <b className="text-gray-900 dark:text-white">Dernier quartier</b></span>
-              <span className="text-indigo-600 dark:text-indigo-400 font-semibold">1 jour</span>
-            </li>
-            <li className="flex justify-between items-center">
-              <span>🌘 <b className="text-gray-900 dark:text-white">Lune décroissante</b></span>
-              <span className="text-indigo-600 dark:text-indigo-400 font-semibold">~7,4 jours</span>
-            </li>
-          </ul>
-          
-          <div className="mt-3 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 italic text-center">
-            💡 Les durées sont approximatives et peuvent varier légèrement
-          </div>
-        </div>
+        <MoonPhaseCalendarTable />
       </div>
     </motion.div>
   );

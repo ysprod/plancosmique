@@ -115,7 +115,7 @@ const ConsultationCard = memo(function ConsultationCard({
             ].join(" ")}
             aria-label={`Consulter l'analyse : ${c.titre || "Consultation"}`}
           >
-            Consulter l’analyse
+            Decouvrir
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>
