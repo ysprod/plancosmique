@@ -186,7 +186,7 @@ const CosmicLoader = memo(() => {
           transition={{ delay: 0.5 }}
           className="text-sm sm:text-base text-purple-200 dark:text-purple-300 mb-6"
         >
-          Préparation de votre thème natal complet...
+          Préparation de votre analyse complète. Veuillez patienter...
         </motion.p>
 
         {/* Loading dots */}

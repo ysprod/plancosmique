@@ -11,6 +11,6 @@ export default function ConsultationResultPageClient() {
   if (error || !consultation) { return <ConsultationError error={error} onBack={handleBack} />; }
 
   return (
-    <ConsultationContent consultation={consultation} onBack={handleBack} onDownloadPDF={handleDownloadPDF} />
+    <ConsultationContent consultation={consultation!} onBack={handleBack} onDownloadPDF={handleDownloadPDF} />
   );
 }

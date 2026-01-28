@@ -1,7 +1,7 @@
+import { api } from '@/lib/api/client';
+import { Consultation } from '@/lib/interfaces';
 import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { api } from '@/lib/api/client';
-import { AnalyseAstrologique } from '@/lib/interfaces';
 
 export function useConsultationResult() {
   const params = useParams();
@@ -10,8 +10,7 @@ export function useConsultationResult() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [consultation, setConsultation] = useState<any | null>(null);
-  const [analyse, setAnalyse] = useState<AnalyseAstrologique | null>(null);
+  const [consultation, setConsultation] = useState<Consultation | null>(null);
 
   useEffect(() => {
     if (!consultationId) return;
@@ -20,13 +19,20 @@ export function useConsultationResult() {
         const response = await api.get(`/consultations/${consultationId}`);
         if (response.status !== 200) throw new Error('Consultation non trouvée');
         const data = response.data;
-        console.log('Consultation data loaded:', data.consultation);
-        setConsultation(data.consultation);
-        if (data.analyse) {
-          setAnalyse(data.analyse);
-        } else {
-          setAnalyse(null);
+        const base = data.consultation;
+        let finalConsultation = base;
+        if (base.status !== "COMPLETED") {
+          try {
+            const generatedRes = await api.post(`/consultations/${consultationId}/generate-analysis`);
+            finalConsultation = generatedRes?.data?.consultation ?? generatedRes?.data ?? null;
+            if (!finalConsultation) throw new Error("Consultation générée introuvable");
+          } catch (err: any) {
+            throw new Error("Erreur lors de la génération de l'analyse");
+          }
         }
+
+
+        setConsultation(finalConsultation);
         setLoading(false);
       } catch (err) {
         setError('Impossible de récupérer la consultation');
@@ -37,6 +43,13 @@ export function useConsultationResult() {
   }, [consultationId]);
 
   const handleBack = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('retour') === 'cinqportes') {
+        router.push('/secured/cinqportes');
+        return;
+      }
+    }
     router.push('/secured/consultations');
   }, [router]);
 
@@ -45,5 +58,5 @@ export function useConsultationResult() {
     window.open(url, '_blank');
   }, [consultationId]);
 
-  return { loading, error, consultation, analyse, handleBack, handleDownloadPDF };
+  return { loading, error, consultation, handleBack, handleDownloadPDF };
 }

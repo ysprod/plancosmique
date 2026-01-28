@@ -55,7 +55,6 @@ export function useOfferingValidation({
                 paymentMethod: 'wallet_offerings'
             });
 
-            console.log('✅ Offerings validated, redirecting to genereanalyse...');
             
             // Navigate to analysis generation
             router.push(`/secured/category/${categoryId}/genereanalyse?consultationId=${consultationId}`);

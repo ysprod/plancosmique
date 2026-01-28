@@ -111,7 +111,6 @@ export function useAdminRubriquesPage() {
         };
       })
     };
-    console.log('Mapped Rubrique to save:', mappedRubrique);
     try {
       if (editingRubrique._id) {
         await api.put(`/rubriques/${editingRubrique._id}`, mappedRubrique);

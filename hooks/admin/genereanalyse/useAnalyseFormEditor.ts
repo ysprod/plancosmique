@@ -1,5 +1,5 @@
+import { Consultation } from "@/lib/interfaces";
 import { useState } from "react";
-import { AnalyseAstrologique, Consultation } from "@/lib/interfaces";
 
 interface UseAnalyseFormEditorProps {
   analyseData: Consultation;

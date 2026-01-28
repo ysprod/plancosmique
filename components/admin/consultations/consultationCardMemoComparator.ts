@@ -1,4 +1,4 @@
-import type { AnalyseAstrologique, Consultation } from "@/lib/interfaces";
+import type { Consultation } from "@/lib/interfaces";
 
 interface ConsultationCardProps {
   consultation: Consultation;

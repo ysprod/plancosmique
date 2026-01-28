@@ -23,7 +23,7 @@ const InfoItem = memo(({
              hover:bg-white/10 transition-all shadow-sm"
   >
     <Icon className={`w-4 h-4 ${iconColor} flex-shrink-0`} />
-    <span className="text-xs text-white/90 font-medium truncate">{value}</span>
+    <span className="text-xs  font-medium truncate">{value}</span>
   </motion.div>
 ));
 

@@ -1,104 +1,115 @@
-'use client';
-import { motion } from "framer-motion";
-import { Award, Calendar, Clock, MapPin, Phone, User } from "lucide-react";
-import { memo } from "react";
-import { ProcessedUserData } from "@/lib/interfaces";
+"use client";
+import { Award, Calendar, Clock, MapPin, Phone, User as UserIcon } from "lucide-react";
+import { memo, useMemo } from "react";
 import InfoItem from "./InfoItem";
+import { User } from "@/lib/interfaces";
+import { safeText, formatDateFR } from "@/lib/functions";
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
-  visible: (custom: number) => ({
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      delay: custom * 0.1,
-      type: "spring",
-      stiffness: 200,
-      damping: 20
-    }
-  })
-};
- 
-const ProfileHeader = memo(({ userData }: { userData: ProcessedUserData }) => (
-  <motion.section
-    custom={0}
-    variants={cardVariants}
-    initial="hidden"
-    animate="visible"
-    className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl 
-             rounded-3xl border border-white/20 p-5 sm:p-6 shadow-2xl 
-             relative overflow-hidden"
-  >
-    <motion.div
-      className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-pink-600/10 to-blue-600/20"
-      animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
-      transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
-      style={{ backgroundSize: '200% 200%' }}
-    />
+const ProfileHeader = memo(function ProfileHeader({ userData }: { userData: User }) {
 
-    <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-48 h-24 bg-purple-500/20 blur-2xl rounded-full pointer-events-none" />
+  const vm = useMemo(() => {
+    const prenoms = safeText(userData?.prenoms);
+    const nom = safeText(userData?.nom);
+    const fullName = (prenoms || nom) ? `${prenoms}${prenoms && nom ? " " : ""}${nom}` : "Profil";
 
-    <div className="relative z-10 flex flex-col sm:flex-row items-center gap-4 mb-4">
-      <motion.div
-        whileHover={{ scale: 1.08, rotate: 4 }}
-        transition={{ type: "spring", stiffness: 300 }}
-        className="relative"
-      >
-        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 
-                     rounded-full flex items-center justify-center shadow-2xl border-4 border-white/20">
-          <User className="w-10 h-10 sm:w-12 sm:h-12 text-white drop-shadow-lg" />
-        </div>
-        
-        {userData.premium && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.3, type: "spring" }}
-            className="absolute -bottom-1 -right-1 bg-gradient-to-r from-amber-400 to-yellow-500 
-                     text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-lg
-                     flex items-center gap-1"
+    const phone = safeText(userData?.phone);
+    const premium = !!userData?.premium;
+
+    const dateNaissance = typeof userData?.dateNaissance === 'string' ? userData.dateNaissance : (userData?.dateNaissance ? userData.dateNaissance.toISOString() : '');
+    const heureNaissance = safeText(userData?.heureNaissance!);
+    const lieuNaissance = safeText(userData?.villeNaissance!);
+
+    return { fullName, phone, premium, dateNaissance, heureNaissance, lieuNaissance };
+  }, [userData]);
+
+  return (
+    <section
+      className={[
+        "w-full max-w-xl rounded-3xl",
+        "border border-black/10 dark:border-white/10",
+        "bg-white dark:bg-slate-950",
+        "shadow-[0_18px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_18px_60px_rgba(0,0,0,0.35)]",
+        "px-4 py-4 sm:px-5 sm:py-5",
+        "mx-auto flex flex-col items-center justify-center text-center",
+      ].join(" ")}
+    >
+      {/* Accent bar (statique, ultra clean) */}
+      <div
+        className={[
+          "mx-auto mb-4 h-[3px] w-24 rounded-full",
+          vm.premium
+            ? "bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400"
+            : "bg-gradient-to-r from-slate-300 via-slate-200 to-slate-300 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700",
+        ].join(" ")}
+        aria-hidden="true"
+      />
+
+      {/* Header row : tout centré */}
+      <div className="flex flex-col items-center justify-center text-center gap-3 w-full">
+        {/* Avatar / Sigil */}
+        <div className="relative"        >
+          <div
+            className={[
+              "h-16 w-16 sm:h-20 sm:w-20 rounded-2xl grid place-items-center",
+              "bg-slate-100 text-slate-700 border border-black/5",
+              "dark:bg-white/5 dark:text-slate-100 dark:border-white/10",
+              vm.premium ? "ring-2 ring-amber-400/60" : "ring-1 ring-black/5 dark:ring-white/10",
+            ].join(" ")}
           >
-            <Award className="w-3 h-3" />
-            Premium
-          </motion.div>
-        )}
-      </motion.div>
+            <UserIcon className="h-8 w-8 sm:h-9 sm:w-9" />
+          </div>
+          <div
+            className={[
+              "absolute -bottom-2 left-1/2 -translate-x-1/2",
+              "inline-flex items-center gap-1.5",
+              "rounded-full px-2.5 py-1",
+              "text-[10px] font-bold tracking-wide",
+              "bg-amber-400 text-amber-950",
+              "shadow-md shadow-amber-400/20",
+            ].join(" ")}
+            aria-label={`Grade utilisateur : ${userData.grade || 'Premium'}`}
+            title={`Grade utilisateur : ${userData.grade || 'Premium'}`}
+          >
+            <Award className="h-3 w-3" />
+            {userData.grade || 'Premium'}
+          </div>
+        </div>
 
-      <div className="flex-1 min-w-0 text-center sm:text-left">
-        <motion.h1
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-2xl sm:text-3xl font-extrabold text-white leading-tight truncate drop-shadow-lg"
-        >
-          {userData.prenoms} {userData.nom}
-        </motion.h1>
+        {/* Nom + contact */}
+        <div className="min-w-0 flex flex-col items-center justify-center gap-1">
+          <h1 className="text-[16px] sm:text-[18px] font-extrabold tracking-tight text-slate-900 dark:text-slate-50 max-w-[22rem] truncate">
+            {vm.fullName}
+          </h1>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 mt-2"
-        >
-          {userData.phone && (
-            <div className="flex items-center gap-1.5 text-xs text-purple-200">
-              <Phone className="w-3.5 h-3.5" />
-              <span className="font-medium">{userData.phone}</span>
+          {vm.phone ? (
+            <div className="inline-flex items-center justify-center gap-2 text-[12px] text-slate-600 dark:text-slate-300">
+              <span className="h-7 w-7 rounded-xl grid place-items-center bg-black/5 dark:bg-white/10">
+                <Phone className="h-4 w-4" />
+              </span>
+              <span className="font-semibold">{vm.phone}</span>
+            </div>
+          ) : (
+            <div className="text-[12px] text-slate-500 dark:text-slate-400">
+              Informations de naissance et progression
             </div>
           )}
-        </motion.div>
+        </div>
       </div>
-    </div>
 
-    <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-2">
-      <InfoItem icon={Calendar} value={userData.dateNaissance} iconColor="text-amber-400" index={0} />
-      <InfoItem icon={Clock} value={userData.heureNaissance} iconColor="text-blue-400" index={1} />
-      <InfoItem icon={MapPin} value={userData.lieuNaissance} iconColor="text-pink-400" index={2} />
-    </div>
-  </motion.section>
-));
+      {/* Infos compactes (grid centrée) */}
+      <div
+        className="mt-4 w-full flex justify-center"
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-blue-50/60 dark:bg-slate-900/50 p-3 rounded-2xl w-full max-w-2xl mx-auto text-center">
+          <InfoItem icon={Calendar} value={formatDateFR(vm.dateNaissance)}   iconColor="text-amber-500" index={0} />
+          <InfoItem icon={Clock} value={vm.heureNaissance || "—"} iconColor="text-indigo-500" index={1} />
+          <InfoItem icon={MapPin} value={vm.lieuNaissance || "—"} iconColor="text-rose-500" index={2} />
+        </div>
+      </div>
+    </section>
+  );
+});
 
-ProfileHeader.displayName = 'ProfileHeader';
+ProfileHeader.displayName = "ProfileHeader";
 
 export default ProfileHeader;

@@ -1,13 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api/client';
-
-export interface Consultation {
-  id: string;
-  titre: string;
-  description?: string;
-  date?: string;
-  [key: string]: any;
-}
+import { Consultation } from '@/lib/interfaces';
 
 export function useConsultationsByRubrique(rubriqueId: string) {
   const [consultations, setConsultations] = useState<Consultation[] | null>(null);
@@ -20,16 +13,14 @@ export function useConsultationsByRubrique(rubriqueId: string) {
     setError(null);
     api.get(`/consultations/rubrique/${rubriqueId}`)
       .then(res => {
-        console.log('API response for consultations:', res);
-        let result = null;
-        if (Array.isArray(res.data)) {
-          result = res.data;
-        } else if (res.data && Array.isArray(res.data.consultations)) {
-          result = res.data.consultations;
-        } else if (res.data && Array.isArray(res.data.data)) {
-          result = res.data.data;
-        }
-        if (isMounted) setConsultations(result);
+        let result = res.data.consultations;
+        // Filtrer les consultations dont le titre contient "5 portes" (insensible à la casse)
+        const filtered = Array.isArray(result)
+          ? result.filter((c: Consultation) =>
+              typeof c.title === 'string' && !c.title.toLowerCase().includes('5 portes') && !c.title.toLowerCase().includes('la carte')
+            )
+          : [];
+        if (isMounted) setConsultations(filtered);
       })
       .catch(err => {
         if (isMounted) setError(err?.response?.data?.message || 'Erreur lors du chargement des consultations');
@@ -39,8 +30,6 @@ export function useConsultationsByRubrique(rubriqueId: string) {
       });
     return () => { isMounted = false; };
   }, [rubriqueId]);
-
-  console.log('Consultations fetched:', consultations);
 
   return { consultations, loading, error };
 }

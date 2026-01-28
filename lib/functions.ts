@@ -17,12 +17,13 @@ export function mapFormDataToBackend(form: User | null): Record<string, any> {
     return {};
   }
 
+  const dateOfBirth = form.dateNaissance
+    ? new Date(form.dateNaissance).toISOString()
+    : (form.dateOfBirth ? new Date(form.dateOfBirth).toISOString() : '');
   const result = {
     firstName: form.prenoms || '',
     lastName: form.nom || '',
-    dateOfBirth: form.dateNaissance
-      ? new Date(form.dateNaissance).toISOString()
-      : (form.dateOfBirth ? new Date(form.dateOfBirth).toISOString() : ''),
+    dateOfBirth: typeof dateOfBirth === 'string' ? dateOfBirth : '',
     timeOfBirth: form.heureNaissance || '',
     countryOfBirth: form.paysNaissance || '',
     cityOfBirth: form.villeNaissance || '',
@@ -125,30 +126,28 @@ export function extractCinqPortes(carteDuCiel: CarteDuCielData | null): CinqPort
   };
 }
 
-export function processUserData(userData: User | null): ProcessedUserData | null {
+
+
+export function processUserData(userData: User | null): User | null {
   if (!userData) return null;
 
   return {
     _id: userData._id,
-    name: `${userData.prenoms || userData.username || ""} ${userData.nom || ""}`.trim(),
-    birthDate: userData.dateNaissance ? formatDate(userData.dateNaissance) : "",
-    prenoms: userData.prenoms || userData.username || "",
-    nom: userData.nom || "",
-    email: userData.email,
-    phone: userData.phone || "",
-    dateNaissance: formatDate(userData.dateNaissance!),
-    lieuNaissance: userData.villeNaissance
+   
+    dateNaissance: userData.dateNaissance ,
+    villeNaissance: userData.villeNaissance
       ? `${userData.villeNaissance}, ${userData.paysNaissance || userData.country}`
       : userData.country || "-",
     heureNaissance: userData.heureNaissance || "-",
-    country: userData.country!,
-    role: userData.role ? userData.role.toString() : "",
+    
+    role: userData.role,
     premium: !!userData.premium,
     credits: userData.credits ?? 0,
     totalConsultations: userData.totalConsultations ?? 0,
     rating: userData.rating ?? 0,
     emailVerified: !!userData.emailVerified,
-    carteDuCiel: userData.carteDuCiel
+    carteDuCiel: userData.carteDuCiel,
+    ...userData
   };
 }
 
@@ -197,3 +196,16 @@ export const formatNumber = (num: number): string => {
   if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
   return num.toString();
 };
+
+
+export function safeText(v: any) {
+  return (typeof v === "string" ? v.trim() : "") || "";
+}
+
+export function formatDateFR(dateStr?: string | null) {
+  const s = safeText(dateStr);
+  if (!s) return "";
+  const d = new Date(s);
+  if (Number.isNaN(d.getTime())) return s;
+  return new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "short", year: "numeric" }).format(d);
+}

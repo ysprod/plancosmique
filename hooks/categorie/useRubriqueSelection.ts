@@ -61,7 +61,6 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
             const participants = choice.participants;
 
             if (participants === 'SOLO') {
-                console.log('⚡ Consultation SOLO détectée, création automatique...');
 
                 if (!user) {
                     console.error('❌ Utilisateur non connecté');
@@ -83,13 +82,11 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
                         choice: choice,
                     };
 
-                    console.log('📤 Création consultation SOLO avec payload:', payload);
 
                     const response = await api.post('/consultations', payload);
                     const id = response.data?.id || response.data?.consultationId || response.data?._id;
 
                     if (id) {
-                        console.log('✅ Consultation SOLO créée avec ID:', id);
                         sessionStorage.removeItem('selectedChoiceId');
                         router.push(`/secured/category/${categoryId}/consulter?consultationId=${id}`);
                     } else {
@@ -103,12 +100,10 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
                 }
             } else if (participants === 'AVEC_TIERS') {
                 // Pour AVEC_TIERS : afficher le formulaire pour collecter les données de la tierce personne
-                console.log('📝 Consultation AVEC_TIERS détectée, affichage du formulaire...');
                 setCreatingConsultation(false);
                 router.push(`/secured/category/${categoryId}/form`);
             } else {
                 // Fallback : rediriger vers le formulaire qui gérera le cas
-                console.log('❓ Type de consultation inconnu, redirection vers formulaire...');
                 setCreatingConsultation(false);
                 router.push(`/secured/category/${categoryId}/form`);
             }

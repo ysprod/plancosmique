@@ -1,41 +1,12 @@
-import { useAuth } from "@/lib/auth/AuthContext";
 import { api } from "@/lib/api/client";
+import { useAuth } from "@/lib/auth/AuthContext";
+import { processUserData } from "@/lib/functions";
+import { User } from "@/lib/interfaces";
 import { useEffect, useMemo, useState } from "react";
-import { formatDate } from "@/lib/functions";
-import { ProcessedUserData } from "@/lib/interfaces";
-import { User, CarteDuCielBase } from "@/lib/interfaces";
-
-const processUserData = (userData: User | null): ProcessedUserData | null => {
-  if (!userData) return null;
-  return {
-    _id: userData._id,
-    name: `${userData.prenoms || userData.username || ""} ${userData.nom || ""}`.trim(),
-    birthDate: userData.dateNaissance
-      ? formatDate(userData.dateNaissance)
-      : "",
-    prenoms: userData.prenoms || userData.username || "",
-    nom: userData.nom || "",
-    email: userData.email,
-    phone: userData.phone || "",
-    dateNaissance: formatDate(userData.dateNaissance!),
-    lieuNaissance: userData.villeNaissance
-      ? `${userData.villeNaissance}, ${userData.paysNaissance || userData.country}`
-      : userData.country || "-",
-    heureNaissance: userData.heureNaissance || "-",
-    country: userData.country!,
-    role: userData.role!,
-    premium: userData.premium || false,
-    credits: userData.credits || 0,
-    totalConsultations: userData.totalConsultations || 0,
-    rating: userData.rating || 0,
-    emailVerified: userData.emailVerified || false,
-    carteDuCiel: userData.carteDuCiel as CarteDuCielBase | undefined
-  };
-};
 
 export function useCarteDuCielPage(): {
   user: User | null;
-  processedData: ProcessedUserData | null;
+  processedData: User | null;
   isLoading: boolean;
 } {
   const { user, isLoading: authLoading } = useAuth();

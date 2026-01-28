@@ -14,7 +14,6 @@ export function useCreatePromptChoice(choiceId: string | null) {
     async function fetchChoice() {
       try {
         const response = await api.get(`/consultation-choices/${choiceId}/raw`);
-        console.log(response);
         setChoice(response.data);
       } catch (err: any) {
         setError(err.response?.data?.message || 'Erreur lors du chargement du choix de consultation');

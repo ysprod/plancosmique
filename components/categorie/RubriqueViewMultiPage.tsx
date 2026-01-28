@@ -73,11 +73,8 @@ export const RubriqueViewMultiPage = memo<RubriqueViewMultiPageProps>(
         const participants = choice.participants;
 
         if (participants === 'SOLO') {
-          console.log('⚡ Consultation SOLO détectée, création automatique...');
-
           if (!user) {
-            console.error('❌ Utilisateur non connecté');
-       
+            console.error('❌ Utilisateur non connecté');       
             return;
           }
 
@@ -95,13 +92,10 @@ export const RubriqueViewMultiPage = memo<RubriqueViewMultiPageProps>(
               choice: choice,
             };
 
-            console.log('📤 Création consultation SOLO avec payload:', payload);
-
             const response = await api.post('/consultations', payload);
             const id = response.data?.id || response.data?.consultationId || response.data?._id;
 
             if (id) {
-              console.log('✅ Consultation SOLO créée avec ID:', id);
               sessionStorage.removeItem('selectedChoiceId');
               router.push(`/secured/category/${categoryId}/consulter?consultationId=${id}`);
             } else {
@@ -109,19 +103,11 @@ export const RubriqueViewMultiPage = memo<RubriqueViewMultiPageProps>(
             }
           } catch (error: any) {
             console.error('❌ Erreur création consultation SOLO:', error);
-         
-            // En cas d'erreur, fallback vers le formulaire
-            router.push(`/secured/category/${categoryId}/form`);
+                     router.push(`/secured/category/${categoryId}/form`);
           }
-        } else if (participants === 'AVEC_TIERS') {
-          // Pour AVEC_TIERS : afficher le formulaire pour collecter les données de la tierce personne
-          console.log('📝 Consultation AVEC_TIERS détectée, affichage du formulaire...');
-    
+        } else if (participants === 'AVEC_TIERS') {   
           router.push(`/secured/category/${categoryId}/form`);
-        } else {
-          // Fallback : rediriger vers le formulaire qui gérera le cas
-          console.log('❓ Type de consultation inconnu, redirection vers formulaire...');
-      
+        } else {      
           router.push(`/secured/category/${categoryId}/form`);
         }
       },

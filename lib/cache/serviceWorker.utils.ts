@@ -29,10 +29,6 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
 
       newWorker.addEventListener('statechange', () => {
         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          // Nouvelle version disponible
-          console.log('🆕 Nouvelle version du Service Worker disponible');
-          
-          // Notifier l'utilisateur (optionnel)
           if (confirm('Une nouvelle version de l\'application est disponible. Recharger ?')) {
             newWorker.postMessage({ type: 'SKIP_WAITING' });
             window.location.reload();

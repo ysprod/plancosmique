@@ -1,5 +1,5 @@
 import { formatDate } from "@/lib/functions";
-import { AnalyseAstrologique, Consultation } from "@/lib/interfaces";
+import { Consultation } from "@/lib/interfaces";
 import { useMemo } from "react";
 
 

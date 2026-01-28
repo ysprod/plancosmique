@@ -114,7 +114,6 @@ export function useRegisterForm() {
         return;
       }
       try {
-        console.log('Submitting registration with data:', formData);
         await register(formData);
       } catch (err: any) {
         let errorMessage = err.response?.data?.message || "Erreur lors de l'inscription";

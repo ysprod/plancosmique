@@ -132,7 +132,6 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
                 rubriqueId,
             };
 
-            console.log("Creating consultation with payload:", payload);
 
             const response = await api.post("/consultations", payload);
             const id = response.data?.id || response.data?.consultationId || response.data?._id;

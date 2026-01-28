@@ -88,26 +88,7 @@ export interface MissionDeVie {
 export interface Section {
   titre: string;
   contenu: string;
-}
-
-export interface AnalyseAstrologique {
-  syntheseEtTiming: undefined;
-  cyclesDeVieGrands: undefined;
-  sagesseAfricaine: undefined;
-  themeDeNaissance: any;
-  cyclesEnMouvement: any;
-  analyseNumerologique: any;
-  sujet: {};
-  _id: string;
-  analysisNotified: boolean;
-  userId: string;
-  consultationId: string;
-  carteDuCiel: CarteDuCielBase;
-  missionDeVie: Section;
-  dateGeneration: string;
-  createdAt: string | Date;
-  updatedAt: string | Date;
-}
+} 
 
 export interface Offering {
   offeringId: string;

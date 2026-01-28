@@ -39,7 +39,6 @@ export function useGenereAnalysePage() {
   }, [consultationId, searchParams]);
 
   const saveAnalysis = async (data: Consultation) => {
-    console.log(data);
     if (!consultationId) {
       throw new Error('ID consultation manquant');
     }

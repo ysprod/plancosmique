@@ -1,22 +1,21 @@
 'use client';
-import LoadingState from "@/components/carteduciel/LoadingState";
 import ErrorState from "@/components/carteduciel/ErrorState";
+import LoadingState from "@/components/carteduciel/LoadingState";
 import ProfileHeader from "@/components/carteduciel/ProfileHeader";
 import SkyChart from "@/components/carteduciel/SkyChart";
-import { ProcessedUserData, User } from "@/lib/interfaces";
+import { User } from "@/lib/interfaces";
  
 interface CarteDuCielMainProps {
-  user: User | null;
-  processedData: ProcessedUserData | null;
+  processedData: User | null;
   isLoading: boolean;
 }
 
-const CarteDuCielMain = ({ user, processedData, isLoading }: CarteDuCielMainProps) => {
+const CarteDuCielMain = ({ processedData, isLoading }: CarteDuCielMainProps) => {
   if (isLoading) {
     return <LoadingState />;
   }
 
-  if (!user || !processedData) {
+  if (!processedData) {
     return <ErrorState />;
   }
   
