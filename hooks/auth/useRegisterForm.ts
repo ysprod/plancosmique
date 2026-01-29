@@ -4,9 +4,6 @@ import { countries } from '@/components/auth/countries';
 
 export interface FormData {
   username: string;
-  gender: string;
-  country: string;
-  phone: string;
   password: string;
   confirmPassword: string;
 }
@@ -16,13 +13,6 @@ export interface FormErrors {
 }
 
 const PASSWORD_MIN_LENGTH = 8;
-
-const GENDER_OPTIONS = [
-  { value: '', label: 'Sélectionner' },
-  { value: 'male', label: 'Homme' },
-  { value: 'female', label: 'Femme' },
-] as const;
-
 const calculatePasswordStrength = (password: string): number => {
   let strength = 0;
   if (password.length >= PASSWORD_MIN_LENGTH) strength++;
@@ -40,15 +30,6 @@ const validateForm = (formData: FormData): FormErrors => {
     errors.username = 'Au moins 2 caractères requis';
   } else if (/\s/.test(formData.username)) {
     errors.username = 'Le nom d\'utilisateur ne peut pas contenir d\'espaces';
-  }
-  if (!formData.gender) {
-    errors.gender = 'Genre requis';
-  }
-  if (!formData.country) {
-    errors.country = 'Pays requis';
-  }
-  if (!formData.phone.trim()) {
-    errors.phone = 'Numéro de téléphone requis';
   }
   if (!formData.password) {
     errors.password = 'Mot de passe requis';
@@ -72,9 +53,6 @@ export function useRegisterForm() {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     username: '',
-    gender: '',
-    country: '',
-    phone: '',
     password: '',
     confirmPassword: '',
   });
@@ -83,12 +61,12 @@ export function useRegisterForm() {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
-      
+
       // Pour le username, empêcher la saisie d'espaces
       if (name === 'username' && /\s/.test(value)) {
         return; // Bloquer la saisie si elle contient des espaces
       }
-      
+
       if (name === 'password') {
         setPasswordStrength(calculatePasswordStrength(value));
       }
@@ -129,7 +107,6 @@ export function useRegisterForm() {
     [formData, register]
   );
 
-  const countryOptions = useMemo(() => ['', ...countries], []);
   const passwordsMatch = useMemo(
     () => formData.password === formData.confirmPassword && formData.confirmPassword !== '',
     [formData.password, formData.confirmPassword]
@@ -150,11 +127,9 @@ export function useRegisterForm() {
     errors,
     handleChange,
     handleSubmit,
-    countryOptions,
     passwordsMatch,
     isSubmitDisabled,
     isLoading,
     isPending,
-    GENDER_OPTIONS,
   };
 }

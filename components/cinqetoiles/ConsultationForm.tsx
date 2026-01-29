@@ -1,10 +1,14 @@
 'use client';
 import InputField from '@/components/vie-personnelle/InputField';
 import { motion } from 'framer-motion';
-import { AlertCircle, Info, Sparkles } from 'lucide-react';
+import { AlertCircle, Info, Phone, Sparkles } from 'lucide-react';
 import React from 'react';
-
 import { useRouter } from 'next/navigation';
+import RegisterInputField from '../auth/RegisterInputField';
+import RegisterSelectField from '../auth/RegisterSelectField';
+import { useRegisterForm } from '@/hooks/auth/useRegisterForm';
+import { GENDER_OPTIONS } from '../vie-personnelle/FormFields';
+import { birthCountries } from '@/lib/birthCountries';
 
 interface Props {
   form: any;
@@ -14,6 +18,8 @@ interface Props {
   handleSubmit: (e: React.FormEvent) => void;
   step: string;
 }
+
+const countryOptions = birthCountries.map((country) => ({ label: country, value: country }));
 
 const ConsultationForm: React.FC<Props> = ({
   form,
@@ -86,6 +92,37 @@ const ConsultationForm: React.FC<Props> = ({
           error={errors.dateNaissance}
         />
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <RegisterSelectField
+            label="Genre"
+            name="gender"
+            value={form.gender}
+            onChange={handleChange}
+            error={errors.gender}
+            options={GENDER_OPTIONS}
+          />
+
+          <RegisterSelectField
+            label="Pays"
+            name="country"
+            value={form.country}
+            onChange={handleChange}
+            error={errors.country}
+            options={countryOptions}
+          />
+        </div>
+
+        <RegisterInputField
+          label="Numéro de téléphone"
+          name="phone"
+          type="tel"
+          value={form.phone}
+          onChange={handleChange}
+          error={errors.phone}
+          placeholder="XXXXXXXXXX"
+          icon={<Phone className="w-4 h-4" />}
+        />
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
           <InputField
@@ -131,7 +168,7 @@ const ConsultationForm: React.FC<Props> = ({
           >
             {isProcessing ? (
               <span className="flex items-center justify-center gap-2">
-                <svg className="animate-spin w-5 h-5 text-white" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="4" fill="none"/></svg>
+                <svg className="animate-spin w-5 h-5 text-white" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity="0.25" /><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="4" fill="none" /></svg>
                 Traitement…
               </span>
             ) : (

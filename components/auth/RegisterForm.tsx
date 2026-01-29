@@ -1,33 +1,25 @@
 'use client';
-import { AnimatePresence, motion } from 'framer-motion';
-import Link from 'next/link';
-import { Loader2, Shield, Lock, Phone, User } from 'lucide-react';
-import React, { memo } from 'react';
-import RegisterLogoHeader from './RegisterLogoHeader';
-import RegisterErrorMessage from './RegisterErrorMessage';
-import RegisterPasswordStrengthIndicator from './RegisterPasswordStrengthIndicator';
-import RegisterInputField from './RegisterInputField';
-import RegisterSelectField from './RegisterSelectField';
 import { useRegisterForm } from '@/hooks/auth/useRegisterForm';
+import { Loader2, Lock, Shield, User } from 'lucide-react';
+import Link from 'next/link';
+import React, { memo } from 'react';
+import RegisterErrorMessage from './RegisterErrorMessage';
+import RegisterInputField from './RegisterInputField';
+import RegisterLogoHeader from './RegisterLogoHeader';
+import RegisterPasswordStrengthIndicator from './RegisterPasswordStrengthIndicator';
 
 const RegisterForm: React.FC = () => {
   const {
-    showPassword, setShowPassword, showConfirmPassword, setShowConfirmPassword,
-    error, setError, passwordStrength, formData, errors,
-    handleChange, handleSubmit, countryOptions, passwordsMatch,
-    isSubmitDisabled, isLoading, isPending, GENDER_OPTIONS,
+    showPassword, showConfirmPassword, isSubmitDisabled, isLoading, isPending,
+    error, passwordStrength, formData, errors, passwordsMatch,
+    handleChange, handleSubmit, setShowConfirmPassword, setShowPassword, setError,
   } = useRegisterForm();
 
   return (
-    <div className=" flex items-center justify-center p-4 
+    <div className="flex items-center justify-center p-4 
                   bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
                   dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="w-full max-w-2xl"
-      >
+      <div className="w-full max-w-2xl"      >
         <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl 
                       rounded-3xl shadow-2xl p-6 sm:p-8 
                       border border-gray-200 dark:border-gray-800">
@@ -38,14 +30,12 @@ const RegisterForm: React.FC = () => {
               Créer un compte
             </h1>
             <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-              Créez votre compte en toute confidentialité. Vous pouvez demander une consultation
+              Créez votre compte en toute confidentialité. Vous pourrez demander une consultation
               pour vous ou un tiers.
             </p>
           </div>
 
-          <AnimatePresence>
-            {error && <RegisterErrorMessage error={error} onClose={() => setError(null)} />}
-          </AnimatePresence>
+          {error && <RegisterErrorMessage error={error} onClose={() => setError(null)} />}
 
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <RegisterInputField
@@ -57,37 +47,6 @@ const RegisterForm: React.FC = () => {
               placeholder="Nom d'utilisateur unique"
               icon={<User className="w-4 h-4" />}
               showSuccess
-            />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <RegisterSelectField
-                label="Genre"
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                error={errors.gender}
-                options={GENDER_OPTIONS}
-              />
-
-              <RegisterSelectField
-                label="Pays"
-                name="country"
-                value={formData.country}
-                onChange={handleChange}
-                error={errors.country}
-                options={countryOptions}
-              />
-            </div>
-
-            <RegisterInputField
-              label="Numéro de téléphone"
-              name="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={handleChange}
-              error={errors.phone}
-              placeholder="XXXXXXXXXX"
-              icon={<Phone className="w-4 h-4" />}
             />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -122,11 +81,9 @@ const RegisterForm: React.FC = () => {
               />
             </div>
 
-            <motion.button
+            <button
               type="submit"
               disabled={isSubmitDisabled}
-              whileHover={{ scale: isSubmitDisabled ? 1 : 1.02 }}
-              whileTap={{ scale: isSubmitDisabled ? 1 : 0.98 }}
               className={`
                 w-full py-3 rounded-xl font-semibold text-sm
                 shadow-lg hover:shadow-xl
@@ -149,7 +106,7 @@ const RegisterForm: React.FC = () => {
                   <span>S'inscrire maintenant</span>
                 </>
               )}
-            </motion.button>
+            </button>
           </form>
 
           <div className="mt-6 space-y-4">
@@ -172,16 +129,10 @@ const RegisterForm: React.FC = () => {
             </div>
           </div>
         </div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="text-center mt-6 text-xs text-gray-500 dark:text-gray-600"
-        >
-          © 2025 Mon Étoile. Tous droits réservés.
-        </motion.p>
-      </motion.div>
+        <p className="text-center mt-6 text-xs text-gray-500 dark:text-gray-600"        >
+          © 2026 Mon Étoile. Tous droits réservés.
+        </p>
+      </div>
     </div>
   );
 };

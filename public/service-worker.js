@@ -2,7 +2,7 @@
 // Gère la mise en cache agressive pour maximiser les performances
 // Version cache - Incrémenter pour forcer le rafraîchissement
 
-const CACHE_VERSION = 'monetoile-v25';
+const CACHE_VERSION = 'monetoile-v26';
 const CACHE_STATIC = `${CACHE_VERSION}-static`;
 const CACHE_DYNAMIC = `${CACHE_VERSION}-dynamic`;
 const CACHE_IMAGES = `${CACHE_VERSION}-images`;
@@ -51,12 +51,10 @@ self.addEventListener('install', (event) => {
 // Activation et nettoyage des anciens caches
 self.addEventListener('activate', (event) => {
   console.log('[SW] Activation...');
-  
   event.waitUntil(
     caches.keys().then((cacheNames) => {
-      return Promise.all(
+      return Promise.allSettled(
         cacheNames.map((cacheName) => {
-          // Supprimer les anciens caches
           if (!cacheName.startsWith(CACHE_VERSION)) {
             console.log('[SW] Suppression de l\'ancien cache:', cacheName);
             return caches.delete(cacheName);
@@ -91,11 +89,9 @@ function getCacheName(url) {
 async function limitCacheSize(cacheName, maxSize) {
   const cache = await caches.open(cacheName);
   const keys = await cache.keys();
-  
   if (keys.length > maxSize) {
-    // Supprimer les plus anciennes entrées
     const toDelete = keys.slice(0, keys.length - maxSize);
-    await Promise.all(toDelete.map(key => cache.delete(key)));
+    await Promise.allSettled(toDelete.map(key => cache.delete(key)));
   }
 }
 
@@ -150,79 +146,65 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.open(cacheName).then(async (cache) => {
       const cachedResponse = await cache.match(request);
-      
-      // Si on a une réponse en cache
       if (cachedResponse) {
         const isExpired = await isCacheExpired(cachedResponse, cacheName);
-        
-        // Pour les assets statiques, retourner le cache même si expiré
         if (cacheName === CACHE_STATIC || cacheName === CACHE_IMAGES) {
-          // Mettre à jour en arrière-plan si expiré
           if (isExpired) {
             fetch(request).then(response => {
               if (response && response.status === 200) {
                 const responseClone = response.clone();
                 const headers = new Headers(responseClone.headers);
                 headers.append('sw-cached-date', new Date().toISOString());
-                
-                const modifiedResponse = new Response(responseClone.body, {
-                  status: responseClone.status,
-                  statusText: responseClone.statusText,
-                  headers: headers,
-                });
-                
-                cache.put(request, modifiedResponse);
-                limitCacheSize(cacheName, MAX_CACHE_SIZE[cacheName.split('-').pop()]);
+                try {
+                  const modifiedResponse = new Response(responseClone.body, {
+                    status: responseClone.status,
+                    statusText: responseClone.statusText,
+                    headers: headers,
+                  });
+                  cache.put(request, modifiedResponse);
+                  limitCacheSize(cacheName, MAX_CACHE_SIZE[cacheName.split('-').pop()]);
+                } catch (e) {
+                  console.warn('[SW] cache.put échoué:', e);
+                }
               }
             }).catch(() => {});
           }
-          
           return cachedResponse;
         }
-        
-        // Pour l'API et contenu dynamique: stale-while-revalidate
         if (!isExpired) {
           return cachedResponse;
         }
       }
-      
-      // Pas de cache ou cache expiré: fetch network
       try {
         const networkResponse = await fetch(request);
-        
-        // Mettre en cache si succès
-        if (networkResponse && networkResponse.status === 200) {
+        // Ne pas mettre en cache les bodies > 5Mo
+        const contentLength = networkResponse.headers.get('content-length');
+        if (networkResponse && networkResponse.status === 200 && (!contentLength || parseInt(contentLength) < 5 * 1024 * 1024)) {
           const responseClone = networkResponse.clone();
           const headers = new Headers(responseClone.headers);
           headers.append('sw-cached-date', new Date().toISOString());
-          
-          const modifiedResponse = new Response(responseClone.body, {
-            status: responseClone.status,
-            statusText: responseClone.statusText,
-            headers: headers,
-          });
-          
-          cache.put(request, modifiedResponse);
-          
-          // Limiter la taille du cache
-          const cacheType = cacheName.split('-').pop();
-          limitCacheSize(cacheName, MAX_CACHE_SIZE[cacheType] || 30);
+          try {
+            const modifiedResponse = new Response(responseClone.body, {
+              status: responseClone.status,
+              statusText: responseClone.statusText,
+              headers: headers,
+            });
+            cache.put(request, modifiedResponse);
+            const cacheType = cacheName.split('-').pop();
+            limitCacheSize(cacheName, MAX_CACHE_SIZE[cacheType] || 30);
+          } catch (e) {
+            console.warn('[SW] cache.put échoué:', e);
+          }
         }
-        
         return networkResponse;
       } catch (error) {
         console.log('[SW] Erreur réseau, retour au cache si disponible:', error);
-        
-        // En cas d'erreur réseau, retourner le cache même expiré
         if (cachedResponse) {
           return cachedResponse;
         }
-        
-        // Page offline de secours
         if (request.mode === 'navigate') {
           return caches.match('/offline.html');
         }
-        
         throw error;
       }
     })

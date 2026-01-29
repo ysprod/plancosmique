@@ -4,22 +4,20 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import React, { memo } from "react";
 
+
 const LoginLogoHeader = memo(() => (
-  <Link
-    href="/"
-    className="block mb-6 group"
-  >
+  <Link href="/" className="block mb-6 group">
     <motion.div
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       className="flex justify-center"
     >
-      <div className="relative w-24 h-24 rounded-2xl overflow-hidden                     
-                    shadow-lg group-hover:shadow-xl transition-shadow">
+      <div className="relative w-24 h-24 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow">
         <Image
           src="/logo.png"
           alt="Mon Étoile Logo"
           fill
+          sizes="(max-width: 768px) 140px, 180px"
           className="object-contain p-3"
           priority
         />
