@@ -5,6 +5,7 @@ import { cx } from "@/lib/functions";
 import { memo } from "react";
 
 const ProfileHero = memo(function ProfileHero({ user }: { user: any; }) {
+  
   return (
     <section className="mx-auto w-full max-w-3xl">
       <div
@@ -23,8 +24,14 @@ const ProfileHero = memo(function ProfileHero({ user }: { user: any; }) {
             </div>
             <div className="mt-3 w-full max-w-xl">
               <ProfilProgressTable user={user} />
+            </div>          
+
+            <div className="mt-2 w-full max-w-xl">           
+              {/* <ProfilGradeCongrats user={user} /> */}
             </div>
           </div>
+          {/* Toast centré (au-dessus du hero) */}
+          {/* <GradeToast show={show} level={level} close={close} /> */}
         </div>
       </div>
     </section>

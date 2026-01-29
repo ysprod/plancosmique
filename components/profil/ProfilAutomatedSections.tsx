@@ -13,7 +13,7 @@ export function ProfilWelcomeMessage({ user }: { user: User }) {
       : '';
   if (!message) return null;
   return (
-    <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-purple-100 via-indigo-50 to-pink-100 dark:from-gray-900/80 dark:to-purple-900/60 shadow-lg animate-fade-in">
+    <div className="mb-2 p-4">
       <p className="text-base sm:text-lg text-gray-800 dark:text-gray-100 whitespace-pre-line text-center">
         {message}
       </p>

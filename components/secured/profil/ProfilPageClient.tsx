@@ -2,7 +2,6 @@
 import StatsCounter from "@/components/commons/StatsCounter";
 import AnimatedBackground from "@/components/profil/AnimatedBackground";
 import TopProgressBar from "@/components/profil/TopProgressBar";
-import { useGradeToast } from "@/components/profil/useGradeToast";
 import { useProfilUser } from "@/hooks/commons/useProfilUser";
 import { cx } from "@/lib/functions";
 import NonPremiumSection from "./NonPremiumSection";
@@ -10,8 +9,6 @@ import PremiumSection from "./PremiumSection";
 
 export default function ProfilPageClient() {
   const { userdata, loading } = useProfilUser();
-  const { show, level, close } = useGradeToast(userdata);
-
   const isPremium = Boolean(userdata?.premium);
 
   return (
@@ -28,10 +25,8 @@ export default function ProfilPageClient() {
       </div>
       <div className="mx-auto flex w-full flex-col items-center justify-center text-center">
         <TopProgressBar />
-        {isPremium && (
-          <PremiumSection user={userdata} showToast={show} toastLevel={level} onCloseToast={close} />
-        )}
-        {!isPremium && !loading && <NonPremiumSection userdata={userdata} showToast={show} toastLevel={level} onCloseToast={close} />}
+        {isPremium && (<PremiumSection user={userdata} />)}
+        {!isPremium && !loading && <NonPremiumSection userdata={userdata!} />}
         <div className="mt-6 w-full">
           <StatsCounter />
         </div>

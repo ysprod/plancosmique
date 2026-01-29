@@ -23,11 +23,11 @@ export function useConsultationResult() {
         let finalConsultation = base;
         if (base.status !== "COMPLETED") {
           try {
-            const generatedRes = await api.post(`/consultations/${consultationId}/generate-analysis`);
+            const generatedRes = await api.post(`/consultations/${consultationId}/generate-analysis-user`);
             finalConsultation = generatedRes?.data?.consultation ?? generatedRes?.data ?? null;
-            if (!finalConsultation) throw new Error("Consultation générée introuvable");
+            if (!finalConsultation) throw new Error("La consultation générée est introuvable");
           } catch (err: any) {
-            throw new Error("Erreur lors de la génération de l'analyse");
+            throw new Error("Erreur lors de la génération de l'analyse utilisateur");
           }
         }
 

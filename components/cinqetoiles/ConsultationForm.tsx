@@ -1,14 +1,15 @@
-'use client';
-import InputField from '@/components/vie-personnelle/InputField';
-import { motion } from 'framer-motion';
-import { AlertCircle, Info, Phone, Sparkles } from 'lucide-react';
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import RegisterInputField from '../auth/RegisterInputField';
-import RegisterSelectField from '../auth/RegisterSelectField';
-import { useRegisterForm } from '@/hooks/auth/useRegisterForm';
-import { GENDER_OPTIONS } from '../vie-personnelle/FormFields';
-import { birthCountries } from '@/lib/birthCountries';
+"use client";
+import InputField from "@/components/vie-personnelle/InputField";
+import { birthCountries } from "@/lib/birthCountries";
+import { cx } from "@/lib/functions";
+import { Phone, X } from "lucide-react";
+import React, { memo, useCallback, useMemo } from "react";
+import RegisterInputField from "../auth/RegisterInputField";
+import RegisterSelectField from "../auth/RegisterSelectField";
+import { GENDER_OPTIONS } from "../vie-personnelle/FormFields";
+import ApiErrorCard from "./form/ApiErrorCard";
+import HintCard from "./form/HintCard";
+import SectionTitle from "./form/SectionTitle";
 
 interface Props {
   form: any;
@@ -19,174 +20,178 @@ interface Props {
   step: string;
 }
 
-const countryOptions = birthCountries.map((country) => ({ label: country, value: country }));
+const RUBRIQUE_COUNTRY_OPTIONS = birthCountries.map((country) => ({ label: country, value: country }));
 
-const ConsultationForm: React.FC<Props> = ({
-  form,
-  errors,
-  handleChange,
-  apiError,
-  handleSubmit,
-  step,
-}) => {
-  const router = useRouter();
-  const handleReset = (() => router.back());
+function ConsultationFormImpl({ form, errors, handleChange, apiError, handleSubmit, step }: Props) {
   const isProcessing = step === "traitement";
+  const disabled = step !== "form";
+
+  const handleReset = useCallback(() => {
+    if (typeof window !== "undefined") window.history.back();
+  }, []);
+
+  const countryOptions = useMemo(() => RUBRIQUE_COUNTRY_OPTIONS, []);
+
+  const submitClass = useMemo(
+    () =>
+      cx(
+        "w-full rounded-2xl px-4 py-3.5",
+        "text-[13px] sm:text-[14px] font-semibold",
+        "text-white",
+        "bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-rose-500",
+        "shadow-lg shadow-fuchsia-500/20",
+        "transition",
+        disabled ? "opacity-60 cursor-not-allowed" : "hover:opacity-[0.97] active:scale-[0.99]"
+      ),
+    [disabled]
+  );
+
+  const cancelClass = useMemo(
+    () =>
+      cx(
+        "w-full rounded-2xl px-4 py-3",
+        "text-[13px] font-semibold",
+        "border border-black/10 dark:border-white/10",
+        "bg-white/70 dark:bg-white/5",
+        "text-slate-800 dark:text-slate-200",
+        "hover:bg-white dark:hover:bg-white/10 transition"
+      ),
+    []
+  );
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="bg-white p-6 sm:p-8 rounded-3xl shadow-2xl border-2 border-purple-200 max-w-3xl mx-auto"
+    <section
+      className={cx(
+        "w-full max-w-md sm:max-w-xl",
+        "rounded-3xl",
+        "border border-black/10 dark:border-white/10",
+        "bg-white/75 dark:bg-slate-950/55",
+        "backdrop-blur-xl",
+        "shadow-[0_18px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_18px_60px_rgba(0,0,0,0.35)]",
+        "px-4 py-5 sm:px-6 sm:py-6"
+      )}
     >
-      <div className="mb-8 pb-6 border-b-2 border-purple-100">
-        <div className="flex items-start gap-3 mb-4">
-          <Sparkles className="w-8 h-8 text-purple-600 flex-shrink-0" />
+      <SectionTitle title="Informations requises" />
+
+      <div className="mt-4 flex flex-col items-center justify-center gap-3">
+        <HintCard />
+
+        <form onSubmit={handleSubmit} className="w-full flex flex-col items-center justify-center gap-4">
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <InputField
+              label="Nom"
+              name="nom"
+              value={form.nom}
+              onChange={handleChange}
+              error={errors.nom}
+              placeholder="Votre nom de famille"
+            />
+            <InputField
+              label="Prénoms"
+              name="prenoms"
+              value={form.prenoms}
+              onChange={handleChange}
+              error={errors.prenoms}
+              placeholder="Tous vos prénoms"
+            />
+          </div>
+
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <InputField
+              label="Date de naissance"
+              name="dateNaissance"
+              type="date"
+              value={form.dateNaissance}
+              onChange={handleChange}
+              error={errors.dateNaissance}
+            />
+            <InputField
+              label="Heure de naissance"
+              name="heureNaissance"
+              type="time"
+              value={form.heureNaissance}
+              onChange={handleChange}
+              error={errors.heureNaissance}
+            />
+          </div>
+
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <RegisterSelectField
+              label="Genre"
+              name="gender"
+              value={form.gender}
+              onChange={handleChange}
+              error={errors.gender}
+              options={GENDER_OPTIONS}
+            />
+            <RegisterSelectField
+              label="Pays de naissance"
+              name="country"
+              value={form.country}
+              onChange={handleChange}
+              error={errors.country}
+              options={countryOptions}
+            />
+          </div>
+
+          <div className="w-full">
+            <InputField
+              label="Ville de naissance"
+              name="villeNaissance"
+              value={form.villeNaissance}
+              onChange={handleChange}
+              error={errors.villeNaissance}
+              placeholder="Ex: Abidjan, Paris…"
+            />
+          </div>
+
+          <div className="w-full">
+            <RegisterInputField
+              label="Numéro de téléphone"
+              name="phone"
+              type="tel"
+              value={form.phone}
+              onChange={handleChange}
+              error={errors.phone}
+              placeholder="XXXXXXXXXX"
+              icon={<Phone className="w-4 h-4" />}
+            />
+          </div>
+
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-fuchsia-600">
-              Informations Requises
-            </h2>
-
+            {apiError ? <ApiErrorCard apiError={apiError} /> : null}
           </div>
-        </div>
 
-        <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-          <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-            <p className="text-blue-900 text-sm leading-relaxed">
-              <strong>Important :</strong> Assurez-vous que votre{' '}
-              <strong>heure de naissance</strong> est exacte pour une analyse astrologique précise.
-              Consultez votre acte de naissance si nécessaire.
-            </p>
-          </div>
-        </div>
-      </div>
+          <div className="w-full flex flex-col items-center justify-center gap-2 pt-1">
+            <button
+              type="submit"
+              disabled={disabled}
+              aria-busy={isProcessing}
+              className={submitClass}
+            >
+              {isProcessing ? (
+                <span className="inline-flex items-center justify-center gap-2">
+                  <span className="h-5 w-5 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+                  Traitement…
+                </span>
+              ) : (
+                "Valider et continuer"
+              )}
+            </button>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <InputField
-            label="Nom"
-            name="nom"
-            value={form.nom}
-            onChange={handleChange}
-            error={errors.nom}
-            placeholder="Votre nom de famille"
-          />
-          <InputField
-            label="Prénoms"
-            name="prenoms"
-            value={form.prenoms}
-            onChange={handleChange}
-            error={errors.prenoms}
-            placeholder="Tous vos prénoms"
-          />
-        </div>
-
-        <InputField
-          label="Date de naissance"
-          name="dateNaissance"
-          type="date"
-          value={form.dateNaissance}
-          onChange={handleChange}
-          error={errors.dateNaissance}
-        />
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <RegisterSelectField
-            label="Genre"
-            name="gender"
-            value={form.gender}
-            onChange={handleChange}
-            error={errors.gender}
-            options={GENDER_OPTIONS}
-          />
-
-          <RegisterSelectField
-            label="Pays"
-            name="country"
-            value={form.country}
-            onChange={handleChange}
-            error={errors.country}
-            options={countryOptions}
-          />
-        </div>
-
-        <RegisterInputField
-          label="Numéro de téléphone"
-          name="phone"
-          type="tel"
-          value={form.phone}
-          onChange={handleChange}
-          error={errors.phone}
-          placeholder="XXXXXXXXXX"
-          icon={<Phone className="w-4 h-4" />}
-        />
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-
-          <InputField
-            label="Ville de naissance"
-            name="villeNaissance"
-            value={form.villeNaissance}
-            onChange={handleChange}
-            error={errors.villeNaissance}
-            placeholder="Ex: Abidjan, Paris..."
-          />
-        </div>
-
-        <InputField
-          label="Heure de naissance (exacte si possible)"
-          name="heureNaissance"
-          type="time"
-          value={form.heureNaissance}
-          onChange={handleChange}
-          error={errors.heureNaissance}
-        />
-
-        {apiError && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="p-4 bg-red-50 border-2 border-red-200 rounded-xl"
-          >
-            <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-              <p className="text-red-700 text-sm font-medium">{apiError}</p>
-            </div>
-          </motion.div>
-        )}
-
-        <div className="space-y-3 pt-4">
-          <motion.button
-            type="submit"
-            disabled={step !== "form"}
-            aria-busy={isProcessing}
-            whileHover={{ scale: step === "form" ? 1.02 : 1 }}
-            whileTap={{ scale: step === "form" ? 0.98 : 1 }}
-            className={`w-full py-4 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all text-lg ${step !== "form" ? "opacity-60 cursor-not-allowed" : ""}`}
-          >
-            {isProcessing ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg className="animate-spin w-5 h-5 text-white" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity="0.25" /><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="4" fill="none" /></svg>
-                Traitement…
+            <button type="button" onClick={handleReset} className={cancelClass}>
+              <span className="inline-flex items-center justify-center gap-2">
+                <X className="h-4 w-4" />
+                Annuler
               </span>
-            ) : (
-              "Valider et Continuer"
-            )}
-          </motion.button>
-
-          <button
-            type="button"
-            onClick={handleReset}
-            className="w-full py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors"
-          >
-            Annuler
-          </button>
-        </div>
-      </form>
-    </motion.div>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
   );
-};
+}
+
+const ConsultationForm = memo(ConsultationFormImpl);
 
 export default ConsultationForm;

@@ -1,6 +1,6 @@
 import { api } from "@/lib/api/client";
-import { FormData, FormErrors, StepType } from "@/lib/interfaces";
 import { getRubriqueById } from "@/lib/api/services/rubriques.service";
+import { FormData, FormErrors, StepType } from "@/lib/interfaces";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export type ExtendedStepType = StepType | "gold" | "traitement";
@@ -9,7 +9,7 @@ export type ProgressStage =
   | "idle"
   | "update_user"
   | "sky_chart"
-  | "choices" 
+  | "choices"
   | "consultations"
   | "finalizing"
   | "done"
@@ -20,8 +20,8 @@ export type ProgressState = {
   message: string;
   total: number;
   done: number;
-  percent: number; // 0..100
-  startedAt: number; // Date.now()
+  percent: number;
+  startedAt: number;
   lastUpdatedAt: number;
   logs: string[];
 };
@@ -35,6 +35,9 @@ const initialForm: FormData = {
   paysNaissance: "",
   villeNaissance: "",
   heureNaissance: "",
+  country: "",
+  phone: "",
+  gender: "",
 };
 
 const validateForm = (form: FormData): FormErrors => {
@@ -61,23 +64,15 @@ function makeProgress(total = 0): ProgressState {
   };
 }
 
-function clamp(n: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, n));
-}
-
 export function useSlide4SectionDoors() {
   const [form, setForm] = useState<FormData>(initialForm);
   const [errors, setErrors] = useState<FormErrors>({});
   const [apiError, setApiError] = useState<string | null>(null);
   const [step, setStep] = useState<ExtendedStepType>("form");
-
-  // Données rubrique/choix
   const [rubrique, setRubrique] = useState<any>(null);
   const [choices, setChoices] = useState<any[]>([]);
   const [loadingRubrique, setLoadingRubrique] = useState(true);
   const [rubriqueError, setRubriqueError] = useState<string | null>(null);
-
-  // Progress UI (un seul state, updates throttlés)
   const [progress, setProgress] = useState<ProgressState>(() => makeProgress(0));
   const progressRafRef = useRef<number | null>(null);
 
@@ -230,17 +225,12 @@ export function useSlide4SectionDoors() {
       });
 
       try {
-        // 1) Update user
         const userUpdatePayload = {
-          nom: form.nom,
-          prenoms: form.prenoms,
-          dateNaissance: form.dateNaissance,
-          paysNaissance: form.paysNaissance,
-          villeNaissance: form.villeNaissance,
-          heureNaissance: form.heureNaissance,
+          ...form,
+          country: form.country && form.country.trim() ? form.country : "Côte d’Ivoire",
           dateOfBirth: form.dateNaissance,
-          country: form.paysNaissance,
-          premium: true,
+          paysNaissance: form.country && form.country.trim() ? form.country : "Côte d’Ivoire",
+          premium: true
         };
 
         await api.patch("/users/me", userUpdatePayload);
@@ -253,20 +243,19 @@ export function useSlide4SectionDoors() {
           lastUpdatedAt: Date.now(),
         }));
 
-        // 2) Sky chart
         await api.post("/consultations/generate-sky-chart", {});
         pushLog("Carte du ciel générée");
         setProgressThrottled((p) => ({
           ...p,
           stage: "choices",
-          message: `Génération des analyses (${choices.length}/${choices.length})…`,
+          message: `Traitement des analyses (${choices.length}/${choices.length})…`,
           percent: 40,
           done: choices.length,
           total: choices.length,
           lastUpdatedAt: Date.now(),
         }));
 
-        // 3) consultations
+
         await api.post("/consultations/generate-consultations-for-rubrique", {
           rubriqueId: RUBRIQUE_ID,
         });
@@ -274,13 +263,13 @@ export function useSlide4SectionDoors() {
         setProgressThrottled((p) => ({
           ...p,
           stage: "consultations",
-          message: `Génération des consultations (${choices.length}/${choices.length})…`,
+          message: `Traitement des consultations (${choices.length}/${choices.length})…`,
           percent: 70,
           done: choices.length,
           total: choices.length,
           lastUpdatedAt: Date.now(),
         }));
-        
+
         setProgressThrottled((p) => ({
           ...p,
           stage: "finalizing",

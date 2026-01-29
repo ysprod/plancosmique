@@ -4,7 +4,7 @@ import ProfilHighlightCards from "@/components/profil/ProfilHighlightCards";
 import ProfilCategories from "@/components/profil/ProfilCategories";
 import { memo } from "react";
 
-const PremiumSection = memo(function PremiumSection({ user, showToast, toastLevel, onCloseToast }: any) {
+const PremiumSection = memo(function PremiumSection({ user }: any) {
   return (
     <section className="mx-auto mt-4 w-full max-w-5xl">
       <div className="mx-auto flex flex-col md:flex-row items-start justify-center gap-6 md:gap-8">

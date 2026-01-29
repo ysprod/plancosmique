@@ -1,8 +1,7 @@
 "use client";
-
 import ConsultationForm from "@/components/cinqetoiles/ConsultationForm";
 import GenereAnalyseContent from "@/components/cinqetoiles/GenereAnalyseContent";
- import { useSlide4SectionDoors } from "@/hooks/cinqetoiles/useSlide4SectionDoors";
+import { useSlide4SectionDoors } from "@/hooks/cinqetoiles/useSlide4SectionDoors";
 import { PaymentProcessingProgress } from "./PaymentProcessingProgress";
 
 export default function ProfilPageClientDoors() {

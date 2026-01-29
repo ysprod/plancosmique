@@ -5,7 +5,7 @@ import SelectionHeader from '@/components/cinqetoiles/SelectionHeader';
 
 export function Slide4SectionSelection({ loading, choices, handleSelect }: any) {
   return (
-    <div key="selection"    >
+    <div key="selection">
       <SelectionHeader />
       <div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6">

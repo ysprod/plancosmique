@@ -167,6 +167,9 @@ export interface FormData {
   paysNaissance: string;
   villeNaissance: string;
   heureNaissance: string;
+  country?: string;
+  phone?: string;
+  gender?: string;
 }
 
 export interface Rubrique {
@@ -626,8 +629,9 @@ export interface CarteDuCielData {
 export interface CarteDuCiel {
   sessionId: string;
   timestamp: string;
-  carteDuCiel: CarteDuCielData;
-  missionDeVie: MissionDeVie;
+  carteDuCiel: Position[];
+    positions: Position[];
+  aspectsTexte: string;
   metadata: {
     processingTime: number;
     tokensUsed: number;
