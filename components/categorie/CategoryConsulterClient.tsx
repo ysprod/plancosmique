@@ -25,6 +25,7 @@ const CategoryConsulterClient = memo<CategoryConsulterClientProps>(function Cate
   const { consultation, walletOfferings, contextInfo,
     loading: dataLoading, error: dataError
   } = useConsultationData(consultationId, category);
+  console.log('Consultation Data:', { consultation, walletOfferings, contextInfo, dataLoading, dataError });
 
   const {
     loading: validationLoading, error: validationError, showError,
