@@ -3,10 +3,8 @@ import CreateCategoryHeader from "@/components/admin/categories/create/CreateCat
 import CreateCategoryMainContent from "@/components/admin/categories/create/CreateCategoryMainContent";
 import CreateCategoryTitle from "@/components/admin/categories/create/CreateCategoryTitle";
 import { useCreateCategoryPage } from "@/hooks/commons/useCreateCategoryPage";
-import { useReducedMotion } from "framer-motion";
 
 export default function CreateCategoryPageClient() {
-  const reducedMotion = useReducedMotion();
   const {
     rubriques, rubriquesLoading, view, nom, rubriqueIds, selectedSet, busy, banner,
     description, selectedRubriques, invalidRubriquesCount, selectionSummary,
@@ -54,7 +52,6 @@ export default function CreateCategoryPageClient() {
             setView("create");
             showBanner({ type: "info", message: "Prêt pour une nouvelle catégorie." });
           },
-          reducedMotion: !!reducedMotion,
         }}
       />
     </div>

@@ -1,60 +1,30 @@
 "use client";
-import { cardVariants } from "./content/variants";
-import { useHoroscopeSummary } from "@/hooks/consultations/useHoroscopeSummary";
-import { cx } from "@/lib/functions";
-import type { Consultation } from "@/lib/interfaces";
+import type { Analysis } from "@/lib/interfaces";
 import { ArrowLeft, Download } from "lucide-react";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import ConsultationHeader from "./content/ConsultationHeader";
-import HoroscopeSummary from "./content/HoroscopeSummary";
-import ShellCard from "./content/ShellCard";
 import MarkdownCard from "./content/MarkdownCard";
+import ShellCard from "./content/ShellCard";
 
-type Kind = "numerology" | "astrology" | "horoscope_fallback";
-
-function normalizeType(t: any) {
-  return String(t ?? "").trim().toLowerCase().replace(/_/g, "-");
-}
-
-function getKindFromType(typeRaw: any): Kind {
-  const t = normalizeType(typeRaw);
-
-  if (t === "nombres-personnels" || t === "cycles-personnels" || t === "numerologie" || t === "numerology") {
-    return "numerology";
-  }
-  if (t === "vie-personnelle" || t === "astrologie-africaine" || t === "transits" || t === "astrologie" || t === "astro" || t === "carte-du-ciel") {
-    return "astrology";
-  }
-  return "horoscope_fallback";
-}
-
-function extractMarkdown(c: any): string | null {
-  const v =
-    c?.analyse?.analyse?.texte ??
-    c?.resultData?.analyse?.texte ??
-    c?.analyse?.analyse ??
-    c?.resultData?.analyse ??
-    null;
-
+function extractMarkdown(c: Analysis): string | null {
+  const v = c?.texte ?? null;
   const s = typeof v === "string" ? v.trim() : "";
   return s ? s : null;
 }
 
 export interface ConsultationContentProps {
-  consultation: Consultation;
+  analyse: Analysis;
   onBack: () => void;
   onDownloadPDF: () => void;
 }
 
-function ConsultationContent({ consultation, onBack, onDownloadPDF }: ConsultationContentProps) {
-  const kind = useMemo(() => getKindFromType((consultation as any)?.type), [consultation]);
-  const markdown = useMemo(() => extractMarkdown(consultation as any), [consultation]);
-
-  const horoscope = kind === "horoscope_fallback" ? useHoroscopeSummary(consultation) : null;
+function ConsultationContent({ analyse, onBack, onDownloadPDF }: ConsultationContentProps) {
+  const markdown = useMemo(() => extractMarkdown(analyse), [analyse]);
 
   return (
     <ShellCard>
       <div className="flex items-center justify-between gap-3 sm:gap-4">
+
         <button
           type="button"
           onClick={onBack}
@@ -76,29 +46,13 @@ function ConsultationContent({ consultation, onBack, onDownloadPDF }: Consultati
 
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center justify-center text-center">
         <ConsultationHeader
-          titre={(consultation as any).titre}
-          title={(consultation as any).title}
+          titre={analyse.titre}
+          title={analyse.title}
         />
       </div>
 
       <div className="mt-4">
-        {markdown ? (
-          <div key="md" >
-            <MarkdownCard markdown={markdown} />
-          </div>
-        ) : (
-          <div key="summary" >
-            <div className={cx(
-              "mx-auto w-full max-w-2xl",
-              "rounded-3xl border p-4 sm:p-5",
-              "border-slate-200/70 bg-white/60",
-              "dark:border-zinc-800/70 dark:bg-zinc-900/40"
-            )}
-            >
-              <HoroscopeSummary horoscope={horoscope} />
-            </div>
-          </div>
-        )}
+        <MarkdownCard markdown={markdown!} />
       </div>
     </ShellCard>
   );

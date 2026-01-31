@@ -1,13 +1,13 @@
 import type { LucideIcon } from 'lucide-react';
 
-export type PaymentStatus = 
+export type PaymentStatus =
   | 'pending'
   | 'paid'
   | 'failure'
   | 'no paid'
   | 'already_used'
   | 'error';
- 
+
 export interface StatusConfig {
   icon: LucideIcon;
   title: string;
@@ -19,9 +19,6 @@ export interface StatusConfig {
   showDetails: boolean;
 }
 
-/**
- * Informations personnelles du paiement
- */
 export interface PersonalInfo {
   userId?: string;
   consultationId?: string;
@@ -31,9 +28,6 @@ export interface PersonalInfo {
   [key: string]: unknown;
 }
 
-/**
- * Données de paiement
- */
 export interface PaymentData {
   _id?: string;
   tokenPay: string;
@@ -47,34 +41,6 @@ export interface PaymentData {
   [key: string]: unknown;
 }
 
-/**
- * Étape d'analyse astrologique
- */
-export interface AnalysisStage {
-  progress: number;
-  label: string;
-  icon: LucideIcon;
-  color: string;
-  description: string;
-  duration: number;
-}
-
-/**
- * Mise à jour de progression d'analyse (SSE)
- */
-export interface AnalysisProgressData {
-  consultationId: string;
-  stage: string;
-  stageIndex: number;
-  progress: number;
-  message: string;
-  timestamp: string;
-  completed: boolean;
-}
-
-/**
- * Résultat de vérification de paiement
- */
 export interface PaymentVerificationResult {
   success: boolean;
   status: string;
@@ -82,9 +48,6 @@ export interface PaymentVerificationResult {
   data?: unknown;
 }
 
-/**
- * Résultat de traitement de consultation
- */
 export interface ConsultationProcessResult {
   success: boolean;
   status: string;

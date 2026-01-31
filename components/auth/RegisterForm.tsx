@@ -2,7 +2,8 @@
 import { useRegisterForm } from '@/hooks/auth/useRegisterForm';
 import { Loader2, Lock, Shield, User } from 'lucide-react';
 import Link from 'next/link';
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
+import { Sun, Moon } from 'lucide-react';
 import RegisterErrorMessage from './RegisterErrorMessage';
 import RegisterInputField from './RegisterInputField';
 import RegisterLogoHeader from './RegisterLogoHeader';
@@ -15,10 +16,29 @@ const RegisterForm: React.FC = () => {
     handleChange, handleSubmit, setShowConfirmPassword, setShowPassword, setError,
   } = useRegisterForm();
 
+  // Gestion du thème dark/light
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    if (isDark) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [isDark]);
+
+  const toggleTheme = () => setIsDark((prev) => !prev);
+
   return (
-    <div className="flex items-center justify-center p-4 
-                  bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
-                  dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
+    <div className="flex items-center justify-center p-4 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
+      <button
+        onClick={toggleTheme}
+        className="fixed top-4 right-4 z-50 p-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg hover:scale-110 transition-transform"
+        aria-label={isDark ? 'Activer le mode clair' : 'Activer le mode sombre'}
+        type="button"
+      >
+        {isDark ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+      </button>
       <div className="w-full max-w-2xl"      >
         <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl 
                       rounded-3xl shadow-2xl p-6 sm:p-8 
@@ -129,7 +149,7 @@ const RegisterForm: React.FC = () => {
             </div>
           </div>
         </div>
-        <p className="text-center mt-6 text-xs text-gray-500 dark:text-gray-600"        >
+        <p className="text-center mt-6 text-xs text-gray-500 dark:text-white"        >
           © 2026 Mon Étoile. Tous droits réservés.
         </p>
       </div>

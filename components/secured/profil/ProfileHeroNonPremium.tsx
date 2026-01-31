@@ -7,7 +7,7 @@ import { memo } from "react";
 const ProfileHeroNonPremium = memo(function ProfileHeroNonPremium({ user }: { user: User; }) {
 
   return (
-    <section className="mx-auto w-full max-w-3xl">
+    <section className="mx-auto w-full">
       <div
         className={cx(
           "relative overflow-hidden rounded-[28px] border mb-4",

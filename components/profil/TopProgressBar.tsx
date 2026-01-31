@@ -10,5 +10,7 @@ const TopProgressBar = memo(() => (
     style={{ transformOrigin: 'left' }}
   />
 ));
+
 TopProgressBar.displayName = 'TopProgressBar';
+
 export default TopProgressBar;

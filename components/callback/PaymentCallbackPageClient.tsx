@@ -1,7 +1,6 @@
 'use client';
-import { ActionButtons, BackgroundBlobs, CompletionBanner, SecurityNote, StatusCard, useAnimationVariants } from '@/components/callback';
+import { ActionButtons, BackgroundBlobs, SecurityNote, StatusCard, useAnimationVariants } from '@/components/callback';
 import AnalysisPreview from '@/components/callback/AnalysisPreview';
-import AnalysisProgressBar from '@/components/callback/AnalysisProgressBar';
 import LoadingState from '@/components/callback/LoadingState';
 import { usePaymentCallback } from '@/hooks/commons/usePaymentCallback';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -11,9 +10,8 @@ export default function PaymentCallbackPageClient() {
   const searchParams = useSearchParams();
   const token = searchParams?.get('token') || null;
   const {
-    isLoading, isProcessing, status, statusConfig, analysisStages, currentStageIndex,
-    isGeneratingAnalysis, analysisCompleted, analysisProgress, autoRedirectCountdown,
-    currentStageMessage, consultationId, downloadUrl, shouldAutoRedirect,
+    isLoading, isProcessing, status, statusConfig, isGeneratingAnalysis,
+    autoRedirectCountdown, consultationId, downloadUrl, shouldAutoRedirect,
     handleViewConsultation, handleDownloadBook, handleRetry, handleGoHome,
   } = usePaymentCallback(token);
 
@@ -34,25 +32,7 @@ export default function PaymentCallbackPageClient() {
           exit="exit"
           className="w-full max-w-3xl relative z-10"
         >
-          <AnalysisProgressBar
-            analysisProgress={analysisProgress}
-            currentStageIndex={currentStageIndex}
-            currentStageMessage={currentStageMessage}
-            analysisStages={analysisStages}
-          />
-          {isGeneratingAnalysis && (
-            <AnalysisProgressBar
-              analysisProgress={analysisProgress}
-              currentStageIndex={currentStageIndex}
-              currentStageMessage={currentStageMessage}
-              analysisStages={analysisStages}
-            />
-          )}
-          {analysisCompleted && !isGeneratingAnalysis && (
-            <CompletionBanner />
-          )}
-          {analysisCompleted &&
-            !isGeneratingAnalysis &&
+          {!isGeneratingAnalysis &&
             status === 'paid' &&
             (consultationId || downloadUrl) && (
               <AnalysisPreview
@@ -68,7 +48,6 @@ export default function PaymentCallbackPageClient() {
             isProcessing={isProcessing}
             isGeneratingAnalysis={isGeneratingAnalysis}
             shouldAutoRedirect={shouldAutoRedirect}
-            analysisCompleted={analysisCompleted}
             autoRedirectCountdown={autoRedirectCountdown}
             itemVariants={itemVariants}
             pulseVariants={pulseVariants}

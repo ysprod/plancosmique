@@ -10,7 +10,6 @@ export function useGenereAnalysePage() {
   const [step, setStep] = useState<GenerationStep>('loading');
   const [consultation, setConsultation] = useState<Consultation | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (!consultationId) {
@@ -38,25 +37,6 @@ export function useGenereAnalysePage() {
     loadConsultation();
   }, [consultationId, searchParams]);
 
-  const saveAnalysis = async (data: Consultation) => {
-    if (!consultationId) {
-      throw new Error('ID consultation manquant');
-    }
-    setIsSaving(true);
-    try {
-      const res = await api.put(`/consultations/${consultationId}`, data);
-      if (res.status !== 200) {
-        throw new Error(res.data?.message || 'Erreur de sauvegarde');
-      }
-      setConsultation((prev: any) => ({ ...prev, analyse: res.data?.consultation || data }));
-      router.push(`/admin/consultations/${consultationId}`);
-    } catch (err: any) {
-      throw new Error(err.response?.data?.message || err.message || 'Erreur de sauvegarde');
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
   const handleRetry = useCallback(() => {
     if (consultationId) {
       setError(null);
@@ -69,8 +49,5 @@ export function useGenereAnalysePage() {
     router.push(`/admin/consultations/${consultationId}`);
   }, [router]);
 
-  return {
-    step, consultation, error, isSaving,
-    handleRetry, handleBack, saveAnalysis, setStep,
-  };
+  return { step, consultation, error, handleRetry, handleBack, };
 }

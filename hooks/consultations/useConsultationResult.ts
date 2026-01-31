@@ -1,5 +1,6 @@
 import { api } from '@/lib/api/client';
-import { Consultation } from '@/lib/interfaces';
+import { analysesService } from '@/lib/api/services/analyses.service';
+import { Analysis, Consultation } from '@/lib/interfaces';
 import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -10,32 +11,26 @@ export function useConsultationResult() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [consultation, setConsultation] = useState<Consultation | null>(null);
+  const [analyse, setAnalyse] = useState<Analysis | null>(null);
 
   useEffect(() => {
     if (!consultationId) return;
     const loadConsultation = async () => {
       try {
-        const response = await api.get(`/consultations/${consultationId}`);
-        if (response.status !== 200) throw new Error('Consultation non trouvée');
+          const response = await api.get(`/analyses/by-consultation/${consultationId}`);
+          console.log("useConsultationResult fetched analysis:", response);
         const data = response.data;
-        const base = data.consultation;
-        let finalConsultation = base;
-        if (base.status !== "COMPLETED") {
-          try {
-            const generatedRes = await api.post(`/consultations/${consultationId}/generate-analysis-user`);
-            finalConsultation = generatedRes?.data?.consultation ?? generatedRes?.data ?? null;
-            if (!finalConsultation) throw new Error("La consultation générée est introuvable");
-          } catch (err: any) {
-            throw new Error("Erreur lors de la génération de l'analyse utilisateur");
-          }
+        if (data=="") {
+         router.push(`/secured/consultations/${consultationId}/generate`);
+          setLoading(false);
+          return;
         }
-
-
-        setConsultation(finalConsultation);
-        setLoading(false);
+          setAnalyse(data);
+        //const response = await analysesService.get(consultationId);
+      console.log("Fetched consultation:", response);
       } catch (err) {
-        setError('Impossible de récupérer la consultation');
+        setError('Impossible de récupérer l\'analyse');
+      } finally {
         setLoading(false);
       }
     };
@@ -58,5 +53,5 @@ export function useConsultationResult() {
     window.open(url, '_blank');
   }, [consultationId]);
 
-  return { loading, error, consultation, handleBack, handleDownloadPDF };
+  return { loading, error, consultation: analyse, handleBack, handleDownloadPDF };
 }

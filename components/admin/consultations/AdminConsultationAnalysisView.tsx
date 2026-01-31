@@ -15,7 +15,7 @@ export default function AdminConsultationAnalysisView() {
     if (loading) { return <LoadingSkeleton />; }
 
     if (error || !consultation) {
-        return <ErrorState error={error || 'Analyse introuvable'} onRetry={handleBack} />;
+        return <ErrorState error={error || 'Aucune donnée disponible'} onRetry={handleBack} />;
     }
 
     return (

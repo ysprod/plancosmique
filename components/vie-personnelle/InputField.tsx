@@ -24,7 +24,7 @@ const InputField: React.FC<{
   placeholder?: string;
 }> = ({ label, name, type = 'text', value, onChange, error, placeholder }) => (
   <div>
-    <label className="block text-sm font-bold text-gray-900 mb-2">
+    <label className="block text-sm font-bold text-gray-900 dark:text-white mb-2">
       {label} <span className="text-red-500">*</span>
     </label>
     <input

@@ -8,10 +8,10 @@ import { User } from "@/lib/interfaces";
 
 const NonPremiumSection = memo(function NonPremiumSection({ userdata }: { userdata: User; }) {
   const { choices, loading, handleSelect } = useSlide4Section();
- 
+
   return (
-    <section className="mx-auto mt-4 w-full max-w-3xl">
-      <div className="mx-auto flex flex-col items-center justify-center text-center">
+    <section className="mt-4 w-full mx-auto max-w-5xl">
+      <div className="flex flex-col items-center justify-center text-center">
         <ProfileHeroNonPremium user={userdata} />
         <Slide4SectionSelection
           loading={loading}

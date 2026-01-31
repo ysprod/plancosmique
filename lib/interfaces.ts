@@ -88,7 +88,7 @@ export interface MissionDeVie {
 export interface Section {
   titre: string;
   contenu: string;
-} 
+}
 
 export interface Offering {
   offeringId: string;
@@ -175,7 +175,7 @@ export interface FormData {
 export interface Rubrique {
   promptId?: any;
   typeconsultation?: any;
-    id?: string;
+  id?: string;
   _id?: string;
   titre?: string;
   type?: ConsultationType;
@@ -630,7 +630,7 @@ export interface CarteDuCiel {
   sessionId: string;
   timestamp: string;
   carteDuCiel: Position[];
-    positions: Position[];
+  positions: Position[];
   aspectsTexte: string;
   metadata: {
     processingTime: number;
@@ -713,4 +713,15 @@ export interface EnrichedChoice {
   consultationCount: undefined;
   choice: ConsultationChoice;
   status: ConsultationChoiceStatusDto;
+}
+
+export interface Analysis {
+  _id: string;
+  consultationID: string;
+  texte: string;
+  createdAt: string;
+  updatedAt: string;
+  titre?: string;
+  title?: string;
+  __v?: number;
 }

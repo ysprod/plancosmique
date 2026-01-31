@@ -6,11 +6,9 @@ import CreateCategoryButton from "@/components/admin/categories/CreateCategoryBu
 import ReloadButtons from "@/components/admin/categories/ReloadButtons";
 import TopBar from "@/components/admin/categories/TopBar";
 import { useAdminCategoriesView } from "@/hooks/admin/useAdminCategoriesView";
-import { AnimatePresence, useReducedMotion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 export default function AdminCategoriesPage() {
-    const reducedMotion = useReducedMotion();
-
     const {
         rubriques, categories, categoriesLoading, categoriesError, editingId,
         rubriquesLoading, rubriquesError, counts, banner, startEdit, stopEdit,
@@ -19,7 +17,7 @@ export default function AdminCategoriesPage() {
 
     return (
         <div className="w-full mx-auto max-w-3xl px-3 py-5 sm:px-4 sm:py-8 bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
-            <TopBar counts={counts} reducedMotion={reducedMotion!} />
+            <TopBar counts={counts} />
             <ReloadButtons
                 fetchCategories={fetchCategories}
                 fetchRubriques={fetchRubriques}

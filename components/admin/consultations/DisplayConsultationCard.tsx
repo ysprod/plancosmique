@@ -17,7 +17,6 @@ interface ConsultationCardProps {
 }
 
 function DisplayConsultationCard({ consultation, onModifyAnalysis, onNotifyUser, notifiedback, onBack }: ConsultationCardProps) {
-  const reduceMotion = useReducedMotion();
   const { derived, copied, handleCopy, handleRefresh, handleNotify,
   } = useDisplayConsultationCard(consultation, notifiedback, onModifyAnalysis, onNotifyUser);
 

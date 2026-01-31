@@ -2,7 +2,8 @@
 import { useLoginForm } from '@/hooks/auth/useLoginForm';
 import { motion } from 'framer-motion';
 import { Loader2, Lock, User } from 'lucide-react';
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
+import { Sun, Moon } from 'lucide-react';
 import LoginErrorAlert from './LoginErrorAlert';
 import LoginFooter from './LoginFooter';
 import LoginInputField from './LoginInputField';
@@ -41,10 +42,29 @@ const LoginForm = () => {
     }
   }, []);
 
+  // Gestion du thème dark/light
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    if (isDark) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [isDark]);
+
+  const toggleTheme = () => setIsDark((prev) => !prev);
+
   return (
-    <div className=" flex items-center justify-center p-4 
-                  bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
-                  dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
+    <div className="flex items-center justify-center p-4 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
+      <button
+        onClick={toggleTheme}
+        className="fixed top-4 right-4 z-50 p-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg hover:scale-110 transition-transform"
+        aria-label={isDark ? 'Activer le mode clair' : 'Activer le mode sombre'}
+        type="button"
+      >
+        {isDark ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+      </button>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -9,7 +9,7 @@ interface StatusCardProps {
   isProcessing: boolean;
   isGeneratingAnalysis: boolean;
   shouldAutoRedirect: boolean;
-  analysisCompleted: boolean;
+
   autoRedirectCountdown: number;
   itemVariants: Variants;
   pulseVariants: Variants;
@@ -21,7 +21,7 @@ export function StatusCard({
   isProcessing,
   isGeneratingAnalysis,
   shouldAutoRedirect,
-  analysisCompleted,
+
   autoRedirectCountdown,
   itemVariants,
   pulseVariants,
@@ -102,7 +102,7 @@ export function StatusCard({
           </motion.div>
         )}
 
-        {shouldAutoRedirect && analysisCompleted && autoRedirectCountdown > 0 && (
+        {shouldAutoRedirect &&  autoRedirectCountdown > 0 && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}

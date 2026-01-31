@@ -6,6 +6,7 @@ import OffersSection from '@/components/about/OffersSection';
 import ServicesSection from '@/components/about/ServicesSection';
 
 export default function AboutPage() {
+  
   return (
     <main className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       <HeroSection />

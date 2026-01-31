@@ -17,88 +17,13 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { AnalysisStage, PaymentData, PaymentStatus, StatusConfig } from '../../components/callback/types';
+import type {  PaymentData, PaymentStatus, StatusConfig } from '../../components/callback/types';
 
-const SSE_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
-const ANALYSIS_STAGES: AnalysisStage[] = [
-  {
-    progress: 5,
-    label: 'Initialisation',
-    icon: Sparkles,
-    color: 'from-blue-400 to-cyan-400',
-    description: 'Préparation des données de naissance...',
-    duration: 1000,
-  },
-  {
-    progress: 15,
-    label: 'Positions Planétaires',
-    icon: Stars,
-    color: 'from-purple-400 to-pink-400',
-    description: 'Calcul des positions célestes à votre naissance...',
-    duration: 3000,
-  },
-  {
-    progress: 30,
-    label: 'Aspects Astrologiques',
-    icon: Zap,
-    color: 'from-yellow-400 to-orange-400',
-    description: 'Analyse des interactions entre les planètes...',
-    duration: 4000,
-  },
-  {
-    progress: 45,
-    label: 'Thème Natal',
-    icon: Telescope,
-    color: 'from-indigo-400 to-purple-400',
-    description: 'Construction de votre carte du ciel personnalisée...',
-    duration: 5000,
-  },
-  {
-    progress: 60,
-    label: 'Maisons Astrologiques',
-    icon: Compass,
-    color: 'from-green-400 to-teal-400',
-    description: 'Interprétation des 12 maisons de votre thème...',
-    duration: 4000,
-  },
-  {
-    progress: 75,
-    label: 'Mission de Vie',
-    icon: Target,
-    color: 'from-pink-400 to-rose-400',
-    description: 'Dévoilement de votre chemin de vie karmique...',
-    duration: 5000,
-  },
-  {
-    progress: 88,
-    label: 'Personnalité',
-    icon: Heart,
-    color: 'from-red-400 to-pink-400',
-    description: 'Analyse approfondie de votre personnalité...',
-    duration: 3000,
-  },
-  {
-    progress: 95,
-    label: 'Finalisation',
-    icon: BookOpen,
-    color: 'from-violet-400 to-purple-400',
-    description: 'Compilation de votre rapport complet...',
-    duration: 2000,
-  },
-  {
-    progress: 100,
-    label: 'Terminé',
-    icon: CheckCircle,
-    color: 'from-green-400 to-emerald-400',
-    description: 'Votre analyse astrologique est prête !',
-    duration: 1000,
-  },
-];
 
 export function usePaymentCallback(token: string | null) {
   const router = useRouter();
-  
+
   // States
   const [consultationId, setConsultationId] = useState<string | null>(null);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
@@ -107,18 +32,10 @@ export function usePaymentCallback(token: string | null) {
   const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(false);
   const [status, setStatus] = useState<PaymentStatus>('pending');
   const [error, setError] = useState<string>('');
-  const [sseProgress, setSseProgress] = useState(0);
   const [currentStage, setCurrentStage] = useState('init');
-  const [sseStageIndex, setSseStageIndex] = useState(0);
-  const [sseStageMessage, setSseStageMessage] = useState('Préparation...');
-  const [sseCompleted, setSseCompleted] = useState(false);
-  const [sseConnected, setSseConnected] = useState(false);
   const [shouldAutoRedirect, setShouldAutoRedirect] = useState(false);
   const [autoRedirectCountdown, setAutoRedirectCountdown] = useState(15);
 
-  const eventSourceRef = useRef<EventSource | null>(null);
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const reconnectAttemptsRef = useRef(0);
 
   // Computed
   const statusConfig = useMemo<StatusConfig>(() => {
@@ -189,76 +106,6 @@ export function usePaymentCallback(token: string | null) {
     return configs[status];
   }, [status, error, downloadUrl]);
 
-  // SSE Connection
-  useEffect(() => {
-    if (!isGeneratingAnalysis || !consultationId) return;
-
-    let isMounted = true;
-
-    const connect = () => {
-      try {
-        const url = `${SSE_BASE_URL}/api/v1/analysis/progress/${consultationId}`;
-
-        const eventSource = new EventSource(url);
-        eventSourceRef.current = eventSource;
-
-        eventSource.onopen = () => {
-          if (!isMounted) return;
-          setSseConnected(true);
-          reconnectAttemptsRef.current = 0;
-        };
-
-        eventSource.onmessage = (event) => {
-          if (!isMounted) return;
-          try {
-            const data = JSON.parse(event.data);
-            setSseProgress(data.progress);
-            setCurrentStage(data.stage);
-            setSseStageIndex(data.stageIndex);
-            setSseStageMessage(data.message);
-            setSseCompleted(data.completed);
-
-            if (data.completed) {
-              eventSource.close();
-            }
-          } catch (err) {
-            console.error('❌ SSE parsing error:', err);
-          }
-        };
-
-        eventSource.onerror = () => {
-          console.error('❌ SSE error');
-          eventSource.close();
-          if (!isMounted) return;
-          setSseConnected(false);
-
-          if (reconnectAttemptsRef.current < 5) {
-            reconnectAttemptsRef.current++;
-            const delay = 2000 * reconnectAttemptsRef.current;
-            reconnectTimeoutRef.current = setTimeout(() => {
-              if (isMounted && !sseCompleted) connect();
-            }, delay);
-          }
-        };
-      } catch (err) {
-        console.error('❌ EventSource creation error:', err);
-      }
-    };
-
-    connect();
-
-    return () => {
-      isMounted = false;
-      if (eventSourceRef.current) {
-        eventSourceRef.current.close();
-        eventSourceRef.current = null;
-      }
-      if (reconnectTimeoutRef.current) {
-        clearTimeout(reconnectTimeoutRef.current);
-        reconnectTimeoutRef.current = null;
-      }
-    };
-  }, [consultationId, isGeneratingAnalysis, sseCompleted]);
 
   // Initialize payment verification
   useEffect(() => {
@@ -349,16 +196,10 @@ export function usePaymentCallback(token: string | null) {
     })();
   }, [token]);
 
-  // Stop generation when analysis completes
-  useEffect(() => {
-    if (sseCompleted) {
-      setIsGeneratingAnalysis(false);
-    }
-  }, [sseCompleted]);
 
   // Auto-redirect countdown
   useEffect(() => {
-    if (!shouldAutoRedirect || !sseCompleted) return;
+    if (!shouldAutoRedirect) return;
 
     const interval = setInterval(() => {
       setAutoRedirectCountdown((prev) => {
@@ -378,7 +219,7 @@ export function usePaymentCallback(token: string | null) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [shouldAutoRedirect, sseCompleted, consultationId, downloadUrl, router]);
+  }, [shouldAutoRedirect, consultationId, downloadUrl, router]);
 
   // Actions
   const handleViewConsultation = useCallback(() => {
@@ -406,14 +247,9 @@ export function usePaymentCallback(token: string | null) {
     isProcessing,
     status,
     statusConfig,
-    analysisStages: ANALYSIS_STAGES,
     isGeneratingAnalysis,
-    analysisCompleted: sseCompleted,
-    analysisProgress: sseProgress,
-    currentStageIndex: sseStageIndex,
-    currentStageMessage: sseStageMessage || 'Préparation...',
+    currentStageMessage: 'Préparation...',
     currentStage,
-    sseConnected,
     consultationId,
     downloadUrl,
     shouldAutoRedirect,
