@@ -10,7 +10,6 @@ export default function CategorySelectionPage() {
     if (!id) return notFound();
 
     const { category, loading } = useCategory(id);
-
     if (loading) return <CategoryLoadingSpinner />;
 
     if (!category || !category._id) return notFound();

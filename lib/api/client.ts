@@ -68,7 +68,9 @@ const apiClient: AxiosInstance = axios.create({
   timeout: config.api.timeout,
   headers: {
     'Content-Type': 'application/json',
-    'Cache-Control': 'no-cache',
+    'Cache-Control': 'no-store',
+    Pragma: 'no-cache',
+    Expires: '0',
   },
   // Optimisations supplémentaires
   validateStatus: (status) => status >= 200 && status < 300,

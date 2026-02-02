@@ -44,7 +44,7 @@ export const useProfilCategories = () => [
     badge: "Puissant",
     badgeColor: "bg-amber-500",
     description: "Pratiques ésotériques pour manifester tes intentions",
-    link: "/star/astrologie-africaine",
+    link: "/star/category/698097de64e1795c57a7d9f3",
   },
   {
     id: "marche",
