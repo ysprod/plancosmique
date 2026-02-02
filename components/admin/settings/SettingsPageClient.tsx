@@ -8,10 +8,10 @@ export default function SettingsPageClient() {
 
   const {
     activeTab, setActiveTab, isSaving, logLevel, siteEmail, setSiteEmail,
-    saveSuccess, setSaveSuccess, setShowApiKey, maintenanceMode,
+    saveSuccess, setSaveSuccess, setShowApiKey, maintenanceMode, passwordExpiry,
     siteName, setSiteName, setLogLevel, setNewConsultationNotif, showApiKey,
     sitePhone, setMaintenanceMode, emailNotifications, newConsultationNotif,
-    twoFactorAuth, setTwoFactorAuth, passwordExpiry, setPasswordExpiry, maxUploadSize,
+    twoFactorAuth, setTwoFactorAuth, setPasswordExpiry, maxUploadSize,
     newUserNotif, setNewUserNotif, paymentMethods, setMaxUploadSize,
     paymentNotif, setPaymentNotif, backupFrequency, setBackupFrequency,
     sessionTimeout, setSessionTimeout, setMoneyFusionApiKey, moneyFusionApiKey,

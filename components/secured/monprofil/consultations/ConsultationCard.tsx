@@ -49,7 +49,7 @@ const ConsultationCard = memo(function ConsultationCard({
                     </div>
                 </div>
                 {(c as any).description ? (
-                    <p className="mt-1 text-[12px] leading-snug text-slate-600 dark:text-slate-300 line-clamp-2 max-w-[28rem]">
+                    <p className="mt-1 text-[12px] leading-snug text-slate-600 dark:text-slate-300">
                         {(c as any).description}
                     </p>
                 ) : (

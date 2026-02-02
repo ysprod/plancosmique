@@ -78,7 +78,6 @@ export default function AdminBooksPage() {
         handleAddBook={handleAddBook}
         categories={categories}
       />
-
       <BookDeleteModal
         show={!!deleteConfirm}
         onClose={() => setDeleteConfirm(null)}

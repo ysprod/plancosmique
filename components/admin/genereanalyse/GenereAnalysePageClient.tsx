@@ -20,7 +20,7 @@ export default function GenereAnalysePageClient() {
           <AnalyseFormEditor analyseData={consultation} />
         )}
         {step === 'error' && (<GenereAnalyseError error={error} onRetry={handleRetry} />)}
-      </div>
+      </div> 
     </div>
   );
 }

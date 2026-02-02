@@ -37,7 +37,6 @@ export async function POST(request: NextRequest) {
                 // Envoyer notification au client
                 // Enregistrer la transaction
             } else if (metadata?.type === 'CONSULTATION') {
-
                 // Marquer la consultation comme payée
                 // TODO: Mettre à jour le statut dans la DB
                 // await db.consultations.updateOne(

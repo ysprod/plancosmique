@@ -42,7 +42,6 @@ const LoginForm = () => {
     }
   }, []);
 
-  // Gestion du thème dark/light
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -77,7 +76,7 @@ const LoginForm = () => {
           <LoginLogoHeader />
 
           <LoginTitle />
-          
+
           {error && <LoginErrorAlert message={error} />}
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <LoginInputField

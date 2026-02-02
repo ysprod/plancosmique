@@ -2,7 +2,7 @@
 // Gère la mise en cache agressive pour maximiser les performances
 // Version cache - Incrémenter pour forcer le rafraîchissement
 
-const CACHE_VERSION = 'monetoile-v39';
+const CACHE_VERSION = 'monetoile-v43';
 const CACHE_STATIC = `${CACHE_VERSION}-static`;
 const CACHE_DYNAMIC = `${CACHE_VERSION}-dynamic`;
 const CACHE_IMAGES = `${CACHE_VERSION}-images`;

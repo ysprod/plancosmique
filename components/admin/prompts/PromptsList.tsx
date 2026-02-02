@@ -114,7 +114,6 @@ export default function PromptsList() {
                   <p className="text-gray-600 text-sm mb-3">{prompt.description}</p>
                 )}
 
-                {/* Usage Info */}
                 {prompt.consultationChoices && prompt.consultationChoices.length > 0 && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
                     <div className="flex items-start gap-2">

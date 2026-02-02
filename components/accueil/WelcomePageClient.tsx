@@ -6,7 +6,6 @@ import WelcomeQuestions from '@/components/accueil/WelcomeQuestions';
 import WelcomeIntro from '@/components/accueil/WelcomeIntro';
 
 function WelcomePageClient() {
-  // Gestion du thème dark/light
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {

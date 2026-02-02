@@ -248,7 +248,7 @@ export const AspectsMarkdown = memo(function AspectsMarkdown({
         <div
           className={cx(
             "rounded-2xl border shadow-sm",
-            "bg-white/80 dark:bg-slate-950/60",
+            "bg-white dark:bg-slate-950/60",
             "border-slate-200/70 dark:border-white/10",
             "backdrop-blur-xl",
             "overflow-hidden"

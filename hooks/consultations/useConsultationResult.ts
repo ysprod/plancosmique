@@ -1,6 +1,6 @@
 import { api } from "@/lib/api/client";
 import type { Analysis } from "@/lib/interfaces";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 function getIdFromParams(params: any): string | null {
@@ -16,8 +16,10 @@ function isEmptyAnalysisPayload(data: any) {
 export function useConsultationResult() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const consultationId = useMemo(() => getIdFromParams(params), [params]);
+  const retour = useMemo(() => searchParams?.get("retour") || null, [searchParams]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +54,7 @@ export function useConsultationResult() {
 
         // Si l’API renvoie vide => on redirige vers la page génération
         if (isEmptyAnalysisPayload(data)) {
-          router.replace(`/star/consultations/${consultationId}/generated`);
+          router.replace(`/star/consultations/${consultationId}/generated?retour=${retour || ""}`);
           return; // important: ne pas setLoading(false) après replace
         }
 
@@ -68,24 +70,21 @@ export function useConsultationResult() {
   }, [consultationId, router]);
 
   const handleBack = useCallback(() => {
-    if (typeof window !== "undefined") {
-      const qs = new URLSearchParams(window.location.search);
-      if (qs.get("retour") === "cinqportes") {
-        router.push("/star/cinqportes");
-        return;
-      }
-       if (qs.get("retour") === "carteduciel") {
-        router.push("/star/carteduciel");
-        return;
-      }
+    if (retour === "cinqportes") {
+      router.push("/star/cinqportes");
+      return;
+    }
+    if (retour === "carteduciel") {
+      router.push("/star/carteduciel");
+      return;
     }
     router.push("/star/consultations");
-  }, [router]);
+  }, [router, retour]);
 
   const handleDownloadPDF = useCallback(() => {
     if (!consultationId) return;
     window.open(`/api/consultations/${consultationId}/download-pdf`, "_blank");
   }, [consultationId]);
 
-  return { loading, error, consultation: analyse, handleBack, handleDownloadPDF };
+  return { loading, error, consultation: analyse, handleBack, handleDownloadPDF, retour };
 }

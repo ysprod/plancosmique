@@ -29,15 +29,9 @@ export default function ConsultationChoicesList() {
     withoutPrompt: choicesWithoutPrompt.length,
   }), [choicesWithPrompt.length, choicesWithoutPrompt.length]);
 
-  const searchProps = useMemo(() => ({
-    search,
-    setSearch,
-  }), [search, setSearch]);
+  const searchProps = useMemo(() => ({ search, setSearch, }), [search, setSearch]);
 
-  const tabsProps = useMemo(() => ({
-    tab,
-    setTab,
-  }), [tab, setTab]);
+  const tabsProps = useMemo(() => ({ tab, setTab, }), [tab, setTab]);
 
   const handleDeletePromptStable = useCallback(handleDeletePrompt, [handleDeletePrompt]);
 

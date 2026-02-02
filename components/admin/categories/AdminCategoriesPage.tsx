@@ -6,7 +6,6 @@ import CreateCategoryButton from "@/components/admin/categories/CreateCategoryBu
 import ReloadButtons from "@/components/admin/categories/ReloadButtons";
 import TopBar from "@/components/admin/categories/TopBar";
 import { useAdminCategoriesView } from "@/hooks/admin/useAdminCategoriesView";
-import { AnimatePresence } from "framer-motion";
 
 export default function AdminCategoriesPage() {
     const {
@@ -24,12 +23,13 @@ export default function AdminCategoriesPage() {
                 categoriesLoading={categoriesLoading}
                 rubriquesLoading={rubriquesLoading}
             />
-            <AnimatePresence>
-                <Banner banner={banner} />
-            </AnimatePresence>
+            <Banner banner={banner} />
+
             {categoriesError && <CategoriesErrorAlert message={categoriesError} />}
             {rubriquesError && <CategoriesErrorAlert message={rubriquesError} />}
+
             <CreateCategoryButton />
+
             <CategoriesList
                 categories={categories}
                 rubriques={rubriques}

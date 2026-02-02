@@ -18,7 +18,6 @@ export default function EditUserPageClient() {
       <EditUserHeader />
 
       {success && <EditUserSuccessAlert />}
-
       {error && <EditUserErrorAlert error={error} onClose={() => setError(null)} />}
 
       <EditUserForm

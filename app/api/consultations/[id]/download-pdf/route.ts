@@ -140,7 +140,6 @@ export async function GET(
     }
 
     const filename = generateFilename(analyse.carteDuCiel.sujet);
-
     const duration = Date.now() - startTime;
 
     return new NextResponse(stream as unknown as ReadableStream, {

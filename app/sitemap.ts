@@ -34,7 +34,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   // Prévu : ajout dynamique de routes (ex: consultations, articles, etc.)
-
   return staticRoutes.map((route) => ({
     url: `${baseUrl}${route.path}`,
     lastModified: new Date().toISOString(),
