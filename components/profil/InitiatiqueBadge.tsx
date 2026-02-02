@@ -2,6 +2,7 @@
 
 import React, { memo, useMemo } from "react";
 import { Grade, getGradeName } from "@/lib/types/grade.types";
+import { Star } from "lucide-react";
 
 const GRADE_LABELS: Record<Grade | "NEOPHYTE", string> = {
   NEOPHYTE: "Néophyte",
@@ -14,6 +15,19 @@ const GRADE_LABELS: Record<Grade | "NEOPHYTE", string> = {
   EVEILLE: "Éveillé",
   SAGE: "Sage",
   MAITRE_DE_SOI: "Maître de Soi",
+};
+
+const GRADE_STARS: Record<Grade | "NEOPHYTE", number> = {
+  NEOPHYTE: 1,
+  ASPIRANT: 2,
+  CONTEMPLATEUR: 3,
+  CONSCIENT: 4,
+  INTEGRATEUR: 5,
+  TRANSMUTANT: 6,
+  ALIGNE: 7,
+  EVEILLE: 8,
+  SAGE: 9,
+  MAITRE_DE_SOI: 9,
 };
 
 const GRADE_COLORS: Record<Grade | "NEOPHYTE", string> = {
@@ -36,45 +50,21 @@ export const InitiatiqueBadge = memo(function InitiatiqueBadge({
 }) {
   const g = (grade ?? "NEOPHYTE") as Grade | "NEOPHYTE";
 
-  const vm = useMemo(() => {
-    const label = GRADE_LABELS[g] || getGradeName(g as Grade) || "Néophyte";
-    const bgColor = GRADE_COLORS[g] || GRADE_COLORS.NEOPHYTE;
-    return { label, bgColor };
-  }, [g]);
+  const label = GRADE_LABELS[g] || getGradeName(g as Grade) || "Néophyte";
+  const stars = GRADE_STARS[g] || 1;
 
   return (
-    <div className="inline-flex items-center justify-center p-6">
-      <div
-        style={{
-          backgroundColor: vm.bgColor,
-          // Ombre portée multipliée par 3 pour supporter la nouvelle taille
-          boxShadow: "0 12px 42px 0 rgba(0, 0, 0, 0.3), 0 6px 12px 0 rgba(0, 0, 0, 0.2)",
-          border: "3px solid rgba(0,0,0,0.1)"
-        }}
-        className={`
-          relative
-          px-15 py-4.5       /* Padding x3 */
-          rounded-full
-          flex items-center justify-center
-          min-w-[360px]      /* Largeur x3 (120 * 3) */
-          transition-all duration-300
-          hover:translate-y-[-6px]
-        `}
+    <div className="flex flex-col items-center justify-center py-6">
+      <span
+        className="font-black uppercase tracking-normal text-cosmic-indigo dark:text-cosmic-pink"
+        style={{ fontSize: "2.7rem", lineHeight: 1.1 }}
       >
-        <span 
-          className="text-black font-black uppercase tracking-normal"
-          style={{ 
-            color: "#000000",
-            fontSize: "42px", /* Taille x3 (14px * 3) */
-            lineHeight: "1",
-            textShadow: "0 2px 4px rgba(255,255,255,0.2)" // Petit relief sur le texte
-          }}
-        >
-          {vm.label}
-        </span>
-        
-        {/* Reflet interne agrandi */}
-        <div className="absolute inset-x-0 top-0 h-1/2 bg-white/20 rounded-t-full pointer-events-none" />
+        {label}
+      </span>
+      <div className="flex items-center justify-center mt-2 gap-1">
+        {Array.from({ length: stars }).map((_, i) => (
+          <Star key={i} className="w-6 h-6 text-yellow-400 drop-shadow-sm" fill="#facc15" />
+        ))}
       </div>
     </div>
   );
