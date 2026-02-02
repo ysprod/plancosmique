@@ -75,6 +75,7 @@ export function useAdminConsultationAnalysis() {
     try {
       const consultationRes = await api.get(`/consultations/${consultationId}`, { signal: controller.signal } as any);
       const payload = consultationRes?.data;
+      console.log("Données de consultation récupérées :", payload);
       const base: Consultation | null = payload?.consultation ?? payload ?? null;
       if (!base) throw new Error("Consultation introuvable");
 

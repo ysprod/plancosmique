@@ -163,7 +163,7 @@ export const RubriqueCard = memo(
 
           {/* Description */}
           {derived.desc && (
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2 px-2">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed  px-2">
               {derived.desc}
             </p>
           )}

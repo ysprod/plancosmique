@@ -17,7 +17,7 @@ interface ConsultationCardProps {
 function DisplayConsultationCard({ consultation, onModifyAnalysis, onNotifyUser, notifiedback, onBack }: ConsultationCardProps) {
   const { derived, copied, handleCopy, handleRefresh, handleNotify,
   } = useDisplayConsultationCard(consultation, notifiedback, onModifyAnalysis, onNotifyUser);
-
+console.log("Rendu de DisplayConsultationCard avec la consultation :", consultation);
   if (!consultation) return null;
 
   return (

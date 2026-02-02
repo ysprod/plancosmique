@@ -97,7 +97,10 @@ export const ConsultationButton = memo<ConsultationButtonProps>(
               type="button"
               className="w-full px-3 py-2 sm:px-4 sm:py-2.5 font-semibold rounded-lg text-white text-sm flex items-center justify-center gap-2 transition-all duration-300 bg-gradient-to-r from-amber-500 to-orange-500 shadow-md hover:shadow-lg"
               onClick={() => {
-                window.location.href = `/star/consultations/history/${enrichedChoice.consultationId}`;
+                // Redirige vers la dernière consultation existante (pas de route /history)
+                if (enrichedChoice.consultationId) {
+                  window.location.href = `/star/consultations/history/${enrichedChoice.consultationId}`;
+                }
               }}
             >
               Historique ({enrichedChoice.consultationCount})
