@@ -3,9 +3,7 @@ import ConsultationContentAdmin from "@/components/consultations/ConsultationCon
 import { useDisplayConsultationCard } from "@/hooks/admin/consultations/useDisplayConsultationCard";
 import { cx } from "@/lib/functions";
 import type { Consultation } from "@/lib/interfaces";
-import { useReducedMotion } from "framer-motion";
 import { CopyToast } from "./DisplayConsultationCard/CopyToast";
-import { FineLine } from "./DisplayConsultationCard/FineLine";
 import { TopBarActions } from "./DisplayConsultationCard/TopBarActions";
 
 interface ConsultationCardProps {

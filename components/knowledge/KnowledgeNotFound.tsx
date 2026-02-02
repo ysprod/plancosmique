@@ -8,7 +8,7 @@ export default function KnowledgeNotFound() {
       <div className="text-center">
         <BookOpen className="w-20 h-20 text-gray-600 mx-auto mb-4" />
         <h2 className="text-xl font-semibold text-white mb-2">Connaissance introuvable</h2>
-        <a href="/secured/knowledge">
+        <a href="/star/knowledge">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

@@ -37,7 +37,7 @@ export default function KnowledgeGrid({ knowledges, onLike }: { knowledges: Know
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.05 }}
         >
-          <Link href={`/secured/knowledge/${knowledge._id}`}>
+          <Link href={`/star/knowledge/${knowledge._id}`}>
             <div className={`group relative h-full p-6 rounded-2xl border backdrop-blur-xl cursor-pointer transition-all duration-200 hover:scale-[1.02] bg-gradient-to-br ${categoryColors[knowledge.category]}`}>
               {knowledge.imageUrl && (
                 <div className="relative w-full h-48 mb-4 rounded-xl overflow-hidden">

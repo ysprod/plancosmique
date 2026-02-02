@@ -20,11 +20,11 @@ export default function WalletActions({ toConsultation, consultationId, category
   const router = useRouter();
   const handleClick = useCallback(() => {
     if (toConsultation && consultationId && categoryId) {
-      router.push(`/secured/category/${categoryId}/consulter?consultationId=${consultationId}`);
+      router.push(`/star/category/${categoryId}/consulter?consultationId=${consultationId}`);
     } else if (toConsultation && consultationId) {
-      router.push(`/secured/consultations/${consultationId}`);
+      router.push(`/star/consultations/${consultationId}`);
     } else if (toConsultation) {
-      router.push("/secured/consultations");
+      router.push("/star/consultations");
     } else {
       router.push("/");
     }

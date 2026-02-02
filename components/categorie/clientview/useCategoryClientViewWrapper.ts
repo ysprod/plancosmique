@@ -15,7 +15,7 @@ export function useCategoryClientViewWrapper(categorie: CategorieAdmin) {
         } catch (e) {
             // fail silently
         }
-        router.push(`/secured/category/${id}/choixconsultation?consultationId=${consultationId}`);
+        router.push(`/star/category/${id}/choixconsultation?consultationId=${consultationId}`);
     };
 
     return { handleOpenRubriqueById, title, description };

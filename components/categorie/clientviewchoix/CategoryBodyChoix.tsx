@@ -11,6 +11,14 @@ interface CategoryBodyChoixProps {
 export const CategoryBodyChoix = React.memo(function CategoryBodyChoix({
     rubriqueCourante, handleSelectConsultation,
 }: CategoryBodyChoixProps) {
+    if (!rubriqueCourante || !Array.isArray(rubriqueCourante.consultationChoices)) {
+        return (
+            <div className="w-full max-w-2xl animate-fade-in mx-auto flex flex-col items-center justify-center">
+                <RubriqueHeader rubrique={rubriqueCourante} />
+                <div className="text-center text-gray-500 py-8">Aucune consultation disponible.</div>
+            </div>
+        );
+    }
     return (
         <div className="w-full max-w-2xl animate-fade-in mx-auto flex flex-col items-center justify-center">
             <RubriqueHeader rubrique={rubriqueCourante} />

@@ -6,7 +6,6 @@ import { notFound, useParams } from "next/navigation";
 
 export default function CategorySelectionPage() {
     const params = useParams();
-
     const id = params?.id as string;
     if (!id) return notFound();
 

@@ -88,7 +88,7 @@ export function UserMenu({ user, userBadge, showUserMenu, setShowUserMenu, handl
             </div>
 
             <div className="p-2">
-              <Link href="/secured/settings" onClick={() => setShowUserMenu(false)}>
+              <Link href="/star/settings" onClick={() => setShowUserMenu(false)}>
                 <motion.button
                   whileHover={{ scale: 1.02, x: 4 }}
                   whileTap={{ scale: 0.98 }}

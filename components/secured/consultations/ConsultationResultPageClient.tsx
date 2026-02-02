@@ -6,7 +6,6 @@ import { useConsultationResult } from '@/hooks/consultations/useConsultationResu
 
 export default function ConsultationResultPageClient() {
   const { consultation, loading, error, handleBack, handleDownloadPDF } = useConsultationResult();
-
   if (loading) { return (<CosmicLoader />); }
   if (error || !consultation) { return <ConsultationError error={error} onBack={handleBack} />; }
 

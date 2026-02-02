@@ -20,6 +20,11 @@ const headerVariants = {
 };
 
 const RubriqueHeader: React.FC<RubriqueHeaderProps> = memo(({ rubrique }) => {
+  if (!rubrique) {
+    return (
+      <div className="w-full text-center text-gray-400 py-6">Aucune rubrique sélectionnée</div>
+    );
+  }
   const derived = useRubriqueDerived(rubrique);
 
   return (

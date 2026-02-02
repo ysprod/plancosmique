@@ -9,7 +9,7 @@ export const useProfilHighlightCards = () => [
     icon: Compass,
     color: "from-blue-600 to-cyan-600",
     gradient: "from-blue-500/10 to-cyan-500/10",
-    link: "/secured/carteduciel",
+    link: "/star/carteduciel",
     badge: "Exclusif"
   },
   {
@@ -19,7 +19,7 @@ export const useProfilHighlightCards = () => [
     icon: Stars,
     color: "from-purple-600 to-pink-600",
     gradient: "from-purple-500/10 to-pink-500/10",
-    link: "/secured/cinqportes",
+    link: "/star/cinqportes",
     badge: "Premium"
   }
 ] as HighlightCardType[];

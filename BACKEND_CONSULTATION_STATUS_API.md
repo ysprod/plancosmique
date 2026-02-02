@@ -322,7 +322,7 @@ Le frontend est 100% prêt et attend simplement que le backend retourne les bonn
 ### Comportements Frontend :
 - **CONSULTER** → Lance le flux de consultation (formulaire → paiement)
 - **RÉPONSE EN ATTENTE** → Bouton désactivé avec animation pulse 🕐
-- **VOIR L'ANALYSE** → Redirige vers `/secured/consultations/{id}` 👁️
+- **VOIR L'ANALYSE** → Redirige vers `/star/consultations/{id}` 👁️
 
 ---
 

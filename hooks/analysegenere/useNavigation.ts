@@ -5,7 +5,7 @@ export function useNavigation() {
   const router = useRouter();
 
   const navigateToProfil = useCallback(() => {
-    router.push('/secured/profil');
+    router.push('/star/profil');
   }, [router]);
 
   return { navigateToProfil };

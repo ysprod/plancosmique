@@ -93,7 +93,7 @@ export default function HeaderContent() {
     ...(hasRole(Role.SUPER_ADMIN) ? [
       { href: "/admin", label: "Administration", icon: LayoutDashboard }
     ] : []),
-    { href: "/secured/consultations", label: "Mes Consultations", icon: FileText },
+    { href: "/star/consultations", label: "Mes Consultations", icon: FileText },
   ], [hasRole]);
 
   return (
@@ -121,7 +121,7 @@ export default function HeaderContent() {
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3">
           <div className="flex items-center justify-between gap-2 sm:gap-4">
             {/* Logo */}
-            <Link href="/secured/profil" className="flex items-center gap-2 sm:gap-2.5 group">
+            <Link href="/star/profil" className="flex items-center gap-2 sm:gap-2.5 group">
               <motion.div
                 whileHover={{ rotate: 360, scale: 1.08 }}
                 transition={{ duration: 0.6, type: "spring" }}
@@ -289,7 +289,7 @@ export default function HeaderContent() {
                       </div>
 
                       <div className="p-2">
-                        <Link href="/secured/settings" onClick={() => setShowUserMenu(false)}>
+                        <Link href="/star/settings" onClick={() => setShowUserMenu(false)}>
                           <motion.button
                             whileHover={{ scale: 1.02, x: 4 }}
                             whileTap={{ scale: 0.98 }}

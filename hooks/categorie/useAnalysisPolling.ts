@@ -46,7 +46,7 @@ export function useAnalysisPolling({
 
                     // Redirect after a short delay to show success message
                     setTimeout(() => {
-                        router.push(`/secured/consultations/${consultationId}`);
+                        router.push(`/star/consultations/${consultationId}`);
                     }, 2000);
                 }
             } catch (err: any) {

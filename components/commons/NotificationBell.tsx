@@ -51,9 +51,9 @@ export default function NotificationBell() {
       await markAsRead(notification._id);
     }
 
-    // Rediriger vers /secured/consultations/[id] pour les notifications de consultation
+    // Rediriger vers /star/consultations/[id] pour les notifications de consultation
     if (notification.type === 'CONSULTATION_RESULT' && notification.metadata?.consultationId) {
-      window.location.href = `/secured/consultations/${notification.metadata.consultationId}`;
+      window.location.href = `/star/consultations/${notification.metadata.consultationId}`;
       return;
     }
     // Sinon, naviguer vers le lien si disponible dans metadata
@@ -196,7 +196,7 @@ export default function NotificationBell() {
             {notifications.length > 0 && (
               <div className="px-4 py-3 border-t border-white/10">
                 <a
-                  href="/secured/notifications"
+                  href="/star/notifications"
                   className="block text-center text-sm text-purple-400 hover:text-purple-300 transition-colors"
                 >
                   Voir toutes les notifications

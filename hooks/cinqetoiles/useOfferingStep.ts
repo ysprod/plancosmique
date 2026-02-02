@@ -66,7 +66,7 @@ export function useOfferingStep(
   }, [selectedOffering, canProceed, onNext]);
 
   const handleGoToMarket = useCallback(() => {
-    router.push("/secured/marcheoffrandes");
+    router.push("/star/marcheoffrandes");
   }, [router]);
 
   const currentOfferings = offeringsByCategory[activeTab];

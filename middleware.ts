@@ -13,8 +13,8 @@ export function middleware(request: NextRequest) {
   const authActionRoutes = ['/auth/logout'];
   const isAuthAction = authActionRoutes.some(route => pathname === route);
 
-  // Liste des routes protégées (toutes les routes commençant par /secured)
-  const protectedRoutePrefixes = ['/admin', '/secured'];
+  // Liste des routes protégées (toutes les routes commençant par /star)
+  const protectedRoutePrefixes = ['/admin', '/star'];
   const isProtectedRoute = protectedRoutePrefixes.some(prefix => pathname.startsWith(prefix));
 
   // Si la route est protégée et pas de token, rediriger vers login avec returnTo
@@ -34,7 +34,7 @@ export function middleware(request: NextRequest) {
     pathname !== '/callback' &&
     pathname !== '/wallet'
   ) {
-    return NextResponse.redirect(new URL('/secured/profil', request.url));
+    return NextResponse.redirect(new URL('/star/profil', request.url));
   }
 
   return NextResponse.next();

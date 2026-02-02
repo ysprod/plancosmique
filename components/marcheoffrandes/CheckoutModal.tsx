@@ -234,7 +234,7 @@ export default function CheckoutModal({
 
       // Nettoyage et redirection
       onClearCart();
-      let walletUrl = "/secured/wallet";
+      let walletUrl = "/star/wallet";
       const params = [];
       if (consultationId) params.push(`consultationId=${encodeURIComponent(consultationId)}`);
       if (categoryId) params.push(`categoryId=${encodeURIComponent(categoryId)}`);

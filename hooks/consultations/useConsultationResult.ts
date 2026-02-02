@@ -1,56 +1,90 @@
-import { api } from '@/lib/api/client';
-import { analysesService } from '@/lib/api/services/analyses.service';
-import { Analysis, Consultation } from '@/lib/interfaces';
-import { useParams, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { api } from "@/lib/api/client";
+import type { Analysis } from "@/lib/interfaces";
+import { useParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+function getIdFromParams(params: any): string | null {
+  const raw = params?.id;
+  if (!raw) return null;
+  return Array.isArray(raw) ? String(raw[0] ?? "") : String(raw);
+}
+
+function isEmptyAnalysisPayload(data: any) {
+  return data === "" || data === null || data === undefined;
+}
 
 export function useConsultationResult() {
   const params = useParams();
   const router = useRouter();
-  const consultationId = params?.id as string;
+
+  const consultationId = useMemo(() => getIdFromParams(params), [params]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [analyse, setAnalyse] = useState<Analysis | null>(null);
 
+  const didRunRef = useRef<string | null>(null);
+  const seqRef = useRef(0);
+
   useEffect(() => {
-    if (!consultationId) return;
-    const loadConsultation = async () => {
+    if (!consultationId) {
+      setLoading(false);
+      setError("Identifiant de consultation manquant");
+      return;
+    }
+
+    // 1 seule exécution par consultationId
+    if (didRunRef.current === consultationId) return;
+    didRunRef.current = consultationId;
+
+    const mySeq = ++seqRef.current;
+
+    setLoading(true);
+    setError(null);
+
+    (async () => {
       try {
-          const response = await api.get(`/analyses/by-consultation/${consultationId}`);
-          console.log("useConsultationResult fetched analysis:", response);
-        const data = response.data;
-        if (data=="") {
-         router.push(`/secured/consultations/${consultationId}/generate`);
-          setLoading(false);
-          return;
+        const response = await api.get(`/analyses/by-consultation/${consultationId}`);
+
+        if (seqRef.current !== mySeq) return;
+
+        const data = response?.data;
+
+        // Si l’API renvoie vide => on redirige vers la page génération
+        if (isEmptyAnalysisPayload(data)) {
+          router.replace(`/star/consultations/${consultationId}/generated`);
+          return; // important: ne pas setLoading(false) après replace
         }
-          setAnalyse(data);
-        //const response = await analysesService.get(consultationId);
-      console.log("Fetched consultation:", response);
-      } catch (err) {
-        setError('Impossible de récupérer l\'analyse');
-      } finally {
+
+        setAnalyse(data);
+        setLoading(false);
+      } catch (err: any) {
+        if (seqRef.current !== mySeq) return;
+
+        setError("Impossible de récupérer l'analyse");
         setLoading(false);
       }
-    };
-    loadConsultation();
-  }, [consultationId]);
+    })();
+  }, [consultationId, router]);
 
   const handleBack = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('retour') === 'cinqportes') {
-        router.push('/secured/cinqportes');
+    if (typeof window !== "undefined") {
+      const qs = new URLSearchParams(window.location.search);
+      if (qs.get("retour") === "cinqportes") {
+        router.push("/star/cinqportes");
+        return;
+      }
+       if (qs.get("retour") === "carteduciel") {
+        router.push("/star/carteduciel");
         return;
       }
     }
-    router.push('/secured/consultations');
+    router.push("/star/consultations");
   }, [router]);
 
   const handleDownloadPDF = useCallback(() => {
-    const url = `/api/consultations/${consultationId}/download-pdf`;
-    window.open(url, '_blank');
+    if (!consultationId) return;
+    window.open(`/api/consultations/${consultationId}/download-pdf`, "_blank");
   }, [consultationId]);
 
   return { loading, error, consultation: analyse, handleBack, handleDownloadPDF };

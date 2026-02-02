@@ -38,7 +38,7 @@ export function useLoginForm() {
 
   const returnTo = useMemo(() => {
     const param = searchParams?.get('returnTo');
-    if (!param || !param.startsWith('/')) return '/secured/profil';
+    if (!param || !param.startsWith('/')) return '/star/profil';
     return param;
   }, [searchParams]);
 

@@ -131,6 +131,8 @@ export function extractCinqPortes(carteDuCiel: CarteDuCielData | null): CinqPort
 export function processUserData(userData: User | null): User | null {
   if (!userData) return null;
 
+  console.log('[processUserData] userData:', userData);
+
   return {
     _id: userData._id,
    
@@ -146,7 +148,6 @@ export function processUserData(userData: User | null): User | null {
     totalConsultations: userData.totalConsultations ?? 0,
     rating: userData.rating ?? 0,
     emailVerified: !!userData.emailVerified,
-    carteDuCiel: userData.carteDuCiel,
     ...userData
   };
 }

@@ -8,6 +8,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import ConsultationHeader from "./content/ConsultationHeader";
 import HoroscopeSummary from "./content/HoroscopeSummary";
+import MarkdownCard from "./content/MarkdownCard";
 
 type Kind = "numerology" | "astrology" | "horoscope_fallback";
 
@@ -65,20 +66,20 @@ const ShellCard = memo(function ShellCard({
   );
 });
 
-const MarkdownCard = memo(function MarkdownCard({ markdown }: { markdown: string }) {
-  return (
-    <div
-      className={cx(
-        "mx-auto w-full max-w-2xl",
-        "dark:border-zinc-800/70 dark:bg-zinc-900/40 mb-4"
-      )}
-    >
-      <article className="prose prose-sm max-w-none text-left dark:prose-invert">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
-      </article>
-    </div>
-  );
-});
+// const MarkdownCard = memo(function MarkdownCard({ markdown }: { markdown: string }) {
+//   return (
+//     <div
+//       className={cx(
+//         "mx-auto w-full max-w-2xl",
+//         "dark:border-zinc-800/70 dark:bg-zinc-900/40 mb-4"
+//       )}
+//     >
+//       <article className="prose prose-sm max-w-none text-left dark:prose-invert">
+//         <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
+//       </article>
+//     </div>
+//   );
+// });
 
 export interface ConsultationContentAdminProps {
   consultation: Consultation;
@@ -89,7 +90,6 @@ function ConsultationContentAdmin({ consultation }: ConsultationContentAdminProp
   const kind = useMemo(() => getKindFromType((consultation as any)?.type), [consultation]);
   const markdown = useMemo(() => extractMarkdown(consultation as any), [consultation]);
 
-  const horoscope = kind === "horoscope_fallback" ? useHoroscopeSummary(consultation) : null;
 
   return (
     <ShellCard>
@@ -97,29 +97,11 @@ function ConsultationContentAdmin({ consultation }: ConsultationContentAdminProp
         titre={(consultation as any).titre}
         title={(consultation as any).title}
       />
-      {markdown ? (
         <motion.div key="md" variants={cardVariants} initial="initial" animate="animate" exit="exit">
-          <MarkdownCard markdown={markdown} />
+          <MarkdownCard markdown={markdown!} />
+      
         </motion.div>
-      ) : (
-        <div
-          className={cx(
-            "mx-auto w-full max-w-2xl",
-            "rounded-3xl border p-4 sm:p-5",
-            "border-slate-200/70 bg-white/60",
-            "dark:border-zinc-800/70 dark:bg-zinc-900/40"
-          )}
-        >
-          <HoroscopeSummary horoscope={horoscope} />
-          {!reduceMotion && (
-            <motion.div
-              className="mx-auto mt-4 h-[2px] w-28 rounded-full bg-gradient-to-r from-violet-600 via-fuchsia-600 to-emerald-500/80"
-              animate={{ opacity: [0.55, 1, 0.55] }}
-              transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-            />
-          )}
-        </div>
-      )}
+      
     </ShellCard>
   );
 }

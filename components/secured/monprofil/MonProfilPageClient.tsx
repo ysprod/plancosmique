@@ -2,14 +2,13 @@
 import ErrorState from "@/components/carteduciel/ErrorState";
 import LoadingState from "@/components/carteduciel/LoadingState";
 import ProfileHeader from "@/components/carteduciel/ProfileHeader";
-import SkyChart from "@/components/carteduciel/SkyChart";
-import CinqPortesSection from "@/components/profil/CinqPortesSection";
 import UserProgressSection from "@/components/profil/UserProgressSection";
 import { useMonProfil } from "@/hooks/carteduciel/useMonProfil";
 import { useConsultationsByRubrique } from "@/hooks/consultations/useConsultationsByRubrique";
 import { memo, useMemo } from "react";
 import ConsultationsPanel from "./ConsultationsPanel";
 import GlassCard from "./GlassCard";
+import { AspectsMarkdown } from "@/components/carteduciel/AspectsMarkdown";
 
 const RUBRIQUE_ID = "694acf59bd12675f59e7a7f2" as const;
 
@@ -22,10 +21,8 @@ function MonProfilPageClientImpl() {
   const vm = useMemo(() => {
     const userName = user?.prenoms?.trim() || "Voyageur";
     const isPremium = !!user?.premium;
-    const cd: any = processedData?.carteDuCiel;
-    const carteDuCielData = cd && typeof cd === "object" && "carteDuCiel" in cd ? cd.carteDuCiel : null;
-    return { userName, isPremium, carteDuCielData };
-  }, [user?.prenoms, user?.premium, processedData?.carteDuCiel]);
+    return { userName, isPremium};
+  }, [user?.prenoms, user?.premium]);
 
   if (isLoading) return <LoadingState />;
 
@@ -44,7 +41,7 @@ function MonProfilPageClientImpl() {
         </GlassCard>
         <GlassCard className="p-0 overflow-hidden flex flex-col items-center justify-center text-center">
           <div className="p-3 sm:p-4 flex flex-col items-center justify-center text-center">
-            <SkyChart carteDuCiel={processedData.carteDuCiel} />
+           <AspectsMarkdown aspectsTexte={processedData.aspectsTexte} />
           </div>
         </GlassCard>
         <div className="w-full flex flex-col items-center justify-center text-center">

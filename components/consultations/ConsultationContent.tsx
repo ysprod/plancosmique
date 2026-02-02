@@ -19,6 +19,7 @@ export interface ConsultationContentProps {
 }
 
 function ConsultationContent({ analyse, onBack, onDownloadPDF }: ConsultationContentProps) {
+
   const markdown = useMemo(() => extractMarkdown(analyse), [analyse]);
 
   return (

@@ -195,7 +195,7 @@
    ↓
 6. Backend: Retourne user mis à jour
    ↓
-7. Frontend: Redirection vers /secured/profil
+7. Frontend: Redirection vers /star/profil
    ↓
 8. Frontend: useUserProfile() charge nouveau statut
    ↓
@@ -279,7 +279,7 @@ hooks/
     useUserProfile.ts               ← Hook unifié grades + profils
 
 app/
-  secured/
+  star/
     monprofil/
       ExempleProfilComplet.tsx      ← Page exemple
 

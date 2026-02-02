@@ -23,7 +23,7 @@ function WelcomeQuestions() {
   return (
     <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-2 sm:gap-3">
       {QUESTIONS.map((item, i) => (
-        <Link key={item.q} href="/secured/profil" className="w-full sm:w-auto">
+        <Link key={item.q} href="/star/profil" className="w-full sm:w-auto">
           <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.05, y: -4 }}

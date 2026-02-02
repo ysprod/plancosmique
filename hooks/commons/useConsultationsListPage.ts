@@ -26,13 +26,15 @@ export function useConsultationsListPage() {
         return;
       }
       const response = await api.get('/consultations/my');
+      console.log("Réponse des consultations :", response);
       if (response.status !== 200) {
         throw new Error('Erreur lors du chargement des consultations');
       }
-      const data = response.data;
-      const filtered = (data.consultations || []).filter((c: any) =>
-        c.analysisNotified === true
-      );
+
+      // const filtered = (response.data.consultations  || []).filter((c: Consultation) =>
+      //   c.analysisNotified === true
+      // );
+      const filtered = response.data.consultations || [];
       setConsultations(filtered);
       setLoading(false);
     } catch (err: any) {
@@ -48,9 +50,9 @@ export function useConsultationsListPage() {
   const handleView = (id: string) => {
     const consultation = consultations.find(c => c._id === id);
     if (consultation && (consultation.type === 'nombres-personnels' || consultation.type === 'cycles-personnels')) {
-      router.push(`/secured/numerologie/${id}`);
+      router.push(`/star/numerologie/${id}`);
     } else {
-      router.push(`/secured/consultations/${id}`);
+      router.push(`/star/consultations/${id}`);
     }
   };
 

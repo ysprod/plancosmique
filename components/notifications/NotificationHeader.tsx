@@ -16,7 +16,7 @@ const NotificationHeader: React.FC<NotificationHeaderProps> = ({ unreadCount, ma
     <div className="mx-auto px-4 py-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/secured/profil">
+          <Link href="/star/profil">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

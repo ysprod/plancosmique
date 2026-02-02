@@ -38,7 +38,7 @@ function RubriqueProtected({ rubriqueId, children }) {
         <p className="text-xl text-white mb-4">
           Abonnement requis pour accéder à cette rubrique
         </p>
-        <Link href="/secured/subscriptions">
+        <Link href="/star/subscriptions">
           <button className="btn-primary">
             Voir les abonnements
           </button>

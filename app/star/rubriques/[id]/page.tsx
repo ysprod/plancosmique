@@ -13,7 +13,7 @@ export default async function RubriquePage({ params }: PageProps) {
     if (!rubrique) return notFound();
 
     if (rubrique.categorieId) {
-        redirect(`/secured/category/${rubrique.categorieId}`);
+        redirect(`/star/category/${rubrique.categorieId}`);
     }
 
     return notFound();

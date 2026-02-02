@@ -101,9 +101,9 @@ export function useHeaderState() {
     ...(hasRole(Role.SUPER_ADMIN)||hasRole(Role.ADMIN) ? [
       { href: "/admin", label: "Admin", icon: LayoutDashboard }
     ] : []),
-    { href: "/secured/monprofil", label: "Mon Profil", icon: User },
-    { href: "/secured/consultations", label: "Mes Consultations", icon: FileText },
-    { href: "/secured/wallet", label: "Mon Panier", icon: Wallet },
+    { href: "/star/monprofil", label: "Mon Profil", icon: User },
+    { href: "/star/consultations", label: "Mes Consultations", icon: FileText },
+    { href: "/star/wallet", label: "Mon Panier", icon: Wallet },
   ], [hasRole]);
 
   return {

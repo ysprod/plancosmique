@@ -27,28 +27,28 @@ const CategoryStepNavigation = memo<CategoryStepNavigationProps>(function Catego
     {
       id: 'selection',
       label: 'Sélection',
-      href: `/secured/category/${categoryId}/selection`,
+      href: `/star/category/${categoryId}/selection`,
       completed: currentStep !== 'selection',
       current: currentStep === 'selection'
     },
     {
       id: 'form',
       label: 'Formulaire',
-      href: `/secured/category/${categoryId}/form`,
+      href: `/star/category/${categoryId}/form`,
       completed: ['consulter', 'genereanalyse'].includes(currentStep),
       current: currentStep === 'form'
     },
     {
       id: 'consulter',
       label: 'Consultation',
-      href: consultationId ? `/secured/category/${categoryId}/consulter?consultationId=${consultationId}` : '#',
+      href: consultationId ? `/star/category/${categoryId}/consulter?consultationId=${consultationId}` : '#',
       completed: currentStep === 'genereanalyse',
       current: currentStep === 'consulter'
     },
     {
       id: 'genereanalyse',
       label: 'Félicitations',
-      href: consultationId ? `/secured/category/${categoryId}/genereanalyse?consultationId=${consultationId}` : '#',
+      href: consultationId ? `/star/category/${categoryId}/genereanalyse?consultationId=${consultationId}` : '#',
       completed: false,
       current: currentStep === 'genereanalyse'
     }

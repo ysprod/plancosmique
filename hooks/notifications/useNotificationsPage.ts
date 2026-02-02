@@ -29,7 +29,7 @@ export function useNotificationsPage() {
       (notification.type === 'CONSULTATION_RESULT' || notification.type === 'CONSULTATION_ASSIGNED') &&
       notification.metadata?.consultationId
     ) {
-      router.push(`/secured/consultations/${notification.metadata.consultationId}`);
+      router.push(`/star/consultations/${notification.metadata.consultationId}`);
       return;
     }
   };

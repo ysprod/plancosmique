@@ -46,7 +46,7 @@ export default function RubriquePageClient({ rubrique }: RubriquePageClientProps
       <div className="mx-auto max-w-2xl px-3 py-6 sm:px-4 sm:py-10">
         {rubrique.categorieId && (
           <button
-            onClick={() => router.push(`/secured/category/${rubrique.categorieId}`)}
+            onClick={() => router.push(`/star/category/${rubrique.categorieId}`)}
             className="mb-4 flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />

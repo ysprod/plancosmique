@@ -22,7 +22,7 @@ export default function QuickActionsSection() {
           <h2 className="text-2xl font-black text-slate-900">Mes Informations</h2>
         </div>
         <div className="space-y-3">
-          <Link href="/secured/profil/edit">
+          <Link href="/star/profil/edit">
             <motion.button
               whileHover={{ scale: 1.02, x: 5 }}
               whileTap={{ scale: 0.98 }}
@@ -32,7 +32,7 @@ export default function QuickActionsSection() {
               <ChevronRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
             </motion.button>
           </Link>
-          <Link href="/secured/profil/security">
+          <Link href="/star/profil/security">
             <motion.button
               whileHover={{ scale: 1.02, x: 5 }}
               whileTap={{ scale: 0.98 }}
@@ -79,7 +79,7 @@ export default function QuickActionsSection() {
             </motion.div>
           </motion.div>
           {/* Confidentialité */}
-          <Link href="/secured/profil/privacy">
+          <Link href="/star/profil/privacy">
             <motion.div
               whileHover={{ x: 5 }}
               className="flex items-center justify-between py-4 px-4 rounded-xl hover:bg-emerald-50 transition-all cursor-pointer"

@@ -68,7 +68,7 @@ function WelcomeIntro() {
           Votre naissance a un but.<br />Découvrez ce que votre âme est venue accomplir.
         </motion.p>
 
-        <Link href="/secured/profil" className="block">
+        <Link href="/star/profil" className="block">
           <motion.button
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.97 }}

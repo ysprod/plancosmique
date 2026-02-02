@@ -388,6 +388,7 @@ export interface Payment {
 }
 
 export interface User {
+  aspectsTexte: string;
   _id?: string;
   email: string;
   nom: string;
@@ -396,7 +397,6 @@ export interface User {
   gender: 'male' | 'female';
   country: string;
   phone: string;
-  carteDuCiel?: any;
   dateNaissance?: Date;
   paysNaissance?: string;
   villeNaissance?: string;

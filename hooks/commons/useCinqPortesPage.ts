@@ -14,7 +14,10 @@ export function useCinqPortesPage() {
     if (user?._id) {
       setIsLoadingUser(true);
       api.get(`/users/me`)
-        .then(res => { setUserData(res.data); })
+        .then(res => {
+          console.log('Données utilisateur chargées:', res.data);
+          
+          setUserData(res.data); })
         .catch(err => {
           console.error('Erreur chargement utilisateur:', err);
           setUserData(null);

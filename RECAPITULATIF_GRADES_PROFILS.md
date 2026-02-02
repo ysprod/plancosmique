@@ -23,7 +23,7 @@
 | `components/profil/UserProgressSection.tsx` | UI | ~80 | Section profil complète |
 | `components/profil/SubscriptionPlans.tsx` | UI | ~230 | Plans d'abonnement |
 | `hooks/profil/useUserProfile.ts` | Hook | ~70 | Hook unifié |
-| `app/secured/monprofil/ExempleProfilComplet.tsx` | Page | ~30 | Page exemple |
+| `app/star/monprofil/ExempleProfilComplet.tsx` | Page | ~30 | Page exemple |
 | **GUIDES (4 fichiers)** | | | |
 | `GRADES_PROFILS_BACKEND_GUIDE.md` | Doc | ~400 | Guide backend complet |
 | `GRADES_PROFILS_IMPLEMENTATION.md` | Doc | ~250 | Documentation complète |

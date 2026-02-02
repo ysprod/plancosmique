@@ -17,7 +17,7 @@ Le système gère automatiquement **3 états différents** pour le bouton de con
 ### 3️⃣ **VOIR L'ANALYSE**
 - **Condition** : La consultation a été notifiée et l'analyse est disponible
 - **Apparence** : Bouton vert émeraude avec icône 👁️ Eye
-- **Action** : Redirige vers `/secured/consultations/{consultationId}`
+- **Action** : Redirige vers `/star/consultations/{consultationId}`
 
 ---
 
@@ -164,7 +164,7 @@ Animation : Oui
 2. Notification envoyée (notifiedAt renseigné)
 3. Statut API : `VOIR_ANALYSE` + consultationId
 4. Bouton vert "Voir l'analyse" cliquable
-5. Clic → Redirige vers `/secured/consultations/{id}`
+5. Clic → Redirige vers `/star/consultations/{id}`
 
 ---
 

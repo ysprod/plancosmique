@@ -15,7 +15,7 @@ export default function BookSuccessError({ error }: { error: string }) {
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h1 className="text-2xl font-black text-gray-900 mb-4">Erreur</h1>
           <p className="text-gray-700 mb-6">{error}</p>
-          <Link href="/secured/livres">
+          <Link href="/star/livres">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

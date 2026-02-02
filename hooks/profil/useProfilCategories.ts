@@ -11,7 +11,7 @@ export const useProfilCategories = () => [
     badge: "Populaire",
     badgeColor: "bg-purple-500",
     description: "Explore les influences cosmiques qui façonnent ta destinée",
-    link: "/secured/category/695ab7ee53c5ed748115c405",
+    link: "/star/category/695ab7ee53c5ed748115c405",
   },
   {
     id: "numerologie",
@@ -22,7 +22,7 @@ export const useProfilCategories = () => [
     badge: "Mystique",
     badgeColor: "bg-indigo-500",
     description: "Décode les mystères cachés dans tes nombres personnels",
-    link: "/secured/category/695af1a645093bdb62a3b274",
+    link: "/star/category/695af1a645093bdb62a3b274",
   },
   {
     id: "spiritualite",
@@ -33,7 +33,7 @@ export const useProfilCategories = () => [
     badge: "Authentique",
     badgeColor: "bg-orange-500",
     description: "Connecte-toi aux forces invisibles et aux ancêtres",
-    link: "/secured/spiritualite",
+    link: "/star/spiritualite",
   },
   {
     id: "invocations",
@@ -44,7 +44,7 @@ export const useProfilCategories = () => [
     badge: "Puissant",
     badgeColor: "bg-amber-500",
     description: "Pratiques ésotériques pour manifester tes intentions",
-    link: "/secured/astrologie-africaine",
+    link: "/star/astrologie-africaine",
   },
   {
     id: "marche",
@@ -55,7 +55,7 @@ export const useProfilCategories = () => [
     badge: "Nouveauté",
     badgeColor: "bg-green-500",
     description: "Découvre les offrandes sacrées authentiques",
-    link: "/secured/marcheoffrandes",
+    link: "/star/marcheoffrandes",
   },
   {
     id: "librairie",
@@ -66,6 +66,6 @@ export const useProfilCategories = () => [
     badge: "Best-seller",
     badgeColor: "bg-blue-500",
     description: "Collection de livres sacrés et guides spirituels",
-    link: "/secured/livres",
+    link: "/star/livres",
   },
 ] as CategoryType[];

@@ -248,12 +248,25 @@ export function useSlide4SectionDoors() {
         setProgressThrottled((p) => ({
           ...p,
           stage: "choices",
-          message: `Traitement des analyses (${choices.length}/${choices.length})…`,
+          message: `Traitement des cartes (${choices.length}/${choices.length})…`,
           percent: 40,
           done: choices.length,
           total: choices.length,
           lastUpdatedAt: Date.now(),
         }));
+
+        await api.post("/consultations/generate-sky-chart-brute", {});
+        pushLog("Carte du ciel générée (brute)");
+        setProgressThrottled((p) => ({
+          ...p,
+          stage: "choices",
+          message: `Traitement des analyses (${choices.length}/${choices.length})…`,
+          percent: 60,
+          done: choices.length,
+          total: choices.length,
+          lastUpdatedAt: Date.now(),
+        }));
+
 
 
         await api.post("/consultations/generate-consultations-for-rubrique", {

@@ -12,7 +12,7 @@ const KnowledgeHeader: React.FC<KnowledgeHeaderProps> = ({ onShare }) => (
   <div className="bg-white/5 backdrop-blur-xl border-b border-white/10">
     <div className="container mx-auto px-4 py-6">
       <div className="flex items-center justify-between">
-        <Link href="/secured/knowledge">
+        <Link href="/star/knowledge">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

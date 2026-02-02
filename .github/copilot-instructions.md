@@ -19,7 +19,7 @@ Mon Étoile is a full-stack spiritual guidance platform (voyance, astrology, num
 
 ### Adding Features
 1. **New API service**: Create `lib/api/services/myfeature.service.ts` with exported methods; add endpoints to `lib/api/endpoints.ts`
-2. **New protected page**: Create `app/secured/mypage/page.tsx`; data fetching via custom hook in `hooks/mypage/useMyPage.ts`
+2. **New protected page**: Create `app/star/mypage/page.tsx`; data fetching via custom hook in `hooks/mypage/useMyPage.ts`
 3. **New admin page**: Create `app/admin/mypage/page.tsx`; add nav config entry in `components/admin/AdminNavConfig.ts`
 4. **New public page**: Create `app/mypage/page.tsx`; add to `publicRoutes` in `middleware.ts` if needed
 5. **New component**: Place in `components/myfeature/`; mark `'use client'` if using hooks/motion
@@ -41,9 +41,9 @@ Mon Étoile is a full-stack spiritual guidance platform (voyance, astrology, num
 
 ### Route Structure
 - **Public**: `/`, `/auth/login`, `/auth/register`, `/terms`
-- **Protected**: `/secured/*` (user routes) and `/admin/*` (admin dashboard)
+- **Protected**: `/star/*` (user routes) and `/admin/*` (admin dashboard)
 - **Middleware**: `middleware.ts` handles auth redirects; checks `monetoile_access_token` cookie and redirects unauthenticated users from protected routes
-- **Dynamic routes**: Both secured and admin layouts use `export const dynamic = "force-dynamic"` to ensure SSR compatibility
+- **Dynamic routes**: Both star and admin layouts use `export const dynamic = "force-dynamic"` to ensure SSR compatibility
 
 ### Authentication Flow
 1. Login/register via `authService` (`lib/api/services/auth.service.ts`)
@@ -65,7 +65,7 @@ Mon Étoile is a full-stack spiritual guidance platform (voyance, astrology, num
   - Example: `useAdminStats()` returns `{ stats, loading, error, refetch, lastUpdated }`
 - **Client components**: Mark with `'use client'` if using `framer-motion`, state, or browser APIs
 - **Admin shell**: `components/admin/AdminShell.tsx` wraps admin pages with sidebar, top bar, mobile nav; uses `ProtectedRoute` + `RoleGuard`
-- **Layouts**: `app/secured/layout.tsx` and `app/admin/layout.tsx` wrap protected sections with `AuthProvider`, `ErrorBoundary`, sticky header
+- **Layouts**: `app/star/layout.tsx` and `app/admin/layout.tsx` wrap protected sections with `AuthProvider`, `ErrorBoundary`, sticky header
 
 ### Configuration & Environment
 - **Config**: `lib/config.ts` centralizes API URL, auth keys, routes, pagination defaults
@@ -195,7 +195,7 @@ NEXT_PUBLIC_SERVICE_ID=
      return { data, loading };
    }
    ```
-2. Page: `app/secured/myfeature/page.tsx`
+2. Page: `app/star/myfeature/page.tsx`
    ```tsx
    'use client';
    import { useMyFeature } from '@/hooks/myfeature/useMyFeature';

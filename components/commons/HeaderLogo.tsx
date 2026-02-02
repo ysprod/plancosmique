@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export function HeaderLogo() {
   return (
-    <Link href="/secured/profil" className="flex items-center gap-2 sm:gap-2.5 group">
+    <Link href="/star/profil" className="flex items-center gap-2 sm:gap-2.5 group">
       <motion.div
         whileHover={{ rotate: 360, scale: 1.08 }}
         transition={{ duration: 0.6, type: "spring" }}

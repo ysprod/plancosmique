@@ -49,6 +49,7 @@ export function useAdminUsersPage() {
     customPermissions: user.customPermissions ?? [],
     dateOfBirth: user.dateOfBirth ?? undefined,
     updatedAt: user.updatedAt ?? new Date(),
+    aspectsTexte: user.aspectsTexte ?? '',
   });
 
   const users: User[] = useMemo(() => (apiUsers ? apiUsers.map(mapUserToUserData) : []), [apiUsers]);

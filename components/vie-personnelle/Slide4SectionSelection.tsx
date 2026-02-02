@@ -65,7 +65,7 @@ const Slide4SectionSelection: FC<Slide4SectionSelectionProps> = ({
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
     
     if (lastDone) {
-      window.location.href = `/secured/consultations/${lastDone.consultationId}`;
+      window.location.href = `/star/consultations/${lastDone.consultationId}`;
     }
   };
 
