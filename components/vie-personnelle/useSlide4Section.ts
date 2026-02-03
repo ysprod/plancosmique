@@ -106,6 +106,8 @@ export function useSlide4Section(rubrique: Rubrique) {
             hasActiveConsultation: false,
             consultationId: null,
             consultationCount: choice.consultationCount ?? 0,
+            consultButtonStatus: 'CONSULTER',
+            
           }));
           
           setChoices(arr);

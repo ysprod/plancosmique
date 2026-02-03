@@ -47,8 +47,7 @@ function ConsultationContent({ analyse, onBack, onDownloadPDF }: ConsultationCon
 
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center justify-center text-center">
         <ConsultationHeader
-          titre={analyse.titre}
-          title={analyse.title}
+          title={analyse.title ?? analyse.titre ?? ""}
         />
       </div>
 

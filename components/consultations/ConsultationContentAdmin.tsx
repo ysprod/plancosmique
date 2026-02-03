@@ -39,7 +39,7 @@ function ConsultationContentAdmin({ consultation }: ConsultationContentAdminProp
   return (
     <ShellCard>
       <ConsultationHeader
-        titre={consultation.titre}
+
         title={consultation.title}
       />
       <MarkdownCard markdown={markdown!} />

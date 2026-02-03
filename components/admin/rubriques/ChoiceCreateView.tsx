@@ -28,6 +28,7 @@ const ChoiceCreateView = memo(function ChoiceCreateView({ onSave, onCancel, offe
     choiceId: "",
     choiceTitle: "",
     buttonStatus: 'CONSULTER',
+    consultButtonStatus: 'CONSULTER',
     hasActiveConsultation: false,
     consultationId: null,
     consultationCount: 0,

@@ -67,7 +67,6 @@ function DisplayConsultationCard({ consultation, onModifyAnalysis, onNotifyUser,
           <CopyToast copied={copied} />
           <ShellCard>
             <ConsultationHeader
-              titre={consultation.titre}
               title={consultation.title}
             />
             <MarkdownCard markdown={markdown!} />

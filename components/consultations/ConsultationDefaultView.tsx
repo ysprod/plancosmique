@@ -14,7 +14,6 @@ export default function ConsultationDefaultView({ consultation }: { consultation
       transition={{ duration: 0.25 }}
     >
       <ConsultationHeader
-        titre={consultation.titre}
         title={consultation.title}
       />
       <div className="my-4 w-full">
