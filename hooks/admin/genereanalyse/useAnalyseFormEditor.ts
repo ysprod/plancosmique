@@ -1,10 +1,10 @@
 import { api } from "@/lib/api/client";
-import type { Consultation } from "@/lib/interfaces";
+import type { Analysis } from "@/lib/interfaces";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 interface UseAnalyseFormEditorProps {
-  analyseData: Consultation;
+  analyseData: Analysis;
 }
 
 type Errors = Record<string, string>;
@@ -18,14 +18,7 @@ function safeText(v: any) {
   return typeof v === "string" ? v : "";
 }
 
-function readInitialAnalysisText(c: any): string {
-  return (
-    safeText(c?.resultData?.analyse?.texte) ||
-    safeText(c?.analyse?.analyse?.texte) ||
-    safeText(c?.resultData?.analyse) ||
-    ""
-  );
-}
+
 
 export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps) {
   const searchParams = useSearchParams();
@@ -33,16 +26,16 @@ export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps)
 
   const consultationIdFromUrl = searchParams?.get("id");
   const fallbackId = useMemo(() => getIdFromConsultation(analyseData), [analyseData]);
-  const consultationId = consultationIdFromUrl || fallbackId;
+  const consultationId = analyseData.consultationID;
 
   const [errors, setErrors] = useState<Errors>({});
   const [isSaving, setIsSaving] = useState(false);
 
   // On conserve formData pour l’affichage (client info etc.)
-  const [formData, setFormData] = useState<Consultation>(analyseData);
+  const [formData, setFormData] = useState<Analysis>(analyseData);
 
   // Texte d’analyse isolé : update très léger à chaque frappe
-  const [analysisText, setAnalysisText] = useState<string>(() => readInitialAnalysisText(analyseData));
+  const [analysisText, setAnalysisText] = useState<string>(analyseData.texte || "");
 
   // “dirty” minimal
   const initialTextRef = useRef<string>(analysisText);
@@ -54,7 +47,7 @@ export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps)
   useEffect(() => {
     setFormData(analyseData);
 
-    const nextText = readInitialAnalysisText(analyseData);
+    const nextText = analyseData ? safeText(analyseData.texte) : "";
     setAnalysisText(nextText);
     initialTextRef.current = nextText;
     setIsDirty(false);
@@ -115,9 +108,9 @@ export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps)
     try {
       // Payload minimal : à aligner avec ton backend
       // Ici on envoie le bloc "analyse" complet que tu peux persister en resultData
-      const payload = {    
-          texte: analysisText,
-      
+      const payload = {
+        texte: analysisText,
+
       };
       // ✅ Route la plus logique selon ton controller
       await api.patch(`/consultations/${consultationId}/analyse-texte`, payload);
@@ -154,14 +147,16 @@ export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps)
     await saveAnalysis();
   }, [isSaving, validate, saveAnalysis]);
 
-  // Compat si tu veux gérer d’autres champs plus tard
-  const handleChange = useCallback((field: keyof Consultation, value: any) => {
-    setFormData((prev) => (prev[field] === value ? prev : { ...prev, [field]: value }));
+  // Pour gérer d’autres champs d'analyse plus tard
+  const handleChange = useCallback((field: keyof Analysis, value: any) => {
+    setFormData((prev) => {
+      if (prev[field] === value) return prev;
+      return { ...prev, [field]: value };
+    });
     setErrors((prev) => {
-      const k = String(field);
-      if (!prev[k]) return prev;
+      if (!(field in prev)) return prev;
       const next = { ...prev };
-      delete next[k];
+      delete next[field as string];
       return next;
     });
   }, []);

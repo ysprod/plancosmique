@@ -26,7 +26,6 @@ export function useConsultationsListPage() {
         return;
       }
       const response = await api.get('/consultations/my');
-      console.log("Réponse des consultations :", response);
       if (response.status !== 200) {
         throw new Error('Erreur lors du chargement des consultations');
       }

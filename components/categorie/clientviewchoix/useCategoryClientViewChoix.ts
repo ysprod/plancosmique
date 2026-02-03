@@ -28,8 +28,6 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
             const response = await api.get(`/rubriques/${consultationId}/choices-with-count`, {
                 params: { userId }
             });
-            console.log("Fetched choices with count:", response.data);
-
             const result = response.data;
             setData(result);
         } catch (err: any) {
@@ -68,7 +66,6 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
 
     const handleSelectConsultation = useCallback(
         async (choice: ConsultationChoice) => {
-            console.log("[handleSelectConsultation] choice:", choice);
             const choiceId = choice._id ?? "";
             if (!choiceId) return;
             const participants = choice?.participants;
@@ -104,7 +101,6 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
             sessionStorage.setItem("categoryId", String(category._id));
             sessionStorage.setItem("rubriqueId", String(rubriqueCourante?._id ?? ""));
 
-            console.log("[handleSelectConsultation] participants:", participants, "frequence:", frequence);
             // Si la consultation est AVEC_TIERS ou POUR_TIERS et la fréquence est LIBRE, afficher le formulaire pour la personne tierce
             if ((participants === "AVEC_TIERS" || participants === "POUR_TIERS") && frequence === "LIBRE") {
                 router.push(`/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`);

@@ -32,18 +32,18 @@ const CategoriesList: React.FC<CategoriesListProps> = ({
     handleDeleteCategory,
 }) => {
     const [page, setPage] = useState(1);
-    const perPage = 3;
+    const perPage = 5;
     const totalPages = Math.ceil(categories.length / perPage);
-    
+
     const paginatedCategories = useMemo(() => {
         const start = (page - 1) * perPage;
         return categories.slice(start, start + perPage);
     }, [categories, page]);
-    
+
     const getCategoryIcon = (index: number) => {
         return CATEGORY_ICONS[index % CATEGORY_ICONS.length];
     };
-    
+
     if (categoriesLoading) return <SkeletonList />;
     if (categories.length === 0)
         return (
@@ -89,7 +89,7 @@ const CategoriesList: React.FC<CategoriesListProps> = ({
                     );
                 })}
             </AnimatePresence>
-            
+
             {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-2 mt-6">
                     <button
@@ -103,7 +103,7 @@ const CategoriesList: React.FC<CategoriesListProps> = ({
                     <span className="px-3 py-1 text-sm font-medium text-slate-700 dark:text-zinc-200">
                         {page} / {totalPages}
                     </span>
-                    
+
                     <button
                         className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-200 font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-200 dark:hover:bg-zinc-700 transition-colors"
                         onClick={() => setPage(p => Math.min(totalPages, p + 1))}

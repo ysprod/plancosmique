@@ -2,7 +2,7 @@
 // Gère la mise en cache agressive pour maximiser les performances
 // Version cache - Incrémenter pour forcer le rafraîchissement
 
-const CACHE_VERSION = 'monetoile-v45';
+const CACHE_VERSION = 'monetoile-v46';
 const CACHE_STATIC = `${CACHE_VERSION}-static`;
 const CACHE_DYNAMIC = `${CACHE_VERSION}-dynamic`;
 const CACHE_IMAGES = `${CACHE_VERSION}-images`;
@@ -33,8 +33,6 @@ const MAX_CACHE_SIZE = {
 
 // Installation du Service Worker
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installation...');
-  
   event.waitUntil(
     caches.open(CACHE_STATIC).then((cache) => {
       return cache.addAll(CRITICAL_ASSETS).catch(err => {
@@ -50,19 +48,16 @@ self.addEventListener('install', (event) => {
 
 // Activation et nettoyage des anciens caches
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activation...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.allSettled(
         cacheNames.map((cacheName) => {
           if (!cacheName.startsWith(CACHE_VERSION)) {
-            console.log('[SW] Suppression de l\'ancien cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     }).then(() => {
-      console.log('[SW] Service Worker activé');
       return self.clients.claim();
     })
   );
@@ -142,7 +137,13 @@ self.addEventListener('fetch', (event) => {
   }
 
   const cacheName = getCacheName(request.url);
-  
+
+  // Désactive la mise en cache des pages dynamiques (CACHE_DYNAMIC)
+  if (cacheName === CACHE_DYNAMIC) {
+    // Toujours faire un fetch réseau, ne jamais servir depuis le cache
+    return event.respondWith(fetch(request));
+  }
+
   event.respondWith(
     caches.open(cacheName).then(async (cache) => {
       const cachedResponse = await cache.match(request);
@@ -177,7 +178,6 @@ self.addEventListener('fetch', (event) => {
       }
       try {
         const networkResponse = await fetch(request);
-        // Ne pas mettre en cache les bodies > 5Mo
         const contentLength = networkResponse.headers.get('content-length');
         if (networkResponse && networkResponse.status === 200 && (!contentLength || parseInt(contentLength) < 5 * 1024 * 1024)) {
           const responseClone = networkResponse.clone();
@@ -198,7 +198,6 @@ self.addEventListener('fetch', (event) => {
         }
         return networkResponse;
       } catch (error) {
-        console.log('[SW] Erreur réseau, retour au cache si disponible:', error);
         if (cachedResponse) {
           return cachedResponse;
         }
@@ -220,7 +219,6 @@ self.addEventListener('message', (event) => {
           cacheNames.map((cacheName) => caches.delete(cacheName))
         );
       }).then(() => {
-        console.log('[SW] Cache vidé avec succès');
         event.ports[0].postMessage({ success: true });
       })
     );

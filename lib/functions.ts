@@ -131,8 +131,6 @@ export function extractCinqPortes(carteDuCiel: CarteDuCielData | null): CinqPort
 export function processUserData(userData: User | null): User | null {
   if (!userData) return null;
 
-  console.log('[processUserData] userData:', userData);
-
   return {
     _id: userData._id,
    
@@ -209,4 +207,14 @@ export function formatDateFR(dateStr?: string | null) {
   const d = new Date(s);
   if (Number.isNaN(d.getTime())) return s;
   return new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "short", year: "numeric" }).format(d);
+}
+
+export function safeTrim(v: unknown): string {
+    return typeof v === "string" ? v.trim() : "";
+}
+
+export function wordCount(text: string): number {
+    const t = text.trim();
+    if (!t) return 0;
+    return t.split(/\s+/).filter(Boolean).length;
 }

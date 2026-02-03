@@ -10,8 +10,7 @@ import { useMemo } from "react";
 export default function ConsultationsPageClient() {
   const {
     consultations, total, loading, error, isRefreshing, totalPages, statusFilter,
-    currentPage, handlePageChange, handleRefresh,
-    handleGenerateAnalysis, setStatusFilter,
+    currentPage, handlePageChange, handleRefresh, handleGenerateAnalysis, setStatusFilter,
   } = useAdminConsultationsPage();
 
   const tabs = useMemo(() => [

@@ -44,13 +44,13 @@ export const ConsultationButton = memo<ConsultationButtonProps>(
 
     if (enrichedChoice.consultationId) {  
 
-    console.log("Rendu du ConsultationButton avec le statut :", enrichedChoice);
     }
 
-    const config = BUTTON_CONFIGS[enrichedChoice.buttonStatus];
+    const status = enrichedChoice.consultButtonStatus || enrichedChoice.buttonStatus;
+    const config = BUTTON_CONFIGS[status as ButtonStatus] || BUTTON_CONFIGS['CONSULTER'];
     const Icon = config.icon;
-    const isPending = enrichedChoice.buttonStatus === 'RÉPONSE EN ATTENTE';
-    const isViewAnalysis = enrichedChoice.buttonStatus === "VOIR L'ANALYSE";
+    const isPending = status === 'RÉPONSE EN ATTENTE';
+    const isViewAnalysis = status === "VOIR L'ANALYSE";
     const isRepeatable = enrichedChoice.frequence !== 'UNE_FOIS_VIE';
 
     const handleClick = () => {

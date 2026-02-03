@@ -86,5 +86,5 @@ export function useConsultationResult() {
     window.open(`/api/consultations/${consultationId}/download-pdf`, "_blank");
   }, [consultationId]);
 
-  return { loading, error, consultation: analyse, handleBack, handleDownloadPDF, retour };
+  return { loading, error,   analyse, handleBack, handleDownloadPDF, retour };
 }

@@ -131,9 +131,8 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
                 choice,
                 rubriqueId,
             };
-            console.log("Creating consultation with payload:", payload);
 
-              const response = await api.post("/consultations", payload);
+            const response = await api.post("/consultations", payload);
             const id = response.data?.id || response.data?.consultationId || response.data?._id;
 
             if (!id) throw new Error("ID de consultation manquant");
@@ -143,8 +142,8 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
                 sessionStorage.removeItem("selectedChoiceId");
             }
             router.push(`/star/category/${category._id}/consulter?consultationId=${id}`);
-        
-         },
+
+        },
         [category?._id, category?.typeconsultation, router, rubriqueCourante?._id, userData]
     );
 

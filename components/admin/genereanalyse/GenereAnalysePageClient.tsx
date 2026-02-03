@@ -6,7 +6,7 @@ import { GenereAnalyseLoading } from '@/components/admin/genereanalyse/GenereAna
 import { useGenereAnalysePage } from '@/hooks/admin/useGenereAnalysePage';
 
 export default function GenereAnalysePageClient() {
-  const { step, error, consultation, handleRetry, handleBack } = useGenereAnalysePage();
+  const { step, error, analyse, handleRetry, handleBack } = useGenereAnalysePage();
 
   return (
     <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900">
@@ -16,8 +16,8 @@ export default function GenereAnalysePageClient() {
 
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-4">
         {(step === 'loading') && (<GenereAnalyseLoading step={step} />)}
-        {step === 'success' && consultation && (
-          <AnalyseFormEditor analyseData={consultation} />
+        {step === 'success' && analyse && (
+          <AnalyseFormEditor analyseData={analyse} />
         )}
         {step === 'error' && (<GenereAnalyseError error={error} onRetry={handleRetry} />)}
       </div> 

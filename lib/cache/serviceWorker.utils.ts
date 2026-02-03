@@ -56,7 +56,6 @@ export async function unregisterServiceWorker(): Promise<boolean> {
     const registration = await navigator.serviceWorker.getRegistration();
     if (registration) {
       const success = await registration.unregister();
-      console.log('✅ Service Worker désenregistré');
       return success;
     }
     return false;
@@ -83,7 +82,6 @@ export async function clearServiceWorkerCache(): Promise<void> {
       return new Promise<void>((resolve, reject) => {
         messageChannel.port1.onmessage = (event) => {
           if (event.data.success) {
-            console.log('✅ Cache du Service Worker vidé');
             resolve();
           } else {
             reject(new Error('Échec du vidage du cache'));
@@ -162,12 +160,10 @@ export function useOnlineStatus(callback?: (online: boolean) => void) {
   if (typeof window === 'undefined') return;
 
   const handleOnline = () => {
-    console.log('🟢 Connexion rétablie');
     callback?.(true);
   };
 
   const handleOffline = () => {
-    console.log('🔴 Connexion perdue');
     callback?.(false);
   };
 
@@ -191,7 +187,6 @@ export async function precacheUrl(url: string): Promise<boolean> {
   try {
     const cache = await caches.open('monetoile-v2-dynamic');
     await cache.add(url);
-    console.log(`✅ URL précachée: ${url}`);
     return true;
   } catch (error) {
     console.error(`❌ Erreur lors du précachage de ${url}:`, error);
@@ -210,7 +205,6 @@ export async function precacheUrls(urls: string[]): Promise<void> {
   try {
     const cache = await caches.open('monetoile-v2-dynamic');
     await cache.addAll(urls);
-    console.log(`✅ ${urls.length} URLs précachées`);
   } catch (error) {
     console.error('❌ Erreur lors du précachage des URLs:', error);
   }

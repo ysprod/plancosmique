@@ -5,11 +5,11 @@ import CosmicLoader from '@/components/consultations/CosmicLoader';
 import { useConsultationResult } from '@/hooks/consultations/useConsultationResult';
 
 export default function ConsultationResultPageClient() {
-  const { consultation, loading, error, handleBack, handleDownloadPDF } = useConsultationResult();
+  const { analyse, loading, error, handleBack, handleDownloadPDF } = useConsultationResult();
   if (loading) { return (<CosmicLoader />); }
-  if (error || !consultation) { return <ConsultationError error={error} onBack={handleBack} />; }
+  if (error || !analyse) { return <ConsultationError error={error} onBack={handleBack} />; }
 
   return (
-    <ConsultationContent analyse={consultation!} onBack={handleBack} onDownloadPDF={handleDownloadPDF} />
+    <ConsultationContent analyse={analyse!} onBack={handleBack} onDownloadPDF={handleDownloadPDF} />
   );
 }

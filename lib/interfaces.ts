@@ -140,6 +140,7 @@ export interface ConsultationOffering {
 }
 
 export interface ConsultationChoice {
+  consultButtonStatus: string;
   _id?: string;
   title: string;
   description: string;

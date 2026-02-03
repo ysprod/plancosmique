@@ -1,6 +1,6 @@
 "use client";
 import { useAnalyseFormEditor } from "@/hooks/admin/genereanalyse/useAnalyseFormEditor";
-import type { Consultation } from "@/lib/interfaces";
+import type { Analysis, Consultation } from "@/lib/interfaces";
 import { AlertTriangle, Save } from "lucide-react";
 import { memo, useCallback, useMemo } from "react";
 import FormActions from "./FormActions";
@@ -9,25 +9,14 @@ import FormHeader from "./FormHeader";
 import FormTextArea from "./FormTextArea";
 
 interface AnalyseFormEditorProps {
-  analyseData: Consultation;
+  analyseData: Analysis;
 }
 
-function getClientInfo(fd: any) {
-  const f = fd || {};
-  return {
-    nom: f.nom || f.lastName || "-",
-    prenoms: f.prenoms || f.firstName || "-",
-    dateNaissance: f.dateNaissance || f.dateOfBirth || "-",
-    ville: f.villeNaissance || f.cityOfBirth || "-",
-    phone: f.phone || "-",
-  };
-}
 
 const AnalyseFormEditor = memo(function AnalyseFormEditor({ analyseData }: AnalyseFormEditorProps) {
-  const { formData, errors, isSaving, isDirty, analysisText, handleBack, handleSubmit, setAnalysisText, saveNow } =
+  const { errors, isSaving, isDirty, analysisText, handleBack, handleSubmit, setAnalysisText, saveNow } =
     useAnalyseFormEditor({ analyseData });
 
-  const client = useMemo(() => getClientInfo((formData as any)?.formData), [(formData as any)?.formData]);
 
   const onChangeText = useCallback((value: string) => setAnalysisText(value), [setAnalysisText]);
 
@@ -85,33 +74,7 @@ const AnalyseFormEditor = memo(function AnalyseFormEditor({ analyseData }: Analy
           />
         </div>
 
-        <div className="w-full rounded-2xl border border-black/10 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-4 py-3 text-left">
-          <div className="text-[12px] font-extrabold text-slate-900 dark:text-slate-100 text-center">
-            Informations du client
-          </div>
-          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[12px] text-slate-700 dark:text-slate-200">
-            <div className="flex items-center justify-between gap-2">
-              <span className="font-semibold">Nom</span>
-              <span className="text-right">{client.nom}</span>
-            </div>
-            <div className="flex items-center justify-between gap-2">
-              <span className="font-semibold">Prénoms</span>
-              <span className="text-right">{client.prenoms}</span>
-            </div>
-            <div className="flex items-center justify-between gap-2">
-              <span className="font-semibold">Naissance</span>
-              <span className="text-right">{client.dateNaissance}</span>
-            </div>
-            <div className="flex items-center justify-between gap-2">
-              <span className="font-semibold">Ville</span>
-              <span className="text-right">{client.ville}</span>
-            </div>
-            <div className="flex items-center justify-between gap-2 sm:col-span-2">
-              <span className="font-semibold">Téléphone</span>
-              <span className="text-right">{client.phone}</span>
-            </div>
-          </div>
-        </div>
+  
 
         <FormActions onCancel={handleBack} isSaving={isSaving} onSave={saveNow} />
       </form>

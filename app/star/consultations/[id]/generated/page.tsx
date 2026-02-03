@@ -90,18 +90,12 @@ export default function GenerateAnalysePage() {
     setError(null);
 
     try {
-      console.log("Génération de l’analyse pour la consultation", id);
       await api.post(`/consultations/${id}/generate-analysis`);
-      // 2) Récupère l’analyse
       const res = await api.get(`/analyses/by-consultation/${id}`);
-           console.log("Génération de l’analyse preussi", res);
       const data = res?.data ?? null;
       if (!data || data === "") {
-        // Si ton backend peut renvoyer "" => rediriger vers une page generate dédiée si tu en as une
-        // Ici on reste cohérent: on affiche une erreur propre.
         throw new Error("Analyse indisponible. Veuillez réessayer.");
       }
-
       setAnalyse(data);
       setStatus("success");
     } catch (err) {

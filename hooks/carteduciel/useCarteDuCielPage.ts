@@ -38,7 +38,6 @@ export function useCarteDuCielPage(): {
     }
     fetchUserAndGenerateCarteDuCiel();
   }, [user?._id]);
-  console.log("useCarteDuCielPage:", { userData, isLoadingUser, authLoading });
 
   const processedData = useMemo(() => processUserData(userData), [userData]);
   const isLoading = authLoading || isLoadingUser;

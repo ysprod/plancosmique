@@ -46,7 +46,15 @@ export function useAdminConsultationAnalysis() {
   const notified = useMemo(() => state.consultation?.analysisNotified === true, [state.consultation]);
 
   const derived = useMemo(() => {
-    const c: any = state.consultation;
+    const c = state.consultation;
+    if (!c) {
+      return {
+        id: "",
+        markdown: { texte: "", prompt: "", title: "" },
+        dateGenLabel: "",
+        isNotified: false,
+      };
+    }
     const id = getConsultationId(c);
     const markdown = extractMarkdown(c);
     const dateGenRaw = c?.dateGeneration ?? c?.updatedAt ?? c?.createdAt ?? null;
@@ -87,7 +95,6 @@ export function useAdminConsultationAnalysis() {
     try {
       const consultationRes = await api.get(`/consultations/${consultationId}`, { signal: controller.signal } as any);
       const payload = consultationRes?.data;
-      console.log("Données de consultation récupérées :", payload);
       const base: Consultation | null = payload?.consultation ?? payload ?? null;
       if (!base) throw new Error("Consultation introuvable");
 
@@ -104,7 +111,6 @@ export function useAdminConsultationAnalysis() {
       if (reqSeqRef.current !== mySeq) return;
 
       const res = await api.get(`/analyses/by-consultation/${consultationId}`);
-      console.log("Génération de l’analyse preussi", res);
       const data = res?.data ?? null;
       if (!data || data === "") {
         throw new Error("Analyse indisponible. Veuillez réessayer.");
@@ -166,14 +172,14 @@ export function useAdminConsultationAnalysis() {
   }, [consultationId, showToast, state.consultation]);
 
   const handleCopy = useCallback(async () => {
-    if (!derived.markdown) return;
+    if (!analyse) return;
     try {
-      await navigator.clipboard.writeText(derived.markdown);
+      await navigator.clipboard.writeText(analyse?.texte || "");
       setCopied(true);
       if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
       copyTimerRef.current = window.setTimeout(() => setCopied(false), 1200);
     } catch { }
-  }, [derived.markdown]);
+  }, [analyse]);
 
   const handleRefresh = useCallback(() => {
     if (!derived.id) return;
@@ -194,12 +200,21 @@ export function useAdminConsultationAnalysis() {
     };
   }, [loadAnalysis]);
 
-  console.log("useAdminConsultationAnalysis state:", state, "analyse:", analyse);
-
   return {
-    consultation: state.consultation, loading: state.loading, error: state.error,
-    toast: state.toast, setToast, showToast, reload: loadAnalysis, handleBack, copied,
-    derived, setCopied, handleCopy, handleRefresh, handleNotify, markdown: analyse,
+    loading: state.loading,
+    error: state.error,
+    toast: state.toast,
+    setToast,
+    showToast,
+    reload: loadAnalysis,
+    handleBack,
+    copied,
+    setCopied,
+    derived,
+    handleCopy,
+    handleRefresh,
+    handleNotify,
+    markdown: analyse ?? { texte: "", prompt: "", title: "" },
   };
 }
 
@@ -207,7 +222,6 @@ function shallowEqualState(a: AdminAnalysisState, b: AdminAnalysisState) {
   return (
     a.loading === b.loading &&
     a.error === b.error &&
-    a.toast === b.toast &&
-    a.consultation === b.consultation
+    a.toast === b.toast
   );
 }

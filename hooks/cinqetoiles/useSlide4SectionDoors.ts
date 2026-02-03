@@ -253,21 +253,7 @@ export function useSlide4SectionDoors() {
           done: choices.length,
           total: choices.length,
           lastUpdatedAt: Date.now(),
-        }));
-
-        await api.post("/consultations/generate-sky-chart-brute", {});
-        pushLog("Carte du ciel générée (brute)");
-        setProgressThrottled((p) => ({
-          ...p,
-          stage: "choices",
-          message: `Traitement des analyses (${choices.length}/${choices.length})…`,
-          percent: 60,
-          done: choices.length,
-          total: choices.length,
-          lastUpdatedAt: Date.now(),
-        }));
-
-
+        }));     
 
         await api.post("/consultations/generate-consultations-for-rubrique", {
           rubriqueId: RUBRIQUE_ID,

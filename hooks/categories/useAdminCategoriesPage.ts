@@ -2,15 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getCategories, createCategory, updateCategory, deleteCategory } from "@/lib/api/services/categories.service";
 import { CategorieAdmin, Rubrique } from "@/lib/interfaces";
 import { useAdminRubriquesPage } from "@/hooks/admin/useAdminRubriquesPage";
-
-// export interface CategorieAdmin {
-//   _id: string;
-//   id: string;
-//   nom: string;
-//   description: string;
-//   rubriques: Rubrique[];
-// }
-
+ 
 export type BannerType = "success" | "error" | "info";
 export type BannerState = { type: BannerType; message: string } | null;
 
