@@ -1,10 +1,29 @@
 "use client";
-import ConsultationContentAdmin from "@/components/consultations/ConsultationContentAdmin";
 import { useDisplayConsultationCard } from "@/hooks/admin/consultations/useDisplayConsultationCard";
 import { cx } from "@/lib/functions";
 import type { Consultation } from "@/lib/interfaces";
+import React, { memo, useMemo } from "react";
+
 import { CopyToast } from "./DisplayConsultationCard/CopyToast";
 import { TopBarActions } from "./DisplayConsultationCard/TopBarActions";
+import ConsultationHeader from "@/components/consultations/content/ConsultationHeader";
+import MarkdownCard from "@/components/consultations/content/MarkdownCard";
+
+
+
+const ShellCard = memo(function ShellCard({ children, }: { children: React.ReactNode; }) {
+  return (
+    <div
+      className={cx(
+        "relative overflow-hidden",
+        "border-slate-200/90 bg-white shadow-xl shadow-black/5 backdrop-blur",
+        "dark:border-zinc-800/70 dark:bg-zinc-950/45 dark:shadow-black/35"
+      )}
+    >
+      {children}
+    </div>
+  );
+});
 
 interface ConsultationCardProps {
   consultation: Consultation;
@@ -15,9 +34,10 @@ interface ConsultationCardProps {
 }
 
 function DisplayConsultationCard({ consultation, onModifyAnalysis, onNotifyUser, notifiedback, onBack }: ConsultationCardProps) {
-  const { derived, copied, handleCopy, handleRefresh, handleNotify,
+  const { derived, copied, handleCopy, handleRefresh, handleNotify, markdown
   } = useDisplayConsultationCard(consultation, notifiedback, onModifyAnalysis, onNotifyUser);
-console.log("Rendu de DisplayConsultationCard avec la consultation :", consultation);
+
+
   if (!consultation) return null;
 
   return (
@@ -45,9 +65,13 @@ console.log("Rendu de DisplayConsultationCard avec la consultation :", consultat
             onBack={onBack}
           />
           <CopyToast copied={copied} />
-          <ConsultationContentAdmin
-            consultation={consultation}
-          />
+          <ShellCard>
+            <ConsultationHeader
+              titre={consultation.titre}
+              title={consultation.title}
+            />
+            <MarkdownCard markdown={markdown!} />
+          </ShellCard>
         </div>
       </div>
     </main>

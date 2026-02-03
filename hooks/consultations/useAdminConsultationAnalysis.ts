@@ -1,5 +1,6 @@
+import { extractMarkdown, formatDateFR, getConsultationId } from "@/components/admin/consultations/DisplayConsultationCard/helpers";
 import { api } from "@/lib/api/client";
-import type { Consultation } from "@/lib/interfaces";
+import type { Analysis, Consultation } from "@/lib/interfaces";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -31,17 +32,32 @@ function getConsultationIdFromParams(params: unknown): string | null {
 export function useAdminConsultationAnalysis() {
   const params = useParams();
   const router = useRouter();
-  const consultationId = useMemo(() => getConsultationIdFromParams(params), [params]);
-  const [state, setState] = useState<AdminAnalysisState>(initialState);
+
   const reqSeqRef = useRef(0);
   const abortRef = useRef<AbortController | null>(null);
   const toastTimerRef = useRef<number | null>(null);
+  const copyTimerRef = useRef<number | null>(null);
+
+  const [copied, setCopied] = useState(false);
+  const [state, setState] = useState<AdminAnalysisState>(initialState);
+  const [analyse, setAnalyse] = useState<Analysis | null>(null);
+
+  const consultationId = useMemo(() => getConsultationIdFromParams(params), [params]);
+  const notified = useMemo(() => state.consultation?.analysisNotified === true, [state.consultation]);
+
+  const derived = useMemo(() => {
+    const c: any = state.consultation;
+    const id = getConsultationId(c);
+    const markdown = extractMarkdown(c);
+    const dateGenRaw = c?.dateGeneration ?? c?.updatedAt ?? c?.createdAt ?? null;
+    const dateGenLabel = formatDateFR(dateGenRaw);
+    const isNotifiedBackend = Boolean(c?.analysisNotified);
+    const isNotified = Boolean(notified || isNotifiedBackend);
+    return { id, markdown, dateGenLabel, isNotified };
+  }, [state.consultation, notified]);
 
   const setToast = useCallback((toast: ToastState | null) => {
-    if (toastTimerRef.current) {
-      window.clearTimeout(toastTimerRef.current);
-      toastTimerRef.current = null;
-    }
+    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
     setState((s) => (s.toast === toast ? s : { ...s, toast }));
     if (toast) {
       toastTimerRef.current = window.setTimeout(() => {
@@ -51,11 +67,7 @@ export function useAdminConsultationAnalysis() {
     }
   }, []);
 
-  const showToast = useCallback((message: string, type: ToastState["type"] = "info") => {
-    setToast({ message, type });
-  }, [setToast]);
-
-  const notified = useMemo(() => state.consultation?.analysisNotified === true, [state.consultation]);
+  const showToast = useCallback((message: string, type: ToastState["type"] = "info") => setToast({ message, type }), [setToast]);
 
   const loadAnalysis = useCallback(async () => {
     if (!consultationId) {
@@ -90,6 +102,14 @@ export function useAdminConsultationAnalysis() {
         }
       }
       if (reqSeqRef.current !== mySeq) return;
+
+      const res = await api.get(`/analyses/by-consultation/${consultationId}`);
+      console.log("Génération de l’analyse preussi", res);
+      const data = res?.data ?? null;
+      if (!data || data === "") {
+        throw new Error("Analyse indisponible. Veuillez réessayer.");
+      }
+      setAnalyse(data);
       setState((s) => {
         const next: AdminAnalysisState = {
           ...s,
@@ -112,14 +132,6 @@ export function useAdminConsultationAnalysis() {
       });
     }
   }, [consultationId, router]);
-
-  useEffect(() => {
-    loadAnalysis();
-    return () => {
-      abortRef.current?.abort();
-      if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
-    };
-  }, [loadAnalysis]);
 
   const handleBack = useCallback(() => {
     router.push("/admin/consultations/");
@@ -153,10 +165,41 @@ export function useAdminConsultationAnalysis() {
     }
   }, [consultationId, showToast, state.consultation]);
 
+  const handleCopy = useCallback(async () => {
+    if (!derived.markdown) return;
+    try {
+      await navigator.clipboard.writeText(derived.markdown);
+      setCopied(true);
+      if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
+      copyTimerRef.current = window.setTimeout(() => setCopied(false), 1200);
+    } catch { }
+  }, [derived.markdown]);
+
+  const handleRefresh = useCallback(() => {
+    if (!derived.id) return;
+    handleModifyAnalysis(derived.id);
+  }, [derived.id, handleModifyAnalysis]);
+
+  const handleNotify = useCallback(() => {
+    if (!derived.id || derived.isNotified) return;
+    handleNotifyUser(derived.id);
+  }, [derived.id, derived.isNotified, handleNotifyUser]);
+
+  useEffect(() => {
+    loadAnalysis();
+    return () => {
+      abortRef.current?.abort();
+      if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+      if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
+    };
+  }, [loadAnalysis]);
+
+  console.log("useAdminConsultationAnalysis state:", state, "analyse:", analyse);
+
   return {
-    consultation: state.consultation, loading: state.loading, notified,
-    error: state.error, toast: state.toast, handleModifyAnalysis,
-    setToast, showToast, reload: loadAnalysis, handleBack, handleNotifyUser,
+    consultation: state.consultation, loading: state.loading, error: state.error,
+    toast: state.toast, setToast, showToast, reload: loadAnalysis, handleBack, copied,
+    derived, setCopied, handleCopy, handleRefresh, handleNotify, markdown: analyse,
   };
 }
 

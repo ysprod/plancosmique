@@ -723,5 +723,6 @@ export interface Analysis {
   updatedAt: string;
   titre?: string;
   title?: string;
+  prompt?: string;
   __v?: number;
 }

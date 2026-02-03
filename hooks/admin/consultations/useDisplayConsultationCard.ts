@@ -44,6 +44,8 @@ export function useDisplayConsultationCard(consultation: Consultation, notifiedb
     onNotifyUser(derived.id);
   }, [derived.id, derived.isNotified, onNotifyUser]);
 
+    const markdown = useMemo(() => extractMarkdown(consultation), [consultation]);
+
   return {
     derived,
     copied,
@@ -51,5 +53,6 @@ export function useDisplayConsultationCard(consultation: Consultation, notifiedb
     handleCopy,
     handleRefresh,
     handleNotify,
+    markdown,
   };
 }

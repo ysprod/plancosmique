@@ -170,7 +170,6 @@ export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps)
     formData,
     analysisText,
     setAnalysisText: setAnalysisTextSafe,
-
     errors,
     isSaving,
     isDirty,
