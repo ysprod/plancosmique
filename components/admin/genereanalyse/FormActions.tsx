@@ -9,11 +9,12 @@ interface FormActionsProps {
 
 export default function FormActions({ onCancel, isSaving, onSave }: FormActionsProps) {
     return (
-        <div className="flex flex-col sm:flex-row gap-3 pt-4">
+        <div className="w-full flex flex-col sm:flex-row gap-3 pt-4 justify-center">
             <button
                 type="button"
                 onClick={onSave}
                 disabled={isSaving}
+                aria-busy={isSaving}
                 className="flex-1 h-12 px-6 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
             >
                 {isSaving ? (
@@ -28,6 +29,7 @@ export default function FormActions({ onCancel, isSaving, onSave }: FormActionsP
                     </>
                 )}
             </button>
+
             <button
                 type="button"
                 onClick={onCancel}

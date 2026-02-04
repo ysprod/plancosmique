@@ -15,7 +15,7 @@ export default function AdminCategoriesPage() {
     } = useAdminCategoriesView();
 
     return (
-        <div className="w-full mx-auto max-w-3xl px-3 py-5 sm:px-4 sm:py-8 bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
+        <div className="w-full mx-auto max-w-4xl px-3 py-5 sm:px-4 sm:py-8 bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
             <TopBar counts={counts} />
             <ReloadButtons
                 fetchCategories={fetchCategories}

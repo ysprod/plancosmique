@@ -1,7 +1,6 @@
 'use client';
-import React, { useMemo, useCallback } from 'react';
 import { useConsultationChoices } from '@/hooks/admin/useConsultationChoices';
-import { useConsultationChoicesTabs } from '@/hooks/admin/useConsultationChoicesTabs';
+import React from 'react';
 import { AvecPromptTab } from './choices/AvecPromptTab';
 import { ConsultationChoicesError } from './choices/ConsultationChoicesError';
 import { ConsultationChoicesHeader } from './choices/ConsultationChoicesHeader';
@@ -19,22 +18,9 @@ const MemoAvecPromptTab = React.memo(AvecPromptTab);
 
 export default function ConsultationChoicesList() {
   const {
-    loading, error, choicesWithPrompt, choicesWithoutPrompt, search,
-    setSearch, handleDeletePrompt,
+    loading, error, choicesWithPrompt, choicesWithoutPrompt,
+    headerProps, searchProps, tabsProps, tab, handleDeletePromptStable,
   } = useConsultationChoices();
-
-  const { tab, setTab } = useConsultationChoicesTabs('sans');
-
-  const headerProps = useMemo(() => ({
-    withPrompt: choicesWithPrompt.length,
-    withoutPrompt: choicesWithoutPrompt.length,
-  }), [choicesWithPrompt.length, choicesWithoutPrompt.length]);
-
-  const searchProps = useMemo(() => ({ search, setSearch, }), [search, setSearch]);
-
-  const tabsProps = useMemo(() => ({ tab, setTab, }), [tab, setTab]);
-
-  const handleDeletePromptStable = useCallback(handleDeletePrompt, [handleDeletePrompt]);
 
   if (loading) {
     return <ConsultationChoicesLoader />;
@@ -54,7 +40,6 @@ export default function ConsultationChoicesList() {
       {tab === 'sans' && (
         <MemoSansPromptTab choicesWithoutPrompt={choicesWithoutPrompt} />
       )}
-
       {tab === 'avec' && (
         <MemoAvecPromptTab choicesWithPrompt={choicesWithPrompt} handleDeletePrompt={handleDeletePromptStable} />
       )}

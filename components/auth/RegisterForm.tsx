@@ -16,7 +16,6 @@ const RegisterForm: React.FC = () => {
     handleChange, handleSubmit, setShowConfirmPassword, setShowPassword, setError,
   } = useRegisterForm();
 
-  // Gestion du thème dark/light
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {

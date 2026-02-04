@@ -1,4 +1,5 @@
 import { api } from "@/lib/api/client";
+import { safeText } from "@/lib/functions";
 import type { Analysis } from "@/lib/interfaces";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -7,95 +8,100 @@ interface UseAnalyseFormEditorProps {
   analyseData: Analysis;
 }
 
-type Errors = Record<string, string>;
+type Errors = {
+  analyse?: string;
+  submit?: string;
+};
 
-function getIdFromConsultation(c: any): string | null {
-  const v = c?.consultationId || c?.id || c?._id;
-  return v ? String(v) : null;
+function toStrId(v: unknown): string | null {
+  if (!v) return null;
+  if (typeof v === "string") return v.trim() || null;
+  if (typeof v === "object") {
+    const anyV = v as any;
+    if (anyV._id?.toString) return anyV._id.toString();
+    if (anyV.toString) return anyV.toString();
+  }
+  return null;
 }
 
-function safeText(v: any) {
-  return typeof v === "string" ? v : "";
+function getIdFromAnalysis(a: any): string | null {
+  return (
+    toStrId(a?.consultationID) ||
+    toStrId(a?.consultationId) ||
+    toStrId(a?.consultation) ||
+    toStrId(a?._id) ||
+    null
+  );
 }
-
-
 
 export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps) {
   const searchParams = useSearchParams();
-
-
-  const consultationIdFromUrl = searchParams?.get("id");
-  const fallbackId = useMemo(() => getIdFromConsultation(analyseData), [analyseData]);
-  const consultationId = analyseData.consultationID;
+  const idFromUrl = searchParams?.get("id")?.trim() || "";
 
   const [errors, setErrors] = useState<Errors>({});
   const [isSaving, setIsSaving] = useState(false);
-
-  // On conserve formData pour l’affichage (client info etc.)
   const [formData, setFormData] = useState<Analysis>(analyseData);
-
-  // Texte d’analyse isolé : update très léger à chaque frappe
-  const [analysisText, setAnalysisText] = useState<string>(analyseData.texte || "");
-
-  // “dirty” minimal
-  const initialTextRef = useRef<string>(analysisText);
   const [isDirty, setIsDirty] = useState(false);
+  const [analysisText, setAnalysisText] = useState<string>(() => safeText(analyseData?.texte));
 
-  // Lock de sauvegarde
+  const initialTextRef = useRef<string>(analysisText);
   const saveLockRef = useRef(false);
+
+  const consultationId = useMemo(() => {
+    return idFromUrl || getIdFromAnalysis(analyseData) || "";
+  }, [idFromUrl, analyseData]);
+
+  const hardNavigate = useCallback((url: string, mode: "replace" | "assign" = "replace") => {
+    const finalUrl = url.includes("?") ? `${url}&r=${Date.now()}` : `${url}?r=${Date.now()}`;
+
+    if (mode === "replace") window.location.replace(finalUrl);
+    else window.location.assign(finalUrl);
+  }, []);
 
   useEffect(() => {
     setFormData(analyseData);
-
-    const nextText = analyseData ? safeText(analyseData.texte) : "";
+    const nextText = safeText(analyseData?.texte);
     setAnalysisText(nextText);
     initialTextRef.current = nextText;
     setIsDirty(false);
-
-    // pas d'abort à faire
-    return undefined;
+    setErrors({});
   }, [analyseData]);
 
   const handleBack = useCallback(() => {
     if (!consultationId) {
-      window.location.href = "/admin/consultations";
+      hardNavigate("/admin/consultations");
       return;
     }
-    window.location.href = `/admin/consultations/${consultationId}`;
-  }, [consultationId]);
+    hardNavigate(`/admin/consultations/${consultationId}`);
+  }, [consultationId, hardNavigate]);
 
   const validate = useCallback(() => {
     const txt = analysisText.trim();
-    if (txt) return true;
+    if (txt.length > 0) return true;
 
-    setErrors((prev) => {
-      if (prev.analyse) return prev; // bail-out
-      return { ...prev, analyse: "Le texte d'analyse est requis" };
-    });
+    setErrors((prev) => (prev.analyse ? prev : { ...prev, analyse: "Le texte d'analyse est requis" }));
     return false;
   }, [analysisText]);
 
   const setAnalysisTextSafe = useCallback((value: string) => {
     setAnalysisText(value);
-
-    // dirty check (bail-out)
     setIsDirty(value !== initialTextRef.current);
-
-    // clear field error only if present
     setErrors((prev) => {
-      if (!prev.analyse) return prev;
+      if (!prev.analyse && !prev.submit) return prev;
       const next = { ...prev };
-      delete next.analyse;
+      if (next.analyse) delete next.analyse;
       return next;
     });
   }, []);
 
   const saveAnalysis = useCallback(async () => {
-    if (!consultationId) throw new Error("ID consultation manquant");
+    if (!consultationId) {
+      const msg = "ID consultation manquant";
+      setErrors((prev) => ({ ...prev, submit: msg }));
+      throw new Error(msg);
+    }
     if (saveLockRef.current) return;
     saveLockRef.current = true;
-
-
 
     setIsSaving(true);
     setErrors((prev) => {
@@ -106,20 +112,14 @@ export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps)
     });
 
     try {
-      // Payload minimal : à aligner avec ton backend
-      // Ici on envoie le bloc "analyse" complet que tu peux persister en resultData
-      const payload = {
+      await api.patch(`/analyses/by-consultation/${consultationId}/texte`, {
         texte: analysisText,
+      });
 
-      };
-      // ✅ Route la plus logique selon ton controller
-      await api.patch(`/consultations/${consultationId}/analyse-texte`, payload);
-
-      // marquer proprement “clean” AVANT redirection
       initialTextRef.current = analysisText;
       setIsDirty(false);
 
-      window.location.href = `/admin/consultations/${consultationId}`;
+      hardNavigate(`/admin/consultations/${consultationId}`, "replace");
     } catch (err: any) {
       const msg = err?.response?.data?.message || err?.message || "Erreur de sauvegarde";
       setErrors((prev) => ({ ...prev, submit: msg }));
@@ -128,49 +128,29 @@ export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps)
       setIsSaving(false);
       saveLockRef.current = false;
     }
-  }, [consultationId, analysisText]);
-
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-      if (isSaving) return;
-      if (!validate()) return;
-      await saveAnalysis();
-    },
-    [isSaving, validate, saveAnalysis]
-  );
+  }, [consultationId, analysisText, hardNavigate]);
 
   const saveNow = useCallback(async () => {
-    alert("Sauvegarde immédiate");
     if (isSaving) return;
     if (!validate()) return;
     await saveAnalysis();
   }, [isSaving, validate, saveAnalysis]);
 
-  // Pour gérer d’autres champs d'analyse plus tard
-  const handleChange = useCallback((field: keyof Analysis, value: any) => {
-    setFormData((prev) => {
-      if (prev[field] === value) return prev;
-      return { ...prev, [field]: value };
-    });
-    setErrors((prev) => {
-      if (!(field in prev)) return prev;
-      const next = { ...prev };
-      delete next[field as string];
-      return next;
-    });
-  }, []);
+  const onChangeText = useCallback(
+    (value: string) => {
+      setAnalysisTextSafe(value);
+    },
+    [setAnalysisTextSafe]
+  );
+
+  const stats = useMemo(() => {
+    const len = analysisText.length;
+    const lines = analysisText ? analysisText.split("\n").length : 0;
+    return { len, lines };
+  }, [analysisText]);
 
   return {
-    formData,
-    analysisText,
-    setAnalysisText: setAnalysisTextSafe,
-    errors,
-    isSaving,
-    isDirty,
-    handleChange,
-    handleSubmit,
-    saveNow,
-    handleBack,
+    formData, analysisText, errors, isSaving, isDirty, stats,
+    saveNow, handleBack, onChangeText,
   };
 }

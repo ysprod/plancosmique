@@ -35,7 +35,7 @@ export default function MissingChoicePromptsList() {
   }, []);
 
   return (
-    <section className="w-full max-w-2xl mx-auto my-6 p-4 rounded-xl border bg-white/80 dark:bg-zinc-900/80">
+    <section className="w-full max-w-3xl mx-auto my-6 p-4 rounded-xl border bg-white/80 dark:bg-zinc-900/80">
       <h2 className="text-lg font-bold mb-2">Choix de consultation sans prompt associé</h2>
       {loading && <div className="text-sm text-gray-500">Chargement…</div>}
       {error && <div className="text-sm text-red-500">{error}</div>}
@@ -65,7 +65,7 @@ export default function MissingChoicePromptsList() {
                     {choice.participants && <span>👥 <b>Participants:</b> {choice.participants}</span>}
                     {choice.frequence && <span>⏳ <b>Fréquence:</b> {choice.frequence}</span>}
                   </div>
-                  
+
                 </li>
               ))}
             </ul>

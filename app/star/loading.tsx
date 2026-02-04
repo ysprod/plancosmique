@@ -1,34 +1,106 @@
-import { memo } from 'react';
+"use client";
 
-const Loader = memo(() => (
-  <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 dark:from-gray-950 dark:via-purple-950/30 dark:to-gray-900 animate-fade-in">
-    <div className="flex flex-col items-center justify-center gap-2 w-full max-w-xs px-4 py-6 rounded-2xl shadow-xl bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border border-purple-100 dark:border-purple-900">
-      <div className="relative flex items-center justify-center">
-        <div className="absolute animate-pulse rounded-full bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 dark:from-purple-700 dark:via-pink-700 dark:to-indigo-700 opacity-30 w-16 h-16" />
-        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-purple-500 dark:border-purple-300" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="text-purple-600 dark:text-purple-300 animate-float">
-            <circle cx="16" cy="16" r="14" stroke="currentColor" strokeWidth="2" opacity="0.2" />
-            <circle cx="16" cy="16" r="7" stroke="currentColor" strokeWidth="2" opacity="0.5" />
-            <circle cx="16" cy="16" r="2" fill="currentColor" />
-          </svg>
+import { memo } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+
+const Loader = memo(function Loader() {
+  const reduce = useReducedMotion();
+
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center px-4">
+      {/* Fond premium statique */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 dark:from-slate-950 dark:via-purple-950/25 dark:to-slate-900" />
+
+      {/* Halo doux (pas animé) */}
+      <div className="absolute -z-10 h-[520px] w-[520px] rounded-full blur-3xl opacity-40 dark:opacity-30 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.35),rgba(236,72,153,0.20),transparent_65%)]" />
+
+      <motion.section
+        initial={reduce ? undefined : { opacity: 0, y: 10, filter: "blur(6px)" }}
+        animate={reduce ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        className={[
+          "w-full max-w-xs",
+          "rounded-3xl border",
+          "border-purple-100/70 dark:border-white/10",
+          "bg-white/80 dark:bg-slate-950/70",
+          "backdrop-blur-xl",
+          "shadow-[0_18px_60px_rgba(0,0,0,0.10)] dark:shadow-[0_18px_60px_rgba(0,0,0,0.45)]",
+          "px-5 py-6",
+          "flex flex-col items-center justify-center text-center gap-3",
+        ].join(" ")}
+        role="status"
+        aria-live="polite"
+        aria-busy="true"
+      >
+        {/* Accent bar */}
+        <div className="h-[3px] w-20 rounded-full bg-gradient-to-r from-violet-600 via-fuchsia-600 to-indigo-500/90 opacity-90" />
+
+        {/* Noyau cosmique */}
+        <div className="relative grid place-items-center">
+          {/* Aura pulse (Tailwind animate-pulse, ok) */}
+          <div className="absolute h-16 w-16 rounded-full opacity-30 animate-pulse bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 dark:from-purple-700 dark:via-pink-700 dark:to-indigo-700" />
+
+          {/* Anneau spin (Tailwind animate-spin, ok) */}
+          <div className="h-12 w-12 rounded-full border-[3px] border-transparent border-t-purple-600 dark:border-t-purple-300 border-r-fuchsia-500/70 dark:border-r-fuchsia-300/70 animate-spin" />
+
+          {/* Sigil (float via Framer Motion, pas de keyframes CSS) */}
+          <motion.svg
+            width="30"
+            height="30"
+            viewBox="0 0 32 32"
+            fill="none"
+            className="absolute text-purple-700 dark:text-purple-200"
+            initial={reduce ? undefined : { y: 0, scale: 1 }}
+            animate={reduce ? undefined : { y: [0, -6, 0], scale: [1, 1.03, 1] }}
+            transition={reduce ? undefined : { duration: 2.1, repeat: Infinity, ease: "easeInOut" }}
+            aria-hidden="true"
+          >
+            <circle cx="16" cy="16" r="14" stroke="currentColor" strokeWidth="2" opacity="0.18" />
+            <circle cx="16" cy="16" r="7" stroke="currentColor" strokeWidth="2" opacity="0.45" />
+            <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.95" />
+          </motion.svg>
         </div>
-      </div>
-      <span className="text-sm sm:text-base font-semibold text-center text-purple-700 dark:text-purple-200 mt-2 animate-fade-in">Chargement cosmique...</span>
+
+        {/* Texte */}
+        <div className="space-y-1">
+          <motion.div
+            initial={reduce ? undefined : { opacity: 0, y: 6 }}
+            animate={reduce ? undefined : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.05 }}
+            className="text-[14px] sm:text-[15px] font-extrabold tracking-tight text-purple-800 dark:text-purple-100"
+          >
+            Chargement cosmique…
+          </motion.div>
+
+          <motion.div
+            initial={reduce ? undefined : { opacity: 0, y: 6 }}
+            animate={reduce ? undefined : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.12 }}
+            className="text-[12px] leading-snug text-slate-600 dark:text-slate-300/85"
+          >
+            Préparation de vos données, merci de patienter.
+          </motion.div>
+
+          {/* Dots sans keyframes custom : Framer Motion */}
+          <div className="mt-2 flex items-center justify-center gap-1.5" aria-hidden="true">
+            {[0, 1, 2].map((i) => (
+              <motion.span
+                key={i}
+                className="h-1.5 w-1.5 rounded-full bg-purple-500/70 dark:bg-purple-300/70"
+                initial={reduce ? undefined : { opacity: 0.35, scale: 0.9 }}
+                animate={reduce ? undefined : { opacity: [0.35, 1, 0.35], scale: [0.9, 1.15, 0.9] }}
+                transition={
+                  reduce
+                    ? undefined
+                    : { duration: 1.05, repeat: Infinity, ease: "easeInOut", delay: i * 0.14 }
+                }
+              />
+            ))}
+          </div>
+        </div>
+      </motion.section>
     </div>
-    <style>{`
-      @keyframes animate-float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
-      }
-      .animate-float { animation: animate-float 2.2s infinite ease-in-out; }
-      .animate-fade-in { animation: fadeIn 0.7s cubic-bezier(.4,0,.2,1) both; }
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-    `}</style>
-  </div>
-));
+  );
+});
 
 export default Loader;

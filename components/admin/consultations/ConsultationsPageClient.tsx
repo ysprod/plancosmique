@@ -5,20 +5,12 @@ import { ConsultationsHeader } from "@/components/admin/consultations/Consultati
 import { ConsultationsList } from "@/components/admin/consultations/ConsultationsList";
 import { CosmicLoader } from "@/components/admin/consultations/CosmicLoader";
 import { useAdminConsultationsPage } from "@/hooks/consultations/useAdminConsultationsPage";
-import { useMemo } from "react";
 
 export default function ConsultationsPageClient() {
   const {
-    consultations, total, loading, error, isRefreshing, totalPages, statusFilter,
+    consultations, total, loading, error, isRefreshing, totalPages, statusFilter,tabs,
     currentPage, handlePageChange, handleRefresh, handleGenerateAnalysis, setStatusFilter,
   } = useAdminConsultationsPage();
-
-  const tabs = useMemo(() => [
-    { key: 'all', label: 'Toutes' },
-    { key: 'COMPLETED', label: 'Terminées' },
-    { key: 'PENDING', label: 'En attente' },
-    { key: 'ERROR', label: 'Erreur' },
-  ], []);
 
   if (loading) return <CosmicLoader />;
 

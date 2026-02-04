@@ -33,7 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/admin/categories', priority: 0.3, changefreq: 'monthly' },
   ];
 
-  // Prévu : ajout dynamique de routes (ex: consultations, articles, etc.)
+  // Prévu : ajout dynamique de routes (ex: consultations, articles, etc)
   return staticRoutes.map((route) => ({
     url: `${baseUrl}${route.path}`,
     lastModified: new Date().toISOString(),

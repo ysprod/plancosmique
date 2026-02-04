@@ -1,5 +1,6 @@
 import { extractMarkdown, formatDateFR, getConsultationId } from "@/components/admin/consultations/DisplayConsultationCard/helpers";
 import { api } from "@/lib/api/client";
+import { safeTrim, wordCount } from "@/lib/functions";
 import type { Analysis, Consultation } from "@/lib/interfaces";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -31,7 +32,6 @@ function getConsultationIdFromParams(params: unknown): string | null {
 
 export function useAdminConsultationAnalysis() {
   const params = useParams();
-
 
   const reqSeqRef = useRef(0);
   const abortRef = useRef<AbortController | null>(null);
@@ -200,21 +200,20 @@ export function useAdminConsultationAnalysis() {
     };
   }, [loadAnalysis]);
 
+  const mdTexte = useMemo(() => safeTrim(analyse?.texte), [analyse?.texte]);
+  const mdPrompt = useMemo(() => safeTrim(analyse?.prompt), [analyse?.prompt]);
+  const mdTitle = useMemo(() => safeTrim(analyse?.title), [analyse?.title]);
+
+  const metrics = useMemo(() => {
+    const wc = wordCount(mdTexte);
+    const pc = wordCount(mdPrompt);
+    return { wc, pc };
+  }, [mdTexte, mdPrompt]);
+
   return {
-    loading: state.loading,
-    error: state.error,
-    toast: state.toast,
-    setToast,
-    showToast,
-    reload: loadAnalysis,
-    handleBack,
-    copied,
-    setCopied,
-    derived,
-    handleCopy,
-    handleRefresh,
-    handleNotify,
-    markdown: analyse ?? { texte: "", prompt: "", title: "" },
+    loading: state.loading, metrics, mdPrompt, copied, derived,
+    mdTexte, mdTitle, error: state.error, toast: state.toast,
+    setToast, handleCopy, handleRefresh, handleNotify, handleBack,
   };
 }
 

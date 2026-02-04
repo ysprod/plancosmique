@@ -4,18 +4,16 @@ import { useConsultationChoiceFromRubriques } from '@/hooks/admin/useConsultatio
 import { CreatePromptError } from './CreatePromptError';
 import { CreatePromptHeader } from './CreatePromptHeader';
 import { CreatePromptLoader } from './CreatePromptLoader';
+import { useSearchParams } from 'next/navigation';
 
-interface CreatePromptPageProps {
-  choiceId: string | null;
-  returnTo: string;
-}
+export default function CreatePromptPage() {
+  const searchParams = useSearchParams();
+  const choiceId = searchParams?.get('choiceId') || '';
+  const returnTo = searchParams?.get('returnTo') || undefined;
 
-export default function CreatePromptPage({ choiceId, returnTo }: CreatePromptPageProps) {
-  const { choice, loading, error, } = useConsultationChoiceFromRubriques(choiceId);
- 
-  if (loading) {
-    return <CreatePromptLoader />;
-  }
+  const { choice, loading, error } = useConsultationChoiceFromRubriques(choiceId);
+
+  if (loading) return <CreatePromptLoader />;
 
   if (error || !choice) {
     return (
@@ -33,7 +31,7 @@ export default function CreatePromptPage({ choiceId, returnTo }: CreatePromptPag
         <CreatePromptHeader title={choice.title} rubriqueTitle={choice.rubriqueTitle} />
         <div className="w-full">
           <PromptForm
-            choiceId={choiceId!}
+            choiceId={choiceId}
             returnTo={returnTo}
           />
         </div>

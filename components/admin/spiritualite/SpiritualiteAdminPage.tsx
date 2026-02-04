@@ -19,7 +19,7 @@ export default function SpiritualiteAdminPage() {
           draftCount={spiritualite.practices.filter(p => !p.published).length}
         />
         <SpiritualiteMessages error={spiritualite.error} success={spiritualite.success} />
-       
+
         <SpiritualiteFormModal
           show={spiritualite.showForm}
           onClose={() => spiritualite.setShowForm(false)}

@@ -106,8 +106,8 @@ export async function GET(
     }
 
     const analyse = backendData.analyse;
-
     let pdfDocument;
+    
     try {
       pdfDocument = createElement(AnalysisDocument, { analyse });
     } catch (err: any) {

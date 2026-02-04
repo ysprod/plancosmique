@@ -4,6 +4,7 @@ import { ConsultationChoice } from '@/lib/interfaces';
 import { Prompt } from '@/lib/types/prompt.types';
 import { useConsultationChoicesFilter } from './useConsultationChoicesFilter';
 import { promptService } from '@/lib/api/services/prompt.service';
+import { useConsultationChoicesTabs } from './useConsultationChoicesTabs';
 
 export interface ConsultationChoiceWithPrompt extends ConsultationChoice {
   prompt?: Prompt;
@@ -61,6 +62,19 @@ export function useConsultationChoices() {
   const choicesWithPrompt = useMemo(() => filteredChoices.filter(c => c.promptId), [filteredChoices]);
   const choicesWithoutPrompt = useMemo(() => filteredChoices.filter(c => !c.promptId), [filteredChoices]);
 
+  const { tab, setTab } = useConsultationChoicesTabs('sans');
+
+  const headerProps = useMemo(() => ({
+    withPrompt: choicesWithPrompt.length,
+    withoutPrompt: choicesWithoutPrompt.length,
+  }), [choicesWithPrompt.length, choicesWithoutPrompt.length]);
+
+  const searchProps = useMemo(() => ({ search, setSearch, }), [search, setSearch]);
+
+  const tabsProps = useMemo(() => ({ tab, setTab, }), [tab, setTab]);
+
+  const handleDeletePromptStable = useCallback(handleDeletePrompt, [handleDeletePrompt]);
+
   return {
     choices,
     loading,
@@ -73,5 +87,12 @@ export function useConsultationChoices() {
     choicesWithoutPrompt,
     search,
     setSearch,
+    tab,
+    setTab,
+    headerProps,
+    searchProps,
+    tabsProps,  
+    handleDeletePromptStable,
+    
   };
 }

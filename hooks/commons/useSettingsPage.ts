@@ -22,26 +22,32 @@ export default function useSettingsPage() {
   const [backupFrequency, setBackupFrequency] = useState('daily');
   const [logLevel, setLogLevel] = useState('error');
 
-  return {
-    activeTab, setActiveTab,
-    isSaving, setIsSaving,
-    saveSuccess, setSaveSuccess,
-    showApiKey, setShowApiKey,
-    siteName, setSiteName,
-    siteEmail, setSiteEmail,
-    sitePhone, setSitePhone,
-    maintenanceMode, setMaintenanceMode,
-    emailNotifications, setEmailNotifications,
-    newUserNotif, setNewUserNotif,
-    newConsultationNotif, setNewConsultationNotif,
-    paymentNotif, setPaymentNotif,
-    twoFactorAuth, setTwoFactorAuth,
-    sessionTimeout, setSessionTimeout,
-    passwordExpiry, setPasswordExpiry,
-    moneyFusionApiKey, setMoneyFusionApiKey,
-    paymentMethods, setPaymentMethods,
-    maxUploadSize, setMaxUploadSize,
-    backupFrequency, setBackupFrequency,
-    logLevel, setLogLevel,
+  const handleSave = async () => {
+    setIsSaving(true);
+    setSaveSuccess(false);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsSaving(false);
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3000);
   };
+
+  const tabProps = {
+    general: {
+      siteName, setSiteName, siteEmail, setSiteEmail, sitePhone, setSitePhone, maintenanceMode, setMaintenanceMode
+    },
+    notifications: {
+      emailNotifications, setEmailNotifications, newUserNotif, setNewUserNotif, newConsultationNotif, setNewConsultationNotif, paymentNotif, setPaymentNotif
+    },
+    security: {
+      twoFactorAuth, setTwoFactorAuth, sessionTimeout, setSessionTimeout, passwordExpiry, setPasswordExpiry
+    },
+    payment: {
+      moneyFusionApiKey, setMoneyFusionApiKey, showApiKey, setShowApiKey, paymentMethods, setPaymentMethods
+    },
+    system: {
+      maxUploadSize, setMaxUploadSize, backupFrequency, setBackupFrequency, logLevel, setLogLevel
+    }
+  };
+
+  return { activeTab, setActiveTab, isSaving, saveSuccess, handleSave, tabProps, };
 }

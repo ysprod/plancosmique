@@ -3,7 +3,7 @@ import { ActionButtons, BackgroundBlobs, SecurityNote, StatusCard, useAnimationV
 import AnalysisPreview from '@/components/callback/AnalysisPreview';
 import LoadingState from '@/components/callback/LoadingState';
 import { usePaymentCallback } from '@/hooks/commons/usePaymentCallback';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
 
 export default function PaymentCallbackPageClient() {
@@ -15,7 +15,7 @@ export default function PaymentCallbackPageClient() {
     handleViewConsultation, handleDownloadBook, handleRetry, handleGoHome,
   } = usePaymentCallback(token);
 
-  const { containerVariants, itemVariants, pulseVariants } = useAnimationVariants();
+  const { itemVariants, pulseVariants } = useAnimationVariants();
 
   if (isLoading) { return <LoadingState />; }
 
@@ -24,12 +24,8 @@ export default function PaymentCallbackPageClient() {
       <BackgroundBlobs />
 
       <AnimatePresence mode="wait">
-        <motion.div
+        <div
           key={status}
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
           className="w-full max-w-3xl relative z-10"
         >
           {!isGeneratingAnalysis &&
@@ -64,7 +60,7 @@ export default function PaymentCallbackPageClient() {
             itemVariants={itemVariants}
           />
           <SecurityNote itemVariants={itemVariants} />
-        </motion.div>
+        </div>
       </AnimatePresence>
     </div>
   );

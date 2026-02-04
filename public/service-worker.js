@@ -1,8 +1,9 @@
-// Service Worker optimisé pour Mon Étoile
-// Gère la mise en cache agressive pour maximiser les performances
-// Version cache - Incrémenter pour forcer le rafraîchissement
 
-const CACHE_VERSION = 'monetoile-v50';
+// Service Worker optimisé pour Mon Étoile
+// Mise en cache intelligente, gestion robuste, code simplifié
+// Incrémentez CACHE_VERSION pour forcer l'update
+
+const CACHE_VERSION = 'monetoile-v56';
 const CACHE_STATIC = `${CACHE_VERSION}-static`;
 const CACHE_DYNAMIC = `${CACHE_VERSION}-dynamic`;
 const CACHE_IMAGES = `${CACHE_VERSION}-images`;
@@ -15,51 +16,40 @@ const CRITICAL_ASSETS = [
   '/manifest.json',
 ];
 
-// Durée de cache par type de ressource (en millisecondes)
+// Durée de cache par type de ressource (en ms)
 const CACHE_DURATIONS = {
-  static: 365 * 24 * 60 * 60 * 1000, // 1 an pour les assets statiques
-  images: 30 * 24 * 60 * 60 * 1000,  // 30 jours pour les images
-  api: 5 * 60 * 1000,                // 5 minutes pour les API
-  dynamic:  1000,      // 24h pour les pages dynamiques  24 * 60 * 60 * 1000
+  static: 365 * 24 * 60 * 60 * 1000, // 1 an
+  images: 30 * 24 * 60 * 60 * 1000,  // 30 jours
+  api: 5 * 60 * 1000,                // 5 min
+  dynamic: 24 * 60 * 60 * 1000,      // 24h
 };
 
-// Taille maximale du cache (en nombre d'entrées)
+// Taille max du cache (entrées)
 const MAX_CACHE_SIZE = {
-  static: 500,
-  images: 1000,
+  static: 300,
+  images: 300,
   api: 50,
-  dynamic: 300,
+  dynamic: 100,
 };
 
 // Installation du Service Worker
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_STATIC).then((cache) => {
-      return cache.addAll(CRITICAL_ASSETS).catch(err => {
-        console.warn('[SW] Certains assets critiques n\'ont pas pu être cachés:', err);
-        return Promise.resolve();
-      });
-    })
+    caches.open(CACHE_STATIC).then((cache) =>
+      cache.addAll(CRITICAL_ASSETS).catch(() => Promise.resolve())
+    )
   );
-  
-  // Activer immédiatement le nouveau SW
   self.skipWaiting();
 });
 
 // Activation et nettoyage des anciens caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.allSettled(
-        cacheNames.map((cacheName) => {
-          if (!cacheName.startsWith(CACHE_VERSION)) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => {
-      return self.clients.claim();
-    })
+    caches.keys().then((cacheNames) =>
+      Promise.all(
+        cacheNames.filter((cacheName) => !cacheName.startsWith(CACHE_VERSION)).map((cacheName) => caches.delete(cacheName))
+      )
+    ).then(() => self.clients.claim())
   );
 });
 
@@ -84,9 +74,8 @@ function getCacheName(url) {
 async function limitCacheSize(cacheName, maxSize) {
   const cache = await caches.open(cacheName);
   const keys = await cache.keys();
-  if (keys.length > maxSize) {
-    const toDelete = keys.slice(0, keys.length - maxSize);
-    await Promise.allSettled(toDelete.map(key => cache.delete(key)));
+  while (keys.length > maxSize) {
+    await cache.delete(keys.shift());
   }
 }
 
@@ -94,25 +83,12 @@ async function limitCacheSize(cacheName, maxSize) {
 async function isCacheExpired(response, cacheName) {
   const cachedDate = response.headers.get('sw-cached-date');
   if (!cachedDate) return false;
-  
   const cacheTime = new Date(cachedDate).getTime();
   const now = Date.now();
-  
-  let maxAge;
-  switch (cacheName) {
-    case CACHE_STATIC:
-      maxAge = CACHE_DURATIONS.static;
-      break;
-    case CACHE_IMAGES:
-      maxAge = CACHE_DURATIONS.images;
-      break;
-    case CACHE_API:
-      maxAge = CACHE_DURATIONS.api;
-      break;
-    default:
-      maxAge = CACHE_DURATIONS.dynamic;
-  }
-  
+  let maxAge = CACHE_DURATIONS.dynamic;
+  if (cacheName === CACHE_STATIC) maxAge = CACHE_DURATIONS.static;
+  else if (cacheName === CACHE_IMAGES) maxAge = CACHE_DURATIONS.images;
+  else if (cacheName === CACHE_API) maxAge = CACHE_DURATIONS.api;
   return (now - cacheTime) > maxAge;
 }
 
@@ -149,32 +125,10 @@ self.addEventListener('fetch', (event) => {
       const cachedResponse = await cache.match(request);
       if (cachedResponse) {
         const isExpired = await isCacheExpired(cachedResponse, cacheName);
-        if (cacheName === CACHE_STATIC || cacheName === CACHE_IMAGES) {
-          if (isExpired) {
-            fetch(request).then(response => {
-              if (response && response.status === 200) {
-                const responseClone = response.clone();
-                const headers = new Headers(responseClone.headers);
-                headers.append('sw-cached-date', new Date().toISOString());
-                try {
-                  const modifiedResponse = new Response(responseClone.body, {
-                    status: responseClone.status,
-                    statusText: responseClone.statusText,
-                    headers: headers,
-                  });
-                  cache.put(request, modifiedResponse);
-                  limitCacheSize(cacheName, MAX_CACHE_SIZE[cacheName.split('-').pop()]);
-                } catch (e) {
-                  console.warn('[SW] cache.put échoué:', e);
-                }
-              }
-            }).catch(() => {});
-          }
+        if ((cacheName === CACHE_STATIC || cacheName === CACHE_IMAGES) && !isExpired) {
           return cachedResponse;
         }
-        if (!isExpired) {
-          return cachedResponse;
-        }
+        if (!isExpired) return cachedResponse;
       }
       try {
         const networkResponse = await fetch(request);
@@ -193,17 +147,13 @@ self.addEventListener('fetch', (event) => {
             const cacheType = cacheName.split('-').pop();
             limitCacheSize(cacheName, MAX_CACHE_SIZE[cacheType] || 30);
           } catch (e) {
-            console.warn('[SW] cache.put échoué:', e);
+            // fail silently
           }
         }
         return networkResponse;
       } catch (error) {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        if (request.mode === 'navigate') {
-          return caches.match('/offline.html');
-        }
+        if (cachedResponse) return cachedResponse;
+        if (request.mode === 'navigate') return caches.match('/offline.html');
         throw error;
       }
     })
@@ -214,16 +164,13 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'CLEAR_CACHE') {
     event.waitUntil(
-      caches.keys().then((cacheNames) => {
-        return Promise.all(
-          cacheNames.map((cacheName) => caches.delete(cacheName))
-        );
-      }).then(() => {
-        event.ports[0].postMessage({ success: true });
+      caches.keys().then((cacheNames) =>
+        Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)))
+      ).then(() => {
+        if (event.ports && event.ports[0]) event.ports[0].postMessage({ success: true });
       })
     );
   }
-  
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
