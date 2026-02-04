@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+
 import { api } from '@/lib/api/client';
 import type { OfferingAlternative } from '@/lib/interfaces';
 import { useAuth } from '../lib/useAuth';
@@ -20,7 +20,7 @@ interface UseOfferingValidationReturn {
 export function useOfferingValidation({
     consultationId,
     categoryId}: UseOfferingValidationParams): UseOfferingValidationReturn {
-    const router = useRouter();
+
      const { user } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -66,7 +66,7 @@ export function useOfferingValidation({
         } finally {
             setLoading(false);
         }
-    }, [consultationId, categoryId, user?._id, router]);
+    }, [consultationId, categoryId, user?._id]);
 
     const clearError = useCallback(() => {
         setShowError(false);

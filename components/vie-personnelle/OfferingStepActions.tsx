@@ -1,6 +1,6 @@
 'use client';
 import { ChevronRight, ShoppingBag, ArrowRight } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React, { useCallback } from "react";
 
 interface OfferingStepActionsProps {
@@ -11,7 +11,7 @@ interface OfferingStepActionsProps {
 }
 
 export default function OfferingStepActions({ onNext, canProceed, consultationId, categoryId }: OfferingStepActionsProps) {
-  const router = useRouter();
+
   const searchParams = useSearchParams();
 
   const effectiveConsultationId = consultationId || searchParams!.get('consultationId') || undefined;
@@ -23,7 +23,7 @@ export default function OfferingStepActions({ onNext, canProceed, consultationId
     if (effectiveCategoryId) params.set('categoryId', effectiveCategoryId);
     const url = `/star/marcheoffrandes${params.toString() ? `?${params.toString()}` : ''}`;
     window.location.href = url;
-  }, [router, effectiveConsultationId, effectiveCategoryId]);
+  }, [effectiveConsultationId, effectiveCategoryId]);
 
   return (
     <div className="sticky bottom-0 z-40 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">

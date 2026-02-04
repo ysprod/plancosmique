@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+
 import type { OfferingAlternative, WalletOffering } from "@/lib/interfaces";
 import type { Category } from "../../components/cinqetoiles/OfferingStep";
 
@@ -8,7 +8,7 @@ export function useOfferingStep(
   walletOfferings: WalletOffering[],
   onNext: (selected: OfferingAlternative) => void
 ) {
-  const router = useRouter();
+
   const [activeTab, setActiveTab] = useState<Category>("animal");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -67,7 +67,7 @@ export function useOfferingStep(
 
   const handleGoToMarket = useCallback(() => {
     window.location.href = "/star/marcheoffrandes";
-  }, [router]);
+  }, []);
 
   const currentOfferings = offeringsByCategory[activeTab];
 

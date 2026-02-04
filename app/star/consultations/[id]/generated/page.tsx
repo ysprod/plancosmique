@@ -1,13 +1,12 @@
 "use client";
 
-import { CosmicLoader } from "@/components/admin/consultations/CosmicLoader";
 import ConsultationContent from "@/components/consultations/ConsultationContent";
 import ConsultationError from "@/components/consultations/ConsultationError";
 import { api } from "@/lib/api/client";
 import { cx } from "@/lib/functions";
 import type { Analysis } from "@/lib/interfaces";
-import { AlertCircle, ArrowRight, Loader2, RefreshCw, Sparkles } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { AlertCircle, ArrowRight, Loader2, Sparkles } from "lucide-react";
+import { useParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type Status = "idle" | "loading" | "error" | "success";
@@ -30,7 +29,6 @@ function getErrorMessage(err: unknown): string {
 }
 
 export default function GenerateAnalysePage() {
-  const router = useRouter();
   const params = useParams();
 
   const id = useMemo(() => getIdFromParams(params), [params]);
@@ -66,7 +64,7 @@ export default function GenerateAnalysePage() {
       }
     }
     window.location.href = "/star/consultations";
-  }, [router]);
+  }, []);
 
   const handleDownloadPDF = useCallback(() => {
     if (!id) return;
@@ -119,12 +117,6 @@ export default function GenerateAnalysePage() {
     return undefined;
   }, [id, runGeneration]);
 
-  const onRetry = useCallback(() => {
-    if (status === "loading") return;
-    setError(null);
-    setStatus("idle");
-    runGeneration();
-  }, [status, runGeneration]);
 
   // UI: si succès et analyse => affiche la page résultat (ton composant existant)
   if (status === "success" && analyse) {

@@ -15,14 +15,14 @@ import {
   XCircle,
   Zap,
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type {  PaymentData, PaymentStatus, StatusConfig } from '../../components/callback/types';
 
 
 
 export function usePaymentCallback(token: string | null) {
-  const router = useRouter();
+
 
   // States
   const [consultationId, setConsultationId] = useState<string | null>(null);
@@ -219,14 +219,14 @@ export function usePaymentCallback(token: string | null) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [shouldAutoRedirect, consultationId, downloadUrl, router]);
+  }, [shouldAutoRedirect, consultationId, downloadUrl]);
 
   // Actions
   const handleViewConsultation = useCallback(() => {
     if (consultationId) {
       window.location.href = `/star/consultations/${consultationId}`;
     }
-  }, [consultationId, router]);
+  }, [consultationId]);
 
   const handleDownloadBook = useCallback(() => {
     if (downloadUrl) {
@@ -240,7 +240,7 @@ export function usePaymentCallback(token: string | null) {
 
   const handleGoHome = useCallback(() => {
     window.location.href = '/star/profil';
-  }, [router]);
+  }, []);
 
   return {
     isLoading,

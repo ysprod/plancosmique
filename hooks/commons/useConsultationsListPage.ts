@@ -1,10 +1,10 @@
-import { useRouter } from 'next/navigation';
+
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api/client';
 import { Consultation, ConsultationType, ConsultationStatus } from '@/lib/interfaces';
 
 export function useConsultationsListPage() {
-  const router = useRouter();
+
   const [consultations, setConsultations] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -4,7 +4,7 @@ import { getRubriqueById } from '@/lib/api/services/rubriques.service';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { mapFormDataToBackend } from '@/lib/functions';
 import { OfferingAlternative, User, WalletOffering } from '@/lib/interfaces';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export type HoroscopeTabId = 'annuel' | 'mensuel';
@@ -20,7 +20,7 @@ interface Consultation {
 
 export function useAnalyseHoroscopePage() {
     const { user } = useAuth();
-    const router = useRouter();
+
     const params = useSearchParams();
     const consultationCreationLock = useRef(false);
     const [step, setStep] = useState<StepType>('selection');
@@ -130,7 +130,7 @@ export function useAnalyseHoroscopePage() {
     );
 
     const handleCloseError = useCallback(() => setError(null), []);
-    const handleBack = useCallback(() => router.back(), [router]);
+    const handleBack = useCallback(() => window.history.back(), []);
 
     return {
         step,

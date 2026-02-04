@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   X, ShoppingCart, CreditCard, Sparkles, CheckCircle2, Loader2, AlertCircle,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+
 import { useState, useCallback } from "react";
 
 interface CheckoutModalProps {
@@ -141,7 +141,7 @@ export default function CheckoutModal({
   consultationId,
   categoryId,
 }: CheckoutModalProps) {
-  const router = useRouter();
+
   const { user } = useAuth();
   const [simulationStep, setSimulationStep] = useState<SimulationStep>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -245,7 +245,7 @@ export default function CheckoutModal({
       setError(err.message || "Une erreur est survenue lors de la simulation");
       setSimulationStep("idle");
     }
-  }, [cart, totalAmount, onClearCart, router, user]);
+  }, [cart, totalAmount, onClearCart,  user]);
 
   const handleRetry = useCallback(() => {
     setError(null);

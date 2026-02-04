@@ -1,10 +1,10 @@
 import { useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
+
 import { api } from "@/lib/api/client";
 import { OfferingFormData } from "@/components/admin/offrandes/OfferingForm";
 
 export function useOfferingForm() {
-  const router = useRouter();
+
   const [formData, setFormData] = useState<OfferingFormData>({
     name: '',
     price: 0,

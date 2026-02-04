@@ -1,6 +1,6 @@
 import { api } from '@/lib/api/client';
 import { Offering } from '@/lib/interfaces';
-import { useRouter } from 'next/navigation';
+
 import { useCallback, useEffect, useState } from 'react';
 
 export interface StatsData {
@@ -32,7 +32,7 @@ export interface OfferingFormData {
 }
 
 export function useAdminOffrandes() {
-  const router = useRouter();
+
   const [statsError, setStatsError] = useState<string | null>(null);
   const [offerings, setOfferings] = useState<Offering[]>([]);
   const [statsData, setStatsData] = useState<StatsData | null>(null);

@@ -1,6 +1,6 @@
 import { api } from "@/lib/api/client";
 import type { Analysis } from "@/lib/interfaces";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 function getIdFromParams(params: any): string | null {
@@ -15,7 +15,7 @@ function isEmptyAnalysisPayload(data: any) {
 
 export function useConsultationResult() {
   const params = useParams();
-  const router = useRouter();
+
   const searchParams = useSearchParams();
 
   const consultationId = useMemo(() => getIdFromParams(params), [params]);
@@ -67,7 +67,7 @@ export function useConsultationResult() {
         setLoading(false);
       }
     })();
-  }, [consultationId, router]);
+  }, [consultationId]);
 
   const handleBack = useCallback(() => {
     if (retour === "cinqportes") {
@@ -79,7 +79,7 @@ export function useConsultationResult() {
       return;
     }
     window.location.href = "/star/consultations";
-  }, [router, retour]);
+  }, [retour]);
 
   const handleDownloadPDF = useCallback(() => {
     if (!consultationId) return;

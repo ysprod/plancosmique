@@ -1,12 +1,12 @@
 import { useMemo, useCallback } from "react";
-import { useRouter } from "next/navigation";
+
 import type { OfferingAlternative, WalletOffering } from "@/lib/interfaces";
 import { useState } from 'react';
 
 export type Category = 'animal' | 'vegetal' | 'beverage';
 
 export function useOfferingStepState(requiredOfferings: OfferingAlternative[], walletOfferings: WalletOffering[], onNext: (selected: OfferingAlternative) => void) {
-  const router = useRouter();
+
   const [activeTab, setActiveTab] = useState<Category>('animal');
   const [selectedId, setSelectedId] = useState<string | null>(null);
 

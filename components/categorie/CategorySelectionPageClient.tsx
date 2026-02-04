@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api/client";
 import CategoryLoadingSpinner from "@/components/categorie/CategoryLoadingSpinner";
@@ -13,7 +13,7 @@ interface Category {
 export default function CategorySelectionPageClient() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
-    const router = useRouter();
+
 
     useEffect(() => {
         api.get("/categories").then(res => setCategories(res.data)).finally(() => setLoading(false));

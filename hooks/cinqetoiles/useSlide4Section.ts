@@ -1,11 +1,11 @@
 'use client';
 import { getRubriqueById } from '@/lib/api/services/rubriques.service';
 import { ConsultationChoice, StepType } from '@/lib/interfaces';
-import { useRouter } from 'next/navigation';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useSlide4Section() {
-  const router = useRouter();
+
   const [choices, setChoices] = useState<ConsultationChoice[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,7 +13,7 @@ export function useSlide4Section() {
 
   const handleSelect = useCallback(() => {
     window.location.href = '/star/profil/doors';
-  }, [router]);
+  }, []);
 
   useEffect(() => {
     if (choicesFetchedRef.current) return;

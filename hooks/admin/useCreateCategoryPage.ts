@@ -1,10 +1,10 @@
 import { useAdminRubriquesPage } from "@/hooks/admin/useAdminRubriquesPage";
 import { createCategory } from "@/lib/api/services/categories.service";
-import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 
 export function useCreateCategoryPage() {
-  const router = useRouter();
+
   const { rubriques, loading: rubriquesLoading } = useAdminRubriquesPage();
   const [nom, setNom] = useState("");
   const [description, setDescription] = useState("");

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAdminConsultations } from '@/hooks/consultations/useAdminConsultations';
 import { api } from '@/lib/api/client';
-import { useRouter } from 'next/navigation';
+
 import { Consultation } from '@/lib/interfaces';
 
 export type ConsultationStatus = 'all' | 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR';
@@ -18,7 +18,7 @@ interface UseAdminConsultationsOptions {
 }
 
 export function useAdminConsultationsPage() {
-  const router = useRouter();
+
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<ConsultationStatus>('all');
   const [typeFilter, setTypeFilter] = useState<ConsultationType>('all');
@@ -112,7 +112,7 @@ export function useAdminConsultationsPage() {
 
   const handleGenerateAnalysis = useCallback(async (id: string) => {
     window.location.href = `/admin/consultations/${id}`;
-  }, [router]);
+  }, []);
 
   const handleToastClose = useCallback(() => {
     setToastMessage(null);

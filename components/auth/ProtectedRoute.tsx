@@ -2,7 +2,7 @@
 import { config } from '@/lib/config';
 import { useAuth } from '@/lib/hooks';
 import { AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+
 import React, { memo, useEffect, useMemo } from 'react';
 import CosmicLoader from './CosmicLoader';
 
@@ -16,7 +16,7 @@ function ProtectedRouteComponent({
   redirectTo = config.routes.login,
 }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuth();
-  const router = useRouter();
+
 
   const loginUrl = useMemo(() => {
     if (typeof window === 'undefined') return redirectTo;
@@ -29,7 +29,7 @@ function ProtectedRouteComponent({
     if (!isAuthenticated) {
       window.location.href = loginUrl;
     }
-  }, [isAuthenticated, isLoading, router, loginUrl]);
+  }, [isAuthenticated, isLoading, loginUrl]);
 
   if (isLoading) {
     return (

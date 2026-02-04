@@ -5,7 +5,7 @@ import { getRubriqueById, getRubriqueWithConsultationCount, ConsultationChoiceWi
 import { useAuth } from '@/lib/auth/AuthContext';
 import { mapFormDataToBackend } from '@/lib/functions';
 import { ConsultationChoice, ConsultationData, DoneChoice, OfferingAlternative, Rubrique, User, WalletOffering } from '@/lib/interfaces';
-import { useRouter } from 'next/navigation';
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm' | 'consulter' | 'genereanalyse';
@@ -45,7 +45,7 @@ export function useSlide4Section(rubrique: Rubrique) {
     gender: '',
   });
   const [formErrors, setFormErrors] = useState<any>({});
-  const router = useRouter();
+
   const { user } = useAuth();
 
   const [alreadyDoneChoices, setAlreadyDoneChoices] = useState<DoneChoice[]>([]);
@@ -173,10 +173,6 @@ export function useSlide4Section(rubrique: Rubrique) {
     },
     [consultationId, user]
   );
-
-  const handleBack = useCallback(() => {
-    router.back();
-  }, [router]);
 
   const fetchWalletOfferings = useCallback(async () => {
     try {
@@ -386,7 +382,8 @@ export function useSlide4Section(rubrique: Rubrique) {
     consultation,
     walletOfferings,
     handleOfferingValidation,
-    handleBack,
+    handleBack: () => {},
+    resetSelection: () => {},
     apiError,
     showErrorToast,
     handleCloseError,
@@ -395,6 +392,5 @@ export function useSlide4Section(rubrique: Rubrique) {
     errors: formErrors,
     handleChange: handleFormChange,
     handleSubmit: handleFormSubmit,
-    resetSelection: handleBack,
   };
 }

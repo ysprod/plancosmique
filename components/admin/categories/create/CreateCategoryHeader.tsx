@@ -1,6 +1,5 @@
 'use client';
 import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
 import ViewSwitcher from "@/components/admin/categories/create/ViewSwitcher";
 import React from "react";
 
@@ -9,7 +8,6 @@ interface CreateCategoryHeaderProps {
 }
 
 const CreateCategoryHeader: React.FC<CreateCategoryHeaderProps> = ({ view }) => {
-  const router = useRouter();
   return (
     <div className="mb-5 flex items-center justify-between gap-3">
       <button

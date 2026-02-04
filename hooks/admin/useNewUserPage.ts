@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation';
+
 import { useCallback, useMemo, useState } from 'react';
 import { api } from '@/lib/api/client';
 import { User } from '@/lib/interfaces';
@@ -9,7 +9,6 @@ const validatePhone = (phone: string): boolean => {
 };
 
 export function useNewUserPage() {
-  const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [errors, setErrors] = useState<any>({});
@@ -70,7 +69,7 @@ export function useNewUserPage() {
     } finally {
       setSaving(false);
     }
-  }, [formData, validateForm, router]);
+  }, [formData, validateForm]);
 
   const isFormValid = useMemo(() => {
     return formData.username && (!formData.phone || validatePhone(formData.phone));

@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Edit, FileText, Trash2 } from "lucide-react";
-import { useRouter } from 'next/navigation';
 
 interface ConsultationChoiceCardProps {
   choice: any;
@@ -8,7 +7,6 @@ interface ConsultationChoiceCardProps {
 }
 
 function ConsultationChoiceCard({ choice, onDelete }: ConsultationChoiceCardProps) {
-  const router = useRouter();
 
   return (
     <motion.div

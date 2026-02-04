@@ -1,11 +1,10 @@
 import { api } from '@/lib/api/client';
 import { Analysis, Consultation, GenerationStep } from '@/lib/interfaces';
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 export function useGenereAnalysePage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const consultationId = searchParams?.get('id') || null;
   const [step, setStep] = useState<GenerationStep>('loading');
   const [consultation, setConsultation] = useState<Consultation | null>(null);
@@ -59,7 +58,7 @@ export function useGenereAnalysePage() {
 
   const handleBack = useCallback(() => {
     window.location.href = `/admin/consultations/${consultationId}`;
-  }, [router]);
+  }, [consultationId]);
 
   return { step, consultation, analyse, error, handleRetry, handleBack, };
 }

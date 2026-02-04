@@ -1,5 +1,5 @@
 import { useAuth } from '@/lib/hooks';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useCallback, useMemo, useState, useTransition } from 'react';
 
 export interface FormData {
@@ -32,7 +32,7 @@ const validateForm = (data: FormData): FormErrors => {
 
 export function useLoginForm() {
   const { login, isLoading } = useAuth();
-  const router = useRouter();
+
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
@@ -89,7 +89,7 @@ export function useLoginForm() {
         'Nom d\'utilisateur ou mot de passe incorrect'
       );
     }
-  }, [formData, login, returnTo, router]);
+  }, [formData, login, returnTo]);
 
   const isSubmitDisabled = useMemo(() => {
     return isLoading || isPending || !formData.username.trim() || !formData.password;

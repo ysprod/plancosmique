@@ -2,7 +2,7 @@ import { api } from "@/lib/api/client";
 import { getChoicesWithCount } from "@/lib/api/services/rubrique.service";
 import { mapFormDataToBackend } from "@/lib/functions";
 import type { CategorieAdmin, ConsultationChoice, Rubrique, User } from "@/lib/interfaces";
-import { useRouter } from "next/navigation";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type UiState = {
@@ -25,7 +25,7 @@ function readSelectedChoiceIdOnce() {
 }
 
 export function useCategoryFormClient(category: CategorieAdmin, consultationId: string) {
-    const router = useRouter();
+
 
     const [ui, setUi] = useState<UiState>(initialUi);
     const [userData, setUserData] = useState<User | null>(null);
@@ -144,7 +144,7 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
             window.location.href = `/star/category/${category._id}/consulter?consultationId=${id}`;
 
         },
-        [category?._id, category?.typeconsultation, router, rubriqueCourante?._id, userData]
+        [category?._id, category?.typeconsultation, rubriqueCourante?._id, userData]
     );
 
     // --- 5) AUTO-create en SOLO (si pas besoin de formulaire) ---
@@ -263,7 +263,7 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
 
     const handleReset = useCallback(() => {
         window.location.href = `/star/category/${category._id}/selection`;
-    }, [category._id, router]);
+    }, [category._id]);
 
     const handleCloseError = useCallback(() => {
         setUi((s) => (s.showErrorToast ? { ...s, showErrorToast: false } : s));

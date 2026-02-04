@@ -1,10 +1,10 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { api } from "@/lib/api/client";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Offering } from "@/lib/interfaces";
 
 export function useEditOffrande() {
-  const router = useRouter();
+
   const params = useParams();
   const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
   const [formData, setFormData] = useState<Offering | null>(null);
@@ -73,6 +73,5 @@ export function useEditOffrande() {
     handleCategoryChange,
     handleSubmit,
     fetchData,
-    router,
   };
 }

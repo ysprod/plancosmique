@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation';
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api } from '@/lib/api/client';
 import type { User } from '@/lib/interfaces';
@@ -47,7 +47,7 @@ function transformBackendToResult(backend: BackendHoroscope): HoroscopeResult | 
 }
 
 export default function useHoroscopePage() {
-  const router = useRouter();
+
   const [userData, setUserData] = useState<User | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
   const [activeTab, setActiveTab] = useState<HoroscopeTypeId>('mensuel');
@@ -63,7 +63,7 @@ export default function useHoroscopePage() {
     hasFetchedUserRef.current = true;
     api.get<User>('/users/me')
       .then(res => setUserData(res.data))
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoadingUser(false));
   }, []);
 
@@ -112,7 +112,7 @@ export default function useHoroscopePage() {
   const handleRedirect = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     window.location.href = `/star/analysehoroscope?tab=${activeTab}`;
-  }, [router, activeTab]);
+  }, [activeTab]);
 
   const handleTabChange = useCallback((tabId: HoroscopeTypeId) => {
     setActiveTab(tabId);

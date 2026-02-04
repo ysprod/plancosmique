@@ -1,8 +1,6 @@
 "use client";
 
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-
 import { usePromptForm } from "@/hooks/admin/usePromptForm";
 import { PromptHeader } from './PromptHeader';
 import { PromptBasicInfo } from './PromptBasicInfo';
@@ -143,7 +141,6 @@ const ChoiceSelectCard = memo(function ChoiceSelectCard({
 ChoiceSelectCard.displayName = "ChoiceSelectCard";
 
 export default function PromptForm({ initialData, choiceId, returnTo }: PromptFormProps) {
-  const router = useRouter();
 
   const {
     formData,
@@ -251,7 +248,7 @@ export default function PromptForm({ initialData, choiceId, returnTo }: PromptFo
         {/* Shell existant (inchangé) */}
         <div className="mt-4">
           <div className="space-y-6 max-w-2xl mx-auto px-2 sm:px-0">
-            <PromptHeader isEdit={!!initialData} loading={loading} onBack={() => router.back()} />
+            <PromptHeader isEdit={!!initialData} loading={loading} onBack={() => window.history.back()} />
             <ChoicePicker
               value={selectedChoiceId}
               onChange={handleSelectChoice}

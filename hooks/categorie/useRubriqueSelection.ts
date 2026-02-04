@@ -1,5 +1,5 @@
 import type { ConsultationChoice, EnrichedChoice, Rubrique } from '@/lib/interfaces';
-import { useRouter } from 'next/navigation';
+
 import { useCallback, useMemo, useState } from 'react';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { api } from '@/lib/api/client';
@@ -12,7 +12,7 @@ const extractEnrichedChoices = (consultationChoices: any[]): EnrichedChoice[] =>
 };
 
 export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
-    const router = useRouter();
+
     const { user } = useAuth();
     const [creatingConsultation, setCreatingConsultation] = useState(false);
 
@@ -108,7 +108,7 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
                 window.location.href = `/star/category/${categoryId}/form`;
             }
         },
-        [categoryId, rubrique._id, rubrique.typeconsultation, router, enrichedChoices, user]
+        [categoryId, rubrique._id, rubrique.typeconsultation, enrichedChoices, user]
     );
 
     return {

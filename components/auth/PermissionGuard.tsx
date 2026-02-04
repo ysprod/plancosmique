@@ -1,11 +1,10 @@
 'use client';
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Permission } from '@/lib/interfaces';
-import { config } from '@/lib/config';
 import { usePermissionCheck } from '@/hooks/auth/usePermissionCheck';
-import { PermissionLoadingState } from './PermissionLoadingState';
+import { config } from '@/lib/config';
+import { Permission } from '@/lib/interfaces';
+import React, { useEffect } from 'react';
 import { PermissionDenied } from './PermissionDenied';
+import { PermissionLoadingState } from './PermissionLoadingState';
 
 interface PermissionGuardProps {
   children: React.ReactNode;
@@ -22,7 +21,7 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = ({
   redirectTo,
   fallback,
 }) => {
-  const router = useRouter();
+ 
   const {
     user,
     isAuthenticated,
@@ -35,7 +34,7 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = ({
     if (!isLoading && isAuthenticated && !hasRequiredPermissions && redirectTo) {
       window.location.href = redirectTo;
     }
-  }, [isAuthenticated, isLoading, hasRequiredPermissions, router, redirectTo]);
+  }, [isAuthenticated, isLoading, hasRequiredPermissions,  redirectTo]);
 
   if (isLoading) {
     return <PermissionLoadingState />;

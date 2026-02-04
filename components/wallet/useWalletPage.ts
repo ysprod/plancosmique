@@ -1,11 +1,11 @@
 import { useAuth } from "@/lib/auth/AuthContext";
-import { useRouter } from "next/navigation";
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "@/lib/api/client";
 import { SortOrder, Stats, Transaction, TransactionFilter } from "./types";
 
 export function useWalletPage() {
-  const router = useRouter();
+
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -134,8 +134,7 @@ export function useWalletPage() {
     return filtered;
   }, [transactions, filter, searchQuery, sortOrder]);
 
-  return {
-    router,
+  return {  
     user,
     isLoading,
     isRefreshing,

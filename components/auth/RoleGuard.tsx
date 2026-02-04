@@ -3,7 +3,7 @@ import { config } from '@/lib/config';
 import { useAuth } from '@/lib/hooks';
 import { Role } from '@/lib/interfaces';
 import { Loader2, ShieldAlert } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+
 import React, { useEffect } from 'react';
 
 interface RoleGuardProps {
@@ -20,7 +20,7 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
   fallback,
 }) => {
   const { user, isAuthenticated, isLoading, hasRole } = useAuth();
-  const router = useRouter();
+
 
   const rolesArray = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
   const hasRequiredRole = hasRole(rolesArray);
@@ -29,7 +29,7 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
     if (!isLoading && isAuthenticated && !hasRequiredRole && redirectTo) {
       window.location.href = redirectTo;
     }
-  }, [isAuthenticated, isLoading, hasRequiredRole, router, redirectTo]);
+  }, [isAuthenticated, isLoading, hasRequiredRole,   redirectTo]);
 
   if (isLoading) {
     return (

@@ -5,11 +5,11 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import { mapFormDataToBackend } from "@/lib/functions";
 import type { CategorieAdmin, ConsultationChoice, Rubrique } from "@/lib/interfaces";
 import { useReducedMotion } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export function useCategoryClientViewChoix({ category, }: { category: CategorieAdmin; }) {
-    const router = useRouter();
+
     const { user } = useAuth();
 
     const reduceMotion = useReducedMotion();
@@ -144,7 +144,7 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
             }
             window.location.href = `/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`;
         },
-        [category._id, enrichedByChoiceId, router, rubriqueCourante?._id, rubriqueCourante?.typeconsultation, user]
+        [category._id, enrichedByChoiceId, rubriqueCourante?._id, rubriqueCourante?.typeconsultation, user]
     );
 
     const handleBack = () => {

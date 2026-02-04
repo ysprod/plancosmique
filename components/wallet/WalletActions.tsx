@@ -1,5 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
+
 import { motion } from 'framer-motion';
 import { ArrowLeftCircle } from 'lucide-react';
 import React, { useCallback } from 'react';
@@ -17,7 +17,7 @@ const buttonVariants = {
 };
 
 export default function WalletActions({ toConsultation, consultationId, categoryId }: WalletActionsProps) {
-  const router = useRouter();
+
   const handleClick = useCallback(() => {
     if (toConsultation && consultationId && categoryId) {
       window.location.href = `/star/category/${categoryId}/consulter?consultationId=${consultationId}`;

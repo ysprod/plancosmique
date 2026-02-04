@@ -1,7 +1,7 @@
 import { extractMarkdown, formatDateFR, getConsultationId } from "@/components/admin/consultations/DisplayConsultationCard/helpers";
 import { api } from "@/lib/api/client";
 import type { Analysis, Consultation } from "@/lib/interfaces";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export interface ToastState {
@@ -31,7 +31,7 @@ function getConsultationIdFromParams(params: unknown): string | null {
 
 export function useAdminConsultationAnalysis() {
   const params = useParams();
-  const router = useRouter();
+
 
   const reqSeqRef = useRef(0);
   const abortRef = useRef<AbortController | null>(null);
@@ -137,15 +137,15 @@ export function useAdminConsultationAnalysis() {
         return shallowEqualState(s, next) ? s : next;
       });
     }
-  }, [consultationId, router]);
+  }, [consultationId]);
 
   const handleBack = useCallback(() => {
     window.location.href = "/admin/consultations/";
-  }, [router]);
+  }, []);
 
   const handleModifyAnalysis = useCallback((id: string) => {
     window.location.href = `/admin/genereanalyse?id=${id}`;
-  }, [router]);
+  }, []);
 
   const handleNotifyUser = useCallback(async (_id?: string) => {
     const loaded = state.consultation;

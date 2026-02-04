@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+
 import { api } from '@/lib/api/client';
 
 interface UseAnalysisPollingParams {
@@ -18,7 +18,7 @@ export function useAnalysisPolling({
     consultationId,
     enabled = true
 }: UseAnalysisPollingParams): UseAnalysisPollingReturn {
-    const router = useRouter();
+
     const [analysisComplete, setAnalysisComplete] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [showError, setShowError] = useState(false);
@@ -63,7 +63,7 @@ export function useAnalysisPolling({
         const interval = setInterval(checkStatus, 5000);
 
         return () => clearInterval(interval);
-    }, [consultationId, analysisComplete, enabled, router]);
+    }, [consultationId, analysisComplete, enabled]);
 
     const clearError = () => {
         setShowError(false);

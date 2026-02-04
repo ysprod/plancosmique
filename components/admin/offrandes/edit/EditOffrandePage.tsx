@@ -6,7 +6,7 @@ import { useEditOffrande } from "@/hooks/admin/useEditOffrande";
 
 export default function EditOffrandePage() {
     const {
-        formData, loading, saving, error, router, priceUSD,
+        formData, loading, saving, error, priceUSD,
         handleChange, handleCategoryChange, handleSubmit, fetchData,
     } = useEditOffrande();
 

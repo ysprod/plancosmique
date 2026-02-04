@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { authService } from "@/lib/api/services/auth.service";
 
@@ -9,7 +9,7 @@ const ERROR_REDIRECT_DELAY = 600;
 const MAX_LOGOUT_WAIT = 6000;
 
 export function useLogoutPage() {
-  const router = useRouter();
+
   const [status, setStatus] = useState("loading");
   const [progress, setProgress] = useState(0);
   const progressIntervalRef = useRef<NodeJS.Timeout | number | null>(null);
@@ -74,7 +74,7 @@ export function useLogoutPage() {
     };
     performLogout();
     return cleanup;
-  }, [router, cleanup]);
+  }, [cleanup]);
 
   return { status, progress };
 }

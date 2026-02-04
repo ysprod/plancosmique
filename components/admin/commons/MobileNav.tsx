@@ -3,7 +3,7 @@ import { useAuth } from '@/lib/auth/AuthContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Activity, LogOut, Menu, Sparkles, X } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { navItems } from './AdminNavConfig';
 
@@ -11,7 +11,7 @@ export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
+
   const { logout } = useAuth();
 
   const handleClose = useCallback(() => {
@@ -32,7 +32,7 @@ export function MobileNav() {
         setIsLoggingOut(false);
       }
     }
-  }, [isLoggingOut, logout, router, handleClose]);
+  }, [isLoggingOut, logout,  handleClose]);
 
   // Animation variants
   const menuVariants = {

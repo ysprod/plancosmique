@@ -3,7 +3,7 @@
 
 import { ConsultationSection } from "@/components/vie-personnelle/ConsultationSection";
 import type { Rubrique } from "@/lib/interfaces";
-import { useRouter } from "next/navigation";
+
 import { ArrowLeft, Download } from "lucide-react";
 import { useEffect, useRef } from "react";
 
@@ -13,7 +13,7 @@ interface RubriquePageClientProps {
 
 
 export default function RubriquePageClient({ rubrique }: RubriquePageClientProps) {
-  const router = useRouter();
+
   const contentRef = useRef<HTMLDivElement>(null);
 
   // Détection des rubriques à protéger

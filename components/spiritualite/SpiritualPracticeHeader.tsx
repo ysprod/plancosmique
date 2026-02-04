@@ -2,7 +2,7 @@
 
 import { Flame, Sparkle, ArrowLeft, BookOpen, CircleDollarSign, Feather, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+
 
 const iconMap: Record<string, React.ReactNode> = {
   'BookOpen': <BookOpen className="w-6 h-6" />,
@@ -29,7 +29,7 @@ interface Practice {
 }
 
 export default function SpiritualPracticeHeader({ practice }: { practice: Practice }) {
-  const router = useRouter();
+
   const icon = iconMap[practice.iconName] || <Flame className="w-8 h-8" />;
   const color = colorMap[practice.slug] || 'from-purple-900 to-indigo-900';
   return (
@@ -44,7 +44,7 @@ export default function SpiritualPracticeHeader({ practice }: { practice: Practi
       </div>
       <div className="relative z-10 max-w-4xl mx-auto">
         <button
-          onClick={() => router.back()}
+          onClick={() => window.history.back()}
           className="inline-flex items-center gap-2 text-orange-200 hover:text-white mb-6 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />

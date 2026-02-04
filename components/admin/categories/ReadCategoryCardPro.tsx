@@ -18,7 +18,6 @@ const cardVariants = {
 
 export const ReadCategoryCardPro = memo(function ReadCategoryCardPro({
   cat,
-  onEdit,
   onDelete,
 }: {
   cat: CategorieAdmin;
@@ -37,11 +36,10 @@ export const ReadCategoryCardPro = memo(function ReadCategoryCardPro({
     return { list, names, visible, remaining, count: list.length };
   }, [cat?.rubriques]);
 
-  const router = require('next/navigation').useRouter();
   const handleEdit = useCallback(() => {
     if (!catId) return;
     window.location.href = `/admin/categories/${catId}/edit`;
-  }, [catId, router]);
+  }, [catId]);
 
   const handleDelete = useCallback(() => {
     if (!catId) return;

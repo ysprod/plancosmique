@@ -1,11 +1,11 @@
-import { useRouter } from 'next/navigation';
+
 import { useEffect, useState } from 'react';
 import useNotificationFilter from '@/hooks/notifications/useNotificationFilter';
 import { useNotifications } from '@/lib/hooks';
 import type { Notification } from '@/lib/types/notification.types';
 
 export function useNotificationsPage() {
-  const router = useRouter();
+
   const { filter, setFilter } = useNotificationFilter();
   const {
     notifications, unreadCount, isLoading,

@@ -6,13 +6,13 @@ import { useEditOffrande } from "@/hooks/admin/useEditOffrande";
 
 export default function EditOffrandePageClient() {
     const {
-        formData, loading, saving, error, router, priceUSD,
+        formData, loading, saving, error, priceUSD,
         handleChange, handleCategoryChange, handleSubmit, fetchData,
     } = useEditOffrande();
 
     if (loading) return <EditOffrandeLoading />;
     if (error) return <EditOffrandeError error={error} onRetry={fetchData} />;
-    
+
     if (!formData) return null;
 
     return (

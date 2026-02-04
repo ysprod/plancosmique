@@ -1,6 +1,6 @@
 import { api } from "@/lib/api/client";
 import type { Analysis } from "@/lib/interfaces";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 interface UseAnalyseFormEditorProps {
@@ -22,7 +22,7 @@ function safeText(v: any) {
 
 export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps) {
   const searchParams = useSearchParams();
-  const router = useRouter();
+
 
   const consultationIdFromUrl = searchParams?.get("id");
   const fallbackId = useMemo(() => getIdFromConsultation(analyseData), [analyseData]);
@@ -62,7 +62,7 @@ export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps)
       return;
     }
     window.location.href = `/admin/consultations/${consultationId}`;
-  }, [router, consultationId]);
+  }, [consultationId]);
 
   const validate = useCallback(() => {
     const txt = analysisText.trim();
@@ -128,7 +128,7 @@ export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps)
       setIsSaving(false);
       saveLockRef.current = false;
     }
-  }, [consultationId, analysisText, router]);
+  }, [consultationId, analysisText]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {

@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/lib/useAuth";
 import { api } from "@/lib/api/client";
 import { mapFormDataToBackend } from "@/lib/functions";
 import type { ConsultationChoice, EnrichedChoice, Rubrique } from "@/lib/interfaces";
-import { useRouter } from "next/navigation";
+
 import { memo, useCallback, useMemo, useState } from "react";
 import { RubriqueConsultationGrid } from "./RubriqueConsultationGrid";
 import RubriqueHeader from "./RubriqueHeader";
@@ -24,7 +24,7 @@ export const RubriqueViewMultiPage = memo<RubriqueViewMultiPageProps>(
 
 
 
-    const router = useRouter();
+
     const { user } = useAuth();
  
 
@@ -111,7 +111,7 @@ export const RubriqueViewMultiPage = memo<RubriqueViewMultiPageProps>(
           window.location.href = `/star/category/${categoryId}/form`;
         }
       },
-      [categoryId, rubrique._id, rubrique.typeconsultation, router, enrichedChoices, user]
+      [categoryId, rubrique._id, rubrique.typeconsultation,  enrichedChoices, user]
     );
 
     // if (loading || creatingConsultation) {

@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+
 import { useAuth } from '@/lib/auth/AuthContext';
 
 export function useAdminShell() {
-  const router = useRouter();
+
   const { user, logout } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
@@ -18,7 +18,7 @@ export function useAdminShell() {
       console.error('Erreur de déconnexion:', error);
       setIsLoggingOut(false);
     }
-  }, [isLoggingOut, logout, router]);
+  }, [isLoggingOut, logout]);
 
   return {
     user,

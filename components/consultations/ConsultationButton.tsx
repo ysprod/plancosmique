@@ -8,7 +8,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Eye, Clock, Sparkles } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+
 
 interface ConsultationButtonProps {
   /** Statut du bouton (détermine le label et le comportement) */
@@ -36,7 +36,7 @@ export default function ConsultationButton({
   className = '',
   size = 'md'
 }: ConsultationButtonProps) {
-  const router = useRouter();
+
 
   const sizeClasses = {
     sm: 'px-3 py-2 text-sm',

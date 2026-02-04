@@ -3,7 +3,7 @@ import { api } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { ConsultationChoice, ConsultationData, OfferingAlternative, User, WalletOffering } from '@/lib/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { containerVariants, processingVariants } from '../../lib/animation.constants';
  
@@ -23,7 +23,7 @@ interface Slide4SectionProps {
 export type StepType = 'selection' | 'form' | 'offering' | 'processing' | 'success' | 'confirm'| 'consulter'| 'genereanalyse';
 
 function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionProps) {
-  const router = useRouter();
+
   const { user } = useAuth();
   const [step, setStep] = useState<StepType>('selection');
   const [paymentLoading, setPaymentLoading] = useState(false);
@@ -133,8 +133,8 @@ function Slide4SectionComponent({ rubriqueId,typeconsultation }: Slide4SectionPr
   );
 
   const handleBack = useCallback(() => {
-    router.back();
-  }, [router]);
+    window.history.back();
+  }, []);
 
   const fetchWalletOfferings = useCallback(async () => {
     try {

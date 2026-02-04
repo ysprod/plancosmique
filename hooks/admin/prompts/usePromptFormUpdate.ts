@@ -1,6 +1,6 @@
 import { promptService } from '@/lib/api/services/prompt.service';
 import { CreatePromptDto, Prompt } from '@/lib/types/prompt.types';
-import { useRouter } from 'next/navigation';
+
 import { useCallback, useState } from 'react';
 
 interface UsePromptFormOptions {
@@ -10,7 +10,7 @@ interface UsePromptFormOptions {
 }
 
 export function usePromptFormUpdate({ initialData, choiceId, returnTo }: UsePromptFormOptions = {}) {
-  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -102,7 +102,7 @@ export function usePromptFormUpdate({ initialData, choiceId, returnTo }: UseProm
     } finally {
       setLoading(false);
     }
-  }, [formData, initialData, router, choiceId, returnTo]);
+  }, [formData, initialData, choiceId, returnTo]);
 
   return {
     formData,

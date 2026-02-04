@@ -1,9 +1,9 @@
 import type { CategorieAdmin, RubriqueOrNone } from "@/lib/interfaces";
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+
 
 export function useCategoryClientView(category: CategorieAdmin) {
-  const router = useRouter();
+
   const rubriques = useMemo(() => category.rubriques ?? [], [category.rubriques]);
   const [rubriqueCourante, setRubriqueCourante] = useState<RubriqueOrNone>(null);
 

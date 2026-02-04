@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Crown, Sparkles, Check, ArrowRight } from 'lucide-react';
 import { UserType } from '@/lib/types/user-profile.types';
 import { profileService } from '@/lib/api/services/grade.service';
-import { useRouter } from 'next/navigation';
+
 
 interface SubscriptionPlan {
   type: UserType;
@@ -75,7 +75,7 @@ export default function SubscriptionPlans({ currentType = UserType.BASIQUE, onSu
   const [selectedRubrique, setSelectedRubrique] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+
 
   const handleSubscribe = async (planType: UserType) => {
     if (planType === UserType.BASIQUE) return;

@@ -2,7 +2,7 @@
 import { useConsultationData } from '@/hooks/categorie/useConsultationData';
 import { useOfferingValidation } from '@/hooks/categorie/useOfferingValidation';
 import type { CategorieAdmin } from '@/lib/interfaces';
-import { useRouter } from 'next/navigation';
+
 import { memo, useCallback } from 'react';
 import Slide4SectionErrorToast from '../vie-personnelle/Slide4SectionErrorToast';
 import Slide4SectionLoadingOverlay from '../vie-personnelle/Slide4SectionLoadingOverlay';
@@ -20,7 +20,7 @@ const CategoryConsulterClient = memo<CategoryConsulterClientProps>(function Cate
   category,
   consultationId
 }) {
-  const router = useRouter();
+
 
   const { consultation, walletOfferings, contextInfo,
     loading: dataLoading, error: dataError

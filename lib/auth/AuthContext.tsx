@@ -1,6 +1,6 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+
 import type { LoginDto, RegisterDto, Permission } from '@/lib/types/auth.types';
 import { Role } from '@/lib/interfaces';
 import { authService } from '@/lib/api/services';
@@ -47,7 +47,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
+
 
   /**
    * Initialise l'authentification au montage du composant
@@ -118,7 +118,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [router]);
+  }, []);
 
   /**
    * Déconnexion utilisateur avec nettoyage complet
@@ -136,7 +136,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsLoading(false);
       window.location.href = config.routes.login;
     }
-  }, [router]);
+  }, []);
 
   /**
    * Rafraîchit les données utilisateur depuis l'API
