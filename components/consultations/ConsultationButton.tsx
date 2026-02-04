@@ -60,7 +60,7 @@ export default function ConsultationButton({
       case 'VOIR L\'ANALYSE':
         // Rediriger vers la page d'analyse
         if (consultationId) {
-          router.push(`/star/consultations/${consultationId}`);
+          window.location.href = `/star/consultations/${consultationId}`;
         }
         break;
     }

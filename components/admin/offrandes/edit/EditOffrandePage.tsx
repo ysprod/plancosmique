@@ -23,7 +23,7 @@ export default function EditOffrandePage() {
             onChange={handleChange}
             onCategory={handleCategoryChange}
             onSubmit={handleSubmit}
-            onCancel={() => router.push("/admin/offrandes")}
+            onCancel={() => { window.location.href = "/admin/offrandes"; }}
         />
     );
 }

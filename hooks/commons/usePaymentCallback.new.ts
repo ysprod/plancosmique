@@ -206,11 +206,11 @@ export function usePaymentCallback(token: string | null) {
         if (prev <= 1) {
           clearInterval(interval);
           if (downloadUrl) {
-            router.push('/star/bibliotheque');
+            window.location.href = '/star/bibliotheque';
           } else if (consultationId) {
-            router.push(`/star/consultations/${consultationId}`);
+            window.location.href = `/star/consultations/${consultationId}`;
           } else {
-            router.push('/star/consultations');
+            window.location.href = '/star/consultations';
           }
           return 0;
         }
@@ -224,7 +224,7 @@ export function usePaymentCallback(token: string | null) {
   // Actions
   const handleViewConsultation = useCallback(() => {
     if (consultationId) {
-      router.push(`/star/consultations/${consultationId}`);
+      window.location.href = `/star/consultations/${consultationId}`;
     }
   }, [consultationId, router]);
 
@@ -239,7 +239,7 @@ export function usePaymentCallback(token: string | null) {
   }, []);
 
   const handleGoHome = useCallback(() => {
-    router.push('/star/profil');
+    window.location.href = '/star/profil';
   }, [router]);
 
   return {

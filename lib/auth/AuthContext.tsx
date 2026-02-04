@@ -111,7 +111,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authService.register(data);
       setUser(response.user);
-      router.push(config.routes.dashboard);
+      window.location.href = config.routes.dashboard;
     } catch (error) {
       console.error('Register error:', error);
       throw error;
@@ -134,7 +134,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } finally {
       setUser(null);
       setIsLoading(false);
-      router.push(config.routes.login);
+      window.location.href = config.routes.login;
     }
   }, [router]);
 

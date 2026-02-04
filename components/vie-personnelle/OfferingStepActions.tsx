@@ -22,7 +22,7 @@ export default function OfferingStepActions({ onNext, canProceed, consultationId
     if (effectiveConsultationId) params.set('consultationId', effectiveConsultationId);
     if (effectiveCategoryId) params.set('categoryId', effectiveCategoryId);
     const url = `/star/marcheoffrandes${params.toString() ? `?${params.toString()}` : ''}`;
-    router.push(url);
+    window.location.href = url;
   }, [router, effectiveConsultationId, effectiveCategoryId]);
 
   return (

@@ -28,7 +28,7 @@ export default function CategorySelectionPageClient() {
                 {categories.map(cat => (
                     <button
                         key={cat._id}
-                        onClick={() => router.push(`/star/category/${cat._id}/selection`)}
+                        onClick={() => { window.location.href = `/star/category/${cat._id}/selection`; }}
                         className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-cosmic-purple to-cosmic-indigo text-white font-bold shadow-lg hover:scale-105 transition-all text-lg"
                     >
                         {cat.name}

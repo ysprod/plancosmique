@@ -140,11 +140,11 @@ export function useAdminConsultationAnalysis() {
   }, [consultationId, router]);
 
   const handleBack = useCallback(() => {
-    router.push("/admin/consultations/");
+    window.location.href = "/admin/consultations/";
   }, [router]);
 
   const handleModifyAnalysis = useCallback((id: string) => {
-    router.push(`/admin/genereanalyse?id=${id}`);
+    window.location.href = `/admin/genereanalyse?id=${id}`;
   }, [router]);
 
   const handleNotifyUser = useCallback(async (_id?: string) => {

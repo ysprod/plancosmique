@@ -92,9 +92,9 @@ export function usePromptFormUpdate({ initialData, choiceId, returnTo }: UseProm
       }
       await promptService.create(formData);
       if (returnTo === 'consultations-choices') {
-        router.push('/admin/consultations/choices');
+        window.location.href = '/admin/consultations/choices';
       } else {
-        router.push('/admin/prompts');
+        window.location.href = '/admin/prompts';
       }
     } catch (err: any) {
       setError(err.response?.data?.message || err.message || 'Erreur lors de la sauvegarde');

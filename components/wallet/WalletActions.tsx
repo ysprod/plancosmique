@@ -20,15 +20,15 @@ export default function WalletActions({ toConsultation, consultationId, category
   const router = useRouter();
   const handleClick = useCallback(() => {
     if (toConsultation && consultationId && categoryId) {
-      router.push(`/star/category/${categoryId}/consulter?consultationId=${consultationId}`);
+      window.location.href = `/star/category/${categoryId}/consulter?consultationId=${consultationId}`;
     } else if (toConsultation && consultationId) {
-      router.push(`/star/consultations/${consultationId}`);
+      window.location.href = `/star/consultations/${consultationId}`;
     } else if (toConsultation) {
-      router.push("/star/consultations");
+      window.location.href = "/star/consultations";
     } else {
-      router.push("/");
+      window.location.href = "/";
     }
-  }, [router, toConsultation, consultationId, categoryId]);
+  }, [toConsultation, consultationId, categoryId]);
 
   return (
     <motion.div

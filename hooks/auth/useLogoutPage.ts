@@ -52,7 +52,7 @@ export function useLogoutPage() {
             cleanup();
             setStatus("error");
             redirectTimeoutRef.current = setTimeout(() => {
-              router.replace("/auth/login");
+              window.location.href = "/auth/login";
             }, ERROR_REDIRECT_DELAY);
           }
         }, MAX_LOGOUT_WAIT);
@@ -62,13 +62,13 @@ export function useLogoutPage() {
         setProgress(100);
         setStatus("success");
         redirectTimeoutRef.current = setTimeout(() => {
-          router.replace("/auth/login");
+          window.location.href = "/auth/login";
         }, SUCCESS_REDIRECT_DELAY);
       } catch (error) {
         cleanup();
         setStatus("error");
         redirectTimeoutRef.current = setTimeout(() => {
-          router.replace("/auth/login");
+          window.location.href = "/auth/login";
         }, ERROR_REDIRECT_DELAY);
       }
     };

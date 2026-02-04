@@ -13,7 +13,7 @@ export function useAdminShell() {
     setIsLoggingOut(true);
     try {
       await logout();
-      router.push('/auth/login');
+      window.location.href = '/auth/login';
     } catch (error) {
       console.error('Erreur de déconnexion:', error);
       setIsLoggingOut(false);

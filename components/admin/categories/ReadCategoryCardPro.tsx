@@ -40,7 +40,7 @@ export const ReadCategoryCardPro = memo(function ReadCategoryCardPro({
   const router = require('next/navigation').useRouter();
   const handleEdit = useCallback(() => {
     if (!catId) return;
-    router.push(`/admin/categories/${catId}/edit`);
+    window.location.href = `/admin/categories/${catId}/edit`;
   }, [catId, router]);
 
   const handleDelete = useCallback(() => {

@@ -58,10 +58,10 @@ export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps)
 
   const handleBack = useCallback(() => {
     if (!consultationId) {
-      router.push("/admin/consultations");
+      window.location.href = "/admin/consultations";
       return;
     }
-    router.push(`/admin/consultations/${consultationId}`);
+    window.location.href = `/admin/consultations/${consultationId}`;
   }, [router, consultationId]);
 
   const validate = useCallback(() => {
@@ -119,7 +119,7 @@ export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps)
       initialTextRef.current = analysisText;
       setIsDirty(false);
 
-      router.push(`/admin/consultations/${consultationId}`);
+      window.location.href = `/admin/consultations/${consultationId}`;
     } catch (err: any) {
       const msg = err?.response?.data?.message || err?.message || "Erreur de sauvegarde";
       setErrors((prev) => ({ ...prev, submit: msg }));

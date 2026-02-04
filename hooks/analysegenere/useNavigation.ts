@@ -5,7 +5,7 @@ export function useNavigation() {
   const router = useRouter();
 
   const navigateToProfil = useCallback(() => {
-    router.push('/star/profil');
+    window.location.href = '/star/profil';
   }, [router]);
 
   return { navigateToProfil };

@@ -59,7 +59,7 @@ export function useNewUserPage() {
       await api.post('/admin/users', formData);
       setToast({ type: 'success', message: 'Utilisateur créé avec succès' });
       setTimeout(() => {
-        router.push('/admin/users');
+        window.location.href = '/admin/users';
       }, 1500);
     } catch (err) {
       const error = err as { response?: { data?: { message?: string } } };

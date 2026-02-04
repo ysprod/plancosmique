@@ -100,7 +100,7 @@ export default function SubscriptionPlans({ currentType = UserType.BASIQUE, onSu
         }
         
         // Redirection vers le profil
-        router.push('/star/profil');
+        window.location.href = '/star/profil';
       }
     } catch (err: any) {
       console.error('Subscription error:', err);

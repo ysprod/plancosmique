@@ -75,7 +75,7 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
                 sessionStorage.setItem("selectedChoiceId", choiceId);
                 sessionStorage.setItem("categoryId", String(category._id));
                 sessionStorage.setItem("rubriqueId", String(rubriqueCourante?._id ?? ""));
-                router.push(`/star/category/${category._id}/formgroupe?consultationId=${rubriqueCourante?._id ?? ""}`);
+                window.location.href = `/star/category/${category._id}/formgroupe?consultationId=${rubriqueCourante?._id ?? ""}`;
                 return;
             }
 
@@ -83,7 +83,7 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
                 sessionStorage.setItem("selectedChoiceId", choiceId);
                 sessionStorage.setItem("categoryId", String(category._id));
                 sessionStorage.setItem("rubriqueId", String(rubriqueCourante?._id ?? ""));
-                router.push(`/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`);
+                window.location.href = `/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`;
                 return;
             }
 
@@ -95,7 +95,7 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
             const enrichedChoice = enrichedByChoiceId.get(choiceId);
             const existingConsultationId = enrichedChoice?.consultationId;
             if (existingConsultationId) {
-                router.push(`/star/category/${category._id}/consulter?consultationId=${existingConsultationId}`);
+                window.location.href = `/star/category/${category._id}/consulter?consultationId=${existingConsultationId}`;
                 return;
             }
             sessionStorage.setItem("categoryId", String(category._id));
@@ -103,16 +103,16 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
 
             // Si la consultation est AVEC_TIERS ou POUR_TIERS et la fréquence est LIBRE, afficher le formulaire pour la personne tierce
             if ((participants === "AVEC_TIERS" || participants === "POUR_TIERS") && frequence === "LIBRE") {
-                router.push(`/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`);
+                window.location.href = `/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`;
                 return;
             }
             if (participants === "AVEC_TIERS") {
-                router.push(`/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`);
+                window.location.href = `/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`;
                 return;
             }
             if (participants === "SOLO") {
                 if (!user) {
-                    router.push(`/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`);
+                    window.location.href = `/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`;
                     return;
                 }
                 try {
@@ -132,17 +132,17 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
                     const id = response.data?.id || response.data?.consultationId || response.data?._id;
                     if (id) {
                         sessionStorage.removeItem("selectedChoiceId");
-                        router.push(`/star/category/${category._id}/consulter?consultationId=${id}`);
+                        window.location.href = `/star/category/${category._id}/consulter?consultationId=${id}`;
                         return;
                     }
-                    router.push(`/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`);
+                    window.location.href = `/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`;
                 } catch (e) {
                     console.error('[handleSelectConsultation] Erreur lors de la création de la consultation:', e);
-                    router.push(`/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`);
+                    window.location.href = `/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`;
                 }
                 return;
             }
-            router.push(`/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`);
+            window.location.href = `/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`;
         },
         [category._id, enrichedByChoiceId, router, rubriqueCourante?._id, rubriqueCourante?.typeconsultation, user]
     );
@@ -151,7 +151,7 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
         if (window.history.length > 1) {
             window.history.back();
         } else {
-            router.push("/star/category");
+            window.location.href = "/star/category";
         }
     };
 

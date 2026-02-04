@@ -141,7 +141,7 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
             if (typeof window !== "undefined") {
                 sessionStorage.removeItem("selectedChoiceId");
             }
-            router.push(`/star/category/${category._id}/consulter?consultationId=${id}`);
+            window.location.href = `/star/category/${category._id}/consulter?consultationId=${id}`;
 
         },
         [category?._id, category?.typeconsultation, router, rubriqueCourante?._id, userData]
@@ -262,7 +262,7 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
     );
 
     const handleReset = useCallback(() => {
-        router.push(`/star/category/${category._id}/selection`);
+        window.location.href = `/star/category/${category._id}/selection`;
     }, [category._id, router]);
 
     const handleCloseError = useCallback(() => {

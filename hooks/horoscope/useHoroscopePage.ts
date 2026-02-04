@@ -111,7 +111,7 @@ export default function useHoroscopePage() {
 
   const handleRedirect = useCallback((e: React.FormEvent) => {
     e.preventDefault();
-    router.push(`/star/analysehoroscope?tab=${activeTab}`);
+    window.location.href = `/star/analysehoroscope?tab=${activeTab}`;
   }, [router, activeTab]);
 
   const handleTabChange = useCallback((tabId: HoroscopeTypeId) => {

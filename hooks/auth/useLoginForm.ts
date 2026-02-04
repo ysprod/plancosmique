@@ -80,7 +80,7 @@ export function useLoginForm() {
     try {
       await login(formData);
       startTransition(() => {
-        router.push(returnTo);
+        window.location.href = returnTo;
       });
     } catch (err: any) {
       setError(

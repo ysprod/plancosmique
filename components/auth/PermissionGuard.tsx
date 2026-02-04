@@ -33,7 +33,7 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = ({
 
   useEffect(() => {
     if (!isLoading && isAuthenticated && !hasRequiredPermissions && redirectTo) {
-      router.push(redirectTo);
+      window.location.href = redirectTo;
     }
   }, [isAuthenticated, isLoading, hasRequiredPermissions, router, redirectTo]);
 
@@ -43,7 +43,7 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = ({
 
   if (!isAuthenticated) {
     if (redirectTo) {
-      router.push(config.routes.login);
+      window.location.href = config.routes.login;
       return null;
     }
     return fallback || <PermissionDenied message="Vous devez être connecté" />;

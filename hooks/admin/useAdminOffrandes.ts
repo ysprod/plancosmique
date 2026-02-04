@@ -64,11 +64,11 @@ export function useAdminOffrandes() {
   }, [fetchOfferings]);
 
   const handleEdit = (offering: Offering) => {
-    router.push(`/admin/offrandes/${offering._id}/edit`);
+    window.location.href = `/admin/offrandes/${offering._id}/edit`;
   };
 
   const handleAdd = () => {
-    router.push('/admin/offrandes/new');
+    window.location.href = '/admin/offrandes/new';
   };
 
   const handleDelete = async (id: string) => {

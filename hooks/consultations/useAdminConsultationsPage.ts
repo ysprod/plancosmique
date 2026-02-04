@@ -111,7 +111,7 @@ export function useAdminConsultationsPage() {
   }, []);
 
   const handleGenerateAnalysis = useCallback(async (id: string) => {
-    router.push(`/admin/consultations/${id}`);
+    window.location.href = `/admin/consultations/${id}`;
   }, [router]);
 
   const handleToastClose = useCallback(() => {

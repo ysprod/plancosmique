@@ -18,7 +18,7 @@ export function useCategoryClientView(category: CategorieAdmin) {
 
   const handleOpenRubriqueById = (id: string, consultationId: string) => {
     if (category._id && consultationId) {
-      router.push(`/star/category/${category._id}/choixconsultation?consultationId=${consultationId}`);
+      window.location.href = `/star/category/${category._id}/choixconsultation?consultationId=${consultationId}`;
     }
   };
 

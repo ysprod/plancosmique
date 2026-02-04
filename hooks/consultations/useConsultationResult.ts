@@ -54,7 +54,7 @@ export function useConsultationResult() {
 
         // Si l’API renvoie vide => on redirige vers la page génération
         if (isEmptyAnalysisPayload(data)) {
-          router.replace(`/star/consultations/${consultationId}/generated?retour=${retour || ""}`);
+          window.location.href = `/star/consultations/${consultationId}/generated?retour=${retour || ""}`;
           return; // important: ne pas setLoading(false) après replace
         }
 
@@ -71,14 +71,14 @@ export function useConsultationResult() {
 
   const handleBack = useCallback(() => {
     if (retour === "cinqportes") {
-      router.push("/star/cinqportes");
+      window.location.href = "/star/cinqportes";
       return;
     }
     if (retour === "carteduciel") {
-      router.push("/star/carteduciel");
+      window.location.href = "/star/carteduciel";
       return;
     }
-    router.push("/star/consultations");
+    window.location.href = "/star/consultations";
   }, [router, retour]);
 
   const handleDownloadPDF = useCallback(() => {

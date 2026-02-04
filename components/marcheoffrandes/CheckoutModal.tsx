@@ -239,7 +239,7 @@ export default function CheckoutModal({
       if (consultationId) params.push(`consultationId=${encodeURIComponent(consultationId)}`);
       if (categoryId) params.push(`categoryId=${encodeURIComponent(categoryId)}`);
       if (params.length > 0) walletUrl += `?${params.join("&")}`;
-      router.push(walletUrl);
+      window.location.href = walletUrl;
     } catch (err: any) {
       console.error("❌ [CheckoutModal] Erreur simulation:", err);
       setError(err.message || "Une erreur est survenue lors de la simulation");

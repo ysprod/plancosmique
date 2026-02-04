@@ -57,15 +57,15 @@ export default function GenerateAnalysePage() {
       const qs = new URLSearchParams(window.location.search);
       const retour = qs.get("retour");
       if (retour === "cinqportes") {
-        router.push("/star/cinqportes");
+        window.location.href = "/star/cinqportes";
         return;
       }
       if (retour === "carteduciel") {
-        router.push("/star/carteduciel");
+        window.location.href = "/star/carteduciel";
         return;
       }
     }
-    router.push("/star/consultations");
+    window.location.href = "/star/consultations";
   }, [router]);
 
   const handleDownloadPDF = useCallback(() => {
@@ -209,7 +209,7 @@ export default function GenerateAnalysePage() {
 
             <button
               type="button"
-              onClick={() => router.replace(resultUrl)}
+              onClick={() => { window.location.href = resultUrl; }}
               className={cx(
                 "w-full rounded-2xl px-4 py-3",
                 "text-[13px] font-semibold",

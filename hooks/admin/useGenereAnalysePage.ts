@@ -58,7 +58,7 @@ export function useGenereAnalysePage() {
   }, [consultationId]);
 
   const handleBack = useCallback(() => {
-    router.push(`/admin/consultations/${consultationId}`);
+    window.location.href = `/admin/consultations/${consultationId}`;
   }, [router]);
 
   return { step, consultation, analyse, error, handleRetry, handleBack, };

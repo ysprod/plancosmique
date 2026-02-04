@@ -27,7 +27,7 @@ function ProtectedRouteComponent({
   useEffect(() => {
     if (isLoading) return;
     if (!isAuthenticated) {
-      router.push(loginUrl);
+      window.location.href = loginUrl;
     }
   }, [isAuthenticated, isLoading, router, loginUrl]);
 
