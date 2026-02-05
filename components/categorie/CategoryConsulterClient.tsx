@@ -16,20 +16,15 @@ interface CategoryConsulterClientProps {
   consultationId: string;
 }
 
-const CategoryConsulterClient = memo<CategoryConsulterClientProps>(function CategoryConsulterClient({
-  category,
-  consultationId
-}) {
+const CategoryConsulterClient = memo<CategoryConsulterClientProps>(function CategoryConsulterClient({ category, consultationId }) {
 
-
-  const { consultation, walletOfferings, contextInfo,
-    loading: dataLoading, error: dataError
+  const { consultation, walletOfferings, contextInfo, loading: dataLoading, error: dataError
   } = useConsultationData(consultationId, category);
 
   const {
     loading: validationLoading, error: validationError, showError,
     handleValidation, clearError
-  } = useOfferingValidation({ consultationId, categoryId: category._id, }); 
+  } = useOfferingValidation({ consultationId, categoryId: category._id, });
 
   const isLoading = dataLoading || validationLoading;
   const currentError = validationError || dataError;

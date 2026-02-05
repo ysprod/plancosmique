@@ -41,11 +41,6 @@ const BUTTON_CONFIGS: Record<ButtonStatus, ButtonConfig> = {
 
 export const ConsultationButton = memo<ConsultationButtonProps>(
   function ConsultationButton({ enrichedChoice, onConsult }) {
-
-    if (enrichedChoice.consultationId) {  
-
-    }
-
     const status = enrichedChoice.consultButtonStatus || enrichedChoice.buttonStatus;
     const config = BUTTON_CONFIGS[status as ButtonStatus] || BUTTON_CONFIGS['CONSULTER'];
     const Icon = config.icon;
@@ -55,7 +50,6 @@ export const ConsultationButton = memo<ConsultationButtonProps>(
 
     const handleClick = () => {
       if (isPending) return;
-      // Si consultation répétable, toujours lancer une nouvelle consultation
       if (isRepeatable) {
         onConsult();
         return;
@@ -68,16 +62,11 @@ export const ConsultationButton = memo<ConsultationButtonProps>(
     };
 
     const baseClasses = `
-      w-full px-3 py-2 sm:px-4 sm:py-2.5
-      font-semibold rounded-lg
-      text-white text-sm
-      flex items-center justify-center gap-2
-      transition-all duration-300
-      bg-gradient-to-r ${config.gradient}
+      w-full px-3 py-2 sm:px-4 sm:py-2.5 font-semibold rounded-lg
+      text-white text-sm flex items-center justify-center gap-2
+      transition-all duration-300 bg-gradient-to-r ${config.gradient}
     `;
 
-
-    // Si consultation répétable, afficher les deux boutons : Consulter et Historique
     if (isRepeatable) {
       const showHistory = enrichedChoice.consultationCount! > 0;
       return (
@@ -97,7 +86,6 @@ export const ConsultationButton = memo<ConsultationButtonProps>(
               type="button"
               className="w-full px-3 py-2 sm:px-4 sm:py-2.5 font-semibold rounded-lg text-white text-sm flex items-center justify-center gap-2 transition-all duration-300 bg-gradient-to-r from-amber-500 to-orange-500 shadow-md hover:shadow-lg"
               onClick={() => {
-                // Redirige vers la dernière consultation existante (pas de route /history)
                 if (enrichedChoice.consultationId) {
                   window.location.href = `/star/consultations/history/${enrichedChoice.consultationId}`;
                 }

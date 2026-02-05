@@ -1,10 +1,11 @@
 import { promptService } from '@/lib/api/services/prompt.service';
+import { ConsultationChoice } from '@/lib/interfaces';
 import { CreatePromptDto, Prompt } from '@/lib/types/prompt.types';
 
 import { useCallback, useState } from 'react';
 
 interface UsePromptFormOptions {
-  initialData?: Prompt;
+  initialData?: ConsultationChoice;
   choiceId?: string;
   returnTo?: string;
 }
@@ -17,18 +18,8 @@ export function usePromptFormUpdate({ initialData, choiceId, returnTo }: UseProm
   const [formData, setFormData] = useState<CreatePromptDto>({
     title: initialData?.title || '',
     description: initialData?.description || '',
-    role: initialData?.role || '',
-    objective: initialData?.objective || '',
-    styleAndTone: initialData?.styleAndTone || [],
-    structure: initialData?.structure || {
-      introduction: '',
-      sections: [],
-      synthesis: '',
-      conclusion: ''
-    },
-    variables: initialData?.variables || {},
-    tags: initialData?.tags || [],
-    isActive: initialData?.isActive ?? true,
+    prompt: initialData?.prompt || '' , // Assuming prompt content is not part of Prompt type
+     
     choiceId: initialData?.choiceId || choiceId || ''
   });
 
@@ -36,60 +27,13 @@ export function usePromptFormUpdate({ initialData, choiceId, returnTo }: UseProm
     setFormData(prev => ({ ...prev, [field]: value }));
   }, []);
 
-  const addSection = useCallback(() => {
-    setFormData(prev => ({
-      ...prev,
-      structure: {
-        ...prev.structure,
-        sections: [...prev.structure.sections, { title: '', content: '', guidelines: [] }]
-      }
-    }));
-  }, []);
-
-  const updateSection = useCallback((index: number, field: string, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      structure: {
-        ...prev.structure,
-        sections: prev.structure.sections.map((s, i) =>
-          i === index ? { ...s, [field]: value } : s
-        )
-      }
-    }));
-  }, []);
-
-  const removeSection = useCallback((index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      structure: {
-        ...prev.structure,
-        sections: prev.structure.sections.filter((_, i) => i !== index)
-      }
-    }));
-  }, []);
-
-  const addVariable = useCallback((key: string, description: string) => {
-    setFormData(prev => ({
-      ...prev,
-      variables: { ...prev.variables, [key]: description }
-    }));
-  }, []);
-
-  const removeVariable = useCallback((key: string) => {
-    setFormData(prev => {
-      const { [key]: _, ...rest } = prev.variables || {};
-      return { ...prev, variables: rest };
-    });
-  }, []);
+ 
 
   const handleSubmit = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      if (!formData.structure.sections || formData.structure.sections.length === 0) {
-        setError('Le prompt doit contenir au moins une section.');
-        throw new Error('Le prompt doit contenir au moins une section.');
-      }
+      
       await promptService.create(formData);
       if (returnTo === 'consultations-choices') {
         window.location.href = '/admin/consultations/choices';
@@ -109,11 +53,6 @@ export function usePromptFormUpdate({ initialData, choiceId, returnTo }: UseProm
     loading,
     error,
     updateField,
-    addSection,
-    updateSection,
-    removeSection,
-    addVariable,
-    removeVariable,
     handleSubmit
   };
 }

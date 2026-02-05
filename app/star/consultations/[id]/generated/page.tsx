@@ -1,5 +1,4 @@
 "use client";
-
 import ConsultationContent from "@/components/consultations/ConsultationContent";
 import ConsultationError from "@/components/consultations/ConsultationError";
 import { api } from "@/lib/api/client";
@@ -15,7 +14,6 @@ function getIdFromParams(params: ReturnType<typeof useParams>): string {
   const raw = (params as { id?: string | string[] } | null)?.id;
   if (!raw) return "";
   const id = Array.isArray(raw) ? String(raw[0] ?? "") : String(raw);
-  // Nettoie tout ce qui ressemble à une query string accidentelle
   return id.split("&")[0].split("?")[0];
 }
 
@@ -33,22 +31,17 @@ export default function GenerateAnalysePage() {
 
   const id = useMemo(() => getIdFromParams(params), [params]);
 
-  // URL cible (stable)
   const resultUrl = useMemo(() => {
     if (!id) return "/star/consultations";
-    // Tu peux changer "cinqportes" si besoin
     return `/star/consultations/${id}?retour=cinqportes`;
   }, [id]);
 
-  // État minimal (évite loading + status en double)
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
   const [analyse, setAnalyse] = useState<Analysis | null>(null);
 
-  // Verrous anti double-run (StrictMode + double clic + rerenders)
   const didRunForIdRef = useRef<string | null>(null);
   const lockRef = useRef(false);
-
 
   const handleBack = useCallback(() => {
     if (typeof window !== "undefined") {
@@ -81,19 +74,13 @@ export default function GenerateAnalysePage() {
     // Lock synchro: empêche double POST (clic rapide / StrictMode / rerun)
     if (lockRef.current) return;
     lockRef.current = true;
-
-
-
     setStatus("loading");
     setError(null);
 
     try {
       await api.post(`/consultations/${id}/generate-analysis`);
       const res = await api.get(`/analyses/by-consultation/${id}`);
-      const data = res?.data ?? null;
-      if (!data || data === "") {
-        throw new Error("Analyse indisponible. Veuillez réessayer.");
-      }
+      const data = res?.data ?? null;       
       setAnalyse(data);
       setStatus("success");
     } catch (err) {

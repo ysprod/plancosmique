@@ -149,6 +149,7 @@ export interface ConsultationChoice {
   offering: ConsultationOffering;
   order?: number;
   promptId?: string;
+  prompt?: string;
   choiceId: string;
   choiceTitle: string;
   buttonStatus: 'CONSULTER' | 'RÉPONSE EN ATTENTE' | "VOIR L'ANALYSE";

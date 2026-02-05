@@ -43,12 +43,6 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
         }
     }, [consultationId, userId, fetchChoices]);
 
-
-
-
-
-
-
     const { data: rubriqueCourante, } = useChoicesWithCount(consultationId, userId) as {
         data: Rubrique | null;
         loading: boolean;
@@ -86,10 +80,6 @@ export function useCategoryClientViewChoix({ category, }: { category: CategorieA
                 window.location.href = `/star/category/${category._id}/form?consultationId=${rubriqueCourante?._id ?? ""}`;
                 return;
             }
-
-
-
-
 
             sessionStorage.setItem("selectedChoiceId", choiceId);
             const enrichedChoice = enrichedByChoiceId.get(choiceId);

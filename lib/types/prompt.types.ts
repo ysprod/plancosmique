@@ -39,14 +39,8 @@ export interface PromptWithUsage extends Prompt {
 export interface CreatePromptDto {
   title: string;
   description?: string;
-  role: string;
-  objective: string;
-  styleAndTone?: string[];
-  structure: PromptStructure;
-  variables?: Record<string, string>;
-  tags?: string[];
-  isActive?: boolean;
-  choiceId: string;
+  prompt?: string;  
+  choiceId?: string;
 }
 
 export interface UpdatePromptDto extends Partial<CreatePromptDto> { }

@@ -1,20 +1,13 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import { api } from "@/lib/api/client";
 import CategoryLoadingSpinner from "@/components/categorie/CategoryLoadingSpinner";
-
-interface Category {
-    _id: string;
-    name: string;
-    description?: string;
-}
+import { api } from "@/lib/api/client";
+import { CategorieAdmin } from "@/lib/interfaces";
+import { useEffect, useState } from "react";
 
 export default function CategorySelectionPageClient() {
-    const [categories, setCategories] = useState<Category[]>([]);
+    const [categories, setCategories] = useState<CategorieAdmin[]>([]);
     const [loading, setLoading] = useState(true);
-
-
+    
     useEffect(() => {
         api.get("/categories").then(res => setCategories(res.data)).finally(() => setLoading(false));
     }, []);
@@ -31,7 +24,7 @@ export default function CategorySelectionPageClient() {
                         onClick={() => { window.location.href = `/star/category/${cat._id}/selection`; }}
                         className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-cosmic-purple to-cosmic-indigo text-white font-bold shadow-lg hover:scale-105 transition-all text-lg"
                     >
-                        {cat.name}
+                        {cat.titre}
                         {cat.description && <div className="text-xs text-cosmic-pink mt-1">{cat.description}</div>}
                     </button>
                 ))}

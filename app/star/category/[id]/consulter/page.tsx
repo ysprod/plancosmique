@@ -12,7 +12,6 @@ export default function CategoryConsulterPage() {
     const consultationId = searchParams?.get('consultationId');
 
     if (!id || !consultationId) return notFound();
-
     const { category, loading } = useCategory(id);
 
     if (loading) return <CategoryLoadingSpinner />;

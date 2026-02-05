@@ -19,8 +19,9 @@ export const CategoryBodyChoix = React.memo(function CategoryBodyChoix({
             </div>
         );
     }
+
     return (
-        <div className="w-full max-w-2xl animate-fade-in mx-auto flex flex-col items-center justify-center">
+        <div className="w-full max-w-4xl animate-fade-in mx-auto flex flex-col items-center justify-center">
             <RubriqueHeader rubrique={rubriqueCourante} />
             <div className="grid gap-4 sm:gap-5 lg:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
                 {rubriqueCourante.consultationChoices.map((choice, idx) => (

@@ -7,7 +7,7 @@ import { promptService } from '@/lib/api/services/prompt.service';
 import { useConsultationChoicesTabs } from './useConsultationChoicesTabs';
 
 export interface ConsultationChoiceWithPrompt extends ConsultationChoice {
-  prompt?: Prompt;
+ 
   rubriqueTitle?: string;
 }
 
@@ -59,10 +59,10 @@ export function useConsultationChoices() {
   }, [assignPrompt]);
 
   const filteredChoices = useConsultationChoicesFilter(choices, search);
-  const choicesWithPrompt = useMemo(() => filteredChoices.filter(c => c.promptId), [filteredChoices]);
-  const choicesWithoutPrompt = useMemo(() => filteredChoices.filter(c => !c.promptId), [filteredChoices]);
+  const choicesWithPrompt = useMemo(() => filteredChoices.filter(c => c.prompt), [filteredChoices]);
+  const choicesWithoutPrompt = useMemo(() => filteredChoices.filter(c => !c.prompt), [filteredChoices]);
 
-  const { tab, setTab } = useConsultationChoicesTabs('sans');
+  const { tab, setTab } = useConsultationChoicesTabs('avec');
 
   const headerProps = useMemo(() => ({
     withPrompt: choicesWithPrompt.length,
@@ -91,8 +91,8 @@ export function useConsultationChoices() {
     setTab,
     headerProps,
     searchProps,
-    tabsProps,  
+    tabsProps,
     handleDeletePromptStable,
-    
+
   };
 }

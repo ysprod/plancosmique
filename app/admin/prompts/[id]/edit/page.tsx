@@ -8,7 +8,7 @@ interface PageProps {
 export default function Page({ params, searchParams }: PageProps) {
     return (
         <EditPromptPageClient
-            promptId={params.id}
+            choiceId={params.id}
             returnTo={searchParams?.returnTo}
         />
     );

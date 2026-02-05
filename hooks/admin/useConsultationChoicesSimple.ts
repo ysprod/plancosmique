@@ -1,18 +1,9 @@
- 
-
-import { useState, useEffect, useCallback } from 'react';
-import { api } from '@/lib/api/client';
+ import { api } from '@/lib/api/client';
 import { ConsultationChoice } from '@/lib/interfaces';
-import { Prompt } from '@/lib/types/prompt.types';
-
-
-export interface ConsultationChoiceWithPrompt extends ConsultationChoice {
-  prompt?: Prompt;
-  rubriqueTitle?: string;
-}
+import { useCallback, useEffect, useState } from 'react'; 
 
 export function useConsultationChoicesSimple(choiceId: string | null) {
-  const [choices, setChoices] = useState<ConsultationChoiceWithPrompt[]>([]);
+  const [choices, setChoices] = useState<ConsultationChoice[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

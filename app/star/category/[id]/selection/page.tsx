@@ -11,7 +11,6 @@ export default function CategorySelectionPage() {
 
     const { category, loading } = useCategory(id);
     if (loading) return <CategoryLoadingSpinner />;
-
     if (!category || !category._id) return notFound();
 
     return <CategoryClientViewWrapperMultiPage category={category} />;

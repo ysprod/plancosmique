@@ -8,7 +8,6 @@ import { ConsultationChoicesLoader } from './choices/ConsultationChoicesLoader';
 import { ConsultationChoicesSearch } from './choices/ConsultationChoicesSearch';
 import { ConsultationChoicesTabs } from './choices/ConsultationChoicesTabs';
 import { SansPromptTab } from './choices/SansPromptTab';
-import MissingChoicePromptsList from './MissingChoicePromptsList';
 
 const MemoConsultationChoicesHeader = React.memo(ConsultationChoicesHeader);
 const MemoConsultationChoicesSearch = React.memo(ConsultationChoicesSearch);
@@ -18,8 +17,8 @@ const MemoAvecPromptTab = React.memo(AvecPromptTab);
 
 export default function ConsultationChoicesList() {
   const {
-    loading, error, choicesWithPrompt, choicesWithoutPrompt,
-    headerProps, searchProps, tabsProps, tab, handleDeletePromptStable,
+    loading, error, choicesWithPrompt, choicesWithoutPrompt, headerProps, searchProps,
+    tabsProps, tab, handleDeletePromptStable,
   } = useConsultationChoices();
 
   if (loading) {
@@ -32,16 +31,14 @@ export default function ConsultationChoicesList() {
 
   return (
     <div className="w-full space-y-6 flex flex-col items-center justify-center">
-      <MissingChoicePromptsList />
       <MemoConsultationChoicesHeader {...headerProps} />
       <MemoConsultationChoicesSearch {...searchProps} />
       <MemoConsultationChoicesTabs {...tabsProps} />
-
-      {tab === 'sans' && (
-        <MemoSansPromptTab choicesWithoutPrompt={choicesWithoutPrompt} />
-      )}
       {tab === 'avec' && (
         <MemoAvecPromptTab choicesWithPrompt={choicesWithPrompt} handleDeletePrompt={handleDeletePromptStable} />
+      )}
+      {tab === 'sans' && (
+        <MemoSansPromptTab choicesWithoutPrompt={choicesWithoutPrompt} />
       )}
     </div>
   );

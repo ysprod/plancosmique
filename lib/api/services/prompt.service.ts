@@ -1,3 +1,4 @@
+import { Consultation, ConsultationChoice } from '@/lib/interfaces';
 import { api } from '../client';
 import { CreatePromptDto, Prompt, UpdatePromptDto } from '@/lib/types/prompt.types';
 
@@ -17,13 +18,13 @@ export const promptService = {
     return response.data;
   },
 
-  async findById(id: string): Promise<Prompt> {
-    const response = await api.get(`/prompts/${id}`);
+  async findById(id: string): Promise<ConsultationChoice> {
+    const response = await api.get(`/consultations/${id}/with-prompt`);
     return response.data;
   },
 
   async update(id: string, data: UpdatePromptDto): Promise<Prompt> {
-    const response = await api.patch(`/prompts/${id}`, data);
+    const response = await api.patch(`/consultations/choice/${id}/prompt`, data);
     return response.data;
   },
 

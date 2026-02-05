@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { promptService } from '@/lib/api/services/prompt.service';
 import { Prompt } from '@/lib/types/prompt.types';
+import { ConsultationChoice } from '@/lib/interfaces';
 
 export function useEditPromptPage(promptId: string) {
-  const [prompt, setPrompt] = useState<Prompt | null>(null);
+  const [prompt, setPrompt] = useState<ConsultationChoice | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 

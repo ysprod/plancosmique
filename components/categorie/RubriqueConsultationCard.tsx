@@ -28,7 +28,7 @@ const RubriqueConsultationCard = memo<RubriqueConsultationCardProps>(
         transition={{ type: 'spring', stiffness: 420, damping: 30 }}
         tabIndex={0}
         aria-label={enrichedChoice.title}
-        className="group relative h-full flex flex-col items-center overflow-hidden rounded-2xl bg-white/90 dark:bg-zinc-900/80 shadow-sm hover:shadow-xl border border-purple-100 dark:border-purple-900/60 backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 transition-all duration-300  mx-auto"
+        className="group relative h-full flex flex-col items-center overflow-hidden rounded-2xl bg-white dark:bg-zinc-900/80 shadow-sm hover:shadow-xl border border-purple-100 dark:border-purple-900/60 backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 transition-all duration-300  mx-auto"
       >
         <motion.div
           layoutId={`rubrique-bg-${enrichedChoice.choiceId}`}

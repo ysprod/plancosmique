@@ -1,9 +1,6 @@
 import React from 'react';
+import PromptBasicInfo from './PromptBasicInfo';
 import { PromptHeader } from './PromptHeader';
-import { PromptBasicInfo } from './PromptBasicInfo';
-import { PromptStructure } from './PromptStructure';
-import { PromptTags } from './PromptTags';
-import { PromptVariables } from './PromptVariables';
 
 interface PromptFormShellProps {
   formData: any;
@@ -24,11 +21,7 @@ export const PromptFormShell: React.FC<PromptFormShellProps> = ({
   loading,
   error,
   updateField,
-  addSection,
-  updateSection,
-  removeSection,
-  addVariable,
-  removeVariable,
+   
   onBack,
   isEdit
 }) => (
@@ -39,17 +32,15 @@ export const PromptFormShell: React.FC<PromptFormShellProps> = ({
         {error}
       </div>
     )}
-    <PromptBasicInfo formData={formData} updateField={updateField} />
-    <PromptStructure
-      structure={formData.structure}
-      updateField={updateField}
-      addSection={addSection}
-      updateSection={updateSection}
-      removeSection={removeSection}
+    <PromptBasicInfo
+      title={formData?.title}
+      description={formData?.description}
+      frequence={formData?.frequence}
+      participants={formData?.participants}
+      rubriqueTitle={formData?.rubriqueTitle}
+      offering={formData?.offering}
     />
-    <PromptTags tags={formData.tags} updateField={updateField} />
-    <PromptVariables variables={formData.variables} addVariable={addVariable} removeVariable={removeVariable} />
-    {/* Duplicate save button at the bottom */}
+  
     <div className="flex justify-end pt-2">
       <button
         type="submit"

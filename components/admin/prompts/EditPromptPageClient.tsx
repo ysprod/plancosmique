@@ -7,39 +7,39 @@ import { EditPromptShell } from './EditPromptShell';
 import PromptForm from './PromptForm';
 
 interface PageProps {
-    promptId: string;
-    returnTo?: string;
+  choiceId: string;
+  returnTo?: string;
 }
 
-export default function EditPromptPageClient({ promptId, returnTo }: PageProps) {
-    const { prompt, error, loading } = useEditPromptPage(promptId);
-    
-      if (loading) {
-        return (
-          <EditPromptShell>
-            <EditPromptLoader />
-          </EditPromptShell>
-        );
-      }
-    
-      if (!prompt) {
-        if (error) {
-          return (
-            <EditPromptShell>
-              <EditPromptError error={error} />
-            </EditPromptShell>
-          );
-        }
-        notFound();
-      }
-    
+export default function EditPromptPageClient({ choiceId, returnTo }: PageProps) {
+  const { prompt, error, loading } = useEditPromptPage(choiceId);
+
+  if (loading) {
+    return (
+      <EditPromptShell>
+        <EditPromptLoader />
+      </EditPromptShell>
+    );
+  }
+
+  if (!prompt) {
+    if (error) {
       return (
         <EditPromptShell>
-          <PromptForm
-            initialData={prompt}
-            choiceId={prompt.choiceId || ''}
-            returnTo={returnTo}
-          />
+          <EditPromptError error={error} />
         </EditPromptShell>
       );
+    }
+    notFound();
+  }
+
+  return (
+    <EditPromptShell>
+      <PromptForm
+        initialData={prompt}
+        choiceId={prompt.choiceId || ''}
+        returnTo={returnTo}
+      />
+    </EditPromptShell>
+  );
 }

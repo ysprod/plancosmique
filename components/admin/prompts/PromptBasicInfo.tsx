@@ -1,73 +1,62 @@
-import React from 'react';
+import React from "react";
 
 interface PromptBasicInfoProps {
-  formData: any;
-  updateField: (field: string, value: any) => void;
+  title?: string;
+  description?: string;
+  frequence?: string;
+  participants?: string;
+  rubriqueTitle?: string;
+  offering?: { alternatives?: Array<{ _id: string; category: string; quantity: number }> };
 }
 
-export const PromptBasicInfo: React.FC<PromptBasicInfoProps> = React.memo(({ formData, updateField }) => (
+const PromptBasicInfo: React.FC<PromptBasicInfoProps> = ({ title, description, frequence, participants, rubriqueTitle, offering }) => (
   <section className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 sm:p-6 space-y-4 shadow">
-    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Informations de base</h2>
-    <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Titre *</label>
-      <input
-        type="text"
-        value={formData.title}
-        onChange={e => updateField('title', e.target.value)}
-        required
-        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
-      />
+    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Informations de la consultation</h2>
+    {title && (
+      <div className="mb-2">
+        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Titre</div>
+        <div className="font-bold text-base text-gray-900 dark:text-white">{title}</div>
+      </div>
+    )}
+    {description && (
+      <div className="mb-2">
+        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Description</div>
+        <div className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">{description}</div>
+      </div>
+    )}
+    <div className="mb-2 flex flex-wrap gap-4">
+      {frequence && (
+        <div>
+          <span className="text-xs text-gray-500 dark:text-gray-400">Fréquence : </span>
+          <span className="text-xs font-semibold text-gray-700 dark:text-gray-200">{frequence}</span>
+        </div>
+      )}
+      {participants && (
+        <div>
+          <span className="text-xs text-gray-500 dark:text-gray-400">Participants : </span>
+          <span className="text-xs font-semibold text-gray-700 dark:text-gray-200">{participants}</span>
+        </div>
+      )}
+      {rubriqueTitle && (
+        <div>
+          <span className="text-xs text-gray-500 dark:text-gray-400">Rubrique : </span>
+          <span className="text-xs font-semibold text-gray-700 dark:text-gray-200">{rubriqueTitle}</span>
+        </div>
+      )}
     </div>
-    <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
-      <textarea
-        value={formData.description}
-        onChange={e => updateField('description', e.target.value)}
-        rows={2}
-        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
-      />
-    </div>
-    <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Rôle *</label>
-      <textarea
-        value={formData.role}
-        onChange={e => updateField('role', e.target.value)}
-        required
-        rows={2}
-        placeholder="Ex: Agis comme un astrologue professionnel..."
-        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
-      />
-    </div>
-    <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Objectif *</label>
-      <textarea
-        value={formData.objective}
-        onChange={e => updateField('objective', e.target.value)}
-        required
-        rows={2}
-        placeholder="Ex: À partir de la carte du ciel, réalise une analyse..."
-        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
-      />
-    </div>
-    <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Style et Ton (un par ligne)</label>
-      <textarea
-        value={formData.styleAndTone?.join('\n')}
-        onChange={e => updateField('styleAndTone', e.target.value.split('\n').filter(Boolean))}
-        rows={2}
-        placeholder="Tutoiement\nTon pédagogique..."
-        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
-      />
-    </div>
-    <div className="flex items-center gap-2">
-      <input
-        type="checkbox"
-        id="isActive"
-        checked={formData.isActive}
-        onChange={e => updateField('isActive', e.target.checked)}
-        className="w-4 h-4 text-purple-600 border-gray-300 dark:border-gray-700 rounded focus:ring-purple-500"
-      />
-      <label htmlFor="isActive" className="text-sm font-medium text-gray-700 dark:text-gray-300">Prompt actif</label>
-    </div>
+    {Array.isArray(offering?.alternatives) && offering.alternatives.length > 0 && (
+      <div className="mb-2">
+        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Offrandes requises</div>
+        <ul className="list-disc list-inside text-xs text-gray-700 dark:text-gray-200">
+          {offering.alternatives.map((alt) => (
+            <li key={alt._id}>
+              {alt.category} × {alt.quantity}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
   </section>
-));
+);
+
+export default PromptBasicInfo;

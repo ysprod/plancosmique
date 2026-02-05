@@ -3,8 +3,8 @@ import { api } from '@/lib/api/client';
 import { ConsultationChoice } from '@/lib/interfaces';
 import { Prompt } from '@/lib/types/prompt.types';
 
-export interface ConsultationChoiceWithRubrique extends ConsultationChoice {
-  prompt?: Prompt;
+export interface ConsultationChoiceWithRubrique extends Omit<ConsultationChoice, 'prompt'> {
+  prompt?: string | Prompt;
   rubriqueId?: string;
   rubriqueTitle?: string;
 }
@@ -22,14 +22,7 @@ function formatChoice(raw: any) {
     if (raw.rubriqueTitle) base.rubriqueTitle = raw.rubriqueTitle;
     if (raw.rubriqueId) base.rubriqueId = raw.rubriqueId;
   }
-  if (base.offering && Array.isArray(base.offering.alternatives)) {
-    base.offering.alternatives = base.offering.alternatives.map((alt: any) => ({
-      _id: alt._id,
-      category: alt.category,
-      offeringId: alt.offeringId,
-      quantity: alt.quantity,
-    }));
-  }
+  
   if (!base.rubriqueTitle && raw.$__parent && raw.$__parent.titre) {
     base.rubriqueTitle = raw.$__parent.titre;
     base.rubriqueId = raw.$__parent._id;
