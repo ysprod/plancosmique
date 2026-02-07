@@ -34,8 +34,8 @@ const CategoryFormClient = memo<CategoryFormClientProps>(function CategoryFormCl
   } = useCategoryFormClient(category, consultationId);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-6 sm:py-8">
-      <div className="max-w-4xl mx-auto px-3 sm:px-6">
+    <div className="min-h-screen py-6 sm:py-8">
+      <div className="max-w-2xl mx-auto px-3 sm:px-6">
         <CategoryStepNavigation
           categoryId={category._id}
           currentStep="form"

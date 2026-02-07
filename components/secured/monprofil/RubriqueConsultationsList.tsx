@@ -23,7 +23,7 @@ function RubriqueConsultationsListImpl({ consultations }: Props) {
         className="w-full max-w-xl flex flex-col items-center justify-center gap-2"
       >
         {consultations.map((c) => (
-          <ConsultationCard key={String((c as any).consultationId || c.id)} c={c} onView={onView} />
+          <ConsultationCard key={c.consultationId || c._id || c.id} c={c} onView={onView} />
         ))}
       </ul>
     </div>

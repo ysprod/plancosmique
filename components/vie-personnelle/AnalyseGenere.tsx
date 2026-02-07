@@ -25,7 +25,7 @@ const AnalyseGenere = memo<AnalyseGenereProps>(({ consultation, choix }) => {
 
   return (
     <div
-      className="flex items-center justify-center px-3 sm:px-4 py-8 sm:py-12 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 dark:from-slate-950 dark:via-purple-950/30 dark:to-slate-900"
+      className="flex items-center justify-center px-3 sm:px-4 py-8 sm:py-12"
       role="main"
       aria-labelledby="success-heading"
     >
@@ -45,11 +45,11 @@ const AnalyseGenere = memo<AnalyseGenereProps>(({ consultation, choix }) => {
               Votre consultation "{consultationTitle}" a été soumise avec succès et est en cours de traitement.
             </p>
           </div>
-          <ConsultationSummary consultation={consultation} choix={choix} />
           <MasterAssignmentNotice />
           <div className="flex justify-center pt-2">
             <TimelineBadge />
           </div>
+          <ConsultationSummary consultation={consultation} choix={choix} />
           <ConfidentialityNotice />
           <ProcessSteps />
           <ThankYouMessage />

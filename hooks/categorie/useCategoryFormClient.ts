@@ -42,6 +42,19 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
         paysNaissance: "",
         question: "",
     });
+    const [tiercesList, setTiercesList] = useState<typeof form[]>([]);
+    const [showAddMore, setShowAddMore] = useState(false);
+
+    const emptyForm = {
+        nom: "",
+        prenoms: "",
+        gender: "",
+        dateNaissance: "",
+        heureNaissance: "",
+        villeNaissance: "",
+        paysNaissance: "",
+        question: "",
+    };
 
     useEffect(() => {
         const ctrl = new AbortController();
@@ -112,11 +125,11 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
 
     // --- 4) Create consultation factorisé (même fonction SOLO/TIERS) ---
     const createConsultation = useCallback(
-        async (params: { choice: ConsultationChoice; tierce?: typeof form }) => {
+        async (params: { choice: ConsultationChoice; tierces?: typeof form[] }) => {
             const choice = params.choice;
             const rubriqueId = rubriqueCourante?._id || "";
 
-            // formData: SOLO utilise userData, TIERS utilise userData + tierce séparé
+            // formData: SOLO utilise userData, TIERS utilise userData + tierces array
             const mappedFormData = mapFormDataToBackend(userData);
 
             const payload = {
@@ -124,7 +137,7 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
                 type: category?.typeconsultation,
                 title: choice?.title || "Consultation",
                 formData: mappedFormData,
-                tierce: params.tierce, // undefined en SOLO
+                tierces: params.tierces && params.tierces.length > 0 ? params.tierces : undefined,
                 description: choice?.description || "",
                 status: "PENDING",
                 alternatives: choice?.offering?.alternatives || [],
@@ -227,16 +240,26 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
         return Object.keys(newErrors).length === 0;
     }, [form]);
 
+    const handleAddTierce = useCallback(() => {
+        if (!validateForm()) {
+            setUi((s) => ({ ...s, apiError: "Veuillez remplir tous les champs requis", showErrorToast: true }));
+            return;
+        }
+        setTiercesList((prev) => [...prev, form]);
+        setForm(emptyForm);
+        setShowAddMore(false);
+        setUi((s) => ({ ...s, apiError: null }));
+    }, [validateForm, form, emptyForm]);
+
+    const handleRemoveTierce = useCallback((index: number) => {
+        setTiercesList((prev) => prev.filter((_, i) => i !== index));
+    }, []);
+
     const handleSubmit = useCallback(
         async (e: React.FormEvent) => {
             e.preventDefault();
 
             if (!rubriqueCourante?._id) return;
-
-            if (!validateForm()) {
-                setUi((s) => ({ ...s, apiError: "Veuillez remplir tous les champs requis", showErrorToast: true }));
-                return;
-            }
 
             if (!selectedChoice) {
                 setUi((s) => ({ ...s, apiError: "Choix de consultation introuvable", showErrorToast: true }));
@@ -246,7 +269,7 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
             setUi((s) => ({ ...s, loading: true, apiError: null }));
 
             try {
-                await createConsultation({ choice: selectedChoice, tierce: form });
+                await createConsultation({ choice: selectedChoice, tierces: tiercesList.length > 0 ? tiercesList : undefined });
             } catch (err: any) {
                 setUi((s) => ({
                     ...s,
@@ -258,7 +281,7 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
                 setUi((s) => (s.loading ? { ...s, loading: false } : s));
             }
         },
-        [rubriqueCourante?._id, validateForm, selectedChoice, createConsultation, form]
+        [rubriqueCourante?._id, selectedChoice, createConsultation, tiercesList]
     );
 
     const handleReset = useCallback(() => {
@@ -274,6 +297,9 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
         apiError: ui.apiError, showErrorToast: ui.showErrorToast,
         contextInfo, needsForm, userData, form, errors,
         selectedChoiceId, selectedChoice,
-        setSelectedChoiceId, handleChange, handleSubmit, handleReset, handleCloseError,
+        setSelectedChoiceId, handleChange, handleSubmit,
+        handleReset, handleCloseError,
+        tiercesList, showAddMore, setShowAddMore,
+        handleAddTierce, handleRemoveTierce,
     };
 }

@@ -17,7 +17,7 @@ const CategoryGenereAnalyseClient = memo<CategoryGenereAnalyseClientProps>(funct
   const { consultation, contextInfo } = useConsultationData(consultationId, category);
 
   return (
-    <div className="w-full max-w-4xl mx-auto  bg-gradient-to-br from-purple-50 via-indigo-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-4 sm:py-6 lg:py-8">
+    <div className="w-full max-w-6xl mx-auto  py-4 sm:py-6 lg:py-8">
       <CategoryStepNavigation
         categoryId={category._id}
         currentStep="genereanalyse"
@@ -26,7 +26,7 @@ const CategoryGenereAnalyseClient = memo<CategoryGenereAnalyseClientProps>(funct
       <AnalyseGenere
         consultation={consultation}
         choix={contextInfo.choix}
-      />        
+      />
     </div>
   );
 });

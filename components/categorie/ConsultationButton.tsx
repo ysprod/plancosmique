@@ -87,7 +87,7 @@ export const ConsultationButton = memo<ConsultationButtonProps>(
               className="w-full px-3 py-2 sm:px-4 sm:py-2.5 font-semibold rounded-lg text-white text-sm flex items-center justify-center gap-2 transition-all duration-300 bg-gradient-to-r from-amber-500 to-orange-500 shadow-md hover:shadow-lg"
               onClick={() => {
                 if (enrichedChoice.consultationId) {
-                  window.location.href = `/star/consultations/history/${enrichedChoice.consultationId}`;
+                  window.location.href = `/star/consultations/history/${enrichedChoice._id}`;
                 }
               }}
             >

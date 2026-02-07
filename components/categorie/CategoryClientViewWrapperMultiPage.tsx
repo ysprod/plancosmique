@@ -14,7 +14,7 @@ const CategoryClientViewWrapperMultiPage = memo(
         return (
             <main
                 className={cx(
-                    "w-full mx-auto max-w-4xl flex items-center justify-center",
+                    "w-full mx-auto max-w-6xl flex items-center justify-center",
                     "bg-gradient-to-br from-white via-gray-50 to-gray-100",
                     "dark:from-gray-950 dark:via-gray-900 dark:to-gray-950",
                     "transition-colors duration-100",

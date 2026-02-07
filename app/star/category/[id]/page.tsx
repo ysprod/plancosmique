@@ -6,7 +6,6 @@ interface PageProps {
 
 export default async function CategoryPage({ params }: PageProps) {
     const { id } = await params;
-    console.log("CategoryPage - id:", id);
     if (!id) { redirect('/star/profil'); }
     redirect(`/star/category/${id}/selection`);
 }

@@ -3,3 +3,5 @@ import ConsultationResultPageClient from '@/components/secured/consultations/Con
 export default function ConsultationResultPage() {
   return <ConsultationResultPageClient />;
 }
+
+

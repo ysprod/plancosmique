@@ -3,7 +3,7 @@
 // Mise en cache intelligente, gestion robuste, code simplifié
 // Incrémentez CACHE_VERSION pour forcer l'update
 
-const CACHE_VERSION = 'monetoile-v59';
+const CACHE_VERSION = 'monetoile-v62';
 const CACHE_STATIC = `${CACHE_VERSION}-static`;
 const CACHE_DYNAMIC = `${CACHE_VERSION}-dynamic`;
 const CACHE_IMAGES = `${CACHE_VERSION}-images`;

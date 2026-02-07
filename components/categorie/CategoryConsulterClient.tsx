@@ -30,8 +30,8 @@ const CategoryConsulterClient = memo<CategoryConsulterClientProps>(function Cate
   const currentError = validationError || dataError;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-4 sm:py-6 lg:py-8">
-      <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-6">
+    <div className="min-h-screen py-4 sm:py-6 lg:py-8">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6">
         <CategoryStepNavigation
           categoryId={category._id}
           currentStep="consulter"

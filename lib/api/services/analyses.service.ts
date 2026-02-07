@@ -30,4 +30,10 @@ export const analysesService = {
     const res = await api.delete(`/analyses/${id}`);
     return res.data;
   },
+
+  // Récupérer toutes les analyses pour un choiceId donné
+  getByChoice: async (choiceId: string) => {
+    const res = await api.get(`/analyses/by-choice/${choiceId}`);
+    return res.data;
+  },
 };

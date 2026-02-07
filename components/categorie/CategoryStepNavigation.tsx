@@ -1,8 +1,7 @@
 'use client';
-import { memo } from 'react';
-import { motion } from 'framer-motion';
-import { ChevronRight, Check } from 'lucide-react';
+import { Check, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { memo } from 'react';
 
 interface Step {
   id: string;
@@ -18,10 +17,10 @@ interface CategoryStepNavigationProps {
   consultationId?: string;
 }
 
-const CategoryStepNavigation = memo<CategoryStepNavigationProps>(function CategoryStepNavigation({ 
-  categoryId, 
+const CategoryStepNavigation = memo<CategoryStepNavigationProps>(function CategoryStepNavigation({
+  categoryId,
   currentStep,
-  consultationId 
+  consultationId
 }) {
   const steps: Step[] = [
     {
@@ -61,25 +60,22 @@ const CategoryStepNavigation = memo<CategoryStepNavigationProps>(function Catego
           <li key={step.id} className="flex items-center flex-1 sm:flex-none">
             {step.completed ? (
               <Link href={step.href} className="group flex items-center">
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
+                <div
                   className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-lg"
                 >
                   <Check className="w-4 h-4 sm:w-5 sm:h-5" />
-                </motion.div>
+                </div>
                 <span className="ml-2 text-xs sm:text-sm font-medium text-gray-700 dark:text-slate-300 group-hover:text-purple-600 dark:group-hover:text-purple-400 hidden sm:inline">
                   {step.label}
                 </span>
               </Link>
             ) : step.current ? (
               <div className="flex items-center">
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                <div
                   className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 text-white shadow-xl border-2 border-white dark:border-slate-800"
                 >
                   <span className="text-xs sm:text-sm font-bold">{index + 1}</span>
-                </motion.div>
+                </div>
                 <span className="ml-2 text-xs sm:text-sm font-bold text-purple-700 dark:text-purple-400 hidden sm:inline">
                   {step.label}
                 </span>
@@ -94,7 +90,7 @@ const CategoryStepNavigation = memo<CategoryStepNavigationProps>(function Catego
                 </span>
               </div>
             )}
-            
+
             {index < steps.length - 1 && (
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 dark:text-slate-600 mx-1 sm:mx-3 flex-shrink-0" />
             )}

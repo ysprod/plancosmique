@@ -25,6 +25,12 @@ const LoginForm = () => {
     isPending,
   } = useLoginForm();
 
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   useEffect(() => {
     const usernameInput = document.querySelector<HTMLInputElement>('input[name="username"]');
     const passwordInput = document.querySelector<HTMLInputElement>('input[name="password"]');
@@ -120,7 +126,7 @@ const LoginForm = () => {
               whileHover={{ scale: isSubmitDisabled ? 1 : 1.02 }}
               whileTap={{ scale: isSubmitDisabled ? 1 : 0.98 }}
             >
-              {isLoading || isPending ? (
+              {isHydrated && (isLoading || isPending) ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
                   <span>Connexion...</span>

@@ -20,7 +20,6 @@ export function HeaderLogo() {
               width={40}
               height={40}
               className="w-6 h-6 sm:w-8 sm:h-8 object-contain"
-              priority
             />
           </div>
         </div>

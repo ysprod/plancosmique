@@ -243,62 +243,55 @@ export const AspectsMarkdown = memo(function AspectsMarkdown({
   }, [safeMarkdown]);
 
   return (
-    <section className="w-full flex justify-center">
-      <div className="w-full max-w-[720px] px-3 sm:px-4">
+    <div className="w-full flex justify-center max-w-6xl px-3 sm:px-4">
+      <div
+        className={cx(
+          "w-full",
+          "bg-white",
+          "overflow-hidden"
+        )}
+      >
         <div
           className={cx(
-            "rounded-2xl border shadow-sm",
-            "bg-white dark:bg-slate-950/60",
-            "border-slate-200/70 dark:border-white/10",
-            "backdrop-blur-xl",
-            "overflow-hidden"
+            "px-4 sm:px-6 py-4",
+            "border-b border-slate-200/60 dark:border-white/10",
+            "bg-gradient-to-b from-white/70 to-white/40 dark:from-white/[0.06] dark:to-transparent"
           )}
         >
-          {/* Header centré */}
-          <div
-            className={cx(
-              "px-4 sm:px-6 py-4",
-              "border-b border-slate-200/60 dark:border-white/10",
-              "bg-gradient-to-b from-white/70 to-white/40 dark:from-white/[0.06] dark:to-transparent"
-            )}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <Star className="h-4 w-4 text-cosmic-purple dark:text-cosmic-pink" />
-              <h2 className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white text-center">
-                {title}
-              </h2>
-            </div>
-          </div>
-
-          {/* Body */}
-          <div className="px-4 sm:px-6 py-5">
-            {!enhanced.trim() ? (
-              <div className="py-10 flex flex-col items-center justify-center text-center">
-                <div className="h-10 w-10 rounded-2xl bg-black/5 dark:bg-white/10 flex items-center justify-center">
-                  <BookOpen className="h-5 w-5 text-slate-700 dark:text-slate-200" />
-                </div>
-                <p className="mt-3 text-sm text-slate-600 dark:text-slate-300/80">
-                  Aucun contenu d’aspects à afficher.
-                </p>
-              </div>
-            ) : (
-              <div
-                className={cx(
-                  "prose prose-slate dark:prose-invert",
-                  "max-w-none",
-                  "prose-p:my-3 prose-ul:my-4",
-                  "prose-h2:mt-10 prose-h3:mt-8",
-                  "prose-hr:my-8"
-                )}
-              >
-                <ReactMarkdown components={markdownComponents as any}>
-                  {enhanced}
-                </ReactMarkdown>
-              </div>
-            )}
+          <div className="flex items-center justify-center gap-2">
+            <Star className="h-4 w-4 text-cosmic-purple dark:text-cosmic-pink" />
+            <h2 className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white text-center">
+              {title}
+            </h2>
           </div>
         </div>
+        <div className="px-4 sm:px-6 py-5">
+          {!enhanced.trim() ? (
+            <div className="py-10 flex flex-col items-center justify-center text-center">
+              <div className="h-10 w-10 rounded-2xl bg-black/5 dark:bg-white/10 flex items-center justify-center">
+                <BookOpen className="h-5 w-5 text-slate-700 dark:text-slate-200" />
+              </div>
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-300/80">
+                Aucun contenu d’aspects à afficher.
+              </p>
+            </div>
+          ) : (
+            <div
+              className={cx(
+                "prose prose-slate dark:prose-invert",
+                "max-w-none",
+                "prose-p:my-3 prose-ul:my-4",
+                "prose-h2:mt-10 prose-h3:mt-8",
+                "prose-hr:my-8"
+              )}
+            >
+              <ReactMarkdown components={markdownComponents as any}>
+                {enhanced}
+              </ReactMarkdown>
+            </div>
+          )}
+        </div>
       </div>
-    </section>
+    </div>
   );
 });

@@ -28,7 +28,7 @@ export const FormHeader = memo(function FormHeader() {
       </motion.div>
       
       <h2 className="text-xl font-extrabold bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent tracking-tight sm:text-2xl">
-        Informations sur la personne tierce
+        Informations sur les personnes concernées
       </h2>
       <p className="mt-2 max-w-md text-sm text-gray-600 dark:text-gray-300 font-medium">
         Remplis les champs pour une consultation personnalisée et précise

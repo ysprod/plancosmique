@@ -1,73 +1,165 @@
+"use client";
+import { formatDateFR } from "@/components/admin/consultations/DisplayConsultationCard/helpers";
 import { api } from "@/lib/api/client";
+import { safeTrim, wordCount } from "@/lib/functions";
 import type { Analysis } from "@/lib/interfaces";
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-function getIdFromParams(params: any): string | null {
-  const raw = params?.id;
-  if (!raw) return null;
-  return Array.isArray(raw) ? String(raw[0] ?? "") : String(raw);
+export interface ToastState {
+  message: string;
+  type: "success" | "error" | "info";
 }
 
-function isEmptyAnalysisPayload(data: any) {
-  return data === "" || data === null || data === undefined;
+type ConsultationResultState = {
+  loading: boolean;
+  error: string | null;
+  toast: ToastState | null;
+};
+
+const initialState: ConsultationResultState = {
+  loading: true,
+  error: null,
+  toast: null,
+};
+
+function getConsultationIdFromParams(params: unknown): string | null {
+  const raw = (params as any)?.id;
+  if (!raw) return null;
+  const v = Array.isArray(raw) ? raw[0] : raw;
+  const s = typeof v === "string" ? v : String(v ?? "");
+  return s.trim() ? s : null;
+}
+
+function shallowEqualState(a: ConsultationResultState, b: ConsultationResultState) {
+  return a.loading === b.loading && a.error === b.error && a.toast === b.toast;
 }
 
 export function useConsultationResult() {
   const params = useParams();
 
-  const searchParams = useSearchParams();
+  const reqSeqRef = useRef(0);
+  const abortRef = useRef<AbortController | null>(null);
+  const toastTimerRef = useRef<number | null>(null);
 
-  const consultationId = useMemo(() => getIdFromParams(params), [params]);
-  const retour = useMemo(() => searchParams?.get("retour") || null, [searchParams]);
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [state, setState] = useState<ConsultationResultState>(initialState);
   const [analyse, setAnalyse] = useState<Analysis | null>(null);
 
-  const didRunRef = useRef<string | null>(null);
-  const seqRef = useRef(0);
+  const consultationId = useMemo(() => getConsultationIdFromParams(params), [params]);
+  const searchParams = useSearchParams();
 
-  useEffect(() => {
+
+  const retour = useMemo(() => searchParams?.get("retour") || null, [searchParams]);
+
+  const clearToastTimer = useCallback(() => {
+    if (toastTimerRef.current) {
+      window.clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = null;
+    }
+  }, []);
+
+  const setToast = useCallback(
+    (toast: ToastState | null) => {
+      clearToastTimer();
+
+      setState((s) => {
+        const next = s.toast === toast ? s : { ...s, toast };
+        return shallowEqualState(s, next) ? s : next;
+      });
+
+      if (toast) {
+        toastTimerRef.current = window.setTimeout(() => {
+          setState((s) => (s.toast ? { ...s, toast: null } : s));
+          toastTimerRef.current = null;
+        }, 2500);
+      }
+    },
+    [clearToastTimer],
+  );
+
+
+  const derived = useMemo(() => {
+    const dateGenRaw = analyse?.dateGeneration ?? null;
+    const dateGenLabel = formatDateFR(dateGenRaw);
+    const isNotified = Boolean(analyse?.analysisNotified);
+
+    return { dateGenLabel, isNotified };
+  }, [analyse?.dateGeneration, analyse?.analysisNotified]);
+
+  const loadAnalysis = useCallback(async () => {
     if (!consultationId) {
-      setLoading(false);
-      setError("Identifiant de consultation manquant");
+      setState((s) => {
+        if (!s.loading && s.error === "ID de consultation manquant") return s;
+        const next: ConsultationResultState = {
+          ...s,
+          loading: false,
+          error: "ID de consultation manquant",
+        };
+        return shallowEqualState(s, next) ? s : next;
+      });
       return;
     }
 
-    // 1 seule exécution par consultationId
-    if (didRunRef.current === consultationId) return;
-    didRunRef.current = consultationId;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
 
-    const mySeq = ++seqRef.current;
+    const mySeq = ++reqSeqRef.current;
 
-    setLoading(true);
-    setError(null);
+    setState((s) => (s.loading && s.error === null ? s : { ...s, loading: true, error: null }));
 
-    (async () => {
-      try {
-        const response = await api.get(`/analyses/by-consultation/${consultationId}`);
+    try {
+      // 1) tentative de récupération
+      const res = await api.get(`/analyses/by-consultation/${consultationId}`, {
+        signal: controller.signal,
+      } as any);
 
-        if (seqRef.current !== mySeq) return;
+      const data = res?.data ?? null;
 
-        const data = response?.data;
+      // Si analyse absente → on tente de générer
+      let finalAnalyse: Analysis | null = data && data !== "" ? data : null;
 
-        // Si l’API renvoie vide => on redirige vers la page génération
-        if (isEmptyAnalysisPayload(data)) {
-          window.location.href = `/star/consultations/${consultationId}/generated?retour=${retour || ""}`;
-          return; // important: ne pas setLoading(false) après replace
+      if (!finalAnalyse) {
+        const generatedRes = await api.post(
+          `/consultations/${consultationId}/generate-analysis`,
+          {},
+          { signal: controller.signal } as any,
+        );
+
+        const generatedData =
+          generatedRes?.data?.analyse ?? generatedRes?.data ?? null;
+
+        if (!generatedData || generatedData === "") {
+          throw new Error("Analyse générée introuvable");
         }
-
-        setAnalyse(data);
-        setLoading(false);
-      } catch (err: any) {
-        if (seqRef.current !== mySeq) return;
-
-        setError("Impossible de récupérer l'analyse");
-        setLoading(false);
+        finalAnalyse = generatedData;
       }
-    })();
+
+      if (reqSeqRef.current !== mySeq) return;
+
+      setAnalyse(finalAnalyse);
+
+      setState((s) => {
+        const next: ConsultationResultState = { ...s, loading: false, error: null };
+        return shallowEqualState(s, next) ? s : next;
+      });
+    } catch (err: any) {
+      const name = err?.name;
+      if (name === "CanceledError" || name === "AbortError") return;
+      if (reqSeqRef.current !== mySeq) return;
+
+      setState((s) => {
+        const next: ConsultationResultState = {
+          ...s,
+          loading: false,
+          error: err?.message || "Impossible de récupérer l'analyse",
+        };
+        return shallowEqualState(s, next) ? s : next;
+      });
+    }
   }, [consultationId]);
+
+
 
   const handleBack = useCallback(() => {
     if (retour === "cinqportes") {
@@ -81,10 +173,47 @@ export function useConsultationResult() {
     window.location.href = "/star/consultations";
   }, [retour]);
 
-  const handleDownloadPDF = useCallback(() => {
-    if (!consultationId) return;
-    window.open(`/api/consultations/${consultationId}/download-pdf`, "_blank");
-  }, [consultationId]);
 
-  return { loading, error,   analyse, handleBack, handleDownloadPDF, retour };
+  const handleDownloadPDF = useCallback(() => {
+    const downloadId = consultationId ?? (analyse?._id ? String(analyse._id) : null);
+    if (!downloadId) return;
+    window.open(`/api/consultations/${downloadId}/download-pdf`, "_blank");
+  }, [consultationId, analyse?._id]);
+
+
+  useEffect(() => {
+    void loadAnalysis();
+    return () => {
+      abortRef.current?.abort();
+      clearToastTimer();
+    };
+  }, [loadAnalysis, clearToastTimer]);
+
+
+  const mdTexte = useMemo(() => safeTrim(analyse?.texte), [analyse?.texte]);
+  const mdPrompt = useMemo(() => safeTrim(analyse?.prompt), [analyse?.prompt]);
+  const mdTitle = useMemo(() => safeTrim(analyse?.title), [analyse?.title]);
+
+  const metrics = useMemo(() => {
+    return {
+      wc: wordCount(mdTexte),
+      pc: wordCount(mdPrompt),
+    };
+  }, [mdTexte, mdPrompt]);
+
+  return {
+    loading: state.loading,
+    error: state.error,
+    toast: state.toast,
+    setToast,
+    analyse,
+    consultationId,
+    derived,
+    metrics,
+    mdTexte,
+    mdPrompt,
+    mdTitle,
+    handleDownloadPDF,
+    handleBack,
+  };
 }

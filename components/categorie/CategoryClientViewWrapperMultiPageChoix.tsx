@@ -9,7 +9,6 @@ import { useCategoryClientViewChoix } from "./clientviewchoix/useCategoryClientV
 const CategoryClientViewWrapperMultiPageChoix = memo(
     function CategoryClientViewWrapperMultiPageChoix({ category, }: { category: CategorieAdmin; }) {
         const { rubriqueCourante, loading, handleSelectConsultation, handleBack, } = useCategoryClientViewChoix({ category });
-console.log(rubriqueCourante);
         if (loading) { return <CategoryConsultationLoading />; }
 
         return (
