@@ -1,15 +1,18 @@
 import EditPromptPageClient from '@/components/admin/prompts/EditPromptPageClient';
 
 interface PageProps {
-    params: { id: string };
-    searchParams?: { returnTo?: string };
+    params: Promise<{ id: string }>;
+    searchParams?: Promise<{ returnTo?: string }>;
 }
 
-export default function Page({ params, searchParams }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
+    const { id } = await params;
+    const sp = await searchParams;
+    
     return (
         <EditPromptPageClient
-            choiceId={params.id}
-            returnTo={searchParams?.returnTo}
+            choiceId={id}
+            returnTo={sp?.returnTo}
         />
     );
 }

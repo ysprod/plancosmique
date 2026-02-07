@@ -3,10 +3,9 @@ import { Edit, FileText, Trash2 } from "lucide-react";
 
 interface ConsultationChoiceCardProps {
   choice: any;
-  onDelete: () => void;
 }
 
-function ConsultationChoiceCard({ choice, onDelete }: ConsultationChoiceCardProps) {
+function ConsultationChoiceCard({ choice }: ConsultationChoiceCardProps) {
 
   return (
     <motion.div

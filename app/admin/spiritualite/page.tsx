@@ -3,3 +3,4 @@ import SpiritualiteAdminPage from '@/components/admin/spiritualite/SpiritualiteA
 export default function SpiritualiteAdmin() {
   return <SpiritualiteAdminPage />;
 }
+

@@ -1,46 +1,48 @@
-export interface PromptSection {
-  title: string;
-  content: string;
-  guidelines?: string[];
-}
+/**
+ * Types pour les prompts de consultation
+ */
 
-export interface PromptStructure {
-  introduction?: string;
-  sections: PromptSection[];
-  synthesis?: string;
-  conclusion?: string;
-}
-
+/**
+ * Structure d'un prompt dans la base de données
+ */
 export interface Prompt {
   _id: string;
   title: string;
-  description?: string;
-  role: string;
-  objective: string;
-  styleAndTone?: string[];
-  structure: PromptStructure;
-  variables?: Record<string, string>;
-  tags?: string[];
-  isActive: boolean;
-  choiceId: string; // ID du choix de consultation (relation 1:1 obligatoire)
-  createdAt: string;
-  updatedAt: string;
+  description: string;
+  prompt: string;
+  choiceId: string;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-export interface PromptWithUsage extends Prompt {
-  usageCount?: number;
-  consultationChoices?: Array<{
-    _id: string;
-    title: string;
-    rubriqueTitle?: string;
-  }>;
-}
-
+/**
+ * DTO pour créer un nouveau prompt
+ */
 export interface CreatePromptDto {
   title: string;
-  description?: string;
-  prompt?: string;  
-  choiceId?: string;
+  description: string;
+  prompt: string;
+  choiceId: string;
 }
 
-export interface UpdatePromptDto extends Partial<CreatePromptDto> { }
+/**
+ * DTO pour mettre à jour un prompt existant
+ * Tous les champs sont optionnels pour permettre des mises à jour partielles
+ */
+export interface UpdatePromptDto {
+  title?: string;
+  description?: string;
+  prompt?: string;
+  choiceId?: string;
+  isActive?: boolean;
+}
+
+/**
+ * Réponse API lors de la création/mise à jour d'un prompt
+ */
+export interface PromptResponse {
+  success: boolean;
+  data: Prompt;
+  message?: string;
+}

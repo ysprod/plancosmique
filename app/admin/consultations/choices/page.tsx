@@ -3,7 +3,5 @@ import ConsultationChoicesList from '@/components/admin/consultations/Consultati
 export const dynamic = 'force-dynamic';
 
 export default function ConsultationChoicesPage() {
-  return (
-    <ConsultationChoicesList />
-  );
+  return (<ConsultationChoicesList />);
 }

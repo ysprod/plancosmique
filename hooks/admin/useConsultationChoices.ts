@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '@/lib/api/client';
 import { ConsultationChoice } from '@/lib/interfaces';
-import { Prompt } from '@/lib/types/prompt.types';
 import { useConsultationChoicesFilter } from './useConsultationChoicesFilter';
 import { promptService } from '@/lib/api/services/prompt.service';
 import { useConsultationChoicesTabs } from './useConsultationChoicesTabs';
 
 export interface ConsultationChoiceWithPrompt extends ConsultationChoice {
- 
+
   rubriqueTitle?: string;
 }
 
@@ -73,26 +72,9 @@ export function useConsultationChoices() {
 
   const tabsProps = useMemo(() => ({ tab, setTab, }), [tab, setTab]);
 
-  const handleDeletePromptStable = useCallback(handleDeletePrompt, [handleDeletePrompt]);
-
   return {
-    choices,
-    loading,
-    error,
-    refetch: fetchChoices,
-    assignPrompt,
-    handleDeletePrompt,
-    filteredChoices,
-    choicesWithPrompt,
-    choicesWithoutPrompt,
-    search,
-    setSearch,
-    tab,
-    setTab,
-    headerProps,
-    searchProps,
-    tabsProps,
-    handleDeletePromptStable,
-
+    refetch: fetchChoices, setSearch, assignPrompt, setTab, handleDeletePrompt,
+    filteredChoices, choicesWithPrompt, choicesWithoutPrompt, search,
+    choices, loading, error, tab, headerProps, searchProps, tabsProps,
   };
 }

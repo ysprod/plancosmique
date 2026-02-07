@@ -1,10 +1,7 @@
 'use client';
 import GlobalErrorUI from '@/components/commons/GlobalErrorUI';
 
-export default function Error({
-  error,
-  reset,
-}: {
+export default function Error({ error, reset, }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {

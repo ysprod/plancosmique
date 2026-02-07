@@ -3,3 +3,4 @@ import PaymentCallbackPageClient from '@/components/callback/PaymentCallbackPage
 export default function PaymentCallbackPage() {
   return <PaymentCallbackPageClient />;
 }
+

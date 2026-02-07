@@ -16,13 +16,14 @@ function generateFilename(sujet: Sujet): string {
 }
 
 export async function GET(
-  request: Request, { params }: { params: { id: string } }
+  request: Request, { params }: { params: Promise<{ id: string }> }
 ) {
 
+  const { id } = await params;
   const startTime = Date.now();
 
   try {
-    const consultationId = params.id;
+    const consultationId = id;
     let backendData: BackendResponse;
 
     try {

@@ -168,8 +168,8 @@ apiClient.interceptors.response.use(
       console.error('Permission denied:', error.response.data);
     }
 
-    // Erreur réseau ou timeout
-    if (!error.response) {
+    // Erreur réseau ou timeout (sauf annulations intentionnelles)
+    if (!error.response && error.name !== 'CanceledError' && error.name !== 'AbortError') {
       console.error('Network error or timeout:', error.message);
     }
 

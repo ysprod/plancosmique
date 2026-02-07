@@ -4,3 +4,4 @@ import CreatePromptPageClient from '@/components/admin/prompts/CreatePromptPageC
 export default function Page() {
     return <CreatePromptPageClient  />;
 }
+

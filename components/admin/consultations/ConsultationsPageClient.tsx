@@ -8,7 +8,7 @@ import { useAdminConsultationsPage } from "@/hooks/consultations/useAdminConsult
 
 export default function ConsultationsPageClient() {
   const {
-    consultations, total, loading, error, isRefreshing, totalPages, statusFilter,tabs,
+    consultations, total, loading, error, isRefreshing, totalPages, statusFilter, tabs,
     currentPage, handlePageChange, handleRefresh, handleGenerateAnalysis, setStatusFilter,
   } = useAdminConsultationsPage();
 

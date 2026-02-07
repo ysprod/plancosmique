@@ -3,3 +3,4 @@ import RubriquesOverviewPageClient from '@/components/admin/rubriques/overview/R
 export default function RubriquesOverviewPage() {
   return <RubriquesOverviewPageClient />;
 }
+

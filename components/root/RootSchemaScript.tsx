@@ -1,5 +1,3 @@
-'use client';
-
 /**
  * Schema.org JSON-LD pour le SEO
  */
@@ -49,6 +47,7 @@ export function RootSchemaScript() {
   return (
     <script
       type="application/ld+json"
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );

@@ -10,14 +10,12 @@ import { useCallback } from "react";
 
 interface TopBarActionsProps {
   derived: any;
-  copied: boolean;
-  handleCopy: () => void;
   handleRefresh: () => void;
   handleNotify: () => void;
   onBack?: () => void;
 }
 
-export function TopBarActions({ derived, copied, handleCopy, handleRefresh, handleNotify, onBack }: TopBarActionsProps) {
+export function TopBarActions({ derived, handleRefresh, handleNotify, onBack }: TopBarActionsProps) {
   return (
     <div className="sticky top-0 z-10 bg-white/70 dark:bg-zinc-950/35 backdrop-blur supports-[backdrop-filter]:backdrop-blur-xl border-b border-slate-200/60 dark:border-zinc-800/60">
       <div className="mx-auto flex w-full max-w-3xl flex-col items-center justify-center gap-2 px-3 py-3 sm:flex-row sm:gap-3">
@@ -29,22 +27,9 @@ export function TopBarActions({ derived, copied, handleCopy, handleRefresh, hand
         <div className="flex w-full flex-col items-center justify-center gap-2 sm:w-auto sm:flex-row">
           <Button
             size="sm"
-            variant="outline"
-            className="w-full sm:w-auto"
-            onClick={handleCopy}
-            disabled={!derived.markdown}
-            title="Copier l'analyse (Markdown)"
-            aria-label="Copier l'analyse"
-          >
-            <Copy className="mr-2 h-4 w-4" />
-            {copied ? "Copié" : "Copier"}
-          </Button>
-          <Button
-            size="sm"
             variant="ghost"
             className="w-full sm:w-auto"
             onClick={handleRefresh}
-            disabled={!derived.id}
             title="Rafraîchir / Re-générer"
             aria-label="Rafraîchir"
           >
@@ -78,7 +63,6 @@ export function TopBarActions({ derived, copied, handleCopy, handleRefresh, hand
                 variant="default"
                 className="w-full sm:w-auto"
                 onClick={handleNotify}
-                disabled={!derived.id}
                 aria-label="Notifier l'utilisateur"
               >
                 Notifier

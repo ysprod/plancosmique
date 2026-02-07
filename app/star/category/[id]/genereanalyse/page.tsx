@@ -1,19 +1,12 @@
-"use client";
-import CategoryGenereAnalyseClient from "@/components/categorie/CategoryGenereAnalyseClient";
-import CategoryLoadingSpinner from "@/components/categorie/CategoryLoadingSpinner";
-import { useCategory } from "@/hooks/categorie/useCategory";
-import { notFound, useParams, useSearchParams } from "next/navigation";
+import CategoryGenereAnalysePageWrapper from "@/components/categorie/CategoryGenereAnalysePageWrapper";
+import { notFound } from "next/navigation";
 
-export default function CategoryGenereAnalysePage() {
-    const params = useParams();
-    const searchParams = useSearchParams();
-    const id = params?.id as string;
-    const consultationId = searchParams?.get('consultationId');
+export default async function CategoryGenereAnalysePage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<Record<string, string>> }) {
+    const { id } = await params;
+    const sp = await searchParams;
+    const consultationId = sp?.consultationId;
 
-    const { category, loading } = useCategory(id);
     if (!id || !consultationId) return notFound();
-    if (loading) return <CategoryLoadingSpinner />;
-    if (!category || !category._id) return notFound();
 
-    return <CategoryGenereAnalyseClient category={category} consultationId={consultationId} />;
+    return <CategoryGenereAnalysePageWrapper id={id} consultationId={consultationId} />;
 }

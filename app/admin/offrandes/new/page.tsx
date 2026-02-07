@@ -3,3 +3,4 @@ import OffrandeCreatePageClient from '@/components/admin/offrandes/OffrandeCreat
 export default function OffrandeCreatePage() {
   return <OffrandeCreatePageClient />;
 }
+

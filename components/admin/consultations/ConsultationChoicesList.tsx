@@ -17,8 +17,8 @@ const MemoAvecPromptTab = React.memo(AvecPromptTab);
 
 export default function ConsultationChoicesList() {
   const {
-    loading, error, choicesWithPrompt, choicesWithoutPrompt, headerProps, searchProps,
-    tabsProps, tab, handleDeletePromptStable,
+    loading, error, choicesWithPrompt, choicesWithoutPrompt, headerProps,
+    searchProps, tabsProps, tab,
   } = useConsultationChoices();
 
   if (loading) {
@@ -35,7 +35,7 @@ export default function ConsultationChoicesList() {
       <MemoConsultationChoicesSearch {...searchProps} />
       <MemoConsultationChoicesTabs {...tabsProps} />
       {tab === 'avec' && (
-        <MemoAvecPromptTab choicesWithPrompt={choicesWithPrompt} handleDeletePrompt={handleDeletePromptStable} />
+        <MemoAvecPromptTab choicesWithPrompt={choicesWithPrompt} />
       )}
       {tab === 'sans' && (
         <MemoSansPromptTab choicesWithoutPrompt={choicesWithoutPrompt} />

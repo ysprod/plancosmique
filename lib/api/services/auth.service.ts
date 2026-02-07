@@ -14,7 +14,8 @@ export const authService = {
     setUser(user);
 
     if (typeof window !== 'undefined') {
-      document.cookie = `monetoile_access_token=${accessToken}; path=/; secure; samesite=lax`;
+      const isSecure = window.location.protocol === 'https:';
+      document.cookie = `monetoile_access_token=${accessToken}; path=/; samesite=lax${isSecure ? '; secure' : ''}`;
     }
 
     return response.data;
@@ -32,7 +33,8 @@ export const authService = {
     setUser(user);
     // Ajout : synchronisation du cookie pour le middleware
     if (typeof window !== 'undefined') {
-      document.cookie = `monetoile_access_token=${accessToken}; path=/; secure; samesite=lax`;
+      const isSecure = window.location.protocol === 'https:';
+      document.cookie = `monetoile_access_token=${accessToken}; path=/; samesite=lax${isSecure ? '; secure' : ''}`;
     }
 
     return response.data;

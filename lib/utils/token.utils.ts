@@ -91,6 +91,10 @@ export const clearAuth = (): void => {
   removeAccessToken();
   removeRefreshToken();
   removeUser();
+  if (typeof window !== 'undefined') {
+    const isSecure = window.location.protocol === 'https:';
+    document.cookie = `monetoile_access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=lax${isSecure ? '; secure' : ''}`;
+  }
 };
 
 /**

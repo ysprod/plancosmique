@@ -59,9 +59,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const storedUser = getUser();
         const token = getAccessToken();
 
-        // Vérification du token et de l'utilisateur en cache
-        if (storedUser && token) {
+        // Vérification du token et récupération utilisateur
+        if (token) {
           try {
+            // Si un user est déjà en cache, on tente quand même de rafraîchir le profil
             const currentUser = await authService.me();
             setUser(currentUser);
           } catch (error) {

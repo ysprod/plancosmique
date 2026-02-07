@@ -1,17 +1,9 @@
-"use client";
-import CategoryClientViewWrapperMultiPage from "@/components/categorie/CategoryClientViewWrapperMultiPage";
-import CategoryLoadingSpinner from "@/components/categorie/CategoryLoadingSpinner";
-import { useCategory } from "@/hooks/categorie/useCategory";
-import { notFound, useParams } from "next/navigation";
+import CategorySelectionPageWrapper from "@/components/categorie/CategorySelectionPageWrapper";
+import { notFound } from "next/navigation";
 
-export default function CategorySelectionPage() {
-    const params = useParams();
-    const id = params?.id as string;
+export default async function CategorySelectionPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     if (!id) return notFound();
 
-    const { category, loading } = useCategory(id);
-    if (loading) return <CategoryLoadingSpinner />;
-    if (!category || !category._id) return notFound();
-
-    return <CategoryClientViewWrapperMultiPage category={category} />;
+    return <CategorySelectionPageWrapper id={id} />;
 }

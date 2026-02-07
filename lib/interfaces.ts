@@ -727,4 +727,6 @@ export interface Analysis {
   title?: string;
   prompt?: string;
   __v?: number;
+  dateGeneration?: string;
+  analysisNotified?: boolean;
 }

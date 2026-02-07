@@ -1,9 +1,10 @@
 import KnowledgeDetailPageClient from '@/components/secured/knowledge/KnowledgeDetailPageClient';
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export default function KnowledgeDetailPage({ params }: PageProps) {
-  return <KnowledgeDetailPageClient id={params.id} />;
+export default async function KnowledgeDetailPage({ params }: PageProps) {
+  const { id } = await params;
+  return <KnowledgeDetailPageClient id={id} />;
 }

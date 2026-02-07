@@ -3,3 +3,4 @@ import ConsultationsPageClient from "@/components/admin/consultations/Consultati
 export default function ConsultationsPage() {
   return <ConsultationsPageClient />;
 }
+

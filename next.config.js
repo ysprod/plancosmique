@@ -61,9 +61,6 @@ const nextConfig = {
     ];
   },
   
-  // Optimisation du build
-  swcMinify: true,
-  
   // Experimental features pour performances
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', 'recharts'],

@@ -1,9 +1,10 @@
 import NumerologiePageClient from '@/components/secured/numerologie/NumerologiePageClient';
 
 interface NumerologiePageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export default function NumerologiePage({ params }: NumerologiePageProps) {
-  return <NumerologiePageClient id={params.id} />;
+export default async function NumerologiePage({ params }: NumerologiePageProps) {
+  const { id } = await params;
+  return <NumerologiePageClient id={id} />;
 }

@@ -13,7 +13,7 @@ const CACHE_API = `${CACHE_VERSION}-api`;
 const CRITICAL_ASSETS = [
   '/',
   '/offline.html',
-  '/manifest.json',
+  '/site.webmanifest',
 ];
 
 // Durée de cache par type de ressource (en ms)

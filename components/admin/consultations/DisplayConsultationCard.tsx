@@ -57,9 +57,7 @@ function DisplayConsultationCard({ consultation, onModifyAnalysis, onNotifyUser,
         >
           <div className="h-1 w-full bg-gradient-to-r from-violet-600 via-fuchsia-600 to-emerald-500/70" />
           <TopBarActions
-            derived={derived}
-            copied={copied}
-            handleCopy={handleCopy}
+            derived={derived} 
             handleRefresh={handleRefresh}
             handleNotify={handleNotify}
             onBack={onBack}

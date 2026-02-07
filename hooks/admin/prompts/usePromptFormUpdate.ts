@@ -1,7 +1,6 @@
 import { promptService } from '@/lib/api/services/prompt.service';
 import { ConsultationChoice } from '@/lib/interfaces';
-import { CreatePromptDto, Prompt } from '@/lib/types/prompt.types';
-
+import { CreatePromptDto } from '@/lib/types/prompt.types';
 import { useCallback, useState } from 'react';
 
 interface UsePromptFormOptions {

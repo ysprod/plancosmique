@@ -1,23 +1,12 @@
-"use client";
-import CategoryFormClient from "@/components/categorie/CategoryFormClient";
-import CategoryFormClientGroupe from "@/components/categorie/CategoryFormClientGroupe";
-import CategoryLoadingSpinner from "@/components/categorie/CategoryLoadingSpinner";
-import { useCategory } from "@/hooks/categorie/useCategory";
-import { notFound, useParams, useSearchParams } from "next/navigation";
+import CategoryFormGroupePageWrapper from "@/components/categorie/CategoryFormGroupePageWrapper";
+import { notFound } from "next/navigation";
 
-export default function CategoryFormPage() {
-    const params = useParams();
-    const searchParams = useSearchParams();
-
-    const id = params?.id as string;
-    const consultationId = searchParams?.get('consultationId');
+export default async function CategoryFormGroupePage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<Record<string, string>> }) {
+    const { id } = await params;
+    const sp = await searchParams;
+    const consultationId = sp?.consultationId;
 
     if (!id || !consultationId) return notFound();
 
-    const { category, loading } = useCategory(id);
-
-    if (loading) return <CategoryLoadingSpinner />;
-    if (!category || !category._id) return notFound();
-
-    return <CategoryFormClientGroupe category={category} consultationId={consultationId} />;
+    return <CategoryFormGroupePageWrapper id={id} consultationId={consultationId} />;
 }

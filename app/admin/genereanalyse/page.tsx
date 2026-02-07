@@ -3,3 +3,4 @@ import GenereAnalysePageClient from '@/components/admin/genereanalyse/GenereAnal
 export default function GenereAnalysePage() {
   return <GenereAnalysePageClient />;
 }
+

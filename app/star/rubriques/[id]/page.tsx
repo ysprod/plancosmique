@@ -2,11 +2,11 @@ import { getRubrique } from "@/lib/api/services/rubriques.service";
 import { notFound, redirect } from "next/navigation";
 
 interface PageProps {
-    params: { id: string };
+    params: Promise<{ id: string }>;
 }
 
 export default async function RubriquePage({ params }: PageProps) {
-    const id = params?.id;
+    const { id } = await params;
     if (!id) return notFound();
     
     const rubrique = await getRubrique(id);

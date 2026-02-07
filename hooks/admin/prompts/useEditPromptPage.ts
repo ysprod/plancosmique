@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { promptService } from '@/lib/api/services/prompt.service';
-import { Prompt } from '@/lib/types/prompt.types';
+ 
 import { ConsultationChoice } from '@/lib/interfaces';
 
 export function useEditPromptPage(promptId: string) {

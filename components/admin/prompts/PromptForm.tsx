@@ -71,13 +71,9 @@ export default function PromptForm({ initialData, choiceId, returnTo }: PromptFo
     [handleSubmit, formData]
   );
 
-
-
   return (
     <div className="w-full grid place-items-center px-3 py-6 sm:px-4 sm:py-8">
-
       <div className="fixed inset-0 -z-10 bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900" />
-
 
       <form onSubmit={onSubmit} className="w-full max-w-6xl">
         <div className="mt-4 space-y-4 max-w-6xl mx-auto">

@@ -2,8 +2,7 @@
 import GlobalErrorUI from '@/components/commons/GlobalErrorUI';
 
 export default function GlobalError({
-  error,
-  reset,
+  error, reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;

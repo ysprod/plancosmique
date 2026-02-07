@@ -3,19 +3,14 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Edit, Trash2, Power, Search, Tag, Clock, Link2, AlertCircle } from 'lucide-react';
 import { usePrompts } from '@/hooks/admin/usePrompts';
-import { PromptWithUsage } from '@/lib/types/prompt.types';
-import Link from 'next/link';
+ import Link from 'next/link';
 
 export default function PromptsList() {
   const { prompts, loading, error, toggleActive, deletePrompt } = usePrompts();
   const [search, setSearch] = useState('');
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
-  const filteredPrompts = prompts.filter(p =>
-    p.title.toLowerCase().includes(search.toLowerCase()) ||
-    p.description?.toLowerCase().includes(search.toLowerCase()) ||
-    p.tags?.some(t => t.toLowerCase().includes(search.toLowerCase()))
-  );
+   
 
   const handleToggle = async (id: string) => {
     try {
@@ -87,7 +82,7 @@ export default function PromptsList() {
 
       {/* List */}
       <div className="grid gap-4">
-        {filteredPrompts.map((prompt) => (
+        {prompts.map((prompt) => (
           <motion.div
             key={prompt._id}
             initial={{ opacity: 0, y: 20 }}
@@ -123,14 +118,7 @@ export default function PromptsList() {
                           Utilisé par {prompt.consultationChoices.length} consultation{prompt.consultationChoices.length > 1 ? 's' : ''}
                         </p>
                         <div className="space-y-1">
-                          {prompt.consultationChoices.map((choice) => (
-                            <div key={choice._id} className="text-xs text-blue-700">
-                              • {choice.title}
-                              {choice.rubriqueTitle && (
-                                <span className="text-blue-600"> ({choice.rubriqueTitle})</span>
-                              )}
-                            </div>
-                          ))}
+                         
                         </div>
                       </div>
                     </div>
@@ -149,18 +137,7 @@ export default function PromptsList() {
                   </div>
                 )}
 
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {prompt.tags?.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center gap-1 px-2 py-1 bg-purple-50 text-purple-700 rounded text-xs"
-                    >
-                      <Tag className="w-3 h-3" />
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
+               
                 <div className="flex items-center gap-4 text-xs text-gray-500">
                   <span className="flex items-center gap-1">
                     <Clock className="w-3 h-3" />
@@ -195,11 +172,7 @@ export default function PromptsList() {
           </motion.div>
         ))}
 
-        {filteredPrompts.length === 0 && (
-          <div className="text-center py-12 text-gray-500">
-            Aucun prompt trouvé
-          </div>
-        )}
+        
       </div>
     </div>
   );

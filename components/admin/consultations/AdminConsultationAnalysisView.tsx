@@ -10,13 +10,12 @@ import { AnalysisMarkdownSection } from "./AdminConsultationAnalysisView/Analysi
 import { AnalysisMetrics } from "./AdminConsultationAnalysisView/AnalysisMetrics";
 import { PromptCollapsibleSection } from "./AdminConsultationAnalysisView/PromptCollapsibleSection";
 import CenterShell from "./DisplayConsultationCard/CenterShell";
-import { CopyToast } from "./DisplayConsultationCard/CopyToast";
 import { TopBarActions } from "./DisplayConsultationCard/TopBarActions";
 
 export default function AdminConsultationAnalysisView() {
     const {
-        loading, error, toast, derived, copied, mdTexte, mdPrompt, mdTitle, metrics,
-        setToast, handleBack, handleCopy, handleRefresh, handleNotify,
+        loading, error, toast, derived, mdTexte, mdPrompt, mdTitle, metrics,
+        setToast, handleBack, handleRefresh, handleNotify,
     } = useAdminConsultationAnalysis();
 
     if (loading) return <LoadingSkeleton />;
@@ -36,15 +35,11 @@ export default function AdminConsultationAnalysisView() {
             <CenterShell>
                 <div className="h-1 w-full bg-gradient-to-r from-violet-600 via-fuchsia-600 to-emerald-500/70" />
                 <TopBarActions
-                    derived={derived}
-                    copied={copied}
-                    handleCopy={handleCopy}
+                    derived={derived}             
                     handleRefresh={handleRefresh}
                     handleNotify={handleNotify}
                     onBack={handleBack}
-                />
-
-                <CopyToast copied={copied} />
+                />               
 
                 <ShellCard>
                     <div className="mx-auto flex w-full max-w-2xl flex-col items-center justify-center text-center">
