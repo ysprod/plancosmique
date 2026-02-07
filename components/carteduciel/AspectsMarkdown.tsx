@@ -1,16 +1,7 @@
 "use client";
-
 import React, { memo, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import { Star, BookOpen } from "lucide-react";
-
-/**
- * Objectif:
- * - Espacer clairement les "chapitres" (Sections 0..6) => styles h2/h3 + séparateurs
- * - Préfixer les entrées (planètes/astéroïdes/points) avec leur symbole
- * - Conserver ReactMarkdown et le style card existant (gradient, icônes)
- * - Minimiser les rerenders: mappings & helpers hors render + memo + useMemo
- */
 
 type Props = {
   aspectsTexte?: string | null;
@@ -18,12 +9,8 @@ type Props = {
   title?: string;
 };
 
-const DEFAULT_TITLE = "Aspects astrologiques";
 
-// Mapping symboles — extensible
-// (Les glyphes dépendront de la police; on garde un fallback texte si absent)
 const SYMBOL_MAP: Record<string, string> = {
-  // Planètes / luminaires
   soleil: "☉",
   lune: "☾",
   mercure: "☿",
@@ -36,7 +23,6 @@ const SYMBOL_MAP: Record<string, string> = {
   neptune: "♆",
   pluton: "♇",
 
-  // Points/axes fréquemment renvoyés
   "noeud nord": "☊",
   "nœud nord": "☊",
   "noeud sud": "☋",
@@ -51,7 +37,6 @@ const SYMBOL_MAP: Record<string, string> = {
   "milieu du ciel": "MC",
   "fond du ciel": "IC",
 
-  // Astéroïdes courants (si backend les renvoie)
   "chiron": "⚷",
   "ceres": "⚳",
   "pallas": "⚴",
@@ -61,25 +46,8 @@ const SYMBOL_MAP: Record<string, string> = {
 };
 
 const normalizeKey = (s: string) =>
-  s
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, ""); // retire accents
-
-const findLeadingBodySymbol = (raw: string): { symbol: string; key: string } | null => {
-  // On cherche un "nom" au début de ligne: "Soleil ...", "Noeud Nord ...", etc.
-  // On essaie d'abord les clés multi-mots (ex: "noeud nord") puis single word.
-  const s = raw.trim();
-  if (!s) return null;
-
-  const lowered = normalizeKey(s);
-
-  // liste des clés triées par longueur desc pour matcher "noeud nord" avant "noeud"
-  // (on la construit 1 fois via Object.keys, mais ici helper pur — utilisé par useMemo plus bas)
-  // => l’ordre réel sera appliqué via KEYS_SORTED.
-  return null;
-};
+  s.trim().toLowerCase().normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 
 // Pré-calc des clés triées (anti-rerenders)
 const SYMBOL_KEYS_SORTED = Object.keys(SYMBOL_MAP).sort((a, b) => b.length - a.length).map(normalizeKey);
@@ -93,9 +61,6 @@ const getSymbolPrefixForLine = (line: string): string | null => {
   for (let i = 0; i < SYMBOL_KEYS_SORTED.length; i++) {
     const k = SYMBOL_KEYS_SORTED[i];
     if (lowered.startsWith(k)) {
-      // récupère la clé "originale" correspondante (on re-trouve via normalizeKey)
-      // comme c'est un mapping 1->1 à petite taille, on fait un lookup simple
-      // (évite d'embarquer une Map lourde; coût négligeable)
       const originalKey = Object.keys(SYMBOL_MAP).find((ok) => normalizeKey(ok) === k);
       const sym = originalKey ? SYMBOL_MAP[originalKey] : null;
       return sym ? sym : null;
@@ -107,23 +72,19 @@ const getSymbolPrefixForLine = (line: string): string | null => {
 const splitLinesPreserve = (text: string) => text.split(/\r?\n/);
 
 const enhanceMarkdownWithSymbols = (md: string): string => {
-  // Important: on NE touche pas aux chiffres, on ne parse pas les degrés.
-  // On préfixe uniquement les lignes "candidates" (listes ou lignes simples).
-  const lines = splitLinesPreserve(md);
+   const lines = splitLinesPreserve(md);
 
   let inCodeBlock = false;
 
   const out = lines.map((line) => {
     const trimmed = line.trim();
 
-    // gestion simple des blocs ``` pour ne rien modifier à l'intérieur
     if (trimmed.startsWith("```")) {
       inCodeBlock = !inCodeBlock;
       return line;
     }
     if (inCodeBlock) return line;
 
-    // détecte des items markdown "- ..." ou "* ..." ou "• ..."
     const m = /^(\s*[-*•]\s+)(.+)$/.exec(line);
     if (m) {
       const [, bullet, content] = m;
@@ -190,7 +151,7 @@ const markdownComponents = {
       {...props}
       className={cx(
         "my-3 leading-relaxed",
-        "text-[13px] sm:text-sm",
+        "text-[14px] sm:text-sm",
         "text-slate-700 dark:text-slate-200/90",
         "text-center"
       )}
@@ -204,7 +165,7 @@ const markdownComponents = {
       {...props}
       className={cx(
         "flex items-start gap-2",
-        "text-[13px] sm:text-sm",
+        "text-[14px] sm:text-sm",
         "text-slate-700 dark:text-slate-200/90"
       )}
     />
@@ -218,7 +179,7 @@ const markdownComponents = {
       className={cx(
         "rounded-md px-1.5 py-0.5",
         "bg-black/5 dark:bg-white/10",
-        "text-[12px] font-mono",
+        "text-[14px] font-mono",
         "text-slate-800 dark:text-slate-100"
       )}
     />
@@ -231,7 +192,7 @@ const markdownComponents = {
 export const AspectsMarkdown = memo(function AspectsMarkdown({
   aspectsTexte,
   markdown,
-  title = DEFAULT_TITLE,
+  title = "Aspects astrologiques",
 }: Props) {
   // Priorité à aspectsTexte, fallback sur markdown (pour compatibilité)
   const safeMarkdown = aspectsTexte ?? markdown ?? "";

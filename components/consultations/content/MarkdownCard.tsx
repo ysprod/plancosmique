@@ -170,7 +170,7 @@ const MarkdownCard = memo(function MarkdownCard({ markdown }: Props) {
   return (
     <div
       className={cx(
-        "mx-auto w-full max-w-2xl",
+        "mx-auto w-full max-w-4xl",
         "rounded-2xl border shadow-sm",
         "bg-white/80 dark:bg-slate-950/60",
         "border-slate-200/70 dark:border-white/10",

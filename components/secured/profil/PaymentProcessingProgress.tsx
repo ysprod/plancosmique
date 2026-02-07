@@ -1,15 +1,14 @@
 "use client";
 
-import React, { memo, useMemo } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { CheckCircle2, Loader2 } from "lucide-react";
+import { memo, useMemo } from "react";
 
 export type ProgressStage =
   | "idle"
   | "update_user"
   | "sky_chart"
   | "choices"
-  | "consultations"
   | "finalizing"
   | "done"
   | "error";
@@ -36,7 +35,6 @@ const STAGES: Array<{ key: ProgressStage; label: string }> = [
   { key: "sky_chart", label: "Carte du ciel" },
   { key: "choices", label: "Analyses" },
   { key: "finalizing", label: "Finalisation" },
-  { key: "consultations", label: "Consultations" },
   { key: "done", label: "Terminé" },
 ];
 

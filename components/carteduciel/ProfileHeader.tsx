@@ -12,14 +12,13 @@ const ProfileHeader = memo(function ProfileHeader({ userData }: { userData: User
     const nom = safeText(userData?.nom);
     const fullName = (prenoms || nom) ? `${prenoms}${prenoms && nom ? " " : ""}${nom}` : "Profil";
 
-    const phone = safeText(userData?.phone);
     const premium = !!userData?.premium;
 
     const dateNaissance = typeof userData?.dateNaissance === 'string' ? userData.dateNaissance : (userData?.dateNaissance ? userData.dateNaissance.toISOString() : '');
     const heureNaissance = safeText(userData?.heureNaissance!);
     const lieuNaissance = safeText(userData?.villeNaissance!);
 
-    return { fullName, phone, premium, dateNaissance, heureNaissance, lieuNaissance };
+    return { fullName,  premium, dateNaissance, heureNaissance, lieuNaissance };
   }, [userData]);
 
   return (
@@ -80,23 +79,8 @@ const ProfileHeader = memo(function ProfileHeader({ userData }: { userData: User
           <h1 className="text-[16px] sm:text-[18px] font-extrabold tracking-tight text-slate-900 dark:text-slate-50 max-w-[22rem] truncate">
             {vm.fullName}
           </h1>
-
-          {vm.phone ? (
-            <div className="inline-flex items-center justify-center gap-2 text-[12px] text-slate-600 dark:text-slate-300">
-              <span className="h-7 w-7 rounded-xl grid place-items-center bg-black/5 dark:bg-white/10">
-                <Phone className="h-4 w-4" />
-              </span>
-              <span className="font-semibold">{vm.phone}</span>
-            </div>
-          ) : (
-            <div className="text-[12px] text-slate-500 dark:text-slate-400">
-              Informations de naissance et progression
-            </div>
-          )}
         </div>
-      </div>
-
-      {/* Infos compactes (grid centrée) */}
+      </div> 
       <div
         className="mt-4 w-full flex justify-center"
       >

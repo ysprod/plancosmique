@@ -62,7 +62,7 @@ function ConsultationFormImpl({ form, errors, handleChange, apiError, handleSubm
   return (
     <section
       className={cx(
-        "w-full max-w-md sm:max-w-xl",
+        "w-full max-w-2xl",
         "rounded-3xl",
         "border border-black/10 dark:border-white/10",
         "bg-white/75 dark:bg-slate-950/55",

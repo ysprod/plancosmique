@@ -15,7 +15,7 @@ export default function ConsultationHistoryPageClient() {
 
   return (
     <main className="w-full min-h-[60vh] flex flex-col items-center justify-center p-6">
-      <h1 className="text-2xl font-bold mb-4">Historique de la consultation</h1>
+      <h1 className="text-2xl font-bold mb-4">Historique du choix de consultation</h1>
       <p className="text-lg text-gray-700 dark:text-gray-200 mb-6">
         Choice ID :{' '}
         <span className="font-mono text-purple-700 dark:text-purple-300">{choiceId ?? '—'}</span>

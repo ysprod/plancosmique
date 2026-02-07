@@ -10,7 +10,6 @@ export type ProgressStage =
   | "update_user"
   | "sky_chart"
   | "choices"
-  | "consultations"
   | "finalizing"
   | "done"
   | "error";
@@ -245,10 +244,11 @@ export function useSlide4SectionDoors() {
 
         await api.post("/consultations/generate-sky-chart", {});
         pushLog("Carte du ciel générée");
+
         setProgressThrottled((p) => ({
           ...p,
           stage: "choices",
-          message: `Traitement des cartes (${choices.length}/${choices.length})…`,
+          message: `Traitement des consultations (${choices.length}/${choices.length})…`,
           percent: 40,
           done: choices.length,
           total: choices.length,
@@ -258,17 +258,8 @@ export function useSlide4SectionDoors() {
         await api.post("/consultations/generate-consultations-for-rubrique", {
           rubriqueId: RUBRIQUE_ID,
         });
-        pushLog("Consultations générées");
-        setProgressThrottled((p) => ({
-          ...p,
-          stage: "consultations",
-          message: `Traitement des consultations (${choices.length}/${choices.length})…`,
-          percent: 70,
-          done: choices.length,
-          total: choices.length,
-          lastUpdatedAt: Date.now(),
-        }));
-
+        pushLog("Consultations générées"); 
+        
         setProgressThrottled((p) => ({
           ...p,
           stage: "finalizing",

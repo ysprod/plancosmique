@@ -1,18 +1,9 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
 import { cx } from "@/lib/functions";
-
-const shellVariants = {
-  initial: { opacity: 0, y: 10, filter: "blur(2px)" },
-  animate: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.18 } },
-};
 
 const ShellCard = memo(function ShellCard({ children }: { children: React.ReactNode }) {
   return (
-    <motion.section
-      variants={shellVariants}
-      initial="initial"
-      animate="animate"
+    <div
       className={cx(
         "w-full mx-auto",
         "flex flex-col items-center justify-center text-center",
@@ -32,7 +23,7 @@ const ShellCard = memo(function ShellCard({ children }: { children: React.ReactN
           <div className="p-3 sm:p-5">{children}</div>
         </div>
       </div>
-    </motion.section>
+    </div>
   );
 });
 
