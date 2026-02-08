@@ -67,37 +67,8 @@ export const ConsultationButton = memo<ConsultationButtonProps>(
       transition-all duration-300 bg-gradient-to-r ${config.gradient}
     `;
 
-    if (isRepeatable) {
-      const showHistory = enrichedChoice.consultationCount! > 0;
-      return (
-        <div className={showHistory ? "w-full flex items-end gap-2" : "w-full"}>
-          <motion.button
-            onClick={handleClick}
-            whileHover={{ scale: 1.02, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-            className={`${baseClasses} shadow-md hover:shadow-lg`}
-          >
-            <Icon className="w-4 h-4" />
-            <span>Consulter</span>
-          </motion.button>
-          {showHistory && (
-            <button
-              type="button"
-              className="w-full px-3 py-2 sm:px-4 sm:py-2.5 font-semibold rounded-lg text-white text-sm flex items-center justify-center gap-2 transition-all duration-300 bg-gradient-to-r from-amber-500 to-orange-500 shadow-md hover:shadow-lg"
-              onClick={() => {
-                if (enrichedChoice.consultationId) {
-                  window.location.href = `/star/consultations/history/${enrichedChoice._id}`;
-                }
-              }}
-            >
-              Historique ({enrichedChoice.consultationCount})
-            </button>
-          )}
-        </div>
-      );
-    } else {
-      return (
+    return isRepeatable ? (
+      <div className={enrichedChoice.consultationCount! > 0 ? "w-full flex items-end gap-2" : "w-full"}>
         <motion.button
           onClick={handleClick}
           whileHover={{ scale: 1.02, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
@@ -106,9 +77,33 @@ export const ConsultationButton = memo<ConsultationButtonProps>(
           className={`${baseClasses} shadow-md hover:shadow-lg`}
         >
           <Icon className="w-4 h-4" />
-          <span>{config.label}</span>
+          <span>Consulter</span>
         </motion.button>
-      );
-    }
+        {enrichedChoice.consultationCount! > 0 && (
+          <button
+            type="button"
+            className="w-full px-3 py-2 sm:px-4 sm:py-2.5 font-semibold rounded-lg text-white text-sm flex items-center justify-center gap-2 transition-all duration-300 bg-gradient-to-r from-amber-500 to-orange-500 shadow-md hover:shadow-lg"
+            onClick={() => {
+              if (enrichedChoice.consultationId) {
+                window.location.href = `/star/consultations/history/${enrichedChoice._id}`;
+              }
+            }}
+          >
+            Historique ({enrichedChoice.consultationCount})
+          </button>
+        )}
+      </div>
+    ) : (
+      <motion.button
+        onClick={handleClick}
+        whileHover={{ scale: 1.02, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
+        whileTap={{ scale: 0.98 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+        className={`${baseClasses} shadow-md hover:shadow-lg`}
+      >
+        <Icon className="w-4 h-4" />
+        <span>{config.label}</span>
+      </motion.button>
+    );
   }
 );
