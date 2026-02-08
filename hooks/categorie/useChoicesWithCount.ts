@@ -7,7 +7,7 @@ export interface ChoicesWithCountResult {
   [key: string]: any;
 }
 
-export function useChoicesWithCount(rubriqueId: string, userId: string) {
+export function useChoicesWithCount(rubriqueId: string) {
   const [data, setData] = useState<Rubrique | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,20 +16,20 @@ export function useChoicesWithCount(rubriqueId: string, userId: string) {
     setLoading(true);
     setError(null);
     try {
-      const result = await getChoicesWithCount(rubriqueId, userId);
+      const result = await getChoicesWithCount(rubriqueId);
       setData(result);
     } catch (err: any) {
       setError(err?.response?.data?.message || err.message || 'Erreur inconnue');
     } finally {
       setLoading(false);
     }
-  }, [rubriqueId, userId]);
+  }, [rubriqueId]);
 
   useEffect(() => {
-    if (rubriqueId && userId) {
+    if (rubriqueId) {
       fetchChoices();
     }
-  }, [rubriqueId, userId, fetchChoices]);
+  }, [rubriqueId, fetchChoices]);
 
   return { data, loading, error, refetch: fetchChoices };
 }

@@ -131,7 +131,7 @@ export function useCategoryFormClientGroupe(category: CategorieAdmin, consultati
                 setUserData(user);
 
                 if (consultationId && user?._id) {
-                    const result = await getChoicesWithCount(consultationId, user._id);
+                    const result = await getChoicesWithCount(consultationId );
                     if (reqSeqRef.current !== seq) return;
 
                     setRubriqueCourante(result);

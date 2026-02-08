@@ -44,7 +44,7 @@ export function useAdminConsultationsPage() {
 
       const response = await api.get(`/admin/consultations?${params}`, {
         headers: { 'Cache-Control': 'no-cache' },
-        timeout: 10000,
+        timeout: 30000, // 30 secondes pour les données volumineuses
       });
 
       setConsultations(response.data.consultations || []);
@@ -54,13 +54,17 @@ export function useAdminConsultationsPage() {
 
       let errorMessage = 'Erreur inconnue';
 
-      if (err.response) {
+      if (err.code === 'ECONNABORTED') {
+        errorMessage = 'Délai dépassé : la requête a pris trop de temps. Veuillez réessayer.';
+      } else if (err.response) {
         errorMessage = err.response.data?.message ||
           `Erreur ${err.response.status}`;
       } else if (err.request) {
         errorMessage = 'Erreur de connexion au serveur';
+      } else if (err.message === 'Network Error') {
+        errorMessage = 'Erreur réseau : vérifiez votre connexion internet';
       } else {
-        errorMessage = err.message;
+        errorMessage = err.message || 'Erreur inconnue';
       }
 
       setError(errorMessage);

@@ -65,7 +65,7 @@ const redirectToLogin = (): void => {
 const cleanBaseURL = config.api.baseURL.replace(/\/+$/, '');
 const apiClient: AxiosInstance = axios.create({
   baseURL: `${cleanBaseURL}/api/${config.api.apiVersion}`,
-  timeout: config.api.timeout,
+  timeout: 45000, // 45 secondes (augmenté pour les requêtes volumineuses)
   headers: {
     'Content-Type': 'application/json',
     'Cache-Control': 'no-store',

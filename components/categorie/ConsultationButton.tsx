@@ -47,7 +47,7 @@ export const ConsultationButton = memo<ConsultationButtonProps>(
     const isPending = status === 'RÉPONSE EN ATTENTE';
     const isViewAnalysis = status === "VOIR L'ANALYSE";
     const isRepeatable = enrichedChoice.frequence !== 'UNE_FOIS_VIE';
-console.log("ConsultationButton render - status:", status, "enrichedChoice:", enrichedChoice);
+    console.log("ConsultationButton render - status:", status, "enrichedChoice:", enrichedChoice);
     const handleClick = () => {
       if (isPending) return;
       if (isRepeatable) {

@@ -25,8 +25,6 @@ function readSelectedChoiceIdOnce() {
 }
 
 export function useCategoryFormClient(category: CategorieAdmin, consultationId: string) {
-
-
     const [ui, setUi] = useState<UiState>(initialUi);
     const [userData, setUserData] = useState<User | null>(null);
     const [rubriqueCourante, setRubriqueCourante] = useState<Rubrique | null>(null);
@@ -87,7 +85,7 @@ export function useCategoryFormClient(category: CategorieAdmin, consultationId: 
 
         (async () => {
             try {
-                const result = await getChoicesWithCount(consultationId, userId);
+                const result = await getChoicesWithCount(consultationId);
                 if (reqSeqRef.current !== seq) return;
                 setRubriqueCourante(result);
                 setUi((s) => ({ ...s, loading: false, error: null }));

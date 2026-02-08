@@ -1,54 +1,25 @@
 import { useChoicesWithCount } from "@/hooks/categorie/useChoicesWithCount";
 import { api } from "@/lib/api/client";
-import { getChoicesWithCount } from "@/lib/api/services/rubrique.service";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { mapFormDataToBackend } from "@/lib/functions";
 import type { CategorieAdmin, ConsultationChoice, Rubrique } from "@/lib/interfaces";
 import { useReducedMotion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 
 export function useCategoryClientViewChoix({ category, }: { category: CategorieAdmin; }) {
-
     const { user } = useAuth();
-
     const reduceMotion = useReducedMotion();
     const searchParams = useSearchParams();
     const consultationId = searchParams?.get("consultationId") ?? "";
-    const userId = user?._id ?? "";
 
-    const [data, setData] = useState<Rubrique | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    const fetchChoices = useCallback(async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const response = await api.get(`/rubriques/${consultationId}/choices-with-count`, {
-                params: { userId }
-            });
-            const result = response.data;
-            setData(result);
-        } catch (err: any) {
-            setError(err?.response?.data?.message || err.message || 'Erreur inconnue');
-        } finally {
-            setLoading(false);
-        }
-    }, [consultationId, userId]);
-
-    useEffect(() => {
-        if (consultationId && userId) {
-            fetchChoices();
-        }
-    }, [consultationId, userId, fetchChoices]);
-
-    const { data: rubriqueCourante, } = useChoicesWithCount(consultationId, userId) as {
+    const { data: rubriqueCourante, loading, error } = useChoicesWithCount(consultationId) as {
         data: Rubrique | null;
         loading: boolean;
         error: string | null;
         refetch: () => Promise<void>;
     };
+    console.log("[useCategoryClientViewChoix] rubriqueCourante:", rubriqueCourante);
 
     const enrichedByChoiceId = useMemo(() => {
         const map = new Map<string, ConsultationChoice>();
