@@ -8,6 +8,7 @@ import { ConsultationChoicesLoader } from './choices/ConsultationChoicesLoader';
 import { ConsultationChoicesSearch } from './choices/ConsultationChoicesSearch';
 import { ConsultationChoicesTabs } from './choices/ConsultationChoicesTabs';
 import { SansPromptTab } from './choices/SansPromptTab';
+import { ToutPromptTab } from './choices/ToutPromptTab';
 
 const MemoConsultationChoicesHeader = React.memo(ConsultationChoicesHeader);
 const MemoConsultationChoicesSearch = React.memo(ConsultationChoicesSearch);
@@ -18,7 +19,7 @@ const MemoAvecPromptTab = React.memo(AvecPromptTab);
 export default function ConsultationChoicesList() {
   const {
     loading, error, choicesWithPrompt, choicesWithoutPrompt, headerProps,
-    searchProps, tabsProps, tab,
+    searchProps, tabsProps, tab,filteredChoices
   } = useConsultationChoices();
 
   if (loading) {
@@ -39,6 +40,10 @@ export default function ConsultationChoicesList() {
       )}
       {tab === 'sans' && (
         <MemoSansPromptTab choicesWithoutPrompt={choicesWithoutPrompt} />
+      )}
+      {tab === 'tout' && (
+        <>          <ToutPromptTab choicesWithoutPrompt={filteredChoices} />
+        </>
       )}
     </div>
   );
