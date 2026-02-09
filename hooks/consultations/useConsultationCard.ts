@@ -18,10 +18,9 @@ export function useConsultationCard(consultation: any) {
     };
   }, [consultation.type]);
 
-  const hasResultData = useMemo(() => !!consultation.resultData, [consultation.resultData]);
-  const hasCarteDuCiel = useMemo(() => !!consultation.formData?.carteDuCiel, [consultation.formData]);
+   const hasCarteDuCiel = useMemo(() => !!consultation.formData?.carteDuCiel, [consultation.formData]);
   const hasTierce = useMemo(() => !!consultation.tierce, [consultation.tierce]);
   const isPaid = useMemo(() => consultation.isPaid || consultation.status === 'paid', [consultation.isPaid, consultation.status]);
 
-  return { typeConfig, hasResultData, hasCarteDuCiel, hasTierce, isPaid };
+  return { typeConfig,  hasCarteDuCiel, hasTierce, isPaid };
 }

@@ -237,24 +237,7 @@ export interface ConsultationFormData {
   phone?: string;
 }
 
-export interface ResultData {
-  consultationId: string;
-  sessionId: string;
-  timestamp: string;
-  carteDuCiel: CarteDuCiel;
-  missionDeVie: MissionDeVie;
-  horoscope?: any;
-  analyse?: any;
-  metadata: {
-    processingTime: number;
-    tokensUsed: number;
-    model: string;
-  };
-  dateGeneration: string;
-  numbers?: Array<{ label: string; value: string | number }>;
-  cycles?: Array<{ label: string; value: string | number }>;
-}
-
+ 
 export interface Transaction {
   _id: string;
   transactionId: string;
@@ -320,17 +303,6 @@ export interface BackendHoroscope {
   title: string;
   description: string;
   status: string;
-  resultData?: {
-    horoscope?: {
-      generalForecast: string;
-      love: string;
-      work: string;
-      health: string;
-      spiritualAdvice: string;
-      luckyColor: string;
-      dominantPlanet: string;
-    };
-  };
   formData?: {
     carteDuCiel?: {
       carteDuCiel?: {
@@ -536,7 +508,6 @@ export interface Consultation {
   description: string;
   formData?: ConsultationFormData;
   result: any;
-  resultData?: ResultData | null;
   price: number;
   attachments: string[];
   notes: string | null;

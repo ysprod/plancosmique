@@ -4,8 +4,7 @@ import type { Rubrique } from "@/lib/interfaces";
 import { useRubriqueDerived } from "../../hooks/commons/useRubriqueDerived";
 import RubriqueHeader from "./RubriqueHeader";
 
-const HoroscopeConsultationSection = lazy(() => import("../vie-personnelle/HoroscopeConsultationSection"));
-const Slide4Section = lazy(() => import("../vie-personnelle/Slide4Section"));
+ const Slide4Section = lazy(() => import("../vie-personnelle/Slide4Section"));
 
 const LoadingFallback = () => (
   <div className="flex items-center justify-center py-12">
@@ -25,9 +24,7 @@ export const RubriqueView = memo<RubriqueViewProps>(function RubriqueView({ rubr
   const isHoroscope = consultationType === 'HOROSCOPE';
 
   const ConsultationContent = useMemo(() => {
-    if (isHoroscope) {
-      return <HoroscopeConsultationSection />;
-    }
+   
     return <Slide4Section rubrique={rubrique} />;
   }, [isHoroscope, rubrique]);
 

@@ -9,7 +9,7 @@ interface AstrologyConsultationCardClientProps {
 
 const AstrologyConsultationCardClient: React.FC<AstrologyConsultationCardClientProps> = ({ consultation }) => {
   // Extraction des données astrologiques
-  const analyse = consultation.analyse?.analyse || consultation.resultData?.analyse;
+  const analyse = consultation.analyse?.analyse ;
   const missionDeVie = analyse?.missionDeVie?.contenu || analyse?.missionDeVie || '';
   const carteDuCiel = analyse?.carteDuCiel || analyse?.carte || null;
   const aspectsTexte = carteDuCiel?.aspectsTexte || '';

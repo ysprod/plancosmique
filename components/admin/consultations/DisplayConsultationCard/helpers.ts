@@ -8,9 +8,7 @@ export function getConsultationId(c: any) {
 export function extractMarkdown(c: any): string | null {
   const v =
     c?.analyse?.analyse?.texte ??
-    c?.resultData?.analyse?.texte ??
     c?.analyse?.analyse ??
-    c?.resultData?.analyse ??
     null;
 
   const s = typeof v === "string" ? v.trim() : "";

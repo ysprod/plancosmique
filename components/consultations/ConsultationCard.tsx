@@ -262,7 +262,6 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
   
   const sameId = p._id === n._id;
   const sameStatus = p.status === n.status;
-  const sameResultData = p.resultData === n.resultData;
   const sameTitle = p.title === n.title;
   const sameDescription = p.description === n.description;
   const sameCompletedDate = p.completedDate === n.completedDate;
@@ -277,7 +276,7 @@ const ConsultationCard: React.FC<ConsultationCardProps> = memo(({
     pForm?.heureNaissance === nForm?.heureNaissance
   );
   
-  return sameId && sameStatus && sameResultData && sameTitle && 
+  return sameId && sameStatus  && sameTitle && 
          sameDescription && sameCompletedDate && sameFormData;
 });
 

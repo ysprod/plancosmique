@@ -10,7 +10,7 @@ export default function ConsultationHoroscopeView({ consultation }: { consultati
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
     >
-      <HoroscopeSummary horoscope={consultation.analyse?.horoscope || consultation.resultData?.horoscope} />
+      <HoroscopeSummary horoscope={consultation.analyse?.horoscope} />
     </motion.div>
   );
 }

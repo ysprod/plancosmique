@@ -14,7 +14,7 @@ const useConsultationData = (consultation: Consultation) => {
       birthLocation,
       birthDate: formData?.dateNaissance ? formatDate(formData.dateNaissance) : '—',
       birthTime: formData?.heureNaissance || '—',
-      hasResult: Boolean(consultation.resultData),
+      hasResult:  consultation.status === 'COMPLETED',
       createdAt: formatDate(consultation.createdAt),
       completedDate: consultation.completedDate ? formatDate(consultation.completedDate) : null,
       isProcessing: consultation.status === 'processing',

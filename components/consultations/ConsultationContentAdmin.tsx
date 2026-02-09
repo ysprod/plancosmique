@@ -6,8 +6,8 @@ import ConsultationHeader from "./content/ConsultationHeader";
 import MarkdownCard from "./content/MarkdownCard";
 
 function extractMarkdown(c: Consultation): string | null {
-  const v = c?.analyse?.analyse?.texte ?? c?.resultData?.analyse?.texte ??
-    c?.analyse?.analyse ?? c?.resultData?.analyse ??
+  const v = c?.analyse?.analyse?.texte  ??
+    c?.analyse?.analyse  ??
     null;
 
   const s = typeof v === "string" ? v.trim() : "";
