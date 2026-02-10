@@ -4,10 +4,11 @@ import { AlertCircle } from 'lucide-react';
 
 interface SansPromptTabProps {
     choicesWithoutPrompt: any[];
+    onEditPrompt?: (choice: any) => void;
 }
 
-export function SansPromptTab({ choicesWithoutPrompt }: SansPromptTabProps) {
-    const withoutPromptCards = useConsultationChoicesSectionSansPrompts(choicesWithoutPrompt);
+export function SansPromptTab({ choicesWithoutPrompt, onEditPrompt }: SansPromptTabProps) {
+    const withoutPromptCards = useConsultationChoicesSectionSansPrompts(choicesWithoutPrompt, onEditPrompt);
 
     return (
         choicesWithoutPrompt.length > 0 ? (

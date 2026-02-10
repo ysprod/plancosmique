@@ -70,10 +70,10 @@ export function useAdminRubriquesPage() {
       description: "",
       categorie: "GENERAL",
       consultationChoices: [],
-      type: ConsultationType.AUTRE,
+      type: ConsultationType.SPIRITUALITE,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      typeconsultation: ConsultationType.AUTRE,
+      typeconsultation: ConsultationType.SPIRITUALITE,
     };
     setEditingRubrique(newRubrique);
     setSelectedRubrique(null);
@@ -101,7 +101,6 @@ export function useAdminRubriquesPage() {
           };
         }
         return {
-          promptId: choice.promptId||undefined,
           title: choice.title,
           description: choice.description,
           frequence: choice.frequence,

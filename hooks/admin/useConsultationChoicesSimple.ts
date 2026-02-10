@@ -25,7 +25,7 @@ export function useConsultationChoicesSimple(choiceId: string | null) {
     fetchChoices();
   }, [fetchChoices]);
  
-  const choicesWithoutPrompt = choices.filter(c => !c.promptId);
+  const choicesWithoutPrompt = choices.filter(c => !c);
   const choice = choicesWithoutPrompt.find((c: any) => c._id === choiceId);
 
   return {

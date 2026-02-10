@@ -4,10 +4,11 @@ import { AlertCircle } from 'lucide-react';
 
 interface ToutPromptTabProps {
     choicesWithoutPrompt: any[];
+    onEditPrompt?: (choice: any) => void;
 }
 
-export function ToutPromptTab({ choicesWithoutPrompt }: ToutPromptTabProps) {
-     const withoutPromptCards = useConsultationChoicesSection(choicesWithoutPrompt);
+export function ToutPromptTab({ choicesWithoutPrompt, onEditPrompt }: ToutPromptTabProps) {
+     const withoutPromptCards = useConsultationChoicesSection(choicesWithoutPrompt, onEditPrompt);
 
     return (
         choicesWithoutPrompt.length > 0 ? (

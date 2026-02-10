@@ -1,6 +1,4 @@
-import Link from 'next/link';
-import { Plus } from 'lucide-react';
-
+'use client';
 interface ConsultationChoicesHeaderProps {
   withPrompt: number;
   withoutPrompt: number;
@@ -16,13 +14,6 @@ export const ConsultationChoicesHeader = ({ withPrompt, withoutPrompt }: Consult
           {total} consultations • {withPrompt} avec prompt • {withoutPrompt} sans prompt
         </p>
       </div>
-      <Link
-        href="/admin/prompts/create"
-        className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-      >
-        <Plus className="w-5 h-5" />
-        Nouveau Prompt
-      </Link>
     </div>
   );
 };

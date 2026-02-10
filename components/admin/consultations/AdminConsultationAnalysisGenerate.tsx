@@ -27,7 +27,7 @@ export default function AdminConsultationAnalysisGenerate() {
     }, []);
 
     const goback = useCallback(() => {
-        window.location.replace(`/admin/consultations/${consultationId}`);
+        window.location.assign(`/admin/consultations/${consultationId}`);
     }, [consultationId]);
 
     useEffect(() => {

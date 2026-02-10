@@ -8,7 +8,7 @@ interface PromptFormHeaderProps {
 }
 
 const PromptFormHeader: React.FC<PromptFormHeaderProps> = ({ title, isSaving, onSave }) => (
-  <div className="flex items-center justify-between mb-4">
+  <div className="flex flex-col items-center justify-center gap-3 mb-4">
     <h2 className="text-lg font-bold text-cosmic-indigo dark:text-cosmic-pink">{title}</h2>
     {onSave && (
       <button

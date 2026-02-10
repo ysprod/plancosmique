@@ -3,9 +3,18 @@ import { FileText, Plus } from "lucide-react";
 
 interface ConsultationChoiceCardProps {
   choice: any;
+  onEditPrompt?: (choice: any) => void;
 }
 
-function ConsultationChoiceCardSansPrompt({ choice }: ConsultationChoiceCardProps) {
+function ConsultationChoiceCardSansPrompt({ choice, onEditPrompt }: ConsultationChoiceCardProps) {
+  const handleCreate = () => {
+    if (onEditPrompt) {
+      onEditPrompt(choice);
+      return;
+    }
+    window.location.href = `/admin/prompts/create?returnTo=consultations-choices&choiceId=${choice._id}`;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -30,7 +39,7 @@ function ConsultationChoiceCardSansPrompt({ choice }: ConsultationChoiceCardProp
             <button
               type="button"
               className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
-              onClick={() => window.location.href = `/admin/prompts/create?returnTo=consultations-choices&choiceId=${choice._id}`}
+              onClick={handleCreate}
             >
               <Plus className="w-4 h-4" />
               Créer le prompt

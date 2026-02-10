@@ -85,7 +85,7 @@ export function useAdminConsultationAnalysis() {
 
     return { dateGenLabel, isNotified };
   }, [analyse?.dateGeneration, analyse?.analysisNotified]);
- 
+
   const loadAnalysis = useCallback(async () => {
     if (!consultationId) {
       setState((s) => {
@@ -109,36 +109,13 @@ export function useAdminConsultationAnalysis() {
     setState((s) => (s.loading && s.error === null ? s : { ...s, loading: true, error: null }));
 
     try {
-      // 1) tentative de récupération
       const res = await api.get(`/analyses/by-consultation/${consultationId}`, {
         signal: controller.signal,
       } as any);
 
       const data = res?.data ?? null;
-
-      // Si analyse absente → on tente de générer
-      let finalAnalyse: Analysis | null = data && data !== "" ? data : null;
-
-      if (!finalAnalyse) {
-        const generatedRes = await api.post(
-          `/consultations/${consultationId}/generate-analysis`,
-          {},
-          { signal: controller.signal } as any,
-        );
-
-        const generatedData =
-          generatedRes?.data?.analyse ?? generatedRes?.data ?? null;
-
-        if (!generatedData || generatedData === "") {
-          throw new Error("Analyse générée introuvable");
-        }
-        finalAnalyse = generatedData;
-      }
-
       if (reqSeqRef.current !== mySeq) return;
-
-      setAnalyse(finalAnalyse);
-
+      setAnalyse(data);
       setState((s) => {
         const next: AdminAnalysisState = { ...s, loading: false, error: null };
         return shallowEqualState(s, next) ? s : next;
@@ -162,7 +139,7 @@ export function useAdminConsultationAnalysis() {
 
   const hardNavigate = useCallback((url: string, mode: "replace" | "assign" = "assign") => {
     const cacheBusted = url.includes("?") ? `${url}&r=${Date.now()}` : `${url}?r=${Date.now()}`;
-    if (mode === "replace") window.location.replace(cacheBusted);
+    if (mode === "replace") window.location.assign(cacheBusted);
     else window.location.assign(cacheBusted);
   }, []);
 
@@ -177,21 +154,16 @@ export function useAdminConsultationAnalysis() {
     [hardNavigate],
   );
 
-
   const handleNotifyUser = useCallback(async () => {
-    const notifyId = consultationId ?? (analyse?._id ? String(analyse._id) : null);
-
-    if (!notifyId) {
+    if (!consultationId) {
       showToast("❌ ID de consultation manquant", "error");
       return;
     }
 
     try {
-      const res = await api.post(`/consultations/${notifyId}/notify-user`);
+      const res = await api.post(`/consultations/${consultationId}/notify-user`);
       if (res.status === 200 || res.status === 201) {
         showToast("📧 Notification envoyée avec succès !", "success");
-
-        // ✅ update immuable
         setAnalyse((prev) => (prev ? { ...prev, analysisNotified: true } : prev));
       } else {
         showToast("❌ Erreur lors de l'envoi", "error");
@@ -199,7 +171,7 @@ export function useAdminConsultationAnalysis() {
     } catch {
       showToast("❌ Erreur lors de l'envoi", "error");
     }
-  }, [analyse?._id, consultationId, showToast]);
+  }, [consultationId, showToast]);
 
   const handleNotify = useCallback(() => {
     if (!consultationId || derived.isNotified) return;
@@ -212,7 +184,6 @@ export function useAdminConsultationAnalysis() {
     handleModifyAnalysis(consultationId);
   }, [consultationId, handleModifyAnalysis]);
 
-
   useEffect(() => {
     void loadAnalysis();
     return () => {
@@ -220,7 +191,6 @@ export function useAdminConsultationAnalysis() {
       clearToastTimer();
     };
   }, [loadAnalysis, clearToastTimer]);
-
 
   const mdTexte = useMemo(() => safeTrim(analyse?.texte), [analyse?.texte]);
   const mdPrompt = useMemo(() => safeTrim(analyse?.prompt), [analyse?.prompt]);
@@ -238,7 +208,6 @@ export function useAdminConsultationAnalysis() {
     error: state.error,
     toast: state.toast,
     setToast,
-    analyse, // utile parfois côté UI (optionnel, retire si tu veux minimiser)
     consultationId,
     derived,
     metrics,

@@ -44,7 +44,7 @@ export default function CreateCategoryPageClient() {
         }}
         successProps={{
           nom: nom.trim(),
-          onGoList: () => window.location.replace("/admin/categories"),
+          onGoList: () => window.location.assign("/admin/categories"),
           onCreateAnother: () => {
             setNom("");
             setDescription("");

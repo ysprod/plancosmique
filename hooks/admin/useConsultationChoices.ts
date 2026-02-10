@@ -6,7 +6,6 @@ import { promptService } from '@/lib/api/services/prompt.service';
 import { useConsultationChoicesTabs } from './useConsultationChoicesTabs';
 
 export interface ConsultationChoiceWithPrompt extends ConsultationChoice {
-
   rubriqueTitle?: string;
 }
 

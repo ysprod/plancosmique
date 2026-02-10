@@ -148,7 +148,6 @@ export interface ConsultationChoice {
   participants?: TypeParticipants;
   offering: ConsultationOffering;
   order?: number;
-  promptId?: string;
   prompt?: string;
   choiceId: string;
   choiceTitle: string;
@@ -456,30 +455,30 @@ export interface SpiritualPractice {
 }
 
 export enum ConsultationType {
-  HOROSCOPE = 'horoscope',
-  NUMEROLOGIE = 'numerologie',
-  VIE_PERSONNELLE = 'vie-personnelle',
-  RELATIONS = 'relations',
-  PROFESSIONNEL = 'professionnel',
-  ASTROLOGIE_AFRICAINE = 'astrologie-africaine',
-  SPIRITUALITE = 'spiritualite',
-  OFFRANDES = 'offrandes',
-  NOMBRES_PERSONNELS = 'nombres-personnels',
-  CYCLES_PERSONNELS = 'cycles-personnels',
-  CINQ_ETOILES = 'cinq-etoiles',
-  AUTRE = 'autre',
+  HOROSCOPE = 'HOROSCOPE',
+  NUMEROLOGIE = 'NUMEROLOGIE',
+  VIE_PERSONNELLE = 'VIE_PERSONNELLE',
+  RELATIONS = 'RELATIONS',
+  PROFESSIONNEL = 'PROFESSIONNEL',
+  ASTROLOGIE_AFRICAINE = 'ASTROLOGIE_AFRICAINE',
+  SPIRITUALITE = 'SPIRITUALITE',
+  OFFRANDES = 'OFFRANDES',
+  NOMBRES_PERSONNELS = 'NOMBRES_PERSONNELS',
+  CYCLES_PERSONNELS = 'CYCLES_PERSONNELS',
+  CINQ_ETOILES = 'CINQ_ETOILES',
+  AUTRE = 'AUTRE',
 }
 
 export enum ConsultationStatus {
-  PENDING = 'pending',
-  PROCESSING = 'processing',
-  AWAITING_PAYMENT = 'awaiting_payment',
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  AWAITING_PAYMENT = 'AWAITING_PAYMENT',
   COMPLETED = 'COMPLETED',
-  CANCELLED = 'cancelled',
-  REFUNDED = 'refunded',
-  FAILED = 'failed',
-  ERROR = 'error',
-  GENERATING = 'generating',
+  CANCELLED = 'CANCELLED',
+  REFUNDED = 'REFUNDED',
+  FAILED = 'FAILED',
+  ERROR = 'ERROR',
+  GENERATING = 'GENERATING',
 }
 
 export interface Consultation {

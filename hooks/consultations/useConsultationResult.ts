@@ -1,5 +1,3 @@
-"use client";
-
 import { api } from "@/lib/api/client";
 import type { Analysis } from "@/lib/interfaces";
 import { useParams, useSearchParams } from "next/navigation";
@@ -35,7 +33,7 @@ export function useConsultationResult() {
 
   const hardNavigate = useCallback((url: string, mode: "assign" | "replace" = "assign") => {
     const finalUrl = url.includes("?") ? `${url}&r=${Date.now()}` : `${url}?r=${Date.now()}`;
-    if (mode === "replace") window.location.replace(finalUrl);
+    if (mode === "replace") window.location.assign(finalUrl);
     else window.location.assign(finalUrl);
   }, []);
 
@@ -46,49 +44,25 @@ export function useConsultationResult() {
       setAnalyse(null);
       return;
     }
-
-    // cancel previous in-flight
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
-
     const mySeq = ++reqSeqRef.current;
-
-    // minimise les rerenders (si déjà en loading & pas d'erreur, ne re-set pas)
     setLoading(true);
     setError(null);
 
     try {
-      // 1) GET analyse existante
       const res = await api.get<Analysis>(`/analyses/by-consultation/${consultationId}`, {
         signal: controller.signal,
       } as any);
 
-      let data: any = res?.data ?? null;
-
-      // 2) si vide => génération
-      if (!data || data === "") {
-        const generatedRes = await api.post<any>(
-          `/consultations/${consultationId}/generate-analysis`,
-          {},
-          { signal: controller.signal } as any,
-        );
-
-        data = generatedRes?.data?.analyse ?? generatedRes?.data ?? null;
-
-        if (!data || data === "") {
-          throw new Error("Analyse générée introuvable");
-        }
-      }
-
+      const data: Analysis = res?.data ?? null;
       if (reqSeqRef.current !== mySeq) return;
-
       setAnalyse(data);
       setLoading(false);
     } catch (err: any) {
       if (isAbort(err)) return;
       if (reqSeqRef.current !== mySeq) return;
-
       setAnalyse(null);
       setError(err?.response?.data?.message || err?.message || ERROR_ANALYSIS_NOT_FOUND);
       setLoading(false);
@@ -96,7 +70,6 @@ export function useConsultationResult() {
   }, [consultationId]);
 
   const handleBack = useCallback(() => {
-    // garde ton mapping, mais robuste + fallback unique
     const routes: Record<string, string> = {
       cinqportes: "/star/cinqportes",
       carteduciel: "/star/carteduciel",
@@ -109,8 +82,6 @@ export function useConsultationResult() {
   const handleDownloadPDF = useCallback(() => {
     const downloadId = consultationId || (analyse as any)?._id;
     if (!downloadId) return;
-
-    // open() est ok ici: téléchargement / nouvelle tab
     window.open(`/api/consultations/${downloadId}/download-pdf`, "_blank", "noopener,noreferrer");
   }, [consultationId, analyse]);
 

@@ -8,9 +8,10 @@ interface UsePromptFormOptions {
   initialData?: ConsultationChoice;
   choiceId?: string;
   returnTo?: string;
+  onSuccess?: () => void;
 }
 
-export function usePromptForm({ initialData, choiceId, returnTo }: UsePromptFormOptions = {}) {
+export function usePromptForm({ initialData, choiceId, returnTo, onSuccess }: UsePromptFormOptions = {}) {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,8 +37,10 @@ export function usePromptForm({ initialData, choiceId, returnTo }: UsePromptForm
 
       if (initialData?._id) {
         await promptService.update(initialData._id, { prompt: formData.prompt });
-      } else {
-        await promptService.create(formData);
+      } 
+      if (onSuccess) {
+        onSuccess();
+        return;
       }
       if (returnTo === 'consultations-choices') {
         window.location.href = '/admin/consultations/choices';
@@ -50,7 +53,7 @@ export function usePromptForm({ initialData, choiceId, returnTo }: UsePromptForm
     } finally {
       setLoading(false);
     }
-  }, [formData, initialData, choiceId, returnTo]);
+  }, [formData, initialData, choiceId, onSuccess, returnTo]);
 
   return {
     formData,

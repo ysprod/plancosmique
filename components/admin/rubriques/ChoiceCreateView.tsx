@@ -24,7 +24,6 @@ const ChoiceCreateView = memo(function ChoiceCreateView({ onSave, onCancel, offe
       ],
     },
     order: 0,
-    promptId: "",
     choiceId: "",
     choiceTitle: "",
     buttonStatus: 'CONSULTER',

@@ -12,6 +12,7 @@ interface PromptFormProps {
   initialData?: ConsultationChoiceWithRubrique;
   choiceId: string;
   returnTo?: string;
+  onSuccess?: () => void;
 }
 
 function safeStr(v: unknown) {
@@ -25,10 +26,10 @@ function countLines(s: string) {
 
 
 
-export default function PromptForm({ initialData, choiceId, returnTo }: PromptFormProps) {
+export default function PromptForm({ initialData, choiceId, returnTo, onSuccess }: PromptFormProps) {
   const {
     formData, loading, error, updateField, handleSubmit,
-  } = usePromptForm({ initialData: initialData as any, choiceId, returnTo });
+  } = usePromptForm({ initialData: initialData as any, choiceId, returnTo, onSuccess });
 
   // Gère le cas où prompt peut être un objet ou une string
   function extractPrompt(val: any): string {
@@ -110,16 +111,7 @@ export default function PromptForm({ initialData, choiceId, returnTo }: PromptFo
             )}
 
             <div className="mt-4 grid gap-3 text-left">
-              {initialData?.description ? (
-                <div className="rounded-2xl border border-black/5 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.04] px-4 py-3">
-                  <div className="text-[11px] font-semibold text-slate-500 dark:text-slate-300/80">
-                    Description
-                  </div>
-                  <div className="mt-1 text-[13px] text-slate-800 dark:text-slate-200 whitespace-pre-line">
-                    {initialData.description}
-                  </div>
-                </div>
-              ) : null}
+              
 
 
               <div className="flex flex-wrap items-center justify-center gap-2">

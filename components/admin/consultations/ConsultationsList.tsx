@@ -21,10 +21,10 @@ export const ConsultationsList: React.FC<ConsultationsListProps> = ({
 }) => {
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full auto-rows-fr">
         <AnimatePresence mode="popLayout">
           {consultations.map((consultation: Consultation) => (
-            <div key={consultation.id} className="relative flex justify-center">
+            <div key={consultation.id} className="relative flex w-full h-full">
               <ConsultationCard
                 consultation={consultation}
                 onGenerateAnalysis={onGenerateAnalysis}

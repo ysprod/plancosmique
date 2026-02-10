@@ -1,23 +1,9 @@
-import { Consultation, ConsultationChoice } from '@/lib/interfaces';
+import { ConsultationChoice } from '@/lib/interfaces';
+import { Prompt, UpdatePromptDto } from '@/lib/types/prompt.types';
 import { api } from '../client';
-import { CreatePromptDto, Prompt, UpdatePromptDto } from '@/lib/types/prompt.types';
 
 export const promptService = {
-  async create(data: CreatePromptDto): Promise<Prompt> {
-    const response = await api.post('/prompts', data);
-    return response.data;
-  },
-
-  async findAll(): Promise<Prompt[]> {
-    const response = await api.get('/prompts');
-    return response.data;
-  },
-
-  async findActive(): Promise<Prompt[]> {
-    const response = await api.get('/prompts/active');
-    return response.data;
-  },
-
+  
   async findById(id: string): Promise<ConsultationChoice> {
     const response = await api.get(`/consultations/${id}/with-prompt`);
     return response.data;

@@ -54,7 +54,7 @@ export function useAnalyseFormEditor({ analyseData }: UseAnalyseFormEditorProps)
   const hardNavigate = useCallback((url: string, mode: "replace" | "assign" = "replace") => {
     const finalUrl = url.includes("?") ? `${url}&r=${Date.now()}` : `${url}?r=${Date.now()}`;
 
-    if (mode === "replace") window.location.replace(finalUrl);
+    if (mode === "replace") window.location.assign(finalUrl);
     else window.location.assign(finalUrl);
   }, []);
 

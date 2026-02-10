@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
-import { Edit, FileText, Trash2 } from "lucide-react";
+import { Edit, FileText } from "lucide-react";
 
 interface ConsultationChoiceCardProps {
   choice: any;
+  onEditPrompt?: (choice: any) => void;
 }
 
-function ConsultationChoiceCard({ choice }: ConsultationChoiceCardProps) {
+function ConsultationChoiceCard({ choice, onEditPrompt }: ConsultationChoiceCardProps) {
 
   return (
     <motion.div
@@ -28,11 +29,11 @@ function ConsultationChoiceCard({ choice }: ConsultationChoiceCardProps) {
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={() => { window.location.href = `/admin/prompts/${choice._id}/edit?returnTo=consultations-choices`; }}
+              onClick={() => onEditPrompt?.(choice)}
               className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
             >
               <Edit className="w-4 h-4" />
-              Modifier le prompt
+              Mettre à jour le prompt
             </button>
           </div>
         </div>

@@ -36,7 +36,7 @@ const ConsultationCard = memo(({ consultation, onGenerateAnalysis }: Consultatio
             animate="visible"
             exit="exit"
             whileHover={{ y: -4, transition: { duration: 0.2 } }}
-            className="relative flex flex-col items-center justify-center bg-gradient-to-br from-white via-white to-gray-50/50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800/50 rounded-2xl border-2 border-gray-200/60 dark:border-slate-700/60 p-4 shadow-lg hover:shadow-2xl hover:shadow-purple-500/10 dark:hover:shadow-purple-500/20 transition-all duration-300 overflow-hidden group  max-w-md mx-auto"
+            className="relative flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-white via-white to-gray-50/50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800/50 rounded-2xl border-2 border-gray-200/60 dark:border-slate-700/60 p-4 shadow-lg hover:shadow-2xl hover:shadow-purple-500/10 dark:hover:shadow-purple-500/20 transition-all duration-300 overflow-hidden group"
         >
             <motion.div
                 variants={shimmerVariants}

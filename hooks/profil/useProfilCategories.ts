@@ -33,7 +33,7 @@ export const useProfilCategories = () => [
     badge: "Authentique",
     badgeColor: "bg-orange-500",
     description: "Connecte-toi aux forces invisibles et aux ancêtres",
-    link: "/star/spiritualite",
+    link: "/star/category/698aa1ce6d811feccfe14b89/choixconsultation?consultationId=698acf1ddb59af029614ccab",
   },
   {
     id: "invocations",

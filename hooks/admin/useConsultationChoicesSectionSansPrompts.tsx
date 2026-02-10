@@ -1,16 +1,18 @@
-import ConsultationChoiceCardSansPrompt from '@/components/admin/consultations/ConsultationChoiceCardSansPrompt';
+import ConsultationChoiceCard from '@/components/admin/consultations/ConsultationChoiceCard';
 import { ReactNode, useMemo } from 'react';
 
 export function useConsultationChoicesSectionSansPrompts(
-  choices: any[]
+  choices: any[],
+  onEditPrompt?: (choice: any) => void
 ): ReactNode[] | null {
   return useMemo(() => {
     if (!choices || choices.length === 0) return null;
     return choices.map((choice) => (
-      <ConsultationChoiceCardSansPrompt
+      <ConsultationChoiceCard
         key={choice._id}
         choice={choice}
+        onEditPrompt={onEditPrompt}
       />
     ));
-  }, [choices]);
+  }, [choices, onEditPrompt]);
 }

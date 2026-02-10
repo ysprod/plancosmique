@@ -4,10 +4,11 @@ import { useConsultationChoicesSection } from '@/hooks/admin/useConsultationChoi
 
 interface AvecPromptTabProps {
     choicesWithPrompt: any[];
+    onEditPrompt?: (choice: any) => void;
 }
 
-export function AvecPromptTab({ choicesWithPrompt }: AvecPromptTabProps) {
-    const withPromptCards = useConsultationChoicesSection(choicesWithPrompt);
+export function AvecPromptTab({ choicesWithPrompt, onEditPrompt }: AvecPromptTabProps) {
+    const withPromptCards = useConsultationChoicesSection(choicesWithPrompt, onEditPrompt);
     return (
         choicesWithPrompt.length > 0 ? (
             <ConsultationChoicesSection

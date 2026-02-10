@@ -48,7 +48,7 @@ export function useConsultationsListPage() {
 
   const handleView = (id: string) => {
     const consultation = consultations.find(c => c._id === id);
-    if (consultation && (consultation.type === 'nombres-personnels' || consultation.type === 'cycles-personnels')) {
+    if (consultation && (consultation.type === ConsultationType.NOMBRES_PERSONNELS || consultation.type === ConsultationType.CYCLES_PERSONNELS)) {
       window.location.href = `/star/numerologie/${id}`;
     } else {
       window.location.href = `/star/consultations/${id}`;
