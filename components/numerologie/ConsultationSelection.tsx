@@ -25,7 +25,7 @@ const ConsultationSelection: React.FC<Props> = ({ onSelect, title, choices, alre
     if (!choiceId || !alreadyDoneChoices[choiceId]) return;
     const doneChoice = alreadyDoneChoices[choiceId];
     if (doneChoice.consultationId) {
-      window.location.href = `/star/consultations/${doneChoice.consultationId}`;
+      window.location.href = `/star/consultations/${doneChoice.consultationId}?r=${Date.now()}`;
     }
   };
 

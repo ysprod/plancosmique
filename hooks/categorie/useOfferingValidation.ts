@@ -57,7 +57,7 @@ export function useOfferingValidation({
 
             
             // Navigate to analysis generation
-            window.location.href = `/star/category/${categoryId}/genereanalyse?consultationId=${consultationId}`;
+            window.location.href = `/star/category/${categoryId}/genereanalyse?consultationId=${consultationId}&r=${Date.now()}`;
         } catch (err: any) {
             console.error('❌ Error validating offerings:', err);
             const errorMsg = err.response?.data?.message || err.message || 'Erreur lors de la validation';

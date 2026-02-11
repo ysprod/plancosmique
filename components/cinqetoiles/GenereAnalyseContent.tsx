@@ -48,7 +48,7 @@ export default function GenereAnalyseContent({ onBack }: { onBack?: () => void }
     if (onBack) {
       onBack();
     } else {
-      window.location.href = '/star/profil';
+      window.location.href = `/star/profil?r=${Date.now()}`;
     }
   }, [onBack]);
 

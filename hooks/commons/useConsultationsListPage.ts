@@ -49,9 +49,9 @@ export function useConsultationsListPage() {
   const handleView = (id: string) => {
     const consultation = consultations.find(c => c._id === id);
     if (consultation && (consultation.type === ConsultationType.NOMBRES_PERSONNELS || consultation.type === ConsultationType.CYCLES_PERSONNELS)) {
-      window.location.href = `/star/numerologie/${id}`;
+      window.location.href = `/star/numerologie/${id}?r=${Date.now()}`;
     } else {
-      window.location.href = `/star/consultations/${id}`;
+      window.location.href = `/star/consultations/${id}?r=${Date.now()}`;
     }
   };
 

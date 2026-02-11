@@ -12,7 +12,7 @@ function ConsultationChoiceCardSansPrompt({ choice, onEditPrompt }: Consultation
       onEditPrompt(choice);
       return;
     }
-    window.location.href = `/admin/prompts/create?returnTo=consultations-choices&choiceId=${choice._id}`;
+    window.location.href = `/admin/prompts/create?returnTo=consultations-choices&choiceId=${choice._id}&r=${Date.now()}`;
   };
 
   return (

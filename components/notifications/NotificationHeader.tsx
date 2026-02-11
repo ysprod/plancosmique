@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Bell, ArrowLeft, CheckCheck, Settings } from 'lucide-react';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 
 interface NotificationHeaderProps {
   unreadCount: number;
@@ -16,7 +16,7 @@ const NotificationHeader: React.FC<NotificationHeaderProps> = ({ unreadCount, ma
     <div className="mx-auto px-4 py-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/star/profil">
+          <CacheLink href="/star/profil">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -24,7 +24,7 @@ const NotificationHeader: React.FC<NotificationHeaderProps> = ({ unreadCount, ma
             >
               <ArrowLeft className="w-5 h-5 text-white" />
             </motion.button>
-          </Link>
+          </CacheLink>
           <div>
             <h1 className="text-2xl font-bold text-white flex items-center gap-3">
               <Bell className="w-7 h-7" />

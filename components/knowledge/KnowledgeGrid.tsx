@@ -1,7 +1,7 @@
 'use client';
 import { Tag, Eye, Heart, Calendar, User } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 import { motion } from 'framer-motion';
 import type { Knowledge, KnowledgeCategory } from '@/lib/types/knowledge.types';
 
@@ -37,7 +37,7 @@ export default function KnowledgeGrid({ knowledges, onLike }: { knowledges: Know
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.05 }}
         >
-          <Link href={`/star/knowledge/${knowledge._id}`}>
+          <CacheLink href={`/star/knowledge/${knowledge._id}`}>
             <div className={`group relative h-full p-6 rounded-2xl border backdrop-blur-xl cursor-pointer transition-all duration-200 hover:scale-[1.02] bg-gradient-to-br ${categoryColors[knowledge.category]}`}>
               {knowledge.imageUrl && (
                 <div className="relative w-full h-48 mb-4 rounded-xl overflow-hidden">
@@ -105,7 +105,7 @@ export default function KnowledgeGrid({ knowledges, onLike }: { knowledges: Know
                 </div>
               )}
             </div>
-          </Link>
+          </CacheLink>
         </motion.div>
       ))}
     </div>

@@ -336,7 +336,7 @@ export function useCategoryFormClientGroupe(category: CategorieAdmin, consultati
                 }
 
                 // ✅ Navigation vers la page de paiement
-                window.location.href = `/star/category/${category._id}/consulter?consultationId=${createdId}`;
+                window.location.href = `/star/category/${category._id}/consulter?consultationId=${createdId}&r=${Date.now()}`;
 
                 setUi((s) => ({ ...s, loading: false }));
             } catch (err: any) {
@@ -358,7 +358,7 @@ export function useCategoryFormClientGroupe(category: CategorieAdmin, consultati
     // reset / close error
     // ─────────────────────────────────────────────────────────────
     const handleReset = useCallback(() => {
-        window.location.href = `/star/category/${category._id}/selection`;
+        window.location.href = `/star/category/${category._id}/selection?r=${Date.now()}`;
     }, [category._id]);
 
     const handleCloseError = useCallback(() => {

@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Calendar, Clock, User, Eye, Heart, MessageCircle, ArrowRight, Star, TrendingUp } from 'lucide-react';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 
 interface Author {
   name: string;
@@ -39,7 +39,7 @@ export default function SpiritualiteFeaturedArticle({ article, formatDate }: Pro
       transition={{ delay: 0.2 }}
       className="mb-8 sm:mb-12"
     >
-      <Link href={`/spiritualite/${article.id}`}>
+      <CacheLink href={`/spiritualite/${article.id}`}>
         <motion.div
           whileHover={{ y: -5 }}
           className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer"
@@ -122,7 +122,7 @@ export default function SpiritualiteFeaturedArticle({ article, formatDate }: Pro
             </div>
           </div>
         </motion.div>
-      </Link>
+      </CacheLink>
     </motion.div>
   );
 }

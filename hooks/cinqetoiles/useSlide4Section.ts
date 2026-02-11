@@ -12,7 +12,7 @@ export function useSlide4Section() {
   const choicesFetchedRef = useRef(false);
 
   const handleSelect = useCallback(() => {
-    window.location.href = '/star/profil/doors';
+    window.location.href = `/star/profil/doors?r=${Date.now()}`;
   }, []);
 
   useEffect(() => {

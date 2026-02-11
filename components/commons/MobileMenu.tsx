@@ -204,7 +204,7 @@ function MobileMenu({
                   </button>
                 ) : (
                   <a
-                    href="/login"
+                    href={`/login?r=${Date.now()}`}
                     onClick={closeMobileMenu}
                     className="w-full rounded-2xl px-3 py-3 text-[13px] font-semibold text-center
                                bg-gradient-to-r from-indigo-500/90 to-violet-500/90 text-white

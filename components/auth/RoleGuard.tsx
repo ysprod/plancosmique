@@ -27,7 +27,8 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
 
   useEffect(() => {
     if (!isLoading && isAuthenticated && !hasRequiredRole && redirectTo) {
-      window.location.href = redirectTo;
+      const urlWithCacheBust = redirectTo.includes('?') ? `${redirectTo}&r=${Date.now()}` : `${redirectTo}?r=${Date.now()}`;
+      window.location.href = urlWithCacheBust;
     }
   }, [isAuthenticated, isLoading, hasRequiredRole,   redirectTo]);
 
@@ -44,7 +45,7 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
 
   if (!isAuthenticated) {
     if (redirectTo) {
-      window.location.href = config.routes.login;
+      window.location.href = `${config.routes.login}?r=${Date.now()}`;
       return null;
     }
     return fallback || <AccessDenied message="Vous devez être connecté" />;

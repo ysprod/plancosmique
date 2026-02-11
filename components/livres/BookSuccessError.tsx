@@ -1,6 +1,6 @@
 'use client';
 import { AlertCircle } from 'lucide-react';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 import { motion } from 'framer-motion';
 
 export default function BookSuccessError({ error }: { error: string }) {
@@ -15,7 +15,7 @@ export default function BookSuccessError({ error }: { error: string }) {
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h1 className="text-2xl font-black text-gray-900 mb-4">Erreur</h1>
           <p className="text-gray-700 mb-6">{error}</p>
-          <Link href="/star/livres">
+          <CacheLink href="/star/livres">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -23,7 +23,7 @@ export default function BookSuccessError({ error }: { error: string }) {
             >
               Retour à la boutique
             </motion.button>
-          </Link>
+          </CacheLink>
         </div>
       </motion.div>
     </div>

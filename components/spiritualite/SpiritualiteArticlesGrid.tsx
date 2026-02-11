@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 import { Calendar, Clock, Eye, Heart, ArrowRight, Flame } from 'lucide-react';
 import React from 'react';
 
@@ -46,7 +46,7 @@ export default function SpiritualiteArticlesGrid({ articles, formatDate, setSear
             whileHover={{ y: -8 }}
             className="group"
           >
-            <Link href={`/spiritualite/${article.id}`}>
+            <CacheLink href={`/spiritualite/${article.id}`}>
               <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 h-full flex flex-col cursor-pointer">
                 <div className="relative h-40 sm:h-48 bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 overflow-hidden">
                   <motion.div
@@ -104,7 +104,7 @@ export default function SpiritualiteArticlesGrid({ articles, formatDate, setSear
                   </div>
                 </div>
               </div>
-            </Link>
+            </CacheLink>
           </motion.div>
         ))}
       </motion.div>

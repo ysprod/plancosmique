@@ -46,7 +46,7 @@ export function useAnalysisPolling({
 
                     // Redirect after a short delay to show success message
                     setTimeout(() => {
-                        window.location.href = `/star/consultations/${consultationId}`;
+                        window.location.href = `/star/consultations/${consultationId}?r=${Date.now()}`;
                     }, 2000);
                 }
             } catch (err: any) {

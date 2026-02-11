@@ -32,7 +32,8 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = ({
 
   useEffect(() => {
     if (!isLoading && isAuthenticated && !hasRequiredPermissions && redirectTo) {
-      window.location.href = redirectTo;
+      const urlWithCacheBust = redirectTo.includes('?') ? `${redirectTo}&r=${Date.now()}` : `${redirectTo}?r=${Date.now()}`;
+      window.location.href = urlWithCacheBust;
     }
   }, [isAuthenticated, isLoading, hasRequiredPermissions,  redirectTo]);
 
@@ -42,7 +43,7 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = ({
 
   if (!isAuthenticated) {
     if (redirectTo) {
-      window.location.href = config.routes.login;
+      window.location.href = `${config.routes.login}?r=${Date.now()}`;
       return null;
     }
     return fallback || <PermissionDenied message="Vous devez être connecté" />;

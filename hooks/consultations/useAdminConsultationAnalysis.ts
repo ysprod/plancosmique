@@ -139,8 +139,8 @@ export function useAdminConsultationAnalysis() {
 
   const hardNavigate = useCallback((url: string, mode: "replace" | "assign" = "assign") => {
     const cacheBusted = url.includes("?") ? `${url}&r=${Date.now()}` : `${url}?r=${Date.now()}`;
-    if (mode === "replace") window.location.assign(cacheBusted);
-    else window.location.assign(cacheBusted);
+    if (mode === "replace") window.location.replace(cacheBusted);
+    else window.location.replace(cacheBusted);
   }, []);
 
   const handleBack = useCallback(() => {

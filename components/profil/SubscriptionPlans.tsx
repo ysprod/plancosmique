@@ -93,14 +93,15 @@ export default function SubscriptionPlans({ currentType = UserType.BASIQUE, onSu
         onSubscribe(planType, selectedRubrique);
       } else {
         // Appel API par défaut
+        let subscriptionResponse;
         if (planType === UserType.PREMIUM) {
-          await profileService.activateMyPremium(selectedRubrique);
+          subscriptionResponse = await profileService.activateMyPremium(selectedRubrique);
         } else if (planType === UserType.INTEGRAL) {
           await profileService.activateMyIntegral();
         }
         
         // Redirection vers le profil
-        window.location.href = '/star/profil';
+        window.location.href = `/star/profil?r=${Date.now()}`;
       }
     } catch (err: any) {
       console.error('Subscription error:', err);

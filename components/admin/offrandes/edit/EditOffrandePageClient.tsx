@@ -24,7 +24,7 @@ export default function EditOffrandePageClient() {
             onChange={handleChange}
             onCategory={handleCategoryChange}
             onSubmit={handleSubmit}
-            onCancel={() => { window.location.href = "/admin/offrandes"; }}
+            onCancel={() => { window.location.href = `/admin/offrandes?r=${Date.now()}`; }}
         />
     );
 }

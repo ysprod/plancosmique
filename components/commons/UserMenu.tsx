@@ -1,7 +1,7 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Crown, ChevronDown, Settings, LogOut } from 'lucide-react';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 
 interface UserMenuProps {
   user: any;
@@ -88,7 +88,7 @@ export function UserMenu({ user, userBadge, showUserMenu, setShowUserMenu, handl
             </div>
 
             <div className="p-2">
-              <Link href="/star/settings" onClick={() => setShowUserMenu(false)}>
+              <CacheLink href="/star/settings" onClick={() => setShowUserMenu(false)}>
                 <motion.button
                   whileHover={{ scale: 1.02, x: 4 }}
                   whileTap={{ scale: 0.98 }}
@@ -100,7 +100,7 @@ export function UserMenu({ user, userBadge, showUserMenu, setShowUserMenu, handl
                   <Settings className="w-5 h-5" />
                   Paramètres
                 </motion.button>
-              </Link>
+              </CacheLink>
 
               <motion.button
                 whileHover={{ scale: 1.02, x: 4 }}

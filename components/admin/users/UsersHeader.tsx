@@ -40,7 +40,7 @@ const UsersHeader = ({ total, handleRefresh, isRefreshing, loading }: UsersHeade
             <RefreshCw className={`w-4 h-4 ${isRefreshing || loading ? 'animate-spin' : ''}`} />
           </motion.button>
           <Link
-            href="/admin/users/new"
+            href={`/admin/users/new?r=${Date.now()}`}
             className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm rounded-lg font-semibold hover:shadow-md transition-all"
           >
             <Plus className="w-4 h-4" />

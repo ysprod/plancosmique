@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 import { Calendar, Clock, Eye, Heart, ArrowRight, Flame } from 'lucide-react';
 
 interface ArticlesGridProps {
@@ -30,7 +30,7 @@ const ArticlesGrid = ({ articles, formatDate, setSearchQuery, setSelectedCategor
           whileHover={{ y: -8 }}
           className="group"
         >
-          <Link href={`/spiritualite/${practice.id}`}>
+          <CacheLink href={`/spiritualite/${practice.id}`}>
             <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 h-full flex flex-col cursor-pointer">
               {/* Image Header */}
               <div className="relative h-40 sm:h-48 bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 overflow-hidden">
@@ -95,7 +95,7 @@ const ArticlesGrid = ({ articles, formatDate, setSearchQuery, setSelectedCategor
                 </div>
               </div>
             </div>
-          </Link>
+          </CacheLink>
         </motion.div>
       ))}
     </motion.div>

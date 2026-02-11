@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import Link from "next/link";
+import CacheLink from "@/components/commons/CacheLink";
 import { User, Lock, ChevronRight, Settings, Bell, Shield, Calendar } from "lucide-react";
 
 export default function QuickActionsSection() {
@@ -22,7 +22,7 @@ export default function QuickActionsSection() {
           <h2 className="text-2xl font-black text-slate-900">Mes Informations</h2>
         </div>
         <div className="space-y-3">
-          <Link href="/star/profil/edit">
+          <CacheLink href="/star/profil/edit">
             <motion.button
               whileHover={{ scale: 1.02, x: 5 }}
               whileTap={{ scale: 0.98 }}
@@ -31,8 +31,8 @@ export default function QuickActionsSection() {
               <span>Modifier mon profil</span>
               <ChevronRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
             </motion.button>
-          </Link>
-          <Link href="/star/profil/security">
+          </CacheLink>
+          <CacheLink href="/star/profil/security">
             <motion.button
               whileHover={{ scale: 1.02, x: 5 }}
               whileTap={{ scale: 0.98 }}
@@ -44,7 +44,7 @@ export default function QuickActionsSection() {
               </span>
               <ChevronRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
             </motion.button>
-          </Link>
+          </CacheLink>
         </div>
       </motion.div>
       {/* Card Préférences Améliorée */}
@@ -79,7 +79,7 @@ export default function QuickActionsSection() {
             </motion.div>
           </motion.div>
           {/* Confidentialité */}
-          <Link href="/star/profil/privacy">
+          <CacheLink href="/star/profil/privacy">
             <motion.div
               whileHover={{ x: 5 }}
               className="flex items-center justify-between py-4 px-4 rounded-xl hover:bg-emerald-50 transition-all cursor-pointer"
@@ -90,7 +90,7 @@ export default function QuickActionsSection() {
               </span>
               <ChevronRight className="w-5 h-5 text-slate-400" />
             </motion.div>
-          </Link>
+          </CacheLink>
           {/* Horoscope quotidien */}
           <motion.div
             whileHover={{ x: 5 }}

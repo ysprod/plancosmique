@@ -55,7 +55,7 @@ const isPublicRoute = (url?: string): boolean => {
  */
 const redirectToLogin = (): void => {
   if (typeof window !== 'undefined' && !window.location.pathname.includes('/auth/login')) {
-    window.location.href = config.routes.login;
+    window.location.href = `${config.routes.login}?r=${Date.now()}`;
   }
 };
 
@@ -78,13 +78,31 @@ const apiClient: AxiosInstance = axios.create({
 });
 
 /**
- * Intercepteur de requête optimisé - Ajoute le token JWT et gère le refresh proactif
+ * Ajoute le paramètre cache-busting aux requêtes GET
+ */
+const addCacheBusting = (url: string | undefined): string | undefined => {
+  if (!url) return url;
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}r=${Date.now()}`;
+};
+
+/**
+ * Intercepteur de requête optimisé - Ajoute le token JWT et gère le refresh proactif + cache-busting
  */
 apiClient.interceptors.request.use(
   async (requestConfig: InternalAxiosRequestConfig) => {
     // Routes publiques : pas d'authentification nécessaire
     if (isPublicRoute(requestConfig.url)) {
+      // Ajouter le cache-busting si c'est un GET
+      if (requestConfig.method === 'get') {
+        requestConfig.url = addCacheBusting(requestConfig.url);
+      }
       return requestConfig;
+    }
+
+    // Ajouter le cache-busting pour les requêtes GET
+    if (requestConfig.method === 'get') {
+      requestConfig.url = addCacheBusting(requestConfig.url);
     }
 
     const accessToken = getAccessToken();

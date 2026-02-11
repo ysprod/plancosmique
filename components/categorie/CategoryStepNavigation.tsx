@@ -1,6 +1,6 @@
 'use client';
 import { Check, ChevronRight } from 'lucide-react';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 import { memo } from 'react';
 
 interface Step {
@@ -59,7 +59,7 @@ const CategoryStepNavigation = memo<CategoryStepNavigationProps>(function Catego
         {steps.map((step, index) => (
           <li key={step.id} className="flex items-center flex-1 sm:flex-none">
             {step.completed ? (
-              <Link href={step.href} className="group flex items-center">
+              <CacheLink href={step.href} className="group flex items-center">
                 <div
                   className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-lg"
                 >
@@ -68,7 +68,7 @@ const CategoryStepNavigation = memo<CategoryStepNavigationProps>(function Catego
                 <span className="ml-2 text-xs sm:text-sm font-medium text-gray-700 dark:text-slate-300 group-hover:text-purple-600 dark:group-hover:text-purple-400 hidden sm:inline">
                   {step.label}
                 </span>
-              </Link>
+              </CacheLink>
             ) : step.current ? (
               <div className="flex items-center">
                 <div

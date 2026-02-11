@@ -26,7 +26,7 @@ export function useCreateCategoryPage() {
         rubriques: rubriqueIds,
       });
       setBanner({ type: "success", message: "Catégorie créée !" });
-      setTimeout(() => { window.location.href = "/admin/categories"; }, 1200);
+      setTimeout(() => { window.location.href = `/admin/categories?r=${Date.now()}`; }, 1200);
     } catch {
       setBanner({ type: "error", message: "Erreur lors de la création." });
     } finally {
@@ -39,7 +39,7 @@ export function useCreateCategoryPage() {
   }
 
   function goBack() {
-    window.location.href = "/admin/categories";
+    window.location.href = `/admin/categories?r=${Date.now()}`;
   }
 
   return {

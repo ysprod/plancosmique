@@ -53,12 +53,13 @@ export default function NotificationBell() {
 
     // Rediriger vers /star/consultations/[id] pour les notifications de consultation
     if (notification.type === 'CONSULTATION_RESULT' && notification.metadata?.consultationId) {
-      window.location.href = `/star/consultations/${notification.metadata.consultationId}`;
+      window.location.href = `/star/consultations/${notification.metadata.consultationId}?r=${Date.now()}`;
       return;
     }
     // Sinon, naviguer vers le lien si disponible dans metadata
     if (notification.metadata?.url) {
-      window.location.href = notification.metadata.url;
+      const url = notification.metadata.url.includes("?") ? `${notification.metadata.url}&r=${Date.now()}` : `${notification.metadata.url}?r=${Date.now()}`;
+      window.location.href = url;
     }
   };
 
@@ -196,7 +197,7 @@ export default function NotificationBell() {
             {notifications.length > 0 && (
               <div className="px-4 py-3 border-t border-white/10">
                 <a
-                  href="/star/notifications"
+                  href={`/star/notifications?r=${Date.now()}`}
                   className="block text-center text-sm text-purple-400 hover:text-purple-300 transition-colors"
                 >
                   Voir toutes les notifications

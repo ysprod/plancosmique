@@ -1,12 +1,12 @@
 'use client';
-import Link from "next/link";
+import CacheLink from "@/components/commons/CacheLink";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import React, { memo } from "react";
 
 
 const LoginLogoHeader = memo(() => (
-  <Link href="/" className="block mb-6 group">
+  <CacheLink href="/" className="block mb-6 group">
     <motion.div
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
@@ -23,7 +23,7 @@ const LoginLogoHeader = memo(() => (
         />
       </div>
     </motion.div>
-  </Link>
+  </CacheLink>
 ));
 
 LoginLogoHeader.displayName = 'LoginLogoHeader';

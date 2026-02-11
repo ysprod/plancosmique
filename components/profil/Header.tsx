@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import CacheLink from "@/components/commons/CacheLink";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { User as UserIcon, LogOut, Menu, X } from "lucide-react";
@@ -22,7 +22,7 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
       <div className="container mx-auto px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
+          <CacheLink href="/" className="flex items-center gap-3 group">
             <motion.div
               whileHover={{ rotate: 360, scale: 1.1 }}
               transition={{ duration: 0.6 }}
@@ -47,11 +47,11 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
                 Votre guide spirituel
               </p>
             </div>
-          </Link>
+          </CacheLink>
 
           {/* Navigation Desktop */}
           <nav className="hidden lg:flex items-center gap-2">
-            <Link href="/star/profil">
+            <CacheLink href={`/star/profil`}>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -59,8 +59,8 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
               >
                 Tableau de bord
               </motion.button>
-            </Link>
-            <Link href="/star/consultations">
+            </CacheLink>
+            <CacheLink href={`/star/consultations`}>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -68,7 +68,7 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
               >
                 Mes Consultations
               </motion.button>
-            </Link>
+            </CacheLink>
           </nav>
 
           {/* Actions Desktop */}

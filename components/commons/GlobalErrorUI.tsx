@@ -16,7 +16,7 @@ export default function GlobalErrorUI({ error, reset, isGlobalError = false }: G
   }, [error]);
 
   const handleGoHome = () => {
-    window.location.href = '/';
+    window.location.href = `/?r=${Date.now()}`;
   };
 
   const handleGoBack = () => {

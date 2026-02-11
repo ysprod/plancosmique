@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 import { motion } from 'framer-motion';
 
 export default function LoginFooter() {
@@ -11,9 +11,9 @@ export default function LoginFooter() {
       className="text-center mt-6 text-xs text-gray-500 dark:text-white"
     >
       En vous connectant, vous acceptez nos{' '}
-      <Link href="/terms" className="underline hover:text-gray-700 dark:hover:text-gray-400">
+      <CacheLink href="/terms" className="underline hover:text-gray-700 dark:hover:text-gray-400">
         conditions
-      </Link>
+      </CacheLink>
     </motion.p>
   );
 }

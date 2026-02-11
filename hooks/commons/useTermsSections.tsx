@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield, UserCheck, FileText, AlertCircle } from 'lucide-react';
+import CacheLink from '@/components/commons/CacheLink';
 
 export interface TermsSection {
   number: string;
@@ -134,9 +135,9 @@ export function useTermsSections(List: any, Link: any): TermsSection[] {
       content: (
         <p>
           Nous protégeons vos données conformément aux réglementations. Consultez notre{' '}
-          <Link href="/privacy" className="text-purple-600 dark:text-purple-400 hover:underline font-semibold">
+          <CacheLink href="/privacy" className="text-purple-600 dark:text-purple-400 hover:underline font-semibold">
             politique de confidentialité
-          </Link>.
+          </CacheLink>.
         </p>
       ),
     },

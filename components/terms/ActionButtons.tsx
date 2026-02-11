@@ -1,11 +1,11 @@
 'use client';
 
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 import React, { memo } from 'react';
 
 const ActionButtons = memo(() => (
     <div className="mt-6 flex flex-col sm:flex-row gap-3">
-        <Link
+        <CacheLink
             href="/auth/register"
             className="flex-1 py-2.5 px-6 bg-gradient-to-r from-purple-600 to-pink-600 
                hover:from-purple-700 hover:to-pink-700 text-white font-semibold 
@@ -13,8 +13,8 @@ const ActionButtons = memo(() => (
                text-center text-sm"
         >
             Créer un compte
-        </Link>
-        <Link
+        </CacheLink>
+        <CacheLink
             href="/auth/login"
             className="flex-1 py-2.5 px-6 bg-white dark:bg-gray-800 
                hover:bg-gray-50 dark:hover:bg-gray-700 
@@ -24,7 +24,7 @@ const ActionButtons = memo(() => (
                transition-all duration-200 text-center text-sm"
         >
             Se connecter
-        </Link>
+        </CacheLink>
     </div>
 ));
 ActionButtons.displayName = 'ActionButtons';

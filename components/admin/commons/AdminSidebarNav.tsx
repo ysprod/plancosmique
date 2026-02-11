@@ -2,7 +2,7 @@
 import { cx } from "@/lib/functions";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import Link from "next/link";
+import CacheLink from "@/components/commons/CacheLink";
 import { memo, useCallback, useMemo } from "react";
 import { colorClasses, navItems } from "./AdminNavConfig";
 
@@ -86,7 +86,7 @@ export const AdminSidebarNav = memo(function AdminSidebarNav({ pathname, onNav, 
               transition={{ delay: reduce ? 0 : index * 0.02 }}
               className={base}
             >
-              <Link href={href} onClick={isMobile ? handleNav : undefined} aria-current={isActive ? "page" : undefined}>
+              <CacheLink href={href} onClick={isMobile ? handleNav : undefined} aria-current={isActive ? "page" : undefined}>
                 <motion.div whileHover={whileHover} whileTap={whileTap} className={pill}>
                   {/* Active glow (ultra léger, pas de blur énorme) */}
                   <AnimatePresence>
@@ -159,7 +159,7 @@ export const AdminSidebarNav = memo(function AdminSidebarNav({ pathname, onNav, 
                     />
                   )}
                 </motion.div>
-              </Link>
+              </CacheLink>
             </motion.li>
           );
         })}

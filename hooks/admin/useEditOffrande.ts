@@ -54,7 +54,7 @@ export function useEditOffrande() {
       await api.put(`/offerings/${id}`,
         { ...formData, priceUSD }
       );
-      window.location.href = "/admin/offrandes";
+      window.location.href = `/admin/offrandes?r=${Date.now()}`;
     } catch (err: any) {
       setError(err.response?.data?.message || "Erreur lors de la sauvegarde");
     } finally {

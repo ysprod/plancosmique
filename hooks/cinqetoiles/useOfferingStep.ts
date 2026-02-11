@@ -66,7 +66,7 @@ export function useOfferingStep(
   }, [selectedOffering, canProceed, onNext]);
 
   const handleGoToMarket = useCallback(() => {
-    window.location.href = "/star/marcheoffrandes";
+    window.location.href = `/star/marcheoffrandes?r=${Date.now()}`;
   }, []);
 
   const currentOfferings = offeringsByCategory[activeTab];

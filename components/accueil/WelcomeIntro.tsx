@@ -1,7 +1,7 @@
 'use client';
 import { memo } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 import { Sparkles, Star, Compass, ArrowRight } from 'lucide-react';
 
 function WelcomeIntro() {
@@ -68,7 +68,7 @@ function WelcomeIntro() {
           Votre naissance a un but.<br />Découvrez ce que votre âme est venue accomplir.
         </motion.p>
 
-        <Link href="/star/profil" className="block">
+        <CacheLink href="/star/profil" className="block">
           <motion.button
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.97 }}
@@ -83,7 +83,7 @@ function WelcomeIntro() {
             <span>DEMANDER UNE CONSULTATION</span>
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </motion.button>
-        </Link>
+        </CacheLink>
       </div>
     </motion.div>
   );

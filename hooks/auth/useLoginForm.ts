@@ -80,7 +80,8 @@ export function useLoginForm() {
     try {
       await login(formData);
       startTransition(() => {
-        window.location.href = returnTo;
+        const urlWithCacheBust = returnTo.includes('?') ? `${returnTo}&r=${Date.now()}` : `${returnTo}?r=${Date.now()}`;
+        window.location.href = urlWithCacheBust;
       });
     } catch (err: any) {
       setError(

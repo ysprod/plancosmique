@@ -1,7 +1,7 @@
 'use client';
 import { BookOpen, Download, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 
 interface PurchaseInfo {
   downloadUrl: string;
@@ -82,7 +82,7 @@ export default function BookSuccessMain({ purchaseInfo, onDownload }: { purchase
           </motion.div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/star/livres">
+            <CacheLink href="/star/livres">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -91,7 +91,7 @@ export default function BookSuccessMain({ purchaseInfo, onDownload }: { purchase
                 <BookOpen className="w-5 h-5" />
                 Voir plus de livres
               </motion.button>
-            </Link>
+            </CacheLink>
           </div>
         </div>
       </motion.div>

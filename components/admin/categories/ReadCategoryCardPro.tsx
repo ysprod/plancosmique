@@ -38,7 +38,7 @@ export const ReadCategoryCardPro = memo(function ReadCategoryCardPro({
 
   const handleEdit = useCallback(() => {
     if (!catId) return;
-    window.location.href = `/admin/categories/${catId}/edit`;
+    window.location.href = `/admin/categories/${catId}/edit?r=${Date.now()}`;
   }, [catId]);
 
   const handleDelete = useCallback(() => {

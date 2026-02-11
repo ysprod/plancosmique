@@ -57,7 +57,7 @@ export function useGenereAnalysePage() {
   }, [consultationId]);
 
   const handleBack = useCallback(() => {
-    window.location.href = `/admin/consultations/${consultationId}`;
+    window.location.href = `/admin/consultations/${consultationId}?r=${Date.now()}`;
   }, [consultationId]);
 
   return { step, consultation, analyse, error, handleRetry, handleBack, };

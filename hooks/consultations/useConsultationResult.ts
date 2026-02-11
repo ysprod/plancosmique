@@ -33,8 +33,8 @@ export function useConsultationResult() {
 
   const hardNavigate = useCallback((url: string, mode: "assign" | "replace" = "assign") => {
     const finalUrl = url.includes("?") ? `${url}&r=${Date.now()}` : `${url}?r=${Date.now()}`;
-    if (mode === "replace") window.location.assign(finalUrl);
-    else window.location.assign(finalUrl);
+    if (mode === "replace") window.location.replace(finalUrl);
+    else window.location.replace(finalUrl);
   }, []);
 
   const loadAnalysis = useCallback(async () => {

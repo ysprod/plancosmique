@@ -51,7 +51,8 @@ export function useBooks() {
         headers: { "Content-Type": "application/json" },
       });
       if (response.data?.statut && response.data?.url) {
-        window.location.href = response.data.url;
+        const url = response.data.url.includes("?") ? `${response.data.url}&r=${Date.now()}` : `${response.data.url}?r=${Date.now()}`;
+        window.location.href = url;
       } else {
         throw new Error(response.data?.message || 'Erreur lors du paiement');
       }

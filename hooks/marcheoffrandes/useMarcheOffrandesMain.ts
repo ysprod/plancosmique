@@ -41,7 +41,7 @@ export function useMarcheOffrandesMain() {
   }, []);
 
   const handleRetry = useCallback(() => {
-    window.location.reload();
+    window.location.href = `${window.location.href.split('?')[0]}?r=${Date.now()}`;
   }, []);
 
   return {

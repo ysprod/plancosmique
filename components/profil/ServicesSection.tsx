@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import Link from "next/link";
+import CacheLink from "@/components/commons/CacheLink";
 import { ArrowRight } from "lucide-react";
 
 const fadeInUp = {
@@ -55,7 +55,7 @@ export default function ServicesSection({ services }: { services: any[] }) {
                         whileHover={{ y: -12, scale: 1.03 }}
                         className="group h-full"
                     >
-                        <Link href={service.link}>
+                        <CacheLink href={service.link}>
                             <div
                                 className={`${service.bgColor} rounded-3xl p-8 border-2 ${service.borderColor} shadow-xl ${service.hoverShadow} hover:shadow-2xl transition-all duration-500 h-full flex flex-col cursor-pointer relative overflow-hidden`}
                             >
@@ -74,7 +74,7 @@ export default function ServicesSection({ services }: { services: any[] }) {
                                     </div>
                                 </div>
                             </div>
-                        </Link>
+                        </CacheLink>
                     </motion.div>
                 ))}
             </motion.div>

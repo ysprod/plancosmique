@@ -21,6 +21,7 @@ export default function OfferingStepActions({ onNext, canProceed, consultationId
     const params = new URLSearchParams();
     if (effectiveConsultationId) params.set('consultationId', effectiveConsultationId);
     if (effectiveCategoryId) params.set('categoryId', effectiveCategoryId);
+    params.set('r', String(Date.now()));
     const url = `/star/marcheoffrandes${params.toString() ? `?${params.toString()}` : ''}`;
     window.location.href = url;
   }, [effectiveConsultationId, effectiveCategoryId]);

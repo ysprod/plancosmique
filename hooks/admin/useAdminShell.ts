@@ -13,7 +13,7 @@ export function useAdminShell() {
     setIsLoggingOut(true);
     try {
       await logout();
-      window.location.href = '/auth/login';
+      window.location.href = `/auth/login?r=${Date.now()}`;
     } catch (error) {
       console.error('Erreur de déconnexion:', error);
       setIsLoggingOut(false);

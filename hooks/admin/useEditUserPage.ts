@@ -54,7 +54,7 @@ export function useEditUserPage() {
       await api.patch(`/admin/users/${userId}`, formData);
       setSuccess(true);
       setTimeout(() => {
-        window.location.href = '/admin/users';
+        window.location.href = `/admin/users?r=${Date.now()}`;
       }, 1500);
     } catch (err) {
       const error = err as { response?: { data?: { message?: string } } };

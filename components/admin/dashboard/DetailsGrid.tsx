@@ -48,7 +48,7 @@ export const DetailsGrid = memo<DetailsGridProps>(({ stats, derivedStats }) => {
         progressValue={derivedStats?.activeUserRate || 0}
         progressColor="blue"
         progressDelay={0}
-        linkHref="/admin/users"
+        linkHref={`/admin/users?r=${Date.now()}`}
       />
       <DetailCard
         title="Consultations"
@@ -59,7 +59,7 @@ export const DetailsGrid = memo<DetailsGridProps>(({ stats, derivedStats }) => {
         progressValue={derivedStats?.consultationSuccessRate || 0}
         progressColor="green"
         progressDelay={0.2}
-        linkHref="/admin/consultations"
+        linkHref={`/admin/consultations?r=${Date.now()}`}
       />
       <DetailCard
         title="Paiements"
@@ -70,7 +70,7 @@ export const DetailsGrid = memo<DetailsGridProps>(({ stats, derivedStats }) => {
         progressValue={derivedStats?.paymentSuccessRate || 0}
         progressColor="purple"
         progressDelay={0.4}
-        linkHref="/admin/payments"
+        linkHref={`/admin/payments?r=${Date.now()}`}
       />
     </motion.div>
   );

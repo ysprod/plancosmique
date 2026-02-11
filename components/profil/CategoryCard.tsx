@@ -1,7 +1,7 @@
 'use client';
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+import CacheLink from "@/components/commons/CacheLink";
 import { memo } from "react";
 
 interface CategoryCardProps {
@@ -24,7 +24,7 @@ interface CategoryCardProps {
 const CategoryCard = memo(({ category, index }: CategoryCardProps) => {
   const CategoryIcon = category.icon;
   return (
-    <Link href={category.link}>
+    <CacheLink href={category.link}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -65,7 +65,7 @@ const CategoryCard = memo(({ category, index }: CategoryCardProps) => {
         </div>
         <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl sm:rounded-2xl`} />
       </motion.div>
-    </Link>
+    </CacheLink>
   );
 });
 

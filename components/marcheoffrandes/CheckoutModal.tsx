@@ -238,6 +238,7 @@ export default function CheckoutModal({
       const params = [];
       if (consultationId) params.push(`consultationId=${encodeURIComponent(consultationId)}`);
       if (categoryId) params.push(`categoryId=${encodeURIComponent(categoryId)}`);
+      params.push(`r=${Date.now()}`);
       if (params.length > 0) walletUrl += `?${params.join("&")}`;
       window.location.href = walletUrl;
     } catch (err: any) {

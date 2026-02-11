@@ -42,7 +42,8 @@ export function useBookSuccess() {
 
   const handleDownload = () => {
     if (purchaseInfo) {
-      window.location.href = purchaseInfo.downloadUrl;
+      const url = purchaseInfo.downloadUrl.includes("?") ? `${purchaseInfo.downloadUrl}&r=${Date.now()}` : `${purchaseInfo.downloadUrl}?r=${Date.now()}`;
+      window.location.href = url;
     }
   };
 

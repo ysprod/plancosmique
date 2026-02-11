@@ -11,7 +11,7 @@ export function NewUserHeader() {
       className="mb-4 sm:mb-6"
     >
       <Link
-        href="/admin/users"
+        href={`/admin/users?r=${Date.now()}`}
         className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 mb-3 sm:mb-4 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />

@@ -43,9 +43,9 @@ export function usePromptForm({ initialData, choiceId, returnTo, onSuccess }: Us
         return;
       }
       if (returnTo === 'consultations-choices') {
-        window.location.href = '/admin/consultations/choices';
+        window.location.href = `/admin/consultations/choices?r=${Date.now()}`;
       } else {
-        window.location.href = '/admin/prompts';
+        window.location.href = `/admin/prompts?r=${Date.now()}`;
       }
     } catch (err: any) {
       setError(err.response?.data?.message || err.message || 'Erreur lors de la sauvegarde');

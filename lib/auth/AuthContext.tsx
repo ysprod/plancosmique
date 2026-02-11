@@ -112,7 +112,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authService.register(data);
       setUser(response.user);
-      window.location.href = config.routes.dashboard;
+      window.location.href = `${config.routes.dashboard}?r=${Date.now()}`;
     } catch (error) {
       console.error('Register error:', error);
       throw error;
@@ -128,14 +128,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(true);
     try {
       await authService.logout();
-      window.location.href = '/auth/logout';
+      window.location.href = `/auth/logout?r=${Date.now()}`;
     } catch (error) {
       console.error('Logout error:', error);
       // Continuer la déconnexion même en cas d'erreur
     } finally {
       setUser(null);
       setIsLoading(false);
-      window.location.href = config.routes.login;
+      window.location.href = `${config.routes.login}?r=${Date.now()}`;
     }
   }, []);
 

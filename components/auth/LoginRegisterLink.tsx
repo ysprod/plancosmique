@@ -8,7 +8,7 @@ export default function LoginRegisterLink() {
       <p className="text-sm text-gray-600 dark:text-gray-400">
         Pas encore de compte ?{' '}
         <Link
-          href="/auth/register"
+          href={`/auth/register?r=${Date.now()}`}
           className="text-purple-600 dark:text-purple-400 font-semibold hover:underline transition-colors"
         >
           Inscription

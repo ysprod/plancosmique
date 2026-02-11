@@ -1,7 +1,7 @@
 'use client';
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+import CacheLink from "@/components/commons/CacheLink";
 import { memo } from "react";
 
 interface HighlightCardProps {
@@ -21,7 +21,7 @@ interface HighlightCardProps {
 const HighlightCard = memo(({ card, index }: HighlightCardProps) => {
   const CardIcon = card.icon;
   return (
-    <Link href={card.link}>
+    <CacheLink href={card.link}>
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -60,7 +60,7 @@ const HighlightCard = memo(({ card, index }: HighlightCardProps) => {
         </div>
         <div className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl sm:rounded-2xl`} />
       </motion.div>
-    </Link>
+    </CacheLink>
   );
 });
 

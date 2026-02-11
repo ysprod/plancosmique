@@ -50,7 +50,7 @@ export function useOfferingForm() {
         icon: formData.icon?.trim()||'❓',
         description: formData.description.trim(),
       });
-      window.location.href = '/admin/offrandes';
+      window.location.href = `/admin/offrandes?r=${Date.now()}`;
     } catch (err: any) {
       setError(err.response?.data?.message || 'Erreur lors de la sauvegarde');
     } finally {
@@ -59,7 +59,7 @@ export function useOfferingForm() {
   }
 
   function handleCancel() {
-    window.location.href = '/admin/offrandes';
+    window.location.href = `/admin/offrandes?r=${Date.now()}`;
   }
 
   return {

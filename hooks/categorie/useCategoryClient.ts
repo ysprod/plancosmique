@@ -20,7 +20,7 @@ export function useCategoryClient(category: CategorieAdmin) {
     const rubrique = rubriques.find((r: any) => String(r._id) === String(id));
     //setRubriqueCourante(rubrique || null);
     if (category._id && consultationId) {
-      window.location.href = `/star/category/${category._id}/choixconsultation?consultationId=${consultationId}`;
+      window.location.href = `/star/category/${category._id}/choixconsultation?consultationId=${consultationId}&r=${Date.now()}`;
     }
   };
 

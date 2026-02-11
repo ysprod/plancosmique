@@ -50,7 +50,7 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
             if (enrichedChoice?.status?.consultationId) {
                 alert('📋 Consultation existante détectée, redirection directe...');
                 setCreatingConsultation(false);
-                window.location.href = `/star/category/${categoryId}/consulter?consultationId=${enrichedChoice.status.consultationId}`;
+                window.location.href = `/star/category/${categoryId}/consulter?consultationId=${enrichedChoice.status.consultationId}&r=${Date.now()}`;
                 return;
             }
 
@@ -88,7 +88,7 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
 
                     if (id) {
                         sessionStorage.removeItem('selectedChoiceId');
-                        window.location.href = `/star/category/${categoryId}/consulter?consultationId=${id}`;
+                        window.location.href = `/star/category/${categoryId}/consulter?consultationId=${id}&r=${Date.now()}`;
                     } else {
                         throw new Error('ID de consultation manquant dans la réponse');
                     }
@@ -96,16 +96,16 @@ export function useRubriqueSelection(rubrique: Rubrique, categoryId: string) {
                     console.error('❌ Erreur création consultation SOLO:', error);
                     setCreatingConsultation(false);
                     // En cas d'erreur, fallback vers le formulaire
-                    window.location.href = `/star/category/${categoryId}/form`;
+                    window.location.href = `/star/category/${categoryId}/form?r=${Date.now()}`;
                 }
             } else if (participants === 'AVEC_TIERS') {
                 // Pour AVEC_TIERS : afficher le formulaire pour collecter les données de la tierce personne
                 setCreatingConsultation(false);
-                window.location.href = `/star/category/${categoryId}/form`;
+                window.location.href = `/star/category/${categoryId}/form?r=${Date.now()}`;
             } else {
                 // Fallback : rediriger vers le formulaire qui gérera le cas
                 setCreatingConsultation(false);
-                window.location.href = `/star/category/${categoryId}/form`;
+                window.location.href = `/star/category/${categoryId}/form?r=${Date.now()}`;
             }
         },
         [categoryId, rubrique._id, rubrique.typeconsultation, enrichedChoices, user]

@@ -1,12 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import CacheLink from "@/components/commons/CacheLink";
 import { memo } from "react";
 
 const ConsultationCardBackButton = memo(function ConsultationCardBackButton() {
   return (
-    <Link href="/admin/consultations">
+    <CacheLink href="/admin/consultations">
       <motion.div
         className="relative z-10 mx-auto inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-slate-100 to-slate-50 px-3 py-1.5 text-xs font-extrabold text-slate-700 shadow-md dark:from-zinc-800 dark:to-zinc-900 dark:text-zinc-200"
         whileHover={{ scale: 1.05, x: -4 }}
@@ -23,7 +23,7 @@ const ConsultationCardBackButton = memo(function ConsultationCardBackButton() {
         </motion.div>
         Retour
       </motion.div>
-    </Link>
+    </CacheLink>
   );
 });
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 import { Star, TrendingUp, Calendar, Clock, User, Eye, Heart, MessageCircle, ArrowRight } from 'lucide-react';
 
 interface FeaturedArticleProps {
@@ -18,7 +18,7 @@ const FeaturedArticle = ({ article, formatDate }: FeaturedArticleProps) => {
       transition={{ delay: 0.4 }}
       className="mb-8 sm:mb-12"
     >
-      <Link href={`/spiritualite/${article._id}`}>
+      <CacheLink href={`/spiritualite/${article._id}`}>
         <motion.div
           whileHover={{ y: -5 }}
           className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer"
@@ -104,7 +104,7 @@ const FeaturedArticle = ({ article, formatDate }: FeaturedArticleProps) => {
             </div>
           </div>
         </motion.div>
-      </Link>
+      </CacheLink>
     </motion.div>
   );
 };

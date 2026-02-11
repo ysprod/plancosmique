@@ -134,7 +134,7 @@ export function EditUserForm({ formData, setFormData, saving, success, onSubmit 
       </div>
       <div className="flex gap-3 pt-4 border-t border-slate-200">
         <Link
-          href="/admin/users"
+          href={`/admin/users?r=${Date.now()}`}
           className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-semibold hover:bg-slate-200 transition-colors"
         >
           <X className="w-5 h-5" />

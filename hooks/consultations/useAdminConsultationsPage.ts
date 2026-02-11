@@ -92,7 +92,7 @@ export function useAdminConsultationsPage() {
   }, []);
 
   const handleGenerateAnalysis = useCallback(async (id: string) => {
-    window.location.href = `/admin/consultations/${id}`;
+    window.location.href = `/admin/consultations/${id}?r=${Date.now()}`;
   }, []);
 
   const handleToastClose = useCallback(() => {

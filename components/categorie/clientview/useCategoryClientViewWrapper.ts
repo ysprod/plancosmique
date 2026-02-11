@@ -15,7 +15,7 @@ export function useCategoryClientViewWrapper(categorie: CategorieAdmin) {
         } catch (e) {
             // fail silently
         }
-        window.location.href = `/star/category/${id}/choixconsultation?consultationId=${consultationId}`;
+        window.location.href = `/star/category/${id}/choixconsultation?consultationId=${consultationId}&r=${Date.now()}`;
     };
 
     return { handleOpenRubriqueById, title, description };

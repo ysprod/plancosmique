@@ -73,12 +73,9 @@ export function useSlide4SectionDoors() {
   const [loadingRubrique, setLoadingRubrique] = useState(true);
   const [rubriqueError, setRubriqueError] = useState<string | null>(null);
   const [progress, setProgress] = useState<ProgressState>(() => makeProgress(0));
+
   const progressRafRef = useRef<number | null>(null);
-
-  // Verrou synchrone anti-double submit (ne dépend pas du rerender)
   const submitLockRef = useRef(false);
-
-  // Stocker le dernier résultat sans rerender à chaque itération
   const latestResultRef = useRef<{ consultation?: any; analyse?: any } | null>(null);
 
   useEffect(() => {
@@ -107,7 +104,6 @@ export function useSlide4SectionDoors() {
     }));
   }, [setProgressThrottled]);
 
-  // Chargement rubrique + choices
   useEffect(() => {
     let alive = true;
     setLoadingRubrique(true);
@@ -154,32 +150,14 @@ export function useSlide4SectionDoors() {
     setApiError((prev) => (prev === null ? prev : null));
   }, []);
 
-  const generateAnalysisForChoice = useCallback(
-    async (choiceId: string) => {
-      const res = await api.post(
-        "/consultations/generate-analysis-for-choice",
-        { rubriqueId: RUBRIQUE_ID, choiceId }
-      );
-
-      latestResultRef.current = {
-        consultation: res.data?.consultation,
-        analyse: res.data?.analyse,
-      };
-
-      return res.data;
-    },
-    []
-  );
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      // Anti-double submit ultra robuste
       if (submitLockRef.current) return;
       if (step !== "form") return;
 
-      // Rubrique pas prête
       if (loadingRubrique) {
         setApiError("Chargement en cours, veuillez patienter…");
         return;
@@ -189,7 +167,6 @@ export function useSlide4SectionDoors() {
         return;
       }
 
-      // Validation
       const validationErrors = validateForm(form);
       if (Object.keys(validationErrors).length > 0) {
         setErrors(validationErrors);
@@ -197,7 +174,6 @@ export function useSlide4SectionDoors() {
         return;
       }
 
-      // Choices
       const total = choices.length;
       if (!total) {
         setApiError("Aucun choix de consultation disponible");
@@ -253,13 +229,13 @@ export function useSlide4SectionDoors() {
           done: choices.length,
           total: choices.length,
           lastUpdatedAt: Date.now(),
-        }));     
+        }));
 
         await api.post("/consultations/generate-consultations-for-rubrique", {
           rubriqueId: RUBRIQUE_ID,
         });
-        pushLog("Consultations générées"); 
-        
+        pushLog("Consultations générées");
+
         setProgressThrottled((p) => ({
           ...p,
           stage: "finalizing",
@@ -301,7 +277,6 @@ export function useSlide4SectionDoors() {
       rubriqueError,
       pushLog,
       setProgressThrottled,
-      generateAnalysisForChoice,
     ]
   );
 

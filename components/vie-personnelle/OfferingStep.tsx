@@ -24,9 +24,7 @@ export default function OfferingStep({
 }: OfferingStepProps) {
   const state = useOfferingStepState(requiredOfferings, walletOfferings, onNext);
   return (
-    <div className=" bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 
-                  dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900 
-                  flex flex-col">
+    <div className="flex flex-col">
       <OfferingStepHeader />
       {consultationTitle && (
         <div className="w-full flex justify-center items-center mt-2 mb-1">
@@ -35,7 +33,7 @@ export default function OfferingStep({
           </h2>
         </div>
       )}
-      <div className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 shadow-sm">
+      <div className="sticky top-0 z-50  ">
         <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="flex flex-col items-center justify-center text-center">

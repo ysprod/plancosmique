@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 import { Home } from 'lucide-react';
 import IconGroup from './IconGroup';
 
@@ -69,13 +69,13 @@ export default function NotFoundContent() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.4, type: 'spring', stiffness: 300 }}
       >
-        <Link
+        <CacheLink
           href="/"
           className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 text-white text-sm sm:text-base font-bold shadow-lg hover:shadow-2xl hover:scale-105 hover:from-pink-600 hover:to-purple-500 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-400/50"
         >
           <Home className="w-4 h-4 sm:w-5 sm:h-5" />
           <span>Revenir à l'accueil</span>
-        </Link>
+        </CacheLink>
       </motion.div>
       
       <motion.p

@@ -2,11 +2,11 @@
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 
 export function HeaderLogo() {
   return (
-    <Link href="/star/profil" className="flex items-center gap-2 sm:gap-2.5 group">
+    <CacheLink href="/star/profil" className="flex items-center gap-2 sm:gap-2.5 group">
       <motion.div
         whileHover={{ rotate: 360, scale: 1.08 }}
         transition={{ duration: 0.6, type: "spring" }}
@@ -64,6 +64,6 @@ export function HeaderLogo() {
           Mon Étoile
         </h1>
       </div>
-    </Link>
+    </CacheLink>
   );
 }

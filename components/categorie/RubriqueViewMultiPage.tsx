@@ -62,7 +62,7 @@ export const RubriqueViewMultiPage = memo<RubriqueViewMultiPageProps>(
         if (enrichedChoice?.status?.consultationId) {
           alert('📋 Consultation existante détectée, redirection directe...');
        
-          window.location.href = `/star/category/${categoryId}/consulter?consultationId=${enrichedChoice.status.consultationId}`;
+          window.location.href = `/star/category/${categoryId}/consulter?consultationId=${enrichedChoice.status.consultationId}&r=${Date.now()}`;
           return;
         }
 
@@ -97,18 +97,18 @@ export const RubriqueViewMultiPage = memo<RubriqueViewMultiPageProps>(
 
             if (id) {
               sessionStorage.removeItem('selectedChoiceId');
-              window.location.href = `/star/category/${categoryId}/consulter?consultationId=${id}`;
+              window.location.href = `/star/category/${categoryId}/consulter?consultationId=${id}&r=${Date.now()}`;
             } else {
               throw new Error('ID de consultation manquant dans la réponse');
             }
           } catch (error: any) {
             console.error('❌ Erreur création consultation SOLO:', error);
-                     window.location.href = `/star/category/${categoryId}/form`;
+                     window.location.href = `/star/category/${categoryId}/form?r=${Date.now()}`;
           }
         } else if (participants === 'AVEC_TIERS') {   
-          window.location.href = `/star/category/${categoryId}/form`;
+          window.location.href = `/star/category/${categoryId}/form?r=${Date.now()}`;
         } else {      
-          window.location.href = `/star/category/${categoryId}/form`;
+          window.location.href = `/star/category/${categoryId}/form?r=${Date.now()}`;
         }
       },
       [categoryId, rubrique._id, rubrique.typeconsultation,  enrichedChoices, user]

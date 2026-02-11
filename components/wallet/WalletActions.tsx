@@ -20,13 +20,13 @@ export default function WalletActions({ toConsultation, consultationId, category
 
   const handleClick = useCallback(() => {
     if (toConsultation && consultationId && categoryId) {
-      window.location.href = `/star/category/${categoryId}/consulter?consultationId=${consultationId}`;
+      window.location.href = `/star/category/${categoryId}/consulter?consultationId=${consultationId}&r=${Date.now()}`;
     } else if (toConsultation && consultationId) {
-      window.location.href = `/star/consultations/${consultationId}`;
+      window.location.href = `/star/consultations/${consultationId}&r=${Date.now()}`;
     } else if (toConsultation) {
-      window.location.href = "/star/consultations";
+      window.location.href = `/star/consultations&r=${Date.now()}`;
     } else {
-      window.location.href = "/";
+      window.location.href = `/?r=${Date.now()}`;
     }
   }, [toConsultation, consultationId, categoryId]);
 

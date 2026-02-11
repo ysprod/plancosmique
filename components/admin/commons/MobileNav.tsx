@@ -26,7 +26,7 @@ export function MobileNav() {
       try {
         await logout();
         handleClose();
-        window.location.href = '/auth/login';
+        window.location.href = `/auth/login?r=${Date.now()}`;
       } catch (error) {
         console.error('Erreur de déconnexion:', error);
         setIsLoggingOut(false);

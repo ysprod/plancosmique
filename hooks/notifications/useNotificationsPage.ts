@@ -22,14 +22,15 @@ export function useNotificationsPage() {
       await markAsRead(notification._id);
     }
     if (notification.metadata?.url) {
-      window.location.href = notification.metadata.url;
+      const url = notification.metadata.url.includes("?") ? `${notification.metadata.url}&r=${Date.now()}` : `${notification.metadata.url}?r=${Date.now()}`;
+      window.location.href = url;
       return;
     }
     if (
       (notification.type === 'CONSULTATION_RESULT' || notification.type === 'CONSULTATION_ASSIGNED') &&
       notification.metadata?.consultationId
     ) {
-      window.location.href = `/star/consultations/${notification.metadata.consultationId}`;
+      window.location.href = `/star/consultations/${notification.metadata.consultationId}?r=${Date.now()}`;
       return;
     }
   };

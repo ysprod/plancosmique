@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import CacheLink from "@/components/commons/CacheLink";
 import { AnimatePresence, motion } from "framer-motion";
 import { User, LogOut } from "lucide-react";
 import { useAuth } from "@/lib/auth/AuthContext";
@@ -41,16 +41,16 @@ export default function MobileMenu({ mobileMenuOpen, user, handleLogout }: {
                 </p>
               </div>
             </div>
-            <Link href="/star/profil">
+            <CacheLink href="/star/profil">
               <button className="w-full text-left px-4 py-3 rounded-xl text-slate-700 hover:bg-violet-50 font-semibold transition-all">
                 Dashboard
               </button>
-            </Link>
-            <Link href="/star/consultations">
+            </CacheLink>
+            <CacheLink href="/star/consultations">
               <button className="w-full text-left px-4 py-3 rounded-xl text-slate-700 hover:bg-violet-50 font-semibold transition-all">
                 Mes Consultations
               </button>
-            </Link>
+            </CacheLink>
             {/* Déconnexion Mobile */}
             <button
               onClick={handleLogout}

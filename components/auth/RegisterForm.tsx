@@ -133,7 +133,7 @@ const RegisterForm: React.FC = () => {
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 Déjà inscrit ?{' '}
                 <Link
-                  href="/auth/login"
+                  href={`/auth/login?r=${Date.now()}`}
                   className="text-purple-600 dark:text-purple-400 font-semibold 
                            hover:underline transition-colors"
                 >

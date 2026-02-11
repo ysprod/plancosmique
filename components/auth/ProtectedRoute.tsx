@@ -27,7 +27,8 @@ function ProtectedRouteComponent({
   useEffect(() => {
     if (isLoading) return;
     if (!isAuthenticated) {
-      window.location.href = loginUrl;
+      const urlWithCacheBust = loginUrl.includes('?') ? `${loginUrl}&r=${Date.now()}` : `${loginUrl}?r=${Date.now()}`;
+      window.location.href = urlWithCacheBust;
     }
   }, [isAuthenticated, isLoading, loginUrl]);
 

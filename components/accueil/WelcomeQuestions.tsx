@@ -2,7 +2,7 @@
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Compass, Eye, Star } from 'lucide-react';
-import Link from 'next/link';
+import CacheLink from '@/components/commons/CacheLink';
 
 const QUESTIONS = [
   { q: "QUI SUIS-JE ?", icon: Eye, gradient: "from-purple-500 to-indigo-500" },
@@ -23,7 +23,7 @@ function WelcomeQuestions() {
   return (
     <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-2 sm:gap-3">
       {QUESTIONS.map((item, i) => (
-        <Link key={item.q} href="/star/profil" className="w-full sm:w-auto">
+        <CacheLink key={item.q} href="/star/profil" className="w-full sm:w-auto">
           <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.05, y: -4 }}
@@ -40,7 +40,7 @@ function WelcomeQuestions() {
               {item.q}
             </span>
           </motion.div>
-        </Link>
+        </CacheLink>
       ))}
     </div>
   );
