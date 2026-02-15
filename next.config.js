@@ -1,71 +1,202 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
+
   reactStrictMode: true,
+
   images: {
+
     remotePatterns: [
+
       {
+
         protocol: 'https',
+
         hostname: 'www.genspark.ai',
+
         port: '',
+
         pathname: '/api/files/**',
+
       },
+
     ],
+
     // Optimisation des images
+
     formats: ['image/avif', 'image/webp'],
+
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+
     minimumCacheTTL: 0, // ‚ö†Ô∏è CACHE D√âSACTIV√â POUR LE D√âVELOPPEMENT (1 an en prod)
+
   },
+
   
+
   // Compression automatique
+
   compress: true,
+
   
-  // Headers de cache optimis√©s pour les assets statiques
-  async headers() {
+
+  // Ì†ΩÌ¥¥ CORRECTION DES URLS API
+
+  async rewrites() {
+
     return [
+
+      // Correction pour /api/api/v1/...
+
       {
-        source: '/_next/static/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
+
+        source: '/api/api/:path*',
+
+        destination: '/api/:path*',
+
       },
+
+      // Correction pour /api/v1/api/v1/...
+
       {
-        source: '/static/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
+
+        source: '/api/v1/api/v1/:path*',
+
+        destination: '/api/:path*',
+
       },
+
+      // Correction pour /api/api/v1/...
+
       {
-        source: '/:all*(svg|jpg|jpeg|png|gif|ico|webp|avif)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
+
+        source: '/api/api/v1/:path*',
+
+        destination: '/api/:path*',
+
       },
+
+      // Correction pour /api/v1/...
+
       {
+
+        source: '/api/v1/:path*',
+
+        destination: '/api/:path*',
+
+      },
+
+      // ‚úÖ Redirection vers le backend NestJS
+
+      {
+
         source: '/api/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-store, must-revalidate',
-          },
-        ],
+
+        destination: 'http://localhost:3001/api/v1/:path*',
+
       },
+
     ];
+
   },
+
   
-  // Experimental features pour performances
-  experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion', 'recharts'],
+
+  // Headers de cache optimis√©s pour les assets statiques
+
+  async headers() {
+
+    return [
+
+      {
+
+        source: '/_next/static/:path*',
+
+        headers: [
+
+          {
+
+            key: 'Cache-Control',
+
+            value: 'public, max-age=31536000, immutable',
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        source: '/static/:path*',
+
+        headers: [
+
+          {
+
+            key: 'Cache-Control',
+
+            value: 'public, max-age=31536000, immutable',
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        source: '/:all*(svg|jpg|jpeg|png|gif|ico|webp|avif)',
+
+        headers: [
+
+          {
+
+            key: 'Cache-Control',
+
+            value: 'public, max-age=31536000, immutable',
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        source: '/api/:path*',
+
+        headers: [
+
+          {
+
+            key: 'Cache-Control',
+
+            value: 'no-store, must-revalidate',
+
+          },
+
+        ],
+
+      },
+
+    ];
+
   },
+
+  
+
+  // Experimental features pour performances
+
+  experimental: {
+
+    optimizePackageImports: ['lucide-react', 'framer-motion', 'recharts'],
+
+  },
+
 }
+
 
 module.exports = nextConfig
