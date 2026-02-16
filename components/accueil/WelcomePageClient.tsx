@@ -1,9 +1,9 @@
 'use client';
 import { memo } from 'react';
-import PrologueOffoland from '@/components/accueil/PrologueOffoland';
+import PortalHomePage from '@/components/accueil/PortalHomePage';
 
 function WelcomePageClient() {
-  return <PrologueOffoland />;
+  return <PortalHomePage />;
 }
 
 export default memo(WelcomePageClient);
