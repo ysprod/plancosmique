@@ -15,7 +15,7 @@ const LoginLogoHeader = memo(() => (
       <div className="relative w-24 h-24 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow">
         <Image
           src="/logo.png"
-          alt="Mon Étoile Logo"
+          alt="OFFOLOMOU Logo"
           fill
           sizes="(max-width: 768px) 140px, 180px"
           className="object-contain p-3"

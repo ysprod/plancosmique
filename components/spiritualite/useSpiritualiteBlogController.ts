@@ -27,7 +27,7 @@ export function useSpiritualiteBlogController() {
         ...practice,
         readTime: practice.readTime || Math.floor(Math.random() * 5) + 3,
         publishedAt: practice.publishedAt || new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
-        author: practice.author || 'Équipe Mon Étoile',
+        author: practice.author || 'Équipe OFFOLOMOU',
         views: practice.views || Math.floor(Math.random() * 1000) + 100,
         likes: practice.likes || Math.floor(Math.random() * 100) + 10,
         comments: practice.comments || Math.floor(Math.random() * 50),

@@ -5,7 +5,7 @@ export default function useSettingsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [showApiKey, setShowApiKey] = useState(false);
-  const [siteName, setSiteName] = useState('Mon Étoile');
+  const [siteName, setSiteName] = useState('OFFOLOMOU');
   const [siteEmail, setSiteEmail] = useState('contact@monetoile.com');
   const [sitePhone, setSitePhone] = useState('+225 07 00 00 00 00');
   const [maintenanceMode, setMaintenanceMode] = useState(false);

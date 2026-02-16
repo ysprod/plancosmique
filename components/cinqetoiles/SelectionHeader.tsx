@@ -9,7 +9,7 @@ const SelectionHeader = memo(() => (
     className="w-full text-center mb-6"
   >
     <h2 className="text-2xl sm:text-3xl font-black dark:text-white mb-4">
-      LES 5 PORTES DE MON ÉTOILE
+      OFFOLOMOU
     </h2>
 
     <motion.p

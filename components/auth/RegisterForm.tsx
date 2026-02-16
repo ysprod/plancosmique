@@ -149,7 +149,7 @@ const RegisterForm: React.FC = () => {
           </div>
         </div>
         <p className="text-center mt-6 text-xs text-gray-500 dark:text-white"        >
-          © 2026 Mon Étoile. Tous droits réservés.
+          © 2026 OFFOLOMOU. Tous droits réservés.
         </p>
       </div>
     </div>

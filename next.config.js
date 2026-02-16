@@ -4,6 +4,16 @@ const nextConfig = {
 
   reactStrictMode: true,
 
+  // ✅ Cache busting avec buildId dynamique
+  generateBuildId: async () => {
+    const buildVersion = process.env.BUILD_VERSION;
+    if (buildVersion) {
+      return buildVersion;
+    }
+    // Fallback: utiliser timestamp ISO
+    return new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+  },
+
   images: {
 
     remotePatterns: [
@@ -30,7 +40,8 @@ const nextConfig = {
 
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
 
-    minimumCacheTTL: 0, // ⚠️ CACHE DÉSACTIVÉ POUR LE DÉVELOPPEMENT (1 an en prod)
+    // ✅ Cache des images: 0 en dev, 1 an en prod
+    minimumCacheTTL: process.env.NODE_ENV === 'production' ? 31536000 : 0,
 
   },
 
@@ -42,7 +53,13 @@ const nextConfig = {
 
   
 
-  // ������ CORRECTION DES URLS API
+  // ✅ Source maps uniquement en développement
+
+  productionBrowserSourceMaps: false,
+
+  
+
+  // 🔧 CORRECTION DES URLS API
 
   async rewrites() {
 
@@ -104,12 +121,13 @@ const nextConfig = {
 
   
 
-  // Headers de cache optimisés pour les assets statiques
+  // 🚀 Headers de cache optimisés pour les assets et sécurité
 
   async headers() {
 
     return [
 
+      // ✅ Assets Next.js statiques - cache 1 an
       {
 
         source: '/_next/static/:path*',
@@ -120,7 +138,7 @@ const nextConfig = {
 
             key: 'Cache-Control',
 
-            value: 'public, max-age=31536000, immutable',
+            value: 'public, max-age=31536000, immutable, s-maxage=31536000',
 
           },
 
@@ -128,6 +146,7 @@ const nextConfig = {
 
       },
 
+      // ✅ Public assets - cache 1 an
       {
 
         source: '/static/:path*',
@@ -138,7 +157,7 @@ const nextConfig = {
 
             key: 'Cache-Control',
 
-            value: 'public, max-age=31536000, immutable',
+            value: 'public, max-age=31536000, immutable, s-maxage=31536000',
 
           },
 
@@ -146,9 +165,10 @@ const nextConfig = {
 
       },
 
+      // ✅ Images/Medias - cache 1 an + stale-while-revalidate
       {
 
-        source: '/:all*(svg|jpg|jpeg|png|gif|ico|webp|avif)',
+        source: '/:all*(svg|jpg|jpeg|png|gif|ico|webp|avif|mp4|webm|ogg)',
 
         headers: [
 
@@ -156,7 +176,7 @@ const nextConfig = {
 
             key: 'Cache-Control',
 
-            value: 'public, max-age=31536000, immutable',
+            value: 'public, max-age=31536000, immutable, s-maxage=31536000, stale-while-revalidate=86400',
 
           },
 
@@ -164,6 +184,45 @@ const nextConfig = {
 
       },
 
+      // ✅ Fonts - cache très long terme
+      {
+
+        source: '/:all*(woff|woff2|ttf|otf|eot)',
+
+        headers: [
+
+          {
+
+            key: 'Cache-Control',
+
+            value: 'public, max-age=31536000, immutable, s-maxage=31536000',
+
+          },
+
+        ],
+
+      },
+
+      // ✅ Pages HTML - cache court terme + revalidation
+      {
+
+        source: '/:path((?!api|_next|static).*)',
+
+        headers: [
+
+          {
+
+            key: 'Cache-Control',
+
+            value: 'public, max-age=0, s-maxage=60, must-revalidate, stale-while-revalidate=3600',
+
+          },
+
+        ],
+
+      },
+
+      // ✅ API routes - pas de cache
       {
 
         source: '/api/:path*',
@@ -174,7 +233,77 @@ const nextConfig = {
 
             key: 'Cache-Control',
 
-            value: 'no-store, must-revalidate',
+            value: 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+
+          },
+
+        ],
+
+      },
+
+      // ✅ Service Worker - pas de cache
+      {
+
+        source: '/service-worker.js',
+
+        headers: [
+
+          {
+
+            key: 'Cache-Control',
+
+            value: 'no-cache, no-store, must-revalidate, max-age=0',
+
+          },
+
+          {
+
+            key: 'Service-Worker-Allowed',
+
+            value: '/',
+
+          },
+
+        ],
+
+      },
+
+      // 🔒 Headers de sécurité globaux
+      {
+
+        source: '/:path*',
+
+        headers: [
+
+          {
+
+            key: 'X-Content-Type-Options',
+
+            value: 'nosniff',
+
+          },
+
+          {
+
+            key: 'X-Frame-Options',
+
+            value: 'DENY',
+
+          },
+
+          {
+
+            key: 'Referrer-Policy',
+
+            value: 'strict-origin-when-cross-origin',
+
+          },
+
+          {
+
+            key: 'Permissions-Policy',
+
+            value: 'camera=(), microphone=(), geolocation=()',
 
           },
 

@@ -16,7 +16,7 @@ export default function ConsultationsHeader({ consultationsCount, filteredCount 
             <FileText className="w-8 h-8 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl md:text-4xl font-black text-white mb-1">Mes Consultations</h1>
+            <h1 className="text-3xl md:text-4xl font-black text-white mb-1">Mes Contenus</h1>
             <p className="text-purple-200">
               {consultationsCount} {consultationsCount > 1 ? 'analyses' : 'analyse'} · {filteredCount} affichée{filteredCount > 1 ? 's' : ''}
             </p>

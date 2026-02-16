@@ -61,7 +61,7 @@ export default function NotFoundContent() {
         La page que tu cherches s'est égarée dans la galaxie.
         <br className="hidden sm:block" />
         <span className="block sm:inline"> Mais l'univers de </span>
-        <span className="font-semibold text-purple-300">Mon Etoile</span>
+        <span className="font-semibold text-purple-300">OFFOLOMOU</span>
         <span className="block sm:inline"> regorge de merveilles !</span>
       </motion.p>
       <motion.div

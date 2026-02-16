@@ -31,7 +31,7 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
               <div className="w-full h-full rounded-2xl bg-white flex items-center justify-center">
                 <Image
                   src="/logo.png"
-                  alt="Logo Mon Etoile"
+                  alt="Logo OFFOLOMOU"
                   width={100}
                   height={10}
                   className="h-8 w-auto"
@@ -41,10 +41,10 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
             </motion.div>
             <div className="hidden sm:block">
               <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-fuchsia-600">
-                Mon Étoile
+                OFFOLOMOU
               </h1>
               <p className="text-xs text-slate-500 font-medium -mt-1">
-                Votre guide spirituel
+               Dieu donne des stars ✨
               </p>
             </div>
           </CacheLink>
@@ -66,7 +66,7 @@ export default function Header({ user, mobileMenuOpen, setMobileMenuOpen, handle
                 whileTap={{ scale: 0.95 }}
                 className="px-6 py-2.5 rounded-xl text-slate-700 hover:text-violet-600 font-semibold hover:bg-violet-50 transition-all"
               >
-                Mes Consultations
+                Mes contenus
               </motion.button>
             </CacheLink>
           </nav>

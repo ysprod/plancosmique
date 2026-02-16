@@ -19,7 +19,7 @@ export function useTermsSections(List: any, Link: any): TermsSection[] {
       iconColor: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
       content: (
         <p>
-          L'utilisation de Mon Étoile implique l'acceptation pleine et entière de ces
+          L'utilisation de OFFOLOMOU implique l'acceptation pleine et entière de ces
           conditions. Nous pouvons les modifier à tout moment ; consultez-les régulièrement.
         </p>
       ),
@@ -31,7 +31,7 @@ export function useTermsSections(List: any, Link: any): TermsSection[] {
       iconColor: 'bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400',
       content: (
         <>
-          <p>Mon Étoile propose des services de voyance, astrologie, numérologie et guidance spirituelle :</p>
+          <p>OFFOLOMOU propose des services de voyance, astrologie, numérologie et guidance spirituelle :</p>
           <List items={[
             'Consultations avec des professionnels qualifiés',
             'Analyses astrologiques et numérologiques',
@@ -115,7 +115,7 @@ export function useTermsSections(List: any, Link: any): TermsSection[] {
       iconColor: 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400',
       content: (
         <>
-          <p>Mon Étoile fournit des services de guidance et divertissement. Nous ne garantissons pas :</p>
+          <p>OFFOLOMOU fournit des services de guidance et divertissement. Nous ne garantissons pas :</p>
           <List items={[
             "L'exactitude absolue des prédictions",
             'Des résultats spécifiques',

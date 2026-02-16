@@ -8,7 +8,7 @@ export function RootSchemaScript() {
       {
         "@type": "WebSite",
         "@id": "https://www.monetoile.org/#website",
-        name: "Mon Étoile",
+        name: "OFFOLOMOU",
         url: "https://www.monetoile.org",
         description: "Plateforme spirituelle pour voyance, astrologie et guidance personnalisée",
         inLanguage: "fr-FR",
@@ -21,7 +21,7 @@ export function RootSchemaScript() {
       {
         "@type": "Organization",
         "@id": "https://www.monetoile.org/#organization",
-        name: "Mon Étoile",
+        name: "OFFOLOMOU",
         url: "https://www.monetoile.org",
         logo: { "@type": "ImageObject", url: "https://www.monetoile.org/logo.png", width: 512, height: 512 },
         sameAs: [
@@ -35,7 +35,7 @@ export function RootSchemaScript() {
         "@type": "WebPage",
         "@id": "https://www.monetoile.org/#webpage",
         url: "https://www.monetoile.org",
-        name: "Mon Étoile - Votre Guide Spirituel Personnel",
+        name: "OFFOLOMOU",
         description: "Consultations de voyance, analyses astrologiques et guidance spirituelle",
         isPartOf: { "@id": "https://www.monetoile.org/#website" },
         about: { "@id": "https://www.monetoile.org/#organization" },

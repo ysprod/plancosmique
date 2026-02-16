@@ -15,7 +15,7 @@ export const useProfilHighlightCards = () => [
   {
     id: "cinq-portes",
     title: "MES 5 PORTES",
-    subtitle: "Forces de Mon Étoile",
+    subtitle: "Forces de OFFOLOMOU",
     icon: Stars,
     color: "from-purple-600 to-pink-600",
     gradient: "from-purple-500/10 to-pink-500/10",

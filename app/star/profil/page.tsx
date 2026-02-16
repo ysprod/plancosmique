@@ -1,5 +1,6 @@
-import ProfilPageClient from "@/components/secured/profil/ProfilPageClient";
+import PortalHomePage from "@/components/accueil/PortalHomePage";
 
 export default function ProfilPage() {
-  return <ProfilPageClient />;
+  return <PortalHomePage />;
+  // return <ProfilPageClient />;
 }

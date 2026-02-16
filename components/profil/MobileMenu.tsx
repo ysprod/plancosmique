@@ -48,7 +48,7 @@ export default function MobileMenu({ mobileMenuOpen, user, handleLogout }: {
             </CacheLink>
             <CacheLink href="/star/consultations">
               <button className="w-full text-left px-4 py-3 rounded-xl text-slate-700 hover:bg-violet-50 font-semibold transition-all">
-                Mes Consultations
+                Mes Contenus
               </button>
             </CacheLink>
             {/* Déconnexion Mobile */}

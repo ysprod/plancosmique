@@ -94,7 +94,7 @@ export default function HeaderContent() {
     ...(hasRole(Role.SUPER_ADMIN) ? [
       { href: "/admin", label: "Administration", icon: LayoutDashboard }
     ] : []),
-    { href: "/star/consultations", label: "Mes Consultations", icon: FileText },
+    { href: "/star/consultations", label: "Mes Contenus", icon: FileText },
   ], [hasRole]);
 
   return (
@@ -132,7 +132,7 @@ export default function HeaderContent() {
                   <div className="w-full h-full rounded-xl bg-white dark:bg-slate-900 flex items-center justify-center overflow-hidden">
                     <Image
                       src="/logo.png"
-                      alt="Mon Étoile"
+                      alt="OFFOLOMOU"
                       width={40}
                       height={40}
                       className="w-6 h-6 sm:w-8 sm:h-8 object-contain"
@@ -157,7 +157,7 @@ export default function HeaderContent() {
 
               <div className="hidden sm:block">
                 <h1 className="text-lg sm:text-xl font-black bg-gradient-to-r from-violet-600 via-fuchsia-600 to-violet-600 text-transparent bg-clip-text flex items-center gap-1.5">
-                  Mon Étoile
+                  OFFOLOMOU
                   <motion.div
                     animate={{ rotate: [0, 15, -15, 0] }}
                     transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
@@ -166,13 +166,13 @@ export default function HeaderContent() {
                   </motion.div>
                 </h1>
                 <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-semibold -mt-0.5 tracking-wide">
-                  Votre guide spirituel ✨
+                  Dieu donne des stars ✨
                 </p>
               </div>
 
               <div className="sm:hidden">
                 <h1 className="text-base font-black bg-gradient-to-r from-violet-600 to-fuchsia-600 text-transparent bg-clip-text">
-                  Mon Étoile
+                  OFFOLOMOU
                 </h1>
               </div>
             </CacheLink>

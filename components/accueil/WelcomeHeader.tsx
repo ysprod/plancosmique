@@ -17,7 +17,7 @@ function WelcomeHeader() {
       >
         <Image
           src="/logo.png"
-          alt="Mon Étoile"
+          alt="OFFOLOMOU"
           width={80}
           height={80}
           className="mx-auto mb-2 sm:mb-3 drop-shadow-2xl"
@@ -26,7 +26,7 @@ function WelcomeHeader() {
       </motion.div>
 
       <h1 className="text-2xl sm:text-4xl font-black bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 dark:from-purple-400 dark:via-indigo-400 dark:to-pink-400 bg-clip-text text-transparent">
-        MON ÉTOILE
+        OFFOLOMOU
       </h1>
     </motion.div>
   );

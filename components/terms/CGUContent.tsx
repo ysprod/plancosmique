@@ -4,14 +4,14 @@ import { memo } from 'react';
 const CGUContent = memo(() => (
   <section className="prose prose-sm sm:prose-base max-w-none text-gray-800 dark:text-gray-100 mx-auto">
     <h1 className="flex items-center gap-2 text-purple-700 dark:text-purple-300 mb-4"><FileText className="inline w-6 h-6" /> CONDITIONS GÉNÉRALES D'UTILISATION (CGU)</h1>
-    <h2>MON ÉTOILE</h2>
+    <h2>OFFOLOMOU</h2>
     <p><strong>ARTICLE 1 - OBJET ET PRÉAMBULE</strong><br/>
-    Les présentes Conditions Générales d'Utilisation (ci-après "CGU") ont pour objet de définir les modalités et conditions d'utilisation de la plateforme numérique "MON ÉTOILE" (ci-après "la Plateforme"), ainsi que les droits et obligations des parties dans ce cadre.
+    Les présentes Conditions Générales d'Utilisation (ci-après "CGU") ont pour objet de définir les modalités et conditions d'utilisation de la plateforme numérique "OFFOLOMOU" (ci-après "la Plateforme"), ainsi que les droits et obligations des parties dans ce cadre.
     En accédant et utilisant la Plateforme, vous reconnaissez avoir lu, compris et accepté sans réserve l'intégralité des présentes CGU. Si vous n'acceptez pas ces conditions, vous devez immédiatement cesser toute utilisation de la Plateforme.</p>
     <h3>ARTICLE 2 - DÉFINITIONS</h3>
     <ul>
-      <li><b>Plateforme</b> : Désigne l'ensemble des services numériques accessibles via le site internet MON ÉTOILE, ses applications mobiles associées et toute autre interface de connexion.</li>
-      <li><b>Éditeur</b> : La société ou l'entité responsable de la création, du développement et de la maintenance de la Plateforme MON ÉTOILE.</li>
+      <li><b>Plateforme</b> : Désigne l'ensemble des services numériques accessibles via le site internet OFFOLOMOU, ses applications mobiles associées et toute autre interface de connexion.</li>
+      <li><b>Éditeur</b> : La société ou l'entité responsable de la création, du développement et de la maintenance de la Plateforme OFFOLOMOU.</li>
       <li><b>Utilisateur</b> : Toute personne physique ou morale accédant à la Plateforme, sans distinction.</li>
       <li><b>Client</b> : Utilisateur ayant procédé à la création d'un compte personnel et ayant souscrit à un ou plusieurs services payants proposés par la Plateforme.</li>
       <li><b>Consultation</b> : Service personnalisé d'analyse et d'interprétation dans les domaines de l'astrologie, de la numérologie, de l'étude des cycles de vie, du destin et des archétypes symboliques.</li>
@@ -134,7 +134,7 @@ const CGUContent = memo(() => (
     </ul>
     <h3>ARTICLE 18 - CONTACT ET INFORMATIONS</h3>
     <p>Pour toute question relative aux présentes CGU ou à l'utilisation de la Plateforme, l'Utilisateur peut contacter l'Éditeur :<br/>
-    MON ÉTOILE<br/>
+    OFFOLOMOU<br/>
     Adresse : [À compléter]<br/>
     Email : [À compléter]<br/>
     Téléphone : [À compléter]<br/>

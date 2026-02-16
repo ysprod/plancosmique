@@ -1,6 +1,6 @@
-# Copilot Instructions for Mon Étoile
+# Copilot Instructions for  OFFOLOMOU
 
-Mon Étoile is a full-stack spiritual guidance platform (voyance, astrology, numerology) built with Next.js 14 App Router, TypeScript, and a separate backend API. These instructions help AI agents be immediately productive in this codebase.
+OFFOLOMOU is a full-stack spiritual guidance platform (voyance, astrology, numerology) built with Next.js 14 App Router, TypeScript, and a separate backend API. These instructions help AI agents be immediately productive in this codebase.
 
 ## Project Overview
 - **Framework**: Next.js 14 (App Router) with TypeScript strict mode

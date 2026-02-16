@@ -30,7 +30,7 @@ const ContactInfo = memo(() => (
             <div className="flex items-center gap-3 text-sm">
                 <MapPin className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0" />
                 <span className="text-gray-700 dark:text-gray-300">
-                    Mon Étoile, Abidjan, Côte d'Ivoire
+                    OFFOLOMOU, Abidjan, Côte d'Ivoire
                 </span>
             </div>
         </div>

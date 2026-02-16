@@ -102,8 +102,8 @@ export function useHeaderState() {
       { href: "/admin", label: "Admin", icon: LayoutDashboard }
     ] : []),
     { href: "/star/monprofil", label: "Mon Profil", icon: User },
-    { href: "/star/consultations", label: "Mes Consultations", icon: FileText },
-    { href: "/star/wallet", label: "Mon Panier", icon: Wallet },
+    { href: "/star/consultations", label: "Mes Contenus", icon: FileText },
+    { href: "/star/wallet", label: "Mon Portefeuille", icon: Wallet },
   ], [hasRole]);
 
   return {

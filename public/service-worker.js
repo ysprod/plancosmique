@@ -1,9 +1,9 @@
 
-// Service Worker optimisé pour Mon Étoile
+// Service Worker optimisé pour OFFOLOMOU
 // Mise en cache intelligente, gestion robuste, code simplifié
 // Incrémentez CACHE_VERSION pour forcer l'update
 
-const CACHE_VERSION = 'monetoile-v67';
+const CACHE_VERSION = 'monetoile-v70';
 const CACHE_STATIC = `${CACHE_VERSION}-static`;
 const CACHE_DYNAMIC = `${CACHE_VERSION}-dynamic`;
 const CACHE_IMAGES = `${CACHE_VERSION}-images`;

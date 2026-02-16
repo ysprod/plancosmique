@@ -162,7 +162,7 @@ const LoadingFallbackComponent = () => {
               WebkitTextFillColor: 'transparent'
             }}
           >
-            Mon Etoile
+            OFFOLOMOU
           </motion.h2>
 
           <motion.p

@@ -53,7 +53,7 @@ export const CartModal: React.FC<CartModalProps> = ({
                             <div className="flex items-center justify-between mb-2">
                                 <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white flex items-center gap-2">
                                     <ShoppingCart className="w-6 h-6 sm:w-7 sm:h-7" />
-                                    Mon Panier
+                                    Mon Portefeuille
                                 </h2>
                                 <button
                                     onClick={onClose}

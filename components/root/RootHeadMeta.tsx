@@ -13,7 +13,7 @@ const RootHeadMeta = memo<RootHeadMetaProps>(({ fontVariable }) => {
   return (
     <>
       <meta name="mobile-web-app-capable" content="yes" />
-      <meta name="application-name" content="Mon Étoile" />
+      <meta name="application-name" content="OFFOLOMOU" />
       <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
     </>
   );

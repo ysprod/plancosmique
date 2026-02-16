@@ -17,7 +17,7 @@ const Header = memo(function Header() {
   return (
     <div className="mx-auto flex max-w-2xl flex-col items-center justify-center text-center gap-2">
       <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-zinc-50">
-        Mon Panier d&apos;Offrandes
+        Mon Portefeuille
       </h1>
       <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300">
         Gérez vos offrandes et consultez l’historique de vos transactions

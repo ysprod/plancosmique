@@ -5,7 +5,7 @@ import { styles } from './analysis-pdf.styles';
 
 const PageFooter: React.FC<{ pageNumber?: number }> = ({ pageNumber }) => (
   <View style={styles.footer}>
-    <Text>Mon Etoile - Analyse Astrologique Personnalisée</Text>
+    <Text>OFFOLOMOUe</Text>
     {pageNumber && <Text>Page {pageNumber}</Text>}
   </View>
 );

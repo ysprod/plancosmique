@@ -10,7 +10,7 @@ const IntroAlert = memo(() => (
         <div className="flex items-start gap-2">
             <AlertCircle className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
             <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
-                En utilisant <strong>Mon Étoile</strong>, vous acceptez ces conditions.
+                En utilisant <strong>OFFOLOMOU</strong>, vous acceptez ces conditions.
                 Si vous n'êtes pas d'accord, veuillez ne pas utiliser notre plateforme.
             </p>
         </div>
