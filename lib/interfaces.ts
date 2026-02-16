@@ -9,6 +9,7 @@ export type GenerationStep = 'loading' | 'success' | 'error';
 export type TransactionFilter = "all" | "simulation" | "real";
 export type SortOrder = "newest" | "oldest" | "amount_high" | "amount_low";
 export type OfferingCategory = "animal" | "vegetal" | "beverage";
+
 export type HoroscopeTypeId = 'mensuel' | 'annuel';
 
 export type FrequenceConsultation =
